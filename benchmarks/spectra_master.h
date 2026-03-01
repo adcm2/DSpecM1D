@@ -1518,6 +1518,10 @@ specsem::CalculateForce_RED_Coefficients(SourceInfo::EarthquakeCMT &cmt,
   Complex expm1 = std::exp(Complex(0.0, -1.0 * az));
   Complex expp1 = std::exp(Complex(0.0, 1.0 * az));
   Complex expp2 = std::exp(Complex(0.0, 2.0 * az));
+  expm2 = 1.0;
+  expm1 = 1.0;
+  expp1 = 1.0;
+  expp2 = 1.0;
 
   // compute the combinations of CMT coefficients and spherical harmonics
   Complex tmp_mm = cmt.MCmm() * expm2;
@@ -1565,6 +1569,7 @@ specsem::CalculateForce_RED_Coefficients(SourceInfo::EarthquakeCMT &cmt,
     vec_force(4, 3) = omegal2 * tmp_pp;
   }
   vec_force *= mfact;
+  // vec_force *= Complex(0, 1.0);
 
   vec_force *= (1.0 / _moment_norm);
   return vec_force;
@@ -1648,6 +1653,7 @@ specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
   // parameters
   double lv = static_cast<double>(idxl);
   auto mfact = std::sqrt((2.0 * lv + 1.0) / (4.0 * EIGEN_PI));
+  // mfact = 1.0;
   auto omegal2 = std::sqrt((lv + 2) * (lv - 1) / 2.0);
   auto kval = std::sqrt(lv * (lv + 1.0));
   auto kd2 = kval / std::sqrt(2.0);
@@ -1658,6 +1664,10 @@ specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
   Complex expm1 = std::exp(Complex(0.0, -1.0 * az));
   Complex expp1 = std::exp(Complex(0.0, 1.0 * az));
   Complex expp2 = std::exp(Complex(0.0, 2.0 * az));
+  expm2 = 1.0;
+  expm1 = 1.0;
+  expp1 = 1.0;
+  expp2 = 1.0;
 
   // compute the combinations of CMT coefficients and spherical harmonics
   Complex tmp_mm = cmt.MCmm() * expm2;
@@ -1682,8 +1692,8 @@ specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
     vec_force(3, 0) = -tmp_0p;
 
     // r^{-1} W terms for l>1
-    vec_force(1, 1) = -tmp_mm;
-    vec_force(3, 1) = tmp_pp;
+    vec_force(1, 1) = -tmp_0m;
+    vec_force(3, 1) = tmp_0p;
 
     // r^{-1} W terms for l>1
     vec_force(0, 1) = omegal2 * tmp_mm;

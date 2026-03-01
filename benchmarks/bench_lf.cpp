@@ -40,11 +40,11 @@ main() {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Read all parameters from the input file
-  InputParameters params("../YSpec/input_bench_lf.txt");
+  InputParameters params("../MyVersion/YSpec/input_bench_lf.txt");
   SRInfo sr_info(params);
   // earth model
   std::string cpath = params.earth_model();
-  std::string earth_model_path = "../YSpec/" + params.earth_model();
+  std::string earth_model_path = "../MyVersion/YSpec/" + params.earth_model();
   std::cout << "Path to earth model: " << earth_model_path << "\n";
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // parameters of sem
@@ -99,14 +99,14 @@ main() {
   //           << maxstep / ((vec_w[1] - vec_w[0]) * 0.003) << "\n";
   int nskip = 5 * std::floor(maxstep / ((vec_w[1] - vec_w[0]) * 0.003));
   nskip += 1;
-  int num_chunks = 10;
+  int num_chunks = 5;
   timer1.start();
   MATRIX vec_raw = mytest.FrequencySpectrum_RED(myff, prem, cmt, params, NQ,
                                                 nskip, num_chunks, sr_info);
 
   // MATRIX vec_raw = mytest.FrequencySpectrum_TEST_SPECSEM(myff, sem, prem,
   // cmt,
-  //  params, nskip);
+  //                                                        params, nskip);
   timer1.stop("Total time for sparse frequency spectrum");
 
   // normalise
@@ -142,7 +142,7 @@ main() {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // testing read in of yspec
   // std::cout << "First output\n";
-  std::string yspec_path = "../YSpec/output/yspec.lf.out.1";
+  std::string yspec_path = "../MyVersion/YSpec/output/yspec.lf.out.1";
   YSPECREADER::DataColumns yspec_data(yspec_path);
   std::size_t maxcoly;
   if (yspec_data.getColumn1().size() > vec_r2t_b.cols()) {
@@ -177,28 +177,28 @@ main() {
   // MINEOSREADER::DataColumns mineos_data2(mineos_path2);
 
   // read in mineos output
-  std::string mineos_path = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-                            "Syndat.2000160: 0:33:16.TLY.LHZ.ASC";
-  MINEOSREADER::DataColumns mineos_data(mineos_path);
-  std::string mineos_path1 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-                             "Syndat.2000160: 0:33:16.TLY.LHN.ASC";
-  MINEOSREADER::DataColumns mineos_data1(mineos_path1);
-  std::string mineos_path2 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-                             "Syndat.2000160: 0:33:16.TLY.LHE.ASC";
-  MINEOSREADER::DataColumns mineos_data2(mineos_path2);
+  // std::string mineos_path = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+  //                           "Syndat.2000160: 0:33:16.TLY.LHZ.ASC";
+  // MINEOSREADER::DataColumns mineos_data(mineos_path);
+  // std::string mineos_path1 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+  //                            "Syndat.2000160: 0:33:16.TLY.LHN.ASC";
+  // MINEOSREADER::DataColumns mineos_data1(mineos_path1);
+  // std::string mineos_path2 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+  //                            "Syndat.2000160: 0:33:16.TLY.LHE.ASC";
+  // MINEOSREADER::DataColumns mineos_data2(mineos_path2);
 
-  std::size_t maxcol;
-  if (mineos_data.getColumn1().size() > vec_r2t_b.cols()) {
-    maxcol = vec_r2t_b.cols();
-  } else {
-    maxcol = mineos_data.getColumn1().size();
-  }
-  Eigen::MatrixXd mineos_t = Eigen::MatrixXd::Zero(3, vec_r2t_b.cols());
-  for (int idx = 0; idx < maxcol; ++idx) {
-    mineos_t(0, idx) += mineos_data.getColumn2()[idx] * 1e-9;
-    mineos_t(1, idx) += mineos_data1.getColumn2()[idx] * 1e-9;
-    mineos_t(2, idx) += mineos_data2.getColumn2()[idx] * 1e-9;
-  }
+  // std::size_t maxcol;
+  // if (mineos_data.getColumn1().size() > vec_r2t_b.cols()) {
+  //   maxcol = vec_r2t_b.cols();
+  // } else {
+  //   maxcol = mineos_data.getColumn1().size();
+  // }
+  Eigen::MatrixXd mineos_t = yspec_t;
+  // for (int idx = 0; idx < maxcol; ++idx) {
+  //   mineos_t(0, idx) += mineos_data.getColumn2()[idx] * 1e-9;
+  //   mineos_t(1, idx) += mineos_data1.getColumn2()[idx] * 1e-9;
+  //   mineos_t(2, idx) += mineos_data2.getColumn2()[idx] * 1e-9;
+  // }
   // std::cout << "Finished reading Mineos output.\n";
   // std::cout << "The size of mineos_t: " << mineos_t.rows() << " x "
   //           << mineos_t.cols() << "\n";

@@ -3030,7 +3030,13 @@ Sparse_F_Spec::FrequencySpectrum_RED(SpectraSolver::FreqFull &myff,
   std::vector<double> max_steps;
   for (int idx = 0; idx < num_chunks; ++idx) {
     double tmp = 1.57 / freq_chunks[idx].back();
+    if (tmp > 0.01) {
+      tmp = 0.01;
+    }
     max_steps.push_back(tmp);
+  }
+  for (auto &idx : max_steps) {
+    std::cout << "Max step size: " << idx << "\n";
   }
 
   // vector of sems

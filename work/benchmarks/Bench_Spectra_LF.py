@@ -80,8 +80,8 @@ ax_diff.legend(loc='upper right')
 ax_data = axes[1, 0]
 ax_diff = axes[1, 1]
 
-ax_data.plot(time_vector, yspec_n, "b", linewidth=lwidth)
-ax_data.plot(time_vector, trans_n, "r--", linewidth=lwidth)
+ax_data.plot(time_vector, dmf[:,6], "b", linewidth=lwidth)
+ax_data.plot(time_vector, dmf[:,15], "r--", linewidth=lwidth)
 # ax_data.plot(time_vector, mineos_n, "g-.", linewidth=lwidth)
 ax_data.set_ylabel('North-Component', fontsize=BIGGER_SIZE)
 
@@ -94,8 +94,8 @@ ax_diff.set_ylabel('Relative Error (%)', fontsize=BIGGER_SIZE)
 ax_data = axes[2, 0]
 ax_diff = axes[2, 1]
 
-ax_data.plot(time_vector, yspec_e, "b", linewidth=lwidth)
-ax_data.plot(time_vector, trans_e, "r--", linewidth=lwidth)
+ax_data.plot(time_vector, dmf[:,9], "b", linewidth=lwidth)
+ax_data.plot(time_vector, dmf[:,18], "r--", linewidth=lwidth)
 # ax_data.plot(time_vector, mineos_e, "g-.", linewidth=lwidth)
 ax_data.set_ylabel('East-Component', fontsize=BIGGER_SIZE)
 
