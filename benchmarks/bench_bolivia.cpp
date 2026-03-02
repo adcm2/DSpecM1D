@@ -14,6 +14,7 @@
 #include "read_mineos.h"
 #include "full_spec.h"
 #include "spectra_master.h"
+#include "SR_Info.h"
 
 template <typename FLOAT> class prem_norm {
 public:
@@ -39,11 +40,11 @@ main() {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Read all parameters from the input file_w
-  InputParameters params("../YSpec/input_bench_bolivia_mf.txt");
-
+  InputParameters params("../MyVersion/YSpec/input_bench_bolivia_mf.txt");
+  SRInfo sr_info(params);
   // earth model
   std::string cpath = params.earth_model();
-  std::string earth_model_path = "../YSpec/" + params.earth_model();
+  std::string earth_model_path = "../MyVersion/YSpec/" + params.earth_model();
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // parameters of sem
@@ -96,9 +97,15 @@ main() {
   // std::cout << "Approximate nskip: "
   //           << maxstep / ((vec_w[1] - vec_w[0]) * 0.003) << "\n";
   int nskip = 5 * std::floor(maxstep / ((vec_w[1] - vec_w[0]) * 0.003));
+  int num_chunks = 5;
   timer1.start();
-  MATRIX vec_raw = mytest.FrequencySpectrum_TEST_SPECSEM(myff, sem, prem, cmt,
-                                                         params, nskip);
+  MATRIX vec_raw = mytest.FrequencySpectrum_RED(myff, prem, cmt, params, NQ,
+                                                nskip, num_chunks, sr_info);
+
+  // timer1.start();
+  // MATRIX vec_raw = mytest.FrequencySpectrum_TEST_SPECSEM(myff, sem, prem,
+  // cmt,
+  //                                                        params, nskip);
   timer1.stop("Total time for sparse frequency spectrum");
 
   // normalise
@@ -149,7 +156,7 @@ main() {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // testing read in of yspec
   // std::cout << "First output\n";
-  std::string yspec_path = "../YSpec/output/yspec.out.bolivia.mf.1";
+  std::string yspec_path = "../MyVersion/YSpec/output/yspec.out.bolivia.mf.1";
   YSPECREADER::DataColumns yspec_data(yspec_path);
 
   Eigen::MatrixXd yspec_t = Eigen::MatrixXd::Zero(3, vec_r2t_b.cols());
@@ -176,32 +183,34 @@ main() {
       processfunctions::fulltime2freq(vec_filt_t_yspec, myff, hann_w);
 
   // read in mineos output
-  std::string mineos_path = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-                            "Syndat2.2000160: 0:33:16.TLY.LHZ.ASC";
-  MINEOSREADER::DataColumns mineos_data(mineos_path);
-  std::string mineos_path1 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-                             "Syndat2.2000160: 0:33:16.TLY.LHN.ASC";
-  MINEOSREADER::DataColumns mineos_data1(mineos_path1);
-  std::string mineos_path2 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-                             "Syndat2.2000160: 0:33:16.TLY.LHE.ASC";
-  MINEOSREADER::DataColumns mineos_data2(mineos_path2);
+  // std::string mineos_path = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+  //                           "Syndat2.2000160: 0:33:16.TLY.LHZ.ASC";
+  // MINEOSREADER::DataColumns mineos_data(mineos_path);
+  // std::string mineos_path1 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+  //                            "Syndat2.2000160: 0:33:16.TLY.LHN.ASC";
+  // MINEOSREADER::DataColumns mineos_data1(mineos_path1);
+  // std::string mineos_path2 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+  //                            "Syndat2.2000160: 0:33:16.TLY.LHE.ASC";
+  // MINEOSREADER::DataColumns mineos_data2(mineos_path2);
 
   Eigen::MatrixXd mineos_t = Eigen::MatrixXd::Zero(3, vec_r2t_b.cols());
-  std::cout << "nt: " << myff.nt() << ", vec_r2t_b.cols(): " << vec_r2t_b.cols()
-            << "\n";
-  std::size_t maxcol;
-  if (mineos_data.getColumn1().size() > vec_r2t_b.cols()) {
-    maxcol = vec_r2t_b.cols();
-  } else {
-    maxcol = mineos_data.getColumn1().size();
-  }
-  std::cout << "mineos data size: " << mineos_data.getColumn1().size() << "\n";
-  for (int idx = 0; idx < maxcol; ++idx) {
-    mineos_t(0, idx) += mineos_data.getColumn2()[idx] * 1e-9;
-    mineos_t(1, idx) += mineos_data1.getColumn2()[idx] * 1e-9;
-    mineos_t(2, idx) += mineos_data2.getColumn2()[idx] * 1e-9;
-  }
-  std::cout << "First element in mineos_t(0,0): " << mineos_t(0, 0) << "\n";
+  mineos_t = yspec_t;
+  // std::cout << "nt: " << myff.nt() << ", vec_r2t_b.cols(): " <<
+  // vec_r2t_b.cols()
+  //           << "\n";
+  // std::size_t maxcol;
+  // if (mineos_data.getColumn1().size() > vec_r2t_b.cols()) {
+  //   maxcol = vec_r2t_b.cols();
+  // } else {
+  //   maxcol = mineos_data.getColumn1().size();
+  // }
+  // std::cout << "mineos data size: " << mineos_data.getColumn1().size() <<
+  // "\n"; for (int idx = 0; idx < maxcol; ++idx) {
+  //   mineos_t(0, idx) += mineos_data.getColumn2()[idx] * 1e-9;
+  //   mineos_t(1, idx) += mineos_data1.getColumn2()[idx] * 1e-9;
+  //   mineos_t(2, idx) += mineos_data2.getColumn2()[idx] * 1e-9;
+  // }
+  // std::cout << "First element in mineos_t(0,0): " << mineos_t(0, 0) << "\n";
   // std::cout << "The size of mineos_t: " << mineos_t.rows() << " x "
   //           << mineos_t.cols() << "\n";
   // auto a_mineos_00 = processfunctions::fulltime2freq(mineos_t, myff, 0.001);
@@ -217,14 +226,17 @@ main() {
   auto a_mineos_stf0 = a_mineos_0;
   for (int idx = 1; idx < a_mineos_0.cols(); ++idx) {
     auto wval = myff.w(idx);
+    // Complex stf_factor =
+    //     -1.0 / (wval * wval) * exp(-myi * wval * st_time) *
+    //     std::exp(-(1.0 / (4.0 * pi_d)) * std::pow(wval / kap_val, 2.0));
     Complex stf_factor =
-        -1.0 / (wval * wval) * exp(-myi * wval * st_time) *
+        exp(-myi * wval * st_time) *
         std::exp(-(1.0 / (4.0 * pi_d)) * std::pow(wval / kap_val, 2.0));
     // stf_factor = 1.0;
     a_mineos_stf0.col(idx) *= stf_factor;
   }
-  a_mineos_stf0 *= prem.TimeNorm() * prem.TimeNorm();   // correct units after
-                                                        // dividing by w^2
+  // a_mineos_stf0 *= prem.TimeNorm() * prem.TimeNorm();   // correct units
+  // after dividing by w^2
   auto vec_filt_t_mineos =
       processfunctions::filtfreq2time(a_mineos_stf0, myff, false);
   auto a_filt_mineos =

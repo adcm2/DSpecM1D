@@ -64,7 +64,7 @@ public:
   template <class model1d>
   auto FrequencySpectrum_RED(SpectraSolver::FreqFull &, model1d &,
                              SourceInfo::EarthquakeCMT &, InputParameters &,
-                             int, int, int, SRInfo &);
+                             int, int, int, SRInfo &, double = 1e-4);
 
 private:
 };
@@ -2963,7 +2963,8 @@ Sparse_F_Spec::FrequencySpectrum_RED(SpectraSolver::FreqFull &myff,
                                      model1d &inp_model,
                                      SourceInfo::EarthquakeCMT &cmt,
                                      InputParameters &params, int NQ, int nskip,
-                                     int num_chunks, SRInfo &srinfo) {
+                                     int num_chunks, SRInfo &srinfo,
+                                     double relerr) {
   using Complex = std::complex<double>;
   using MATRIX = Eigen::MatrixXcd;
   using SMATRIX = Eigen::SparseMatrix<Complex>;
@@ -3028,11 +3029,13 @@ Sparse_F_Spec::FrequencySpectrum_RED(SpectraSolver::FreqFull &myff,
 
   // vector of maximum step sizes for each frequency chunk
   std::vector<double> max_steps;
+  double base_len = 1.57;
+  double newlen = std::pow(100.0 * relerr, 1.0 / (NQ - 1.0)) * base_len;
   for (int idx = 0; idx < num_chunks; ++idx) {
-    double tmp = 1.57 / freq_chunks[idx].back();
-    if (tmp > 0.01) {
-      tmp = 0.01;
-    }
+    double tmp = newlen / freq_chunks[idx].back();
+    // if (tmp > 0.01) {
+    //   tmp = 0.01;
+    // }
     max_steps.push_back(tmp);
   }
   for (auto &idx : max_steps) {
@@ -3124,13 +3127,13 @@ Sparse_F_Spec::FrequencySpectrum_RED(SpectraSolver::FreqFull &myff,
       MATRIX f_r = sem.CalculateForce_Red_R(cmt);
 
       MATRIX vec_red_z = sem.RV_RED_Z_R(params);
-      // std::cout << "idx_chunk: " << idx_chunk << "\n";
-      // std::cout << vec_red_z << "\n\n";
-      // auto testrec = sem.RV_Z_R(params, 0).block(lowidx, 0, lenidx, 1);
-      // std::cout << "Test rec: \n" << testrec << "\n\n";
-      // #pragma omp parallel default(shared) private(solver)
+// std::cout << "idx_chunk: " << idx_chunk << "\n";
+// std::cout << vec_red_z << "\n\n";
+// auto testrec = sem.RV_Z_R(params, 0).block(lowidx, 0, lenidx, 1);
+// std::cout << "Test rec: \n" << testrec << "\n\n";
+#pragma omp parallel default(shared) private(solver)
       {
-        // #pragma omp for schedule(dynamic, 10)
+#pragma omp for schedule(dynamic)
         for (int idx = 0; idx < idx_chunks[idx_chunk].size(); ++idx) {
           double wval = freq_chunks[idx_chunk][idx];
           int idxw = idx_chunks[idx_chunk][idx];
@@ -3174,12 +3177,12 @@ Sparse_F_Spec::FrequencySpectrum_RED(SpectraSolver::FreqFull &myff,
           for (int idxr = 0; idxr < num_rec; ++idxr) {
             // index
             auto idxpl = 3 * idxr;
-            // if ((wval > 4.0) && (wval < 7.0)) {
-            //   std::cout << "Adding response to vec_raw at index: (" << idxpl
-            //             << ", " << idxw << ")\n";
-            // }
-            // find response
-            // #pragma omp critical(torvecadd)
+// if ((wval > 4.0) && (wval < 7.0)) {
+//   std::cout << "Adding response to vec_raw at index: (" << idxpl
+//             << ", " << idxw << ")\n";
+// }
+// find response
+#pragma omp critical(torvecadd)
             {
               vec_raw(idxpl, idxw) += resval;
             }
