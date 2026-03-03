@@ -2,18 +2,9 @@
 #define EIGEN_DONT_PARALLELIZE
 #include <iostream>
 #include <PlanetaryModel/All>
-#include <new_coupling/Timer>
-#include "sem_full.h"
-// #include "sem_spheroidal_debug.h"
-#include "../SpectraSolver/SpectraSolver/FF"
-// #include "../SpectraSolver/SpectraSolver/src/ODE_Spectra/filter_base.h"
-#include "../SpectraSolver/SpectraSolver/src/ODE_Spectra/postprocessfunctions.h"
-#include "read_station.h"
-#include "input_parser.h"   // Use the new input parser
-#include "read_yspec.h"
-#include "read_mineos.h"
-#include "full_spec.h"
-#include "spectra_master.h"
+#include <DSpecM1D/Timer>
+#include <DSpecM1D/All>
+#include <SpectraSolver/FF>
 
 template <typename FLOAT> class prem_norm {
 public:
@@ -39,11 +30,11 @@ main() {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Read all parameters from the input file_w
-  InputParameters params("./input_bench_step.txt");
+  InputParameters params("./bench_params/input_bench_step.txt");
 
   // earth model
   std::string cpath = params.earth_model();
-  std::string earth_model_path = "../YSpec/" + params.earth_model();
+  std::string earth_model_path = params.earth_model();
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // parameters of sem
@@ -115,8 +106,7 @@ main() {
     // for this maxstep set up the SEM
     Full1D::specsem sem(prem, maxstep, NQ, lval);
     std::cout << "\nDoing step: " << maxstep << ", nskip: " << nskip << "\n";
-    MATRIX vec_raw = mytest.FrequencySpectrum_TEST_SPECSEM(myff, sem, prem, cmt,
-                                                           params, nskip);
+    MATRIX vec_raw = mytest.Spectra(myff, sem, prem, cmt, params, nskip);
 
     vec_raw *= norm_factor;
 

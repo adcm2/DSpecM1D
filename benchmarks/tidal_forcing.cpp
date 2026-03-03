@@ -3,16 +3,9 @@
 
 #include <iostream>
 #include <PlanetaryModel/All>
-#include <new_coupling/Timer>
-
-#include "sem_full.h"
-#include "../SpectraSolver/SpectraSolver/FF"
-#include "../SpectraSolver/SpectraSolver/src/ODE_Spectra/postprocessfunctions.h"
-#include "read_station.h"
-#include "input_parser.h"   // Use the new input parser
-#include "read_yspec.h"
-#include "full_spec.h"
-#include "spectra_master.h"
+#include <DSpecM1D/Timer>
+#include <DSpecM1D/All>
+#include <SpectraSolver/FF>
 
 template <typename FLOAT> class prem_norm {
 public:
@@ -38,10 +31,10 @@ main() {
 
   //////////////////////////////////////////////////////////////////////////////
   // Read all parameters from the input file
-  InputParameters params("../YSpec/input_bench_hf.txt");
-
+  InputParameters params("bench_params/input_bench_hf.txt");
+  SRInfo sr_info(params);
   // Earth model
-  std::string earth_model_path = "../YSpec/" + params.earth_model();
+  std::string earth_model_path = params.earth_model();
 
   //////////////////////////////////////////////////////////////////////////////
   // Parameters of SEM
@@ -136,8 +129,8 @@ main() {
 
   ////////////////////////////////
   auto idxl = 3;   // l = 2 or 3 for tidal forcing
-  SMATRIX ke_s = sem.MAT_KE_S(idxl).cast<Complex>();
-  SMATRIX in_s = sem.MAT_IN_S(idxl).cast<Complex>();
+  SMATRIX ke_s = sem.H_S(idxl).cast<Complex>();
+  SMATRIX in_s = sem.P_S(idxl).cast<Complex>();
   Eigen::MatrixXcd fval = sem.CalculateForce(cmt, idxl);
 
   ////////////////////////////////

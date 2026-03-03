@@ -2,19 +2,9 @@
 #define EIGEN_DONT_PARALLELIZE
 #include <iostream>
 #include <PlanetaryModel/All>
-#include <new_coupling/Timer>
-#include "sem_full.h"
-// #include "sem_spheroidal_debug.h"
-#include "../SpectraSolver/SpectraSolver/FF"
-// #include "../SpectraSolver/SpectraSolver/src/ODE_Spectra/filter_base.h"
-#include "../SpectraSolver/SpectraSolver/src/ODE_Spectra/postprocessfunctions.h"
-#include "read_station.h"
-#include "input_parser.h"   // Use the new input parser
-#include "read_yspec.h"
-#include "read_mineos.h"
-#include "full_spec.h"
-#include "spectra_master.h"
-#include "SR_Info.h"
+#include <DSpecM1D/Timer>
+#include <DSpecM1D/All>
+#include <SpectraSolver/FF>
 
 template <typename FLOAT> class prem_norm {
 public:
@@ -40,37 +30,23 @@ main() {
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // Read all parameters from the input file_w
-  InputParameters params("../MyVersion/YSpec/input_bench_bolivia_mf.txt");
+  InputParameters params("bench_params/input_bench_bolivia_mf.txt");
   SRInfo sr_info(params);
+  auto cmt = SourceInfo::EarthquakeCMT(params);
+
   // earth model
   std::string cpath = params.earth_model();
-  std::string earth_model_path = "../MyVersion/YSpec/" + params.earth_model();
+  std::string earth_model_path = params.earth_model();
+  prem_norm<double> norm_class;
+  auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
 
-  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // parameters of sem
-  int lval = params.lmax(), NQ = 5;
-  bool toaug = false;
-  double maxstep = 0.05;
-  std::cout << "Max step: \n";
-  std::cin >> maxstep;
-  const double twopi = 2.0 * 3.1415926535897932;
-  std::string pathpert;
-
-  //////////////////////////////
   // frequency solver parameters
   double dt = params.time_step_sec(), tout = params.t_out() / 60.0, df0 = 1.0,
          wtb = 0.05, t1 = 0, t2 = tout;
-  int qex = 1;
+  int qex = 1, nskip = 20, num_chunks = 5, NQ = 6;
+  const double twopi = 2.0 * 3.1415926535897932;
   Complex myi(0.0, 1.0);
-  double droptol = 1e-4;
-  auto tend = 0.6 * params.t_out();   // length of time series in seconds
-  // std::cout << "tend: " << tend << "\n";
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // prem
-  // auto prem = EarthModels::ModelInput(pathtoprem);
-  timer1.start();
-  prem_norm<double> norm_class;
-  auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
 
   // frequency class
   SpectraSolver::FreqFull myff(params.f1(), params.f2(), params.f11(),
@@ -78,34 +54,14 @@ main() {
                                tout, df0, wtb, t1, t2, qex, prem.TimeNorm());
   auto vec_w = myff.w();
 
-  timer1.stop("Total time for reading PREM and setting up frequency class");
-
-  timer1.start();
-  // sem class
-  // Full1D::sem sem(prem, maxstep, NQ, lval);
-  Full1D::specsem sem(prem, maxstep, NQ, lval);
-  timer1.stop("Total time for setting up SEM class");
-
-  // source information
-  auto cmt = SourceInfo::EarthquakeCMT(params);
-
   //////////////////////////////////////////////////////////////////////////////
 
   // test new functionality
-  SPARSESPEC::Sparse_F_Spec mytest;
-  // int nskip = 20;
-  // std::cout << "Approximate nskip: "
-  //           << maxstep / ((vec_w[1] - vec_w[0]) * 0.003) << "\n";
-  int nskip = 5 * std::floor(maxstep / ((vec_w[1] - vec_w[0]) * 0.003));
-  int num_chunks = 5;
-  timer1.start();
-  MATRIX vec_raw = mytest.FrequencySpectrum_RED(myff, prem, cmt, params, NQ,
-                                                nskip, num_chunks, sr_info);
+  SPARSESPEC::Sparse_F_Spec spec;
 
-  // timer1.start();
-  // MATRIX vec_raw = mytest.FrequencySpectrum_TEST_SPECSEM(myff, sem, prem,
-  // cmt,
-  //                                                        params, nskip);
+  timer1.start();
+  MATRIX vec_raw =
+      spec.Spectra(myff, prem, cmt, params, NQ, nskip, num_chunks, sr_info);
   timer1.stop("Total time for sparse frequency spectrum");
 
   // normalise
@@ -124,8 +80,8 @@ main() {
   // process responses
   // don't do hann filter until you have time domain response etc
   auto vec_r2t_b = processfunctions::freq2time(vec_raw, myff);
-
   auto a_filt0 = processfunctions::fulltime2freq(vec_r2t_b, myff, 0.01);
+
   // now do the convolution for a particular source time function
   double hd = 60.0 / prem.TimeNorm();   // 60 seconds half duration
   hd = 1e-9;                            // set to zero for testing
@@ -156,7 +112,7 @@ main() {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // testing read in of yspec
   // std::cout << "First output\n";
-  std::string yspec_path = "../MyVersion/YSpec/output/yspec.out.bolivia.mf.1";
+  std::string yspec_path = "../YSpec/output/yspec.out.bolivia.mf.1";
   YSPECREADER::DataColumns yspec_data(yspec_path);
 
   Eigen::MatrixXd yspec_t = Eigen::MatrixXd::Zero(3, vec_r2t_b.cols());
@@ -165,8 +121,6 @@ main() {
     yspec_t(1, idx) += yspec_data.getColumn3()[idx];
     yspec_t(2, idx) += yspec_data.getColumn4()[idx];
   }
-  // std::cout << "The size of yspec_t: " << yspec_t.rows() << " x "
-  //           << yspec_t.cols() << "\n";
   auto a_filt_yspec0 = processfunctions::fulltime2freq(yspec_t, myff, 0.01);
   auto a_yspec_stf0 = a_filt_yspec0;
   for (int idx = 1; idx < a_yspec_stf0.cols(); ++idx) {
@@ -174,7 +128,6 @@ main() {
     Complex stf_factor =
         exp(-myi * wval * st_time) *
         std::exp(-(1.0 / (4.0 * pi_d)) * std::pow(wval / kap_val, 2.0));
-    // stf_factor = 1.0;
     a_yspec_stf0.col(idx) *= stf_factor;
   }
   auto vec_filt_t_yspec =
@@ -183,66 +136,43 @@ main() {
       processfunctions::fulltime2freq(vec_filt_t_yspec, myff, hann_w);
 
   // read in mineos output
-  // std::string mineos_path = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-  //                           "Syndat2.2000160: 0:33:16.TLY.LHZ.ASC";
-  // MINEOSREADER::DataColumns mineos_data(mineos_path);
-  // std::string mineos_path1 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-  //                            "Syndat2.2000160: 0:33:16.TLY.LHN.ASC";
-  // MINEOSREADER::DataColumns mineos_data1(mineos_path1);
-  // std::string mineos_path2 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
-  //                            "Syndat2.2000160: 0:33:16.TLY.LHE.ASC";
-  // MINEOSREADER::DataColumns mineos_data2(mineos_path2);
+  std::string mineos_path = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+                            "Syndat2.2000160: 0:33:16.TLY.LHZ.ASC";
+  MINEOSREADER::DataColumns mineos_data(mineos_path);
+  std::string mineos_path1 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+                             "Syndat2.2000160: 0:33:16.TLY.LHN.ASC";
+  MINEOSREADER::DataColumns mineos_data1(mineos_path1);
+  std::string mineos_path2 = "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/"
+                             "Syndat2.2000160: 0:33:16.TLY.LHE.ASC";
+  MINEOSREADER::DataColumns mineos_data2(mineos_path2);
 
   Eigen::MatrixXd mineos_t = Eigen::MatrixXd::Zero(3, vec_r2t_b.cols());
-  mineos_t = yspec_t;
-  // std::cout << "nt: " << myff.nt() << ", vec_r2t_b.cols(): " <<
-  // vec_r2t_b.cols()
-  //           << "\n";
-  // std::size_t maxcol;
-  // if (mineos_data.getColumn1().size() > vec_r2t_b.cols()) {
-  //   maxcol = vec_r2t_b.cols();
-  // } else {
-  //   maxcol = mineos_data.getColumn1().size();
-  // }
-  // std::cout << "mineos data size: " << mineos_data.getColumn1().size() <<
-  // "\n"; for (int idx = 0; idx < maxcol; ++idx) {
-  //   mineos_t(0, idx) += mineos_data.getColumn2()[idx] * 1e-9;
-  //   mineos_t(1, idx) += mineos_data1.getColumn2()[idx] * 1e-9;
-  //   mineos_t(2, idx) += mineos_data2.getColumn2()[idx] * 1e-9;
-  // }
-  // std::cout << "First element in mineos_t(0,0): " << mineos_t(0, 0) << "\n";
-  // std::cout << "The size of mineos_t: " << mineos_t.rows() << " x "
-  //           << mineos_t.cols() << "\n";
-  // auto a_mineos_00 = processfunctions::fulltime2freq(mineos_t, myff, 0.001);
-  // for (int idx = 0; idx < a_mineos_00.cols(); ++idx) {
-  //   auto fval = myff.df() * idx;
-  //   if ((fval > myff.f22()) || (fval < myff.f11())) {
-  //     a_mineos_00.col(idx) *= 0.0;
-  //   }
-  // }
-  // auto vec_filt_t_mineos0 =
-  //     processfunctions::filtfreq2time(a_mineos_00, myff, false);
+  std::size_t maxcol;
+  if (mineos_data.getColumn1().size() > vec_r2t_b.cols()) {
+    maxcol = vec_r2t_b.cols();
+  } else {
+    maxcol = mineos_data.getColumn1().size();
+  }
+
+  for (int idx = 0; idx < maxcol; ++idx) {
+    mineos_t(0, idx) += mineos_data.getColumn2()[idx] * 1e-9;
+    mineos_t(1, idx) += mineos_data1.getColumn2()[idx] * 1e-9;
+    mineos_t(2, idx) += mineos_data2.getColumn2()[idx] * 1e-9;
+  }
   auto a_mineos_0 = processfunctions::fulltime2freq(mineos_t, myff, 0.01);
   auto a_mineos_stf0 = a_mineos_0;
   for (int idx = 1; idx < a_mineos_0.cols(); ++idx) {
     auto wval = myff.w(idx);
-    // Complex stf_factor =
-    //     -1.0 / (wval * wval) * exp(-myi * wval * st_time) *
-    //     std::exp(-(1.0 / (4.0 * pi_d)) * std::pow(wval / kap_val, 2.0));
     Complex stf_factor =
-        exp(-myi * wval * st_time) *
+        -1.0 / (wval * wval) * exp(-myi * wval * st_time) *
         std::exp(-(1.0 / (4.0 * pi_d)) * std::pow(wval / kap_val, 2.0));
-    // stf_factor = 1.0;
     a_mineos_stf0.col(idx) *= stf_factor;
   }
-  // a_mineos_stf0 *= prem.TimeNorm() * prem.TimeNorm();   // correct units
-  // after dividing by w^2
+  a_mineos_stf0 *= prem.TimeNorm() * prem.TimeNorm();   // correct units
   auto vec_filt_t_mineos =
       processfunctions::filtfreq2time(a_mineos_stf0, myff, false);
   auto a_filt_mineos =
       processfunctions::fulltime2freq(vec_filt_t_mineos, myff, hann_w);
-
-  // auto a_filt_mineos =
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // output
@@ -258,10 +188,6 @@ main() {
   double nval = 1.0 / prem.TimeNorm();
   const auto &vec_w_ref = vec_w;             // alias
   const std::size_t nw = vec_w_ref.size();   // use actual vector size
-
-  // Write header (optional)
-  // file_w <<
-  // "#freq_mHz;Z_re;Z_im;Z_abs;TH_re;TH_im;TH_abs;PH_re;PH_im;PH_abs\n";
   file_w.setf(std::ios::fixed);
   file_w << std::setprecision(16);
 
