@@ -5,7 +5,7 @@ from matplotlib.patches import ConnectionPatch
 
 # --- 1. Load Data ---
 try:
-    path_mf = "bench_w_lf.out"
+    path_mf = "../outputs/ex1_w.out"
     dmf = np.loadtxt(path_mf, delimiter=";")
 except FileNotFoundError:
     print(f"Error: Data file not found at '{path_mf}'")

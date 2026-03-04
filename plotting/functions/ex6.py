@@ -26,18 +26,18 @@ def read_spectra_to_array(path, pad=np.nan):
 # --- 1. Load Data ---
 # Use a try-except block for better error handling.
 try:
-    path_mf = "tidal_radial_response0.010000.out"
+    path_mf = "../outputs/ex6_radial_response0.010000.out"
     dmf = np.loadtxt(path_mf, delimiter=";")
-    path_mf2 = "tidal_radial_response0.001000.out"
+    path_mf2 = "../outputs/ex6_radial_response0.001000.out"
     dmf2 = np.loadtxt(path_mf2, delimiter=";")
-    path_mf3 = "tidal_radial_response0.000100.out"
+    path_mf3 = "../outputs/ex6_radial_response0.000100.out"
     dmf3 = np.loadtxt(path_mf3, delimiter=";")
 
-    path_freqs = "tidal_frequency_0.010000.out"
+    path_freqs = "../outputs/ex6_w_0.010000.out"
     dfreqs = np.loadtxt(path_freqs, delimiter=";")
     # Assuming freqs are same structure for all, or load distict if needed
     
-    path_n2 = "tidal_N2_0.010000.out"
+    path_n2 = "../outputs/ex6_N2_0.010000.out"
     dn2 = np.loadtxt(path_n2, delimiter=";")
     # ... assuming N2 is same or similar for display purposes ...
     

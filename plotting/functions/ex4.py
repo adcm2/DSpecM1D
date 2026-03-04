@@ -6,7 +6,7 @@ import re
 from matplotlib import patheffects
 
 # --- 1. Load Data ---
-path1 = "record_section.out"
+path1 = "../outputs/ex4.out"
 try:
     d1 = np.loadtxt(path1, delimiter=";")
 except FileNotFoundError:
@@ -15,7 +15,7 @@ except FileNotFoundError:
 
 # Read in TauP travel time data
 try:
-    data = np.genfromtxt("travel_times.txt", delimiter=";", names=True, dtype=None, encoding='utf-8')
+    data = np.genfromtxt("../outputs/travel_times.txt", delimiter=";", names=True, dtype=None, encoding='utf-8')
 except FileNotFoundError:
     print(f"Error: Data file travel_times.txt not found")
     exit()

@@ -1055,12 +1055,12 @@ specsem::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   //////////////////////////////
   // wigner matrix for evaluation
   int maxn = 2;
-  if (maxn > _lmax) {
-    maxn = _lmax;
+  if (maxn > idxl) {
+    maxn = idxl;
   }
   auto wigdmat =
       GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Single, GSHTrans::ColumnMajor>(_lmax, _lmax,
+                       GSHTrans::Single, GSHTrans::ColumnMajor>(idxl, idxl,
                                                                 maxn, theta_s);
   // ylmn lambda
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {

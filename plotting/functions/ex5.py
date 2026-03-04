@@ -5,11 +5,11 @@ import matplotlib.pyplot as plt
 # --- 1. Load data_3 ---
 # Use a try-except block for better error handling.
 try:
-    path_3 = "bench_step_error_50.out"
+    path_3 = "../outputs/ex5_NQ5_step_error_50.out"
     data_3 = np.loadtxt(path_3, delimiter=";")
-    path_6 = "bench_NQ6_step_error_50.out"
+    path_6 = "../outputs/ex5_NQ6_step_error_50.out"
     data_6 = np.loadtxt(path_6, delimiter=";")
-    path_4 = "bench_NQ4_step_error_50.out"
+    path_4 = "../outputs/ex5_NQ4_step_error_50.out"
     data_4 = np.loadtxt(path_4, delimiter=";")
 
 except FileNotFoundError:

@@ -2,13 +2,13 @@
 # program yspec
 
 # prefix for output files
-  "./output/yspec.out"
+  "./output/yspec.lf.out"
 
 # Earth model
-  "./examples/prem.200.no.noatten.txt"
+  "./models/prem.200.no.noatten.txt"
 
 # which type of modes to include
-3
+4
 
 # attenuation switch: 1 = on, 0 = off
 0
@@ -17,25 +17,28 @@
 2
 
 # output: 0 = displacement, 1 = velocity, 2 = acceleration
-2
+0
 
 # potential and tilt corrections: 0 = no, 1 = yes 
 0
  
+# relative error 
+1e-2
+
 # lmin 
-  1
+  0
 
 # lmax
-  1
+  100
 
 # fmin (mHz) (this should always be greater than 0)
   0.1
 
 # fmax (mHz)
-  40.0
+  7.0
   
 #  length of  time series (min)
-  500
+  6000
 
 # time step (sec) 
   1.0	
@@ -44,40 +47,40 @@
   0.1
 
 # f12 filter (mHz) 
-  0.15
+  0.2
 
 # f21 filter (mHz) 
-  39.8
+  4.9
 
 # f22 filter (mHz) 
-  40.0
+  5.0
 
 # source depth (km)
-  33.0
+  647.1
 
 # source latitude (deg)
-  25.39
+  -13.82
 
 # source longitude (deg)
-  101.4
+  -67.25
 
 # M_	{r,r} (Nm) 
-  -0.6e17
+  -7.59e20
 
 # M_{r,theta} (Nm)
-  -1.85e17
+  -2.50e21
 
 # M_{r,phi} (Nm)
-  0.12e17
+  4.20e19
 
 # M_{theta,theta} (Nm)
- -6.29e17
+ 7.75e20
 
 # M_{theta,phi} (Nm)
-  -4.73e17
+  -2.48e20
 
 # M_{phi,phi} (Nm)
-  6.89e17
+  -1.60e19
 
 # receiver depth
   0.0
@@ -87,6 +90,5 @@
 
 # receiver latitudes and longitudes
  
-     51.6807   103.6438
+     80   0
      0    06
-     

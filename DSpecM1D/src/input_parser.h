@@ -54,6 +54,7 @@ private:
   double m_source_lon_deg;
   double m_m_rr, m_m_rt, m_m_rp, m_m_tt, m_m_tp, m_m_pp;   // Moment tensor
   double m_receiver_depth;
+  double relerr;
   int m_num_receivers;
   std::vector<std::pair<double, double>> m_receivers;   // lat, lon
 
@@ -72,6 +73,7 @@ public:
     std::stringstream(get_next_value_line(file)) >> m_gravitation;
     std::stringstream(get_next_value_line(file)) >> m_output_type;
     std::stringstream(get_next_value_line(file)) >> m_corrections;
+    std::stringstream(get_next_value_line(file)) >> relerr;
     std::stringstream(get_next_value_line(file)) >> m_lmin;
     std::stringstream(get_next_value_line(file)) >> m_lmax;
     std::stringstream(get_next_value_line(file)) >> m_f1;
@@ -116,6 +118,7 @@ public:
   int gravitation() const { return m_gravitation; }
   int output_type() const { return m_output_type; }
   int corrections() const { return m_corrections; }
+  double relative_error() const { return relerr; }
   int lmin() const { return m_lmin; }
   int lmax() const { return m_lmax; }
   double f1() const { return m_f1; }

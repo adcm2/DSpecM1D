@@ -4,16 +4,9 @@
 #include <iostream>
 #include <PlanetaryModel/All>
 #include <DSpecM1D/Timer>
-// #include "sem_full.h"
-// #include <SpectraSolver/FF>
 #include "read_station.h"
-// #include "input_parser.h"   // Use the new input parser
-// #include "read_yspec.h"
-// #include "read_mineos.h"
 #include "SourceInfo.h"
 #include "start_element.h"
-// #include "precon_test.h"
-// #include <chrono>
 #include "spectra_master.h"
 #include "ParamInfo.h"
 #include <omp.h>
@@ -21,7 +14,6 @@
 #include "BiCGSTABT.h"
 #include "ParamRedInfo.h"
 #include "SR_Info.h"
-// #include <Eigen/UmfPackSupport>
 
 namespace SPARSESPEC {
 
@@ -36,8 +28,8 @@ public:
 
   template <class model1d>
   auto Spectra(SpectraSolver::FreqFull &, model1d &,
-               SourceInfo::EarthquakeCMT &, InputParameters &, int, int, int,
-               SRInfo &, double = 1e-4);
+               SourceInfo::EarthquakeCMT &, InputParameters &, int, SRInfo &,
+               double = 1e-4);
 
 private:
 };
@@ -59,7 +51,8 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
   Complex myi = Complex(0.0, 1.0);
   Complex ieps = -myff.ep() * myi;
   auto tref = inp_model.TREF();
-  auto w0 = 2.0 * 3.14159265358979323846 / tref;
+  auto twopid = 2.0 * 3.14159265358979323846;
+  auto w0 = twopid / tref;
   auto twodivpi = 2.0 / 3.14159265358979323846;
 
   MATRIX vec_raw = MATRIX::Zero(3 * params.num_receivers(), vec_w.size());
@@ -324,16 +317,8 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
           /////////////////////////////////////////
           // compute responses
           auto testmult_red = RV_BASE * vec_sol.block(lidx, 0, lenidx, 4);
-          Complex mfact = 1.0;
-          // if (params.output_type() == 0) {
-          //   mfact = -myi / w;
-          // } else if (params.output_type() == 1) {
-          //   mfact = 1.0;
-          // } else if (params.output_type() == 2) {
-          //   mfact = myi * w;
-          // }
           vec_raw_l.col(idx) +=
-              mfact * RED_C.cwiseProduct(testmult_red).rowwise().sum();
+              RED_C.cwiseProduct(testmult_red).rowwise().sum();
         };
 
 #pragma omp critical(sphvecadd)
@@ -363,8 +348,7 @@ template <class model1d>
 auto
 Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                        SourceInfo::EarthquakeCMT &cmt, InputParameters &params,
-                       int NQ, int nskip, int num_chunks, SRInfo &srinfo,
-                       double relerr) {
+                       int NQ, SRInfo &srinfo, double relerr) {
   using Complex = std::complex<double>;
   using MATRIX = Eigen::MatrixXcd;
   using SMATRIX = Eigen::SparseMatrix<Complex>;
@@ -380,9 +364,12 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   Complex myi = Complex(0.0, 1.0);
   Complex ieps = -myff.ep() * myi;
   auto tref = inp_model.TREF();
-  auto w0 = 2.0 * 3.14159265358979323846 / tref;
+  auto twopid = 2.0 * 3.14159265358979323846;
+  auto w0 = twopid / tref;
   auto twodivpi = 2.0 / 3.14159265358979323846;
   auto num_rec = params.num_receivers();
+  int nskip = (myff.i2() - myff.i1()) / 20;
+  int num_chunks = std::floor((myff.f22() - myff.f11()) / 10.0) + 1;
 
   // response
   MATRIX vec_raw = MATRIX::Zero(3 * params.num_receivers(), vec_w.size());
@@ -409,12 +396,21 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   }
 
   // vector of maximum step sizes for each frequency chunk
+  // note max step size is based on the highest frequency in the chunk
+  // we set maximum step size as 0.1, which is smaller than will be given for
+  // the lowest frequency generally
   std::vector<double> max_steps;
-  double base_len = 1.57;
+  double base_len = 0.78 * 1000 / inp_model.TimeNorm() * twopid;
   double newlen = std::pow(100.0 * relerr, 1.0 / (NQ - 1.0)) * base_len;
   for (int idx = 0; idx < num_chunks; ++idx) {
     double tmp = newlen / freq_chunks[idx].back();
+    if (tmp > 0.05) {
+      tmp = 0.05;
+    }
     max_steps.push_back(tmp);
+  }
+  for (auto idx : max_steps) {
+    std::cout << "Max step: " << idx << "\n";
   }
   // vector of sems
   std::vector<Full1D::specsem> sems;
@@ -468,8 +464,6 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
       auto upidx = sem.LtG_R(1, rec_elems.back(), NQ - 1);
       int lenidx = upidx - lowidx + 1;
 
-      // std::cout << "Lowidx: " << lowidx << ", Upidx: " << upidx
-      //           << ", Lenidx: " << lenidx << "\n";
       SMATRIX ke_r = sem.H_R().cast<Complex>();
       SMATRIX in_r = sem.P_R().cast<Complex>();
       SMATRIX ke_r_atten = sem.H_RA().cast<Complex>();
@@ -582,7 +576,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             SMATRIX mat_w_tor_red =
                 H_tor.block(ridx, ridx, len_ms, len_ms) -
                 w * w * P_tor.block(ridx, ridx, len_ms, len_ms);
-            // std::cout << "Test f.3\n";
+
             // if including attenuation
             if (params.attenuation()) {
               mat_w_tor_red += (myi + twodivpi * std::log(wval / w0)) *
@@ -597,10 +591,10 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             } else {
               solver1.factorize(mat_w_tor_red);
             }
-            // std::cout << "Test f.5\n";
+
             MATRIX vec_sol = solver1.solve(f_red);
             auto lidx = lowidx - ridx;
-            // std::cout << "Test f.6\n";
+
             // compute responses
             auto testmult_red = RV_BASE * vec_sol.block(lidx, 0, lenidx, 2);
 
@@ -619,8 +613,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  // SUMF solver2;
-  // BCSP solver3;
+
   // spheroidals
   if (inc_sph) {
     std::cout << "\nDoing Spheroidal Modes\n";
@@ -657,22 +650,13 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
         auto tot_l_solve = microseconds::zero();
         auto tot_l_matmult = microseconds::zero();
 
-        // #pragma omp critical(sphoutput)
-        //         {
-        //           std::cout << "Spheroidal,  l = " << idxl << "\n";
-        //           std::cout << "Before RV_VALS\n\n";
-        //         }
-
-        // std::cout << "Test 0\n";
         auto t_rv_vals = clock::now();
         MATRIX RV_VALS = srinfo.RV_RED_SPH(idxl);   // receiver
         auto t_rv_vals_end = clock::now();
         tot_l_rv_vals += duration_cast<microseconds>(t_rv_vals_end - t_rv_vals);
-        // std::cout << "Test 0.5\n";
+
         for (auto idx_chunk = 0; idx_chunk < num_chunks; ++idx_chunk) {
-          // std::cout << "Frequency chunk " << idx_chunk << ": "
-          //           << freq_chunks[idx_chunk].front() << " to "
-          //           << freq_chunks[idx_chunk].back() << " Hz\n";
+
           auto t_sem = clock::now();
           Full1D::specsem &sem = sems[idx_chunk];
           // std::cout << "Test 0.6\n";
@@ -686,6 +670,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           tot_l_sem += duration_cast<microseconds>(t_sem_end - t_sem);
 
           auto t_mat = clock::now();
+
           // get matrices
           SMATRIX p_s = sem.P_S(idxl).cast<Complex>();
           SMATRIX h_s = sem.H_S(idxl).cast<Complex>();
@@ -807,7 +792,6 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           tot_factorize += tot_l_factorize;
           tot_solve += tot_l_solve;
           tot_matmult += tot_l_matmult;
-          // std::cout << "Spheroidal,  l = " << idxl << "\n";
         }
       }
     }
@@ -867,32 +851,3 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 };   // namespace SPARSESPEC
 
 #endif
-// SMATRIX mat_w_sph = h_s;
-// mat_w_sph -= w * w * p_s;
-// SMATRIX mat_w_sph(h_s.rows(), h_s.cols());
-
-// std::cout << vec_ke_idx.size() << ", " << vec_in_idx.size() << "\n";
-// std::cout << vec_ke_idx[0][0] << ", " << vec_ke_idx[0][1] << ", "
-//           << vec_ke_val[0] << "\n";
-// std::cout << h_s.coeff(vec_ke_idx[0][0], vec_ke_idx[0][1])
-//           << "\n";
-
-// for (std::size_t k = 0; k < vec_in_idx.size(); ++k) {
-//   tpl_w[numke + k] =
-//       T(vec_in_idx[k][0], vec_in_idx[k][1], -w * w * vec_in_val[k]);
-// }
-// mat_w_sph.resize(h_s.rows(), h_s.cols());
-// mat_w_sph.setFromTriplets(tpl_w.begin(), tpl_w.end());
-// mat_check.makeCompressed();
-// for (int i = 0; i < 5; ++i) {
-//   for (int j = 0; j < 5; ++j) {
-//     std::cout << "mat_w_sph(" << i << "," << j
-//               << "): " << mat_w_sph.coeff(i, j) << ", mat_check(" <<
-//               i
-//               << "," << j << "): " << mat_check.coeff(i, j) << "\n";
-//   }
-// }
-// std::cout << "Difference in norms: " << (mat_w_sph -
-// mat_check).norm()
-//           << "\n";
-// std::cout << "\nidxl: " << idxl << ", freq idx: " << idx << "\n";

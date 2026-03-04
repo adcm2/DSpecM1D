@@ -2,13 +2,13 @@
 # program yspec
 
 # prefix for output files
-  "./output/yspec.out"
+  "./output/yspec.out.bolivia.mf"
 
 # Earth model
-  "./examples/prem.200.no.noatten.txt"
+  "./models/prem.200.no.noatten.txt"
 
 # which type of modes to include
-3
+4
 
 # attenuation switch: 1 = on, 0 = off
 0
@@ -17,75 +17,79 @@
 2
 
 # output: 0 = displacement, 1 = velocity, 2 = acceleration
-2
+0
 
 # potential and tilt corrections: 0 = no, 1 = yes 
 0
  
+# relative error 
+1e-2
+
 # lmin 
-  300
+  0
 
 # lmax
-  300
+  350
 
 # fmin (mHz) (this should always be greater than 0)
-  0.1
+  1.5
 
 # fmax (mHz)
-  22.0
+  21.0
   
 #  length of  time series (min)
   500
 
 # time step (sec) 
-  1.0	
+  1.0
 
 # f11 filter (mHz) 
-  0.1
+  1.9
 
 # f12 filter (mHz) 
-  0.15
+  2.0
 
 # f21 filter (mHz) 
-  19.0
+  20.0
 
 # f22 filter (mHz) 
-  19.5
+  20.1
 
 # source depth (km)
-  33.0
+  647.1
 
 # source latitude (deg)
-  89.0
+  -13.82
 
 # source longitude (deg)
-  0.0
+  -67.25
 
 # M_	{r,r} (Nm) 
-  1.0e17
+  -7.59e20
 
 # M_{r,theta} (Nm)
-  0.0e17
+  -2.50e21
 
 # M_{r,phi} (Nm)
-  0e17
+  4.20e19
 
 # M_{theta,theta} (Nm)
-  0e17
+ 7.75e20
 
 # M_{theta,phi} (Nm)
-  0e17
+  -2.48e20
 
 # M_{phi,phi} (Nm)
-  0e17
+  -1.60e19
 
 # receiver depth
   0.0
 
 # number of receivers
-1
+2
 
 # receiver latitudes and longitudes
  
-     -23.0 43.0
+     80.0 0.0
+     0    06
      
