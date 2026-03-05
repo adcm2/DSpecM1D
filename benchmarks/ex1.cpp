@@ -3,6 +3,7 @@
 #endif
 
 // Standard library includes
+#include "config.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -10,6 +11,7 @@
 #include <complex>
 #include <cmath>
 #include <algorithm>
+#include <filesystem>
 
 // Project-specific includes
 #include <PlanetaryModel/All>
@@ -42,10 +44,14 @@ main() {
 
   Timer timer1;
 
-  // --- 1. Read Inputs & Earth Model ---
-  InputParameters params("bench_params/ex1.txt");
+  // --- 0. Initial Setup ---
+  // get paths required for input parameters and Earth model
+  std::string param_path =
+      std::string(PROJECT_BUILD_DIR) + "data/params/ex1.txt";
+  InputParameters params(param_path);
   SRInfo sr_info(params);
-  std::string earth_model_path = params.earth_model();
+  std::string earth_model_path =
+      std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
   // --- 2. Spectral Element Method (SEM) Parameters ---
   int lval = params.lmax();
@@ -112,7 +118,8 @@ main() {
   auto a_filt = processfunctions::fulltime2freq(vec_filt_t, myff, hann_w);
 
   // --- 9. Read and Process YSpec Data ---
-  std::string yspec_path = "../YSpec/output/yspec.lf.out.1";
+  std::string yspec_path =
+      std::string(PROJECT_BUILD_DIR) + "../../YSpec/output/yspec.lf.out.1";
   YSPECREADER::DataColumns yspec_data(yspec_path);
 
   // Safe boundary checking for columns
@@ -134,7 +141,8 @@ main() {
       processfunctions::fulltime2freq(vec_filt_t_yspec, myff, hann_w);
 
   // --- 10. Output Frequency Spectrum ---
-  std::string pathtofile = "./plotting/outputs/ex1_w.out";
+  std::string pathtofile =
+      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex1_w.out";
   std::ofstream file(pathtofile);
   if (!file) {
     std::cerr << "Error: unable to open output file: " << pathtofile << "\n";
@@ -161,7 +169,8 @@ main() {
   file.close();
 
   // --- 11. Output MinEOS Time Series ---
-  std::string pathtofile_mineos = "./plotting/outputs/ex1_t.out";
+  std::string pathtofile_mineos =
+      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex1_t.out";
   std::ofstream file_mineos(pathtofile_mineos);
   if (!file_mineos) {
     std::cerr << "Error: unable to open output file: " << pathtofile_mineos

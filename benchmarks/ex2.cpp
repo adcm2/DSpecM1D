@@ -3,6 +3,7 @@
 #endif
 
 // Standard library includes
+#include "config.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -44,11 +45,16 @@ main() {
   Timer timer1;
 
   // --- 1. Read Inputs & Earth Model ---
-  InputParameters params("bench_params/ex2.txt");
+  // get paths required for input parameters and Earth model
+  std::string param_path =
+      std::string(PROJECT_BUILD_DIR) + "data/params/ex2.txt";
+  InputParameters params(param_path);
+  std::string earth_model_path =
+      std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
+
   SRInfo sr_info(params);
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
-  std::string earth_model_path = params.earth_model();
   prem_norm<double> norm_class;
   auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
 
@@ -121,7 +127,8 @@ main() {
   //////////////////////////////////////////////////////////////////////////////
 
   // --- 7. Read and Process YSpec Data ---
-  std::string yspec_path = "../YSpec/output/yspec.out.bolivia.mf.1";
+  std::string yspec_path = std::string(PROJECT_BUILD_DIR) +
+                           "../../YSpec/output/yspec.out.bolivia.mf.1";
   YSPECREADER::DataColumns yspec_data(yspec_path);
 
   // FIX: Added safe boundary checking here to prevent out-of-bounds crashes
@@ -153,7 +160,8 @@ main() {
 
   // --- 8. Read and Process MinEOS Data ---
   std::string mineos_base =
-      "../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/Syndat2.2000160: 0:33:16.TLY.";
+      std::string(PROJECT_BUILD_DIR) +
+      "../../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/Syndat2.2000160: 0:33:16.TLY.";
   MINEOSREADER::DataColumns mineos_data(mineos_base + "LHZ.ASC");
   MINEOSREADER::DataColumns mineos_data1(mineos_base + "LHN.ASC");
   MINEOSREADER::DataColumns mineos_data2(mineos_base + "LHE.ASC");
@@ -188,7 +196,8 @@ main() {
 
   //////////////////////////////////////////////////////////////////////////////
   // --- 9. Output Frequency Spectrum ---
-  std::string ptf_w = "./plotting/outputs/ex2_w.out";
+  std::string ptf_w =
+      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_w.out";
   std::ofstream file_w(ptf_w);
   if (!file_w) {
     std::cerr << "Error: unable to open output file_w: " << ptf_w << "\n";
@@ -224,7 +233,8 @@ main() {
   file_w.close();
 
   // --- 10. Output Time Series ---
-  std::string ptf_t = "./plotting/outputs/ex2_t.out";
+  std::string ptf_t =
+      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_t.out";
   std::ofstream file_t(ptf_t);
   if (!file_t) {
     std::cerr << "Error: unable to open output file_t: " << ptf_t << "\n";

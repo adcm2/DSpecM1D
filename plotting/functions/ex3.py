@@ -49,7 +49,7 @@ upidx = 1301
 # lowidx=0
 # upidx=-1
 time_vector = dmf[lowidx:upidx, 0]
-trans_z, trans_n, trans_e = dmf[lowidx:upidx, 1], dmf[lowidx:upidx, 2], dmf[lowidx:upidx, 3]
+dspecm_z, dspecm_n, dspecm_e = dmf[lowidx:upidx, 1], dmf[lowidx:upidx, 2], dmf[lowidx:upidx, 3]
 yspec_z, yspec_n, yspec_e = dmf[lowidx:upidx, 4], dmf[lowidx:upidx, 5], dmf[lowidx:upidx, 6]
 mineos_z, mineos_n, mineos_e = dmf[lowidx:upidx, 7], dmf[lowidx:upidx, 8], dmf[lowidx:upidx, 9]
 
@@ -61,24 +61,24 @@ print(f"Time limits: tlow = {tlow}, tup = {tup}")
 # tup=1300
 
 # --- Calculate Normalization Factors ---
-norm_z = max(np.max(np.abs(yspec_z)),np.max(np.abs(trans_z)),np.max(np.abs(mineos_z))) + 1e-17
-norm_n = max(np.max(np.abs(yspec_n)),np.max(np.abs(trans_n)),np.max(np.abs(mineos_n))) + 1e-17
-norm_e = max(np.max(np.abs(yspec_e)),np.max(np.abs(trans_e)),np.max(np.abs(mineos_e))) + 1e-17
+norm_z = max(np.max(np.abs(yspec_z)),np.max(np.abs(dspecm_z)),np.max(np.abs(mineos_z))) + 1e-17
+norm_n = max(np.max(np.abs(yspec_n)),np.max(np.abs(dspecm_n)),np.max(np.abs(mineos_n))) + 1e-17
+norm_e = max(np.max(np.abs(yspec_e)),np.max(np.abs(dspecm_e)),np.max(np.abs(mineos_e))) + 1e-17
 
 # --- Calculate Average Differences ---
-yspec_diff_z = np.abs(yspec_z - trans_z) / norm_z * 100
+yspec_diff_z = np.abs(yspec_z - dspecm_z) / norm_z * 100
 yspec_av_diff_z = np.mean(yspec_diff_z)
-mineos_diff_z = np.abs(mineos_z - trans_z) / norm_z * 100
+mineos_diff_z = np.abs(mineos_z - dspecm_z) / norm_z * 100
 mineos_av_diff_z = np.mean(mineos_diff_z)
 
-yspec_diff_n = np.abs(yspec_n - trans_n) / norm_n * 100
+yspec_diff_n = np.abs(yspec_n - dspecm_n) / norm_n * 100
 yspec_av_diff_n = np.mean(yspec_diff_n)
-mineos_diff_n = np.abs(mineos_n - trans_n) / norm_n * 100
+mineos_diff_n = np.abs(mineos_n - dspecm_n) / norm_n * 100
 mineos_av_diff_n = np.mean(mineos_diff_n)
 
-yspec_diff_e = np.abs(yspec_e - trans_e) / norm_e * 100
+yspec_diff_e = np.abs(yspec_e - dspecm_e) / norm_e * 100
 yspec_av_diff_e = np.mean(yspec_diff_e)
-mineos_diff_e = np.abs(mineos_e - trans_e) / norm_e * 100
+mineos_diff_e = np.abs(mineos_e - dspecm_e) / norm_e * 100
 mineos_av_diff_e = np.mean(mineos_diff_e)
 
 print(f"Average relative difference for Z component: YSpec = {yspec_av_diff_z:.2f} %, MINEOS = {mineos_av_diff_z:.2f} %")
@@ -90,16 +90,16 @@ print(f"Max relative difference for Z component: YSpec = {np.max(yspec_diff_z):.
 print(f"Max relative difference for N component: YSpec = {np.max(yspec_diff_n):.2f} %, MINEOS = {np.max(mineos_diff_n):.2f} %")
 print(f"Max relative difference for E component: YSpec = {np.max(yspec_diff_e):.2f} %, MINEOS = {np.max(mineos_diff_e):.2f} %")
 
-# calculate L2 norm scaled by l2 norm of trans
-l2_trans_z = np.sqrt(np.sum(trans_z**2))
-l2_trans_n = np.sqrt(np.sum(trans_n**2))
-l2_trans_e = np.sqrt(np.sum(trans_e**2))
-l2_yspec_z = np.sqrt(np.sum((yspec_z-trans_z)**2))/l2_trans_z
-l2_mineos_z = np.sqrt(np.sum((mineos_z-trans_z)**2))/l2_trans_z
-l2_yspec_n = np.sqrt(np.sum((yspec_n-trans_n)**2))/l2_trans_n
-l2_mineos_n = np.sqrt(np.sum((mineos_n-trans_n)**2))/l2_trans_n
-l2_yspec_e = np.sqrt(np.sum((yspec_e-trans_e)**2))/l2_trans_e
-l2_mineos_e = np.sqrt(np.sum((mineos_e-trans_e)**2))/l2_trans_e
+# calculate L2 norm scaled by l2 norm of dspecm
+l2_dspecm_z = np.sqrt(np.sum(dspecm_z**2))
+l2_dspecm_n = np.sqrt(np.sum(dspecm_n**2))
+l2_dspecm_e = np.sqrt(np.sum(dspecm_e**2))
+l2_yspec_z = np.sqrt(np.sum((yspec_z-dspecm_z)**2))/l2_dspecm_z
+l2_mineos_z = np.sqrt(np.sum((mineos_z-dspecm_z)**2))/l2_dspecm_z
+l2_yspec_n = np.sqrt(np.sum((yspec_n-dspecm_n)**2))/l2_dspecm_n
+l2_mineos_n = np.sqrt(np.sum((mineos_n-dspecm_n)**2))/l2_dspecm_n
+l2_yspec_e = np.sqrt(np.sum((yspec_e-dspecm_e)**2))/l2_dspecm_e
+l2_mineos_e = np.sqrt(np.sum((mineos_e-dspecm_e)**2))/l2_dspecm_e
 print(f"L2 norm for Z component: YSpec = {l2_yspec_z:.4e}, MINEOS = {l2_mineos_z:.4e}") 
 print(f"L2 norm for N component: YSpec = {l2_yspec_n:.4e}, MINEOS = {l2_mineos_n:.4e}") 
 print(f"L2 norm for E component: YSpec = {l2_yspec_e:.4e}, MINEOS = {l2_mineos_e:.4e}")
@@ -108,9 +108,9 @@ print(f"L2 norm for E component: YSpec = {l2_yspec_e:.4e}, MINEOS = {l2_mineos_e
 yspec_z /= norm_z
 yspec_n /= norm_n
 yspec_e /= norm_e
-trans_z /= norm_z
-trans_n /= norm_n
-trans_e /= norm_e
+dspecm_z /= norm_z
+dspecm_n /= norm_n
+dspecm_e /= norm_e
 mineos_z /= norm_z
 mineos_n /= norm_n
 mineos_e /= norm_e
@@ -127,20 +127,23 @@ plt.rc('ytick', labelsize=16)
 # --- Plot Z Component (Top) ---
 ax_data = axes[0]
 ax_data.plot(time_vector, yspec_z, "b", linewidth=lwidth, label='YSpec')
-ax_data.plot(time_vector, trans_z, "r--", linewidth=lwidth, label='DSpecM1D')
-ax_data.plot(time_vector, mineos_z, "g-.", linewidth=lwidth, label='MINEOS')
+ax_data.plot(time_vector, mineos_z, "g--", linewidth=lwidth, label='MINEOS')
+ax_data.plot(time_vector, dspecm_z, "r-.", linewidth=lwidth, label='DSpecM1D')
+
 # ax_data.plot(time_vector,yspec_diff_z, "k", linewidth=lwidth, label='|YSpec - DSpecM1D| / Peak(YSpec) (%)')
 # --- Plot North Component (Middle) ---
 ax_data = axes[1]
 ax_data.plot(time_vector, yspec_n, "b", linewidth=lwidth)
-ax_data.plot(time_vector, trans_n, "r--", linewidth=lwidth)
-ax_data.plot(time_vector, mineos_n, "g-.", linewidth=lwidth)
+ax_data.plot(time_vector, mineos_n, "g--", linewidth=lwidth)
+ax_data.plot(time_vector, dspecm_n, "r-.", linewidth=lwidth)
+
 
 # --- Plot East Component (Bottom) ---
 ax_data = axes[2]
 ax_data.plot(time_vector, yspec_e, "b", linewidth=lwidth)
-ax_data.plot(time_vector, trans_e, "r--", linewidth=lwidth)
-ax_data.plot(time_vector, mineos_e, "g-.", linewidth=lwidth)
+ax_data.plot(time_vector, mineos_e, "g--", linewidth=lwidth)
+ax_data.plot(time_vector, dspecm_e, "r-.", linewidth=lwidth)
+
 
 # =============================================================================
 # 4. AESTHETIC ADJUSTMENTS & STYLING

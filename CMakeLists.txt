@@ -69,9 +69,26 @@ target_include_directories(DSpecM1D INTERFACE
 
 # --- Benchmarks ---
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    option(DSPECM1D_BUILD_BENCHMARKS "Whether or not benchmarks should be built" ON)
+    option(BUILD_BENCHMARKS "Whether or not benchmarks should be built" ON)
+    option(BUILD_EXAMPLES "Whether or not examples should be built" ON)
 
-    if(DSPECM1D_BUILD_BENCHMARKS)
+    if(BUILD_BENCHMARKS)
         add_subdirectory(benchmarks)
     endif()
+
+    if(BUILD_EXAMPLES)
+        add_subdirectory(examples)
+    endif()
+endif()
+
+
+if(BUILD_BENCHMARKS OR BUILD_EXAMPLES)
+     add_custom_target(CopyData
+             COMMAND ${CMAKE_COMMAND} -E make_directory
+${CMAKE_BINARY_DIR}/data
+             COMMAND ${CMAKE_COMMAND} -E copy_directory
+${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
+             WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+             )
+     add_dependencies(DSpecM1D CopyData)
 endif()

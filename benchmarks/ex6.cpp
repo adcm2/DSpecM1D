@@ -3,6 +3,7 @@
 #endif
 
 // Standard library includes
+#include "config.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -42,8 +43,13 @@ main() {
   Timer timer1;
 
   // --- 1. Read Inputs & Earth Model ---
-  InputParameters params("bench_params/ex6.txt");
-  std::string earth_model_path = params.earth_model();
+  // get paths required for input parameters and Earth model
+  std::string param_path =
+      std::string(PROJECT_BUILD_DIR) + "data/params/ex6.txt";
+  InputParameters params(param_path);
+  std::string earth_model_path =
+      std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
+
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   // --- 2. Parameters of SEM ---
@@ -195,8 +201,9 @@ main() {
   // --- 8. Outputs ---
 
   // 8a. Output Brunt-Väisälä frequency
-  std::string N2_out_path =
-      "./plotting/outputs/ex6_N2_" + std::to_string(maxstep) + ".out";
+  std::string N2_out_path = std::string(PROJECT_BUILD_DIR) +
+                            "../plotting/outputs/ex6_N2_" +
+                            std::to_string(maxstep) + ".out";
   std::ofstream N2_file(N2_out_path);
   if (!N2_file) {
     std::cerr << "Error: unable to open output file: " << N2_out_path << "\n";
@@ -215,8 +222,9 @@ main() {
   N2_file.close();
 
   // 8b. Output Frequencies
-  std::string freq_out_path =
-      "./plotting/outputs/ex6_w_" + std::to_string(maxstep) + ".out";
+  std::string freq_out_path = std::string(PROJECT_BUILD_DIR) +
+                              "../plotting/outputs/ex6_w_" +
+                              std::to_string(maxstep) + ".out";
   std::ofstream freq_file(freq_out_path);
   if (!freq_file) {
     std::cerr << "Error: unable to open output file: " << freq_out_path << "\n";
@@ -231,7 +239,8 @@ main() {
   freq_file.close();
 
   // 8c. Output Radial Solution
-  std::string pathtofile = "./plotting/outputs/ex6_radial_response_" +
+  std::string pathtofile = std::string(PROJECT_BUILD_DIR) +
+                           "../plotting/outputs/ex6_radial_response_" +
                            std::to_string(maxstep) + ".out";
   std::ofstream file(pathtofile);
   if (!file) {

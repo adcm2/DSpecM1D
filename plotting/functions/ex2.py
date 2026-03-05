@@ -47,7 +47,7 @@ BIGGER_SIZE = 20
 lowidx = 0
 upidx = 18001
 time_vector = dmf[lowidx:upidx, 0]
-trans_z, trans_n, trans_e = dmf[lowidx:upidx, 1], dmf[lowidx:upidx, 2], dmf[lowidx:upidx, 3]
+dspecm_z, dspecm_n, dspecm_e = dmf[lowidx:upidx, 1], dmf[lowidx:upidx, 2], dmf[lowidx:upidx, 3]
 yspec_z, yspec_n, yspec_e = dmf[lowidx:upidx, 4], dmf[lowidx:upidx, 5], dmf[lowidx:upidx, 6]
 mineos_z, mineos_n, mineos_e = dmf[lowidx:upidx, 7], dmf[lowidx:upidx, 8], dmf[lowidx:upidx, 9]
 
@@ -56,24 +56,24 @@ tlow = time_vector[0]
 tup = 18000
 
 # --- Calculate Normalization Factors ---
-norm_z = max(np.max(np.abs(yspec_z)),np.max(np.abs(trans_z)), np.max(np.abs(mineos_z))) + 1e-12
-norm_n = max(np.max(np.abs(yspec_n)),np.max(np.abs(trans_n)), np.max(np.abs(mineos_n))) + 1e-12
-norm_e = max(np.max(np.abs(yspec_e)),np.max(np.abs(trans_e)), np.max(np.abs(mineos_e))) + 1e-12
+norm_z = max(np.max(np.abs(yspec_z)),np.max(np.abs(dspecm_z)), np.max(np.abs(mineos_z))) + 1e-12
+norm_n = max(np.max(np.abs(yspec_n)),np.max(np.abs(dspecm_n)), np.max(np.abs(mineos_n))) + 1e-12
+norm_e = max(np.max(np.abs(yspec_e)),np.max(np.abs(dspecm_e)), np.max(np.abs(mineos_e))) + 1e-12
 
 # --- Calculate Average Differences ---
-yspec_diff_z = np.abs(yspec_z - trans_z) / norm_z * 100
+yspec_diff_z = np.abs(yspec_z - dspecm_z) / norm_z * 100
 yspec_av_diff_z = np.mean(yspec_diff_z)
-mineos_diff_z = np.abs(mineos_z - trans_z) / norm_z * 100
+mineos_diff_z = np.abs(mineos_z - dspecm_z) / norm_z * 100
 mineos_av_diff_z = np.mean(mineos_diff_z)
 
-yspec_diff_n = np.abs(yspec_n - trans_n) / norm_n * 100
+yspec_diff_n = np.abs(yspec_n - dspecm_n) / norm_n * 100
 yspec_av_diff_n = np.mean(yspec_diff_n)
-mineos_diff_n = np.abs(mineos_n - trans_n) / norm_n * 100
+mineos_diff_n = np.abs(mineos_n - dspecm_n) / norm_n * 100
 mineos_av_diff_n = np.mean(mineos_diff_n)
 
-yspec_diff_e = np.abs(yspec_e - trans_e) / norm_e * 100
+yspec_diff_e = np.abs(yspec_e - dspecm_e) / norm_e * 100
 yspec_av_diff_e = np.mean(yspec_diff_e)
-mineos_diff_e = np.abs(mineos_e - trans_e) / norm_e * 100
+mineos_diff_e = np.abs(mineos_e - dspecm_e) / norm_e * 100
 mineos_av_diff_e = np.mean(mineos_diff_e)
 
 # print max relative differences for debugging
@@ -85,9 +85,9 @@ print(f"Max relative difference for E: YSpec={np.max(yspec_diff_e):.2f} %, MINEO
 yspec_z /= norm_z
 yspec_n /= norm_n
 yspec_e /= norm_e
-trans_z /= norm_z
-trans_n /= norm_n
-trans_e /= norm_e
+dspecm_z /= norm_z
+dspecm_n /= norm_n
+dspecm_e /= norm_e
 mineos_z /= norm_z
 mineos_n /= norm_n
 mineos_e /= norm_e
@@ -104,20 +104,23 @@ plt.rc('ytick', labelsize=16)
 # --- Plot Z Component (Top) ---
 ax_data = axes[0]
 ax_data.plot(time_vector, yspec_z/1.01, "b", linewidth=lwidth, label='YSpec')
-ax_data.plot(time_vector, trans_z/1.01, "r--", linewidth=lwidth, label='DSpecM1D')
-ax_data.plot(time_vector, mineos_z/1.01, "g-.", linewidth=lwidth, label='MINEOS')
+ax_data.plot(time_vector, mineos_z/1.01, "g--", linewidth=lwidth, label='MINEOS')
+ax_data.plot(time_vector, dspecm_z/1.01, "r-.", linewidth=lwidth, label='DSpecM1D')
+
 
 # --- Plot North Component (Middle) ---
 ax_data = axes[1]
 ax_data.plot(time_vector, yspec_n/1.01, "b", linewidth=lwidth)
-ax_data.plot(time_vector, trans_n/1.01, "r--", linewidth=lwidth)
-ax_data.plot(time_vector, mineos_n/1.01, "g-.", linewidth=lwidth)
+ax_data.plot(time_vector, mineos_n/1.01, "g--", linewidth=lwidth)
+ax_data.plot(time_vector, dspecm_n/1.01, "r-.", linewidth=lwidth)
+
 
 # --- Plot East Component (Bottom) ---
 ax_data = axes[2]
 ax_data.plot(time_vector, yspec_e/1.01, "b", linewidth=lwidth)
-ax_data.plot(time_vector, trans_e/1.01, "r--", linewidth=lwidth)
-ax_data.plot(time_vector, mineos_e/1.01, "g-.", linewidth=lwidth)
+ax_data.plot(time_vector, mineos_e/1.01, "g--", linewidth=lwidth)
+ax_data.plot(time_vector, dspecm_e/1.01, "r-.", linewidth=lwidth)
+
 
 # =============================================================================
 # 4. AESTHETIC ADJUSTMENTS & STYLING
@@ -138,7 +141,7 @@ ax_data.tick_params(axis='x', which='both', bottom=False, top=False)
 ax_data.tick_params(axis='y', which='major', length=10, width=1.5)
 # ax_data.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 ax_data.tick_params(axis='both', which='major', labelcolor='black',labelsize=M_SIZE)
-z_mval = max(np.max(np.abs(yspec_z)),np.max(np.abs(trans_z)), np.max(np.abs(mineos_z)))
+z_mval = max(np.max(np.abs(yspec_z)),np.max(np.abs(dspecm_z)), np.max(np.abs(mineos_z)))
 z_axlim = 1.0 * z_mval
 ax_data.set_ylim(-z_axlim, z_axlim)
 extraticks = [-z_axlim, 0,  z_axlim]
@@ -156,7 +159,7 @@ ax_data.tick_params(axis='x', which='both', bottom=False, top=False)
 ax_data.tick_params(axis='y', which='major', length=10, width=1.5)
 # ax_data.ticklabel_format(style='sci', axis='y', scilimits=(0,0))
 ax_data.tick_params(axis='both', which='major', labelcolor='black',labelsize=M_SIZE)
-n_mval = max(np.max(np.abs(yspec_n)),np.max(np.abs(trans_n)), np.max(np.abs(mineos_n)))
+n_mval = max(np.max(np.abs(yspec_n)),np.max(np.abs(dspecm_n)), np.max(np.abs(mineos_n)))
 n_axlim = 1.0 * n_mval
 ax_data.set_ylim(-n_axlim, n_axlim)
 extraticks = [-n_axlim,  0,  n_axlim]
@@ -174,7 +177,7 @@ ax_data.spines['left'].set_linewidth(1.5)
 ax_data.tick_params(axis='both', which='major', length=10, width=1.5)
 # ax_data.ticklabel_format(style='sci', axis='y', scilimits=(-2,2))
 ax_data.tick_params(axis='both', which='major', labelcolor='black',labelsize=M_SIZE)
-e_mval = max(np.max(np.abs(yspec_e)),np.max(np.abs(trans_e)), np.max(np.abs(mineos_e)))
+e_mval = max(np.max(np.abs(yspec_e)),np.max(np.abs(dspecm_e)), np.max(np.abs(mineos_e)))
 e_axlim = 1.0 * e_mval
 ax_data.set_ylim(-e_axlim, e_axlim)
 extraticks = [-e_axlim, 0,  e_axlim]

@@ -3,6 +3,7 @@
 #endif
 
 // Standard library includes
+#include "config.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -40,8 +41,12 @@ main() {
   Timer timer1;
 
   // --- 1. Read Inputs & Earth Model ---
-  InputParameters params("./bench_params/ex5.txt");
-  std::string earth_model_path = params.earth_model();
+  // get paths required for input parameters and Earth model
+  std::string param_path =
+      std::string(PROJECT_BUILD_DIR) + "data/params/ex5.txt";
+  InputParameters params(param_path);
+  std::string earth_model_path =
+      std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
   prem_norm<double> norm_class;
   auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
@@ -196,8 +201,9 @@ main() {
   double nval = 1.0 / prem.TimeNorm();
 
   // 8a. Output Frequency Series
-  std::string ptf_w =
-      "./plotting/outputs/ex5_w_NQ" + std::to_string(NQ) + "_step.out";
+  std::string ptf_w = std::string(PROJECT_BUILD_DIR) +
+                      "../plotting/outputs/ex5_w_NQ" + std::to_string(NQ) +
+                      "_step.out";
   std::ofstream file_w(ptf_w);
   if (!file_w) {
     std::cerr << "Error: unable to open output file_w: " << ptf_w << "\n";
@@ -223,8 +229,9 @@ main() {
   file_w.close();
 
   // 8b. Output Time Series
-  std::string ptf_t =
-      "./plotting/outputs/ex5_t_NQ" + std::to_string(NQ) + "_step.out";
+  std::string ptf_t = std::string(PROJECT_BUILD_DIR) +
+                      "../plotting/outputs/ex5_t_NQ" + std::to_string(NQ) +
+                      "_step.out";
   std::ofstream file_t(ptf_t);
   if (!file_t) {
     std::cerr << "Error: unable to open output file_t: " << ptf_t << "\n";
@@ -244,7 +251,8 @@ main() {
   file_t.close();
 
   // 8c. Output Error Matrix (L1-based)
-  std::string ptf_err = "./plotting/outputs/ex5_NQ" + std::to_string(NQ) +
+  std::string ptf_err = std::string(PROJECT_BUILD_DIR) +
+                        "../plotting/outputs/ex5_NQ" + std::to_string(NQ) +
                         "_step_error_" +
                         std::to_string(static_cast<int>(params.f22())) + ".out";
   std::ofstream file_err(ptf_err);
@@ -263,7 +271,8 @@ main() {
   file_err.close();
 
   // 8d. Output L2 Error Matrix
-  std::string ptf_l2 = "./plotting/outputs/ex5_NQ" + std::to_string(NQ) +
+  std::string ptf_l2 = std::string(PROJECT_BUILD_DIR) +
+                       "../plotting/outputs/ex5_NQ" + std::to_string(NQ) +
                        "_step_error_l2_" +
                        std::to_string(static_cast<int>(params.f22())) + ".out";
   std::ofstream file_l2(ptf_l2);

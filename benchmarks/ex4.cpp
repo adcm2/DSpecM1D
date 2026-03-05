@@ -3,6 +3,7 @@
 #endif
 
 // Standard library includes
+#include "config.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -43,9 +44,14 @@ main() {
   prem_norm<double> norm_class;
   auto timenorm = norm_class.TimeNorm();
 
-  InputParameters params("bench_params/ex4.txt");
+  // get paths required for input parameters and Earth model
+  std::string param_path =
+      std::string(PROJECT_BUILD_DIR) + "data/params/ex4.txt";
+  InputParameters params(param_path);
+  std::string earth_model_path =
+      std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
+
   SRInfo sr_info(params);
-  std::string earth_model_path = params.earth_model();
 
   // --- 2. Frequency Solver Parameters ---
   double dt = params.time_step_sec();
@@ -85,7 +91,8 @@ main() {
 
   //////////////////////////////////////////////////////////////////////////////
   // --- 7. Write Record Section to File ---
-  std::string pathtofile = "./plotting/outputs/ex4.out";
+  std::string pathtofile =
+      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex4.out";
   std::ofstream file(pathtofile);
 
   // Safety check to ensure the file opened successfully
