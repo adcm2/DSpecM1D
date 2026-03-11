@@ -1,0 +1,39 @@
+Code Structure & Architecture
+Remove the prem_norm class from tutorial/benchmark files — now that norm_class.h exists, every file that re-defines it locally should include that header instead. This was the right move but hasn't been applied consistently yet.
+
+Split spectra_master.h — the file mixes class declaration and a large constructor body along with many method implementations. Consider:
+
+spectra_master.h — class declaration only
+spectra_master_impl.h — constructor and method implementations
+Or move to a .cpp with explicit template instantiations if compile times become an issue.
+Reduce code duplication in force/receiver vector methods — CalculateForce, CalculateForce_T, and CalculateForce_R share large blocks of identical setup code (Wigner matrix construction, element search, Lagrange polynomial evaluation). Extract these into private helpers:
+
+Naming & Consistency
+Unify naming conventions — the codebase mixes styles:
+
+MAT_KE_T_K vs mat_ke_0 (shouting vs snake_case)
+RV_BASE_Z vs RV_VAL_Z (public methods in uppercase is unusual in C++)
+Recommend adopting a single convention, e.g. all public methods in PascalCase or snake_case.
+Rename cryptic members — names like _el, _eu, _en, fsb, _NQ are not self-documenting. Consider:
+
+CMake
+Add an install target — the library is header-only but has no install() rules. This prevents it being used as a proper CMake package by downstream projects.
+
+Add a DSpecM1DConfig.cmake so downstream projects can use find_package(DSpecM1D).
+
+Pin all FetchContent dependencies to a specific commit hash rather than a branch name (main, develop). Branch tips are not reproducible builds:
+
+Documentation
+Apply Doxygen comments consistently — t1.cpp now has excellent Doxygen coverage but spectra_master.h has none. The public API (all MAT_*, RV_*, CalculateForce_* methods) should at minimum have a @brief, @param, and @return.
+
+Add a Doxyfile to the repository root so documentation can be generated with a single doxygen invocation.
+
+Testing
+There are no tests — at minimum, add a tests/ directory with a few CTest cases that verify:
+The LtG maps (LtG_S, LtG_T, LtG_R) return expected indices for known inputs.
+The assembled matrices are symmetric.
+A known analytic mode frequency is recovered to within tolerance.
+Performance
+The CalculateForce_* methods re-construct the Wigner matrix on every call for the same source. If the source location is fixed (which it is within a single run), cache the Wigner matrix as a member or pass it in.
+
+Consider using Eigen::SparseMatrix<Complex> directly for the frequency-domain solve rather than assembling a real matrix and promoting it at solve time — this avoids an extra copy per frequency.
