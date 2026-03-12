@@ -180,4 +180,4 @@ SRInfo::RV_RED_TOR(int idxl) {
 
   return vec_receiver;
 };
-#endif   // PARAM_INFO_H
+#endif   // SR_INFO_H

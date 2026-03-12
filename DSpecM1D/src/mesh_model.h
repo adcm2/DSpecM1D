@@ -10,37 +10,36 @@ class MeshModel {
 public:
   template <class model1d> MeshModel(EarthMesh::RadialMesh &, model1d &);
   MeshModel() {};
-  //   ~MeshModel();
 
-  auto Density(int idxe, int idxn) { return _vec_density[idxe][idxn]; };
-  auto VPV(int idxe, int idxn) { return _vec_vpv[idxe][idxn]; };
-  auto VSV(int idxe, int idxn) { return _vec_vsv[idxe][idxn]; };
-  auto VPH(int idxe, int idxn) { return _vec_vph[idxe][idxn]; };
-  auto VSH(int idxe, int idxn) { return _vec_vsh[idxe][idxn]; };
-  auto VP(int idxe, int idxn) { return _vec_vp[idxe][idxn]; };
-  auto VS(int idxe, int idxn) { return _vec_vs[idxe][idxn]; };
-  auto QKappa(int idxe, int idxn) { return _vec_qkappa[idxe][idxn]; };
-  auto QMu(int idxe, int idxn) { return _vec_qmu[idxe][idxn]; };
-  auto Eta(int idxe, int idxn) { return _vec_eta[idxe][idxn]; };
-  auto A(int idxe, int idxn) { return _vec_A[idxe][idxn]; };
-  auto N(int idxe, int idxn) { return _vec_N[idxe][idxn]; };
-  auto L(int idxe, int idxn) { return _vec_L[idxe][idxn]; };
-  auto C(int idxe, int idxn) { return _vec_C[idxe][idxn]; };
-  auto F(int idxe, int idxn) { return _vec_F[idxe][idxn]; };
-  auto Kappa(int idxe, int idxn) { return _vec_Kappa[idxe][idxn]; };
-  auto Mu(int idxe, int idxn) { return _vec_Mu[idxe][idxn]; };
-  auto PSlow(int idxe, int idxn) { return _vec_pslow[idxe][idxn]; };
-  auto SSlow(int idxe, int idxn) { return _vec_sslow[idxe][idxn]; };
+  auto Density(int idxe, int idxn) const { return _vec_density[idxe][idxn]; };
+  auto VPV(int idxe, int idxn) const { return _vec_vpv[idxe][idxn]; };
+  auto VSV(int idxe, int idxn) const { return _vec_vsv[idxe][idxn]; };
+  auto VPH(int idxe, int idxn) const { return _vec_vph[idxe][idxn]; };
+  auto VSH(int idxe, int idxn) const { return _vec_vsh[idxe][idxn]; };
+  auto VP(int idxe, int idxn) const { return _vec_vp[idxe][idxn]; };
+  auto VS(int idxe, int idxn) const { return _vec_vs[idxe][idxn]; };
+  auto QKappa(int idxe, int idxn) const { return _vec_qkappa[idxe][idxn]; };
+  auto QMu(int idxe, int idxn) const { return _vec_qmu[idxe][idxn]; };
+  auto Eta(int idxe, int idxn) const { return _vec_eta[idxe][idxn]; };
+  auto A(int idxe, int idxn) const { return _vec_A[idxe][idxn]; };
+  auto N(int idxe, int idxn) const { return _vec_N[idxe][idxn]; };
+  auto L(int idxe, int idxn) const { return _vec_L[idxe][idxn]; };
+  auto C(int idxe, int idxn) const { return _vec_C[idxe][idxn]; };
+  auto F(int idxe, int idxn) const { return _vec_F[idxe][idxn]; };
+  auto Kappa(int idxe, int idxn) const { return _vec_Kappa[idxe][idxn]; };
+  auto Mu(int idxe, int idxn) const { return _vec_Mu[idxe][idxn]; };
+  auto PSlow(int idxe, int idxn) const { return _vec_pslow[idxe][idxn]; };
+  auto SSlow(int idxe, int idxn) const { return _vec_sslow[idxe][idxn]; };
 
   // attenuation equivalent parameters
-  auto A_atten(int idxe, int idxn) { return _vec_A_atten[idxe][idxn]; };
-  auto N_atten(int idxe, int idxn) { return _vec_N_atten[idxe][idxn]; };
-  auto L_atten(int idxe, int idxn) { return _vec_L_atten[idxe][idxn]; };
-  auto C_atten(int idxe, int idxn) { return _vec_C_atten[idxe][idxn]; };
-  auto F_atten(int idxe, int idxn) { return _vec_F_atten[idxe][idxn]; };
+  auto A_atten(int idxe, int idxn) const { return _vec_A_atten[idxe][idxn]; };
+  auto N_atten(int idxe, int idxn) const { return _vec_N_atten[idxe][idxn]; };
+  auto L_atten(int idxe, int idxn) const { return _vec_L_atten[idxe][idxn]; };
+  auto C_atten(int idxe, int idxn) const { return _vec_C_atten[idxe][idxn]; };
+  auto F_atten(int idxe, int idxn) const { return _vec_F_atten[idxe][idxn]; };
 
   // gravity
-  auto Gravity(int idxe, int idxn) { return _vec_gravity[idxe][idxn]; };
+  auto Gravity(int idxe, int idxn) const { return _vec_gravity[idxe][idxn]; };
 
 private:
   using VECTOR = std::vector<double>;

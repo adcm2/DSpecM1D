@@ -125,4 +125,4 @@ public:
   };
 };
 
-#endif   // PARAM_INFO_H
+#endif   // PARAMRED_INFO_H

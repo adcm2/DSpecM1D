@@ -9,7 +9,7 @@
 #include <vector>
 
 // Helper function to read the next non-comment, non-empty line from a file
-std::string
+inline std::string
 get_next_value_line(std::ifstream &file) {
   std::string line;
   while (std::getline(file, line)) {
