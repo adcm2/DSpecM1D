@@ -1,5 +1,7 @@
 # DSpecM1D
 
+NOTE: The current release should be viewed as a pre-release version of the software. API changes and a general cleaning up of the library will be complete soon.
+
 A C++23 spectral element library for computing synthetic seismograms in a
 spherically symmetric (1D) Earth model. The solver works in the
 frequency domain, assembling sparse stiffness and inertia matrices for each
