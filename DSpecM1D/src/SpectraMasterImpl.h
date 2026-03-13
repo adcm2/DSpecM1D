@@ -1,7 +1,7 @@
 #ifndef SPECTRA_MASTER_IMPL_H
 #define SPECTRA_MASTER_IMPL_H
 
-#include "spectra_master.h"
+#include "SpectraMaster.h"
 
 namespace Full1D {
 

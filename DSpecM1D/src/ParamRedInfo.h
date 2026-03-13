@@ -9,8 +9,8 @@
 #include <Interpolation/Lagrange>
 #include "SourceInfo.h"
 #include <EarthMesh/All>
-#include "input_parser.h"
-#include "mesh_model.h"
+#include "InputParser.h"
+#include "MeshModel.h"
 
 class ParamRedInfo {
 

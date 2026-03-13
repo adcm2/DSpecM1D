@@ -47,7 +47,7 @@ main() {
   double wtb = 0.05;
   double t1 = 0.0;
   double t2 = tout;
-  int qex = 4;
+  int qex = 1;
 
   // --- 4. Setup PREM and Frequency Class ---
   timer1.start();
