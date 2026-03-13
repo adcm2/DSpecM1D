@@ -58,7 +58,8 @@ outputFactor(int output_type, std::complex<double> w,
 struct SpecConstants {
   std::complex<double> myi{0.0, 1.0};
   std::complex<double> ieps;
-  double w0, twodivpi, twopid;
+  double twopid, w0,
+      twodivpi;   // twopid declared before w0 so init order is correct
 
   SpecConstants(double ep, double tref)
       : ieps{-ep * myi}, twopid{2.0 * M_PI}, w0{twopid / tref},

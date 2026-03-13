@@ -11,7 +11,7 @@ specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
   totlen = this->LtG_R(1, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
 
-  double rad_source = _mesh.PR() - 1000.0 * cmt.Depth() / _length_norm;
+  double rad_source = _SourceRadius(cmt);
 
   auto wigdmat2 =
       GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
@@ -22,8 +22,8 @@ specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
 
   for (int idx = 0; idx < _mesh.NE(); ++idx) {
     if ((_mesh.ELR(idx) <= rad_source) && (_mesh.EUR(idx) > rad_source)) {
-      stdvec vec_nodes(NQ, 0.0);
-      for (int idxn = 0; idxn < NQ; ++idxn)
+      stdvec vec_nodes(_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
         vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
@@ -51,7 +51,7 @@ specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
   totlen = this->LtG_R(1, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
 
-  double rad_source = _mesh.PR() - 1000.0 * cmt.Depth() / _length_norm;
+  double rad_source = _SourceRadius(cmt);
 
   auto wigdmat =
       GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
@@ -60,8 +60,8 @@ specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
 
   for (int idx = 0; idx < _mesh.NE(); ++idx) {
     if ((_mesh.ELR(idx) <= rad_source) && (_mesh.EUR(idx) > rad_source)) {
-      stdvec vec_nodes(NQ, 0.0);
-      for (int idxn = 0; idxn < NQ; ++idxn)
+      stdvec vec_nodes(_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
         vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());

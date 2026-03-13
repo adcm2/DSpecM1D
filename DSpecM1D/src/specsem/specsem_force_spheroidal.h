@@ -14,7 +14,7 @@ specsem::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
   double kd2 = kval / std::sqrt(2.0);
 
-  double rad_source = _mesh.PR() - 1000.0 * cmt.Depth() / _length_norm;
+  double rad_source = _SourceRadius(cmt);
   double theta_s = (90.0 - cmt.Latitude()) * EIGEN_PI / (180.0);
   double phi_s = cmt.Longitude() * EIGEN_PI / (180.0);
 
@@ -37,8 +37,8 @@ specsem::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
   for (int idx = 0; idx < _mesh.NE(); ++idx) {
     if ((_mesh.ELR(idx) <= rad_source) && (_mesh.EUR(idx) > rad_source)) {
-      stdvec vec_nodes(NQ, 0.0);
-      for (int idxn = 0; idxn < NQ; ++idxn)
+      stdvec vec_nodes(_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
         vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
@@ -88,12 +88,12 @@ specsem::CalculateForce_All(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
   double kd2 = kval / std::sqrt(2.0);
-  double rad_source = _mesh.PR() - 1000.0 * cmt.Depth() / _length_norm;
+  double rad_source = _SourceRadius(cmt);
 
   for (int idx = 0; idx < _mesh.NE(); ++idx) {
     if ((_mesh.ELR(idx) <= rad_source) && (_mesh.EUR(idx) > rad_source)) {
-      stdvec vec_nodes(NQ, 0.0);
-      for (int idxn = 0; idxn < NQ; ++idxn)
+      stdvec vec_nodes(_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
         vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());

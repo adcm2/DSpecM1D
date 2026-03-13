@@ -40,49 +40,8 @@ allIndicesImpl(const std::vector<double> &vec_w,   // frequencies to evaluate
 
 template <class semtype>
 auto
-StartElementClean(semtype &sem, int l, double omega_in, bool isP) {
-
-  auto mesh = sem.mesh();
-  auto mesh_model = sem.mesh_model();
-  auto q = mesh.GLL();
-  int NE = mesh.NE();
-  int NQ = mesh.NN();
-  double omega = omega_in;
-  double slowval2 = l * (l + 1.0) / (omega * omega);
-  double sum = 0.0;
-  double tolval = 12.0;
-  int idx = 0;
-
-  // loop through elements from top to bottom
-  for (int idxe = NE - 1; idxe > -1; --idxe) {
-    double tmpmult = 0.5 * omega * mesh.EW(idxe);
-    for (int idxq = 0; idxq < NQ; ++idxq) {
-      double r = mesh.NodeRadius(idxe, idxq);
-      auto sv = -slowval2 / (r * r);
-      if (isP) {
-        sv += mesh_model.PSlow(idxe, idxq);
-      } else {
-        sv += mesh_model.SSlow(idxe, idxq);
-      }
-      if (sv < 0) {
-        sum += tmpmult * std::sqrt(-sv) * q.W(idxq);
-      } else {
-        sum = 0.0;
-        break;
-      }
-    }
-    if ((sum > tolval)) {
-      idx = idxe;
-      break;
-    }
-  }
-  return idx;
-}
-
-template <class semtype>
-auto
 StartElementClean(semtype &sem, int l, double omega_in, bool isP,
-                  int idx_source) {
+                  int idx_source = -1) {
   auto mesh = sem.mesh();
   auto mesh_model = sem.mesh_model();
   auto q = mesh.GLL();
@@ -91,14 +50,14 @@ StartElementClean(semtype &sem, int l, double omega_in, bool isP,
   double omega = omega_in;
   double slowval2 = l * (l + 1.0) / (omega * omega);
   double sum = 0.0;
-  double tolval = 14.0;
+  // use a slightly tighter tolerance when starting from source element
+  double tolval = (idx_source < 0) ? 12.0 : 14.0;
   int idx = 0;
 
-  // loop through elements from top to bottom
-  int idx_start = NE - 1;
-  if (idx_source < NE) {
-    idx_start = idx_source - 1;
-  }
+  // start from source element if provided, otherwise from the top
+  int idx_start =
+      (idx_source >= 0 && idx_source < NE) ? idx_source - 1 : NE - 1;
+
   for (int idxe = idx_start; idxe > -1; --idxe) {
     double tmpmult = 0.5 * omega * mesh.EW(idxe);
     for (int idxq = 0; idxq < NQ; ++idxq) {
@@ -116,7 +75,7 @@ StartElementClean(semtype &sem, int l, double omega_in, bool isP,
         break;
       }
     }
-    if ((sum > tolval)) {
+    if (sum > tolval) {
       idx = idxe;
       break;
     }

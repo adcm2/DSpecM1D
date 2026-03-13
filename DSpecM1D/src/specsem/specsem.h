@@ -11,6 +11,7 @@
 #include <EarthMesh/All>
 #include "../InputParser.h"
 #include "../MeshModel.h"
+#include "../NormClass.h"
 
 namespace Full1D {
 
@@ -45,7 +46,7 @@ private:
 
   // normalisation factors
   double densitynorm = 5515.0;
-  double pi_db = 3.141592653589793238462643383279502884197;
+  double pi_db = EIGEN_PI;
   double bigg_nd = 6.6723 * std::pow(10.0, -11.0);
   double bigg_db;
   double frequencynorm = std::sqrt(pi_db * bigg_nd * densitynorm);
@@ -54,6 +55,14 @@ private:
 
   // base sparse matrices
   SMAT mat_inertia_0, mat_ke_0, mat_ke_0_atten, mat_in_t_base;
+
+  // private helpers
+  double _SourceRadius(const SourceInfo::EarthquakeCMT &cmt) const {
+    return _mesh.PR() - 1000.0 * cmt.Depth() / _length_norm;
+  }
+  double _ReceiverRadius(const InputParameters &param) const {
+    return _mesh.PR() - 1000.0 * param.receiver_depth() / _length_norm;
+  }
   std::vector<SMAT> vec_ke_t_base, vec_ke_t_atten, vec_ke_s_base,
       vec_ke_s_atten, vec_in_s_base;
 

@@ -51,7 +51,7 @@ public:
   auto backazimuths(int idx) const { return vec_backazimuths[idx]; };
 };
 
-SRInfo::SRInfo(InputParameters &param)
+inline SRInfo::SRInfo(InputParameters &param)
     : _lmax{param.lmax()}, nrec{param.num_receivers()} {
   using namespace GSHTrans;
 
@@ -121,7 +121,7 @@ SRInfo::SRInfo(InputParameters &param)
   }
 };
 
-Eigen::MatrixXcd
+inline Eigen::MatrixXcd
 SRInfo::RV_RED_SPH(int idxl) {
   // maximum m value for given l
   int max_m = std::min(idxl, 2);
@@ -152,7 +152,7 @@ SRInfo::RV_RED_SPH(int idxl) {
   return vec_receiver;
 };
 
-Eigen::MatrixXcd
+inline Eigen::MatrixXcd
 SRInfo::RV_RED_TOR(int idxl) {
   // maximum m value for given l
   int max_m = std::min(idxl, 2);

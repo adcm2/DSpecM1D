@@ -74,7 +74,7 @@ specsem::RV_FULL_T(InputParameters &param, int idxl) {
 
 Eigen::MatrixXcd
 specsem::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   std::size_t flen = this->LtG_S(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
@@ -116,7 +116,7 @@ specsem::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
 
 Eigen::MatrixXcd
 specsem::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   auto k =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
   std::size_t flen = this->LtG_S(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
@@ -163,7 +163,7 @@ specsem::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
 
 Eigen::MatrixXcd
 specsem::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   std::size_t flen = this->LtG_T(_mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
@@ -260,7 +260,7 @@ specsem::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   std::size_t flen = this->LtG_T(_eu - 1, _mesh.NN() - 1) + 1;
   std::size_t fcols = 2 * idxl + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, fcols);
@@ -302,7 +302,7 @@ specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   std::size_t flen = this->LtG_T(_eu - 1, _mesh.NN() - 1) + 1;
   std::size_t fcols = 2 * idxl + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, fcols);
@@ -341,7 +341,7 @@ specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
 Eigen::MatrixXcd
 specsem::RV_Z_R(InputParameters &param, int idxr) {
   auto rec = param.receivers()[idxr];
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   std::size_t flen = this->LtG_R(1, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, 1);
   using namespace GSHTrans;
@@ -369,7 +369,7 @@ specsem::RV_Z_R(InputParameters &param, int idxr) {
 
 Eigen::MatrixXcd
 specsem::RV_RED_Z_R(InputParameters &param) {
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   auto rec_elems = this->Receiver_Elements(param);
   auto lowidx = this->LtG_R(0, rec_elems[0], 0);
   auto upidx = this->LtG_R(1, rec_elems.back(), _mesh.NN() - 1);
@@ -406,7 +406,7 @@ specsem::RV_BASE_FULL(InputParameters &param, int idxl) {
   int lenidx = upidx - lowidx + 1;
   auto nrec = param.num_receivers();
   Eigen::MatrixXcd mat_base = Eigen::MatrixXcd::Zero(3 * nrec, lenidx);
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   double k = std::sqrt(1.0 * idxl * (idxl + 1.0));
   for (int idx = rec_elems[0]; idx < rec_elems.back() + 1; ++idx) {
     std::vector<double> vec_nodes(_mesh.NN(), 0.0);
@@ -437,7 +437,7 @@ specsem::RV_BASE_FULL_T(InputParameters &param, int idxl) {
   int lenidx = upidx - lowidx + 1;
   auto nrec = param.num_receivers();
   Eigen::MatrixXcd mat_base = Eigen::MatrixXcd::Zero(3 * nrec, lenidx);
-  double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
+  double rad_r = _ReceiverRadius(param);
   double k = std::sqrt(1.0 * idxl * (idxl + 1.0));
   for (int idx = rec_elems[0]; idx < rec_elems.back() + 1; ++idx) {
     std::vector<double> vec_nodes(_mesh.NN(), 0.0);

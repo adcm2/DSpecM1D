@@ -63,7 +63,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
 
     totlen = this->LtG_S(2, _mesh.NE() - 1, NQ - 1) + 1;
 
-    // fluid / solid bookkeeping and toroidal DOF bounds
+    // fluid / solid bookkeeping
     _vec_fluid = std::vector<int>(_mesh.NE(), 0);
     _vec_dof = std::vector<bool>(_mesh.NE(), false);
     for (int idxe = 0; idxe < _mesh.NE(); ++idxe) {
@@ -75,29 +75,43 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
         _vec_dof[idxe - 1] = true;
     }
 
-    // find _el (first solid element above fluid)
-    {
-      bool found = false, prev_fluid = false;
-      while (!found) {
-        ++_el;
-        auto laynum = _mesh.LayerNumber(_el);
-        if (prev_fluid && inp_model.IsSolid(laynum)) {
-          found = true;
+    // find _el and _eu — toroidal DOF range
+    // Toroidal modes live in the mantle: the solid region immediately above
+    // the deepest fluid region (outer core). Walk from the centre outward to
+    // find the deepest fluid region, ignoring shallower fluid layers (ocean).
+    // For a purely solid model: _el=0, _eu=NE.
+    _el = 0;
+    _eu = _mesh.NE();
+    if (_has_fluid) {
+      // Walk from centre (idx=0) upward to find the first (deepest) fluid
+      // region — this is the outer core for Earth models.
+      int first_fluid_from_bottom = -1;
+      for (int idx = 0; idx < _mesh.NE(); ++idx) {
+        if (_vec_fluid[idx] == 1) {
+          first_fluid_from_bottom = idx;
           break;
         }
-        if (inp_model.IsFluid(laynum))
-          prev_fluid = true;
       }
-    }
 
-    // find _eu (first fluid element above solid, or NE)
-    _eu = _el;
-    {
-      bool found = false;
-      while (!found) {
-        auto laynum = _mesh.LayerNumber(_eu);
-        if (inp_model.IsFluid(laynum) || (++_eu == _mesh.NE()))
-          found = true;
+      if (first_fluid_from_bottom >= 0) {
+        // Find the top of this contiguous fluid region (outer core top)
+        int top_of_deepest_fluid = first_fluid_from_bottom;
+        for (int idx = first_fluid_from_bottom; idx < _mesh.NE(); ++idx) {
+          if (_vec_fluid[idx] == 1)
+            top_of_deepest_fluid = idx;
+          else
+            break;
+        }
+        // _el: first solid element above the outer core (mantle base)
+        _el = top_of_deepest_fluid + 1;
+        // _eu: next fluid element above _el (e.g. ocean), or NE if none
+        _eu = _mesh.NE();
+        for (int idx = _el; idx < _mesh.NE(); ++idx) {
+          if (_vec_fluid[idx] == 1) {
+            _eu = idx;
+            break;
+          }
+        }
       }
     }
 
