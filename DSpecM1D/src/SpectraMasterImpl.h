@@ -152,7 +152,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
       {
         bool found = false;
         bool prev_fluid = false;
-        while (!found) {
+        while (!found && _el < _mesh.NE() - 1) {
           ++_el;
           auto laynum = _mesh.LayerNumber(_el);
           if (prev_fluid) {

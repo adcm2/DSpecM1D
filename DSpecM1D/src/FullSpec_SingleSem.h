@@ -105,8 +105,6 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
         MATRIX RV_BASE = sem.RV_BASE_FULL_T(params, idxl);
         auto ridxtor =
             SpectralTools::AllIndices_TOR(sem, idxl, myff, idx_source, nskip);
-        MATRIX vec_raw_l =
-            MATRIX::Zero(3 * params.num_receivers(), vec_w.size());
         for (int idx = myff.i2() - 1; idx > myff.i1() - 1; --idx) {
           std::size_t ridx = ridxtor[idx - myff.i1()];
           std::size_t len_ms = lentor - ridx;
@@ -123,14 +121,13 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
                              nskip);
           MATRIX vec_sol = solver1.solve(f_red);
           auto lidx = lowidx - ridx;
-          vec_raw_l.col(idx) +=
-              RED_C.cwiseProduct(RV_BASE * vec_sol.block(lidx, 0, lenidx, 2))
-                  .rowwise()
-                  .sum();
-        }
 #pragma omp critical(torvecadd)
-        {
-          vec_raw += vec_raw_l;
+          {
+            vec_raw.col(idx) +=
+                RED_C.cwiseProduct(RV_BASE * vec_sol.block(lidx, 0, lenidx, 2))
+                    .rowwise()
+                    .sum();
+          }
         }
       }
     }
@@ -160,8 +157,8 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
         MATRIX RV_BASE = sem.RV_BASE_FULL(params, idxl);
         auto vec_ridx =
             SpectralTools::AllIndices_SPH(sem, idxl, myff, idx_source, nskip);
-        MATRIX vec_raw_l =
-            MATRIX::Zero(3 * params.num_receivers(), vec_w.size());
+        // MATRIX vec_raw_l =
+        //     MATRIX::Zero(3 * params.num_receivers(), vec_w.size());
         for (int idx = myff.i2() - 1; idx > myff.i1() - 1; --idx) {
           std::size_t idx_rs = vec_ridx[idx - myff.i1()];
           std::size_t len_ms = lensph - idx_rs;
@@ -176,14 +173,14 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
           factorizeOrCompute(solver1, mat_sph, myff.i2() - idx - 1, nskip);
           MATRIX vec_sol = solver1.solve(f_red);
           auto lidx = lowidx - idx_rs;
-          vec_raw_l.col(idx) +=
-              RED_C.cwiseProduct(RV_BASE * vec_sol.block(lidx, 0, lenidx, 4))
-                  .rowwise()
-                  .sum();
-        }
+
 #pragma omp critical(sphvecadd)
-        {
-          vec_raw += vec_raw_l;
+          {
+            vec_raw.col(idx) +=
+                RED_C.cwiseProduct(RV_BASE * vec_sol.block(lidx, 0, lenidx, 4))
+                    .rowwise()
+                    .sum();
+          }
         }
       }
     }

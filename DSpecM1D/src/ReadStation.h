@@ -61,7 +61,7 @@ public:
  * @return A vector of SiteChanEntry objects, each containing the data from one
  * line.
  */
-std::vector<SiteChanEntry>
+inline std::vector<SiteChanEntry>
 read_full_sitechan_file(const std::string &filename) {
   std::vector<SiteChanEntry> entries;
   std::ifstream file(filename);
