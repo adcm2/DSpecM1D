@@ -83,6 +83,19 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D/src/
     FILES_MATCHING PATTERN "*.h"
 )
 
+# Install umbrella headers (extensionless)
+install(FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D/All
+    ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D/Timer
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DSpecM1D
+)
+
+# Install implementation/public headers preserving src/ path
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D/src/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DSpecM1D/src
+    FILES_MATCHING PATTERN "*.h"
+)
+
 # Write the targets file
 install(EXPORT DSpecM1DTargets
     FILE      DSpecM1DTargets.cmake
@@ -114,10 +127,10 @@ install(FILES
 
 # --- Benchmarks ---
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    option(BUILD_BENCHMARKS "Whether or not benchmarks should be built" ON)
-    option(BUILD_TUTORIALS "Whether or not tutorials should be built" ON)
+    option(DSPECM1D_BUILD_BENCHMARKS "Whether or not benchmarks should be built" ON)
+    option(DSPECM1D_BUILD_TUTORIALS "Whether or not tutorials should be built" ON)
 
-    if(BUILD_BENCHMARKS OR BUILD_TUTORIALS)
+    if(DSPECM1D_BUILD_BENCHMARKS OR DSPECM1D_BUILD_TUTORIALS)
         add_custom_target(CopyData
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/data
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
@@ -125,11 +138,11 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
         )
     endif()
 
-    if(BUILD_BENCHMARKS)
+    if(DSPECM1D_BUILD_BENCHMARKS)
         add_subdirectory(benchmarks)
     endif()
 
-    if(BUILD_TUTORIALS)
+    if(DSPECM1D_BUILD_TUTORIALS)
         add_subdirectory(tutorials)
     endif()
 endif()
@@ -137,8 +150,8 @@ endif()
 # --- Tests (must come after benchmarks so ex3 target exists) ---
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     enable_testing()
-    option(BUILD_TESTS "Build CTest smoke tests" ON)
-    if(BUILD_TESTS)
+    option(DSPECM1D_BUILD_TESTS "Build CTest smoke tests" ON)
+    if(DSPECM1D_BUILD_TESTS)
         add_subdirectory(tests)
     endif()
 endif()

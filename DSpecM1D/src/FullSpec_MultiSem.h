@@ -25,40 +25,59 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   auto twopid = sc.twopid;
 
   auto num_rec = params.num_receivers();
-  int nskip = (myff.i2() - myff.i1()) / 20;
-  int num_chunks = std::floor((myff.f22() - myff.f11()) / 10.0) + 1;
+  int nskip = std::max(1, (myff.i2() - myff.i1()) / 20);
+  auto i_begin = myff.i1();
+  auto i_end = myff.i2();   // one past last valid index
+  if (i_begin < 0 || i_end > static_cast<int>(vec_w.size()) ||
+      i_begin >= i_end) {
+    throw std::runtime_error(
+        "Invalid frequency index range in FullSpec_MultiSem.");
+  }
+
+  int num_chunks = std::max(
+      1, static_cast<int>(std::floor((myff.f22() - myff.f11()) / 10.0) + 1.0));
+
+  std::vector<std::vector<double>> freq_chunks(num_chunks);
+  std::vector<std::vector<int>> idx_chunks(num_chunks);
+
+  double wl = vec_w[i_begin];
+  double wh = vec_w[i_end - 1];
+  double wdiff = (wh - wl) / static_cast<double>(num_chunks);
+
+  int idxw = i_begin;
+  for (int c = 0; c < num_chunks; ++c) {
+    double upper = (c == num_chunks - 1) ? wh : (wl + wdiff * (c + 1));
+    while (idxw < i_end && vec_w[idxw] <= upper) {
+      freq_chunks[c].push_back(vec_w[idxw]);
+      idx_chunks[c].push_back(idxw);
+      ++idxw;
+    }
+  }
+
+  // Any stragglers (numeric edge cases) go to last chunk
+  while (idxw < i_end) {
+    freq_chunks.back().push_back(vec_w[idxw]);
+    idx_chunks.back().push_back(idxw);
+    ++idxw;
+  }
+
+  // Build max_steps safely
+  std::vector<double> max_steps;
+  max_steps.reserve(num_chunks);
+  double base_len = 0.78 * 1000 / inp_model.TimeNorm() * twopid;
+  double newlen = std::pow(100.0 * relerr, 1.0 / (NQ - 1.0)) * base_len;
+
+  for (int c = 0; c < num_chunks; ++c) {
+    double fref = freq_chunks[c].empty() ? wh : freq_chunks[c].back();
+    if (fref <= 0.0) {
+      throw std::runtime_error("Non-positive reference frequency in chunking.");
+    }
+    double step = std::min(newlen / fref, 0.05);
+    max_steps.push_back(step);
+  }
 
   MATRIX vec_raw = MATRIX::Zero(3 * params.num_receivers(), vec_w.size());
 
-  // build frequency chunks
-  auto wl = vec_w[myff.i1()];
-  auto wh = vec_w[myff.i2() - 1];
-  auto wdiff = (wh - wl) / static_cast<double>(num_chunks);
-  std::vector<std::vector<double>> freq_chunks;
-  std::vector<std::vector<int>> idx_chunks;
-  auto idxw = myff.i1();
-  for (int idx = 0; idx < num_chunks; ++idx) {
-    std::vector<double> chunk;
-    std::vector<int> tmp;
-    while (vec_w[idxw] <= wl + wdiff * (idx + 1)) {
-      chunk.push_back(vec_w[idxw]);
-      tmp.push_back(idxw);
-      ++idxw;
-    }
-    freq_chunks.push_back(chunk);
-    idx_chunks.push_back(tmp);
-  }
-
-  // per-chunk max step sizes
-  std::vector<double> max_steps;
-  double base_len = 0.78 * 1000 / inp_model.TimeNorm() * twopid;
-  double newlen = std::pow(100.0 * relerr, 1.0 / (NQ - 1.0)) * base_len;
-  for (int idx = 0; idx < num_chunks; ++idx) {
-    double tmp = newlen / freq_chunks[idx].back();
-    if (tmp > 0.05)
-      tmp = 0.05;
-    max_steps.push_back(tmp);
-  }
   for (auto s : max_steps)
     std::cout << "Max step: " << s << "\n";
 
