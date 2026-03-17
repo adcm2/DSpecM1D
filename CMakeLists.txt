@@ -23,7 +23,13 @@ find_package(OpenMP REQUIRED)
 include(FetchContent)
 
 # 1. Declare everything upfront. (No downloading happens here).
-FetchContent_Declare(Eigen3           GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git         GIT_TAG 3.4.0  GIT_SHALLOW TRUE)
+FetchContent_Declare(
+    Eigen3           
+    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git         
+    GIT_TAG        3.4.0  
+    GIT_SHALLOW    TRUE
+    FIND_PACKAGE_ARGS NAMES Eigen3
+)
 FetchContent_Declare(FFTWpp           GIT_REPOSITORY https://github.com/da380/FFTWpp.git           GIT_TAG main   GIT_SHALLOW TRUE)
 FetchContent_Declare(GaussQuad        GIT_REPOSITORY https://github.com/da380/GaussQuad.git        GIT_TAG main   GIT_SHALLOW TRUE)
 FetchContent_Declare(PlanetaryModel   GIT_REPOSITORY https://github.com/da380/PlanetaryModel.git   GIT_TAG newdev GIT_SHALLOW TRUE)
@@ -64,65 +70,6 @@ target_link_libraries(DSpecM1D INTERFACE
 
 target_include_directories(DSpecM1D INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<INSTALL_INTERFACE:include>
-)
-
-# --- Install Rules (header-only INTERFACE target) ---
-include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
-
-# Export the interface target
-install(TARGETS DSpecM1D
-    EXPORT DSpecM1DTargets
-)
-
-# Install all public headers under include/DSpecM1D/ so that
-# #include <DSpecM1D/All> resolves correctly after installation.
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D/src/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DSpecM1D
-    FILES_MATCHING PATTERN "*.h"
-)
-
-# Install umbrella headers (extensionless)
-install(FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D/All
-    ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D/Timer
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DSpecM1D
-)
-
-# Install implementation/public headers preserving src/ path
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D/src/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DSpecM1D/src
-    FILES_MATCHING PATTERN "*.h"
-)
-
-# Write the targets file
-install(EXPORT DSpecM1DTargets
-    FILE      DSpecM1DTargets.cmake
-    NAMESPACE DSpecM1D::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
-)
-
-# Version file
-write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfigVersion.cmake"
-    VERSION ${PROJECT_VERSION}
-    COMPATIBILITY SameMajorVersion
-)
-
-# Config file from template
-configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/DSpecM1DConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfig.cmake"
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
-    NO_SET_AND_CHECK_MACRO   # not needed for header-only; avoids unused-macro warnings
-    NO_CHECK_REQUIRED_COMPONENTS_MACRO
-)
-
-install(FILES
-    "${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfigVersion.cmake"
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
 )
 
 # --- Benchmarks ---
