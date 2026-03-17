@@ -122,7 +122,7 @@ main() {
       std::string(PROJECT_BUILD_DIR) + "data/params/ex1.txt";
 
   InputParameters params(param_path);
-  SRInfo sr_info(params);
+  SRInfo srInfo(params);
 
   std::string earth_model_path =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
@@ -194,7 +194,7 @@ main() {
   /**
    * @brief Sparse SEM frequency-domain solver.
    *
-   * @c Spectra() iterates over all angular degrees @p l up to @p lval,
+   * @c spectra() iterates over all angular degrees @p l up to @p lval,
    * assembles the stiffness/inertia matrices, solves the linear system at
    * each frequency, and accumulates the receiver seismograms.
    *
@@ -203,14 +203,14 @@ main() {
    * @param cmt         Earthquake CMT source.
    * @param params      Simulation parameters (receivers, tolerances, etc.).
    * @param NQ          GLL quadrature order.
-   * @param sr_info     Source–receiver geometry.
+   * @param srInfo     Source–receiver geometry.
    * @param rel_error   Relative tolerance for the iterative solver.
    *
    * @returns Matrix of complex spectra: rows = receivers × components,
    *          cols = frequencies.
    */
-  SPARSESPEC::Sparse_F_Spec mytest;
-  MATRIX vec_raw = mytest.Spectra(myff, prem, cmt, params, NQ, sr_info,
+  SPARSESPEC::SparseFSpec mytest;
+  MATRIX vec_raw = mytest.spectra(myff, prem, cmt, params, NQ, srInfo,
                                   params.relative_error());
 
   // -------------------------------------------------------------------------

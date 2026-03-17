@@ -51,7 +51,7 @@ main() {
   std::string earth_model_path =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
-  SRInfo sr_info(params);
+  SRInfo srInfo(params);
 
   // --- 2. Frequency Solver Parameters ---
   double dt = params.time_step_sec();
@@ -73,10 +73,10 @@ main() {
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   // --- 5. Compute Raw Frequency-Domain Spectra ---
-  SPARSESPEC::Sparse_F_Spec mytest;
+  SPARSESPEC::SparseFSpec mytest;
 
   timer1.start();
-  MATRIX vec_raw = mytest.Spectra(myff, prem, cmt, params, NQ, sr_info,
+  MATRIX vec_raw = mytest.spectra(myff, prem, cmt, params, NQ, srInfo,
                                   params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 

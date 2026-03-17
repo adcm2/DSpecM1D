@@ -1,14 +1,14 @@
-#ifndef SPECSEM_FORCE_RADIAL_H
-#define SPECSEM_FORCE_RADIAL_H
+#ifndef SEM_FORCE_RADIAL_H
+#define SEM_FORCE_RADIAL_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::MatrixXcd
-specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
+SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
   int NQ = _mesh.NN();
-  totlen = this->LtG_R(1, _mesh.NE() - 1, NQ - 1) + 1;
+  totlen = this->ltgR(1, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
 
   double rad_source = _SourceRadius(cmt);
@@ -31,7 +31,7 @@ specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
       for (int idxq = 0; idxq < NQ; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
-        auto idx_u = this->LtG_R(0, idx, idxq);
+        auto idx_u = this->ltgR(0, idx, idxq);
 
         Complex tmp_pm = 2.0 * cmt.MCmp() * y0c;
         Complex tmp_u = -w_val * tmp_pm + cmt.MC00() * w_deriv * y0c;
@@ -46,9 +46,9 @@ specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
+SEM::calculateForceRedR(SourceInfo::EarthquakeCMT &cmt) {
   int NQ = _mesh.NN();
-  totlen = this->LtG_R(1, _mesh.NE() - 1, NQ - 1) + 1;
+  totlen = this->ltgR(1, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
 
   double rad_source = _SourceRadius(cmt);
@@ -69,7 +69,7 @@ specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
       for (int idxq = 0; idxq < NQ; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
-        auto idx_u = this->LtG_R(0, idx, idxq);
+        auto idx_u = this->ltgR(0, idx, idxq);
 
         Complex tmp_pm = 2.0 * cmt.MCmp() * y0c;
         Complex tmp_u = -w_val * tmp_pm + cmt.MC00() * w_deriv * y0c;
@@ -85,4 +85,4 @@ specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_FORCE_RADIAL_H
+#endif   // SEM_FORCE_RADIAL_H

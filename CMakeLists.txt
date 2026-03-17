@@ -20,13 +20,18 @@ find_package(FFTW)
 find_package(OpenMP REQUIRED)
 
 # --- Parallel Dependency Fetching (CMake 3.24+) ---
+# Store downloads in a hidden .deps folder so 'rm -rf build' doesn't delete them!
+set(FETCHCONTENT_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/.deps)
+set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE BOOL "Disable FetchContent updates")
 include(FetchContent)
 
-# 1. Declare everything upfront. (No downloading happens here).
+# 1. Declare everything upfront.
+# The FIND_PACKAGE_ARGS tells CMake to search your system for Eigen3 first.
+# If it finds it locally, it SKIPS the git download entirely!
 FetchContent_Declare(
     Eigen3           
     GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git         
-    GIT_TAG        3.4.0  
+    GIT_TAG        3.4.0
     GIT_SHALLOW    TRUE
     FIND_PACKAGE_ARGS NAMES Eigen3
 )
@@ -43,11 +48,11 @@ FetchContent_Declare(SpectraSolver    GIT_REPOSITORY https://github.com/adcm2/Sp
 function(FetchContent_MakeAvailable_NoInstall)
     macro(install)
     endmacro()
-    # ${ARGV} expands to all arguments passed to this function
     FetchContent_MakeAvailable(${ARGV})
 endfunction()
 
-# 3. Fire them all off at once! CMake will download these in parallel.
+# 3. Fire them all off at once! 
+# CMake will handle the "local vs git" logic automatically.
 FetchContent_MakeAvailable_NoInstall(
     Eigen3 FFTWpp GaussQuad PlanetaryModel GSHTRANS 
     TomographyModels Interpolation EarthMesh SpectraSolver
@@ -94,10 +99,10 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     endif()
 endif()
 
-# --- Tests (must come after benchmarks so ex3 target exists) ---
+# --- Tests ---
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     enable_testing()
-    option(DSPECM1D_BUILD_TESTS "Build CTest smoke tests" ON)
+    option(DSPECM1D_BUILD_TESTS "Build DSPECM1D Tests" OFF)
     if(DSPECM1D_BUILD_TESTS)
         add_subdirectory(tests)
     endif()

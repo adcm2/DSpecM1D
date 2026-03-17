@@ -1,12 +1,12 @@
-#ifndef SPECSEM_CONSTRUCTOR_H
-#define SPECSEM_CONSTRUCTOR_H
+#ifndef SEM_CONSTRUCTOR_H
+#define SEM_CONSTRUCTOR_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 template <class model1d>
-specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
+SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
     : _mesh(inp_model, NQ, 1.0, maxstep, false),
       _freq_norm{1.0 / inp_model.TimeNorm()}, _lmax{lmax},
       _k2{lmax * (lmax + 1)},
@@ -61,7 +61,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
   {
     using T = Eigen::Triplet<double>;
 
-    totlen = this->LtG_S(2, _mesh.NE() - 1, NQ - 1) + 1;
+    totlen = this->ltgS(2, _mesh.NE() - 1, NQ - 1) + 1;
 
     // fluid / solid bookkeeping
     _vec_fluid = std::vector<int>(_mesh.NE(), 0);
@@ -117,7 +117,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
 
     // radial inertia + stiffness matrices
     {
-      auto num_radial_dof = this->LtG_R(1, _mesh.NE() - 1, NQ - 1) + 1;
+      auto num_radial_dof = this->ltgR(1, _mesh.NE() - 1, NQ - 1) + 1;
       std::vector<T> tpl_in, tpl_ke, tpl_ke_atten;
 
       for (int idxe = 0; idxe < _mesh.NE(); ++idxe) {
@@ -126,7 +126,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
           double xrad = _mesh.NodeRadius(idxe, i);
           double tmp = elem_width / 2.0 * q.W(i) *
                        _mesh_model.Density(idxe, i) * xrad * xrad;
-          auto idx_uu = this->LtG_R(0, idxe, i);
+          auto idx_uu = this->ltgR(0, idxe, i);
           tpl_in.push_back(T(idx_uu, idx_uu, tmp));
         }
       }
@@ -150,13 +150,13 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
               tmp0 * (4.0 * crho * (pi_db * bigg_db * crho * crad - gi) * crad +
                       4 * (Ai - Ni));
           double tmp_u_a = 4 * tmp0 * (Ai_a - Ni_a);
-          auto idxtiu = this->LtG_R(0, idxe, i);
+          auto idxtiu = this->ltgR(0, idxe, i);
           tpl_ke.push_back(T(idxtiu, idxtiu, tmp_u));
           tpl_ke_atten.push_back(T(idxtiu, idxtiu, tmp_u_a));
         }
       }
       // surface gravity boundary term
-      int idxpb = this->LtG_R(1, _mesh.NE() - 1, NQ - 1);
+      int idxpb = this->ltgR(1, _mesh.NE() - 1, NQ - 1);
       double rpb = _mesh.NodeRadius(_mesh.NE() - 1, NQ - 1);
       tpl_ke.push_back(T(idxpb, idxpb, rpb / (4.0 * pi_db * bigg_db)));
 
@@ -183,9 +183,9 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
             auto tmp_uu = elem_width * q.W(j) * FV[j] * rj * mat_d[i][j];
             auto tmp_pdu = q.W(j) * rhoj * rj * rj * vec_lag_deriv[j][i];
             auto tmp_uu_a = elem_width * q.W(j) * FVA[j] * rj * mat_d[i][j];
-            auto idx_u_i = this->LtG_R(0, idxe, i);
-            auto idx_u_j = this->LtG_R(0, idxe, j);
-            auto idx_p_i = this->LtG_R(1, idxe, i);
+            auto idx_u_i = this->ltgR(0, idxe, i);
+            auto idx_u_j = this->ltgR(0, idxe, j);
+            auto idx_p_i = this->ltgR(1, idxe, i);
             tpl_ke.push_back(T(idx_u_i, idx_u_j, tmp_uu));
             tpl_ke.push_back(T(idx_u_j, idx_u_i, tmp_uu));
             tpl_ke.push_back(T(idx_p_i, idx_u_j, tmp_pdu));
@@ -208,10 +208,10 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
             tmp_uu *= e2;
             tmp_pp *= e2 / (4.0 * pi_db * bigg_db);
             tmp_uu_a *= e2;
-            auto idx_u_i = this->LtG_R(0, idxe, i);
-            auto idx_u_j = this->LtG_R(0, idxe, j);
-            auto idx_p_i = this->LtG_R(1, idxe, i);
-            auto idx_p_j = this->LtG_R(1, idxe, j);
+            auto idx_u_i = this->ltgR(0, idxe, i);
+            auto idx_u_j = this->ltgR(0, idxe, j);
+            auto idx_p_i = this->ltgR(1, idxe, i);
+            auto idx_p_j = this->ltgR(1, idxe, j);
             tpl_ke.push_back(T(idx_u_i, idx_u_j, tmp_uu));
             tpl_ke.push_back(T(idx_p_i, idx_p_j, tmp_pp));
             tpl_ke_atten.push_back(T(idx_u_i, idx_u_j, tmp_uu_a));
@@ -233,7 +233,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
   {
     using T = Eigen::Triplet<double>;
     std::vector<T> tpl_in_0, tpl_ke_1, tpl_ke_2, tpl_ke_a1, tpl_ke_a2;
-    auto ntdof = this->LtG_T(_mesh.NE() - 1, NQ - 1) + 1;
+    auto ntdof = this->ltgT(_mesh.NE() - 1, NQ - 1) + 1;
 
     for (int idxe = _el; idxe < _eu; ++idxe) {
       double elem_width = _mesh.EW(idxe);
@@ -241,7 +241,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
         double xrad = _mesh.NodeRadius(idxe, i);
         double tmp = elem_width / 2.0 * q.W(i) * _mesh_model.Density(idxe, i) *
                      xrad * xrad;
-        auto idx_ww = this->LtG_T(idxe, i);
+        auto idx_ww = this->ltgT(idxe, i);
         tpl_in_0.push_back(T(idx_ww, idx_ww, tmp));
       }
     }
@@ -267,7 +267,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
         RR[i] = _mesh.NodeRadius(idxe, i);
         LVA[i] = _mesh_model.L_atten(idxe, i);
         NVA[i] = _mesh_model.N_atten(idxe, i);
-        IDXW[i] = this->LtG_T(idxe, i);
+        IDXW[i] = this->ltgT(idxe, i);
       }
 
       for (int i = 0; i < q.N(); ++i) {
@@ -320,7 +320,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
     vec_ke_s_base.reserve(3);
     vec_ke_s_atten.reserve(3);
     vec_in_s_base.reserve(2);
-    auto totlen_S = this->LtG_S(2, _mesh.NE() - 1, NQ - 1) + 1;
+    auto totlen_S = this->ltgS(2, _mesh.NE() - 1, NQ - 1) + 1;
     using T = Eigen::Triplet<double>;
     std::vector<T> tpl_in_0, tpl_in_1;
     std::vector<T> tpl_ke_0, tpl_ke_1, tpl_ke_2;
@@ -332,8 +332,8 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
         double xrad = _mesh.NodeRadius(idxe, i);
         double tmp = _mesh.EW(idxe) / 2.0 * q.W(i) *
                      _mesh_model.Density(idxe, i) * xrad * xrad;
-        auto idx_uu = this->LtG_S(0, idxe, i);
-        auto idx_vv = this->LtG_S(1, idxe, i);
+        auto idx_uu = this->ltgS(0, idxe, i);
+        auto idx_vv = this->ltgS(1, idxe, i);
         tpl_in_0.push_back(T(idx_uu, idx_uu, tmp));
         tpl_in_1.push_back(T(idx_vv, idx_vv, tmp));
       }
@@ -353,9 +353,9 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
         auto Li_a = _mesh_model.L_atten(idxe, i);
         auto Ai_a = _mesh_model.A_atten(idxe, i);
         auto Ni_a = _mesh_model.N_atten(idxe, i);
-        auto idxtiu = this->LtG_S(0, idxe, i);
-        auto idxtiv = this->LtG_S(1, idxe, i);
-        auto idxtip = this->LtG_S(2, idxe, i);
+        auto idxtiu = this->ltgS(0, idxe, i);
+        auto idxtiv = this->ltgS(1, idxe, i);
+        auto idxtip = this->ltgS(2, idxe, i);
 
         tpl_ke_0.push_back(
             T(idxtiu, idxtiu,
@@ -423,11 +423,11 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
           auto tmp_vv_1a = -e2 * q.W(j) * LVA[j] * rj * mat_d[i][j];
           auto tmp_uvd_1a = e2 * q.W(i) * LVA[i] * ri * mat_d[j][i];
           auto tmp_udv_1a = -e2 * q.W(j) * FVA[j] * rj * mat_d[i][j];
-          auto idx_u_i = this->LtG_S(0, idxe, i),
-               idx_u_j = this->LtG_S(0, idxe, j);
-          auto idx_v_i = this->LtG_S(1, idxe, i),
-               idx_v_j = this->LtG_S(1, idxe, j);
-          auto idx_p_i = this->LtG_S(2, idxe, i);
+          auto idx_u_i = this->ltgS(0, idxe, i),
+               idx_u_j = this->ltgS(0, idxe, j);
+          auto idx_v_i = this->ltgS(1, idxe, i),
+               idx_v_j = this->ltgS(1, idxe, j);
+          auto idx_p_i = this->ltgS(2, idxe, i);
           tpl_ke_0.push_back(T(idx_u_i, idx_u_j, tmp_uu_0));
           tpl_ke_0.push_back(T(idx_u_j, idx_u_i, tmp_uu_0));
           tpl_ke_1.push_back(T(idx_v_i, idx_v_j, tmp_vv_1));
@@ -462,12 +462,12 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
             tmp_uu_0a += q.W(k) * _mesh_model.C_atten(idxe, k) * ddrr;
             tmp_vv_1a += q.W(k) * _mesh_model.L_atten(idxe, k) * ddrr;
           }
-          auto idx_u_i = this->LtG_S(0, idxe, i),
-               idx_u_j = this->LtG_S(0, idxe, j);
-          auto idx_v_i = this->LtG_S(1, idxe, i),
-               idx_v_j = this->LtG_S(1, idxe, j);
-          auto idx_p_i = this->LtG_S(2, idxe, i),
-               idx_p_j = this->LtG_S(2, idxe, j);
+          auto idx_u_i = this->ltgS(0, idxe, i),
+               idx_u_j = this->ltgS(0, idxe, j);
+          auto idx_v_i = this->ltgS(1, idxe, i),
+               idx_v_j = this->ltgS(1, idxe, j);
+          auto idx_p_i = this->ltgS(2, idxe, i),
+               idx_p_j = this->ltgS(2, idxe, j);
           tpl_ke_0.push_back(T(idx_u_i, idx_u_j, e2 * tmp_uu_0));
           tpl_ke_1.push_back(T(idx_v_i, idx_v_j, e2 * tmp_vv_1));
           tpl_ke_0.push_back(
@@ -503,4 +503,4 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_CONSTRUCTOR_H
+#endif   // SEM_CONSTRUCTOR_H

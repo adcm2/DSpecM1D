@@ -116,7 +116,7 @@ output_type  2                 # 0=displacement, 1=velocity, 2=acceleration
 DSpecM1D_Draft/
 ├── DSpecM1D/
 │   └── src/
-│       ├── spectra_master.h   # Core SEM class (specsem)
+│       ├── spectra_master.h   # Core SEM class (SEM)
 │       ├── mesh_model.h       # Material parameter interpolation
 │       ├── input_parser.h     # Parameter file reader
 │       └── ...

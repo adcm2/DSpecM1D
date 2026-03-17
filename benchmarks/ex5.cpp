@@ -97,7 +97,7 @@ main() {
   double hann_w = 0.2;
 
   // --- 6. Execute Iterative Convergence Test ---
-  SPARSESPEC::Sparse_F_Spec mytest;
+  SPARSESPEC::SparseFSpec mytest;
   std::vector<Eigen::MatrixXcd> vec_final_w;
   std::vector<Eigen::MatrixXd> vec_final_t;
   vec_final_w.reserve(nsteps);
@@ -109,10 +109,10 @@ main() {
                         std::floor(maxstep / ((vec_w[1] - vec_w[0]) * 0.003))) +
                 1;
 
-    Full1D::specsem sem(prem, maxstep, NQ, lval);
+    Full1D::SEM sem(prem, maxstep, NQ, lval);
     std::cout << "\nDoing step: " << maxstep << ", nskip: " << nskip << "\n";
 
-    MATRIX vec_raw = mytest.Spectra(myff, sem, prem, cmt, params, nskip);
+    MATRIX vec_raw = mytest.spectra(myff, sem, prem, cmt, params, nskip);
     vec_raw *= norm_factor;
 
     // Process responses

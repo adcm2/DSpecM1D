@@ -1,18 +1,18 @@
-#ifndef SPECSEM_MATRICES_H
-#define SPECSEM_MATRICES_H
+#ifndef SEM_MATRICES_H
+#define SEM_MATRICES_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::SparseMatrix<double>
-specsem::H_S(int idxl) const {
+SEM::hS(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_s_base[0];
   tmp += vec_ke_s_base[1] * k2;
   tmp += vec_ke_s_base[2] * k2 * k2;
 
-  auto idx_pp = this->LtG_S(2, _mesh.NE() - 1, _NQ - 1);
+  auto idx_pp = this->ltgS(2, _mesh.NE() - 1, _NQ - 1);
   double rpb = _mesh.NodeRadius(_mesh.NE() - 1, _NQ - 1);
   tmp.coeffRef(idx_pp, idx_pp) += rpb * (idxl + 1) / (4.0 * pi_db * bigg_db);
 
@@ -20,7 +20,7 @@ specsem::H_S(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_SA(int idxl) const {
+SEM::hSa(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_s_atten[0];
   tmp += vec_ke_s_atten[1] * k2;
@@ -29,7 +29,7 @@ specsem::H_SA(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::P_S(int idxl) const {
+SEM::pS(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_in_s_base[0];
   tmp += vec_in_s_base[1] * k2;
@@ -37,7 +37,7 @@ specsem::P_S(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_TK(int idxl) const {
+SEM::hTk(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_t_base[0] * k2;
   tmp += vec_ke_t_base[1] * k2 * k2;
@@ -45,7 +45,7 @@ specsem::H_TK(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_TA(int idxl) const {
+SEM::hTa(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_t_atten[0] * k2;
   tmp += vec_ke_t_atten[1] * k2 * k2;
@@ -53,7 +53,7 @@ specsem::H_TA(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::P_TK(int idxl) const {
+SEM::pTk(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = mat_in_t_base * k2;
   return tmp;
@@ -61,4 +61,4 @@ specsem::P_TK(int idxl) const {
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_MATRICES_H
+#endif   // SEM_MATRICES_H

@@ -1,12 +1,12 @@
-#ifndef SPECSEM_RECEIVERS_H
-#define SPECSEM_RECEIVERS_H
+#ifndef SEM_RECEIVERS_H
+#define SEM_RECEIVERS_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::MatrixXcd
-specsem::RV_FULL(InputParameters &param, int idxl) {
+SEM::rvFull(InputParameters &param, int idxl) {
   auto nrec = param.num_receivers();
   using MATRIX = Eigen::MatrixXcd;
   MATRIX vec_receiver = MATRIX::Zero(3 * nrec, 2 * idxl + 1);
@@ -41,7 +41,7 @@ specsem::RV_FULL(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_FULL_T(InputParameters &param, int idxl) {
+SEM::rvFullT(InputParameters &param, int idxl) {
   auto nrec = param.num_receivers();
   using MATRIX = Eigen::MatrixXcd;
   MATRIX vec_receiver = MATRIX::Zero(3 * nrec, 2 * idxl + 1);
@@ -73,9 +73,9 @@ specsem::RV_FULL_T(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
+SEM::rvBaseZ(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->LtG_S(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgS(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
   for (int idx = 0; idx < _mesh.NE(); ++idx) {
@@ -88,7 +88,7 @@ specsem::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
       for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-        auto idx_u = this->LtG_S(0, idx, idxq);
+        auto idx_u = this->ltgS(0, idx, idxq);
         vec_receiver(0, idx_u) = pleg(idxq, rad_r);
       }
     }
@@ -97,7 +97,7 @@ specsem::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
+SEM::rvValZ(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -115,11 +115,11 @@ specsem::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
+SEM::rvBaseTheta(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
   auto k =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
-  std::size_t flen = this->LtG_S(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgS(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
   for (int idx = 0; idx < _mesh.NE(); ++idx) {
@@ -132,7 +132,7 @@ specsem::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
       for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-        auto idx_v = this->LtG_S(1, idx, idxq);
+        auto idx_v = this->ltgS(1, idx, idxq);
         vec_receiver(0, idx_v) = k / 2.0 * pleg(idxq, rad_r);
       }
     }
@@ -141,7 +141,7 @@ specsem::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
+SEM::rvValTheta(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -162,9 +162,9 @@ specsem::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::rvBaseThetaT(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->LtG_T(_mesh.NE() - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgT(_mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
   for (int idx = 0; idx < _mesh.NE(); ++idx) {
@@ -177,7 +177,7 @@ specsem::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
       for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-        auto idx_v = this->LtG_T(idx, idxq);
+        auto idx_v = this->ltgT(idx, idxq);
         vec_receiver(0, idx_v) = 0.5 * pleg(idxq, rad_r);
       }
     }
@@ -186,7 +186,7 @@ specsem::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::rvValThetaT(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -208,7 +208,7 @@ specsem::RV_VAL_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_PHI(InputParameters &param, int idxl, int idxr) {
+SEM::rvValPhi(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -230,12 +230,12 @@ specsem::RV_VAL_PHI(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_PHI_T(InputParameters &param, int idxl, int idxr) {
-  return this->RV_BASE_THETA_T(param, idxl, idxr);
+SEM::rvBasePhiT(InputParameters &param, int idxl, int idxr) {
+  return this->rvBaseThetaT(param, idxl, idxr);
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_PHI_T(InputParameters &param, int idxl, int idxr) {
+SEM::rvValPhiT(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -256,12 +256,12 @@ specsem::RV_VAL_PHI_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::rvThetaT(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->LtG_T(_eu - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgT(_eu - 1, _mesh.NN() - 1) + 1;
   std::size_t fcols = 2 * idxl + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, fcols);
   using namespace GSHTrans;
@@ -284,7 +284,7 @@ specsem::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
       for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-        auto idx_v = this->LtG_T(idx, idxq);
+        auto idx_v = this->ltgT(idx, idxq);
         for (int idxm = -idxl; idxm < idxl + 1; ++idxm) {
           Complex ylm = ylmn(idxl, idxm, -1, phi_r);
           Complex ylp = ylmn(idxl, idxm, 1, phi_r);
@@ -298,12 +298,12 @@ specsem::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
+SEM::rvPhiT(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->LtG_T(_eu - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgT(_eu - 1, _mesh.NN() - 1) + 1;
   std::size_t fcols = 2 * idxl + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, fcols);
   using namespace GSHTrans;
@@ -325,7 +325,7 @@ specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
       for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-        auto idx_v = this->LtG_T(idx, idxq);
+        auto idx_v = this->ltgT(idx, idxq);
         for (int idxm = -idxl; idxm < idxl + 1; ++idxm) {
           Complex ylm = ylmn(idxl, idxm, -1, phi_r);
           Complex ylp = ylmn(idxl, idxm, 1, phi_r);
@@ -339,10 +339,10 @@ specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_Z_R(InputParameters &param, int idxr) {
+SEM::rvZR(InputParameters &param, int idxr) {
   auto rec = param.receivers()[idxr];
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->LtG_R(1, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgR(1, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, 1);
   using namespace GSHTrans;
   auto wigdmat2 =
@@ -359,7 +359,7 @@ specsem::RV_Z_R(InputParameters &param, int idxr) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
       for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-        auto idx_u = this->LtG_R(0, idx, idxq);
+        auto idx_u = this->ltgR(0, idx, idxq);
         vec_receiver(idx_u, 0) = yl0 * pleg(idxq, rad_r);
       }
     }
@@ -368,11 +368,11 @@ specsem::RV_Z_R(InputParameters &param, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_RED_Z_R(InputParameters &param) {
+SEM::rvRedZR(InputParameters &param) {
   double rad_r = _ReceiverRadius(param);
-  auto rec_elems = this->Receiver_Elements(param);
-  auto lowidx = this->LtG_R(0, rec_elems[0], 0);
-  auto upidx = this->LtG_R(1, rec_elems.back(), _mesh.NN() - 1);
+  auto rec_elems = this->receiverElements(param);
+  auto lowidx = this->ltgR(0, rec_elems[0], 0);
+  auto upidx = this->ltgR(1, rec_elems.back(), _mesh.NN() - 1);
   int lenidx = upidx - lowidx + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(lenidx, 1);
   using namespace GSHTrans;
@@ -390,7 +390,7 @@ specsem::RV_RED_Z_R(InputParameters &param) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
       for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-        auto idx_u = this->LtG_R(0, idx, idxq) - lowidx;
+        auto idx_u = this->ltgR(0, idx, idxq) - lowidx;
         vec_receiver(idx_u, 0) = yl0 * pleg(idxq, rad_r);
       }
     }
@@ -399,10 +399,10 @@ specsem::RV_RED_Z_R(InputParameters &param) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_FULL(InputParameters &param, int idxl) {
-  auto rec_elems = this->Receiver_Elements(param);
-  auto lowidx = this->LtG_S(0, rec_elems[0], 0);
-  auto upidx = this->LtG_S(1, rec_elems.back(), _NQ - 1);
+SEM::rvBaseFull(InputParameters &param, int idxl) {
+  auto rec_elems = this->receiverElements(param);
+  auto lowidx = this->ltgS(0, rec_elems[0], 0);
+  auto upidx = this->ltgS(1, rec_elems.back(), _NQ - 1);
   int lenidx = upidx - lowidx + 1;
   auto nrec = param.num_receivers();
   Eigen::MatrixXcd mat_base = Eigen::MatrixXcd::Zero(3 * nrec, lenidx);
@@ -415,8 +415,8 @@ specsem::RV_BASE_FULL(InputParameters &param, int idxl) {
     auto pleg =
         Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
     for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-      auto idx_u = this->LtG_S(0, idx, idxq) - lowidx;
-      auto idx_v = this->LtG_S(1, idx, idxq) - lowidx;
+      auto idx_u = this->ltgS(0, idx, idxq) - lowidx;
+      auto idx_v = this->ltgS(1, idx, idxq) - lowidx;
       auto zv = pleg(idxq, rad_r);
       auto tv = k / 2.0 * zv;
       for (int idxr = 0; idxr < nrec; ++idxr) {
@@ -430,10 +430,10 @@ specsem::RV_BASE_FULL(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_FULL_T(InputParameters &param, int idxl) {
-  auto rec_elems = this->Receiver_Elements(param);
-  auto lowidx = this->LtG_T(rec_elems[0], 0);
-  auto upidx = this->LtG_T(rec_elems.back(), _NQ - 1);
+SEM::rvBaseFullT(InputParameters &param, int idxl) {
+  auto rec_elems = this->receiverElements(param);
+  auto lowidx = this->ltgT(rec_elems[0], 0);
+  auto upidx = this->ltgT(rec_elems.back(), _NQ - 1);
   int lenidx = upidx - lowidx + 1;
   auto nrec = param.num_receivers();
   Eigen::MatrixXcd mat_base = Eigen::MatrixXcd::Zero(3 * nrec, lenidx);
@@ -446,7 +446,7 @@ specsem::RV_BASE_FULL_T(InputParameters &param, int idxl) {
     auto pleg =
         Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
     for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
-      auto idx_v = this->LtG_T(idx, idxq) - lowidx;
+      auto idx_v = this->ltgT(idx, idxq) - lowidx;
       auto tv = k / 2.0 * pleg(idxq, rad_r);
       for (int idxr = 0; idxr < nrec; ++idxr) {
         mat_base(3 * idxr + 1, idx_v) = tv;
@@ -459,4 +459,4 @@ specsem::RV_BASE_FULL_T(InputParameters &param, int idxl) {
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_RECEIVERS_H
+#endif   // SEM_RECEIVERS_H

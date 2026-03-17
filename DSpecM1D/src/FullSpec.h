@@ -13,22 +13,22 @@
 #include "FEM_Preconditioner.h"
 #include "BiCGSTABT.h"
 #include "ParamRedInfo.h"
-#include "SR_Info.h"
+#include "SRInfo.h"
 #include "SpecHelpers.h"
 
 namespace SPARSESPEC {
 
-class Sparse_F_Spec {
+class SparseFSpec {
 public:
-  Sparse_F_Spec() {};
-  ~Sparse_F_Spec() {};
+  SparseFSpec() {};
+  ~SparseFSpec() {};
 
   template <class model1d>
-  auto Spectra(SpectraSolver::FreqFull &, Full1D::specsem &, model1d &,
+  auto spectra(SpectraSolver::FreqFull &, Full1D::SEM &, model1d &,
                SourceInfo::EarthquakeCMT &, InputParameters &, int = 10);
 
   template <class model1d>
-  auto Spectra(SpectraSolver::FreqFull &, model1d &,
+  auto spectra(SpectraSolver::FreqFull &, model1d &,
                SourceInfo::EarthquakeCMT &, InputParameters &, int, SRInfo &,
                double = 1e-4);
 

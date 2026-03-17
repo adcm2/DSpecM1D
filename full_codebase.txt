@@ -32,7 +32,7 @@ namespace SPARSESPEC {
 
 template <class model1d>
 auto
-Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
+Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::SEM &sem,
                        model1d &inp_model, SourceInfo::EarthquakeCMT &cmt,
                        InputParameters &params, int nskip) {
   using Complex = std::complex<double>;
@@ -494,7 +494,7 @@ read_full_sitechan_file(const std::string &filename) {
 namespace Full1D {
 
 auto
-specsem::LtG_S(int neig, int idx_e, int idx_n) const {
+SEM::LtG_S(int neig, int idx_e, int idx_n) const {
   assert((neig >= 0) && (neig <= 2) &&
          "Error: neig must be 0, 1 or 2 in LtG_S");
   assert((idx_e >= 0) && (idx_e < _mesh.NE()) &&
@@ -518,7 +518,7 @@ specsem::LtG_S(int neig, int idx_e, int idx_n) const {
 };
 
 auto
-specsem::LtG_R(int neig, int idx_e, int idx_n) const {
+SEM::LtG_R(int neig, int idx_e, int idx_n) const {
   assert((neig >= 0) && (neig < 2) && "Error: neig must be 0 or 1 in LtG_R");
   assert((idx_e >= 0) && (idx_e < _mesh.NE()) &&
          "Error: idx_e out of range in LtG_R");
@@ -539,7 +539,7 @@ specsem::LtG_R(int neig, int idx_e, int idx_n) const {
 };
 
 auto
-specsem::LtG_T(int idx_e, int idx_n) const {
+SEM::LtG_T(int idx_e, int idx_n) const {
   assert((idx_e >= _el) && (idx_e < _eu) && "idxe out of range in LtG_T");
   assert((idx_n >= 0) && (idx_n < _mesh.NN()) &&
          "Error: idx_n out of range in LtG_T");
@@ -548,7 +548,7 @@ specsem::LtG_T(int idx_e, int idx_n) const {
 };
 
 template <class model1d>
-specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
+SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
     : _mesh(inp_model, NQ, 1.0, maxstep, false),
       _freq_norm{1.0 / inp_model.TimeNorm()}, _lmax{lmax},
       _k2{lmax * (lmax + 1)},
@@ -1342,7 +1342,7 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_S(int idxl) const {
+SEM::H_S(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_s_base[0];
   tmp += vec_ke_s_base[1] * k2;
@@ -1358,7 +1358,7 @@ specsem::H_S(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_SA(int idxl) const {
+SEM::H_SA(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_s_atten[0];
   tmp += vec_ke_s_atten[1] * k2;
@@ -1369,7 +1369,7 @@ specsem::H_SA(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::P_S(int idxl) const {
+SEM::P_S(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_in_s_base[0];
   tmp += vec_in_s_base[1] * k2;
@@ -1377,7 +1377,7 @@ specsem::P_S(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_TK(int idxl) const {
+SEM::H_TK(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_t_base[0] * k2;
   tmp += vec_ke_t_base[1] * k2 * k2;
@@ -1385,7 +1385,7 @@ specsem::H_TK(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_TA(int idxl) const {
+SEM::H_TA(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_t_atten[0] * k2;
   tmp += vec_ke_t_atten[1] * k2 * k2;
@@ -1393,14 +1393,14 @@ specsem::H_TA(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::P_TK(int idxl) const {
+SEM::P_TK(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = mat_in_t_base * k2;
   return tmp;
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
   //////////////////////////////
   int NQ = _mesh.NN();
@@ -1509,7 +1509,7 @@ specsem::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_All(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce_All(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
   //////////////////////////////
   int NQ = _mesh.NN();
@@ -1558,7 +1558,7 @@ specsem::CalculateForce_All(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 auto
-specsem::Source_Element(SourceInfo::EarthquakeCMT &cmt)
+SEM::Source_Element(SourceInfo::EarthquakeCMT &cmt)
     const {   // find element within which the source sits
   double rad_source = _mesh.PR() - 1000.0 * cmt.Depth() / _length_norm;
 
@@ -1574,7 +1574,7 @@ specsem::Source_Element(SourceInfo::EarthquakeCMT &cmt)
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
   //////////////////////////////
   int NQ = _mesh.NN();
@@ -1622,7 +1622,7 @@ specsem::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_Coefficients(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce_Coefficients(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
   //////////////////////////////
   int NQ = _mesh.NN();
@@ -1697,7 +1697,7 @@ specsem::CalculateForce_Coefficients(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_RED_Coefficients(SourceInfo::EarthquakeCMT &cmt,
+SEM::CalculateForce_RED_Coefficients(SourceInfo::EarthquakeCMT &cmt,
                                          int idxl, double az) {
 
   //////////////////////////////
@@ -1778,7 +1778,7 @@ specsem::CalculateForce_RED_Coefficients(SourceInfo::EarthquakeCMT &cmt,
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
+SEM::CalculateForce_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
                                        int idxl) {
 
   //////////////////////////////
@@ -1842,7 +1842,7 @@ specsem::CalculateForce_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
+SEM::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
                                            int idxl, double az) {
 
   //////////////////////////////
@@ -1909,7 +1909,7 @@ specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
   //////////////////////////////
   int NQ = _mesh.NN();
@@ -2005,7 +2005,7 @@ specsem::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
+SEM::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
 
   //////////////////////////////
   int NQ = _mesh.NN();
@@ -2095,7 +2095,7 @@ specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
+SEM::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
 
   //////////////////////////////
   int NQ = _mesh.NN();
@@ -2154,7 +2154,7 @@ specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
+SEM::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
   double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
 
   // create the receiver vector
@@ -2189,7 +2189,7 @@ specsem::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
 };
 
 auto
-specsem::Receiver_Elements(InputParameters &param) const {
+SEM::Receiver_Elements(InputParameters &param) const {
   std::vector<int> receiver_elems;
   double rad_receiver =
       _mesh.PR() - 1000.0 * param.receiver_depth() / _length_norm;
@@ -2204,7 +2204,7 @@ specsem::Receiver_Elements(InputParameters &param) const {
 };
 
 Eigen::MatrixXcd
-specsem::RV_FULL(InputParameters &param, int idxl) {
+SEM::RV_FULL(InputParameters &param, int idxl) {
   auto nrec = param.num_receivers();
   using MATRIX = Eigen::MatrixXcd;
   MATRIX vec_receiver = MATRIX::Zero(3 * nrec, 2 * idxl + 1);
@@ -2250,7 +2250,7 @@ specsem::RV_FULL(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_FULL_T(InputParameters &param, int idxl) {
+SEM::RV_FULL_T(InputParameters &param, int idxl) {
   auto nrec = param.num_receivers();
   using MATRIX = Eigen::MatrixXcd;
   MATRIX vec_receiver = MATRIX::Zero(3 * nrec, 2 * idxl + 1);
@@ -2293,7 +2293,7 @@ specsem::RV_FULL_T(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -2330,7 +2330,7 @@ specsem::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_Z_R(InputParameters &param, int idxr) {
+SEM::RV_Z_R(InputParameters &param, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -2392,7 +2392,7 @@ specsem::RV_Z_R(InputParameters &param, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_RED_Z_R(InputParameters &param) {
+SEM::RV_RED_Z_R(InputParameters &param) {
   double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
   auto rec_elems = this->Receiver_Elements(param);
   auto lowidx = this->LtG_R(0, rec_elems[0], 0);
@@ -2435,7 +2435,7 @@ specsem::RV_RED_Z_R(InputParameters &param) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
+SEM::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
 
   double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
 
@@ -2474,7 +2474,7 @@ specsem::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
 
   double rad_r = _mesh.PR() - param.receiver_depth() * 1000.0 / _length_norm;
 
@@ -2513,7 +2513,7 @@ specsem::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -2547,7 +2547,7 @@ specsem::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_THETA_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -2582,7 +2582,7 @@ specsem::RV_VAL_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -2647,12 +2647,12 @@ specsem::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_PHI_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_BASE_PHI_T(InputParameters &param, int idxl, int idxr) {
   return this->RV_BASE_THETA_T(param, idxl, idxr);
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_PHI(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_PHI(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -2686,7 +2686,7 @@ specsem::RV_VAL_PHI(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_PHI_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_PHI_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -2720,7 +2720,7 @@ specsem::RV_VAL_PHI_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -2785,7 +2785,7 @@ specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_FULL(InputParameters &param, int idxl) {
+SEM::RV_BASE_FULL(InputParameters &param, int idxl) {
   // Implementation of RV_BASE_FULL
   auto rec_elems = this->Receiver_Elements(param);
   auto lowidx = this->LtG_S(0, rec_elems[0], 0);
@@ -2830,7 +2830,7 @@ specsem::RV_BASE_FULL(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_FULL_T(InputParameters &param, int idxl) {
+SEM::RV_BASE_FULL_T(InputParameters &param, int idxl) {
   // Implementation of RV_BASE_FULL
   auto rec_elems = this->Receiver_Elements(param);
   auto lowidx = this->LtG_T(rec_elems[0], 0);
@@ -2877,16 +2877,16 @@ specsem::RV_BASE_FULL_T(InputParameters &param, int idxl) {
 #endif   // SPECTRA_MASTER_IMPL_H
 
 
---- FILE: ./DSpecM1D/src/specsem/specsem_ltg.h ---
-#ifndef SPECSEM_LTG_H
-#define SPECSEM_LTG_H
+--- FILE: ./DSpecM1D/src/SEM/SEMLG.h ---
+#ifndef SEM_LTG_H
+#define SEM_LTG_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 auto
-specsem::LtG_S(int neig, int idx_e, int idx_n) const {
+SEM::LtG_S(int neig, int idx_e, int idx_n) const {
   assert((neig >= 0) && (neig <= 2) &&
          "Error: neig must be 0, 1 or 2 in LtG_S");
   assert((idx_e >= 0) && (idx_e < _mesh.NE()) &&
@@ -2910,7 +2910,7 @@ specsem::LtG_S(int neig, int idx_e, int idx_n) const {
 };
 
 auto
-specsem::LtG_R(int neig, int idx_e, int idx_n) const {
+SEM::LtG_R(int neig, int idx_e, int idx_n) const {
   assert((neig >= 0) && (neig < 2) && "Error: neig must be 0 or 1 in LtG_R");
   assert((idx_e >= 0) && (idx_e < _mesh.NE()) &&
          "Error: idx_e out of range in LtG_R");
@@ -2924,7 +2924,7 @@ specsem::LtG_R(int neig, int idx_e, int idx_n) const {
 };
 
 auto
-specsem::LtG_T(int idx_e, int idx_n) const {
+SEM::LtG_T(int idx_e, int idx_n) const {
   assert((idx_e >= _el) && (idx_e < _eu) && "idxe out of range in LtG_T");
   assert((idx_n >= 0) && (idx_n < _mesh.NN()) &&
          "Error: idx_n out of range in LtG_T");
@@ -2933,7 +2933,7 @@ specsem::LtG_T(int idx_e, int idx_n) const {
 };
 
 auto
-specsem::Source_Element(SourceInfo::EarthquakeCMT &cmt) const {
+SEM::Source_Element(SourceInfo::EarthquakeCMT &cmt) const {
   double rad_source = _mesh.PR() - 1000.0 * cmt.Depth() / _length_norm;
 
   int idxout = _mesh.NE() - 1;
@@ -2947,7 +2947,7 @@ specsem::Source_Element(SourceInfo::EarthquakeCMT &cmt) const {
 };
 
 auto
-specsem::Receiver_Elements(InputParameters &param) const {
+SEM::Receiver_Elements(InputParameters &param) const {
   std::vector<int> receiver_elems;
   double rad_receiver =
       _mesh.PR() - 1000.0 * param.receiver_depth() / _length_norm;
@@ -2962,19 +2962,19 @@ specsem::Receiver_Elements(InputParameters &param) const {
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_LTG_H
+#endif   // SEM_LTG_H
 
 
---- FILE: ./DSpecM1D/src/specsem/specsem_matrices.h ---
-#ifndef SPECSEM_MATRICES_H
-#define SPECSEM_MATRICES_H
+--- FILE: ./DSpecM1D/src/SEM/SEMMatrices.h ---
+#ifndef SEM_MATRICES_H
+#define SEM_MATRICES_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::SparseMatrix<double>
-specsem::H_S(int idxl) const {
+SEM::H_S(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_s_base[0];
   tmp += vec_ke_s_base[1] * k2;
@@ -2988,7 +2988,7 @@ specsem::H_S(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_SA(int idxl) const {
+SEM::H_SA(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_s_atten[0];
   tmp += vec_ke_s_atten[1] * k2;
@@ -2997,7 +2997,7 @@ specsem::H_SA(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::P_S(int idxl) const {
+SEM::P_S(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_in_s_base[0];
   tmp += vec_in_s_base[1] * k2;
@@ -3005,7 +3005,7 @@ specsem::P_S(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_TK(int idxl) const {
+SEM::H_TK(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_t_base[0] * k2;
   tmp += vec_ke_t_base[1] * k2 * k2;
@@ -3013,7 +3013,7 @@ specsem::H_TK(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::H_TA(int idxl) const {
+SEM::H_TA(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = vec_ke_t_atten[0] * k2;
   tmp += vec_ke_t_atten[1] * k2 * k2;
@@ -3021,7 +3021,7 @@ specsem::H_TA(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
-specsem::P_TK(int idxl) const {
+SEM::P_TK(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = mat_in_t_base * k2;
   return tmp;
@@ -3029,19 +3029,19 @@ specsem::P_TK(int idxl) const {
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_MATRICES_H
+#endif   // SEM_MATRICES_H
 
 
---- FILE: ./DSpecM1D/src/specsem/specsem_force_radial.h ---
-#ifndef SPECSEM_FORCE_RADIAL_H
-#define SPECSEM_FORCE_RADIAL_H
+--- FILE: ./DSpecM1D/src/SEM/SEMForceRadial.h ---
+#ifndef SEM_FORCE_RADIAL_H
+#define SEM_FORCE_RADIAL_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::MatrixXcd
-specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
+SEM::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
   int NQ = _mesh.NN();
   totlen = this->LtG_R(1, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
@@ -3081,7 +3081,7 @@ specsem::CalculateForce_R(SourceInfo::EarthquakeCMT &cmt) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
+SEM::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
   int NQ = _mesh.NN();
   totlen = this->LtG_R(1, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
@@ -3120,12 +3120,12 @@ specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_FORCE_RADIAL_H
+#endif   // SEM_FORCE_RADIAL_H
 
 
---- FILE: ./DSpecM1D/src/specsem/specsem.h ---
-#ifndef SPECSEM_H
-#define SPECSEM_H
+--- FILE: ./DSpecM1D/src/SEM/SEM.h ---
+#ifndef SEM_H
+#define SEM_H
 
 #include <iostream>
 #include <iomanip>
@@ -3142,7 +3142,7 @@ specsem::CalculateForce_Red_R(SourceInfo::EarthquakeCMT &cmt) {
 namespace Full1D {
 
 // spectral element solver
-class specsem {
+class SEM {
 private:
   // abbreviations
   using stdvec = std::vector<double>;
@@ -3193,8 +3193,8 @@ private:
       vec_ke_s_atten, vec_in_s_base;
 
 public:
-  specsem() {};
-  template <class model1d> specsem(const model1d &, double, int, int);
+  SEM() {};
+  template <class model1d> SEM(const model1d &, double, int, int);
 
   // local-to-global maps
   auto LtG_S(int, int, int) const;
@@ -3268,27 +3268,27 @@ public:
 
 }   // namespace Full1D
 
-#include "specsem_ltg.h"
-#include "specsem_constructor.h"
-#include "specsem_matrices.h"
-#include "specsem_force_spheroidal.h"
-#include "specsem_force_toroidal.h"
-#include "specsem_force_radial.h"
-#include "specsem_receivers.h"
+#include "SEMLG.h"
+#include "SEMConstructor.h"
+#include "SEMMatrices.h"
+#include "SEMForceSpheroidal.h"
+#include "SEMForceToroidal.h"
+#include "SEMForceRadial.h"
+#include "SEMReceivers.h"
 
-#endif   // SPECSEM_H
+#endif   // SEM_H
 
 
---- FILE: ./DSpecM1D/src/specsem/specsem_receivers.h ---
-#ifndef SPECSEM_RECEIVERS_H
-#define SPECSEM_RECEIVERS_H
+--- FILE: ./DSpecM1D/src/SEM/SEMReceivers.h ---
+#ifndef SEM_RECEIVERS_H
+#define SEM_RECEIVERS_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::MatrixXcd
-specsem::RV_FULL(InputParameters &param, int idxl) {
+SEM::RV_FULL(InputParameters &param, int idxl) {
   auto nrec = param.num_receivers();
   using MATRIX = Eigen::MatrixXcd;
   MATRIX vec_receiver = MATRIX::Zero(3 * nrec, 2 * idxl + 1);
@@ -3323,7 +3323,7 @@ specsem::RV_FULL(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_FULL_T(InputParameters &param, int idxl) {
+SEM::RV_FULL_T(InputParameters &param, int idxl) {
   auto nrec = param.num_receivers();
   using MATRIX = Eigen::MatrixXcd;
   MATRIX vec_receiver = MATRIX::Zero(3 * nrec, 2 * idxl + 1);
@@ -3355,7 +3355,7 @@ specsem::RV_FULL_T(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
+SEM::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
   std::size_t flen = this->LtG_S(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
@@ -3379,7 +3379,7 @@ specsem::RV_BASE_Z(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -3397,7 +3397,7 @@ specsem::RV_VAL_Z(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
+SEM::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
   auto k =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -3423,7 +3423,7 @@ specsem::RV_BASE_THETA(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -3444,7 +3444,7 @@ specsem::RV_VAL_THETA(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
   std::size_t flen = this->LtG_T(_mesh.NE() - 1, _mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
@@ -3468,7 +3468,7 @@ specsem::RV_BASE_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_THETA_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -3490,7 +3490,7 @@ specsem::RV_VAL_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_PHI(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_PHI(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -3512,12 +3512,12 @@ specsem::RV_VAL_PHI(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_PHI_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_BASE_PHI_T(InputParameters &param, int idxl, int idxr) {
   return this->RV_BASE_THETA_T(param, idxl, idxr);
 };
 
 Eigen::MatrixXcd
-specsem::RV_VAL_PHI_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_VAL_PHI_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -3538,7 +3538,7 @@ specsem::RV_VAL_PHI_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -3580,7 +3580,7 @@ specsem::RV_THETA_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
+SEM::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
   auto rec = param.receivers()[idxr];
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
@@ -3621,7 +3621,7 @@ specsem::RV_PHI_T(InputParameters &param, int idxl, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_Z_R(InputParameters &param, int idxr) {
+SEM::RV_Z_R(InputParameters &param, int idxr) {
   auto rec = param.receivers()[idxr];
   double rad_r = _ReceiverRadius(param);
   std::size_t flen = this->LtG_R(1, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
@@ -3650,7 +3650,7 @@ specsem::RV_Z_R(InputParameters &param, int idxr) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_RED_Z_R(InputParameters &param) {
+SEM::RV_RED_Z_R(InputParameters &param) {
   double rad_r = _ReceiverRadius(param);
   auto rec_elems = this->Receiver_Elements(param);
   auto lowidx = this->LtG_R(0, rec_elems[0], 0);
@@ -3681,7 +3681,7 @@ specsem::RV_RED_Z_R(InputParameters &param) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_FULL(InputParameters &param, int idxl) {
+SEM::RV_BASE_FULL(InputParameters &param, int idxl) {
   auto rec_elems = this->Receiver_Elements(param);
   auto lowidx = this->LtG_S(0, rec_elems[0], 0);
   auto upidx = this->LtG_S(1, rec_elems.back(), _NQ - 1);
@@ -3712,7 +3712,7 @@ specsem::RV_BASE_FULL(InputParameters &param, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::RV_BASE_FULL_T(InputParameters &param, int idxl) {
+SEM::RV_BASE_FULL_T(InputParameters &param, int idxl) {
   auto rec_elems = this->Receiver_Elements(param);
   auto lowidx = this->LtG_T(rec_elems[0], 0);
   auto upidx = this->LtG_T(rec_elems.back(), _NQ - 1);
@@ -3741,19 +3741,19 @@ specsem::RV_BASE_FULL_T(InputParameters &param, int idxl) {
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_RECEIVERS_H
+#endif   // SEM_RECEIVERS_H
 
 
---- FILE: ./DSpecM1D/src/specsem/specsem_constructor.h ---
-#ifndef SPECSEM_CONSTRUCTOR_H
-#define SPECSEM_CONSTRUCTOR_H
+--- FILE: ./DSpecM1D/src/SEM/SEMConstructor.h ---
+#ifndef SEM_CONSTRUCTOR_H
+#define SEM_CONSTRUCTOR_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 template <class model1d>
-specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
+SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
     : _mesh(inp_model, NQ, 1.0, maxstep, false),
       _freq_norm{1.0 / inp_model.TimeNorm()}, _lmax{lmax},
       _k2{lmax * (lmax + 1)},
@@ -4250,19 +4250,19 @@ specsem::specsem(const model1d &inp_model, double maxstep, int NQ, int lmax)
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_CONSTRUCTOR_H
+#endif   // SEM_CONSTRUCTOR_H
 
 
---- FILE: ./DSpecM1D/src/specsem/specsem_force_toroidal.h ---
-#ifndef SPECSEM_FORCE_TOROIDAL_H
-#define SPECSEM_FORCE_TOROIDAL_H
+--- FILE: ./DSpecM1D/src/SEM/SEMForceToroidal.h ---
+#ifndef SEM_FORCE_TOROIDAL_H
+#define SEM_FORCE_TOROIDAL_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::MatrixXcd
-specsem::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = _mesh.NN();
   totlen = this->LtG_T(_eu - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2 * idxl + 1);
@@ -4325,7 +4325,7 @@ specsem::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = _mesh.NN();
   totlen = this->LtG_T(_mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2);
@@ -4354,7 +4354,7 @@ specsem::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
+SEM::CalculateForce_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
                                        int idxl) {
   int NQ = _mesh.NN();
   totlen = this->LtG_T(_mesh.NE() - 1, NQ - 1) + 1;
@@ -4398,7 +4398,7 @@ specsem::CalculateForce_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
+SEM::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
                                            int idxl, double az) {
   int maxn = 2;
   (maxn > idxl) ? maxn = idxl : maxn = maxn;
@@ -4435,19 +4435,19 @@ specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_FORCE_TOROIDAL_H
+#endif   // SEM_FORCE_TOROIDAL_H
 
 
---- FILE: ./DSpecM1D/src/specsem/specsem_force_spheroidal.h ---
-#ifndef SPECSEM_FORCE_SPHEROIDAL_H
-#define SPECSEM_FORCE_SPHEROIDAL_H
+--- FILE: ./DSpecM1D/src/SEM/SEMForceSpheroidal.h ---
+#ifndef SEM_FORCE_SPHEROIDAL_H
+#define SEM_FORCE_SPHEROIDAL_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::MatrixXcd
-specsem::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = _mesh.NN();
   totlen = this->LtG_S(2, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2 * idxl + 1);
@@ -4522,7 +4522,7 @@ specsem::CalculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_All(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce_All(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = _mesh.NN();
   totlen = this->LtG_S(2, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 4);
@@ -4556,7 +4556,7 @@ specsem::CalculateForce_All(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_Coefficients(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::CalculateForce_Coefficients(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = _mesh.NN();
   totlen = this->LtG_S(2, _mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(2 * idxl + 1, 4);
@@ -4607,7 +4607,7 @@ specsem::CalculateForce_Coefficients(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_RED_Coefficients(SourceInfo::EarthquakeCMT &cmt,
+SEM::CalculateForce_RED_Coefficients(SourceInfo::EarthquakeCMT &cmt,
                                          int idxl, double az) {
   int maxn = 2;
   (maxn > idxl) ? maxn = idxl : maxn = maxn;
@@ -4656,7 +4656,7 @@ specsem::CalculateForce_RED_Coefficients(SourceInfo::EarthquakeCMT &cmt,
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_FORCE_SPHEROIDAL_H
+#endif   // SEM_FORCE_SPHEROIDAL_H
 
 
 --- FILE: ./DSpecM1D/src/ReadYSpec.h ---
@@ -5235,8 +5235,8 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   for (auto s : max_steps)
     std::cout << "Max step: " << s << "\n";
 
-  // build one specsem per chunk
-  std::vector<Full1D::specsem> sems;
+  // build one SEM per chunk
+  std::vector<Full1D::SEM> sems;
   for (int idx = 0; idx < num_chunks; ++idx)
     sems.emplace_back(inp_model, max_steps[idx], NQ, params.lmax());
 
@@ -5257,7 +5257,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   if (inc_rad) {
     timer1.start();
     for (int idx_chunk = 0; idx_chunk < num_chunks; ++idx_chunk) {
-      Full1D::specsem &sem = sems[idx_chunk];
+      Full1D::SEM &sem = sems[idx_chunk];
       auto rec_elems = sem.Receiver_Elements(params);
       auto lowidx = sem.LtG_R(0, rec_elems[0], 0);
       auto upidx = sem.LtG_R(1, rec_elems.back(), NQ - 1);
@@ -5307,7 +5307,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
         MATRIX RV_VALS = srinfo.RV_RED_TOR(idxl);
         for (int idx_chunk = 0; idx_chunk < num_chunks; ++idx_chunk) {
-          Full1D::specsem &sem = sems[idx_chunk];
+          Full1D::SEM &sem = sems[idx_chunk];
           auto idx_source = sem.Source_Element(cmt);
           auto rec_elems = sem.Receiver_Elements(params);
           auto lowidx = sem.LtG_T(rec_elems[0], 0);
@@ -5369,7 +5369,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
         MATRIX RV_VALS = srinfo.RV_RED_SPH(idxl);
         for (int idx_chunk = 0; idx_chunk < num_chunks; ++idx_chunk) {
-          Full1D::specsem &sem = sems[idx_chunk];
+          Full1D::SEM &sem = sems[idx_chunk];
           auto idx_source = sem.Source_Element(cmt);
           auto rec_elems = sem.Receiver_Elements(params);
           auto lowidx = sem.LtG_S(0, rec_elems[0], 0);
@@ -6888,7 +6888,7 @@ public:
   ~Sparse_F_Spec() {};
 
   template <class model1d>
-  auto Spectra(SpectraSolver::FreqFull &, Full1D::specsem &, model1d &,
+  auto Spectra(SpectraSolver::FreqFull &, Full1D::SEM &, model1d &,
                SourceInfo::EarthquakeCMT &, InputParameters &, int = 10);
 
   template <class model1d>
@@ -6908,10 +6908,10 @@ private:
 
 
 --- FILE: ./DSpecM1D/src/SpectraMaster.h ---
-// Compatibility forwarder — include specsem/specsem.h directly.
+// Compatibility forwarder — include SEM/SEM.h directly.
 #ifndef SPECTRA_MASTER_GUARD_H
 #define SPECTRA_MASTER_GUARD_H
-#include "specsem/specsem.h"
+#include "SEM/SEM.h"
 #endif   // SPECTRA_MASTER_GUARD_H
 
 
@@ -7366,7 +7366,7 @@ main() {
   // --- 5. Setup SEM Class ---
   timer1.start();
   std::cout << "Setting up SEM class...\n";
-  Full1D::specsem sem(prem, maxstep, NQ, lval);
+  Full1D::SEM sem(prem, maxstep, NQ, lval);
   timer1.stop("Total time for setting up SEM class");
 
   // --- 6. Source Information & Spectrum Generation ---
@@ -7812,7 +7812,7 @@ main() {
                         std::floor(maxstep / ((vec_w[1] - vec_w[0]) * 0.003))) +
                 1;
 
-    Full1D::specsem sem(prem, maxstep, NQ, lval);
+    Full1D::SEM sem(prem, maxstep, NQ, lval);
     std::cout << "\nDoing step: " << maxstep << ", nskip: " << nskip << "\n";
 
     MATRIX vec_raw = mytest.Spectra(myff, sem, prem, cmt, params, nskip);
@@ -8460,7 +8460,7 @@ main() {
   auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
 
   // Initialize SEM
-  Full1D::specsem sem(prem, maxstep, NQ, lval);
+  Full1D::SEM sem(prem, maxstep, NQ, lval);
   auto _mesh = sem.mesh();
   auto meshmodel = sem.mesh_model();
 

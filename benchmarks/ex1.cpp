@@ -31,7 +31,7 @@ main() {
   std::string param_path =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex1.txt";
   InputParameters params(param_path);
-  SRInfo sr_info(params);
+  SRInfo srInfo(params);
   std::string earth_model_path =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
@@ -67,15 +67,15 @@ main() {
   // --- 5. Setup SEM Class ---
   timer1.start();
   std::cout << "Setting up SEM class...\n";
-  Full1D::specsem sem(prem, maxstep, NQ, lval);
+  Full1D::SEM sem(prem, maxstep, NQ, lval);
   timer1.stop("Total time for setting up SEM class");
 
   // --- 6. Source Information & Spectrum Generation ---
   auto cmt = SourceInfo::EarthquakeCMT(params);
-  SPARSESPEC::Sparse_F_Spec mytest;
+  SPARSESPEC::SparseFSpec mytest;
 
   timer1.start();
-  MATRIX vec_raw = mytest.Spectra(myff, prem, cmt, params, NQ, sr_info,
+  MATRIX vec_raw = mytest.spectra(myff, prem, cmt, params, NQ, srInfo,
                                   params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 

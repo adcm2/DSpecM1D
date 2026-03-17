@@ -11,7 +11,7 @@ namespace SpectralTools {
 
 namespace detail {
 
-/// Shared implementation for AllIndices_TOR and AllIndices_SPH.
+/// Shared implementation for allIndicesTor and allIndicesSph.
 /// GetStartIdx is a callable: (double omega) -> std::size_t
 /// that returns the global DOF index of the lowest element at that frequency.
 template <class GetStartIdx>
@@ -40,10 +40,10 @@ allIndicesImpl(const std::vector<double> &vec_w,   // frequencies to evaluate
 
 template <class semtype>
 auto
-StartElementClean(semtype &sem, int l, double omega_in, bool isP,
+startElementClean(semtype &sem, int l, double omega_in, bool isP,
                   int idx_source = -1) {
   auto mesh = sem.mesh();
-  auto mesh_model = sem.mesh_model();
+  auto meshModel = sem.meshModel();
   auto q = mesh.GLL();
   int NE = mesh.NE();
   int NQ = mesh.NN();
@@ -64,9 +64,9 @@ StartElementClean(semtype &sem, int l, double omega_in, bool isP,
       double r = mesh.NodeRadius(idxe, idxq);
       auto sv = -slowval2 / (r * r);
       if (isP) {
-        sv += mesh_model.PSlow(idxe, idxq);
+        sv += meshModel.PSlow(idxe, idxq);
       } else {
-        sv += mesh_model.SSlow(idxe, idxq);
+        sv += meshModel.SSlow(idxe, idxq);
       }
       if (sv < 0) {
         sum += tmpmult * std::sqrt(-sv) * q.W(idxq);
@@ -85,109 +85,109 @@ StartElementClean(semtype &sem, int l, double omega_in, bool isP,
 
 template <class semtype>
 auto
-StartElement_Tor(semtype &sem, int l, double omega_in) {
-  auto idx1 = StartElementClean(sem, l, omega_in, 0);
-  auto idx2 = sem.EL();
+startElementTor(semtype &sem, int l, double omega_in) {
+  auto idx1 = startElementClean(sem, l, omega_in, 0);
+  auto idx2 = sem.el();
   return std::max(idx1, idx2);
 }
 
 template <class semtype>
 auto
-StartElement_Tor(semtype &sem, int l, double omega_in, int idx_source) {
-  auto idx1 = StartElementClean(sem, l, omega_in, 0, idx_source);
-  auto idx2 = sem.EL();
+startElementTor(semtype &sem, int l, double omega_in, int idx_source) {
+  auto idx1 = startElementClean(sem, l, omega_in, 0, idx_source);
+  auto idx2 = sem.el();
   return std::max(idx1, idx2);
 }
 
 template <class semtype>
 auto
-StartElement_Sph(semtype &sem, int l, double omega_in) {
-  auto idx1 = StartElementClean(sem, l, omega_in, 0);
-  auto idx2 = StartElementClean(sem, l, omega_in, 1);
+startElementSph(semtype &sem, int l, double omega_in) {
+  auto idx1 = startElementClean(sem, l, omega_in, 0);
+  auto idx2 = startElementClean(sem, l, omega_in, 1);
   return std::min(idx1, idx2);
 }
 
 template <class semtype>
 auto
-StartElement_Sph(semtype &sem, int l, double omega_in, int idx_source) {
-  auto idx1 = StartElementClean(sem, l, omega_in, 0, idx_source);
-  auto idx2 = StartElementClean(sem, l, omega_in, 1, idx_source);
+startElementSph(semtype &sem, int l, double omega_in, int idx_source) {
+  auto idx1 = startElementClean(sem, l, omega_in, 0, idx_source);
+  auto idx2 = startElementClean(sem, l, omega_in, 1, idx_source);
   return std::min(idx1, idx2);
 }
 
 template <class semtype>
 auto
-AllIndices_TOR(semtype &sem, int l, SpectraSolver::FreqFull &myff,
+allIndicesTor(semtype &sem, int l, SpectraSolver::FreqFull &myff,
                int nskip = 10) {
   auto vec_w = myff.w();
   return detail::allIndicesImpl(vec_w, myff.i1(), myff.i2(), nskip,
                                 [&](double w) {
-                                  auto idxlow_e = StartElement_Tor(sem, l, w);
-                                  return sem.LtG_T(idxlow_e, 0);
+                                  auto idxlow_e = startElementTor(sem, l, w);
+                                  return sem.ltgT(idxlow_e, 0);
                                 });
 }
 
 template <class semtype>
 auto
-AllIndices_TOR(semtype &sem, int l, SpectraSolver::FreqFull &myff,
+allIndicesTor(semtype &sem, int l, SpectraSolver::FreqFull &myff,
                int idx_source, int nskip) {
   auto vec_w = myff.w();
   return detail::allIndicesImpl(
       vec_w, myff.i1(), myff.i2(), nskip, [&](double w) {
-        auto idxlow_e = StartElement_Tor(sem, l, w, idx_source);
-        return sem.LtG_T(idxlow_e, 0);
+        auto idxlow_e = startElementTor(sem, l, w, idx_source);
+        return sem.ltgT(idxlow_e, 0);
       });
 }
 
 template <class semtype>
 auto
-AllIndices_TOR(semtype &sem, int l, std::vector<double> &vec_w, int idx_source,
+allIndicesTor(semtype &sem, int l, std::vector<double> &vec_w, int idx_source,
                int nskip) {
   return detail::allIndicesImpl(
       vec_w, 0, static_cast<int>(vec_w.size()), nskip, [&](double w) {
-        auto idxlow_e = StartElement_Tor(sem, l, w, idx_source);
-        return sem.LtG_T(idxlow_e, 0);
+        auto idxlow_e = startElementTor(sem, l, w, idx_source);
+        return sem.ltgT(idxlow_e, 0);
       });
 }
 
 template <class semtype>
 auto
-AllIndices_SPH(semtype &sem, int l, SpectraSolver::FreqFull &myff,
+allIndicesSph(semtype &sem, int l, SpectraSolver::FreqFull &myff,
                int nskip = 10) {
   auto vec_w = myff.w();
   return detail::allIndicesImpl(vec_w, myff.i1(), myff.i2(), nskip,
                                 [&](double w) {
-                                  auto idxlow_e = StartElement_Sph(sem, l, w);
-                                  return sem.LtG_S(0, idxlow_e, 0);
+                                  auto idxlow_e = startElementSph(sem, l, w);
+                                  return sem.ltgS(0, idxlow_e, 0);
                                 });
 }
 
 template <class semtype>
 auto
-AllIndices_SPH(semtype &sem, int l, SpectraSolver::FreqFull &myff,
+allIndicesSph(semtype &sem, int l, SpectraSolver::FreqFull &myff,
                int idx_source, int nskip) {
   auto vec_w = myff.w();
   return detail::allIndicesImpl(
       vec_w, myff.i1(), myff.i2(), nskip, [&](double w) {
-        auto idxlow_e = StartElement_Sph(sem, l, w, idx_source);
-        return sem.LtG_S(0, idxlow_e, 0);
+        auto idxlow_e = startElementSph(sem, l, w, idx_source);
+        return sem.ltgS(0, idxlow_e, 0);
       });
 }
 
 template <class semtype>
 auto
-AllIndices_SPH(semtype &sem, int l, std::vector<double> &vec_w, int idx_source,
+allIndicesSph(semtype &sem, int l, std::vector<double> &vec_w, int idx_source,
                int nskip) {
   return detail::allIndicesImpl(
       vec_w, 0, static_cast<int>(vec_w.size()), nskip, [&](double w) {
-        auto idxlow_e = StartElement_Sph(sem, l, w, idx_source);
-        return sem.LtG_S(0, idxlow_e, 0);
+        auto idxlow_e = startElementSph(sem, l, w, idx_source);
+        return sem.ltgS(0, idxlow_e, 0);
       });
 };
 
 template <class model1d, class semtype>
 auto
-StartElement_S(semtype &sem, model1d &inp_model, int l, double omega_in) {
+startElementS(semtype &sem, model1d &inp_model, int l, double omega_in) {
 
   auto mesh = sem.mesh();
   int NE = mesh.NE();
@@ -273,10 +273,10 @@ StartElement_S(semtype &sem, model1d &inp_model, int l, double omega_in) {
 
 template <class semtype>
 auto
-StartRadiusClean(semtype &sem, int l, double omega_in, bool isP) {
+startRadiusClean(semtype &sem, int l, double omega_in, bool isP) {
 
   auto mesh = sem.mesh();
-  auto mesh_model = sem.mesh_model();
+  auto meshModel = sem.meshModel();
   int NE = mesh.NE();
   int NQ = mesh.NN();
   double omega = omega_in;
@@ -296,11 +296,11 @@ StartRadiusClean(semtype &sem, int l, double omega_in, bool isP) {
       auto vv = 0.0;
       auto vl = 0.0;
       if (isP) {
-        vv = mesh_model.VP(idxe, idxq);
-        vl = mesh_model.VP(idxe, idxq - 1);
+        vv = meshModel.VP(idxe, idxq);
+        vl = meshModel.VP(idxe, idxq - 1);
       } else {
-        vv = mesh_model.VS(idxe, idxq);
-        vl = mesh_model.VS(idxe, idxq - 1);
+        vv = meshModel.VS(idxe, idxq);
+        vl = meshModel.VS(idxe, idxq - 1);
       }
       sv += 1.0 / (vv * vv);
       sl += 1.0 / (vl * vl);

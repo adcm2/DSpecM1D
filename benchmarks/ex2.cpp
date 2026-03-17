@@ -52,7 +52,7 @@ main() {
   std::string earth_model_path =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
-  SRInfo sr_info(params);
+  SRInfo srInfo(params);
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   prem_norm<double> norm_class;
@@ -74,10 +74,10 @@ main() {
   auto vec_w = myff.w();
 
   // --- 3. Compute Sparse Frequency Spectrum ---
-  SPARSESPEC::Sparse_F_Spec spec;
+  SPARSESPEC::SparseFSpec spec;
 
   timer1.start();
-  MATRIX vec_raw = spec.Spectra(myff, prem, cmt, params, NQ, sr_info,
+  MATRIX vec_raw = spec.spectra(myff, prem, cmt, params, NQ, srInfo,
                                 params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 

@@ -1,14 +1,14 @@
-#ifndef SPECSEM_FORCE_TOROIDAL_H
-#define SPECSEM_FORCE_TOROIDAL_H
+#ifndef SEM_FORCE_TOROIDAL_H
+#define SEM_FORCE_TOROIDAL_H
 
-#include "specsem.h"
+#include "SEM.h"
 
 namespace Full1D {
 
 Eigen::MatrixXcd
-specsem::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = _mesh.NN();
-  totlen = this->LtG_T(_eu - 1, NQ - 1) + 1;
+  totlen = this->ltgT(_eu - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2 * idxl + 1);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -44,7 +44,7 @@ specsem::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       for (int idxq = 0; idxq < NQ; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_prefactor = pleg.Derivative(idxq, rad_source) - w_val;
-        std::size_t ridx = this->LtG_T(idx, idxq);
+        std::size_t ridx = this->ltgT(idx, idxq);
 
         for (int idxm = -idxl; idxm < idxl + 1; ++idxm) {
           Complex ymc = std::conj(ylmn(idxl, idxm, -1, phi_s));
@@ -69,9 +69,9 @@ specsem::CalculateForce_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = _mesh.NN();
-  totlen = this->LtG_T(_mesh.NE() - 1, NQ - 1) + 1;
+  totlen = this->ltgT(_mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -88,7 +88,7 @@ specsem::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       for (int idxq = 0; idxq < NQ; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
-        auto idx_v = this->LtG_T(idx, idxq);
+        auto idx_v = this->ltgT(idx, idxq);
         vec_lforce(idx_v, 0) = kval * w_deriv;
         vec_lforce(idx_v, 1) = kval * w_val;
       };
@@ -98,10 +98,10 @@ specsem::CalculateForce_All_T(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
+SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt,
                                        int idxl) {
   int NQ = _mesh.NN();
-  totlen = this->LtG_T(_mesh.NE() - 1, NQ - 1) + 1;
+  totlen = this->ltgT(_mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(2 * idxl + 1, 2);
 
   double theta_s = (90.0 - cmt.Latitude()) * EIGEN_PI / (180.0);
@@ -142,7 +142,7 @@ specsem::CalculateForce_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
 };
 
 Eigen::MatrixXcd
-specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
+SEM::calculateForceRedCoefficientsT(SourceInfo::EarthquakeCMT &cmt,
                                            int idxl, double az) {
   int maxn = 2;
   (maxn > idxl) ? maxn = idxl : maxn = maxn;
@@ -179,4 +179,4 @@ specsem::CalculateForce_RED_Coefficients_T(SourceInfo::EarthquakeCMT &cmt,
 
 }   // namespace Full1D
 
-#endif   // SPECSEM_FORCE_TOROIDAL_H
+#endif   // SEM_FORCE_TOROIDAL_H

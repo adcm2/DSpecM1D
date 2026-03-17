@@ -66,9 +66,9 @@ main() {
   auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
 
   // Initialize SEM
-  Full1D::specsem sem(prem, maxstep, NQ, lval);
+  Full1D::SEM sem(prem, maxstep, NQ, lval);
   auto _mesh = sem.mesh();
-  auto meshmodel = sem.mesh_model();
+  auto meshmodel = sem.meshModel();
 
   // --- 3. Calculate the Brunt-Väisälä frequency ---
   std::vector<std::vector<double>> vec_N2;
@@ -121,8 +121,8 @@ main() {
 
   // --- 5. System Setup (Tidal Forcing) ---
   auto idxl = 3;   // l = 2 or 3 for tidal forcing
-  SMATRIX ke_s = sem.H_S(idxl).cast<Complex>();
-  SMATRIX in_s = sem.P_S(idxl).cast<Complex>();
+  SMATRIX ke_s = sem.hS(idxl).cast<Complex>();
+  SMATRIX in_s = sem.pS(idxl).cast<Complex>();
 
   Eigen::VectorXcd rhs = Eigen::VectorXcd::Zero(ke_s.rows());
 
@@ -130,8 +130,8 @@ main() {
     auto jacval = 2.0 / (_mesh.EUR(idx) - _mesh.ELR(idx));
     for (int idxn = 0; idxn < _mesh.NN(); ++idxn) {
       auto crad = _mesh.NodeRadius(idx, idxn);
-      auto idx_u = sem.LtG_S(0, idx, idxn);
-      auto idx_v = sem.LtG_S(1, idx, idxn);
+      auto idx_u = sem.ltgS(0, idx, idxn);
+      auto idx_v = sem.ltgS(1, idx, idxn);
       auto tmp = _mesh.GLL().W(idxn) * jacval * std::pow(crad, idxl + 1);
 
       rhs(idx_u) += idxl * tmp;
@@ -179,8 +179,8 @@ main() {
         auto jacval = 2.0 / (_mesh.EUR(idxe) - _mesh.ELR(idxe));
         auto wval = _mesh.GLL().W(idxn);
 
-        auto uidx = sem.LtG_S(0, idxe, idxn);
-        auto vidx = sem.LtG_S(1, idxe, idxn);
+        auto uidx = sem.ltgS(0, idxe, idxn);
+        auto vidx = sem.ltgS(1, idxe, idxn);
         auto uval = sol(uidx);
         auto vval = sol(vidx);
 
@@ -252,8 +252,8 @@ main() {
   for (int idxe = 0; idxe < _mesh.NE(); ++idxe) {
     for (int idxq = 0; idxq < NQ; ++idxq) {
       auto crad = _mesh.NodeRadius(idxe, idxq) * prem.LengthNorm();
-      auto uidx = sem.LtG_S(0, idxe, idxq);
-      auto vidx = sem.LtG_S(1, idxe, idxq);
+      auto uidx = sem.ltgS(0, idxe, idxq);
+      auto vidx = sem.ltgS(1, idxe, idxq);
 
       file << crad;
       for (std::size_t idxf = 0; idxf < vec_omega.size(); ++idxf) {

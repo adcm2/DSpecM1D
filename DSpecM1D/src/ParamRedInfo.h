@@ -15,21 +15,22 @@
 class ParamRedInfo {
 
 private:
-  using COMPLEX = std::complex<double>;
-  using MATRIX = Eigen::MatrixXcd;
-  using WIGNER =
+  using Complex = std::complex<double>;
+  using MatrixC = Eigen::MatrixXcd;
+  using WignerType =
       GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
                        GSHTrans::Multiple, GSHTrans::ColumnMajor>;
-  WIGNER wigdmat;
-  std::vector<double> vec_theta_r, vec_phi_r;
-  int nrec, _mmax;
-  double deg2rad = EIGEN_PI / 180.0;
-  std::complex<double> i1 = std::complex<double>(0.0, 1.0);
+  WignerType m_wigner;
+  std::vector<double> m_thetaR, m_phiR;
+  int m_numReceivers;
+  int m_mmax;
+  double m_deg2rad = EIGEN_PI / 180.0;
+  Complex m_i1 = Complex(0.0, 1.0);
 
-  COMPLEX ylmn_trial(int l, int m, int N, int idxr) {
-    auto dl = this->wigdmat[N, idxr];
+  Complex ylmnTrial(int l, int m, int N, int idxr) {
+    auto dl = this->m_wigner[N, idxr];
     auto tmp = dl[l, m];
-    auto ylm = tmp * std::exp(COMPLEX(0.0, m * this->vec_phi_r[idxr]));
+    auto ylm = tmp * std::exp(Complex(0.0, m * this->m_phiR[idxr]));
     return ylm;
   };
 
@@ -37,49 +38,49 @@ public:
   ParamRedInfo(InputParameters &param, int lmax) {
     using namespace GSHTrans;
     // vector of receiver angle values:
-    nrec = param.num_receivers();
-    vec_theta_r = std::vector<double>(nrec, 0.0);
-    vec_phi_r = std::vector<double>(nrec, 0.0);
-    for (int idx = 0; idx < nrec; ++idx) {
+    m_numReceivers = param.num_receivers();
+    m_thetaR = std::vector<double>(m_numReceivers, 0.0);
+    m_phiR = std::vector<double>(m_numReceivers, 0.0);
+    for (int idx = 0; idx < m_numReceivers; ++idx) {
       auto rec = param.receivers()[idx];
-      vec_theta_r[idx] = (90.0 - rec.first) * deg2rad;
-      vec_phi_r[idx] = rec.second * deg2rad;
+      m_thetaR[idx] = (90.0 - rec.first) * m_deg2rad;
+      m_phiR[idx] = rec.second * m_deg2rad;
     }
-    _mmax = std::min(lmax, 2);
+    m_mmax = std::min(lmax, 2);
 
     // wigner class
-    wigdmat = WIGNER(lmax, _mmax, 1, vec_theta_r);
+    m_wigner = WignerType(lmax, m_mmax, 1, m_thetaR);
   };
 
-  MATRIX RV_RED_SPH(int idxl) {
+  MatrixC rvRedSph(int idxl) {
     // ylmn function for given l, m, N and receiver index
     auto ylmn = [&](int l, int m, int N, int idxr) {
-      auto dl = wigdmat[N, idxr];
+      auto dl = m_wigner[N, idxr];
       auto tmp = dl[l, m];
-      auto ylm = tmp * std::exp(std::complex<double>(0.0, m * vec_phi_r[idxr]));
+      auto ylm = tmp * std::exp(std::complex<double>(0.0, m * m_phiR[idxr]));
       return ylm;
     };
 
     // maximum m value for given l
-    int max_m = std::min(idxl, _mmax);
+    int max_m = std::min(idxl, m_mmax);
     int nm = 2 * max_m + 1;
 
     // receiver vector to be filled
-    MATRIX vec_receiver = MATRIX::Zero(3 * nrec, nm);
+    MatrixC vec_receiver = MatrixC::Zero(3 * m_numReceivers, nm);
 
     // loop through receivers
-    for (int idxr = 0; idxr < nrec; ++idxr) {
+    for (int idxr = 0; idxr < m_numReceivers; ++idxr) {
       int idx_col = 0;
       for (int idxm = -max_m; idxm < max_m + 1; ++idxm) {
         // spherical harmonic values
-        auto yl0 = ylmn_trial(idxl, idxm, 0, idxr);
+        auto yl0 = ylmnTrial(idxl, idxm, 0, idxr);
         auto ylm = ylmn(idxl, idxm, -1, idxr);
         auto ylp = ylmn(idxl, idxm, 1, idxr);
 
         // adding to receiver vector
         vec_receiver(3 * idxr, idx_col) = yl0;
         vec_receiver(3 * idxr + 1, idx_col) = ylp - ylm;
-        vec_receiver(3 * idxr + 2, idx_col) = -i1 * (ylm + ylp);
+        vec_receiver(3 * idxr + 2, idx_col) = -m_i1 * (ylm + ylp);
 
         // incrementing column index
         ++idx_col;
@@ -89,23 +90,23 @@ public:
     return vec_receiver;
   };
 
-  MATRIX RV_RED_TOR(int idxl) {
+  MatrixC rvRedTor(int idxl) {
     auto ylmn = [&](int l, int m, int N, int idxr) {
-      auto dl = wigdmat[N, idxr];
+      auto dl = m_wigner[N, idxr];
       auto tmp = dl[l, m];
-      auto ylm = tmp * std::exp(std::complex<double>(0.0, m * vec_phi_r[idxr]));
+      auto ylm = tmp * std::exp(std::complex<double>(0.0, m * m_phiR[idxr]));
       return ylm;
     };
 
     // maximum m value for given l
-    int max_m = std::min(idxl, _mmax);
+    int max_m = std::min(idxl, m_mmax);
     int nm = 2 * max_m + 1;
 
     // receiver vector to be filled
-    MATRIX vec_receiver = MATRIX::Zero(3 * nrec, nm);
+    MatrixC vec_receiver = MatrixC::Zero(3 * m_numReceivers, nm);
 
     // loop through receivers
-    for (int idxr = 0; idxr < nrec; ++idxr) {
+    for (int idxr = 0; idxr < m_numReceivers; ++idxr) {
       int idx_col = 0;
       for (int idxm = -max_m; idxm < max_m + 1; ++idxm) {
         // spherical harmonic values
@@ -113,7 +114,7 @@ public:
         auto ylp = ylmn(idxl, idxm, 1, idxr);
 
         // adding to receiver vector
-        vec_receiver(3 * idxr + 1, idx_col) = i1 * (ylm + ylp);
+        vec_receiver(3 * idxr + 1, idx_col) = m_i1 * (ylm + ylp);
         vec_receiver(3 * idxr + 2, idx_col) = ylp - ylm;
 
         // incrementing column index

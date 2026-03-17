@@ -7,9 +7,9 @@ namespace SPARSESPEC {
 
 template <class model1d>
 auto
-Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
-                       model1d &inp_model, SourceInfo::EarthquakeCMT &cmt,
-                       InputParameters &params, int nskip) {
+SparseFSpec::spectra(SpectraSolver::FreqFull &myff, Full1D::SEM &sem,
+                     model1d &inp_model, SourceInfo::EarthquakeCMT &cmt,
+                     InputParameters &params, int nskip) {
   using Complex = std::complex<double>;
   using MATRIX = Eigen::MatrixXcd;
   using SMATRIX = Eigen::SparseMatrix<Complex>;
@@ -27,7 +27,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
 
   int lmin = params.lmin();
   int lmax = params.lmax();
-  ParamInfo param_info(params, lmax);
+  ParamInfo paramInfo(params, lmax);
   auto NQ = sem.mesh().NN();
 
   auto mtype = params.type();
@@ -37,25 +37,25 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
   bool inc_sph = flags.inc_sph;
   lmin = std::max(lmin, 1);
 
-  auto num_rec = params.num_receivers();
-  auto idx_source = sem.Source_Element(cmt);
+  auto numRec = params.num_receivers();
+  auto idxSource = sem.sourceElement(cmt);
 
   // radials
   if (inc_rad) {
-    auto rec_elems = sem.Receiver_Elements(params);
-    auto lowidx = sem.LtG_R(0, rec_elems[0], 0);
-    auto upidx = sem.LtG_R(1, rec_elems.back(), NQ - 1);
+    auto recElems = sem.receiverElements(params);
+    auto lowidx = sem.ltgR(0, recElems[0], 0);
+    auto upidx = sem.ltgR(1, recElems.back(), NQ - 1);
     int lenidx = upidx - lowidx + 1;
-    SMATRIX ke_r = sem.H_R().cast<Complex>();
-    SMATRIX in_r = sem.P_R().cast<Complex>();
-    SMATRIX ke_r_atten = sem.H_RA().cast<Complex>();
+    SMATRIX ke_r = sem.hR().cast<Complex>();
+    SMATRIX in_r = sem.pR().cast<Complex>();
+    SMATRIX ke_r_atten = sem.hRa().cast<Complex>();
     ke_r.makeCompressed();
     in_r.makeCompressed();
     ke_r_atten.makeCompressed();
-    MATRIX f_r = sem.CalculateForce_R(cmt);
-    std::vector<MATRIX> vec_RV_Z;
-    for (int idxr = 0; idxr < num_rec; ++idxr)
-      vec_RV_Z.push_back(sem.RV_Z_R(params, idxr).block(lowidx, 0, lenidx, 1));
+    MATRIX f_r = sem.calculateForceR(cmt);
+    std::vector<MATRIX> vecRvZ;
+    for (int idxr = 0; idxr < numRec; ++idxr)
+      vecRvZ.push_back(sem.rvZR(params, idxr).block(lowidx, 0, lenidx, 1));
 
 #pragma omp parallel default(shared) private(solver)
     {
@@ -68,11 +68,11 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
         w_r.makeCompressed();
         solver.compute(w_r);
         MATRIX vec_x = solver.solve(f_r);
-        for (int idxr = 0; idxr < num_rec; ++idxr) {
+        for (int idxr = 0; idxr < numRec; ++idxr) {
 #pragma omp critical(torvecadd)
           {
             vec_raw(3 * idxr, idx) +=
-                vec_RV_Z[idxr]
+                vecRvZ[idxr]
                     .cwiseProduct(vec_x.block(lowidx, 0, lenidx, 1))
                     .sum();
           }
@@ -83,28 +83,28 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
 
   // toroidals
   if (inc_tor) {
-    auto rec_elems = sem.Receiver_Elements(params);
-    auto lowidx = sem.LtG_T(rec_elems[0], 0);
-    auto upidx = sem.LtG_T(rec_elems.back(), NQ - 1) + 1;
+    auto recElems = sem.receiverElements(params);
+    auto lowidx = sem.ltgT(recElems[0], 0);
+    auto upidx = sem.ltgT(recElems.back(), NQ - 1) + 1;
     int lenidx = upidx - lowidx;
-    auto lentor = sem.LtG_T(sem.mesh().NE() - 1, NQ - 1) + 1;
+    auto lentor = sem.ltgT(sem.mesh().NE() - 1, NQ - 1) + 1;
 #pragma omp parallel default(shared) private(solver1)
     {
 #pragma omp for schedule(dynamic)
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
-        SMATRIX H_tor = sem.H_TK(idxl).cast<Complex>();
-        SMATRIX P_tor = sem.P_TK(idxl).cast<Complex>();
-        SMATRIX H_tor_atten = sem.H_TA(idxl).cast<Complex>();
+        SMATRIX H_tor = sem.hTk(idxl).cast<Complex>();
+        SMATRIX P_tor = sem.pTk(idxl).cast<Complex>();
+        SMATRIX H_tor_atten = sem.hTa(idxl).cast<Complex>();
         H_tor.makeCompressed();
         P_tor.makeCompressed();
         H_tor_atten.makeCompressed();
-        MATRIX RV_VALS = param_info.RV_FULL_TOR(idxl);
-        MATRIX F_VALS = sem.CalculateForce_Coefficients_T(cmt, idxl);
-        MATRIX RED_C = RV_VALS * F_VALS;
-        MATRIX F_BASE = sem.CalculateForce_All_T(cmt, idxl);
-        MATRIX RV_BASE = sem.RV_BASE_FULL_T(params, idxl);
+        MATRIX rvVals = paramInfo.rvFullTor(idxl);
+        MATRIX fVals = sem.calculateForceCoefficientsT(cmt, idxl);
+        MATRIX redC = rvVals * fVals;
+        MATRIX fBase = sem.calculateForceAllT(cmt, idxl);
+        MATRIX rvBase = sem.rvBaseFullT(params, idxl);
         auto ridxtor =
-            SpectralTools::AllIndices_TOR(sem, idxl, myff, idx_source, nskip);
+            SpectralTools::allIndicesTor(sem, idxl, myff, idxSource, nskip);
         for (int idx = myff.i2() - 1; idx > myff.i1() - 1; --idx) {
           std::size_t ridx = ridxtor[idx - myff.i1()];
           std::size_t len_ms = lentor - ridx;
@@ -116,7 +116,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
             mat_w_tor_red += attenFactor(vec_w[idx], w0, twodivpi, myi) *
                              H_tor_atten.block(ridx, ridx, len_ms, len_ms);
           mat_w_tor_red.makeCompressed();
-          auto f_red = F_BASE.block(ridx, 0, len_ms, F_BASE.cols());
+          auto f_red = fBase.block(ridx, 0, len_ms, fBase.cols());
           factorizeOrCompute(solver1, mat_w_tor_red, myff.i2() - idx - 1,
                              nskip);
           MATRIX vec_sol = solver1.solve(f_red);
@@ -124,7 +124,7 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
 #pragma omp critical(torvecadd)
           {
             vec_raw.col(idx) +=
-                RED_C.cwiseProduct(RV_BASE * vec_sol.block(lidx, 0, lenidx, 2))
+                redC.cwiseProduct(rvBase * vec_sol.block(lidx, 0, lenidx, 2))
                     .rowwise()
                     .sum();
           }
@@ -135,49 +135,49 @@ Sparse_F_Spec::Spectra(SpectraSolver::FreqFull &myff, Full1D::specsem &sem,
 
   // spheroidals
   if (inc_sph) {
-    auto rec_elems = sem.Receiver_Elements(params);
-    auto lowidx = sem.LtG_S(0, rec_elems[0], 0);
-    auto upidx = sem.LtG_S(1, rec_elems.back(), NQ - 1);
+    auto recElems = sem.receiverElements(params);
+    auto lowidx = sem.ltgS(0, recElems[0], 0);
+    auto upidx = sem.ltgS(1, recElems.back(), NQ - 1);
     int lenidx = upidx - lowidx + 1;
-    auto lensph = sem.LtG_S(2, sem.mesh().NE() - 1, NQ - 1) + 1;
+    auto lensph = sem.ltgS(2, sem.mesh().NE() - 1, NQ - 1) + 1;
 #pragma omp parallel default(shared) private(solver1)
     {
 #pragma omp for schedule(dynamic)
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
-        SMATRIX h_s = sem.H_S(idxl).cast<Complex>();
-        SMATRIX p_s = sem.P_S(idxl).cast<Complex>();
-        SMATRIX h_sa = sem.H_SA(idxl).cast<Complex>();
+        SMATRIX h_s = sem.hS(idxl).cast<Complex>();
+        SMATRIX p_s = sem.pS(idxl).cast<Complex>();
+        SMATRIX h_sa = sem.hSa(idxl).cast<Complex>();
         h_s.makeCompressed();
         p_s.makeCompressed();
         h_sa.makeCompressed();
-        MATRIX RV_VALS = param_info.RV_FULL_SPH(idxl);
-        MATRIX F_VALS = sem.CalculateForce_Coefficients(cmt, idxl);
-        MATRIX RED_C = RV_VALS * F_VALS;
-        MATRIX F_BASE = sem.CalculateForce_All(cmt, idxl);
-        MATRIX RV_BASE = sem.RV_BASE_FULL(params, idxl);
-        auto vec_ridx =
-            SpectralTools::AllIndices_SPH(sem, idxl, myff, idx_source, nskip);
+        MATRIX rvVals = paramInfo.rvFullSph(idxl);
+        MATRIX fVals = sem.calculateForceCoefficients(cmt, idxl);
+        MATRIX redC = rvVals * fVals;
+        MATRIX fBase = sem.calculateForceAll(cmt, idxl);
+        MATRIX rvBase = sem.rvBaseFull(params, idxl);
+        auto vecRidx =
+            SpectralTools::allIndicesSph(sem, idxl, myff, idxSource, nskip);
         // MATRIX vec_raw_l =
         //     MATRIX::Zero(3 * params.num_receivers(), vec_w.size());
         for (int idx = myff.i2() - 1; idx > myff.i1() - 1; --idx) {
-          std::size_t idx_rs = vec_ridx[idx - myff.i1()];
-          std::size_t len_ms = lensph - idx_rs;
+          std::size_t idxRs = vecRidx[idx - myff.i1()];
+          std::size_t len_ms = lensph - idxRs;
           Complex w = vec_w[idx] + ieps;
-          SMATRIX mat_sph = h_s.block(idx_rs, idx_rs, len_ms, len_ms) -
-                            w * w * p_s.block(idx_rs, idx_rs, len_ms, len_ms);
+          SMATRIX mat_sph = h_s.block(idxRs, idxRs, len_ms, len_ms) -
+                            w * w * p_s.block(idxRs, idxRs, len_ms, len_ms);
           if (params.attenuation())
             mat_sph += attenFactor(vec_w[idx], w0, twodivpi, myi) *
-                       h_sa.block(idx_rs, idx_rs, len_ms, len_ms);
+                       h_sa.block(idxRs, idxRs, len_ms, len_ms);
           mat_sph.makeCompressed();
-          auto f_red = F_BASE.block(idx_rs, 0, len_ms, F_BASE.cols());
+          auto f_red = fBase.block(idxRs, 0, len_ms, fBase.cols());
           factorizeOrCompute(solver1, mat_sph, myff.i2() - idx - 1, nskip);
           MATRIX vec_sol = solver1.solve(f_red);
-          auto lidx = lowidx - idx_rs;
+          auto lidx = lowidx - idxRs;
 
 #pragma omp critical(sphvecadd)
           {
             vec_raw.col(idx) +=
-                RED_C.cwiseProduct(RV_BASE * vec_sol.block(lidx, 0, lenidx, 4))
+                redC.cwiseProduct(rvBase * vec_sol.block(lidx, 0, lenidx, 4))
                     .rowwise()
                     .sum();
           }
