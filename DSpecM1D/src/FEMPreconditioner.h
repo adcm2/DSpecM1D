@@ -7,8 +7,8 @@
 // Public License v. 2.0. If a copy of the MPL was not distributed
 // with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-#ifndef FEM_PRECONDITIONER_H
-#define FEM_PRECONDITIONER_H
+#ifndef DSPECM1D_FEM_PRECONDITIONER_H
+#define DSPECM1D_FEM_PRECONDITIONER_H
 #include <Eigen/Core>
 #include <Eigen/Sparse>
 #include <Eigen/IterativeLinearSolvers>
@@ -17,8 +17,8 @@
 namespace Eigen {
 
 template <typename Scalar_> class FEMPreconditioner {
-  typedef Scalar_ Scalar;
-  typedef Matrix<Scalar, Dynamic, 1> Vector;
+  using Scalar = Scalar_;
+  using Vector = Matrix<Scalar, Dynamic, 1>;
 
 public:
   typedef typename Vector::StorageIndex StorageIndex;
@@ -30,22 +30,23 @@ public:
     compute(mat);
   }
 
-  constexpr Index rows() const noexcept { return matsize[0]; }
-  constexpr Index cols() const noexcept { return matsize[1]; }
+  constexpr Index rows() const noexcept { return m_matSize[0]; }
+  constexpr Index cols() const noexcept { return m_matSize[1]; }
 
   template <typename MatType>
   FEMPreconditioner &analyzePattern(const MatType &mat) {
+    (void) mat;
     return *this;
   }
 
   template <typename MatType> FEMPreconditioner &factorize(const MatType &mat) {
-    matsize[0] = mat.rows();
-    matsize[1] = mat.cols();
+    m_matSize[0] = mat.rows();
+    m_matSize[1] = mat.cols();
     if (!m_isInitialized) {
       Eigen::SparseMatrix<Scalar> smid;
-      smid.resize(matsize[0], matsize[1]);
+      smid.resize(m_matSize[0], m_matSize[1]);
       smid.setIdentity();
-      lu_solver.compute(smid);
+      m_luSolver.compute(smid);
     }
     m_isInitialized = true;
     return *this;
@@ -59,17 +60,21 @@ public:
   // add matrix only invoked if we actually have a preconditioner. Otherwise it
   // will not have a preconditioner, with only the identity matrix used as the
   // preconditioner
-  template <typename MatType> FEMPreconditioner &addmatrix(const MatType &mat) {
-    lu_solver.compute(mat);
-    matsize[0] = mat.rows();
-    matsize[1] = mat.cols();
+  template <typename MatType> FEMPreconditioner &addMatrix(const MatType &mat) {
+    m_luSolver.compute(mat);
+    m_matSize[0] = mat.rows();
+    m_matSize[1] = mat.cols();
     m_isInitialized = true;
     return *this;
   }
 
+  template <typename MatType> FEMPreconditioner &addmatrix(const MatType &mat) {
+    return addMatrix(mat);
+  }
+
   template <typename Rhs, typename Dest>
   void _solve_impl(const Rhs &b, Dest &x) const {
-    x = lu_solver.solve(b);
+    x = m_luSolver.solve(b);
   }
 
   // solve call required by IterativeSolverBase
@@ -77,22 +82,22 @@ public:
   inline const Solve<FEMPreconditioner, Rhs>
   solve(const MatrixBase<Rhs> &b) const {
     eigen_assert(m_isInitialized && "FEMPreconditioner is not initialized.");
-    eigen_assert(matsize[0] == b.rows() &&
+    eigen_assert(m_matSize[0] == b.rows() &&
                  "FEMPreconditioner::solve(): invalid number of "
                  "rows of the right hand side matrix b");
     return Solve<FEMPreconditioner, Rhs>(*this, b.derived());
   }
 
-  ComputationInfo info() { return lu_solver.info(); }
+  ComputationInfo info() { return m_luSolver.info(); }
 
 protected:
   // Vector m_invdiag;
   // Matrix<Scalar, Dynamic, Dynamic> m_val;
-  std::vector<std::size_t> matsize{0, 0};
+  std::vector<std::size_t> m_matSize{0, 0};
   bool m_isInitialized;
-  SparseLU<SparseMatrix<Scalar>, Eigen::COLAMDOrdering<int>> lu_solver;
+  SparseLU<SparseMatrix<Scalar>, Eigen::COLAMDOrdering<int>> m_luSolver;
 };
 
 }   // namespace Eigen
 
-#endif   // SPHERICAL_GEOMETRY_PRECONDITIONER_H
+#endif   // DSPECM1D_FEM_PRECONDITIONER_H

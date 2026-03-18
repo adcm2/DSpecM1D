@@ -30,8 +30,8 @@ main() {
   // get paths required for input parameters and Earth model
   std::string param_path =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex1.txt";
-  InputParameters params(param_path);
-  SRInfo srInfo(params);
+  InputParametersNew paramsNew(param_path);
+  auto &params = paramsNew.inputParameters();
   std::string earth_model_path =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
@@ -40,24 +40,13 @@ main() {
   int NQ = 5;
   double maxstep = 0.05;
 
-  // --- 3. Frequency Solver Parameters ---
-  double dt = params.time_step_sec();
-  double tout = params.t_out() / 60.0;
-  double df0 = 1.0;
-  double wtb = 0.05;
-  double t1 = 0.0;
-  double t2 = tout;
-  int qex = 1;
-
   // --- 4. Setup PREM and Frequency Class ---
   timer1.start();
 
   prem_norm<double> norm_class;
   auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
 
-  SpectraSolver::FreqFull myff(params.f1(), params.f2(), params.f11(),
-                               params.f12(), params.f21(), params.f22(), dt,
-                               tout, df0, wtb, t1, t2, qex, prem.TimeNorm());
+  auto &myff = paramsNew.freqFull();
 
   auto vec_w = myff.w();
 
@@ -71,7 +60,8 @@ main() {
   timer1.stop("Total time for setting up SEM class");
 
   // --- 6. Source Information & Spectrum Generation ---
-  auto cmt = SourceInfo::EarthquakeCMT(params);
+  auto &cmt = paramsNew.cmt();
+  auto &srInfo = paramsNew.srInfo();
   SPARSESPEC::SparseFSpec mytest;
 
   timer1.start();
