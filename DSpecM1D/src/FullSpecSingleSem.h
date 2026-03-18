@@ -14,6 +14,11 @@ SparseFSpec::spectra(InputParametersNew &paramsNew, Full1D::SEM &sem) {
 }
 
 inline Eigen::MatrixXcd
+SparseFSpec::spectra(Full1D::SEM &sem, InputParametersNew &paramsNew) {
+  return spectra(paramsNew, sem);
+}
+
+inline Eigen::MatrixXcd
 SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem) {
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
@@ -204,7 +209,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem) {
 }
 
 template <class model1d>
-auto
+Eigen::MatrixXcd
 SparseFSpec::spectra(SpectraSolver::FreqFull &myff, Full1D::SEM &sem,
                      model1d &inp_model, SourceInfo::EarthquakeCMT &cmt,
                      InputParameters &params, int nskip) {

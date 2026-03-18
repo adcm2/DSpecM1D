@@ -5,8 +5,16 @@
 
 namespace SPARSESPEC {
 
+inline Eigen::MatrixXcd
+SparseFSpec::spectra(InputParametersNew &paramsNew) {
+  auto &params = paramsNew.inputParameters();
+  return spectra(paramsNew.freqFull(), paramsNew.earthModel(), paramsNew.cmt(),
+                 params, paramsNew.nq(), paramsNew.srInfo(),
+                 params.relative_error());
+}
+
 template <class model1d>
-auto
+Eigen::MatrixXcd
 SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                      SourceInfo::EarthquakeCMT &cmt, InputParameters &params,
                      int NQ, SRInfo &srInfo, double relerr) {

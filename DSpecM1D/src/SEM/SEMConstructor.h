@@ -2,8 +2,13 @@
 #define SEM_CONSTRUCTOR_H
 
 #include "SEM.h"
+#include "../InputParametersNew.h"
 
 namespace Full1D {
+
+inline SEM::SEM(const ::InputParametersNew &paramsNew)
+    : SEM(paramsNew.earthModel(), paramsNew.maxstep(), paramsNew.nq(),
+          paramsNew.inputParameters().lmax()) {}
 
 template <class model1d>
 SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)

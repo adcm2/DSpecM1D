@@ -25,17 +25,20 @@ public:
   SparseFSpec() {};
   ~SparseFSpec() {};
 
+  Eigen::MatrixXcd spectra(InputParametersNew &);
   Eigen::MatrixXcd spectra(InputParametersNew &, Full1D::SEM &);
+  Eigen::MatrixXcd spectra(Full1D::SEM &, InputParametersNew &);
   Eigen::MatrixXcd spectra(const SpectraRunContext &, Full1D::SEM &);
 
   template <class model1d>
-  auto spectra(SpectraSolver::FreqFull &, Full1D::SEM &, model1d &,
-               SourceInfo::EarthquakeCMT &, InputParameters &, int = 10);
+  Eigen::MatrixXcd spectra(SpectraSolver::FreqFull &, Full1D::SEM &, model1d &,
+                           SourceInfo::EarthquakeCMT &, InputParameters &,
+                           int = 10);
 
   template <class model1d>
-  auto spectra(SpectraSolver::FreqFull &, model1d &,
-               SourceInfo::EarthquakeCMT &, InputParameters &, int, SRInfo &,
-               double = 1e-4);
+  Eigen::MatrixXcd spectra(SpectraSolver::FreqFull &, model1d &,
+                           SourceInfo::EarthquakeCMT &, InputParameters &, int,
+                           SRInfo &, double = 1e-4);
 
 private:
 };

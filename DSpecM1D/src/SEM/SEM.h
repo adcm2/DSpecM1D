@@ -13,6 +13,8 @@
 #include "../MeshModel.h"
 #include "../NormClass.h"
 
+class InputParametersNew;
+
 namespace Full1D {
 
 // spectral element solver
@@ -68,6 +70,7 @@ private:
 
 public:
   SEM() {};
+  explicit SEM(const InputParametersNew &);
   template <class model1d> SEM(const model1d &, double, int, int);
 
   // local-to-global maps
@@ -88,18 +91,17 @@ public:
   // spheroidal force vectors
   Eigen::MatrixXcd calculateForce(SourceInfo::EarthquakeCMT &, int);
   Eigen::MatrixXcd calculateForceAll(SourceInfo::EarthquakeCMT &, int);
-  Eigen::MatrixXcd calculateForceCoefficients(SourceInfo::EarthquakeCMT &,
-                                               int);
+  Eigen::MatrixXcd calculateForceCoefficients(SourceInfo::EarthquakeCMT &, int);
   Eigen::MatrixXcd calculateForceRedCoefficients(SourceInfo::EarthquakeCMT &,
-                                                   int, double);
+                                                 int, double);
 
   // toroidal force vectors
   Eigen::MatrixXcd calculateForceT(SourceInfo::EarthquakeCMT &, int);
   Eigen::MatrixXcd calculateForceAllT(SourceInfo::EarthquakeCMT &, int);
   Eigen::MatrixXcd calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &,
-                                                 int);
-  Eigen::MatrixXcd
-  calculateForceRedCoefficientsT(SourceInfo::EarthquakeCMT &, int, double);
+                                               int);
+  Eigen::MatrixXcd calculateForceRedCoefficientsT(SourceInfo::EarthquakeCMT &,
+                                                  int, double);
 
   // radial force vectors
   Eigen::MatrixXcd calculateForceR(SourceInfo::EarthquakeCMT &);
