@@ -1,5 +1,5 @@
-#ifndef FULL_SPEC_GUARD_H
-#define FULL_SPEC_GUARD_H
+#ifndef DSPECM1D_FULL_SPEC_H
+#define DSPECM1D_FULL_SPEC_H
 
 #include <iostream>
 #include <PlanetaryModel/All>
@@ -48,4 +48,4 @@ private:
 #include "FullSpecSingleSem.h"
 #include "FullSpecMultiSem.h"
 
-#endif   // FULL_SPEC_GUARD_H
+#endif   // DSPECM1D_FULL_SPEC_H

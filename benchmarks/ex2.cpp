@@ -40,23 +40,23 @@
 int
 main() {
   using Complex = std::complex<double>;
-  using MATRIX = Eigen::MatrixXcd;
+  using MatrixC = Eigen::MatrixXcd;
 
   Timer timer1;
 
   // --- 1. Read Inputs & Earth Model ---
   // get paths required for input parameters and Earth model
-  std::string param_path =
+  std::string paramPath =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex2.txt";
-  InputParameters params(param_path);
-  std::string earth_model_path =
+  InputParameters params(paramPath);
+  std::string earthModelPath =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
   SRInfo srInfo(params);
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   prem_norm<double> norm_class;
-  auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, norm_class, "true");
 
   // --- 2. Frequency Solver Parameters ---
   double dt = params.time_step_sec();
@@ -71,33 +71,33 @@ main() {
   SpectraSolver::FreqFull myff(params.f1(), params.f2(), params.f11(),
                                params.f12(), params.f21(), params.f22(), dt,
                                tout, df0, wtb, t1, t2, qex, prem.TimeNorm());
-  auto vec_w = myff.w();
+  auto vecW = myff.w();
 
   // --- 3. Compute Sparse Frequency Spectrum ---
   SPARSESPEC::SparseFSpec spec;
 
   timer1.start();
-  MATRIX vec_raw = spec.spectra(myff, prem, cmt, params, NQ, srInfo,
+  MatrixC vecRaw = spec.spectra(myff, prem, cmt, params, NQ, srInfo,
                                 params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 
   // --- 4. Normalization ---
-  double norm_factor = 1.0;
+  double normFactor = 1.0;
   double accel_norm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
 
   if (params.output_type() == 0) {
-    norm_factor = prem.LengthNorm();
+    normFactor = prem.LengthNorm();
   } else if (params.output_type() == 1) {
-    norm_factor = prem.LengthNorm() / prem.TimeNorm();
+    normFactor = prem.LengthNorm() / prem.TimeNorm();
   } else if (params.output_type() == 2) {
-    norm_factor = accel_norm;
+    normFactor = accel_norm;
   }
-  vec_raw *= norm_factor;
+  vecRaw *= normFactor;
 
   // --- 5. Base Responses (Pre-Filter) ---
-  double hann_w = 0.2;
-  auto vec_r2t_b = processfunctions::freq2time(vec_raw, myff);
-  auto a_filt0 = processfunctions::fulltime2freq(vec_r2t_b, myff, 0.01);
+  double hannW = 0.2;
+  auto vecR2TB = processfunctions::freq2time(vecRaw, myff);
+  auto aFilt0 = processfunctions::fulltime2freq(vecR2TB, myff, 0.01);
 
   // --- 6. Source Time Function (STF) Convolution ---
 
@@ -112,8 +112,8 @@ main() {
             << "df: " << myff.df() << "\n"
             << "Source time (s): " << st_time * prem.TimeNorm() << "\n";
 
-  auto a_filt_stf0 = a_filt0;
-  for (int idx = 0; idx < a_filt0.cols(); ++idx) {
+  auto a_filt_stf0 = aFilt0;
+  for (int idx = 0; idx < aFilt0.cols(); ++idx) {
     auto wval = myff.w(idx);
     Complex stf_factor =
         std::exp(-I * wval * st_time) *
@@ -121,8 +121,8 @@ main() {
     a_filt_stf0.col(idx) *= stf_factor;
   }
 
-  auto vec_filt_t = processfunctions::filtfreq2time(a_filt_stf0, myff, false);
-  auto a_filt = processfunctions::fulltime2freq(vec_filt_t, myff, hann_w);
+  auto vecFiltT = processfunctions::filtfreq2time(a_filt_stf0, myff, false);
+  auto aFilt = processfunctions::fulltime2freq(vecFiltT, myff, hannW);
 
   //////////////////////////////////////////////////////////////////////////////
 
@@ -132,10 +132,10 @@ main() {
   YSPECREADER::DataColumns yspec_data(yspec_path);
 
   // FIX: Added safe boundary checking here to prevent out-of-bounds crashes
-  std::size_t maxcoly = std::min(static_cast<std::size_t>(vec_r2t_b.cols()),
+  std::size_t maxcoly = std::min(static_cast<std::size_t>(vecR2TB.cols()),
                                  yspec_data.getColumn1().size());
 
-  Eigen::MatrixXd yspec_t = Eigen::MatrixXd::Zero(3, vec_r2t_b.cols());
+  Eigen::MatrixXd yspec_t = Eigen::MatrixXd::Zero(3, vecR2TB.cols());
   for (std::size_t idx = 0; idx < maxcoly; ++idx) {
     yspec_t(0, idx) = yspec_data.getColumn2()[idx];
     yspec_t(1, idx) = yspec_data.getColumn3()[idx];
@@ -153,10 +153,10 @@ main() {
     a_yspec_stf0.col(idx) *= stf_factor;
   }
 
-  auto vec_filt_t_yspec =
+  auto vecFiltTYSpec =
       processfunctions::filtfreq2time(a_yspec_stf0, myff, false);
-  auto a_filt_yspec =
-      processfunctions::fulltime2freq(vec_filt_t_yspec, myff, hann_w);
+  auto aFiltYSpec =
+      processfunctions::fulltime2freq(vecFiltTYSpec, myff, hannW);
 
   // --- 8. Read and Process MinEOS Data ---
   std::string mineos_base =
@@ -166,10 +166,10 @@ main() {
   MINEOSREADER::DataColumns mineos_data1(mineos_base + "LHN.ASC");
   MINEOSREADER::DataColumns mineos_data2(mineos_base + "LHE.ASC");
 
-  std::size_t maxcol = std::min(static_cast<std::size_t>(vec_r2t_b.cols()),
+  std::size_t maxcol = std::min(static_cast<std::size_t>(vecR2TB.cols()),
                                 mineos_data.getColumn1().size());
 
-  Eigen::MatrixXd mineos_t = Eigen::MatrixXd::Zero(3, vec_r2t_b.cols());
+  Eigen::MatrixXd mineos_t = Eigen::MatrixXd::Zero(3, vecR2TB.cols());
   for (std::size_t idx = 0; idx < maxcol; ++idx) {
     mineos_t(0, idx) = mineos_data.getColumn2()[idx] * 1e-9;
     mineos_t(1, idx) = mineos_data1.getColumn2()[idx] * 1e-9;
@@ -192,7 +192,7 @@ main() {
   auto vec_filt_t_mineos =
       processfunctions::filtfreq2time(a_mineos_stf0, myff, false);
   auto a_filt_mineos =
-      processfunctions::fulltime2freq(vec_filt_t_mineos, myff, hann_w);
+      processfunctions::fulltime2freq(vec_filt_t_mineos, myff, hannW);
 
   //////////////////////////////////////////////////////////////////////////////
   // --- 9. Output Frequency Spectrum ---
@@ -208,18 +208,18 @@ main() {
   file_w << std::fixed << std::setprecision(16);
 
   for (std::size_t idx = 0; idx < myff.i2() + 100; ++idx) {
-    file_w << (vec_w[idx] * nval * 1000.0 / TWO_PI) << ';'
-           << a_filt(0, idx).real() << ';' << a_filt(0, idx).imag() << ';'
-           << std::abs(a_filt(0, idx)) << ';' << a_filt(1, idx).real() << ';'
-           << a_filt(1, idx).imag() << ';' << std::abs(a_filt(1, idx)) << ';'
-           << a_filt(2, idx).real() << ';' << a_filt(2, idx).imag() << ';'
-           << std::abs(a_filt(2, idx)) << ';' << a_filt_yspec(0, idx).real()
-           << ';' << a_filt_yspec(0, idx).imag() << ';'
-           << std::abs(a_filt_yspec(0, idx)) << ';'
-           << a_filt_yspec(1, idx).real() << ';' << a_filt_yspec(1, idx).imag()
-           << ';' << std::abs(a_filt_yspec(1, idx)) << ';'
-           << a_filt_yspec(2, idx).real() << ';' << a_filt_yspec(2, idx).imag()
-           << ';' << std::abs(a_filt_yspec(2, idx)) << ';'
+    file_w << (vecW[idx] * nval * 1000.0 / TWO_PI) << ';'
+           << aFilt(0, idx).real() << ';' << aFilt(0, idx).imag() << ';'
+           << std::abs(aFilt(0, idx)) << ';' << aFilt(1, idx).real() << ';'
+           << aFilt(1, idx).imag() << ';' << std::abs(aFilt(1, idx)) << ';'
+           << aFilt(2, idx).real() << ';' << aFilt(2, idx).imag() << ';'
+           << std::abs(aFilt(2, idx)) << ';' << aFiltYSpec(0, idx).real()
+           << ';' << aFiltYSpec(0, idx).imag() << ';'
+           << std::abs(aFiltYSpec(0, idx)) << ';'
+           << aFiltYSpec(1, idx).real() << ';' << aFiltYSpec(1, idx).imag()
+           << ';' << std::abs(aFiltYSpec(1, idx)) << ';'
+           << aFiltYSpec(2, idx).real() << ';' << aFiltYSpec(2, idx).imag()
+           << ';' << std::abs(aFiltYSpec(2, idx)) << ';'
            << a_filt_mineos(0, idx).real() << ';'
            << a_filt_mineos(0, idx).imag() << ';'
            << std::abs(a_filt_mineos(0, idx)) << ';'
@@ -247,9 +247,9 @@ main() {
        idx < static_cast<std::size_t>(vec_filt_t_mineos.cols()); ++idx) {
     auto tval = idx * myff.dt() * prem.TimeNorm();
     file_t << (idx * myff.dt() - st_time) * prem.TimeNorm() << ';'
-           << vec_filt_t(0, idx) << ';' << vec_filt_t(1, idx) << ';'
-           << vec_filt_t(2, idx) << ';' << vec_filt_t_yspec(0, idx) << ';'
-           << vec_filt_t_yspec(1, idx) << ';' << vec_filt_t_yspec(2, idx) << ';'
+           << vecFiltT(0, idx) << ';' << vecFiltT(1, idx) << ';'
+           << vecFiltT(2, idx) << ';' << vecFiltTYSpec(0, idx) << ';'
+           << vecFiltTYSpec(1, idx) << ';' << vecFiltTYSpec(2, idx) << ';'
            << vec_filt_t_mineos(0, idx) << ';' << vec_filt_t_mineos(1, idx)
            << ';' << vec_filt_t_mineos(2, idx) << '\n';
 

@@ -75,19 +75,19 @@ SEM::rvFullT(InputParameters &param, int idxl) {
 Eigen::MatrixXcd
 SEM::rvBaseZ(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->ltgS(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgS(2, m_mesh.NE() - 1, m_mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_r) && (_mesh.EUR(idx) >= rad_r) &&
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
         (!evaluated)) {
       evaluated = true;
-      std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+      std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-      for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+      for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
         auto idx_u = this->ltgS(0, idx, idxq);
         vec_receiver(0, idx_u) = pleg(idxq, rad_r);
       }
@@ -103,9 +103,9 @@ SEM::rvValZ(InputParameters &param, int idxl, int idxr) {
   double phi_r = rec.second * EIGEN_PI / 180.0;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(2 * idxl + 1, 1);
   using namespace GSHTrans;
-  int maxn = std::min(2, _lmax);
+  int maxn = std::min(2, m_lmax);
   auto wigdmat = Wigner<double, Ortho, All, All, Single, ColumnMajor>(
-      _lmax, _lmax, maxn, theta_r);
+      m_lmax, m_lmax, maxn, theta_r);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     return wigdmat[N][l, m] * std::exp(std::complex<double>(0.0, m * phi));
   };
@@ -119,19 +119,19 @@ SEM::rvBaseTheta(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
   auto k =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
-  std::size_t flen = this->ltgS(2, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgS(2, m_mesh.NE() - 1, m_mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_r) && (_mesh.EUR(idx) >= rad_r) &&
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
         (!evaluated)) {
       evaluated = true;
-      std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+      std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-      for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+      for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
         auto idx_v = this->ltgS(1, idx, idxq);
         vec_receiver(0, idx_v) = k / 2.0 * pleg(idxq, rad_r);
       }
@@ -147,9 +147,9 @@ SEM::rvValTheta(InputParameters &param, int idxl, int idxr) {
   double phi_r = rec.second * EIGEN_PI / 180.0;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(2 * idxl + 1, 1);
   using namespace GSHTrans;
-  int maxn = std::min(2, _lmax);
+  int maxn = std::min(2, m_lmax);
   auto wigdmat = Wigner<double, Ortho, All, All, Single, ColumnMajor>(
-      _lmax, _lmax, maxn, theta_r);
+      m_lmax, m_lmax, maxn, theta_r);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     return wigdmat[N][l, m] * std::exp(std::complex<double>(0.0, m * phi));
   };
@@ -164,19 +164,19 @@ SEM::rvValTheta(InputParameters &param, int idxl, int idxr) {
 Eigen::MatrixXcd
 SEM::rvBaseThetaT(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->ltgT(_mesh.NE() - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgT(m_mesh.NE() - 1, m_mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_r) && (_mesh.EUR(idx) >= rad_r) &&
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
         (!evaluated)) {
       evaluated = true;
-      std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+      std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-      for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+      for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
         auto idx_v = this->ltgT(idx, idxq);
         vec_receiver(0, idx_v) = 0.5 * pleg(idxq, rad_r);
       }
@@ -192,9 +192,9 @@ SEM::rvValThetaT(InputParameters &param, int idxl, int idxr) {
   double phi_r = rec.second * EIGEN_PI / 180.0;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(2 * idxl + 1, 1);
   using namespace GSHTrans;
-  int maxn = std::min(2, _lmax);
+  int maxn = std::min(2, m_lmax);
   auto wigdmat = Wigner<double, Ortho, All, All, Single, ColumnMajor>(
-      _lmax, _lmax, maxn, theta_r);
+      m_lmax, m_lmax, maxn, theta_r);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     return wigdmat[N][l, m] * std::exp(std::complex<double>(0.0, m * phi));
   };
@@ -214,9 +214,9 @@ SEM::rvValPhi(InputParameters &param, int idxl, int idxr) {
   double phi_r = rec.second * EIGEN_PI / 180.0;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(2 * idxl + 1, 1);
   using namespace GSHTrans;
-  int maxn = std::min(2, _lmax);
+  int maxn = std::min(2, m_lmax);
   auto wigdmat = Wigner<double, Ortho, All, All, Single, ColumnMajor>(
-      _lmax, _lmax, maxn, theta_r);
+      m_lmax, m_lmax, maxn, theta_r);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     return wigdmat[N][l, m] * std::exp(std::complex<double>(0.0, m * phi));
   };
@@ -241,9 +241,9 @@ SEM::rvValPhiT(InputParameters &param, int idxl, int idxr) {
   double phi_r = rec.second * EIGEN_PI / 180.0;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(2 * idxl + 1, 1);
   using namespace GSHTrans;
-  int maxn = std::min(2, _lmax);
+  int maxn = std::min(2, m_lmax);
   auto wigdmat = Wigner<double, Ortho, All, All, Single, ColumnMajor>(
-      _lmax, _lmax, maxn, theta_r);
+      m_lmax, m_lmax, maxn, theta_r);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     return wigdmat[N][l, m] * std::exp(std::complex<double>(0.0, m * phi));
   };
@@ -261,29 +261,29 @@ SEM::rvThetaT(InputParameters &param, int idxl, int idxr) {
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->ltgT(_eu - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgT(m_eu - 1, m_mesh.NN() - 1) + 1;
   std::size_t fcols = 2 * idxl + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, fcols);
   using namespace GSHTrans;
-  int maxn = std::min(2, _lmax);
+  int maxn = std::min(2, m_lmax);
   auto wigdmat = Wigner<double, Ortho, All, All, Single, ColumnMajor>(
-      _lmax, _lmax, maxn, theta_r);
+      m_lmax, m_lmax, maxn, theta_r);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     return (std::complex<double>) wigdmat[N][l, m] *
            std::exp(std::complex<double>(0.0, m * phi));
   };
   Complex i1 = std::complex<double>(0.0, 1.0);
   bool evaluated = false;
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_r) && (_mesh.EUR(idx) >= rad_r) &&
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
         (!evaluated)) {
       evaluated = true;
-      std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+      std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-      for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+      for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
         auto idx_v = this->ltgT(idx, idxq);
         for (int idxm = -idxl; idxm < idxl + 1; ++idxm) {
           Complex ylm = ylmn(idxl, idxm, -1, phi_r);
@@ -303,28 +303,28 @@ SEM::rvPhiT(InputParameters &param, int idxl, int idxr) {
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->ltgT(_eu - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgT(m_eu - 1, m_mesh.NN() - 1) + 1;
   std::size_t fcols = 2 * idxl + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, fcols);
   using namespace GSHTrans;
-  int maxn = std::min(2, _lmax);
+  int maxn = std::min(2, m_lmax);
   auto wigdmat = Wigner<double, Ortho, All, All, Single, ColumnMajor>(
-      _lmax, _lmax, maxn, theta_r);
+      m_lmax, m_lmax, maxn, theta_r);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     return (std::complex<double>) wigdmat[N][l, m] *
            std::exp(std::complex<double>(0.0, m * phi));
   };
   bool evaluated = false;
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_r) && (_mesh.EUR(idx) >= rad_r) &&
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
         (!evaluated)) {
       evaluated = true;
-      std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+      std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-      for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+      for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
         auto idx_v = this->ltgT(idx, idxq);
         for (int idxm = -idxl; idxm < idxl + 1; ++idxm) {
           Complex ylm = ylmn(idxl, idxm, -1, phi_r);
@@ -342,23 +342,23 @@ Eigen::MatrixXcd
 SEM::rvZR(InputParameters &param, int idxr) {
   auto rec = param.receivers()[idxr];
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->ltgR(1, _mesh.NE() - 1, _mesh.NN() - 1) + 1;
+  std::size_t flen = this->ltgR(1, m_mesh.NE() - 1, m_mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, 1);
   using namespace GSHTrans;
   auto wigdmat2 =
       Wigner<double, Ortho, All, All, Single, ColumnMajor>(0, 0, 0, 0.0);
   Complex yl0 = wigdmat2[0][0, 0];
   bool evaluated = false;
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_r) && (_mesh.EUR(idx) >= rad_r) &&
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
         (!evaluated)) {
       evaluated = true;
-      std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+      std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-      for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+      for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
         auto idx_u = this->ltgR(0, idx, idxq);
         vec_receiver(idx_u, 0) = yl0 * pleg(idxq, rad_r);
       }
@@ -372,7 +372,7 @@ SEM::rvRedZR(InputParameters &param) {
   double rad_r = _ReceiverRadius(param);
   auto rec_elems = this->receiverElements(param);
   auto lowidx = this->ltgR(0, rec_elems[0], 0);
-  auto upidx = this->ltgR(1, rec_elems.back(), _mesh.NN() - 1);
+  auto upidx = this->ltgR(1, rec_elems.back(), m_mesh.NN() - 1);
   int lenidx = upidx - lowidx + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(lenidx, 1);
   using namespace GSHTrans;
@@ -380,16 +380,16 @@ SEM::rvRedZR(InputParameters &param) {
       Wigner<double, Ortho, All, All, Single, ColumnMajor>(0, 0, 0, 0.0);
   Complex yl0 = wigdmat[0][0, 0];
   bool evaluated = false;
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_r) && (_mesh.EUR(idx) >= rad_r) &&
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
         (!evaluated)) {
       evaluated = true;
-      std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+      std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-      for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+      for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
         auto idx_u = this->ltgR(0, idx, idxq) - lowidx;
         vec_receiver(idx_u, 0) = yl0 * pleg(idxq, rad_r);
       }
@@ -402,19 +402,19 @@ Eigen::MatrixXcd
 SEM::rvBaseFull(InputParameters &param, int idxl) {
   auto rec_elems = this->receiverElements(param);
   auto lowidx = this->ltgS(0, rec_elems[0], 0);
-  auto upidx = this->ltgS(1, rec_elems.back(), _NQ - 1);
+  auto upidx = this->ltgS(1, rec_elems.back(), m_nq - 1);
   int lenidx = upidx - lowidx + 1;
   auto nrec = param.num_receivers();
   Eigen::MatrixXcd mat_base = Eigen::MatrixXcd::Zero(3 * nrec, lenidx);
   double rad_r = _ReceiverRadius(param);
   double k = std::sqrt(1.0 * idxl * (idxl + 1.0));
   for (int idx = rec_elems[0]; idx < rec_elems.back() + 1; ++idx) {
-    std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-    for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-      vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+    std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+    for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+      vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
     auto pleg =
         Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-    for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+    for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
       auto idx_u = this->ltgS(0, idx, idxq) - lowidx;
       auto idx_v = this->ltgS(1, idx, idxq) - lowidx;
       auto zv = pleg(idxq, rad_r);
@@ -433,19 +433,19 @@ Eigen::MatrixXcd
 SEM::rvBaseFullT(InputParameters &param, int idxl) {
   auto rec_elems = this->receiverElements(param);
   auto lowidx = this->ltgT(rec_elems[0], 0);
-  auto upidx = this->ltgT(rec_elems.back(), _NQ - 1);
+  auto upidx = this->ltgT(rec_elems.back(), m_nq - 1);
   int lenidx = upidx - lowidx + 1;
   auto nrec = param.num_receivers();
   Eigen::MatrixXcd mat_base = Eigen::MatrixXcd::Zero(3 * nrec, lenidx);
   double rad_r = _ReceiverRadius(param);
   double k = std::sqrt(1.0 * idxl * (idxl + 1.0));
   for (int idx = rec_elems[0]; idx < rec_elems.back() + 1; ++idx) {
-    std::vector<double> vec_nodes(_mesh.NN(), 0.0);
-    for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-      vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+    std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
+    for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+      vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
     auto pleg =
         Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
-    for (int idxq = 0; idxq < _mesh.NN(); ++idxq) {
+    for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
       auto idx_v = this->ltgT(idx, idxq) - lowidx;
       auto tv = k / 2.0 * pleg(idxq, rad_r);
       for (int idxr = 0; idxr < nrec; ++idxr) {

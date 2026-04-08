@@ -44,10 +44,10 @@ main() {
 
   // --- 1. Read Inputs & Earth Model ---
   // get paths required for input parameters and Earth model
-  std::string param_path =
+  std::string paramPath =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex6.txt";
-  InputParameters params(param_path);
-  std::string earth_model_path =
+  InputParameters params(paramPath);
+  std::string earthModelPath =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
   auto cmt = SourceInfo::EarthquakeCMT(params);
@@ -63,12 +63,17 @@ main() {
   // Initialize Earth model
   timer1.start();
   prem_norm<double> norm_class;
-  auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, norm_class, "true");
 
   // Initialize SEM
   Full1D::SEM sem(prem, maxstep, NQ, lval);
   auto _mesh = sem.mesh();
   auto meshmodel = sem.meshModel();
+
+  std::cout << sem.meshModel().Gravity(sem.mesh().NE() - 1,
+                                       sem.mesh().NN() - 1) *
+                   prem.AccelerationNorm()
+            << "\n";
 
   // --- 3. Calculate the Brunt-Väisälä frequency ---
   std::vector<std::vector<double>> vec_N2;
@@ -239,12 +244,12 @@ main() {
   freq_file.close();
 
   // 8c. Output Radial Solution
-  std::string pathtofile = std::string(PROJECT_BUILD_DIR) +
+  std::string pathToFile = std::string(PROJECT_BUILD_DIR) +
                            "../plotting/outputs/ex6_radial_response_" +
                            std::to_string(maxstep) + ".out";
-  std::ofstream file(pathtofile);
+  std::ofstream file(pathToFile);
   if (!file) {
-    std::cerr << "Error: unable to open output file: " << pathtofile << "\n";
+    std::cerr << "Error: unable to open output file: " << pathToFile << "\n";
     return 1;
   }
 

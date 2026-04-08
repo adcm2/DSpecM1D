@@ -7,8 +7,8 @@ namespace Full1D {
 
 Eigen::MatrixXcd
 SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
-  int NQ = _mesh.NN();
-  totlen = this->ltgT(_eu - 1, NQ - 1) + 1;
+  int NQ = m_mesh.NN();
+  totlen = this->ltgT(m_eu - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2 * idxl + 1);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -18,11 +18,11 @@ SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   double phi_s = cmt.Longitude() * EIGEN_PI / (180.0);
 
   int maxn = 2;
-  if (maxn > _lmax)
-    maxn = _lmax;
+  if (maxn > m_lmax)
+    maxn = m_lmax;
   auto wigdmat =
       GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Single, GSHTrans::ColumnMajor>(_lmax, _lmax,
+                       GSHTrans::Single, GSHTrans::ColumnMajor>(m_lmax, m_lmax,
                                                                 maxn, theta_s);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     auto dl = wigdmat[N];
@@ -33,11 +33,11 @@ SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   Complex isq2 = Complex(0.0, 1.0 / std::sqrt(2.0));
   double omegal2 = std::sqrt((idxl + 2) * (idxl - 1) / 2.0);
 
-  for (int idx = _el; idx < _eu; ++idx) {
-    if ((_mesh.ELR(idx) <= rad_source) && (_mesh.EUR(idx) > rad_source)) {
-      stdvec vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+  for (int idx = m_el; idx < m_eu; ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_source) && (m_mesh.EUR(idx) > rad_source)) {
+      stdvec vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
@@ -64,24 +64,24 @@ SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       };
     };
   };
-  vec_lforce *= (1.0 / _moment_norm);
+  vec_lforce *= (1.0 / m_momentNorm);
   return vec_lforce;
 };
 
 Eigen::MatrixXcd
 SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
-  int NQ = _mesh.NN();
-  totlen = this->ltgT(_mesh.NE() - 1, NQ - 1) + 1;
+  int NQ = m_mesh.NN();
+  totlen = this->ltgT(m_mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
   double rad_source = _SourceRadius(cmt);
 
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_source) && (_mesh.EUR(idx) > rad_source)) {
-      stdvec vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_source) && (m_mesh.EUR(idx) > rad_source)) {
+      stdvec vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
@@ -100,8 +100,8 @@ SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 Eigen::MatrixXcd
 SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt,
                                        int idxl) {
-  int NQ = _mesh.NN();
-  totlen = this->ltgT(_mesh.NE() - 1, NQ - 1) + 1;
+  int NQ = m_mesh.NN();
+  totlen = this->ltgT(m_mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(2 * idxl + 1, 2);
 
   double theta_s = (90.0 - cmt.Latitude()) * EIGEN_PI / (180.0);
@@ -137,7 +137,7 @@ SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt,
     vec_lforce(idxm + idxl, 1) = isq2 * (omegal2 * tmp2 - tmp1);
   };
 
-  vec_lforce *= (1.0 / _moment_norm);
+  vec_lforce *= (1.0 / m_momentNorm);
   return vec_lforce;
 };
 
@@ -173,7 +173,7 @@ SEM::calculateForceRedCoefficientsT(SourceInfo::EarthquakeCMT &cmt,
     vec_force(0, 1) = omegal2 * tmp_mm;
     vec_force(4, 1) = -omegal2 * tmp_pp;
   }
-  vec_force *= (double) mfact * isq2 * (1.0 / _moment_norm);
+  vec_force *= (double) mfact * isq2 * (1.0 / m_momentNorm);
   return vec_force;
 };
 

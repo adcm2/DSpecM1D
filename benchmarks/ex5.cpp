@@ -37,19 +37,19 @@
 
 int
 main() {
-  using MATRIX = Eigen::MatrixXcd;
+  using MatrixC = Eigen::MatrixXcd;
   Timer timer1;
 
   // --- 1. Read Inputs & Earth Model ---
   // get paths required for input parameters and Earth model
-  std::string param_path =
+  std::string paramPath =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex5.txt";
-  InputParameters params(param_path);
-  std::string earth_model_path =
+  InputParameters params(paramPath);
+  std::string earthModelPath =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
   prem_norm<double> norm_class;
-  auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, norm_class, "true");
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   // --- 2. Parameters ---
@@ -69,7 +69,7 @@ main() {
   SpectraSolver::FreqFull myff(params.f1(), params.f2(), params.f11(),
                                params.f12(), params.f21(), params.f22(), dt,
                                tout, df0, wtb, t1, t2, qex, prem.TimeNorm());
-  auto vec_w = myff.w();
+  auto vecW = myff.w();
 
   // --- 4. Setup Convergence Steps ---
   int nsteps = 50;
@@ -84,20 +84,20 @@ main() {
   }
 
   // --- 5. Normalization ---
-  double norm_factor = 1.0;
+  double normFactor = 1.0;
   double accel_norm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
 
   if (params.output_type() == 0) {
-    norm_factor = prem.LengthNorm();
+    normFactor = prem.LengthNorm();
   } else if (params.output_type() == 1) {
-    norm_factor = prem.LengthNorm() / prem.TimeNorm();
+    normFactor = prem.LengthNorm() / prem.TimeNorm();
   } else if (params.output_type() == 2) {
-    norm_factor = accel_norm;
+    normFactor = accel_norm;
   }
-  double hann_w = 0.2;
+  double hannW = 0.2;
 
   // --- 6. Execute Iterative Convergence Test ---
-  SPARSESPEC::SparseFSpec mytest;
+  SPARSESPEC::SparseFSpec specSolver;
   std::vector<Eigen::MatrixXcd> vec_final_w;
   std::vector<Eigen::MatrixXd> vec_final_t;
   vec_final_w.reserve(nsteps);
@@ -106,23 +106,23 @@ main() {
   for (int idx = 0; idx < nsteps; ++idx) {
     maxstep = vec_step[idx];
     int nskip = 3 * static_cast<int>(
-                        std::floor(maxstep / ((vec_w[1] - vec_w[0]) * 0.003))) +
+                        std::floor(maxstep / ((vecW[1] - vecW[0]) * 0.003))) +
                 1;
 
     Full1D::SEM sem(prem, maxstep, NQ, lval);
     std::cout << "\nDoing step: " << maxstep << ", nskip: " << nskip << "\n";
 
-    MATRIX vec_raw = mytest.spectra(myff, sem, prem, cmt, params, nskip);
-    vec_raw *= norm_factor;
+    MatrixC vecRaw = specSolver.spectra(myff, sem, prem, cmt, params, nskip);
+    vecRaw *= normFactor;
 
     // Process responses
-    auto vec_r2t_b = processfunctions::freq2time(vec_raw, myff);
-    auto a_filt0 = processfunctions::fulltime2freq(vec_r2t_b, myff, 0.05);
-    auto vec_filt_t = processfunctions::filtfreq2time(a_filt0, myff, false);
-    auto a_filt = processfunctions::fulltime2freq(vec_filt_t, myff, hann_w);
+    auto vecR2TB = processfunctions::freq2time(vecRaw, myff);
+    auto aFilt0 = processfunctions::fulltime2freq(vecR2TB, myff, 0.05);
+    auto vecFiltT = processfunctions::filtfreq2time(aFilt0, myff, false);
+    auto aFilt = processfunctions::fulltime2freq(vecFiltT, myff, hannW);
 
-    vec_final_w.push_back(a_filt);
-    vec_final_t.push_back(vec_filt_t);
+    vec_final_w.push_back(aFilt);
+    vec_final_t.push_back(vecFiltT);
   }
 
   // --- 7. Error Calculation ---
@@ -212,7 +212,7 @@ main() {
 
   file_w << std::fixed << std::setprecision(22);
   for (std::size_t idx = 0; idx < myff.i2() + 100; ++idx) {
-    file_w << (vec_w[idx] * nval * 1000.0 / TWO_PI);
+    file_w << (vecW[idx] * nval * 1000.0 / TWO_PI);
     for (std::size_t idx2 = 0; idx2 < vec_step.size(); ++idx2) {
       file_w << ";" << vec_final_w[idx2](0, idx).real() << ';'
              << vec_final_w[idx2](0, idx).imag() << ';'

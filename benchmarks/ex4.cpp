@@ -36,7 +36,7 @@
 
 int
 main() {
-  using MATRIX = Eigen::MatrixXcd;
+  using MatrixC = Eigen::MatrixXcd;
 
   Timer timer1;
 
@@ -45,10 +45,10 @@ main() {
   auto timenorm = norm_class.TimeNorm();
 
   // get paths required for input parameters and Earth model
-  std::string param_path =
+  std::string paramPath =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex4.txt";
-  InputParameters params(param_path);
-  std::string earth_model_path =
+  InputParameters params(paramPath);
+  std::string earthModelPath =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
   SRInfo srInfo(params);
@@ -69,49 +69,49 @@ main() {
                                tout, df0, wtb, t1, t2, qex, timenorm);
 
   // --- 4. Earth Model and Source ---
-  auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, norm_class, "true");
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   // --- 5. Compute Raw Frequency-Domain Spectra ---
-  SPARSESPEC::SparseFSpec mytest;
+  SPARSESPEC::SparseFSpec specSolver;
 
   timer1.start();
-  MATRIX vec_raw = mytest.spectra(myff, prem, cmt, params, NQ, srInfo,
+  MatrixC vecRaw = specSolver.spectra(myff, prem, cmt, params, NQ, srInfo,
                                   params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 
   // --- 6. Post-processing (Freq -> Time -> Filter) ---
-  auto vec_r2t_b = processfunctions::freq2time(vec_raw, myff);
-  auto a_filt0 = processfunctions::fulltime2freq(vec_r2t_b, myff, 0.01);
-  auto vec_filt_t = processfunctions::filtfreq2time(a_filt0, myff, false);
+  auto vecR2TB = processfunctions::freq2time(vecRaw, myff);
+  auto aFilt0 = processfunctions::fulltime2freq(vecR2TB, myff, 0.01);
+  auto vecFiltT = processfunctions::filtfreq2time(aFilt0, myff, false);
 
   // Dimensionalise to acceleration (m/s^2)
   double accel_norm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
-  vec_filt_t *= accel_norm;
+  vecFiltT *= accel_norm;
 
   //////////////////////////////////////////////////////////////////////////////
   // --- 7. Write Record Section to File ---
-  std::string pathtofile =
+  std::string pathToFile =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex4.out";
-  std::ofstream file(pathtofile);
+  std::ofstream file(pathToFile);
 
   // Safety check to ensure the file opened successfully
   if (!file) {
-    std::cerr << "Error: unable to open output file: " << pathtofile << "\n";
+    std::cerr << "Error: unable to open output file: " << pathToFile << "\n";
     return 1;
   }
 
   file << std::fixed << std::setprecision(22);
 
-  for (std::size_t idx = 0; idx < static_cast<std::size_t>(vec_filt_t.cols());
+  for (std::size_t idx = 0; idx < static_cast<std::size_t>(vecFiltT.cols());
        ++idx) {
     double t_sec = idx * myff.dt() * prem.TimeNorm();
     file << t_sec;
 
     for (int jidx = 0; jidx < params.num_receivers(); ++jidx) {
-      file << ';' << vec_filt_t(3 * jidx + 0, idx) << ';'
-           << vec_filt_t(3 * jidx + 1, idx) << ';'
-           << vec_filt_t(3 * jidx + 2, idx);
+      file << ';' << vecFiltT(3 * jidx + 0, idx) << ';'
+           << vecFiltT(3 * jidx + 1, idx) << ';'
+           << vecFiltT(3 * jidx + 2, idx);
     }
     file << '\n';
 

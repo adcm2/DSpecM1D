@@ -7,8 +7,8 @@ namespace Full1D {
 
 Eigen::MatrixXcd
 SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
-  int NQ = _mesh.NN();
-  totlen = this->ltgR(1, _mesh.NE() - 1, NQ - 1) + 1;
+  int NQ = m_mesh.NN();
+  totlen = this->ltgR(1, m_mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
 
   double rad_source = _SourceRadius(cmt);
@@ -20,11 +20,11 @@ SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
 
   double lprefac = 1.0;
 
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_source) && (_mesh.EUR(idx) > rad_source)) {
-      stdvec vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_source) && (m_mesh.EUR(idx) > rad_source)) {
+      stdvec vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
@@ -41,14 +41,14 @@ SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
     };
   };
 
-  vec_lforce *= (1.0 / _moment_norm);
+  vec_lforce *= (1.0 / m_momentNorm);
   return vec_lforce;
 };
 
 Eigen::MatrixXcd
 SEM::calculateForceRedR(SourceInfo::EarthquakeCMT &cmt) {
-  int NQ = _mesh.NN();
-  totlen = this->ltgR(1, _mesh.NE() - 1, NQ - 1) + 1;
+  int NQ = m_mesh.NN();
+  totlen = this->ltgR(1, m_mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
 
   double rad_source = _SourceRadius(cmt);
@@ -58,11 +58,11 @@ SEM::calculateForceRedR(SourceInfo::EarthquakeCMT &cmt) {
                        GSHTrans::Single, GSHTrans::ColumnMajor>(0, 0, 0, 0.0);
   Complex y0c = wigdmat[0][0, 0];
 
-  for (int idx = 0; idx < _mesh.NE(); ++idx) {
-    if ((_mesh.ELR(idx) <= rad_source) && (_mesh.EUR(idx) > rad_source)) {
-      stdvec vec_nodes(_mesh.NN(), 0.0);
-      for (int idxn = 0; idxn < _mesh.NN(); ++idxn)
-        vec_nodes[idxn] = _mesh.NodeRadius(idx, idxn);
+  for (int idx = 0; idx < m_mesh.NE(); ++idx) {
+    if ((m_mesh.ELR(idx) <= rad_source) && (m_mesh.EUR(idx) > rad_source)) {
+      stdvec vec_nodes(m_mesh.NN(), 0.0);
+      for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
+        vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
@@ -79,7 +79,7 @@ SEM::calculateForceRedR(SourceInfo::EarthquakeCMT &cmt) {
     };
   };
 
-  vec_lforce *= (1.0 / _moment_norm);
+  vec_lforce *= (1.0 / m_momentNorm);
   return vec_lforce;
 };
 

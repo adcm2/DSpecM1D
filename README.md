@@ -66,11 +66,11 @@ configure step. An internet connection is required on first build.
 
 | Option | Default | Description |
 |---|---|---|
-| `BUILD_BENCHMARKS` | `ON` | Build the benchmark executables |
-| `BUILD_TUTORIALS` | `ON` | Build the tutorial executables |
+| `DSPECM1D_BUILD_BENCHMARKS` | `ON` | Build the benchmark executables |
+| `DSPECM1D_BUILD_TUTORIALS` | `ON` | Build the tutorial executables |
 
 ```bash
-cmake .. -DBUILD_BENCHMARKS=OFF -DBUILD_TUTORIALS=ON
+cmake .. -DDSPECM1D_BUILD_BENCHMARKS=OFF -DDSPECM1D_BUILD_TUTORIALS=ON
 ```
 
 ---
@@ -97,7 +97,7 @@ the pipeline.
 The input file controls all aspects of the simulation. Key fields are:
 
 ```
-earth_model    prem.txt        # path relative to data/
+earth_model    models/prem.200.no.noatten.txt   # path relative to data/
 lmax           200             # maximum angular degree
 NQ             5               # GLL quadrature points per element
 f1  0.3  f2  10.0              # passband corners (mHz)
@@ -116,16 +116,18 @@ output_type  2                 # 0=displacement, 1=velocity, 2=acceleration
 DSpecM1D_Draft/
 ├── DSpecM1D/
 │   └── src/
-│       ├── spectra_master.h   # Core SEM class (SEM)
-│       ├── mesh_model.h       # Material parameter interpolation
-│       ├── input_parser.h     # Parameter file reader
+│       ├── SpectraMaster.h    # Core SEM orchestration
+│       ├── MeshModel.h        # Material parameter interpolation
+│       ├── InputParser.h      # Parameter file reader
+│       ├── InputParametersNew.h
+│       ├── SignalFiltering.h
 │       └── ...
 ├── benchmarks/                # Benchmark executables
 ├── tutorials/
 │   └── t1.cpp                 # Tutorial 1: basic seismogram synthesis
 ├── data/
 │   ├── params/                # Input parameter files
-│   └── prem.txt               # Reference Earth model
+│   └── models/                # Reference Earth model files (PREM variants)
 ├── cmake/                     # CMake helper modules
 └── CMakeLists.txt
 ```
@@ -142,8 +144,7 @@ All quantities are non-dimensionalised against three reference scales:
 | Density | ρ_ref = 5515 kg m⁻³ |
 | Time | `1 / √(π G ρ_ref)` |
 
-These are encapsulated in the `prem_norm<FLOAT>` helper class defined in each
-executable.
+These are encapsulated by the normalization helper in `DSpecM1D/src/NormClass.h`.
 
 ---
 

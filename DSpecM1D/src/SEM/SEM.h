@@ -1,5 +1,5 @@
-#ifndef SEM_H
-#define SEM_H
+#ifndef DSPECM1D_SEM_H
+#define DSPECM1D_SEM_H
 
 #include <iostream>
 #include <iomanip>
@@ -28,17 +28,17 @@ private:
   using SMAT = Eigen::SparseMatrix<double>;
 
   // mesh
-  EarthMesh::RadialMesh _mesh;
-  MeshModel _mesh_model;
+  EarthMesh::RadialMesh m_mesh;
+  MeshModel m_meshModel;
 
   // integers for calc
-  int _lmax, _il, _el = 0, _eu = 0, _en = 0, numlen = 0, _k2 = 0, _solint = 0,
-                  _NQ;
+  int m_lmax, _il, m_el = 0, m_eu = 0, _en = 0, numlen = 0, _k2 = 0, _solint = 0,
+                  m_nq;
 
   // dealing with fluid regions
-  bool _has_fluid = false;
-  std::vector<int> _vec_fluid, fsb, vec_offset{0};
-  std::vector<bool> _vec_dof;
+  bool m_hasFluid = false;
+  std::vector<int> m_vecFluid, m_fsb, m_vecOffset{0};
+  std::vector<bool> m_vecDof;
 
   // matrix parameters
   std::size_t mlen, totlen;
@@ -53,20 +53,20 @@ private:
   double bigg_db;
   double frequencynorm = std::sqrt(pi_db * bigg_nd * densitynorm);
   double normint;
-  double _freq_norm, _length_norm, _moment_norm;
+  double m_frequencyNorm, m_lengthNorm, m_momentNorm;
 
   // base sparse matrices
-  SMAT mat_inertia_0, mat_ke_0, mat_ke_0_atten, mat_in_t_base;
+  SMAT m_matInertia0, m_matKe0, m_matKe0Atten, m_matInTBase;
 
   // private helpers
   double _SourceRadius(const SourceInfo::EarthquakeCMT &cmt) const {
-    return _mesh.PR() - 1000.0 * cmt.Depth() / _length_norm;
+    return m_mesh.PR() - 1000.0 * cmt.Depth() / m_lengthNorm;
   }
   double _ReceiverRadius(const InputParameters &param) const {
-    return _mesh.PR() - 1000.0 * param.receiver_depth() / _length_norm;
+    return m_mesh.PR() - 1000.0 * param.receiver_depth() / m_lengthNorm;
   }
-  std::vector<SMAT> vec_ke_t_base, vec_ke_t_atten, vec_ke_s_base,
-      vec_ke_s_atten, vec_in_s_base;
+  std::vector<SMAT> m_vecKeTBase, m_vecKeTAtten, m_vecKeSBase,
+      m_vecKeSAtten, m_vecInSBase;
 
 public:
   SEM() {};
@@ -77,16 +77,16 @@ public:
   auto ltgS(int, int, int) const;
   auto ltgT(int, int) const;
   auto ltgR(int, int, int) const;
-  auto el() const { return _el; };
-  auto eu() const { return _eu; };
+  auto el() const { return m_el; };
+  auto eu() const { return m_eu; };
 
   // source / receiver element queries
   auto receiverElements(InputParameters &) const;
   auto sourceElement(SourceInfo::EarthquakeCMT &) const;
 
   // accessors
-  const EarthMesh::RadialMesh &mesh() const { return _mesh; };
-  const MeshModel &meshModel() const { return _mesh_model; };
+  const EarthMesh::RadialMesh &mesh() const { return m_mesh; };
+  const MeshModel &meshModel() const { return m_meshModel; };
 
   // spheroidal force vectors
   Eigen::MatrixXcd calculateForce(SourceInfo::EarthquakeCMT &, int);
@@ -114,9 +114,9 @@ public:
   SMAT pS(int) const;
   SMAT hTk(int) const;
   SMAT pTk(int) const;
-  SMAT hR() const { return mat_ke_0; };
-  SMAT hRa() const { return mat_ke_0_atten; };
-  SMAT pR() const { return mat_inertia_0; };
+  SMAT hR() const { return m_matKe0; };
+  SMAT hRa() const { return m_matKe0Atten; };
+  SMAT pR() const { return m_matInertia0; };
 
   // spheroidal receiver vectors
   Eigen::MatrixXcd rvFull(InputParameters &, int);
@@ -152,4 +152,4 @@ public:
 #include "SEMForceRadial.h"
 #include "SEMReceivers.h"
 
-#endif   // SEM_H
+#endif   // DSPECM1D_SEM_H
