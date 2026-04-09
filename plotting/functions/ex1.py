@@ -45,15 +45,56 @@ norm_z = np.max(np.abs(yspec_z)) * 1.01  # Add small buffer
 # Calculate relative difference
 yspec_diff = np.abs(yspec_z - trans_z) / norm_z * 100
 yspec_av_diff = np.mean(yspec_diff)
+specnm_diff = np.abs(trans_z - specnm_z) / norm_z * 100
+specnm_av_diff = np.mean(specnm_diff)
 
-print(f"Average relative difference (Z): {yspec_av_diff:.4f} %")
-print(f"Maximum relative difference (Z): {np.max(yspec_diff):.4f} %")
+print(f"Average relative difference with yspec  (Z): {yspec_av_diff:.4f} %")
+print(f"Maximum relative difference with yspec  (Z): {np.max(yspec_diff):.4f} %")
+print(f"Average relative difference with specnm (Z): {specnm_av_diff:.4f} %")
+print(f"Maximum relative difference with specnm (Z): {np.max(specnm_diff):.4f} %")
 
 # --- 6. Plot Data ---
 # Add small offset (1e-3) to avoid log scale issues if used later, or just visual base
 ax_data.plot(time_vector, yspec_z/norm_z + 1e-3, "b", linewidth=lwidth, label='YSpec')
 ax_data.plot(time_vector, trans_z/norm_z + 1e-3, "r--", linewidth=lwidth, label='DSpecM1D')
 ax_data.plot(time_vector, specnm_z/norm_z + 1e-3, "g-.", linewidth=lwidth, label='SpecNM')
+
+
+def get_modes_in_range(fmin, fmax):
+    mode_files = [
+        "/home/adcm2/space/c++/mineos/DEMO/MYEX/lf_prem_R",
+        "/home/adcm2/space/c++/mineos/DEMO/MYEX/lf_prem_S"
+    ]
+    modes = []
+    for filepath in mode_files:
+        try:
+            with open(filepath, 'r') as f:
+                lines = f.readlines()
+                start_idx = 0
+                for i, line in enumerate(lines):
+                    if "mode" in line and "phs vel" in line and "w(mhz)" in line:
+                        start_idx = i + 2
+                        break
+                if start_idx > 0:
+                    for line in lines[start_idx:]:
+                        if not line.strip():
+                            continue
+                        parts = line.split()
+                        if len(parts) >= 5:
+                            try:
+                                n = parts[0]
+                                type_mode = parts[1].upper()
+                                l = parts[2]
+                                freq = float(parts[4])
+                                if fmin <= freq <= fmax:
+                                    name = f'${{_{n}}}${type_mode}${{_{{{l}}}}}$'
+                                    modes.append((name, freq))
+                            except ValueError:
+                                pass
+        except FileNotFoundError:
+            pass
+    modes.sort(key=lambda x: x[1])
+    return [m[0] for m in modes], [m[1] for m in modes]
 
 # --- 7. Inset Plot (Zoomed Region) ---
 # Create inset axes in the TOP LEFT corner
@@ -114,9 +155,24 @@ fig.add_artist(con1)
 rect = plt.Rectangle((x1, y1), x2-x1, y2-y1, facecolor='none', edgecolor='black', linewidth=lwidth2)
 ax_data.add_patch(rect)
 
-names = [r'${}_0$S${}_2$', r'${}_2$S${}_1$', r'${}_0$S${}_3$']
-xvalues = [0.3108, 0.4063, 0.4713]
-yvalues = [0.0832, 0.0096, 0.0556]
+
+names, xvalues = get_modes_in_range(zoom_fmin, zoom_fmax)
+print(names)
+print(xvalues)
+yvalues = []
+for x in xvalues:
+    idx = np.searchsorted(zoom_x, x)
+    if idx < len(zoom_x):
+        window = 3
+        start_w = max(0, idx - window)
+        end_w = min(len(zoom_x), idx + window + 1)
+        y_val1 = np.max(zoom_y_yspec[start_w:end_w]) if len(zoom_y_yspec[start_w:end_w]) > 0 else 0
+        y_val2 = np.max(zoom_y_trans[start_w:end_w]) if len(zoom_y_trans[start_w:end_w]) > 0 else 0
+        y_val3 = np.max(zoom_y_specnm[start_w:end_w]) if len(zoom_y_specnm[start_w:end_w]) > 0 else 0
+        yvalues.append(max(y_val1, y_val2, y_val3))
+    else:
+        yvalues.append(0.05)
+
 
 for i, name in enumerate(names):
     ax_ins.axvline(xvalues[i], ymin=0,ymax=(yvalues[i]+0.002)/y2, color='black', linestyle='--', linewidth=lwidth2)
@@ -177,16 +233,32 @@ fig.add_artist(con2_b)
 rect2 = plt.Rectangle((x1_2, y1_2), x2_2-x1_2, y2_2-y1_2, facecolor='none', edgecolor='black', linewidth=lwidth2)
 ax_data.add_patch(rect2)
 
-names2 = [r'${}_4$S${}_4$', r'${}_1$S${}_{11}$', r'${}_5$S${}_4$',r'${}_2$S${}_{10}$', r'${}_6$S${}_2$', r'${}_0$S${}_{16}$',r'${}_2$S${}_0$',r'${}_7$S${}_2$']
-xvalues2 = [2.292460, 2.359480, 2.387861, 2.425544, 2.460181, 2.472586,2.513545 ,2.532304]
-yvalues2 = [0.081, 0.57, 0.12, 0.35, 0.005, 0.4, 0.007, 0.026] 
+
+names2, xvalues2 = get_modes_in_range(zoom2_fmin, zoom2_fmax)
+print(names2)
+print(xvalues2)
+yvalues2 = []
+for x in xvalues2:
+    idx = np.searchsorted(zoom2_x, x)
+    if idx < len(zoom2_x):
+        window = 3
+        start_w = max(0, idx - window)
+        end_w = min(len(zoom2_x), idx + window + 1)
+        y_val1 = np.max(zoom2_y_yspec[start_w:end_w]) if len(zoom2_y_yspec[start_w:end_w]) > 0 else 0
+        y_val2 = np.max(zoom2_y_trans[start_w:end_w]) if len(zoom2_y_trans[start_w:end_w]) > 0 else 0
+        y_val3 = np.max(zoom2_y_specnm[start_w:end_w]) if len(zoom2_y_specnm[start_w:end_w]) > 0 else 0
+        yvalues2.append(max(y_val1, y_val2, y_val3))
+    else:
+        yvalues2.append(0.05)
+ 
 
 for i, name in enumerate(names2):
     ax_ins2.axvline(xvalues2[i], ymin=0,ymax=(yvalues2[i] + 0.01)/y2_2, color='black', linestyle='--', linewidth=lwidth2)
-    if i in [0,1,2,3,5,6,7]:  # For the more prominent peaks, place label above the line
+
+    if i % 2 == 0:  # Alternate label placement height for clear reading
         ax_ins2.text(xvalues2[i], yvalues2[i] + 0.01, name, fontsize=14, fontweight='bold', ha='center')
-    else:  # For smaller peaks, place label slightly above the line to avoid overlap
-        ax_ins2.text(xvalues2[i]-0.01, yvalues2[i] + 0.015, name, fontsize=14, fontweight='bold', ha='center')
+    else:  
+        ax_ins2.text(xvalues2[i], yvalues2[i] + 0.02, name, fontsize=14, fontweight='bold', ha='center')
 
 
 # --- 8. Styling ---

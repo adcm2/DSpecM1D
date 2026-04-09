@@ -50,6 +50,7 @@ time_vector = dmf[lowidx:upidx, 0]
 dspecm_z, dspecm_n, dspecm_e = dmf[lowidx:upidx, 1], dmf[lowidx:upidx, 2], dmf[lowidx:upidx, 3]
 yspec_z, yspec_n, yspec_e = dmf[lowidx:upidx, 4], dmf[lowidx:upidx, 5], dmf[lowidx:upidx, 6]
 mineos_z, mineos_n, mineos_e = dmf[lowidx:upidx, 7], dmf[lowidx:upidx, 8], dmf[lowidx:upidx, 9]
+specnm_z, specnm_n, specnm_e = dmf[lowidx:upidx, 10], dmf[lowidx:upidx, 11], dmf[lowidx:upidx, 12]
 
 # --- Define Time Limits ---
 tlow = time_vector[0]
@@ -65,21 +66,39 @@ yspec_diff_z = np.abs(yspec_z - dspecm_z) / norm_z * 100
 yspec_av_diff_z = np.mean(yspec_diff_z)
 mineos_diff_z = np.abs(mineos_z - dspecm_z) / norm_z * 100
 mineos_av_diff_z = np.mean(mineos_diff_z)
+specnm_diff_z = np.abs(specnm_z - dspecm_z) / norm_z * 100
+specnm_av_diff_z = np.mean(specnm_diff_z)
+specnm_yspec_diff_z = np.abs(specnm_z - yspec_z) / norm_z * 100
+specnm_yspec_av_diff_z = np.mean(specnm_yspec_diff_z)
 
 yspec_diff_n = np.abs(yspec_n - dspecm_n) / norm_n * 100
 yspec_av_diff_n = np.mean(yspec_diff_n)
 mineos_diff_n = np.abs(mineos_n - dspecm_n) / norm_n * 100
 mineos_av_diff_n = np.mean(mineos_diff_n)
+specnm_diff_n = np.abs(specnm_n - dspecm_n) / norm_n * 100
+specnm_av_diff_n = np.mean(specnm_diff_n)
+specnm_yspec_diff_n = np.abs(specnm_n - yspec_n) / norm_n * 100
+specnm_yspec_av_diff_n = np.mean(specnm_yspec_diff_n)
 
 yspec_diff_e = np.abs(yspec_e - dspecm_e) / norm_e * 100
 yspec_av_diff_e = np.mean(yspec_diff_e)
 mineos_diff_e = np.abs(mineos_e - dspecm_e) / norm_e * 100
 mineos_av_diff_e = np.mean(mineos_diff_e)
+specnm_diff_e = np.abs(specnm_e - dspecm_e) / norm_e * 100
+specnm_av_diff_e = np.mean(specnm_diff_e)
+specnm_yspec_diff_e = np.abs(specnm_e - yspec_e) / norm_e * 100
+specnm_yspec_av_diff_e = np.mean(specnm_yspec_diff_e)
 
 # print max relative differences for debugging
-print(f"Max relative difference for Z: YSpec={np.max(yspec_diff_z):.2f} %, MINEOS={np.max(mineos_diff_z):.2f} %")
-print(f"Max relative difference for N: YSpec={np.max(yspec_diff_n):.2f} %, MINEOS={np.max(mineos_diff_n):.2f} %")
-print(f"Max relative difference for E: YSpec={np.max(yspec_diff_e):.2f} %, MINEOS={np.max(mineos_diff_e):.2f} %")
+print(f"Max relative difference for Z: YSpec={np.max(yspec_diff_z):.2f} %, MINEOS={np.max(mineos_diff_z):.2f} %, specnm={np.max(specnm_diff_z):.2f} %")
+print(f"Max relative difference for N: YSpec={np.max(yspec_diff_n):.2f} %, MINEOS={np.max(mineos_diff_n):.2f} %, specnm={np.max(specnm_diff_n):.2f} %")
+print(f"Max relative difference for E: YSpec={np.max(yspec_diff_e):.2f} %, MINEOS={np.max(mineos_diff_e):.2f} %, specnm={np.max(specnm_diff_e):.2f} %")
+print(f"Max relative difference between specnm and yspec for Z: {np.max(specnm_yspec_diff_z):.2f} %")
+print(f"Max relative difference between specnm and yspec for N: {np.max(specnm_yspec_diff_n):.2f} %")
+print(f"Max relative difference between specnm and yspec for E: {np.max(specnm_yspec_diff_e):.2f} %")
+print(f"Average relative difference between specnm and yspec for Z: {specnm_yspec_av_diff_z:.2f} %")
+print(f"Average relative difference between specnm and yspec for N: {specnm_yspec_av_diff_n:.2f} %")
+print(f"Average relative difference between specnm and yspec for E: {specnm_yspec_av_diff_e:.2f} %")
 
 # scale the data by the normalization factors for better visualization
 yspec_z /= norm_z
@@ -91,6 +110,9 @@ dspecm_e /= norm_e
 mineos_z /= norm_z
 mineos_n /= norm_n
 mineos_e /= norm_e
+specnm_z /= norm_z
+specnm_n /= norm_n
+specnm_e /= norm_e
 # =============================================================================
 # 3. FIGURE SETUP & PLOTTING
 # =============================================================================
@@ -104,22 +126,25 @@ plt.rc('ytick', labelsize=16)
 # --- Plot Z Component (Top) ---
 ax_data = axes[0]
 ax_data.plot(time_vector, yspec_z/1.01, "b", linewidth=lwidth, label='YSpec')
-ax_data.plot(time_vector, mineos_z/1.01, "g--", linewidth=lwidth, label='MINEOS')
+# ax_data.plot(time_vector, mineos_z/1.01, "g--", linewidth=lwidth, label='MINEOS')
 ax_data.plot(time_vector, dspecm_z/1.01, "r-.", linewidth=lwidth, label='DSpecM1D')
+ax_data.plot(time_vector, specnm_z/1.01, "m:", linewidth=lwidth, label='SpecNM')
 
 
 # --- Plot North Component (Middle) ---
 ax_data = axes[1]
 ax_data.plot(time_vector, yspec_n/1.01, "b", linewidth=lwidth)
-ax_data.plot(time_vector, mineos_n/1.01, "g--", linewidth=lwidth)
+# ax_data.plot(time_vector, mineos_n/1.01, "g--", linewidth=lwidth)
 ax_data.plot(time_vector, dspecm_n/1.01, "r-.", linewidth=lwidth)
+ax_data.plot(time_vector, specnm_n/1.01, "m:", linewidth=lwidth)
 
 
 # --- Plot East Component (Bottom) ---
 ax_data = axes[2]
 ax_data.plot(time_vector, yspec_e/1.01, "b", linewidth=lwidth)
-ax_data.plot(time_vector, mineos_e/1.01, "g--", linewidth=lwidth)
+# ax_data.plot(time_vector, mineos_e/1.01, "g--", linewidth=lwidth)
 ax_data.plot(time_vector, dspecm_e/1.01, "r-.", linewidth=lwidth)
+ax_data.plot(time_vector, specnm_e/1.01, "m:", linewidth=lwidth)
 
 
 # =============================================================================
@@ -195,15 +220,15 @@ for ax in axes:
 # --- Add Text Annotations ---
 txval = tlow 
 axes[0].text(txval, 0.8 * z_mval, f"{yspec_av_diff_z:.2f} %", fontsize=M_SIZE, color='black')
-axes[0].text(txval, 0.6 * z_mval, f"{mineos_av_diff_z:.2f} %", fontsize=M_SIZE, color='green')
+axes[0].text(txval, 0.6 * z_mval, f"{specnm_av_diff_z:.2f} %", fontsize=M_SIZE, color='green')
 axes[0].text(tup, -z_mval, "Z displacement", fontsize=BIGGER_SIZE, color='black', ha='right')
 
 axes[1].text(txval, 0.8 * n_mval, f"{yspec_av_diff_n:.2f} %", fontsize=M_SIZE, color='black')
-axes[1].text(txval, 0.6 * n_mval, f"{mineos_av_diff_n:.2f} %", fontsize=M_SIZE, color='green')
+axes[1].text(txval, 0.6 * n_mval, f"{specnm_av_diff_n:.2f} %", fontsize=M_SIZE, color='green')
 axes[1].text(tup, -n_mval, "N displacement", fontsize=BIGGER_SIZE, color='black', ha='right')
 
 axes[2].text(txval, 0.8 * e_mval, f"{yspec_av_diff_e:.2f} %", fontsize=M_SIZE, color='black')
-axes[2].text(txval, 0.6 * e_mval, f"{mineos_av_diff_e:.2f} %", fontsize=M_SIZE, color='green')
+axes[2].text(txval, 0.6 * e_mval, f"{specnm_av_diff_e:.2f} %", fontsize=M_SIZE, color='green')
 axes[2].text(tup, - e_mval, "E displacement", fontsize=BIGGER_SIZE, color='black', ha='right')
 
 

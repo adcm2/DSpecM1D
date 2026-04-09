@@ -86,8 +86,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 
   MatrixC vecRaw = MatrixC::Zero(3 * params.num_receivers(), vecW.size());
 
+  // std::cout << "Just before max step printout\n";
   for (auto s : maxSteps)
     std::cout << "Max step: " << s << "\n";
+  // std::cout << "Just after max step printout\n\n";
 
   // build one SEM per chunk
   std::vector<Full1D::SEM> sems;
@@ -164,20 +166,36 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           Full1D::SEM &sem = sems[idxChunk];
           auto idxSource = sem.sourceElement(cmt);
           auto recElems = sem.receiverElements(params);
+          for (auto idxelem : recElems) {
+            if (idxelem < sem.el() || idxelem >= sem.eu()) {
+              throw std::runtime_error(
+                  "Receiver element out of SEM range in toroidal mode loop.");
+            }
+          }
+          // std::cout << "Debug 0\n";
           auto lowidx = sem.ltgT(recElems[0], 0);
+          // std::cout << "Debug 1\n";
           auto upidx = sem.ltgT(recElems.back(), NQ - 1) + 1;
+          // std::cout << "Debug 2\n";
           int lenidx = upidx - lowidx;
-          auto lentor = sem.ltgT(sem.mesh().NE() - 1, NQ - 1) + 1;
+          auto lentor = sem.ltgT(sem.eu() - 1, NQ - 1) + 1;
+          // std::cout << "Debug 3\n";
+
           SparseMatrixC hTor = sem.hTk(idxl).cast<Complex>();
           SparseMatrixC pTor = sem.pTk(idxl).cast<Complex>();
           SparseMatrixC hTorAtten = sem.hTa(idxl).cast<Complex>();
           hTor.makeCompressed();
           pTor.makeCompressed();
           hTorAtten.makeCompressed();
+
+          // std::cout << "Debug 4\n";
           MatrixC fVals = sem.calculateForceRedCoefficientsT(cmt, idxl, 0.0);
+          // std::cout << "Debug 5\n";
           MatrixC redC = rvVals * fVals;
           MatrixC fBase = sem.calculateForceAllT(cmt, idxl);
+          // std::cout << "Debug 6\n";
           MatrixC rvBase = sem.rvBaseFullT(params, idxl);
+          // std::cout << "Debug 7\n";
           auto ridxtor = SpectralTools::allIndicesTor(
               sem, idxl, freqChunks[idxChunk], idxSource, nskip);
           auto i1 = idxChunks[idxChunk][0];

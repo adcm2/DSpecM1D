@@ -125,6 +125,12 @@ main() {
   auto aFilt = processfunctions::fulltime2freq(vecFiltT, myff, hannW);
 
   //////////////////////////////////////////////////////////////////////////////
+  // --- 7. Signal Filtering ---
+  DSpecM::FilterOptions filterOptions;
+  filterOptions.preTaper = 0.05;
+  filterOptions.finalTaper = hannW;
+  filterOptions.passes = 1;
+  filterOptions.enforceRealSignal = false;
 
   // --- 7. Read and Process YSpec Data ---
   std::string yspec_path = std::string(PROJECT_BUILD_DIR) +
@@ -155,13 +161,12 @@ main() {
 
   auto vecFiltTYSpec =
       processfunctions::filtfreq2time(a_yspec_stf0, myff, false);
-  auto aFiltYSpec =
-      processfunctions::fulltime2freq(vecFiltTYSpec, myff, hannW);
+  auto aFiltYSpec = processfunctions::fulltime2freq(vecFiltTYSpec, myff, hannW);
 
   // --- 8. Read and Process MinEOS Data ---
-  std::string mineos_base =
-      std::string(PROJECT_BUILD_DIR) +
-      "../../mineos/DEMO/MYEX/Syndat_ASC_BOLIVIA/Syndat2.2000160: 0:33:16.TLY.";
+  std::string mineos_base = std::string(PROJECT_BUILD_DIR) +
+                            "../../mineos/DEMO/MYEX/Syndat2_ASC_BOLIVIA/"
+                            "Syndat2.2000160: 0:33:16.TLY.";
   MINEOSREADER::DataColumns mineos_data(mineos_base + "LHZ.ASC");
   MINEOSREADER::DataColumns mineos_data1(mineos_base + "LHN.ASC");
   MINEOSREADER::DataColumns mineos_data2(mineos_base + "LHE.ASC");
@@ -194,6 +199,17 @@ main() {
   auto a_filt_mineos =
       processfunctions::fulltime2freq(vec_filt_t_mineos, myff, hannW);
 
+  // --- 9. Read and Process SpecNM Data ---
+  std::string specnm_path = std::string(PROJECT_BUILD_DIR) +
+                            "../../specnm/outputs/"
+                            "seismogram_mf_traces_semicolon.txt";
+  Eigen::MatrixXd specnm_t =
+      DSpecM::loadSpecnmTimeSeries(specnm_path, vecFiltT.cols());
+
+  auto filteredSpecnm = DSpecM::applyFilter(specnm_t, myff, filterOptions);
+  auto &vecFiltTSpecnm = filteredSpecnm.timeSeries;
+  auto &aFiltSpecnm = filteredSpecnm.frequencySeries;
+
   //////////////////////////////////////////////////////////////////////////////
   // --- 9. Output Frequency Spectrum ---
   std::string ptf_w =
@@ -213,14 +229,13 @@ main() {
            << std::abs(aFilt(0, idx)) << ';' << aFilt(1, idx).real() << ';'
            << aFilt(1, idx).imag() << ';' << std::abs(aFilt(1, idx)) << ';'
            << aFilt(2, idx).real() << ';' << aFilt(2, idx).imag() << ';'
-           << std::abs(aFilt(2, idx)) << ';' << aFiltYSpec(0, idx).real()
-           << ';' << aFiltYSpec(0, idx).imag() << ';'
-           << std::abs(aFiltYSpec(0, idx)) << ';'
-           << aFiltYSpec(1, idx).real() << ';' << aFiltYSpec(1, idx).imag()
-           << ';' << std::abs(aFiltYSpec(1, idx)) << ';'
-           << aFiltYSpec(2, idx).real() << ';' << aFiltYSpec(2, idx).imag()
-           << ';' << std::abs(aFiltYSpec(2, idx)) << ';'
-           << a_filt_mineos(0, idx).real() << ';'
+           << std::abs(aFilt(2, idx)) << ';' << aFiltYSpec(0, idx).real() << ';'
+           << aFiltYSpec(0, idx).imag() << ';' << std::abs(aFiltYSpec(0, idx))
+           << ';' << aFiltYSpec(1, idx).real() << ';'
+           << aFiltYSpec(1, idx).imag() << ';' << std::abs(aFiltYSpec(1, idx))
+           << ';' << aFiltYSpec(2, idx).real() << ';'
+           << aFiltYSpec(2, idx).imag() << ';' << std::abs(aFiltYSpec(2, idx))
+           << ';' << a_filt_mineos(0, idx).real() << ';'
            << a_filt_mineos(0, idx).imag() << ';'
            << std::abs(a_filt_mineos(0, idx)) << ';'
            << a_filt_mineos(1, idx).real() << ';'
@@ -228,7 +243,13 @@ main() {
            << std::abs(a_filt_mineos(1, idx)) << ';'
            << a_filt_mineos(2, idx).real() << ';'
            << a_filt_mineos(2, idx).imag() << ';'
-           << std::abs(a_filt_mineos(2, idx)) << '\n';
+           << std::abs(a_filt_mineos(2, idx)) << ";"
+           << aFiltSpecnm(0, idx).real() << ";" << aFiltSpecnm(0, idx).imag()
+           << ";" << std::abs(aFiltSpecnm(0, idx)) << ";"
+           << aFiltSpecnm(0, idx).real() << ";" << aFiltSpecnm(1, idx).imag()
+           << ";" << std::abs(aFiltSpecnm(1, idx)) << ";"
+           << aFiltSpecnm(2, idx).real() << ";" << aFiltSpecnm(2, idx).imag()
+           << ";" << std::abs(aFiltSpecnm(2, idx)) << '\n';
   }
   file_w.close();
 
@@ -251,7 +272,9 @@ main() {
            << vecFiltT(2, idx) << ';' << vecFiltTYSpec(0, idx) << ';'
            << vecFiltTYSpec(1, idx) << ';' << vecFiltTYSpec(2, idx) << ';'
            << vec_filt_t_mineos(0, idx) << ';' << vec_filt_t_mineos(1, idx)
-           << ';' << vec_filt_t_mineos(2, idx) << '\n';
+           << ';' << vec_filt_t_mineos(2, idx) << ";" << vecFiltTSpecnm(0, idx)
+           << ";" << vecFiltTSpecnm(1, idx) << ";" << vecFiltTSpecnm(2, idx)
+           << '\n';
 
     if (tval > t2 * 3600.0) {
       break;

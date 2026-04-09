@@ -43,7 +43,8 @@ private:
 
   static ModelType loadEarthModel(const std::string &modelPath) {
     prem_norm<double> normClass;
-    return EarthModels::ModelInput(modelPath, normClass, "true");
+    auto tmp = EarthModels::ModelInput(modelPath, normClass, "true");
+    return tmp;
   }
 
   InputParameters m_params;

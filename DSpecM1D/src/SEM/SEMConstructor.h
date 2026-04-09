@@ -25,6 +25,8 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
           std::pow(inp_model.LengthNorm() / inp_model.TimeNorm(), 2.0)},
       m_nq{NQ} {
 
+  // std::cout << "Radius etc of planet: " << inp_model.OuterRadius() << " m"
+  //           << std::endl;
   m_meshModel = MeshModel(m_mesh, inp_model);
 
   // -----------------------------------------------------------------------
@@ -119,6 +121,13 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
         }
       }
     }
+    // std::cout << "\nToroidal range: " << m_el << " to " << m_eu - 1
+    //           << ", total NE: " << m_mesh.NE() << std::endl;
+    // std::cout << "\nRadius range for toroidal modes: " << m_mesh.ELR(m_el)
+    //           << " to " << m_mesh.EUR(m_eu - 1) << std::endl;
+    // std::cout << "\nRadius range of uppermost fluid layer: "
+    //           << m_mesh.ELR(m_mesh.NE() - 1) << " to "
+    //           << m_mesh.EUR(m_mesh.NE() - 1) << std::endl;
 
     // radial inertia + stiffness matrices
     {
@@ -238,8 +247,12 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
   {
     using T = Eigen::Triplet<double>;
     std::vector<T> tpl_in_0, tpl_ke_1, tpl_ke_2, tpl_ke_a1, tpl_ke_a2;
-    auto ntdof = this->ltgT(m_mesh.NE() - 1, NQ - 1) + 1;
-
+    auto ntdof = this->ltgT(m_eu - 1, NQ - 1) + 1;
+    // std::cout << "Lower element: " << m_el << ", upper element: " << m_eu
+    //           << std::endl;
+    // std::cout << "Total toroidal DOFs: " << ntdof << std::endl;
+    // std::cout << "Correct DOF range: " << this->ltgT(m_el, 0) << " to "
+    // << this->ltgT(m_eu - 1, NQ - 1) << std::endl;
     for (int idxe = m_el; idxe < m_eu; ++idxe) {
       double elem_width = m_mesh.EW(idxe);
       for (int i = 0; i < q.N(); ++i) {

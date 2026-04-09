@@ -71,7 +71,7 @@ SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 Eigen::MatrixXcd
 SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = m_mesh.NN();
-  totlen = this->ltgT(m_mesh.NE() - 1, NQ - 1) + 1;
+  totlen = this->ltgT(this->eu() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -98,8 +98,7 @@ SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt,
-                                       int idxl) {
+SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int NQ = m_mesh.NN();
   totlen = this->ltgT(m_mesh.NE() - 1, NQ - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(2 * idxl + 1, 2);
@@ -142,8 +141,8 @@ SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt,
 };
 
 Eigen::MatrixXcd
-SEM::calculateForceRedCoefficientsT(SourceInfo::EarthquakeCMT &cmt,
-                                           int idxl, double az) {
+SEM::calculateForceRedCoefficientsT(SourceInfo::EarthquakeCMT &cmt, int idxl,
+                                    double az) {
   int maxn = 2;
   (maxn > idxl) ? maxn = idxl : maxn = maxn;
   Eigen::MatrixXcd vec_force = Eigen::MatrixXcd::Zero(2 * maxn + 1, 2);
