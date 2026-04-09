@@ -5,6 +5,7 @@
 #include <string>
 #include <Eigen/Core>
 #include "ReadYSpec.h"
+#include "ReadSpecnm.h"
 #include "ReadMineos.h"
 
 namespace DSpecM {
@@ -29,6 +30,23 @@ loadYSpecTimeSeries(const std::string &yspecPath, int ncols) {
   }
 
   return yspecT;
+}
+
+inline Eigen::MatrixXd
+loadSpecnmTimeSeries(const std::string &specnmPath, int ncols) {
+  SPECNMREADER::DataColumns specnmData(specnmPath);
+  const std::size_t maxCols = std::max(0, ncols);
+  Eigen::MatrixXd specnmT =
+      Eigen::MatrixXd::Zero(3, static_cast<Eigen::Index>(maxCols));
+
+  const std::size_t count = std::min(maxCols, specnmData.getColumn1().size());
+  for (std::size_t idx = 0; idx < count; ++idx) {
+    specnmT(0, static_cast<Eigen::Index>(idx)) = specnmData.getColumn2()[idx];
+    specnmT(1, static_cast<Eigen::Index>(idx)) = specnmData.getColumn3()[idx];
+    specnmT(2, static_cast<Eigen::Index>(idx)) = specnmData.getColumn4()[idx];
+  }
+
+  return specnmT;
 }
 
 inline Eigen::MatrixXd

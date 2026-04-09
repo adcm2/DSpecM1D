@@ -33,6 +33,11 @@ time_vector = dmf[idx_min:idx_max, 0]
 # --- 4. Extract Data Columns ---
 trans_z = dmf[idx_min:idx_max, 3]
 yspec_z = dmf[idx_min:idx_max, 12]
+# If a third comparison block exists in ex1_w.out, use its Z-abs column.
+# Otherwise, fall back to the second block to keep plotting compatible.
+specnm_col = 21 
+# if dmf.shape[1] > 21 else 12
+specnm_z = dmf[idx_min:idx_max, specnm_col]
 
 # --- 5. Calculate Statistics ---
 norm_z = np.max(np.abs(yspec_z)) * 1.01  # Add small buffer
@@ -48,6 +53,7 @@ print(f"Maximum relative difference (Z): {np.max(yspec_diff):.4f} %")
 # Add small offset (1e-3) to avoid log scale issues if used later, or just visual base
 ax_data.plot(time_vector, yspec_z/norm_z + 1e-3, "b", linewidth=lwidth, label='YSpec')
 ax_data.plot(time_vector, trans_z/norm_z + 1e-3, "r--", linewidth=lwidth, label='DSpecM1D')
+ax_data.plot(time_vector, specnm_z/norm_z + 1e-3, "g-.", linewidth=lwidth, label='SpecNM')
 
 # --- 7. Inset Plot (Zoomed Region) ---
 # Create inset axes in the TOP LEFT corner
@@ -67,13 +73,15 @@ idx_zmax = np.searchsorted(time_vector, zoom_fmax, side='right')
 zoom_x = time_vector[idx_zmin:idx_zmax]
 zoom_y_yspec = yspec_z[idx_zmin:idx_zmax]/norm_z + 1e-3
 zoom_y_trans = trans_z[idx_zmin:idx_zmax]/norm_z + 1e-3
+zoom_y_specnm = specnm_z[idx_zmin:idx_zmax]/norm_z + 1e-3
 
 # Plot data on inset
 ax_ins.plot(zoom_x, zoom_y_yspec, "b", linewidth=lwidth)
 ax_ins.plot(zoom_x, zoom_y_trans, "r--", linewidth=lwidth)
+ax_ins.plot(zoom_x, zoom_y_specnm, "g-.", linewidth=lwidth)
 
 # Calculate max value within the zoom range for the y-limit
-zoom_ymax = max(np.max(zoom_y_yspec), np.max(zoom_y_trans)) * 1.07
+zoom_ymax = max(np.max(zoom_y_yspec), np.max(zoom_y_trans), np.max(zoom_y_specnm)) * 1.07
 y1,y2 = 0, zoom_ymax  
 
 # Style Inset
@@ -128,13 +136,15 @@ idx_zmax2 = np.searchsorted(time_vector, zoom2_fmax, side='right')
 zoom2_x = time_vector[idx_zmin2:idx_zmax2]
 zoom2_y_yspec = yspec_z[idx_zmin2:idx_zmax2]/norm_z + 1e-3
 zoom2_y_trans = trans_z[idx_zmin2:idx_zmax2]/norm_z + 1e-3
+zoom2_y_specnm = specnm_z[idx_zmin2:idx_zmax2]/norm_z + 1e-3
 
 # Plot data on second inset
 ax_ins2.plot(zoom2_x, zoom2_y_yspec, "b", linewidth=lwidth)
 ax_ins2.plot(zoom2_x, zoom2_y_trans, "r--", linewidth=lwidth)
+ax_ins2.plot(zoom2_x, zoom2_y_specnm, "g-.", linewidth=lwidth)
 
 # Calculate max for y-limit
-zoom2_ymax = max(np.max(zoom2_y_yspec), np.max(zoom2_y_trans)) * 1.07
+zoom2_ymax = max(np.max(zoom2_y_yspec), np.max(zoom2_y_trans), np.max(zoom2_y_specnm)) * 1.07
 y1_2, y2_2 = 0, zoom2_ymax
 
 # Style Second Inset

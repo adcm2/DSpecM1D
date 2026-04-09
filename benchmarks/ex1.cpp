@@ -72,16 +72,28 @@ main() {
   auto &vecFiltTYSpec = filteredYSpec.timeSeries;
   auto &aFiltYSpec = filteredYSpec.frequencySeries;
 
-  // --- 9. Output Frequency Spectrum ---
+  // --- 9. Read and Process SpecNM Data ---
+  std::string specnm_path = std::string(PROJECT_BUILD_DIR) +
+                            "../../specnm/outputs/"
+                            "seismogram_lf_traces_semicolon.txt";
+  Eigen::MatrixXd specnm_t =
+      DSpecM::loadSpecnmTimeSeries(specnm_path, vecFiltT.cols());
+
+  auto filteredSpecnm = DSpecM::applyFilter(specnm_t, myff, filterOptions);
+  auto &vecFiltTSpecnm = filteredSpecnm.timeSeries;
+  auto &aFiltSpecnm = filteredSpecnm.frequencySeries;
+
+  // --- 10. Output Frequency Spectrum ---
   std::string pathToFile =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex1_w.out";
-  DSpecM::writeFrequencyComparison(pathToFile, paramsNew, aFilt, aFiltYSpec);
+  DSpecM::writeFrequencyComparison(pathToFile, paramsNew, aFilt, aFiltYSpec,
+                                   aFiltSpecnm);
 
-  // --- 10. Output MinEOS Time Series ---
+  // --- 11. Output MinEOS Time Series ---
   std::string pathToFileMineos =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex1_t.out";
   DSpecM::writeTimeComparison(pathToFileMineos, paramsNew, vecFiltT,
-                              vecFiltTYSpec);
+                              vecFiltTSpecnm);
 
   return 0;
 }

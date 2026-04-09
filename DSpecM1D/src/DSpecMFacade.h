@@ -11,6 +11,7 @@
 #include "SpecHelpers.h"
 #include "SpectraRunContext.h"
 #include "ReadYSpec.h"
+#include "ReadSpecnm.h"
 #include "ReadMineos.h"
 #include "ReferenceSeriesIO.h"
 #include "SignalFiltering.h"
@@ -25,6 +26,7 @@ namespace Full1D = ::Full1D;
 namespace SparseSpec = ::SPARSESPEC;
 namespace Source = ::SourceInfo;
 namespace YSpecReader = ::YSPECREADER;
+namespace SpecnmReader = ::SPECNMREADER;
 namespace MineosReader = ::MINEOSREADER;
 namespace SpectralTools = ::SpectralTools;
 
@@ -40,6 +42,7 @@ using SEM = Full1D::SEM;
 using SparseFSpec = SPARSESPEC::SparseFSpec;
 
 using YSpecDataColumns = YSPECREADER::DataColumns;
+using SpecnmDataColumns = SPECNMREADER::DataColumns;
 using MineosDataColumns = MINEOSREADER::DataColumns;
 
 using ::read_full_sitechan_file;
