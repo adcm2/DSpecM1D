@@ -79,7 +79,7 @@ main() {
 
   timer1.start();
   MatrixC vecRaw = specSolver.spectra(myff, prem, cmt, params, NQ, srInfo,
-                                  params.relative_error());
+                                      params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 
   // --- 5. Normalization ---
@@ -121,8 +121,7 @@ main() {
   auto a_filt_yspec0 = processfunctions::fulltime2freq(yspec_t, myff, 0.05);
   auto vecFiltTYSpec =
       processfunctions::filtfreq2time(a_filt_yspec0, myff, false);
-  auto aFiltYSpec =
-      processfunctions::fulltime2freq(vecFiltTYSpec, myff, hannW);
+  auto aFiltYSpec = processfunctions::fulltime2freq(vecFiltTYSpec, myff, hannW);
 
   // --- 8. Read and Process MinEOS Data ---
   std::string mineos_base =
@@ -148,6 +147,22 @@ main() {
   auto a_filt_mineos =
       processfunctions::fulltime2freq(vec_filt_t_mineos, myff, hannW);
 
+  // --- 9. Read and Process SpecNM Data ---
+  DSpecM::FilterOptions filterOptions;
+  filterOptions.preTaper = 0.05;
+  filterOptions.finalTaper = hannW;
+  filterOptions.passes = 1;
+  filterOptions.enforceRealSignal = false;
+  std::string specnm_path = std::string(PROJECT_BUILD_DIR) +
+                            "../../specnm/outputs/"
+                            "seismogram_ex3.txt";
+  Eigen::MatrixXd specnm_t =
+      DSpecM::loadSpecnmTimeSeries(specnm_path, vecFiltT.cols());
+
+  auto filteredSpecnm = DSpecM::applyFilter(specnm_t, myff, filterOptions);
+  auto &vecFiltTSpecnm = filteredSpecnm.timeSeries;
+  auto &aFiltSpecnm = filteredSpecnm.frequencySeries;
+
   //////////////////////////////////////////////////////////////////////////////
   // --- 9. Output Frequency Spectrum ---
   std::string ptf_w =
@@ -167,14 +182,13 @@ main() {
            << std::abs(aFilt(0, idx)) << ';' << aFilt(1, idx).real() << ';'
            << aFilt(1, idx).imag() << ';' << std::abs(aFilt(1, idx)) << ';'
            << aFilt(2, idx).real() << ';' << aFilt(2, idx).imag() << ';'
-           << std::abs(aFilt(2, idx)) << ';' << aFiltYSpec(0, idx).real()
-           << ';' << aFiltYSpec(0, idx).imag() << ';'
-           << std::abs(aFiltYSpec(0, idx)) << ';'
-           << aFiltYSpec(1, idx).real() << ';' << aFiltYSpec(1, idx).imag()
-           << ';' << std::abs(aFiltYSpec(1, idx)) << ';'
-           << aFiltYSpec(2, idx).real() << ';' << aFiltYSpec(2, idx).imag()
-           << ';' << std::abs(aFiltYSpec(2, idx)) << ';'
-           << a_filt_mineos(0, idx).real() << ';'
+           << std::abs(aFilt(2, idx)) << ';' << aFiltYSpec(0, idx).real() << ';'
+           << aFiltYSpec(0, idx).imag() << ';' << std::abs(aFiltYSpec(0, idx))
+           << ';' << aFiltYSpec(1, idx).real() << ';'
+           << aFiltYSpec(1, idx).imag() << ';' << std::abs(aFiltYSpec(1, idx))
+           << ';' << aFiltYSpec(2, idx).real() << ';'
+           << aFiltYSpec(2, idx).imag() << ';' << std::abs(aFiltYSpec(2, idx))
+           << ';' << a_filt_mineos(0, idx).real() << ';'
            << a_filt_mineos(0, idx).imag() << ';'
            << std::abs(a_filt_mineos(0, idx)) << ';'
            << a_filt_mineos(1, idx).real() << ';'
@@ -182,7 +196,13 @@ main() {
            << std::abs(a_filt_mineos(1, idx)) << ';'
            << a_filt_mineos(2, idx).real() << ';'
            << a_filt_mineos(2, idx).imag() << ';'
-           << std::abs(a_filt_mineos(2, idx)) << '\n';
+           << std::abs(a_filt_mineos(2, idx)) << ';'
+           << aFiltSpecnm(0, idx).real() << ';' << aFiltSpecnm(0, idx).imag()
+           << ';' << std::abs(aFiltSpecnm(0, idx)) << ';'
+           << aFiltSpecnm(1, idx).real() << ';' << aFiltSpecnm(1, idx).imag()
+           << ';' << std::abs(aFiltSpecnm(1, idx)) << ';'
+           << aFiltSpecnm(2, idx).real() << ';' << aFiltSpecnm(2, idx).imag()
+           << ';' << std::abs(aFiltSpecnm(2, idx)) << '\n';
   }
   file_w.close();
 
@@ -200,11 +220,12 @@ main() {
   for (std::size_t idx = 0;
        idx < static_cast<std::size_t>(vec_filt_t_mineos.cols()); ++idx) {
     auto tval = idx * myff.dt() * prem.TimeNorm();
-    file_t << tval << ';' << vecFiltT(0, idx) << ';' << vecFiltT(1, idx)
-           << ';' << vecFiltT(2, idx) << ';' << vecFiltTYSpec(0, idx)
-           << ';' << vecFiltTYSpec(1, idx) << ';' << vecFiltTYSpec(2, idx)
-           << ';' << vec_filt_t_mineos(0, idx) << ';'
-           << vec_filt_t_mineos(1, idx) << ';' << vec_filt_t_mineos(2, idx)
+    file_t << tval << ';' << vecFiltT(0, idx) << ';' << vecFiltT(1, idx) << ';'
+           << vecFiltT(2, idx) << ';' << vecFiltTYSpec(0, idx) << ';'
+           << vecFiltTYSpec(1, idx) << ';' << vecFiltTYSpec(2, idx) << ';'
+           << vec_filt_t_mineos(0, idx) << ';' << vec_filt_t_mineos(1, idx)
+           << ';' << vec_filt_t_mineos(2, idx) << ';' << vecFiltTSpecnm(0, idx)
+           << ';' << vecFiltTSpecnm(1, idx) << ';' << vecFiltTSpecnm(2, idx)
            << '\n';
 
     if (tval > params.t_out() * 60.0) {
