@@ -44,14 +44,21 @@ marker_style = 'o'
 ms_t = 'o'
 ms_w = 's'
 
+# Colorblind-friendly palette (Okabe-Ito)
+COLORS = {
+    'nq4': '#009E73',  # bluish green
+    'nq5': '#0072B2',  # blue
+    'nq6': '#D55E00'   # vermillion
+}
+
 
 # ratio of step size to min wavelength:
 ratio_4 = 0.63/(50 * step_sizes_NQ4)
 ratio_5 = 0.63/(50 * step_sizes_NQ5)
 ratio_6 = 0.63/(50 * step_sizes_NQ6)
-ax.plot(ratio_4, t_error_3, "g-",linewidth=lwidth , label='NQ = 4')
-ax.plot(ratio_5, t_error_1, "b-",linewidth=lwidth , label='NQ = 5')
-ax.plot(ratio_6, t_error_2, "r-",linewidth=lwidth , label='NQ = 6')
+ax.plot(ratio_4, t_error_3, color=COLORS['nq4'], linestyle='-', linewidth=lwidth, label='NQ = 4')
+ax.plot(ratio_5, t_error_1, color=COLORS['nq5'], linestyle='-', linewidth=lwidth, label='NQ = 5')
+ax.plot(ratio_6, t_error_2, color=COLORS['nq6'], linestyle='-', linewidth=lwidth, label='NQ = 6')
 # --- 6. Final Figure Adjustments ---
 # Set log-log scale
 ax.set_xscale('log')

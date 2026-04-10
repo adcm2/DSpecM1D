@@ -28,18 +28,25 @@ SMALL_SIZE = 13
 MEDIUM_SIZE = 20
 BIGGER_SIZE = 24
 
+# Colorblind-friendly palette (Okabe-Ito)
+COLORS = {
+    'waveform': '#111111',  # near-black
+    'phase': '#D55E00',     # vermillion
+    'text': '#111111'
+}
+
 # --- 3. Plot Waveforms ---
 # Left Plot (Vertical Component / P-waves area)
 for i in range(0, 91):
     maxvalp = np.max(np.abs(d1[:, 3 * i + 1])) / 2
     if maxvalp > 0:
-        ax_p.plot(d1[:, 3 * i + 1] / maxvalp + 2 * i, d1[:, 0], "k", linewidth=1.1)
+        ax_p.plot(d1[:, 3 * i + 1] / maxvalp + 2 * i, d1[:, 0], color=COLORS['waveform'], linewidth=1.1)
 
 # Right Plot (Horizontal Component / S-waves area)
 for i in range(0, 91):
     maxvals = np.max(np.abs(d1[:, 3 * i + 2])) / 2
     if maxvals > 0:
-        ax_s.plot(d1[:, 3 * i + 2] / maxvals + 2 * i, d1[:, 0], "k", linewidth=1.1)
+        ax_s.plot(d1[:, 3 * i + 2] / maxvals + 2 * i, d1[:, 0], color=COLORS['waveform'], linewidth=1.1)
 
 # --- 4. Plot Travel Time Curves ---
 dist_min, dist_max = 0, 180
@@ -57,7 +64,7 @@ def plot_phases(axes, phase_list, data_struct):
         time = data_struct['TravelTime_s'][mask]
         
         if len(dist) > 0:
-            axes.plot(dist, time, "r", label=phase_name, linewidth=2.0)
+            axes.plot(dist, time, color=COLORS['phase'], label=phase_name, linewidth=2.0)
             
             # Label positioning
             in_view = (dist >= dist_min) & (dist <= dist_max) & \
@@ -68,7 +75,7 @@ def plot_phases(axes, phase_list, data_struct):
                 idx = idx_candidates[-1] # Pick the last point in view
                 
                 txt = axes.text(dist[idx], time[idx], f" {phase_name}", 
-                                color='r', fontsize=14, fontweight='bold',
+                                color=COLORS['phase'], fontsize=14, fontweight='bold',
                                 va='center', ha='left')
                 txt.set_path_effects(text_style)
 

@@ -43,6 +43,14 @@ lwidth = 2.0
 M_SIZE = 15
 BIGGER_SIZE = 20
 
+# Colorblind-friendly palette (Okabe-Ito)
+COLORS = {
+    'yspec': '#0072B2',   # blue
+    'specnm': '#009E73',  # bluish green
+    'dspecm': '#D55E00',  # vermillion
+    'text': '#111111'
+}
+
 # --- Extract Data Columns ---
 lowidx = 0
 upidx = 18001
@@ -125,26 +133,26 @@ plt.rc('ytick', labelsize=16)
 
 # --- Plot Z Component (Top) ---
 ax_data = axes[0]
-ax_data.plot(time_vector, yspec_z/1.01, "b", linewidth=lwidth, label='YSpec')
+ax_data.plot(time_vector, yspec_z/1.01, color=COLORS['yspec'], linestyle='-', linewidth=lwidth, label='YSpec')
 # ax_data.plot(time_vector, mineos_z/1.01, "g--", linewidth=lwidth, label='MINEOS')
-ax_data.plot(time_vector, dspecm_z/1.01, "r-.", linewidth=lwidth, label='DSpecM1D')
-ax_data.plot(time_vector, specnm_z/1.01, "m:", linewidth=lwidth, label='SpecNM')
+ax_data.plot(time_vector, dspecm_z/1.01, color=COLORS['dspecm'], linestyle='-.', linewidth=lwidth, label='DSpecM1D')
+ax_data.plot(time_vector, specnm_z/1.01, color=COLORS['specnm'], linestyle=':', linewidth=lwidth, label='SpecNM')
 
 
 # --- Plot North Component (Middle) ---
 ax_data = axes[1]
-ax_data.plot(time_vector, yspec_n/1.01, "b", linewidth=lwidth)
+ax_data.plot(time_vector, yspec_n/1.01, color=COLORS['yspec'], linestyle='-', linewidth=lwidth)
 # ax_data.plot(time_vector, mineos_n/1.01, "g--", linewidth=lwidth)
-ax_data.plot(time_vector, dspecm_n/1.01, "r-.", linewidth=lwidth)
-ax_data.plot(time_vector, specnm_n/1.01, "m:", linewidth=lwidth)
+ax_data.plot(time_vector, dspecm_n/1.01, color=COLORS['dspecm'], linestyle='-.', linewidth=lwidth)
+ax_data.plot(time_vector, specnm_n/1.01, color=COLORS['specnm'], linestyle=':', linewidth=lwidth)
 
 
 # --- Plot East Component (Bottom) ---
 ax_data = axes[2]
-ax_data.plot(time_vector, yspec_e/1.01, "b", linewidth=lwidth)
+ax_data.plot(time_vector, yspec_e/1.01, color=COLORS['yspec'], linestyle='-', linewidth=lwidth)
 # ax_data.plot(time_vector, mineos_e/1.01, "g--", linewidth=lwidth)
-ax_data.plot(time_vector, dspecm_e/1.01, "r-.", linewidth=lwidth)
-ax_data.plot(time_vector, specnm_e/1.01, "m:", linewidth=lwidth)
+ax_data.plot(time_vector, dspecm_e/1.01, color=COLORS['dspecm'], linestyle='-.', linewidth=lwidth)
+ax_data.plot(time_vector, specnm_e/1.01, color=COLORS['specnm'], linestyle=':', linewidth=lwidth)
 
 
 # =============================================================================
@@ -219,17 +227,17 @@ for ax in axes:
 
 # --- Add Text Annotations ---
 txval = tlow 
-axes[0].text(txval, 0.8 * z_mval, f"{yspec_av_diff_z:.2f} %", fontsize=M_SIZE, color='black')
-axes[0].text(txval, 0.6 * z_mval, f"{specnm_av_diff_z:.2f} %", fontsize=M_SIZE, color='green')
-axes[0].text(tup, -z_mval, "Z displacement", fontsize=BIGGER_SIZE, color='black', ha='right')
+axes[0].text(txval, 0.8 * z_mval, f"{yspec_av_diff_z:.2f} %", fontsize=M_SIZE, color=COLORS['yspec'])
+axes[0].text(txval, 0.6 * z_mval, f"{specnm_av_diff_z:.2f} %", fontsize=M_SIZE, color=COLORS['specnm'])
+axes[0].text(tup, -z_mval, "Z displacement", fontsize=BIGGER_SIZE, color=COLORS['text'], ha='right')
 
-axes[1].text(txval, 0.8 * n_mval, f"{yspec_av_diff_n:.2f} %", fontsize=M_SIZE, color='black')
-axes[1].text(txval, 0.6 * n_mval, f"{specnm_av_diff_n:.2f} %", fontsize=M_SIZE, color='green')
-axes[1].text(tup, -n_mval, "N displacement", fontsize=BIGGER_SIZE, color='black', ha='right')
+axes[1].text(txval, 0.8 * n_mval, f"{yspec_av_diff_n:.2f} %", fontsize=M_SIZE, color=COLORS['yspec'])
+axes[1].text(txval, 0.6 * n_mval, f"{specnm_av_diff_n:.2f} %", fontsize=M_SIZE, color=COLORS['specnm'])
+axes[1].text(tup, -n_mval, "N displacement", fontsize=BIGGER_SIZE, color=COLORS['text'], ha='right')
 
-axes[2].text(txval, 0.8 * e_mval, f"{yspec_av_diff_e:.2f} %", fontsize=M_SIZE, color='black')
-axes[2].text(txval, 0.6 * e_mval, f"{specnm_av_diff_e:.2f} %", fontsize=M_SIZE, color='green')
-axes[2].text(tup, - e_mval, "E displacement", fontsize=BIGGER_SIZE, color='black', ha='right')
+axes[2].text(txval, 0.8 * e_mval, f"{yspec_av_diff_e:.2f} %", fontsize=M_SIZE, color=COLORS['yspec'])
+axes[2].text(txval, 0.6 * e_mval, f"{specnm_av_diff_e:.2f} %", fontsize=M_SIZE, color=COLORS['specnm'])
+axes[2].text(tup, - e_mval, "E displacement", fontsize=BIGGER_SIZE, color=COLORS['text'], ha='right')
 
 
 

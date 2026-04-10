@@ -61,6 +61,13 @@ M_SIZE = 12
 BIGGER_SIZE = 18
 time_vector = dmf[:, 0]
 
+# Colorblind-friendly palette (Okabe-Ito)
+COLORS = {
+    'u': '#0072B2',      # blue
+    'v': '#D55E00',      # vermillion
+    'n2': '#009E73'      # bluish green
+}
+
 # --- Data Column Indices ---
 # Give meaningful names to the columns being plotted.
 # This makes the code MUCH easier to read and debug.
@@ -86,8 +93,8 @@ def plot_row(row_idx, data_mf, rad_v, label_prefix=""):
         )
         if maxvalt == 0: maxvalt = 1.0 # Avoid singular limits
         
-        ax_data.plot(data_mf[:, 6 * i + 1], rad_v, "b", linewidth=lw, label='U')
-        ax_data.plot(data_mf[:, 6 * i + 4], rad_v, "r", linewidth=lw, label='V')
+        ax_data.plot(data_mf[:, 6 * i + 1], rad_v, color=COLORS['u'], linewidth=lw, label='U')
+        ax_data.plot(data_mf[:, 6 * i + 4], rad_v, color=COLORS['v'], linewidth=lw, label='V')
 
         # Labeling
         # label_text = f"{roman_numerals[i]} {dfreqs[i,0]:.1f}"
@@ -145,7 +152,7 @@ ax_legend.legend(loc='upper center', bbox_to_anchor=(2.5, 1.25),
 # Let's plot N2 on all 3 rows for consistency or leave blank. Plotting on all for symmetry.
 for r in range(3):
     ax_n2 = axes[r, nfreqs]
-    ax_n2.plot(dn2[:,1], dn2[:,0],"g", linewidth=lw)
+    ax_n2.plot(dn2[:,1], dn2[:,0], color=COLORS['n2'], linewidth=lw)
     ax_n2.axvline(0, color='k', linestyle='--', linewidth=1)
     ax_n2.axhline(low_rad, color='k', linestyle='--', linewidth=1)
     ax_n2.axhline(up_rad, color='k', linestyle='--', linewidth=1)

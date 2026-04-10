@@ -22,6 +22,14 @@ M_SIZE = 15
 BIGGER_SIZE = 20
 offset = 10  # The amount of offset in points
 
+# Colorblind-friendly palette (Okabe-Ito)
+COLORS = {
+    'yspec': '#0072B2',   # blue
+    'specnm': '#009E73',  # bluish green
+    'dspecm': '#D55E00',  # vermillion
+    'text': '#111111'
+}
+
 # Filter for frequency range of interest (0.0 to 5.0 mHz)
 fmin, fmax = 0.0, 5.0
 idx_min = np.searchsorted(dmf[:, 0], fmin)
@@ -55,9 +63,9 @@ print(f"Maximum relative difference with specnm (Z): {np.max(specnm_diff):.4f} %
 
 # --- 6. Plot Data ---
 # Add small offset (1e-3) to avoid log scale issues if used later, or just visual base
-ax_data.plot(time_vector, yspec_z/norm_z + 1e-3, "b", linewidth=lwidth, label='YSpec')
-ax_data.plot(time_vector, trans_z/norm_z + 1e-3, "r--", linewidth=lwidth, label='DSpecM1D')
-ax_data.plot(time_vector, specnm_z/norm_z + 1e-3, "g-.", linewidth=lwidth, label='SpecNM')
+ax_data.plot(time_vector, yspec_z/norm_z + 1e-3, color=COLORS['yspec'], linestyle='-', linewidth=lwidth, label='YSpec')
+ax_data.plot(time_vector, trans_z/norm_z + 1e-3, color=COLORS['dspecm'], linestyle='--', linewidth=lwidth, label='DSpecM1D')
+ax_data.plot(time_vector, specnm_z/norm_z + 1e-3, color=COLORS['specnm'], linestyle='-.', linewidth=lwidth, label='SpecNM')
 
 
 def get_modes_in_range(fmin, fmax):
@@ -117,9 +125,9 @@ zoom_y_trans = trans_z[idx_zmin:idx_zmax]/norm_z + 1e-3
 zoom_y_specnm = specnm_z[idx_zmin:idx_zmax]/norm_z + 1e-3
 
 # Plot data on inset
-ax_ins.plot(zoom_x, zoom_y_yspec, "b", linewidth=lwidth)
-ax_ins.plot(zoom_x, zoom_y_trans, "r--", linewidth=lwidth)
-ax_ins.plot(zoom_x, zoom_y_specnm, "g-.", linewidth=lwidth)
+ax_ins.plot(zoom_x, zoom_y_yspec, color=COLORS['yspec'], linestyle='-', linewidth=lwidth)
+ax_ins.plot(zoom_x, zoom_y_trans, color=COLORS['dspecm'], linestyle='--', linewidth=lwidth)
+ax_ins.plot(zoom_x, zoom_y_specnm, color=COLORS['specnm'], linestyle='-.', linewidth=lwidth)
 
 # Calculate max value within the zoom range for the y-limit
 zoom_ymax = max(np.max(zoom_y_yspec), np.max(zoom_y_trans), np.max(zoom_y_specnm)) * 1.07
@@ -195,9 +203,9 @@ zoom2_y_trans = trans_z[idx_zmin2:idx_zmax2]/norm_z + 1e-3
 zoom2_y_specnm = specnm_z[idx_zmin2:idx_zmax2]/norm_z + 1e-3
 
 # Plot data on second inset
-ax_ins2.plot(zoom2_x, zoom2_y_yspec, "b", linewidth=lwidth)
-ax_ins2.plot(zoom2_x, zoom2_y_trans, "r--", linewidth=lwidth)
-ax_ins2.plot(zoom2_x, zoom2_y_specnm, "g-.", linewidth=lwidth)
+ax_ins2.plot(zoom2_x, zoom2_y_yspec, color=COLORS['yspec'], linestyle='-', linewidth=lwidth)
+ax_ins2.plot(zoom2_x, zoom2_y_trans, color=COLORS['dspecm'], linestyle='--', linewidth=lwidth)
+ax_ins2.plot(zoom2_x, zoom2_y_specnm, color=COLORS['specnm'], linestyle='-.', linewidth=lwidth)
 
 # Calculate max for y-limit
 zoom2_ymax = max(np.max(zoom2_y_yspec), np.max(zoom2_y_trans), np.max(zoom2_y_specnm)) * 1.07
