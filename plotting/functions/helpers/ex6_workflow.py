@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.lines import Line2D
 
 from .ex1_workflow import print_workflow_context
 from .plot_common import OKABE_ITO, apply_whitegrid_style, loadtxt_or_exit
@@ -96,9 +97,18 @@ def plot_ex6(
     plot_row(1, dmf2, rad_val2)
     plot_row(2, dmf3, rad_val3)
 
+    for r in range(3):
+        axes[r, 0].set_ylabel("Radius (N.D.)", fontsize=m_size, fontweight="bold")
+
     ax_legend = axes[0, 0]
     legend_properties = {"weight": "bold", "size": bigger_size}
+    legend_handles = [
+        Line2D([0], [0], color=colors["u"], linewidth=lw, label="U"),
+        Line2D([0], [0], color=colors["v"], linewidth=lw, label="V"),
+        Line2D([0], [0], color=colors["n2"], linewidth=lw, label="BV freq. (N^2)"),
+    ]
     ax_legend.legend(
+        handles=legend_handles,
         loc="upper center",
         bbox_to_anchor=(2.5, 1.25),
         ncol=4,
@@ -108,10 +118,11 @@ def plot_ex6(
         edgecolor="black",
         prop=legend_properties,
     )
+    
 
     for r in range(3):
         ax_n2 = axes[r, nfreqs]
-        ax_n2.plot(dn2[:, 1], dn2[:, 0], color=colors["n2"], linewidth=lw)
+        ax_n2.plot(dn2[:, 1], dn2[:, 0], color=colors["n2"], linewidth=lw, label="N^2")
         ax_n2.axvline(0, color="k", linestyle="--", linewidth=1)
         ax_n2.axhline(low_rad, color="k", linestyle="--", linewidth=1)
         ax_n2.axhline(up_rad, color="k", linestyle="--", linewidth=1)
@@ -134,6 +145,7 @@ def plot_ex6(
     plt.tight_layout(pad=0.1, w_pad=0.0, h_pad=0.0)
     fig.subplots_adjust(wspace=0, hspace=0.05)
 
+    
     if show:
         plt.show()
     return fig, axes
