@@ -77,6 +77,28 @@ def plot_ex6(
             ax_data.set_ylim([0, rad_v[-1]])
             ax_data.set_xlim([-maxvalt, maxvalt])
 
+            if i == 0:
+                y_offset = 0.015 * rad_v[-1]
+                x_label = -0.92 * maxvalt
+                ax_data.text(
+                    x_label,
+                    low_rad + y_offset,
+                    "ICB",
+                    fontsize=m_size,
+                    fontweight="bold",
+                    va="bottom",
+                    ha="left",
+                )
+                ax_data.text(
+                    x_label,
+                    up_rad + y_offset,
+                    "CMB",
+                    fontsize=m_size,
+                    fontweight="bold",
+                    va="bottom",
+                    ha="left",
+                )
+
             ax_data.set_xticks([0])
             ax_data.set_xticklabels([0])
 
@@ -105,7 +127,7 @@ def plot_ex6(
     legend_handles = [
         Line2D([0], [0], color=colors["u"], linewidth=lw, label="U"),
         Line2D([0], [0], color=colors["v"], linewidth=lw, label="V"),
-        Line2D([0], [0], color=colors["n2"], linewidth=lw, label="BV freq. (N^2)"),
+        Line2D([0], [0], color=colors["n2"], linewidth=lw, label=r"BV freq. ($N^2$)"),
     ]
     ax_legend.legend(
         handles=legend_handles,
@@ -122,7 +144,7 @@ def plot_ex6(
 
     for r in range(3):
         ax_n2 = axes[r, nfreqs]
-        ax_n2.plot(dn2[:, 1], dn2[:, 0], color=colors["n2"], linewidth=lw, label="N^2")
+        ax_n2.plot(dn2[:, 1], dn2[:, 0], color=colors["n2"], linewidth=lw, label=r"$N^2$")
         ax_n2.axvline(0, color="k", linestyle="--", linewidth=1)
         ax_n2.axhline(low_rad, color="k", linestyle="--", linewidth=1)
         ax_n2.axhline(up_rad, color="k", linestyle="--", linewidth=1)
