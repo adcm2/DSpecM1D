@@ -7,8 +7,8 @@ namespace Full1D {
 
 Eigen::MatrixXcd
 SEM::calculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
-  int NQ = m_mesh.NN();
-  totlen = this->ltgS(2, m_mesh.NE() - 1, NQ - 1) + 1;
+  int nq = m_mesh.NN();
+  totlen = this->ltgS(2, m_mesh.NE() - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2 * idxl + 1);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -43,7 +43,7 @@ SEM::calculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
-      for (int idxq = 0; idxq < NQ; ++idxq) {
+      for (int idxq = 0; idxq < nq; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
         auto idx_u = this->ltgS(0, idx, idxq);
@@ -82,8 +82,8 @@ SEM::calculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
 Eigen::MatrixXcd
 SEM::calculateForceAll(SourceInfo::EarthquakeCMT &cmt, int idxl) {
-  int NQ = m_mesh.NN();
-  totlen = this->ltgS(2, m_mesh.NE() - 1, NQ - 1) + 1;
+  int nq = m_mesh.NN();
+  totlen = this->ltgS(2, m_mesh.NE() - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 4);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -98,7 +98,7 @@ SEM::calculateForceAll(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
-      for (int idxq = 0; idxq < NQ; ++idxq) {
+      for (int idxq = 0; idxq < nq; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
         auto idx_u = this->ltgS(0, idx, idxq);
@@ -116,8 +116,8 @@ SEM::calculateForceAll(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
 Eigen::MatrixXcd
 SEM::calculateForceCoefficients(SourceInfo::EarthquakeCMT &cmt, int idxl) {
-  int NQ = m_mesh.NN();
-  totlen = this->ltgS(2, m_mesh.NE() - 1, NQ - 1) + 1;
+  int nq = m_mesh.NN();
+  totlen = this->ltgS(2, m_mesh.NE() - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(2 * idxl + 1, 4);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));

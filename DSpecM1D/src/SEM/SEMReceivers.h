@@ -8,8 +8,8 @@ namespace Full1D {
 Eigen::MatrixXcd
 SEM::rvFull(InputParameters &param, int idxl) {
   auto nrec = param.num_receivers();
-  using MATRIX = Eigen::MatrixXcd;
-  MATRIX vec_receiver = MATRIX::Zero(3 * nrec, 2 * idxl + 1);
+  using MatrixC = Eigen::MatrixXcd;
+  MatrixC vec_receiver = MatrixC::Zero(3 * nrec, 2 * idxl + 1);
   using namespace GSHTrans;
   int maxn = 1;
   auto i1 = std::complex<double>(0.0, 1.0);
@@ -43,8 +43,8 @@ SEM::rvFull(InputParameters &param, int idxl) {
 Eigen::MatrixXcd
 SEM::rvFullT(InputParameters &param, int idxl) {
   auto nrec = param.num_receivers();
-  using MATRIX = Eigen::MatrixXcd;
-  MATRIX vec_receiver = MATRIX::Zero(3 * nrec, 2 * idxl + 1);
+  using MatrixC = Eigen::MatrixXcd;
+  MatrixC vec_receiver = MatrixC::Zero(3 * nrec, 2 * idxl + 1);
   using namespace GSHTrans;
   auto i1 = std::complex<double>(0.0, 1.0);
   auto deg2rad = EIGEN_PI / 180.0;

@@ -12,14 +12,14 @@ template <typename FLOAT> class prem_norm {
 public:
   prem_norm() = default;
 
-  FLOAT LengthNorm() const { return _length_norm; }
-  FLOAT MassNorm() const { return _mass_norm; }
-  FLOAT TimeNorm() const { return _time_norm; }
+  FLOAT LengthNorm() const { return m_lengthNorm; }
+  FLOAT MassNorm() const { return m_massNorm; }
+  FLOAT TimeNorm() const { return m_timeNorm; }
 
 private:
-  FLOAT _length_norm = 1000.0;
-  FLOAT _mass_norm = 5515.0 * std::pow(_length_norm, 3.0);
-  FLOAT _time_norm = 1.0 / std::sqrt(PI * 6.67230e-11 * 5515.0);
+  FLOAT m_lengthNorm = 1000.0;
+  FLOAT m_massNorm = 5515.0 * std::pow(m_lengthNorm, 3.0);
+  FLOAT m_timeNorm = 1.0 / std::sqrt(PI * 6.67230e-11 * 5515.0);
 };
 
 #endif   // NORM_CLASS_GUARD_H
