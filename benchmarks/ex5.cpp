@@ -48,13 +48,13 @@ main() {
   std::string earthModelPath =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
-  prem_norm<double> norm_class;
-  auto prem = EarthModels::ModelInput(earthModelPath, norm_class, "true");
+  prem_norm<double> normClass;
+  auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   // --- 2. Parameters ---
   int lval = params.lmax();
-  int NQ = 6;
+  int nq = 6;
   int qex = 1;
   double maxstep = 0.05;
 
@@ -72,44 +72,44 @@ main() {
   auto vecW = myff.w();
 
   // --- 4. Setup Convergence Steps ---
-  int nsteps = 50;
-  double step_0 = 2.0 * 0.63 / myff.f22();
-  std::cout << "Initial step: " << step_0 << "\n";
+  int nSteps = 50;
+  double step0 = 2.0 * 0.63 / myff.f22();
+  std::cout << "Initial step: " << step0 << "\n";
 
-  std::vector<double> vec_step;
-  vec_step.reserve(nsteps);
-  for (int idx = 0; idx < nsteps; ++idx) {
-    vec_step.push_back(
-        step_0 / std::pow(10.0, 2.0 * idx / static_cast<double>(nsteps - 1)));
+  std::vector<double> vecStep;
+  vecStep.reserve(nSteps);
+  for (int idx = 0; idx < nSteps; ++idx) {
+    vecStep.push_back(
+        step0 / std::pow(10.0, 2.0 * idx / static_cast<double>(nSteps - 1)));
   }
 
   // --- 5. Normalization ---
   double normFactor = 1.0;
-  double accel_norm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
+  double accelNorm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
 
   if (params.output_type() == 0) {
     normFactor = prem.LengthNorm();
   } else if (params.output_type() == 1) {
     normFactor = prem.LengthNorm() / prem.TimeNorm();
   } else if (params.output_type() == 2) {
-    normFactor = accel_norm;
+    normFactor = accelNorm;
   }
   double hannW = 0.2;
 
   // --- 6. Execute Iterative Convergence Test ---
   SPARSESPEC::SparseFSpec specSolver;
-  std::vector<Eigen::MatrixXcd> vec_final_w;
-  std::vector<Eigen::MatrixXd> vec_final_t;
-  vec_final_w.reserve(nsteps);
-  vec_final_t.reserve(nsteps);
+  std::vector<Eigen::MatrixXcd> vecFinalW;
+  std::vector<Eigen::MatrixXd> vecFinalT;
+  vecFinalW.reserve(nSteps);
+  vecFinalT.reserve(nSteps);
 
-  for (int idx = 0; idx < nsteps; ++idx) {
-    maxstep = vec_step[idx];
+  for (int idx = 0; idx < nSteps; ++idx) {
+    maxstep = vecStep[idx];
     int nskip = 3 * static_cast<int>(
                         std::floor(maxstep / ((vecW[1] - vecW[0]) * 0.003))) +
                 1;
 
-    Full1D::SEM sem(prem, maxstep, NQ, lval);
+    Full1D::SEM sem(prem, maxstep, nq, lval);
     std::cout << "\nDoing step: " << maxstep << ", nskip: " << nskip << "\n";
 
     MatrixC vecRaw = specSolver.spectra(myff, sem, prem, cmt, params, nskip);
@@ -121,174 +121,177 @@ main() {
     auto vecFiltT = processfunctions::filtfreq2time(aFilt0, myff, false);
     auto aFilt = processfunctions::fulltime2freq(vecFiltT, myff, hannW);
 
-    vec_final_w.push_back(aFilt);
-    vec_final_t.push_back(vecFiltT);
+    vecFinalW.push_back(aFilt);
+    vecFinalT.push_back(vecFiltT);
   }
 
   // --- 7. Error Calculation ---
-  std::size_t num_err_steps = vec_step.size() - 1;
-  std::vector<std::vector<double>> vec_err_t(num_err_steps,
+  std::size_t numErrSteps = vecStep.size() - 1;
+  std::vector<std::vector<double>> vecErrT(numErrSteps,
+                                           std::vector<double>(3, 0.0));
+  std::vector<std::vector<double>> vecErrW(numErrSteps,
+                                           std::vector<double>(3, 0.0));
+  std::vector<std::vector<double>> vecL2ErrT(numErrSteps,
                                              std::vector<double>(3, 0.0));
-  std::vector<std::vector<double>> vec_err_w(num_err_steps,
+  std::vector<std::vector<double>> vecL2ErrW(numErrSteps,
                                              std::vector<double>(3, 0.0));
-  std::vector<std::vector<double>> vec_l2_err_t(num_err_steps,
-                                                std::vector<double>(3, 0.0));
-  std::vector<std::vector<double>> vec_l2_err_w(num_err_steps,
-                                                std::vector<double>(3, 0.0));
 
-  int idxout = vec_final_t[0].cols() - 1;
-  for (int idx = 0; idx < vec_final_t[0].cols(); ++idx) {
+  int idxOut = vecFinalT[0].cols() - 1;
+  for (int idx = 0; idx < vecFinalT[0].cols(); ++idx) {
     auto tval = idx * myff.dt() * prem.TimeNorm();
     if (tval > t2 * 3600.0) {
-      idxout = idx;
+      idxOut = idx;
       break;
     }
   }
 
-  for (int idx = 0; idx < nsteps; ++idx) {
-    vec_final_t[idx]
-        .block(0, idxout, 3, vec_final_t[idx].cols() - idxout)
+  for (int idx = 0; idx < nSteps; ++idx) {
+    vecFinalT[idx]
+        .block(0, idxOut, 3, vecFinalT[idx].cols() - idxOut)
         .setZero();
   }
 
   // "Exact" solution is the one with the smallest step
-  auto idxback = nsteps - 1;
-  auto vec_t_ex = vec_final_t[idxback];
-  auto vec_w_ex = vec_final_w[idxback];
+  auto idxBack = nSteps - 1;
+  auto vecTEx = vecFinalT[idxBack];
+  auto vecWEx = vecFinalW[idxBack];
 
   // Reference Norms Setup
-  auto tmp_t = 100.0 / idxout;
-  auto mv_t_1 = tmp_t / vec_t_ex.row(0).lpNorm<Eigen::Infinity>();
-  auto mv_t_2 = tmp_t / vec_t_ex.row(1).lpNorm<Eigen::Infinity>();
-  auto mv_t_3 = tmp_t / vec_t_ex.row(2).lpNorm<Eigen::Infinity>();
+  auto tmpT = 100.0 / idxOut;
+  auto mvT1 = tmpT / vecTEx.row(0).lpNorm<Eigen::Infinity>();
+  auto mvT2 = tmpT / vecTEx.row(1).lpNorm<Eigen::Infinity>();
+  auto mvT3 = tmpT / vecTEx.row(2).lpNorm<Eigen::Infinity>();
 
-  auto mv_t_1_l2 = 100.0 / vec_t_ex.row(0).norm();
-  auto mv_t_2_l2 = 100.0 / vec_t_ex.row(1).norm();
-  auto mv_t_3_l2 = 100.0 / vec_t_ex.row(2).norm();
+  auto mvT1L2 = 100.0 / vecTEx.row(0).norm();
+  auto mvT2L2 = 100.0 / vecTEx.row(1).norm();
+  auto mvT3L2 = 100.0 / vecTEx.row(2).norm();
 
-  auto wcols = vec_final_w[idxback].cols();
-  auto tmp_w = 100.0 / wcols;
-  auto mv_w_1 = tmp_w / vec_w_ex.row(0).lpNorm<Eigen::Infinity>();
-  auto mv_w_2 = tmp_w / vec_w_ex.row(1).lpNorm<Eigen::Infinity>();
-  auto mv_w_3 = tmp_w / vec_w_ex.row(2).lpNorm<Eigen::Infinity>();
+  auto wCols = vecFinalW[idxBack].cols();
+  auto tmpW = 100.0 / wCols;
+  auto mvW1 = tmpW / vecWEx.row(0).lpNorm<Eigen::Infinity>();
+  auto mvW2 = tmpW / vecWEx.row(1).lpNorm<Eigen::Infinity>();
+  auto mvW3 = tmpW / vecWEx.row(2).lpNorm<Eigen::Infinity>();
 
-  auto mv_w_1_l2 = 100.0 / vec_w_ex.row(0).norm();
-  auto mv_w_2_l2 = 100.0 / vec_w_ex.row(1).norm();
-  auto mv_w_3_l2 = 100.0 / vec_w_ex.row(2).norm();
+  auto mvW1L2 = 100.0 / vecWEx.row(0).norm();
+  auto mvW2L2 = 100.0 / vecWEx.row(1).norm();
+  auto mvW3L2 = 100.0 / vecWEx.row(2).norm();
 
-  for (std::size_t idx = 0; idx < num_err_steps; ++idx) {
-    auto vec_t_err = vec_final_t[idx] - vec_t_ex;
-    auto vec_w_err = vec_final_w[idx] - vec_w_ex;
+  for (std::size_t idx = 0; idx < numErrSteps; ++idx) {
+    auto vecTErr = vecFinalT[idx] - vecTEx;
+    auto vecWErr = vecFinalW[idx] - vecWEx;
 
     // L1 norms (scaled by exact solution's L-infinity norm)
-    vec_err_t[idx][0] = vec_t_err.row(0).lpNorm<1>() * mv_t_1;
-    vec_err_t[idx][1] = vec_t_err.row(1).lpNorm<1>() * mv_t_2;
-    vec_err_t[idx][2] = vec_t_err.row(2).lpNorm<1>() * mv_t_3;
-    vec_err_w[idx][0] = vec_w_err.row(0).lpNorm<1>() * mv_w_1;
-    vec_err_w[idx][1] = vec_w_err.row(1).lpNorm<1>() * mv_w_2;
-    vec_err_w[idx][2] = vec_w_err.row(2).lpNorm<1>() * mv_w_3;
+    vecErrT[idx][0] = vecTErr.row(0).lpNorm<1>() * mvT1;
+    vecErrT[idx][1] = vecTErr.row(1).lpNorm<1>() * mvT2;
+    vecErrT[idx][2] = vecTErr.row(2).lpNorm<1>() * mvT3;
+    vecErrW[idx][0] = vecWErr.row(0).lpNorm<1>() * mvW1;
+    vecErrW[idx][1] = vecWErr.row(1).lpNorm<1>() * mvW2;
+    vecErrW[idx][2] = vecWErr.row(2).lpNorm<1>() * mvW3;
 
     // L2 norms
-    vec_l2_err_t[idx][0] = vec_t_err.row(0).norm() * mv_t_1_l2;
-    vec_l2_err_t[idx][1] = vec_t_err.row(1).norm() * mv_t_2_l2;
-    vec_l2_err_t[idx][2] = vec_t_err.row(2).norm() * mv_t_3_l2;
-    vec_l2_err_w[idx][0] = vec_w_err.row(0).norm() * mv_w_1_l2;
-    vec_l2_err_w[idx][1] = vec_w_err.row(1).norm() * mv_w_2_l2;
-    vec_l2_err_w[idx][2] = vec_w_err.row(2).norm() * mv_w_3_l2;
+    vecL2ErrT[idx][0] = vecTErr.row(0).norm() * mvT1L2;
+    vecL2ErrT[idx][1] = vecTErr.row(1).norm() * mvT2L2;
+    vecL2ErrT[idx][2] = vecTErr.row(2).norm() * mvT3L2;
+    vecL2ErrW[idx][0] = vecWErr.row(0).norm() * mvW1L2;
+    vecL2ErrW[idx][1] = vecWErr.row(1).norm() * mvW2L2;
+    vecL2ErrW[idx][2] = vecWErr.row(2).norm() * mvW3L2;
   }
 
   // --- 8. Outputs ---
   double nval = 1.0 / prem.TimeNorm();
 
   // 8a. Output Frequency Series
-  std::string ptf_w = std::string(PROJECT_BUILD_DIR) +
-                      "../plotting/outputs/ex5_w_NQ" + std::to_string(NQ) +
-                      "_step.out";
-  std::ofstream file_w(ptf_w);
-  if (!file_w) {
-    std::cerr << "Error: unable to open output file_w: " << ptf_w << "\n";
+  std::string pathToFreqFile = std::string(PROJECT_BUILD_DIR) +
+                               "../plotting/outputs/ex5_w_NQ" +
+                               std::to_string(nq) + "_step.out";
+  std::ofstream freqFile(pathToFreqFile);
+  if (!freqFile) {
+    std::cerr << "Error: unable to open output file_w: " << pathToFreqFile
+              << "\n";
     return 1;
   }
 
-  file_w << std::fixed << std::setprecision(22);
+  freqFile << std::fixed << std::setprecision(22);
   for (std::size_t idx = 0; idx < myff.i2() + 100; ++idx) {
-    file_w << (vecW[idx] * nval * 1000.0 / TWO_PI);
-    for (std::size_t idx2 = 0; idx2 < vec_step.size(); ++idx2) {
-      file_w << ";" << vec_final_w[idx2](0, idx).real() << ';'
-             << vec_final_w[idx2](0, idx).imag() << ';'
-             << std::abs(vec_final_w[idx2](0, idx)) << ';'
-             << vec_final_w[idx2](1, idx).real() << ';'
-             << vec_final_w[idx2](1, idx).imag() << ';'
-             << std::abs(vec_final_w[idx2](1, idx)) << ';'
-             << vec_final_w[idx2](2, idx).real() << ';'
-             << vec_final_w[idx2](2, idx).imag() << ';'
-             << std::abs(vec_final_w[idx2](2, idx));
+    freqFile << (vecW[idx] * nval * 1000.0 / TWO_PI);
+    for (std::size_t idx2 = 0; idx2 < vecStep.size(); ++idx2) {
+      freqFile << ";" << vecFinalW[idx2](0, idx).real() << ';'
+               << vecFinalW[idx2](0, idx).imag() << ';'
+               << std::abs(vecFinalW[idx2](0, idx)) << ';'
+               << vecFinalW[idx2](1, idx).real() << ';'
+               << vecFinalW[idx2](1, idx).imag() << ';'
+               << std::abs(vecFinalW[idx2](1, idx)) << ';'
+               << vecFinalW[idx2](2, idx).real() << ';'
+               << vecFinalW[idx2](2, idx).imag() << ';'
+               << std::abs(vecFinalW[idx2](2, idx));
     }
-    file_w << '\n';
+    freqFile << '\n';
   }
-  file_w.close();
+  freqFile.close();
 
   // 8b. Output Time Series
-  std::string ptf_t = std::string(PROJECT_BUILD_DIR) +
-                      "../plotting/outputs/ex5_t_NQ" + std::to_string(NQ) +
-                      "_step.out";
-  std::ofstream file_t(ptf_t);
-  if (!file_t) {
-    std::cerr << "Error: unable to open output file_t: " << ptf_t << "\n";
+  std::string pathToTimeFile = std::string(PROJECT_BUILD_DIR) +
+                               "../plotting/outputs/ex5_t_NQ" +
+                               std::to_string(nq) + "_step.out";
+  std::ofstream timeFile(pathToTimeFile);
+  if (!timeFile) {
+    std::cerr << "Error: unable to open output file_t: " << pathToTimeFile
+              << "\n";
     return 1;
   }
 
-  file_t << std::fixed << std::setprecision(22);
-  for (std::size_t idx = 0; idx < static_cast<std::size_t>(idxout); ++idx) {
-    file_t << (idx * myff.dt()) * prem.TimeNorm();
-    for (std::size_t idx2 = 0; idx2 < static_cast<std::size_t>(nsteps);
+  timeFile << std::fixed << std::setprecision(22);
+  for (std::size_t idx = 0; idx < static_cast<std::size_t>(idxOut); ++idx) {
+    timeFile << (idx * myff.dt()) * prem.TimeNorm();
+    for (std::size_t idx2 = 0; idx2 < static_cast<std::size_t>(nSteps);
          ++idx2) {
-      file_t << ";" << vec_final_t[idx2](0, idx) << ";"
-             << vec_final_t[idx2](1, idx) << ";" << vec_final_t[idx2](2, idx);
+      timeFile << ";" << vecFinalT[idx2](0, idx) << ";"
+               << vecFinalT[idx2](1, idx) << ";" << vecFinalT[idx2](2, idx);
     }
-    file_t << '\n';
+    timeFile << '\n';
   }
-  file_t.close();
+  timeFile.close();
 
   // 8c. Output Error Matrix (L1-based)
-  std::string ptf_err = std::string(PROJECT_BUILD_DIR) +
-                        "../plotting/outputs/ex5_NQ" + std::to_string(NQ) +
-                        "_step_error_" +
-                        std::to_string(static_cast<int>(params.f22())) + ".out";
-  std::ofstream file_err(ptf_err);
-  if (!file_err) {
-    std::cerr << "Error: unable to open output file_err: " << ptf_err << "\n";
+  std::string pathToErrFile =
+      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex5_NQ" +
+      std::to_string(nq) + "_step_error_" +
+      std::to_string(static_cast<int>(params.f22())) + ".out";
+  std::ofstream errFile(pathToErrFile);
+  if (!errFile) {
+    std::cerr << "Error: unable to open output file_err: " << pathToErrFile
+              << "\n";
     return 1;
   }
 
-  file_err << std::fixed << std::setprecision(22);
-  for (std::size_t idx = 0; idx < num_err_steps; ++idx) {
-    file_err << vec_step[idx] << ";" << vec_err_t[idx][0] << ";"
-             << vec_err_t[idx][1] << ";" << vec_err_t[idx][2] << ";"
-             << vec_err_w[idx][0] << ";" << vec_err_w[idx][1] << ";"
-             << vec_err_w[idx][2] << "\n";
+  errFile << std::fixed << std::setprecision(22);
+  for (std::size_t idx = 0; idx < numErrSteps; ++idx) {
+    errFile << vecStep[idx] << ";" << vecErrT[idx][0] << ";" << vecErrT[idx][1]
+            << ";" << vecErrT[idx][2] << ";" << vecErrW[idx][0] << ";"
+            << vecErrW[idx][1] << ";" << vecErrW[idx][2] << "\n";
   }
-  file_err.close();
+  errFile.close();
 
   // 8d. Output L2 Error Matrix
-  std::string ptf_l2 = std::string(PROJECT_BUILD_DIR) +
-                       "../plotting/outputs/ex5_NQ" + std::to_string(NQ) +
-                       "_step_error_l2_" +
-                       std::to_string(static_cast<int>(params.f22())) + ".out";
-  std::ofstream file_l2(ptf_l2);
-  if (!file_l2) {
-    std::cerr << "Error: unable to open output file_l2: " << ptf_l2 << "\n";
+  std::string pathToL2File =
+      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex5_NQ" +
+      std::to_string(nq) + "_step_error_l2_" +
+      std::to_string(static_cast<int>(params.f22())) + ".out";
+  std::ofstream l2File(pathToL2File);
+  if (!l2File) {
+    std::cerr << "Error: unable to open output file_l2: " << pathToL2File
+              << "\n";
     return 1;
   }
 
-  file_l2 << std::fixed << std::setprecision(22);
-  for (std::size_t idx = 0; idx < num_err_steps; ++idx) {
-    file_l2 << vec_step[idx] << ";" << vec_l2_err_t[idx][0] << ";"
-            << vec_l2_err_t[idx][1] << ";" << vec_l2_err_t[idx][2] << ";"
-            << vec_l2_err_w[idx][0] << ";" << vec_l2_err_w[idx][1] << ";"
-            << vec_l2_err_w[idx][2] << "\n";
+  l2File << std::fixed << std::setprecision(22);
+  for (std::size_t idx = 0; idx < numErrSteps; ++idx) {
+    l2File << vecStep[idx] << ";" << vecL2ErrT[idx][0] << ";"
+           << vecL2ErrT[idx][1] << ";" << vecL2ErrT[idx][2] << ";"
+           << vecL2ErrW[idx][0] << ";" << vecL2ErrW[idx][1] << ";"
+           << vecL2ErrW[idx][2] << "\n";
   }
-  file_l2.close();
+  l2File.close();
 
   return 0;
 }

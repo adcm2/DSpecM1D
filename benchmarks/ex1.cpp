@@ -29,7 +29,7 @@ main() {
   // get paths required for input parameters and Earth model
   std::string paramPath =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex1.txt";
-  DSpecM::InputParametersNew paramsNew(paramPath);
+  InputParametersNew paramsNew(paramPath);
 
   // --- 4. Setup PREM and Frequency Class ---
   timer1.start();
@@ -40,7 +40,7 @@ main() {
   timer1.stop("Total time for PREM and Frequency setup");
 
   // --- 5. Source Information & Spectrum Generation ---
-  DSpecM::SparseFSpec specSolver;
+  SPARSESPEC::SparseFSpec specSolver;
 
   timer1.start();
   MatrixC vecRaw = specSolver.spectra(paramsNew);
@@ -63,23 +63,23 @@ main() {
   auto &aFilt = filtered.frequencySeries;
 
   // --- 8. Read and Process YSpec Data ---
-  std::string yspec_path =
+  std::string yspecPath =
       std::string(PROJECT_BUILD_DIR) + "../../YSpec/output/yspec.lf.out.1";
-  Eigen::MatrixXd yspec_t =
-      DSpecM::loadYSpecTimeSeries(yspec_path, vecFiltT.cols());
+  Eigen::MatrixXd yspecTime =
+      DSpecM::loadYSpecTimeSeries(yspecPath, vecFiltT.cols());
 
-  auto filteredYSpec = DSpecM::applyFilter(yspec_t, myff, filterOptions);
+  auto filteredYSpec = DSpecM::applyFilter(yspecTime, myff, filterOptions);
   auto &vecFiltTYSpec = filteredYSpec.timeSeries;
   auto &aFiltYSpec = filteredYSpec.frequencySeries;
 
   // --- 9. Read and Process SpecNM Data ---
-  std::string specnm_path = std::string(PROJECT_BUILD_DIR) +
-                            "../../specnm/outputs/"
-                            "seismogram_lf_traces_semicolon.txt";
-  Eigen::MatrixXd specnm_t =
-      DSpecM::loadSpecnmTimeSeries(specnm_path, vecFiltT.cols());
+  std::string specnmPath = std::string(PROJECT_BUILD_DIR) +
+                           "../../specnm/outputs/"
+                           "seismogram_lf_traces_semicolon.txt";
+  Eigen::MatrixXd specnmTime =
+      DSpecM::loadSpecnmTimeSeries(specnmPath, vecFiltT.cols());
 
-  auto filteredSpecnm = DSpecM::applyFilter(specnm_t, myff, filterOptions);
+  auto filteredSpecnm = DSpecM::applyFilter(specnmTime, myff, filterOptions);
   auto &vecFiltTSpecnm = filteredSpecnm.timeSeries;
   auto &aFiltSpecnm = filteredSpecnm.frequencySeries;
 
@@ -90,9 +90,9 @@ main() {
                                    aFiltSpecnm);
 
   // --- 11. Output MinEOS Time Series ---
-  std::string pathToFileMineos =
+  std::string pathToMineosFile =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex1_t.out";
-  DSpecM::writeTimeComparison(pathToFileMineos, paramsNew, vecFiltT,
+  DSpecM::writeTimeComparison(pathToMineosFile, paramsNew, vecFiltT,
                               vecFiltTSpecnm);
 
   return 0;

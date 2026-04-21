@@ -118,4 +118,7 @@ DataColumns::clear() {
 }
 
 }   // namespace YSPECREADER
+
+namespace YSpecReader = YSPECREADER;
+
 #endif

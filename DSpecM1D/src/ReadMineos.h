@@ -102,4 +102,7 @@ DataColumns::clear() {
 }
 
 }   // namespace MINEOSREADER
+
+namespace MineosReader = MINEOSREADER;
+
 #endif

@@ -109,4 +109,6 @@ DataColumns::clear() {
 
 }   // namespace SPECNMREADER
 
+namespace SpecnmReader = SPECNMREADER;
+
 #endif

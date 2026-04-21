@@ -11,8 +11,8 @@
 namespace DSpecM {
 
 struct ReferenceTimeSeries {
-  Eigen::MatrixXd yspec_t;
-  Eigen::MatrixXd mineos_t;
+  Eigen::MatrixXd yspecTime;
+  Eigen::MatrixXd mineosTime;
 };
 
 inline Eigen::MatrixXd
@@ -84,9 +84,9 @@ loadReferenceTimeSeries(const std::string &yspecPath,
                         const std::string &mineosEPath, int ncols,
                         double mineosScale = 1e-9) {
   ReferenceTimeSeries out;
-  out.yspec_t = loadYSpecTimeSeries(yspecPath, ncols);
-  out.mineos_t = loadMineosTimeSeries(mineosZPath, mineosNPath, mineosEPath,
-                                      ncols, mineosScale);
+  out.yspecTime = loadYSpecTimeSeries(yspecPath, ncols);
+  out.mineosTime = loadMineosTimeSeries(mineosZPath, mineosNPath, mineosEPath,
+                                        ncols, mineosScale);
   return out;
 }
 

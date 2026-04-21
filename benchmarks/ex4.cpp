@@ -41,8 +41,8 @@ main() {
   Timer timer1;
 
   // --- 1. Normalisation and Input Parameters ---
-  prem_norm<double> norm_class;
-  auto timenorm = norm_class.TimeNorm();
+  prem_norm<double> normClass;
+  auto timeNorm = normClass.TimeNorm();
 
   // get paths required for input parameters and Earth model
   std::string paramPath =
@@ -60,24 +60,24 @@ main() {
   double wtb = 0.05;
   double t1 = 0.0;
   double t2 = tout + 1.0;
-  int NQ = 5;
+  int nq = 5;
   int qex = 1;
 
   // --- 3. Setup Frequency Class ---
   SpectraSolver::FreqFull myff(params.f1(), params.f2(), params.f11(),
                                params.f12(), params.f21(), params.f22(), dt,
-                               tout, df0, wtb, t1, t2, qex, timenorm);
+                               tout, df0, wtb, t1, t2, qex, timeNorm);
 
   // --- 4. Earth Model and Source ---
-  auto prem = EarthModels::ModelInput(earthModelPath, norm_class, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   // --- 5. Compute Raw Frequency-Domain Spectra ---
   SPARSESPEC::SparseFSpec specSolver;
 
   timer1.start();
-  MatrixC vecRaw = specSolver.spectra(myff, prem, cmt, params, NQ, srInfo,
-                                  params.relative_error());
+  MatrixC vecRaw = specSolver.spectra(myff, prem, cmt, params, nq, srInfo,
+                                      params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 
   // --- 6. Post-processing (Freq -> Time -> Filter) ---
@@ -86,8 +86,8 @@ main() {
   auto vecFiltT = processfunctions::filtfreq2time(aFilt0, myff, false);
 
   // Dimensionalise to acceleration (m/s^2)
-  double accel_norm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
-  vecFiltT *= accel_norm;
+  double accelNorm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
+  vecFiltT *= accelNorm;
 
   //////////////////////////////////////////////////////////////////////////////
   // --- 7. Write Record Section to File ---
@@ -105,17 +105,16 @@ main() {
 
   for (std::size_t idx = 0; idx < static_cast<std::size_t>(vecFiltT.cols());
        ++idx) {
-    double t_sec = idx * myff.dt() * prem.TimeNorm();
-    file << t_sec;
+    double tSec = idx * myff.dt() * prem.TimeNorm();
+    file << tSec;
 
     for (int jidx = 0; jidx < params.num_receivers(); ++jidx) {
       file << ';' << vecFiltT(3 * jidx + 0, idx) << ';'
-           << vecFiltT(3 * jidx + 1, idx) << ';'
-           << vecFiltT(3 * jidx + 2, idx);
+           << vecFiltT(3 * jidx + 1, idx) << ';' << vecFiltT(3 * jidx + 2, idx);
     }
     file << '\n';
 
-    if (t_sec > params.t_out() * 60.0) {
+    if (tSec > params.t_out() * 60.0) {
       break;
     }
   }

@@ -55,8 +55,8 @@ main() {
   SRInfo srInfo(params);
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
-  prem_norm<double> norm_class;
-  auto prem = EarthModels::ModelInput(earthModelPath, norm_class, "true");
+  prem_norm<double> normClass;
+  auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
 
   // --- 2. Frequency Solver Parameters ---
   double dt = params.time_step_sec();
@@ -66,7 +66,7 @@ main() {
   double t1 = 0.0;
   double t2 = tout;
   int qex = 1;
-  int NQ = 6;
+  int nq = 6;
 
   SpectraSolver::FreqFull myff(params.f1(), params.f2(), params.f11(),
                                params.f12(), params.f21(), params.f22(), dt,
@@ -77,20 +77,20 @@ main() {
   SPARSESPEC::SparseFSpec spec;
 
   timer1.start();
-  MatrixC vecRaw = spec.spectra(myff, prem, cmt, params, NQ, srInfo,
+  MatrixC vecRaw = spec.spectra(myff, prem, cmt, params, nq, srInfo,
                                 params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 
   // --- 4. Normalization ---
   double normFactor = 1.0;
-  double accel_norm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
+  double accelNorm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
 
   if (params.output_type() == 0) {
     normFactor = prem.LengthNorm();
   } else if (params.output_type() == 1) {
     normFactor = prem.LengthNorm() / prem.TimeNorm();
   } else if (params.output_type() == 2) {
-    normFactor = accel_norm;
+    normFactor = accelNorm;
   }
   vecRaw *= normFactor;
 
@@ -101,27 +101,27 @@ main() {
 
   // --- 6. Source Time Function (STF) Convolution ---
 
-  double hd = 1e-9;       // Half duration (set to near zero for testing)
-  double dec_t = 1.628;   // Decay constant
-  double kap_val = dec_t / (std::sqrt(PI) * hd);
-  double st_time = 2.0 / kap_val;
+  double hd = 1e-9;        // Half duration (set to near zero for testing)
+  double decayT = 1.628;   // Decay constant
+  double kapVal = decayT / (std::sqrt(PI) * hd);
+  double stTime = 2.0 / kapVal;
 
   std::cout << "Source time function parameters:\n"
             << "Half duration (s): " << hd << "\n"
-            << "Kappa: " << kap_val << "\n"
+            << "Kappa: " << kapVal << "\n"
             << "df: " << myff.df() << "\n"
-            << "Source time (s): " << st_time * prem.TimeNorm() << "\n";
+            << "Source time (s): " << stTime * prem.TimeNorm() << "\n";
 
-  auto a_filt_stf0 = aFilt0;
+  auto aFiltStf0 = aFilt0;
   for (int idx = 0; idx < aFilt0.cols(); ++idx) {
     auto wval = myff.w(idx);
-    Complex stf_factor =
-        std::exp(-I * wval * st_time) *
-        std::exp(-(1.0 / (4.0 * PI)) * std::pow(wval / kap_val, 2.0));
-    a_filt_stf0.col(idx) *= stf_factor;
+    Complex stfFactor =
+        std::exp(-I * wval * stTime) *
+        std::exp(-(1.0 / (4.0 * PI)) * std::pow(wval / kapVal, 2.0));
+    aFiltStf0.col(idx) *= stfFactor;
   }
 
-  auto vecFiltT = processfunctions::filtfreq2time(a_filt_stf0, myff, false);
+  auto vecFiltT = processfunctions::filtfreq2time(aFiltStf0, myff, false);
   auto aFilt = processfunctions::fulltime2freq(vecFiltT, myff, hannW);
 
   //////////////////////////////////////////////////////////////////////////////
@@ -133,154 +133,152 @@ main() {
   filterOptions.enforceRealSignal = false;
 
   // --- 7. Read and Process YSpec Data ---
-  std::string yspec_path = std::string(PROJECT_BUILD_DIR) +
-                           "../../YSpec/output/yspec.out.bolivia.mf.1";
-  YSPECREADER::DataColumns yspec_data(yspec_path);
+  std::string yspecPath = std::string(PROJECT_BUILD_DIR) +
+                          "../../YSpec/output/yspec.out.bolivia.mf.1";
+  YSPECREADER::DataColumns yspecData(yspecPath);
 
   // FIX: Added safe boundary checking here to prevent out-of-bounds crashes
-  std::size_t maxcoly = std::min(static_cast<std::size_t>(vecR2TB.cols()),
-                                 yspec_data.getColumn1().size());
+  std::size_t maxColY = std::min(static_cast<std::size_t>(vecR2TB.cols()),
+                                 yspecData.getColumn1().size());
 
-  Eigen::MatrixXd yspec_t = Eigen::MatrixXd::Zero(3, vecR2TB.cols());
-  for (std::size_t idx = 0; idx < maxcoly; ++idx) {
-    yspec_t(0, idx) = yspec_data.getColumn2()[idx];
-    yspec_t(1, idx) = yspec_data.getColumn3()[idx];
-    yspec_t(2, idx) = yspec_data.getColumn4()[idx];
+  Eigen::MatrixXd yspecTime = Eigen::MatrixXd::Zero(3, vecR2TB.cols());
+  for (std::size_t idx = 0; idx < maxColY; ++idx) {
+    yspecTime(0, idx) = yspecData.getColumn2()[idx];
+    yspecTime(1, idx) = yspecData.getColumn3()[idx];
+    yspecTime(2, idx) = yspecData.getColumn4()[idx];
   }
 
-  auto a_filt_yspec0 = processfunctions::fulltime2freq(yspec_t, myff, 0.01);
-  auto a_yspec_stf0 = a_filt_yspec0;
+  auto aFiltYSpec0 = processfunctions::fulltime2freq(yspecTime, myff, 0.01);
+  auto aYSpecStf0 = aFiltYSpec0;
 
-  for (int idx = 1; idx < a_yspec_stf0.cols(); ++idx) {
+  for (int idx = 1; idx < aYSpecStf0.cols(); ++idx) {
     auto wval = myff.w(idx);
-    Complex stf_factor =
-        std::exp(-I * wval * st_time) *
-        std::exp(-(1.0 / (4.0 * PI)) * std::pow(wval / kap_val, 2.0));
-    a_yspec_stf0.col(idx) *= stf_factor;
+    Complex stfFactor =
+        std::exp(-I * wval * stTime) *
+        std::exp(-(1.0 / (4.0 * PI)) * std::pow(wval / kapVal, 2.0));
+    aYSpecStf0.col(idx) *= stfFactor;
   }
 
-  auto vecFiltTYSpec =
-      processfunctions::filtfreq2time(a_yspec_stf0, myff, false);
+  auto vecFiltTYSpec = processfunctions::filtfreq2time(aYSpecStf0, myff, false);
   auto aFiltYSpec = processfunctions::fulltime2freq(vecFiltTYSpec, myff, hannW);
 
   // --- 8. Read and Process MinEOS Data ---
-  std::string mineos_base = std::string(PROJECT_BUILD_DIR) +
-                            "../../mineos/DEMO/MYEX/Syndat2_ASC_BOLIVIA/"
-                            "Syndat2.2000160: 0:33:16.TLY.";
-  MINEOSREADER::DataColumns mineos_data(mineos_base + "LHZ.ASC");
-  MINEOSREADER::DataColumns mineos_data1(mineos_base + "LHN.ASC");
-  MINEOSREADER::DataColumns mineos_data2(mineos_base + "LHE.ASC");
+  std::string mineosBase = std::string(PROJECT_BUILD_DIR) +
+                           "../../mineos/DEMO/MYEX/Syndat2_ASC_BOLIVIA/"
+                           "Syndat2.2000160: 0:33:16.TLY.";
+  MINEOSREADER::DataColumns mineosDataZ(mineosBase + "LHZ.ASC");
+  MINEOSREADER::DataColumns mineosDataN(mineosBase + "LHN.ASC");
+  MINEOSREADER::DataColumns mineosDataE(mineosBase + "LHE.ASC");
 
-  std::size_t maxcol = std::min(static_cast<std::size_t>(vecR2TB.cols()),
-                                mineos_data.getColumn1().size());
+  std::size_t maxCol = std::min(static_cast<std::size_t>(vecR2TB.cols()),
+                                mineosDataZ.getColumn1().size());
 
-  Eigen::MatrixXd mineos_t = Eigen::MatrixXd::Zero(3, vecR2TB.cols());
-  for (std::size_t idx = 0; idx < maxcol; ++idx) {
-    mineos_t(0, idx) = mineos_data.getColumn2()[idx] * 1e-9;
-    mineos_t(1, idx) = mineos_data1.getColumn2()[idx] * 1e-9;
-    mineos_t(2, idx) = mineos_data2.getColumn2()[idx] * 1e-9;
+  Eigen::MatrixXd mineosTime = Eigen::MatrixXd::Zero(3, vecR2TB.cols());
+  for (std::size_t idx = 0; idx < maxCol; ++idx) {
+    mineosTime(0, idx) = mineosDataZ.getColumn2()[idx] * 1e-9;
+    mineosTime(1, idx) = mineosDataN.getColumn2()[idx] * 1e-9;
+    mineosTime(2, idx) = mineosDataE.getColumn2()[idx] * 1e-9;
   }
 
-  auto a_mineos_0 = processfunctions::fulltime2freq(mineos_t, myff, 0.01);
-  auto a_mineos_stf0 = a_mineos_0;
+  auto aMineos0 = processfunctions::fulltime2freq(mineosTime, myff, 0.01);
+  auto aMineosStf0 = aMineos0;
 
   // Start at idx=1 to avoid division by zero (wval * wval)
-  for (int idx = 1; idx < a_mineos_0.cols(); ++idx) {
+  for (int idx = 1; idx < aMineos0.cols(); ++idx) {
     auto wval = myff.w(idx);
-    Complex stf_factor =
-        -1.0 / (wval * wval) * std::exp(-I * wval * st_time) *
-        std::exp(-(1.0 / (4.0 * PI)) * std::pow(wval / kap_val, 2.0));
-    a_mineos_stf0.col(idx) *= stf_factor;
+    Complex stfFactor =
+        -1.0 / (wval * wval) * std::exp(-I * wval * stTime) *
+        std::exp(-(1.0 / (4.0 * PI)) * std::pow(wval / kapVal, 2.0));
+    aMineosStf0.col(idx) *= stfFactor;
   }
 
-  a_mineos_stf0 *= prem.TimeNorm() * prem.TimeNorm();
-  auto vec_filt_t_mineos =
-      processfunctions::filtfreq2time(a_mineos_stf0, myff, false);
-  auto a_filt_mineos =
-      processfunctions::fulltime2freq(vec_filt_t_mineos, myff, hannW);
+  aMineosStf0 *= prem.TimeNorm() * prem.TimeNorm();
+  auto vecFiltTMineos =
+      processfunctions::filtfreq2time(aMineosStf0, myff, false);
+  auto aFiltMineos =
+      processfunctions::fulltime2freq(vecFiltTMineos, myff, hannW);
 
   // --- 9. Read and Process SpecNM Data ---
-  std::string specnm_path = std::string(PROJECT_BUILD_DIR) +
-                            "../../specnm/outputs/"
-                            "seismogram_mf_traces_semicolon.txt";
-  Eigen::MatrixXd specnm_t =
-      DSpecM::loadSpecnmTimeSeries(specnm_path, vecFiltT.cols());
+  std::string specnmPath = std::string(PROJECT_BUILD_DIR) +
+                           "../../specnm/outputs/"
+                           "seismogram_mf_traces_semicolon.txt";
+  Eigen::MatrixXd specnmTime =
+      DSpecM::loadSpecnmTimeSeries(specnmPath, vecFiltT.cols());
 
-  auto filteredSpecnm = DSpecM::applyFilter(specnm_t, myff, filterOptions);
+  auto filteredSpecnm = DSpecM::applyFilter(specnmTime, myff, filterOptions);
   auto &vecFiltTSpecnm = filteredSpecnm.timeSeries;
   auto &aFiltSpecnm = filteredSpecnm.frequencySeries;
 
   //////////////////////////////////////////////////////////////////////////////
   // --- 9. Output Frequency Spectrum ---
-  std::string ptf_w =
+  std::string pathToFreqFile =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_w.out";
-  std::ofstream file_w(ptf_w);
-  if (!file_w) {
-    std::cerr << "Error: unable to open output file_w: " << ptf_w << "\n";
+  std::ofstream freqFile(pathToFreqFile);
+  if (!freqFile) {
+    std::cerr << "Error: unable to open output file_w: " << pathToFreqFile
+              << "\n";
     return 1;
   }
 
   double nval = 1.0 / prem.TimeNorm();
-  file_w << std::fixed << std::setprecision(16);
+  freqFile << std::fixed << std::setprecision(16);
 
   for (std::size_t idx = 0; idx < myff.i2() + 100; ++idx) {
-    file_w << (vecW[idx] * nval * 1000.0 / TWO_PI) << ';'
-           << aFilt(0, idx).real() << ';' << aFilt(0, idx).imag() << ';'
-           << std::abs(aFilt(0, idx)) << ';' << aFilt(1, idx).real() << ';'
-           << aFilt(1, idx).imag() << ';' << std::abs(aFilt(1, idx)) << ';'
-           << aFilt(2, idx).real() << ';' << aFilt(2, idx).imag() << ';'
-           << std::abs(aFilt(2, idx)) << ';' << aFiltYSpec(0, idx).real() << ';'
-           << aFiltYSpec(0, idx).imag() << ';' << std::abs(aFiltYSpec(0, idx))
-           << ';' << aFiltYSpec(1, idx).real() << ';'
-           << aFiltYSpec(1, idx).imag() << ';' << std::abs(aFiltYSpec(1, idx))
-           << ';' << aFiltYSpec(2, idx).real() << ';'
-           << aFiltYSpec(2, idx).imag() << ';' << std::abs(aFiltYSpec(2, idx))
-           << ';' << a_filt_mineos(0, idx).real() << ';'
-           << a_filt_mineos(0, idx).imag() << ';'
-           << std::abs(a_filt_mineos(0, idx)) << ';'
-           << a_filt_mineos(1, idx).real() << ';'
-           << a_filt_mineos(1, idx).imag() << ';'
-           << std::abs(a_filt_mineos(1, idx)) << ';'
-           << a_filt_mineos(2, idx).real() << ';'
-           << a_filt_mineos(2, idx).imag() << ';'
-           << std::abs(a_filt_mineos(2, idx)) << ";"
-           << aFiltSpecnm(0, idx).real() << ";" << aFiltSpecnm(0, idx).imag()
-           << ";" << std::abs(aFiltSpecnm(0, idx)) << ";"
-           << aFiltSpecnm(0, idx).real() << ";" << aFiltSpecnm(1, idx).imag()
-           << ";" << std::abs(aFiltSpecnm(1, idx)) << ";"
-           << aFiltSpecnm(2, idx).real() << ";" << aFiltSpecnm(2, idx).imag()
-           << ";" << std::abs(aFiltSpecnm(2, idx)) << '\n';
+    freqFile << (vecW[idx] * nval * 1000.0 / TWO_PI) << ';'
+             << aFilt(0, idx).real() << ';' << aFilt(0, idx).imag() << ';'
+             << std::abs(aFilt(0, idx)) << ';' << aFilt(1, idx).real() << ';'
+             << aFilt(1, idx).imag() << ';' << std::abs(aFilt(1, idx)) << ';'
+             << aFilt(2, idx).real() << ';' << aFilt(2, idx).imag() << ';'
+             << std::abs(aFilt(2, idx)) << ';' << aFiltYSpec(0, idx).real()
+             << ';' << aFiltYSpec(0, idx).imag() << ';'
+             << std::abs(aFiltYSpec(0, idx)) << ';' << aFiltYSpec(1, idx).real()
+             << ';' << aFiltYSpec(1, idx).imag() << ';'
+             << std::abs(aFiltYSpec(1, idx)) << ';' << aFiltYSpec(2, idx).real()
+             << ';' << aFiltYSpec(2, idx).imag() << ';'
+             << std::abs(aFiltYSpec(2, idx)) << ';'
+             << aFiltMineos(0, idx).real() << ';' << aFiltMineos(0, idx).imag()
+             << ';' << std::abs(aFiltMineos(0, idx)) << ';'
+             << aFiltMineos(1, idx).real() << ';' << aFiltMineos(1, idx).imag()
+             << ';' << std::abs(aFiltMineos(1, idx)) << ';'
+             << aFiltMineos(2, idx).real() << ';' << aFiltMineos(2, idx).imag()
+             << ';' << std::abs(aFiltMineos(2, idx)) << ";"
+             << aFiltSpecnm(0, idx).real() << ";" << aFiltSpecnm(0, idx).imag()
+             << ";" << std::abs(aFiltSpecnm(0, idx)) << ";"
+             << aFiltSpecnm(0, idx).real() << ";" << aFiltSpecnm(1, idx).imag()
+             << ";" << std::abs(aFiltSpecnm(1, idx)) << ";"
+             << aFiltSpecnm(2, idx).real() << ";" << aFiltSpecnm(2, idx).imag()
+             << ";" << std::abs(aFiltSpecnm(2, idx)) << '\n';
   }
-  file_w.close();
+  freqFile.close();
 
   // --- 10. Output Time Series ---
-  std::string ptf_t =
+  std::string pathToTimeFile =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_t.out";
-  std::ofstream file_t(ptf_t);
-  if (!file_t) {
-    std::cerr << "Error: unable to open output file_t: " << ptf_t << "\n";
+  std::ofstream timeFile(pathToTimeFile);
+  if (!timeFile) {
+    std::cerr << "Error: unable to open output file_t: " << pathToTimeFile
+              << "\n";
     return 1;
   }
 
-  file_t << std::fixed << std::setprecision(16);
+  timeFile << std::fixed << std::setprecision(16);
 
   for (std::size_t idx = 0;
-       idx < static_cast<std::size_t>(vec_filt_t_mineos.cols()); ++idx) {
+       idx < static_cast<std::size_t>(vecFiltTMineos.cols()); ++idx) {
     auto tval = idx * myff.dt() * prem.TimeNorm();
-    file_t << (idx * myff.dt() - st_time) * prem.TimeNorm() << ';'
-           << vecFiltT(0, idx) << ';' << vecFiltT(1, idx) << ';'
-           << vecFiltT(2, idx) << ';' << vecFiltTYSpec(0, idx) << ';'
-           << vecFiltTYSpec(1, idx) << ';' << vecFiltTYSpec(2, idx) << ';'
-           << vec_filt_t_mineos(0, idx) << ';' << vec_filt_t_mineos(1, idx)
-           << ';' << vec_filt_t_mineos(2, idx) << ";" << vecFiltTSpecnm(0, idx)
-           << ";" << vecFiltTSpecnm(1, idx) << ";" << vecFiltTSpecnm(2, idx)
-           << '\n';
+    timeFile << (idx * myff.dt() - stTime) * prem.TimeNorm() << ';'
+             << vecFiltT(0, idx) << ';' << vecFiltT(1, idx) << ';'
+             << vecFiltT(2, idx) << ';' << vecFiltTYSpec(0, idx) << ';'
+             << vecFiltTYSpec(1, idx) << ';' << vecFiltTYSpec(2, idx) << ';'
+             << vecFiltTMineos(0, idx) << ';' << vecFiltTMineos(1, idx) << ';'
+             << vecFiltTMineos(2, idx) << ";" << vecFiltTSpecnm(0, idx) << ";"
+             << vecFiltTSpecnm(1, idx) << ";" << vecFiltTSpecnm(2, idx) << '\n';
 
     if (tval > t2 * 3600.0) {
       break;
     }
   }
-  file_t.close();
+  timeFile.close();
 
   return 0;
 }

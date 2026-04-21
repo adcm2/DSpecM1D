@@ -79,8 +79,11 @@ target_include_directories(DSpecM1D INTERFACE
 
 # --- Benchmarks ---
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+    enable_testing()
     option(DSPECM1D_BUILD_BENCHMARKS "Whether or not benchmarks should be built" ON)
     option(DSPECM1D_BUILD_TUTORIALS "Whether or not tutorials should be built" ON)
+    option(DSPECM1D_BUILD_TESTS "Build DSPECM1D Tests" OFF)
+    option(DSPECM1D_ENABLE_SMOKE_TESTS "Register lightweight executable smoke tests" OFF)
 
     if(DSPECM1D_BUILD_BENCHMARKS OR DSPECM1D_BUILD_TUTORIALS)
         add_custom_target(CopyData
@@ -97,12 +100,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     if(DSPECM1D_BUILD_TUTORIALS)
         add_subdirectory(tutorials)
     endif()
-endif()
 
-# --- Tests ---
-if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
-    enable_testing()
-    option(DSPECM1D_BUILD_TESTS "Build DSPECM1D Tests" OFF)
     if(DSPECM1D_BUILD_TESTS)
         add_subdirectory(tests)
     endif()

@@ -19,3 +19,11 @@ foreach(SRC_FILE IN LISTS BENCHMARK_SOURCES)
     endif()
 
 endforeach()
+
+if(DSPECM1D_ENABLE_SMOKE_TESTS AND TARGET ex1)
+    add_test(
+        NAME smoke_build_benchmark_ex1
+        COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target ex1
+    )
+    set_tests_properties(smoke_build_benchmark_ex1 PROPERTIES LABELS "smoke")
+endif()

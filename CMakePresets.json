@@ -1,0 +1,68 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "dev",
+      "displayName": "Development (Ninja)",
+      "description": "Default development preset with tests, tutorials, benchmarks, and smoke checks.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/dev",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "DSPECM1D_BUILD_TESTS": "ON",
+        "DSPECM1D_BUILD_BENCHMARKS": "ON",
+        "DSPECM1D_BUILD_TUTORIALS": "ON",
+        "DSPECM1D_ENABLE_SMOKE_TESTS": "ON"
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Release (Ninja)",
+      "description": "Optimized release preset for benchmarking and exercise validation.",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "DSPECM1D_BUILD_TESTS": "ON",
+        "DSPECM1D_BUILD_BENCHMARKS": "ON",
+        "DSPECM1D_BUILD_TUTORIALS": "ON",
+        "DSPECM1D_ENABLE_SMOKE_TESTS": "ON"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "dev",
+      "displayName": "Build Development",
+      "configurePreset": "dev"
+    },
+    {
+      "name": "release",
+      "displayName": "Build Release",
+      "configurePreset": "release"
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "dev",
+      "displayName": "Test Development",
+      "configurePreset": "dev",
+      "output": {
+        "outputOnFailure": true
+      }
+    },
+    {
+      "name": "release",
+      "displayName": "Test Release",
+      "configurePreset": "release",
+      "output": {
+        "outputOnFailure": true
+      }
+    }
+  ]
+}
