@@ -10,7 +10,13 @@
 #include <stdexcept>
 #include <type_traits>
 
-// Helper function to read the next non-comment, non-empty line from a file
+/**
+ * @brief Reads the next non-empty, non-comment value line from a stream.
+ *
+ * Comment lines beginning with `#` and fully blank lines are skipped. If the
+ * remaining line is wrapped in quotes, the quotes are removed before
+ * returning the value.
+ */
 inline std::string
 get_next_value_line(std::ifstream &file) {
   std::string line;
@@ -34,8 +40,16 @@ get_next_value_line(std::ifstream &file) {
   return "";   // Return empty if nothing is found
 }
 
-// Reads next value line and parses exactly one scalar of type T.
-// Throws with a field name if missing/invalid/trailing tokens exist.
+/**
+ * @brief Reads and validates a scalar value from the next value line.
+ *
+ * @tparam T Scalar type to parse.
+ * @param file Input stream to read from.
+ * @param field_name Logical field name used in exception messages.
+ *
+ * @throws std::runtime_error if the value is missing, invalid, or contains
+ * trailing tokens.
+ */
 template <typename T>
 inline T
 read_required_scalar(std::ifstream &file, const char *field_name) {
@@ -62,7 +76,14 @@ read_required_scalar(std::ifstream &file, const char *field_name) {
   return value;
 }
 
-// Helper function to read a latitude and longitude from a file
+/**
+ * @brief Reads and validates a latitude/longitude pair from the next value
+ * line.
+ *
+ * @param file Input stream to read from.
+ * @param field_name Logical field name used in exception messages.
+ * @return Pair of latitude and longitude in degrees.
+ */
 inline std::pair<double, double>
 read_required_lat_lon(std::ifstream &file, const char *field_name) {
   const std::string line = get_next_value_line(file);
@@ -113,7 +134,13 @@ require_positive(T value, const char *field_name) {
   }
 }
 
-// Class to store all parameters from the input file
+/**
+ * @brief Legacy ordered parameter-file reader for DSpecM1D workflows.
+ *
+ * The parser consumes a fixed sequence of value lines. It remains available
+ * for backward compatibility and underpins the higher-level
+ * `InputParametersNew` release-facing workflow object.
+ */
 class InputParameters {
 private:
   std::string m_output_prefix;
@@ -140,7 +167,13 @@ private:
   std::vector<std::pair<double, double>> m_receivers;   // lat, lon
 
 public:
-  // Constructor that reads the file
+  /**
+   * @brief Constructs and validates the parameter object from a file.
+   *
+   * @param filename Path to the ordered line-based parameter file.
+   * @throws std::runtime_error if the file cannot be opened or contains
+   * invalid values.
+   */
   explicit InputParameters(const std::string &filename) {
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -213,8 +246,9 @@ public:
     }
   }
 
-  // --- Public Getter Functions ---
+  /// Returns the output prefix for generated files.
   const std::string &output_prefix() const { return m_output_prefix; }
+  /// Returns the Earth model path as stored in the parameter file.
   const std::string &earth_model() const { return m_earth_model; }
   int type() const { return m_type; }
   int attenuation() const { return m_attenuation; }

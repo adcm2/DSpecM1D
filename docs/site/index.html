@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DSpecM1D Documentation</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=JetBrains+Mono:wght@400;600&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="shell hero">
+      <div>
+        <div class="tag">Release Documentation</div>
+        <h1>DSpecM1D</h1>
+        <p>A C++23 spectral element library for synthetic seismograms in a spherically symmetric Earth model, with a release workflow that distinguishes paper-reproduction examples from modular library tests.</p>
+      </div>
+      <div class="card">
+        <h2>Recommended Entry Points</h2>
+        <p><code>InputParametersNew</code>, <code>SPARSESPEC::SparseFSpec</code>, <code>DSpecM::FilterOptions</code>, <code>DSpecM::applyFilter</code>, and the output-writer helpers are the preferred release-facing API.</p>
+      </div>
+    </div>
+  </header>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="shell card-grid">
+      <section class="card">
+        <h2>Installation</h2>
+        <p>Build from source with CMake, use the packaged config for downstream integration, and keep dependency versions pinned for reproducibility.</p>
+        <p><a href="installation.html">Read installation guide</a></p>
+      </section>
+      <section class="card">
+        <h2>Quick Start</h2>
+        <p><code>t1</code> is the self-contained tutorial and runtime smoke example. It is the recommended first executable for new users.</p>
+        <p><a href="installation.html#quick-start">Run tutorial 1</a></p>
+      </section>
+      <section class="card">
+        <h2>Paper Reproduction</h2>
+        <p><code>ex1</code> through <code>ex7</code> are preserved as paper-reproduction workflows and intentionally keep their external comparisons.</p>
+        <p><a href="paper-reproduction.html">View reproduction guide</a></p>
+      </section>
+      <section class="card">
+        <h2>Library Testing</h2>
+        <p>The main regression safety net is a suite of small, self-contained tests that target parsers, helpers, filters, and writers.</p>
+        <p><a href="library-testing.html">See testing model</a></p>
+      </section>
+    </div>
+  </main>
+  <footer>
+    DSpecM1D documentation site. Build the static site with the <code>website</code> target and the API docs with <code>doxygen-docs</code>.
+  </footer>
+</body>
+</html>

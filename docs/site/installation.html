@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Installation | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <h1>Installation</h1>
+      <section class="page-section">
+        <h2>Requirements</h2>
+        <p>DSpecM1D requires a C++23 compiler, CMake 3.24+, FFTW3, and OpenMP. The remaining dependencies are fetched automatically from pinned revisions.</p>
+        <pre><code>cmake -S . -B build/release -G Ninja
+cmake --build build/release --parallel</code></pre>
+      </section>
+      <section class="page-section" id="quick-start">
+        <h2>Quick Start</h2>
+        <p>The self-contained tutorial executable is <code>t1</code>. It is the default runtime smoke test because it does not require the external comparison datasets used by the paper examples.</p>
+        <pre><code>cmake -S . -B build/dev -G Ninja -DDSPECM1D_BUILD_TUTORIALS=ON
+cmake --build build/dev --target t1
+./build/dev/bin/t1</code></pre>
+      </section>
+      <section class="page-section">
+        <h2>Installed Package</h2>
+        <p>The release includes <code>install()</code> and exported CMake targets. Downstream projects can consume the installed package with <code>find_package(DSpecM1D REQUIRED)</code> and link against <code>DSpecM1D::DSpecM1D</code>.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

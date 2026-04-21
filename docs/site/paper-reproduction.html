@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paper Reproduction | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <h1>Paper Reproduction Examples</h1>
+      <section class="page-section">
+        <div class="callout">
+          <strong>Important:</strong> <code>ex1</code> through <code>ex7</code> are preserved as paper-reproduction workflows. Their external comparisons are intentional and must remain intact for scientific reproducibility.
+        </div>
+        <p>These examples are not the main regression test suite. They are validation workflows for the supported reproduction environment used to compare against YSpec, MinEOS, and SpecNM outputs.</p>
+      </section>
+      <section class="page-section">
+        <h2>Current External Inputs</h2>
+        <ul>
+          <li><code>ex1</code>, <code>ex2</code>, <code>ex3</code>, and related plotting flows read comparison outputs from sibling YSpec and SpecNM directories.</li>
+          <li><code>ex7</code> additionally depends on MinEOS comparison traces.</li>
+          <li>These dependencies are part of the paper workflow and should be treated as deliberate release requirements for reproduction, not accidental coupling.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Verification Model</h2>
+        <p>The protected examples should continue to build and run in the supported environment with their current output flow unchanged. Day-to-day regression catching should instead happen in the modular library tests.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

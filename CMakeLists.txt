@@ -15,6 +15,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
+include(GNUInstallDirs)
+include(CMakePackageConfigHelpers)
+
 # --- System Dependencies ---
 find_package(FFTW)
 find_package(OpenMP REQUIRED)
@@ -35,14 +38,14 @@ FetchContent_Declare(
     GIT_SHALLOW    TRUE
     FIND_PACKAGE_ARGS NAMES Eigen3
 )
-FetchContent_Declare(FFTWpp           GIT_REPOSITORY https://github.com/da380/FFTWpp.git           GIT_TAG main   GIT_SHALLOW TRUE)
-FetchContent_Declare(GaussQuad        GIT_REPOSITORY https://github.com/da380/GaussQuad.git        GIT_TAG main   GIT_SHALLOW TRUE)
-FetchContent_Declare(PlanetaryModel   GIT_REPOSITORY https://github.com/da380/PlanetaryModel.git   GIT_TAG newdev GIT_SHALLOW TRUE)
-FetchContent_Declare(GSHTRANS         GIT_REPOSITORY https://github.com/da380/GSHTrans.git         GIT_TAG main   GIT_SHALLOW TRUE)
-FetchContent_Declare(TomographyModels GIT_REPOSITORY https://github.com/adcm2/TomographyModels.git GIT_TAG main   GIT_SHALLOW TRUE)
-FetchContent_Declare(Interpolation    GIT_REPOSITORY https://github.com/da380/Interpolation.git    GIT_TAG develop GIT_SHALLOW TRUE)
-FetchContent_Declare(EarthMesh        GIT_REPOSITORY https://github.com/adcm2/EarthMesh.git        GIT_TAG main   GIT_SHALLOW TRUE)
-FetchContent_Declare(SpectraSolver    GIT_REPOSITORY https://github.com/adcm2/SpectraSolver.git    GIT_TAG develop GIT_SHALLOW TRUE)
+FetchContent_Declare(FFTWpp           GIT_REPOSITORY https://github.com/da380/FFTWpp.git           GIT_TAG 06cc1fb04c4398407839e637cb5414b179b0e9c3 GIT_SHALLOW TRUE)
+FetchContent_Declare(GaussQuad        GIT_REPOSITORY https://github.com/da380/GaussQuad.git        GIT_TAG fbe37c7eef93695317dbf9c48715110bf64c800f GIT_SHALLOW TRUE)
+FetchContent_Declare(PlanetaryModel   GIT_REPOSITORY https://github.com/da380/PlanetaryModel.git   GIT_TAG a801b9e9c2205c3b32daa745fd523d596a9d2ede GIT_SHALLOW TRUE)
+FetchContent_Declare(GSHTRANS         GIT_REPOSITORY https://github.com/da380/GSHTrans.git         GIT_TAG b880ac9aeacdb54a6480fca3aee70a20a727c678 GIT_SHALLOW TRUE)
+FetchContent_Declare(TomographyModels GIT_REPOSITORY https://github.com/adcm2/TomographyModels.git GIT_TAG 97869aeea3f3d87901705db59b5de975960bd9e1 GIT_SHALLOW TRUE)
+FetchContent_Declare(Interpolation    GIT_REPOSITORY https://github.com/da380/Interpolation.git    GIT_TAG 1557aad571ceac1899c2d3795696aa4047f41d8a GIT_SHALLOW TRUE)
+FetchContent_Declare(EarthMesh        GIT_REPOSITORY https://github.com/adcm2/EarthMesh.git        GIT_TAG fc0db1eba3bebb3cbd876f39e7248b9ede78e303 GIT_SHALLOW TRUE)
+FetchContent_Declare(SpectraSolver    GIT_REPOSITORY https://github.com/adcm2/SpectraSolver.git    GIT_TAG 48e75c5ebf7d10f5ea4a85303368a705a1898f02 GIT_SHALLOW TRUE)
 
 # 2. Modify our helper function to accept a LIST of targets
 function(FetchContent_MakeAvailable_NoInstall)
@@ -75,6 +78,43 @@ target_link_libraries(DSpecM1D INTERFACE
 
 target_include_directories(DSpecM1D INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
+
+install(TARGETS DSpecM1D
+    EXPORT DSpecM1DTargets
+)
+
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindFFTW.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfigVersion.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/DSpecM1DConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfig.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
+)
+
+install(EXPORT DSpecM1DTargets
+    FILE DSpecM1DTargets.cmake
+    NAMESPACE DSpecM1D::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
+)
+
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfigVersion.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
 )
 
 # --- Benchmarks ---
@@ -84,6 +124,8 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     option(DSPECM1D_BUILD_TUTORIALS "Whether or not tutorials should be built" ON)
     option(DSPECM1D_BUILD_TESTS "Build DSPECM1D Tests" OFF)
     option(DSPECM1D_ENABLE_SMOKE_TESTS "Register lightweight executable smoke tests" OFF)
+    option(DSPECM1D_ENABLE_PAPER_VALIDATION "Register optional paper reproduction validation checks" OFF)
+    option(DSPECM1D_BUILD_DOCS "Build DSpecM1D documentation targets" OFF)
 
     if(DSPECM1D_BUILD_BENCHMARKS OR DSPECM1D_BUILD_TUTORIALS)
         add_custom_target(CopyData
@@ -103,5 +145,9 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
 
     if(DSPECM1D_BUILD_TESTS)
         add_subdirectory(tests)
+    endif()
+
+    if(DSPECM1D_BUILD_DOCS)
+        add_subdirectory(docs)
     endif()
 endif()

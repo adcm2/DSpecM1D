@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Parameter Files | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <h1>Parameter Files</h1>
+      <section class="page-section">
+        <p>DSpecM1D currently reads an <strong>ordered line-based format</strong>, not a keyword-value format. Blank lines and comments are skipped, but the remaining values must appear in the expected order.</p>
+        <pre><code>"./output/yspec.lf.out"
+"models/prem.200.noatten.txt"
+4
+0
+2
+0
+0
+1e-5
+0
+100
+0.1
+7.0
+6000
+1.0
+0.1
+0.2
+4.9
+5.0
+647.1
+-13.82
+-67.25
+-7.59e20
+-2.50e21
+4.20e19
+7.75e20
+-2.48e20
+-1.60e19
+3.0001
+2
+80 0
+0 6</code></pre>
+      </section>
+      <section class="page-section">
+        <h2>Recommended API</h2>
+        <p>For release-facing code, prefer <code>InputParametersNew</code>. It keeps the legacy file format while bundling the parsed parameters, Earth model, source, receiver geometry, and frequency axis into one object.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

@@ -16,6 +16,8 @@ angular degree _ℓ_ and solving the resulting linear system at each frequency, 
 - Hann-window bandpass filtering pipeline
 - Non-dimensionalisation against a user-supplied reference model (PREM by default)
 - Clean dependency management via CMake `FetchContent`
+- Modular self-contained unit/component tests for regression catching
+- Protected paper-reproduction examples with external-code comparisons intact
 
 ---
 
@@ -68,6 +70,10 @@ configure step. An internet connection is required on first build.
 |---|---|---|
 | `DSPECM1D_BUILD_BENCHMARKS` | `ON` | Build the benchmark executables |
 | `DSPECM1D_BUILD_TUTORIALS` | `ON` | Build the tutorial executables |
+| `DSPECM1D_BUILD_TESTS` | `OFF` | Build the self-contained unit/component test suite |
+| `DSPECM1D_ENABLE_SMOKE_TESTS` | `OFF` | Register runtime smoke checks such as `t1` |
+| `DSPECM1D_ENABLE_PAPER_VALIDATION` | `OFF` | Register optional paper-reproduction validation checks |
+| `DSPECM1D_BUILD_DOCS` | `OFF` | Enable Doxygen and static website build targets |
 
 ```bash
 cmake .. -DDSPECM1D_BUILD_BENCHMARKS=OFF -DDSPECM1D_BUILD_TUTORIALS=ON
@@ -78,8 +84,7 @@ cmake .. -DDSPECM1D_BUILD_BENCHMARKS=OFF -DDSPECM1D_BUILD_TUTORIALS=ON
 ## Quick Start
 
 After building, the tutorial binaries are placed in `build/bin/`. Tutorial 1
-runs a complete seismogram synthesis for a single earthquake and receiver
-geometry defined in the parameter file:
+(`t1`) is the self-contained quickstart and runtime smoke example:
 
 ```bash
 cd build
@@ -92,23 +97,72 @@ the pipeline.
 
 ---
 
-## Parameter File Format
+## Testing
 
-The input file controls all aspects of the simulation. Key fields are:
+DSpecM1D separates small regression-catching tests from heavier
+paper-reproduction workflows.
 
-```
-earth_model    models/prem.200.no.noatten.txt   # path relative to data/
-lmax           200             # maximum angular degree
-NQ             5               # GLL quadrature points per element
-f1  0.3  f2  10.0              # passband corners (mHz)
-f11 0.2  f12 0.5               # lower taper corners (mHz)
-f21 9.0  f22 11.0              # upper taper corners (mHz)
-dt  1.0                        # time step (s)
-t_out  60.0                    # output duration (minutes)
-output_type  2                 # 0=displacement, 1=velocity, 2=acceleration
+- `tests/`: modular, self-contained unit/component checks for parsers,
+  helpers, readers, filters, writers, and small SEM invariants
+- `t1`: self-contained runtime smoke example
+- `ex1` through `ex7`: protected paper-reproduction examples that intentionally
+  keep their YSpec / MinEOS / SpecNM comparisons
+
+Example development build:
+
+```bash
+cmake -S . -B build/dev -G Ninja \
+  -DDSPECM1D_BUILD_TESTS=ON \
+  -DDSPECM1D_BUILD_TUTORIALS=ON \
+  -DDSPECM1D_BUILD_BENCHMARKS=ON \
+  -DDSPECM1D_ENABLE_SMOKE_TESTS=ON
+cmake --build build/dev --parallel
+ctest --test-dir build/dev --output-on-failure -L "unit|component"
+ctest --test-dir build/dev --output-on-failure -L smoke
 ```
 
 ---
+
+## Parameter File Format
+
+The input file controls all aspects of the simulation. The current parser reads
+an ordered sequence of value lines, not a keyed `name value` format. Comments
+and blank lines are ignored, but the remaining values must appear in the
+expected order:
+
+```
+"./output/yspec.lf.out"
+"models/prem.200.noatten.txt"
+4
+0
+2
+0
+0
+1e-5
+0
+100
+0.1
+7.0
+6000
+1.0
+0.1
+0.2
+4.9
+5.0
+647.1
+-13.82
+-67.25
+...
+```
+
+---
+
+## Examples
+
+- `t1` is the recommended first executable and the default runtime smoke test.
+- `ex1` through `ex7` are paper-reproduction examples. Their external
+  comparison inputs are intentional and are preserved so the workflows continue
+  to reproduce the results discussed in the accompanying paper.
 
 ## Repository Layout
 
@@ -123,8 +177,10 @@ DSpecM1D_Draft/
 │       ├── SignalFiltering.h
 │       └── ...
 ├── benchmarks/                # Benchmark executables
+│   └── ex1.cpp ... ex7.cpp    # Paper-reproduction examples
 ├── tutorials/
 │   └── t1.cpp                 # Tutorial 1: basic seismogram synthesis
+├── docs/                      # Static website and Doxygen configuration
 ├── data/
 │   ├── params/                # Input parameter files
 │   └── models/                # Reference Earth model files (PREM variants)
@@ -148,10 +204,24 @@ These are encapsulated by the normalization helper in `DSpecM1D/src/NormClass.h`
 
 ---
 
+## Documentation
+
+Enable documentation targets with:
+
+```bash
+cmake -S . -B build/docs -G Ninja -DDSPECM1D_BUILD_DOCS=ON
+cmake --build build/docs --target website
+```
+
+This builds a static website into `build/docs/site/` and, when Doxygen is
+available, generates API reference pages under `build/docs/site/api/`.
+
+---
+
 ## License
 
-To be added.
+To be added before public release.
 
 ## Contact
 
-To be added.
+To be added before public release.

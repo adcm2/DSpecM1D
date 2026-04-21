@@ -22,5 +22,5 @@ endforeach()
 
 if(DSPECM1D_ENABLE_SMOKE_TESTS AND TARGET t1)
     add_test(NAME smoke_tutorial_t1 COMMAND $<TARGET_FILE:t1>)
-    set_tests_properties(smoke_tutorial_t1 PROPERTIES LABELS "smoke")
+    set_tests_properties(smoke_tutorial_t1 PROPERTIES LABELS "smoke;tutorial")
 endif()
