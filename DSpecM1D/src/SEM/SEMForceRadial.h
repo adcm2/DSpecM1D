@@ -7,8 +7,8 @@ namespace Full1D {
 
 Eigen::MatrixXcd
 SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
-  int NQ = m_mesh.NN();
-  totlen = this->ltgR(1, m_mesh.NE() - 1, NQ - 1) + 1;
+  int nq = m_mesh.NN();
+  totlen = this->ltgR(1, m_mesh.NE() - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
 
   double rad_source = _SourceRadius(cmt);
@@ -28,7 +28,7 @@ SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
-      for (int idxq = 0; idxq < NQ; ++idxq) {
+      for (int idxq = 0; idxq < nq; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
         auto idx_u = this->ltgR(0, idx, idxq);
@@ -47,8 +47,8 @@ SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
 
 Eigen::MatrixXcd
 SEM::calculateForceRedR(SourceInfo::EarthquakeCMT &cmt) {
-  int NQ = m_mesh.NN();
-  totlen = this->ltgR(1, m_mesh.NE() - 1, NQ - 1) + 1;
+  int nq = m_mesh.NN();
+  totlen = this->ltgR(1, m_mesh.NE() - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 1);
 
   double rad_source = _SourceRadius(cmt);
@@ -66,7 +66,7 @@ SEM::calculateForceRedR(SourceInfo::EarthquakeCMT &cmt) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
-      for (int idxq = 0; idxq < NQ; ++idxq) {
+      for (int idxq = 0; idxq < nq; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
         auto idx_u = this->ltgR(0, idx, idxq);

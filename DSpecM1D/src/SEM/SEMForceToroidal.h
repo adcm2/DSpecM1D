@@ -7,8 +7,8 @@ namespace Full1D {
 
 Eigen::MatrixXcd
 SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
-  int NQ = m_mesh.NN();
-  totlen = this->ltgT(m_eu - 1, NQ - 1) + 1;
+  int nq = m_mesh.NN();
+  totlen = this->ltgT(m_eu - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2 * idxl + 1);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -41,7 +41,7 @@ SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
-      for (int idxq = 0; idxq < NQ; ++idxq) {
+      for (int idxq = 0; idxq < nq; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_prefactor = pleg.Derivative(idxq, rad_source) - w_val;
         std::size_t ridx = this->ltgT(idx, idxq);
@@ -70,8 +70,8 @@ SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
 Eigen::MatrixXcd
 SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
-  int NQ = m_mesh.NN();
-  totlen = this->ltgT(this->eu() - 1, NQ - 1) + 1;
+  int nq = m_mesh.NN();
+  totlen = this->ltgT(this->eu() - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 2);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
@@ -85,7 +85,7 @@ SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       auto pleg =
           Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
 
-      for (int idxq = 0; idxq < NQ; ++idxq) {
+      for (int idxq = 0; idxq < nq; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
         auto idx_v = this->ltgT(idx, idxq);
@@ -99,8 +99,8 @@ SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 
 Eigen::MatrixXcd
 SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
-  int NQ = m_mesh.NN();
-  totlen = this->ltgT(m_mesh.NE() - 1, NQ - 1) + 1;
+  int nq = m_mesh.NN();
+  totlen = this->ltgT(m_mesh.NE() - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(2 * idxl + 1, 2);
 
   double theta_s = (90.0 - cmt.Latitude()) * EIGEN_PI / (180.0);
