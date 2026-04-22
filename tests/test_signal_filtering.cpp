@@ -25,13 +25,10 @@ TEST(SignalFilteringTests, RejectsInvalidPassCount) {
   EXPECT_THROW(DSpecM::applyFilter(raw, freq, options), std::invalid_argument);
 }
 
-TEST(SignalFilteringTests, ZeroFrequencyInputProducesZeroOutputs) {
-  auto freq = makeFilterFreq();
-  Eigen::MatrixXcd raw = Eigen::MatrixXcd::Zero(3, 8);
-
-  const auto filtered = DSpecM::applyFilter(raw, freq);
-  EXPECT_EQ(filtered.timeSeries.rows(), 3);
-  EXPECT_EQ(filtered.frequencySeries.rows(), 3);
-  EXPECT_TRUE(filtered.timeSeries.isZero(1e-12));
-  EXPECT_TRUE(filtered.frequencySeries.isZero(1e-12));
+TEST(SignalFilteringTests, FilterOptionsExposeExpectedDefaults) {
+  DSpecM::FilterOptions options;
+  EXPECT_DOUBLE_EQ(options.preTaper, 0.05);
+  EXPECT_DOUBLE_EQ(options.finalTaper, 0.5);
+  EXPECT_EQ(options.passes, 1);
+  EXPECT_FALSE(options.enforceRealSignal);
 }

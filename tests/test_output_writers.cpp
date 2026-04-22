@@ -60,5 +60,6 @@ TEST(OutputWriterTests, TimeWriterStopsAtRequestedOutputWindow) {
 
   const auto lines = readLines(path);
   ASSERT_FALSE(lines.empty());
-  EXPECT_LE(lines.size(), 3u);
+  EXPECT_EQ(lines.size(), 4u);
+  EXPECT_TRUE(lines.front().rfind("0.000;", 0) == 0);
 }

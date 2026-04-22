@@ -2,6 +2,13 @@ set(DSPECM1D_DOCS_OUTPUT_DIR ${CMAKE_BINARY_DIR}/docs)
 set(DSPECM1D_SITE_OUTPUT_DIR ${CMAKE_BINARY_DIR}/site)
 
 find_package(Doxygen QUIET)
+find_program(DSPECM1D_DOT_EXECUTABLE dot)
+
+if(DSPECM1D_DOT_EXECUTABLE)
+    set(DSPECM1D_DOXYGEN_HAVE_DOT YES)
+else()
+    set(DSPECM1D_DOXYGEN_HAVE_DOT NO)
+endif()
 
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in
