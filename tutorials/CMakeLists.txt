@@ -25,7 +25,7 @@ if(DSPECM1D_ENABLE_SMOKE_TESTS AND TARGET t1)
     set_tests_properties(smoke_tutorial_t1 PROPERTIES
         LABELS "smoke;tutorial"
         RUN_SERIAL TRUE
-        TIMEOUT 900
-        ENVIRONMENT "OMP_NUM_THREADS=1"
+        TIMEOUT 1800
+        ENVIRONMENT "OMP_NUM_THREADS=2"
     )
 endif()

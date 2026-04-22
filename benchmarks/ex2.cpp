@@ -134,7 +134,7 @@ main() {
 
   // --- 7. Read and Process YSpec Data ---
   std::string yspecPath = std::string(PROJECT_BUILD_DIR) +
-                          "../../YSpec/output/yspec.out.bolivia.mf.1";
+                          "data/reference/yspec/yspec.out.bolivia.mf.1";
   YSPECREADER::DataColumns yspecData(yspecPath);
 
   // FIX: Added safe boundary checking here to prevent out-of-bounds crashes
@@ -164,7 +164,7 @@ main() {
 
   // --- 8. Read and Process MinEOS Data ---
   std::string mineosBase = std::string(PROJECT_BUILD_DIR) +
-                           "../../mineos/DEMO/MYEX/Syndat2_ASC_BOLIVIA/"
+                           "data/reference/mineos/bolivia/"
                            "Syndat2.2000160: 0:33:16.TLY.";
   MINEOSREADER::DataColumns mineosDataZ(mineosBase + "LHZ.ASC");
   MINEOSREADER::DataColumns mineosDataN(mineosBase + "LHN.ASC");
@@ -200,7 +200,7 @@ main() {
 
   // --- 9. Read and Process SpecNM Data ---
   std::string specnmPath = std::string(PROJECT_BUILD_DIR) +
-                           "../../specnm/outputs/"
+                           "data/reference/specnm/"
                            "seismogram_mf_traces_semicolon.txt";
   Eigen::MatrixXd specnmTime =
       DSpecM::loadSpecnmTimeSeries(specnmPath, vecFiltT.cols());

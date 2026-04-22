@@ -232,7 +232,7 @@ Intent:
 - Build a full static documentation website
 - Fix README and release-facing docs
 
-Status: implemented in code, not fully verified yet
+Status: verified
 
 Completed:
 
@@ -251,12 +251,21 @@ Completed:
   - documents the real ordered parameter-file format
   - distinguishes tests vs paper examples
   - documents docs build target
+- Added a local documentation preview target:
+  - `preview-website`
+- Added repository/support metadata to the README and website:
+  - repository URL
+  - issue tracker URL
+  - contact via repository issues
+- Added the project `LICENSE` file using the GNU General Public License v3.0
 
-Still to do or verify:
+Verified on 2026-04-22:
 
-- Build `website` target
-- If Doxygen is available, confirm API docs copy into `site/api/`
-- License/contact are still placeholders and need real project decisions
+- fresh docs configure succeeded in `build/phase6_verify`
+- `cmake --build build/phase6_verify --target website` completed successfully
+- the generated site includes the expected release-facing pages and API-doc
+  integration path
+- the `preview-website` target is available for local inspection
 
 ### Phase 7: Final Release Validation
 
@@ -264,16 +273,63 @@ Intent:
 
 - Run the full release checklist on a clean build
 
-Status: not done yet
+Status: in progress
 
 Needs:
 
-- clean configure/build
-- unit/component tests
-- smoke test
 - paper-reproduction validation in supported environment
-- install/package verification
-- docs/site verification
+- final install/package recheck from the latest tree
+
+Completed so far on 2026-04-22:
+
+- Copied the canonical paper-comparison files into the repository under:
+  - `data/reference/yspec/`
+  - `data/reference/specnm/`
+  - `data/reference/mineos/bolivia/`
+  - `data/reference/mineos/noheader/`
+- Added `data/reference/README.md` to document provenance and example usage
+- Updated `benchmarks/ex1.cpp`, `benchmarks/ex2.cpp`, `benchmarks/ex3.cpp`,
+  and `benchmarks/ex7.cpp` to read the in-repo comparison files via
+  build-directory-relative paths
+- Verified a fresh benchmark-only configure/build in `build/phase7_verify`
+- Verified the copied reference files appear in
+  `build/phase7_verify/data/reference/`
+- Verified a clean release-validation configure/build in `build/phase7_release`
+- Verified all 20 modular unit/component tests pass in `build/phase7_release`
+- Verified the docs site builds successfully in `build/phase7_release`
+- Tightened the `t1` smoke workflow so it is safe on a developer machine:
+  - smoke test remains serial
+  - OpenMP thread count is capped
+  - timeout remains enforced
+- Reworked `t1` to use a dedicated lighter input file:
+  - added `data/params/t1.txt`
+  - updated `tutorials/t1.cpp` to read `t1.txt` instead of `ex1.txt`
+- Set single-config builds to default to `Release` when
+  `CMAKE_BUILD_TYPE` is unset
+- Verified the new default with a fresh tree:
+  - `build/phase7_smoke_release` configured with
+    `CMAKE_BUILD_TYPE:STRING=Release`
+- Verified guarded smoke now passes in the fresh release-default tree:
+
+```bash
+ctest --test-dir build/phase7_smoke_release --output-on-failure -L smoke
+```
+
+  Results:
+  - `smoke_build_benchmark_ex1` passed
+  - `smoke_tutorial_t1` passed in about 15.5 seconds
+
+Important current status:
+
+- The main software-engineering release gates now pass locally:
+  - clean configure/build
+  - modular tests
+  - guarded smoke
+  - docs build
+  - protected example rebuilds with in-repo reference data
+- Phase 7 is not yet fully closed because two final checks remain:
+  - final install/downstream package recheck from the latest tree
+  - paper-reproduction validation in the supported environment
 
 ## Files Changed So Far
 
@@ -392,10 +448,6 @@ target_link_libraries(consumer PRIVATE DSpecM1D::DSpecM1D)
 
 - `cmake/DSpecM1DConfig.cmake.in` is implemented but not yet validated in a
   downstream consumer
-- docs/site build is implemented but not yet verified locally
-- downstream package consumption is not yet verified
-- License and Contact sections still need real project decisions and should not
-  be considered complete
 - The optional paper-validation path still needs an explicit supported-environment
   verification run
 

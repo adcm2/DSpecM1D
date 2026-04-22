@@ -11,6 +11,7 @@
 #include <complex>
 #include <cmath>
 #include <algorithm>
+#include <filesystem>
 
 // Project-specific includes
 #include <PlanetaryModel/All>
@@ -104,8 +105,10 @@ main() {
 
   //////////////////////////////////////////////////////////////////////////////
   // --- 7. Read and Process YSpec Data ---
-  std::string yspecPath = std::string(PROJECT_BUILD_DIR) + "../../YSpec/" +
-                          params.output_prefix() + ".1";
+  std::string yspecPath = std::string(PROJECT_BUILD_DIR) +
+                          "data/reference/yspec/" +
+                          std::filesystem::path(params.output_prefix()).filename().string() +
+                          ".1";
   YSPECREADER::DataColumns yspecData(yspecPath);
 
   std::size_t maxColY = std::min(static_cast<std::size_t>(vecR2TB.cols()),
@@ -126,7 +129,7 @@ main() {
   // --- 8. Read and Process MinEOS Data ---
   std::string mineosBase =
       std::string(PROJECT_BUILD_DIR) +
-      "../../mineos/DEMO/MYEX/Syndat_ASC_NOHEADER/Syndat.2000014:23:37:10.TLY.";
+      "data/reference/mineos/noheader/Syndat.2000014:23:37:10.TLY.";
   MINEOSREADER::DataColumns mineosDataZ(mineosBase + "LHZ.ASC");
   MINEOSREADER::DataColumns mineosDataN(mineosBase + "LHN.ASC");
   MINEOSREADER::DataColumns mineosDataE(mineosBase + "LHE.ASC");
@@ -153,7 +156,7 @@ main() {
   filterOptions.passes = 1;
   filterOptions.enforceRealSignal = false;
   std::string specnmPath = std::string(PROJECT_BUILD_DIR) +
-                           "../../specnm/outputs/"
+                           "data/reference/specnm/"
                            "seismogram_ex3.txt";
   Eigen::MatrixXd specnmTime =
       DSpecM::loadSpecnmTimeSeries(specnmPath, vecFiltT.cols());

@@ -64,7 +64,7 @@ main() {
 
   // --- 8. Read and Process YSpec Data ---
   std::string yspecPath =
-      std::string(PROJECT_BUILD_DIR) + "../../YSpec/output/yspec.lf.out.1";
+      std::string(PROJECT_BUILD_DIR) + "data/reference/yspec/yspec.lf.out.1";
   Eigen::MatrixXd yspecTime =
       DSpecM::loadYSpecTimeSeries(yspecPath, vecFiltT.cols());
 
@@ -74,7 +74,7 @@ main() {
 
   // --- 9. Read and Process SpecNM Data ---
   std::string specnmPath = std::string(PROJECT_BUILD_DIR) +
-                           "../../specnm/outputs/"
+                           "data/reference/specnm/"
                            "seismogram_lf_traces_semicolon.txt";
   Eigen::MatrixXd specnmTime =
       DSpecM::loadSpecnmTimeSeries(specnmPath, vecFiltT.cols());

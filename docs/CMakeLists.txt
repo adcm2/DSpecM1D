@@ -35,6 +35,19 @@ add_custom_target(website
     VERBATIM
 )
 
+find_package(Python3 COMPONENTS Interpreter QUIET)
+
+if(Python3_Interpreter_FOUND)
+    add_custom_target(preview-website
+        COMMAND ${Python3_EXECUTABLE} -m http.server 8000 --directory ${DSPECM1D_SITE_OUTPUT_DIR}
+        WORKING_DIRECTORY ${DSPECM1D_SITE_OUTPUT_DIR}
+        COMMENT "Serving the DSpecM1D website locally at http://127.0.0.1:8000"
+        VERBATIM
+        USES_TERMINAL
+    )
+    add_dependencies(preview-website website)
+endif()
+
 if(DOXYGEN_FOUND)
     add_dependencies(website doxygen-docs)
     add_custom_command(TARGET website POST_BUILD

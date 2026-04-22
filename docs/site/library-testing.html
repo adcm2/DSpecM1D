@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Testing model for DSpecM1D, covering modular unit and component tests, t1 smoke execution, and protected paper-reproduction validation workflows.">
   <title>Library Testing | DSpecM1D</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -22,18 +23,37 @@
   </nav>
   <main>
     <div class="page">
-      <h1>Library Testing</h1>
-      <section class="page-section">
-        <p>The release test suite focuses on small, synthetic, local checks that narrow failures quickly. It is designed to catch regressions in parsing, helper logic, normalization, filtering, writers, and small SEM components without relying on full waveform comparisons.</p>
-      </section>
+      <div class="page-header">
+        <h1>Library Testing</h1>
+        <p class="lede">The main regression safety net is a suite of small, synthetic, local tests. Full waveform comparisons are reserved for protected reproduction workflows, not for everyday debugging.</p>
+      </div>
       <section class="page-section">
         <h2>Test Categories</h2>
-        <ul>
-          <li><strong>Unit:</strong> parser rules, value validation, helper functions, normalization, and file-format readers.</li>
+        <ul class="check-list">
+          <li><strong>Unit:</strong> parser rules, quoted and unquoted values, range checking, helper functions, normalization, and file-format readers.</li>
           <li><strong>Component:</strong> output writers, filter option validation, and minimal SEM/local-to-global checks.</li>
-          <li><strong>Smoke:</strong> <code>t1</code> runtime execution.</li>
-          <li><strong>Paper validation:</strong> environment-specific reproduction workflows for <code>ex1</code> through <code>ex7</code>.</li>
+          <li><strong>Smoke:</strong> runtime execution of <code>t1</code>.</li>
+          <li><strong>Paper validation:</strong> environment-specific workflows for <code>ex1</code> through <code>ex7</code>.</li>
         </ul>
+      </section>
+      <section class="page-section">
+        <h2>Recommended Fast Developer Check</h2>
+        <pre><code>cmake -S . -B build/dev -G Ninja \
+  -DDSPECM1D_BUILD_TESTS=ON \
+  -DDSPECM1D_BUILD_TUTORIALS=ON \
+  -DDSPECM1D_BUILD_BENCHMARKS=ON \
+  -DDSPECM1D_ENABLE_SMOKE_TESTS=ON
+cmake --build build/dev --parallel
+ctest --test-dir build/dev --output-on-failure -L "unit|component"
+ctest --test-dir build/dev --output-on-failure -L smoke</code></pre>
+      </section>
+      <section class="page-section">
+        <h2>Smoke-Test Safety</h2>
+        <p>The <code>t1</code> smoke test is configured to run serially, with a capped OpenMP thread count and a timeout, so routine validation does not consume an uncontrolled number of CPU cores.</p>
+      </section>
+      <section class="page-section">
+        <h2>What The Small Tests Cover</h2>
+        <p>The self-contained suite now targets parsing behavior, <code>InputParametersNew</code>, normalization-factor selection, <code>FilterOptions</code>, filter validation, writer truncation and bounds behavior, reference-series readers, helper logic, and minimal SEM mapping invariants.</p>
       </section>
     </div>
   </main>

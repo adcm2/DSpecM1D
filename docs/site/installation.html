@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Installation and quick-start guide for DSpecM1D, including build requirements, package installation, downstream consumption, and local website preview.">
   <title>Installation | DSpecM1D</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -22,23 +23,43 @@
   </nav>
   <main>
     <div class="page">
-      <h1>Installation</h1>
+      <div class="page-header">
+        <h1>Installation</h1>
+        <p class="lede">Build from source, install the package, and use the generated CMake config in downstream projects.</p>
+      </div>
       <section class="page-section">
         <h2>Requirements</h2>
-        <p>DSpecM1D requires a C++23 compiler, CMake 3.24+, FFTW3, and OpenMP. The remaining dependencies are fetched automatically from pinned revisions.</p>
-        <pre><code>cmake -S . -B build/release -G Ninja
+        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, and OpenMP. The remaining dependencies are fetched automatically from pinned revisions during the first configure.</p>
+        <pre><code>sudo apt install libfftw3-dev ninja-build
+
+cmake -S . -B build/release -G Ninja
 cmake --build build/release --parallel</code></pre>
       </section>
       <section class="page-section" id="quick-start">
         <h2>Quick Start</h2>
-        <p>The self-contained tutorial executable is <code>t1</code>. It is the default runtime smoke test because it does not require the external comparison datasets used by the paper examples.</p>
-        <pre><code>cmake -S . -B build/dev -G Ninja -DDSPECM1D_BUILD_TUTORIALS=ON
+        <p>The recommended first executable is <code>t1</code>. It is the self-contained tutorial and the default runtime smoke example because it does not depend on the external comparison datasets used by the protected paper workflows.</p>
+        <pre><code>cmake -S . -B build/dev -G Ninja \
+  -DDSPECM1D_BUILD_TUTORIALS=ON
 cmake --build build/dev --target t1
 ./build/dev/bin/t1</code></pre>
       </section>
       <section class="page-section">
         <h2>Installed Package</h2>
-        <p>The release includes <code>install()</code> and exported CMake targets. Downstream projects can consume the installed package with <code>find_package(DSpecM1D REQUIRED)</code> and link against <code>DSpecM1D::DSpecM1D</code>.</p>
+        <p>The release installs headers plus a package config for downstream CMake use. A consumer can locate the package and link to the public interface target:</p>
+        <pre><code>find_package(DSpecM1D REQUIRED)
+target_link_libraries(my_target PRIVATE DSpecM1D::DSpecM1D)</code></pre>
+      </section>
+      <section class="page-section">
+        <h2>Documentation Build And Local Preview</h2>
+        <p>The static site and Doxygen output are integrated into the CMake build. Use <code>website</code> to generate the site and <code>preview-website</code> to serve it locally.</p>
+        <pre><code>cmake -S . -B build/docs -G Ninja -DDSPECM1D_BUILD_DOCS=ON
+cmake --build build/docs --target website
+cmake --build build/docs --target preview-website</code></pre>
+        <p class="muted">The preview server runs at <code>http://127.0.0.1:8000</code> until you stop it.</p>
+      </section>
+      <section class="page-section">
+        <h2>Downstream Reproducibility Note</h2>
+        <p>The installed package recreates pinned dependency targets with <code>FetchContent</code>. That keeps the package usable without exporting third-party targets directly, but a first downstream configure may need network access unless those dependencies are already cached locally.</p>
       </section>
     </div>
   </main>

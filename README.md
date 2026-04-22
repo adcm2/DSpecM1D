@@ -91,7 +91,7 @@ cd build
 ./bin/t1
 ```
 
-The parameter file is expected at `build/data/params/ex1.txt`. See
+The parameter file is expected at `build/data/params/t1.txt`. See
 [`tutorials/t1.cpp`](tutorials/t1.cpp) for a fully documented walkthrough of
 the pipeline.
 
@@ -163,6 +163,9 @@ expected order:
 - `ex1` through `ex7` are paper-reproduction examples. Their external
   comparison inputs are intentional and are preserved so the workflows continue
   to reproduce the results discussed in the accompanying paper.
+- The canonical YSpec, MinEOS, and SpecNM comparison files used by the
+  protected examples are stored in `data/reference/` and copied into the build
+  tree with the rest of the project data.
 
 ## Repository Layout
 
@@ -216,12 +219,23 @@ cmake --build build/docs --target website
 This builds a static website into `build/docs/site/` and, when Doxygen is
 available, generates API reference pages under `build/docs/site/api/`.
 
+To preview the generated site locally:
+
+```bash
+cmake --build build/docs --target preview-website
+```
+
+The preview server runs at `http://127.0.0.1:8000`.
+
 ---
+
+## Repository
+
+- Repository: `https://github.com/adcm2/DSpecM1D`
+- Issues: `https://github.com/adcm2/DSpecM1D/issues`
+- Contact: use the issue tracker for release feedback and usage questions
 
 ## License
 
-To be added before public release.
-
-## Contact
-
-To be added before public release.
+DSpecM1D is released under the GNU General Public License v3.0.
+See [`LICENSE`](LICENSE).

@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Reference for the real DSpecM1D parameter-file format as parsed today, including ordering rules and recommended release-facing API usage.">
   <title>Parameter Files | DSpecM1D</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -22,9 +23,21 @@
   </nav>
   <main>
     <div class="page">
-      <h1>Parameter Files</h1>
+      <div class="page-header">
+        <h1>Parameter Files</h1>
+        <p class="lede">DSpecM1D currently reads an ordered line-based input format. It does not read keyed <code>name value</code> pairs.</p>
+      </div>
       <section class="page-section">
-        <p>DSpecM1D currently reads an <strong>ordered line-based format</strong>, not a keyword-value format. Blank lines and comments are skipped, but the remaining values must appear in the expected order.</p>
+        <h2>Parsing Rules</h2>
+        <ul class="check-list">
+          <li>Blank lines are ignored.</li>
+          <li>Comment lines are ignored.</li>
+          <li>Quoted and unquoted scalar values are accepted where the parser expects them.</li>
+          <li>After comments and blanks are skipped, the remaining values must appear in the exact expected order.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Representative Ordered Input</h2>
         <pre><code>"./output/yspec.lf.out"
 "models/prem.200.noatten.txt"
 4
@@ -59,7 +72,11 @@
       </section>
       <section class="page-section">
         <h2>Recommended API</h2>
-        <p>For release-facing code, prefer <code>InputParametersNew</code>. It keeps the legacy file format while bundling the parsed parameters, Earth model, source, receiver geometry, and frequency axis into one object.</p>
+        <p>For release-facing code, prefer <code>InputParametersNew</code>. It preserves the legacy file format while aggregating the parsed parameters, Earth model, source, receiver geometry, and frequency axis in one object.</p>
+      </section>
+      <section class="page-section">
+        <h2>Why The Docs Call This Out Explicitly</h2>
+        <p>Earlier README-style examples could be read as if the input format were keyed. The release docs now describe the real parser behavior directly so users do not prepare the wrong kind of input file.</p>
       </section>
     </div>
   </main>

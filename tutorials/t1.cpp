@@ -21,7 +21,7 @@
  *
  * @note
  * The input parameter file is expected at:
- *   `<build_dir>/data/params/ex1.txt`
+ *   `<build_dir>/data/params/t1.txt`
  *
  * @author  Alex Myhill
  * @date    2026-03-06
@@ -119,7 +119,7 @@ main() {
 
   /// Path to the parameter file, resolved relative to the CMake build tree.
   std::string paramPath =
-      std::string(PROJECT_BUILD_DIR) + "data/params/ex1.txt";
+      std::string(PROJECT_BUILD_DIR) + "data/params/t1.txt";
 
   InputParameters params(paramPath);
   SRInfo srInfo(params);
