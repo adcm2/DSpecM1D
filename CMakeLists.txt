@@ -49,9 +49,10 @@ FetchContent_Declare(SpectraSolver    GIT_REPOSITORY https://github.com/adcm2/Sp
 
 # 2. Modify our helper function to accept a LIST of targets
 function(FetchContent_MakeAvailable_NoInstall)
-    macro(install)
-    endmacro()
+    set(_dspecm1d_saved_skip_install_rules ${CMAKE_SKIP_INSTALL_RULES})
+    set(CMAKE_SKIP_INSTALL_RULES ON)
     FetchContent_MakeAvailable(${ARGV})
+    set(CMAKE_SKIP_INSTALL_RULES ${_dspecm1d_saved_skip_install_rules} PARENT_SCOPE)
 endfunction()
 
 # 3. Fire them all off at once! 
@@ -81,10 +82,6 @@ target_include_directories(DSpecM1D INTERFACE
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-install(TARGETS DSpecM1D
-    EXPORT DSpecM1DTargets
-)
-
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
@@ -103,12 +100,7 @@ configure_package_config_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/cmake/DSpecM1DConfig.cmake.in
     ${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfig.cmake
     INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
-)
-
-install(EXPORT DSpecM1DTargets
-    FILE DSpecM1DTargets.cmake
-    NAMESPACE DSpecM1D::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
+    PATH_VARS CMAKE_INSTALL_INCLUDEDIR
 )
 
 install(FILES

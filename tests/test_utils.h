@@ -2,12 +2,17 @@
 #define DSPECM1D_TEST_UTILS_H
 
 #include <cstdlib>
+#include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <random>
 #include <sstream>
 #include <string>
+#include <system_error>
+#include <thread>
 #include <utility>
 #include <vector>
+#include <unistd.h>
 #include "config.h"
 
 namespace DSpecMTest {
@@ -68,10 +73,28 @@ writeFile(const std::filesystem::path &path, const std::string &contents) {
 class TempDir {
 public:
   TempDir() {
-    std::ostringstream name;
-    name << "dspecm1d-" << std::rand() << "-" << std::rand();
-    m_path = std::filesystem::temp_directory_path() / name.str();
-    std::filesystem::create_directories(m_path);
+    namespace fs = std::filesystem;
+    std::mt19937_64 rng(
+        static_cast<std::uint64_t>(
+            std::chrono::high_resolution_clock::now().time_since_epoch().count()) ^
+        static_cast<std::uint64_t>(::getpid()) ^
+        static_cast<std::uint64_t>(
+            std::hash<std::thread::id>{}(std::this_thread::get_id())));
+    std::uniform_int_distribution<std::uint64_t> dist;
+
+    const fs::path base = fs::temp_directory_path();
+    for (int attempt = 0; attempt < 32; ++attempt) {
+      std::ostringstream name;
+      name << "dspecm1d-" << ::getpid() << "-" << std::hex << dist(rng);
+      fs::path candidate = base / name.str();
+      std::error_code ec;
+      if (fs::create_directories(candidate, ec)) {
+        m_path = std::move(candidate);
+        return;
+      }
+    }
+
+    throw std::runtime_error("Failed to create unique temporary directory");
   }
 
   ~TempDir() {

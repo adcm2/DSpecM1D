@@ -68,9 +68,14 @@ FetchContent_Declare(
   GIT_SHALLOW TRUE
 )
 
-macro(install)
-endmacro()
-FetchContent_MakeAvailable(
+function(dspecm1d_fetchcontent_make_available_noinstall)
+  set(_dspecm1d_saved_skip_install_rules ${CMAKE_SKIP_INSTALL_RULES})
+  set(CMAKE_SKIP_INSTALL_RULES ON)
+  FetchContent_MakeAvailable(${ARGV})
+  set(CMAKE_SKIP_INSTALL_RULES ${_dspecm1d_saved_skip_install_rules} PARENT_SCOPE)
+endfunction()
+
+dspecm1d_fetchcontent_make_available_noinstall(
   Eigen3
   FFTWpp
   GaussQuad
@@ -82,4 +87,12 @@ FetchContent_MakeAvailable(
   SpectraSolver
 )
 
-include("${CMAKE_CURRENT_LIST_DIR}/DSpecM1DTargets.cmake")
+set_and_check(DSPECM1D_INCLUDE_DIR "${PACKAGE_PREFIX_DIR}/@CMAKE_INSTALL_INCLUDEDIR@")
+
+if(NOT TARGET DSpecM1D::DSpecM1D)
+  add_library(DSpecM1D::DSpecM1D INTERFACE IMPORTED)
+  set_target_properties(DSpecM1D::DSpecM1D PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${DSPECM1D_INCLUDE_DIR}"
+    INTERFACE_LINK_LIBRARIES "Eigen3::Eigen;FFTWpp;Interpolation;GaussQuad;PlanetaryModel;TomographyModels;EarthMesh;SpectraSolver;OpenMP::OpenMP_CXX"
+  )
+endif()

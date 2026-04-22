@@ -177,31 +177,49 @@ Intent:
 - Generate a usable package config
 - Pin dependency revisions
 
-Status: implemented in code, not fully verified yet
+Status: verified
 
 Completed:
 
 - Top-level `CMakeLists.txt` now:
   - includes `GNUInstallDirs` and `CMakePackageConfigHelpers`
   - installs `DSpecM1D`
-  - exports `DSpecM1DTargets`
   - configures `DSpecM1DConfig.cmake`
   - installs `DSpecM1DConfig.cmake` and version file
   - installs `FindFFTW.cmake`
 - Added `cmake/DSpecM1DConfig.cmake.in`
 - Pinned FetchContent dependencies in `CMakeLists.txt` to fixed revisions
+- Replaced the old global `macro(install)` workaround with a safer
+  `CMAKE_SKIP_INSTALL_RULES`-based helper while fetching dependencies
+- Cleaned test dependency packaging so project install no longer pulls
+  `googletest` artifacts into the install prefix
+- Added a minimal downstream package-consumer project in:
+  - `work/phase5_consumer/CMakeLists.txt`
+  - `work/phase5_consumer/main.cpp`
+- Hardened `tests/test_utils.h` temporary-directory creation so parallel test
+  runs do not collide on `std::rand()`-derived temp paths
 
-Important note:
+Verified on 2026-04-22:
 
-- The installed package config is currently designed to recreate the same
-  dependency targets via `FetchContent` before loading
-  `DSpecM1DTargets.cmake`. This is pragmatic, but it still needs downstream
-  verification.
+- fresh configure/build succeeded in `build/phase5_verify`
+- modular test executables still passed after packaging changes
+- clean install succeeded to `build/install_phase5_verify`
+- installed package contents are clean:
+  - headers under `include/DSpecM1D/`
+  - package files under `lib/cmake/DSpecM1D/`
+  - no stray `googletest` install artifacts
+- fresh downstream `find_package(DSpecM1D)` configure succeeded against the
+  installed package
+- downstream consumer compiled and linked successfully, and the resulting
+  executable ran with exit code `0`
 
-Still to verify:
+Implementation note:
 
-- `cmake --install ...`
-- minimal downstream `find_package(DSpecM1D)` consumer
+- The installed package config recreates pinned dependency targets with
+  `FetchContent` for downstream consumers. This keeps the header-only package
+  usable without exporting third-party targets directly, but means a first
+  downstream configure may require network access unless those dependencies are
+  already cached locally.
 
 ### Phase 6: Website And Release-Facing Docs
 
