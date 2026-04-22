@@ -212,6 +212,10 @@ Verified on 2026-04-22:
   installed package
 - downstream consumer compiled and linked successfully, and the resulting
   executable ran with exit code `0`
+- local repo hygiene was tightened after verification:
+  - `.gitignore` now ignores `work/`
+  - `.gitignore` now ignores `compile_commands.json`
+  - `.gitignore` now ignores `CMakeUserPresets.json`
 
 Implementation note:
 
