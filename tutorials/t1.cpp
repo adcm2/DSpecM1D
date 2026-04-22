@@ -198,17 +198,9 @@ main() {
    * assembles the stiffness/inertia matrices, solves the linear system at
    * each frequency, and accumulates the receiver seismograms.
    *
-   * @param myff        Frequency axis and taper.
-   * @param prem        1D Earth model.
-   * @param cmt         Earthquake CMT source.
-   * @param params      Simulation parameters (receivers, tolerances, etc.).
-   * @param NQ          GLL quadrature order.
-   * @param srInfo     Source–receiver geometry.
-   * @param rel_error   Relative tolerance for the iterative solver.
-   *
-   * @returns Matrix of complex spectra: rows = receivers × components,
-   *          cols = frequencies.
-   */
+ * @returns Matrix of complex spectra: rows = receivers × components,
+ *          cols = frequencies.
+ */
   SPARSESPEC::SparseFSpec specSolver;
   MatrixC vecRaw = specSolver.spectra(myff, prem, cmt, params, NQ, srInfo,
                                   params.relative_error());

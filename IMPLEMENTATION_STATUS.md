@@ -134,7 +134,7 @@ Intent:
 - Add Doxygen comments to release-facing headers
 - Clarify preferred vs legacy APIs
 
-Status: partially implemented
+Status: verified
 
 Completed:
 
@@ -152,11 +152,22 @@ Completed:
   - `DSpecM::FilterOptions`
   - `DSpecM::applyFilter`
   - output helpers
+- Added documentation or compatibility notes for:
+  - `DSpecM1D/src/ReferenceSeriesIO.h`
+  - `DSpecM1D/src/SpecHelpers.h`
+  - `DSpecM1D/src/SpectraRunContext.h`
+  - `DSpecM1D/src/SpectraMaster.h`
+- Cleaned one harmless implementation signature mismatch in
+  `DSpecM1D/src/SEM/SEMConstructor.h` to remove a Doxygen warning
+- Adjusted Doxygen configuration to degrade cleanly when Graphviz `dot` is not
+  available and to exclude noisy external-style docs from `BiCGSTABT.h`
 
-Still to do:
+Verified on 2026-04-22:
 
-- Decide whether more release-facing headers need Doxygen expansion
-- Build Doxygen successfully and check warning quality
+- fresh configure/build succeeded
+- all 20 modular unit/component tests still passed
+- `cmake --build build/dev --target website` completed successfully
+- Doxygen now builds cleanly enough for the current release-facing scope
 
 ### Phase 5: Packaging And Reproducible Release Setup
 
@@ -277,6 +288,11 @@ Needs:
 - `DSpecM1D/src/OutputWriters.h`
 - `DSpecM1D/src/FullSpec.h`
 - `DSpecM1D/src/SEM/SEM.h`
+- `DSpecM1D/src/ReferenceSeriesIO.h`
+- `DSpecM1D/src/SpecHelpers.h`
+- `DSpecM1D/src/SpectraRunContext.h`
+- `DSpecM1D/src/SpectraMaster.h`
+- `DSpecM1D/src/SEM/SEMConstructor.h`
 
 ### Tests
 
@@ -333,7 +349,7 @@ After these fixes, the following has now been verified:
 Run these from the repository root:
 
 ```bash
-cmake --build build/dev --target website
+cmake --install build/dev --prefix build/install
 ```
 
 If packaging verification is reached, then also run:
@@ -355,7 +371,7 @@ target_link_libraries(consumer PRIVATE DSpecM1D::DSpecM1D)
 - `cmake/DSpecM1DConfig.cmake.in` is implemented but not yet validated in a
   downstream consumer
 - docs/site build is implemented but not yet verified locally
-- Doxygen warnings and output quality are not yet checked
+- downstream package consumption is not yet verified
 - License and Contact sections still need real project decisions and should not
   be considered complete
 - The optional paper-validation path still needs an explicit supported-environment
@@ -365,9 +381,8 @@ target_link_libraries(consumer PRIVATE DSpecM1D::DSpecM1D)
 
 If work resumes later, continue in this order:
 
-1. build and verify docs targets
-2. verify install/package flow
-3. run optional paper-validation checks in the supported environment
+1. verify install/package flow
+2. run optional paper-validation checks in the supported environment
 
 Do not refactor `ex1`-`ex7` away from their comparison workflows. Those are
 protected paper-reproduction examples.
