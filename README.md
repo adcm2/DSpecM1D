@@ -30,7 +30,6 @@ angular degree _ℓ_ and solving the resulting linear system at each frequency, 
 | [GaussQuad](https://github.com/da380/GaussQuad) | ✓ |
 | [GSHTrans](https://github.com/da380/GSHTrans) | ✓ |
 | [PlanetaryModel](https://github.com/da380/PlanetaryModel) | ✓ |
-| [TomographyModels](https://github.com/adcm2/TomographyModels) | ✓ |
 | [Interpolation](https://github.com/da380/Interpolation) | ✓ |
 | [EarthMesh](https://github.com/adcm2/EarthMesh) | ✓ |
 | [SpectraSolver](https://github.com/adcm2/SpectraSolver) | ✓ |

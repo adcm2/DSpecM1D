@@ -47,7 +47,6 @@ FetchContent_Declare(FFTWpp           GIT_REPOSITORY https://github.com/da380/FF
 FetchContent_Declare(GaussQuad        GIT_REPOSITORY https://github.com/da380/GaussQuad.git        GIT_TAG fbe37c7eef93695317dbf9c48715110bf64c800f GIT_SHALLOW TRUE)
 FetchContent_Declare(PlanetaryModel   GIT_REPOSITORY https://github.com/da380/PlanetaryModel.git   GIT_TAG a801b9e9c2205c3b32daa745fd523d596a9d2ede GIT_SHALLOW TRUE)
 FetchContent_Declare(GSHTRANS         GIT_REPOSITORY https://github.com/da380/GSHTrans.git         GIT_TAG b880ac9aeacdb54a6480fca3aee70a20a727c678 GIT_SHALLOW TRUE)
-FetchContent_Declare(TomographyModels GIT_REPOSITORY https://github.com/adcm2/TomographyModels.git GIT_TAG 97869aeea3f3d87901705db59b5de975960bd9e1 GIT_SHALLOW TRUE)
 FetchContent_Declare(Interpolation    GIT_REPOSITORY https://github.com/da380/Interpolation.git    GIT_TAG 1557aad571ceac1899c2d3795696aa4047f41d8a GIT_SHALLOW TRUE)
 FetchContent_Declare(EarthMesh        GIT_REPOSITORY https://github.com/adcm2/EarthMesh.git        GIT_TAG fc0db1eba3bebb3cbd876f39e7248b9ede78e303 GIT_SHALLOW TRUE)
 FetchContent_Declare(SpectraSolver    GIT_REPOSITORY https://github.com/adcm2/SpectraSolver.git    GIT_TAG 48e75c5ebf7d10f5ea4a85303368a705a1898f02 GIT_SHALLOW TRUE)
@@ -64,7 +63,7 @@ endfunction()
 # CMake will handle the "local vs git" logic automatically.
 FetchContent_MakeAvailable_NoInstall(
     Eigen3 FFTWpp GaussQuad PlanetaryModel GSHTRANS 
-    TomographyModels Interpolation EarthMesh SpectraSolver
+    Interpolation EarthMesh SpectraSolver
 )
 
 # --- Target Definition ---
@@ -76,7 +75,6 @@ target_link_libraries(DSpecM1D INTERFACE
     Interpolation
     GaussQuad
     PlanetaryModel
-    TomographyModels
     EarthMesh
     SpectraSolver
     OpenMP::OpenMP_CXX
