@@ -29,8 +29,8 @@
       </div>
       <section class="page-section">
         <h2>Requirements</h2>
-        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, and OpenMP. The remaining dependencies are fetched automatically from pinned revisions during the first configure.</p>
-        <pre><code>sudo apt install libfftw3-dev ninja-build
+        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, a BLAS/LAPACK implementation, and OpenMP. The remaining dependencies are fetched automatically from pinned revisions during the first configure.</p>
+        <pre><code>sudo apt install libfftw3-dev libopenblas-dev liblapack-dev ninja-build
 
 cmake -S . -B build/release -G Ninja
 cmake --build build/release --parallel</code></pre>

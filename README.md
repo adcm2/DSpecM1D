@@ -34,18 +34,19 @@ angular degree _ℓ_ and solving the resulting linear system at each frequency, 
 | [EarthMesh](https://github.com/adcm2/EarthMesh) | ✓ |
 | [SpectraSolver](https://github.com/adcm2/SpectraSolver) | ✓ |
 | [FFTW3](https://www.fftw.org/) | **System** |
+| BLAS / LAPACK | **System** |
 | OpenMP | **System** |
 
-FFTW3 must be installed on your system before building. On Ubuntu/Debian:
+FFTW3 plus a BLAS/LAPACK implementation must be installed on your system before building. On Ubuntu/Debian:
 
 ```bash
-sudo apt install libfftw3-dev
+sudo apt install libfftw3-dev libopenblas-dev liblapack-dev
 ```
 
 On macOS with Homebrew:
 
 ```bash
-brew install fftw
+brew install fftw openblas
 ```
 
 ---
