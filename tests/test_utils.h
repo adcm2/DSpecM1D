@@ -17,6 +17,25 @@
 
 namespace DSpecMTest {
 
+struct ParameterOptions {
+  int type = 4;
+  int outputType = 0;
+  double relativeError = 1e-5;
+  int lmin = 0;
+  int lmax = 6;
+  double f1 = 0.1;
+  double f2 = 1.0;
+  double tOutMinutes = 5.0;
+  double timeStepSec = 1.0;
+  double f11 = 0.1;
+  double f12 = 0.2;
+  double f21 = 0.8;
+  double f22 = 1.0;
+  int numReceivers = 2;
+  std::vector<std::pair<double, double>> receivers{{45.0, 90.0},
+                                                   {-10.0, 120.0}};
+};
+
 inline std::filesystem::path
 repoRoot() {
   return std::filesystem::path(DSPECM1D_TEST_SOURCE_DIR);
@@ -28,38 +47,53 @@ modelPath() {
 }
 
 inline std::string
+makeParameterText(const std::string &earthModelPath,
+                  const ParameterOptions &options) {
+  std::ostringstream out;
+  out << "\"./output/test.out\"\n"
+      << "\"" << earthModelPath << "\"\n"
+      << options.type << "\n"
+      << "0\n"
+      << "2\n"
+      << options.outputType << "\n"
+      << "0\n"
+      << options.relativeError << "\n"
+      << options.lmin << "\n"
+      << options.lmax << "\n"
+      << options.f1 << "\n"
+      << options.f2 << "\n"
+      << options.tOutMinutes << "\n"
+      << options.timeStepSec << "\n"
+      << options.f11 << "\n"
+      << options.f12 << "\n"
+      << options.f21 << "\n"
+      << options.f22 << "\n"
+      << "33.0\n"
+      << "10.0\n"
+      << "20.0\n"
+      << "1.0\n"
+      << "2.0\n"
+      << "3.0\n"
+      << "4.0\n"
+      << "5.0\n"
+      << "6.0\n"
+      << "0.0\n"
+      << options.numReceivers << "\n";
+
+  for (const auto &[lat, lon] : options.receivers) {
+    out << lat << " " << lon << "\n";
+  }
+
+  return out.str();
+}
+
+inline std::string
 makeParameterText(const std::string &earthModelPath, int outputType = 0,
                   double relativeError = 1e-5) {
-  return "\"./output/test.out\"\n"
-         "\"" + earthModelPath + "\"\n" +
-         "4\n"
-         "0\n"
-         "2\n" +
-         std::to_string(outputType) + "\n"
-         "0\n" + std::to_string(relativeError) + "\n"
-         "0\n"
-         "6\n"
-         "0.1\n"
-         "1.0\n"
-         "5.0\n"
-         "1.0\n"
-         "0.1\n"
-         "0.2\n"
-         "0.8\n"
-         "1.0\n"
-         "33.0\n"
-         "10.0\n"
-         "20.0\n"
-         "1.0\n"
-         "2.0\n"
-         "3.0\n"
-         "4.0\n"
-         "5.0\n"
-         "6.0\n"
-         "0.0\n"
-         "2\n"
-         "45.0 90.0\n"
-         "-10.0 120.0\n";
+  ParameterOptions options;
+  options.outputType = outputType;
+  options.relativeError = relativeError;
+  return makeParameterText(earthModelPath, options);
 }
 
 inline std::filesystem::path

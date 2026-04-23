@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Testing model for DSpecM1D, covering modular unit and component tests, t1 smoke execution, and protected paper-reproduction validation workflows.">
+  <meta name="description" content="Testing overview for DSpecM1D, with linked pages for smoke checks, parser and workflow tests, I/O and writer tests, solver and SEM tests, and coverage status.">
   <title>Library Testing | DSpecM1D</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -25,8 +25,18 @@
     <div class="page">
       <div class="page-header">
         <h1>Library Testing</h1>
-        <p class="lede">The main regression safety net is a suite of small, synthetic, local tests. Full waveform comparisons are reserved for protected reproduction workflows, not for everyday debugging.</p>
+        <p class="lede">The main regression safety net is a suite of small, synthetic, local tests, with separate linked pages for each major test area and the heavier paper-reproduction workflows kept apart on purpose.</p>
       </div>
+      <section class="page-section">
+        <h2>Testing Pages</h2>
+        <ul class="check-list">
+          <li><a href="testing-smoke.html">Smoke and integration checks</a></li>
+          <li><a href="testing-inputs.html">Parser and workflow-context tests</a></li>
+          <li><a href="testing-io.html">Reference I/O and output-writer tests</a></li>
+          <li><a href="testing-solver.html">Filtering, solver API, and SEM/component tests</a></li>
+          <li><a href="testing-coverage.html">Coverage status and residual risks</a></li>
+        </ul>
+      </section>
       <section class="page-section">
         <h2>Test Categories</h2>
         <ul class="check-list">
@@ -52,8 +62,9 @@ ctest --test-dir build/dev --output-on-failure -L smoke</code></pre>
         <p>The <code>t1</code> smoke test is configured to run serially, with a capped OpenMP thread count and a timeout, so routine validation does not consume an uncontrolled number of CPU cores.</p>
       </section>
       <section class="page-section">
-        <h2>What The Small Tests Cover</h2>
-        <p>The self-contained suite now targets parsing behavior, <code>InputParametersNew</code>, normalization-factor selection, <code>FilterOptions</code>, filter validation, writer truncation and bounds behavior, reference-series readers, helper logic, and minimal SEM mapping invariants.</p>
+        <h2>Coverage Summary</h2>
+        <p>The self-contained suite now covers parsing behavior, <code>InputParametersNew</code>, preferred and legacy solver entry points, <code>FilterOptions</code>, filter validation, writer truncation and bounds behavior, reference-series readers, helper logic, and targeted SEM contracts.</p>
+        <p><a href="testing-coverage.html">Open testing coverage summary</a></p>
       </section>
     </div>
   </main>

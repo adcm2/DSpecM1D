@@ -2,8 +2,8 @@
 #define EIGEN_DONT_PARALLELIZE
 #endif
 
-// Standard library includes
 #include "config.h"
+#include "PaperExampleSupport.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -11,28 +11,10 @@
 #include <complex>
 #include <cmath>
 
-// Project-specific includes
 #include <PlanetaryModel/All>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
 #include <SpectraSolver/FF>
-
-// constexpr double PI = 3.1415926535897932;
-
-// Normalisation class for PREM - stores length, mass, and time scales
-// template <typename FLOAT> class prem_norm {
-// public:
-//   prem_norm() = default;
-
-//   FLOAT LengthNorm() const { return _length_norm; }
-//   FLOAT MassNorm() const { return _mass_norm; }
-//   FLOAT TimeNorm() const { return _time_norm; }
-
-// private:
-//   FLOAT _length_norm = 1000.0;
-//   FLOAT _mass_norm = 5515.0 * std::pow(_length_norm, 3.0);
-//   FLOAT _time_norm = 1.0 / std::sqrt(PI * 6.67230e-11 * 5515.0);
-// };
 
 int
 main() {
@@ -40,11 +22,10 @@ main() {
 
   Timer timer1;
 
-  // --- 1. Normalisation and Input Parameters ---
+  // ex4 writes a record section, so it keeps the setup explicit even though
+  // the filtering stage now reuses the shared helper path.
   prem_norm<double> normClass;
   auto timeNorm = normClass.TimeNorm();
-
-  // get paths required for input parameters and Earth model
   std::string paramPath =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex4.txt";
   InputParameters params(paramPath);
@@ -53,7 +34,6 @@ main() {
 
   SRInfo srInfo(params);
 
-  // --- 2. Frequency Solver Parameters ---
   double dt = params.time_step_sec();
   double tout = params.t_out() / 60.0;
   double df0 = 1.0;
@@ -63,39 +43,34 @@ main() {
   int nq = 5;
   int qex = 1;
 
-  // --- 3. Setup Frequency Class ---
+  // Build the explicit frequency helper for this record-section run.
   SpectraSolver::FreqFull myff(params.f1(), params.f2(), params.f11(),
                                params.f12(), params.f21(), params.f22(), dt,
                                tout, df0, wtb, t1, t2, qex, timeNorm);
 
-  // --- 4. Earth Model and Source ---
   auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
-  // --- 5. Compute Raw Frequency-Domain Spectra ---
+  // Solve for the raw spectra and then filter them back to the time domain.
   SPARSESPEC::SparseFSpec specSolver;
-
   timer1.start();
   MatrixC vecRaw = specSolver.spectra(myff, prem, cmt, params, nq, srInfo,
                                       params.relative_error());
   timer1.stop("Total time for sparse frequency spectrum");
 
-  // --- 6. Post-processing (Freq -> Time -> Filter) ---
-  auto vecR2TB = processfunctions::freq2time(vecRaw, myff);
-  auto aFilt0 = processfunctions::fulltime2freq(vecR2TB, myff, 0.01);
-  auto vecFiltT = processfunctions::filtfreq2time(aFilt0, myff, false);
+  auto filterOptions = PaperExamples::makeFilterOptions(0.5, 0.01);
+  auto filtered = DSpecM::applyFilter(vecRaw, myff, filterOptions);
+  auto &vecFiltT = filtered.timeSeries;
 
-  // Dimensionalise to acceleration (m/s^2)
+  // ex4 is an acceleration record section, so scale the filtered traces
+  // accordingly before writing the output grid.
   double accelNorm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
   vecFiltT *= accelNorm;
 
-  //////////////////////////////////////////////////////////////////////////////
-  // --- 7. Write Record Section to File ---
+  // Write one row per time sample, with the three components for each receiver.
   std::string pathToFile =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex4.out";
   std::ofstream file(pathToFile);
-
-  // Safety check to ensure the file opened successfully
   if (!file) {
     std::cerr << "Error: unable to open output file: " << pathToFile << "\n";
     return 1;

@@ -2,7 +2,6 @@
 #define EIGEN_DONT_PARALLELIZE
 #endif
 
-// Standard library includes
 #include "config.h"
 #include <iostream>
 #include <fstream>
@@ -12,28 +11,10 @@
 #include <cmath>
 #include <vector>
 
-// Project-specific includes
 #include <PlanetaryModel/All>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
 #include <SpectraSolver/FF>
-
-// constexpr double PI = 3.1415926535897932;
-// constexpr double TWO_PI = 2.0 * PI;
-
-// template <typename FLOAT> class prem_norm {
-// public:
-//   prem_norm() = default;
-
-//   FLOAT LengthNorm() const { return _length_norm; }
-//   FLOAT MassNorm() const { return _mass_norm; }
-//   FLOAT TimeNorm() const { return _time_norm; }
-
-// private:
-//   FLOAT _length_norm = 1000.0;
-//   FLOAT _mass_norm = 5515.0 * std::pow(_length_norm, 3.0);
-//   FLOAT _time_norm = 1.0 / std::sqrt(PI * 6.67230e-11 * 5515.0);
-// };
 
 int
 main() {
@@ -42,8 +23,8 @@ main() {
 
   Timer timer1;
 
-  // --- 1. Read Inputs & Earth Model ---
-  // get paths required for input parameters and Earth model
+  // ex6 is intentionally low-level: it works directly with the SEM matrices to
+  // study tidal forcing, buoyancy structure, and kinetic-energy partitioning.
   std::string paramPath =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex6.txt";
   InputParameters params(paramPath);
@@ -52,7 +33,6 @@ main() {
 
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
-  // --- 2. Parameters of SEM ---
   int lval = params.lmax();
   int nq = 5;
   double maxstep = 0.05;
@@ -60,12 +40,12 @@ main() {
   std::cout << "Enter max step size for SEM integration: \n";
   std::cin >> maxstep;
 
-  // Initialize Earth model
+  // Build the Earth model and SEM mesh explicitly so the benchmark can inspect
+  // mesh-level quantities as well as solve-level quantities.
   timer1.start();
   prem_norm<double> normClass;
   auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
 
-  // Initialize SEM
   Full1D::SEM sem(prem, maxstep, nq, lval);
   auto mesh = sem.mesh();
   auto meshmodel = sem.meshModel();
@@ -75,10 +55,8 @@ main() {
                    prem.AccelerationNorm()
             << "\n";
 
-  // --- 3. Calculate the Brunt-Väisälä frequency ---
+  // Restrict the buoyancy-frequency calculation to the fluid shell.
   std::vector<std::vector<double>> vecN2;
-
-  // Indices of fluid-solid boundaries
   auto fsb = mesh.FS_Boundaries();
   int idxLow = fsb[0] + 1;
   int idxUp = fsb[1] + 1;
@@ -86,7 +64,6 @@ main() {
   double maxN2 = 0.0;
   double minN2 = 0.0;
 
-  // Calculate N^2 in the fluid region
   for (int idxe = idxLow; idxe < idxUp; ++idxe) {
     std::vector<double> tmp;
     tmp.reserve(mesh.NN());
@@ -108,24 +85,23 @@ main() {
     vecN2.push_back(tmp);
   }
 
-  // BV frequency conversions
+  // Sample a few long periods relevant to the tidal forcing experiment.
   auto maxImag = std::sqrt(-minN2) / (TWO_PI * prem.TimeNorm());
-  auto nHours = maxImag * 3600.0;   // convert to cycles per hour
+  auto nHours = maxImag * 3600.0;
   auto nHPeriod = 1.0 / nHours;
 
-  // --- 4. Frequency Setup ---
-  std::vector<double> vecTPeriods{12.0, 48.0, 168.0, 1680.0};   // in hours
+  std::vector<double> vecTPeriods{12.0, 48.0, 168.0, 1680.0};
   std::vector<Complex> vecOmega;
   vecOmega.reserve(vecTPeriods.size());
 
   for (double period : vecTPeriods) {
-    auto freq = 1.0 / (period * 3600.0);   // frequency in Hz
+    auto freq = 1.0 / (period * 3600.0);
     Complex omegaC = TWO_PI * freq * prem.TimeNorm();
     vecOmega.push_back(omegaC);
   }
 
-  // --- 5. System Setup (Tidal Forcing) ---
-  auto idxl = 3;   // l = 2 or 3 for tidal forcing
+  // Assemble the tidal-forcing right-hand side directly in the SEM basis.
+  auto idxl = 3;
   SparseMatrixC keS = sem.hS(idxl).cast<Complex>();
   SparseMatrixC inS = sem.pS(idxl).cast<Complex>();
 
@@ -144,7 +120,7 @@ main() {
     }
   }
 
-  // --- 6. Solve Linear System ---
+  // Solve one complex linear system per forcing frequency.
   timer1.start();
   Eigen::SparseLU<SparseMatrixC, Eigen::COLAMDOrdering<int>> solver;
   std::vector<Eigen::VectorXcd> vecSolutions;
@@ -164,7 +140,7 @@ main() {
   }
   timer1.stop("Total time for solving linear system");
 
-  // --- 7. Calculate Kinetic Energy ---
+  // Integrate the total and fluid-only kinetic energies from the SEM solution.
   std::vector<double> vecTotalKE, vecFluidKE;
   vecTotalKE.reserve(vecOmega.size());
   vecFluidKE.reserve(vecOmega.size());
@@ -203,9 +179,8 @@ main() {
     vecFluidKE.push_back(fluid_ke * energynorm);
   }
 
-  // --- 8. Outputs ---
-
-  // 8a. Output Brunt-Väisälä frequency
+  // Write the derived buoyancy-frequency profile, the frequency summary, and
+  // the radial SEM response sampled across the mesh.
   std::string n2OutPath = std::string(PROJECT_BUILD_DIR) +
                           "../plotting/outputs/ex6_N2_" +
                           std::to_string(maxstep) + ".out";
@@ -226,7 +201,6 @@ main() {
   }
   n2File.close();
 
-  // 8b. Output Frequencies
   std::string freqOutPath = std::string(PROJECT_BUILD_DIR) +
                             "../plotting/outputs/ex6_w_" +
                             std::to_string(maxstep) + ".out";
@@ -243,7 +217,6 @@ main() {
   }
   freqFile.close();
 
-  // 8c. Output Radial Solution
   std::string pathToFile = std::string(PROJECT_BUILD_DIR) +
                            "../plotting/outputs/ex6_radial_response_" +
                            std::to_string(maxstep) + ".out";

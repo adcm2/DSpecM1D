@@ -53,10 +53,12 @@ TEST(InputParserTests, InputParametersParsesKnownGoodFile) {
 
 TEST(InputParserTests, InputParametersRejectsOutOfRangeLatitude) {
   DSpecMTest::TempDir temp;
-  std::string bad = DSpecMTest::makeParameterText(
-      DSpecMTest::modelPath().string(), 0, 1e-5);
-  const std::string needle = "45.0 90.0";
-  bad.replace(bad.find(needle), needle.size(), "95.0 90.0");
+  DSpecMTest::ParameterOptions options;
+  options.outputType = 0;
+  options.relativeError = 1e-5;
+  options.receivers = {{95.0, 90.0}, {-10.0, 120.0}};
+  std::string bad =
+      DSpecMTest::makeParameterText(DSpecMTest::modelPath().string(), options);
   auto path = DSpecMTest::writeFile(temp.path() / "bad_params.txt", bad);
 
   EXPECT_THROW(InputParameters(path.string()), std::runtime_error);

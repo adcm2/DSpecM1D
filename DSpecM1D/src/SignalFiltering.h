@@ -47,6 +47,10 @@ applyFilter(const Eigen::MatrixXcd &rawFrequency, SpectraSolver::FreqFull &freq,
   if (options.passes < 1) {
     throw std::invalid_argument("FilterOptions.passes must be >= 1");
   }
+  if (rawFrequency.cols() != freq.nt() / 2 + 1) {
+    throw std::invalid_argument(
+        "rawFrequency must have exactly freq.nt() / 2 + 1 columns");
+  }
 
   FilterResult out;
   out.timeSeries = processfunctions::freq2time(rawFrequency, freq);
@@ -79,6 +83,10 @@ applyFilter(const Eigen::MatrixXd &rawTime, SpectraSolver::FreqFull &freq,
             const FilterOptions &options = {}) {
   if (options.passes < 1) {
     throw std::invalid_argument("FilterOptions.passes must be >= 1");
+  }
+  if (rawTime.cols() != freq.nt()) {
+    throw std::invalid_argument(
+        "rawTime must have exactly freq.nt() columns");
   }
 
   FilterResult out;

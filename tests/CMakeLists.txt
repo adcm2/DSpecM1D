@@ -37,6 +37,10 @@ dspecm1d_add_test_exe(dspecm1d_input_context_tests
   test_input_parameters_new.cpp
 )
 
+dspecm1d_add_test_exe(dspecm1d_solver_api_tests
+  test_solver_api.cpp
+)
+
 dspecm1d_add_test_exe(dspecm1d_output_writer_tests
   test_output_writers.cpp
 )

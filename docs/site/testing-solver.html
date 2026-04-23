@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Filtering, solver API, and SEM component tests for DSpecM1D, covering preferred and legacy entry points plus targeted low-level contracts.">
+  <title>Filtering, Solver, And SEM Tests | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Filtering, Solver API, And SEM Tests</h1>
+        <p class="lede">These tests cover the preferred public solver path, the guarded filter wrapper, and a narrow set of low-level SEM contracts that fail close to the bug source.</p>
+      </div>
+      <section class="page-section">
+        <h2>Filtering</h2>
+        <ul class="check-list">
+          <li><code>FilterOptions</code> defaults are checked directly.</li>
+          <li>Both <code>applyFilter(...)</code> overloads are checked for valid execution on synthetic inputs.</li>
+          <li>Invalid matrix widths are rejected explicitly at the wrapper boundary.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Preferred And Legacy Solver Entry Points</h2>
+        <ul class="check-list">
+          <li>The preferred <code>SparseFSpec::spectra(InputParametersNew &)</code> path is covered directly.</li>
+          <li>The SEM-reuse overloads are checked for consistent output shape and agreement.</li>
+          <li>The legacy single-SEM and multi-SEM overloads now have small direct regression tests on a tiny setup.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>SEM Contracts</h2>
+        <ul class="check-list">
+          <li>Local-to-global indexing invariants are checked on a minimal setup.</li>
+          <li>Receiver/source element lookup is checked for in-mesh bounds.</li>
+          <li>Main SEM matrices are checked for consistent square shapes and structural non-emptiness.</li>
+          <li>Selected receiver-vector helpers are checked for expected dimensions and non-zero support.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

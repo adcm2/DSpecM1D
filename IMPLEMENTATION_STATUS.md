@@ -1,10 +1,12 @@
 # DSpecM1D Release Readiness Implementation Status
 
-Last updated: 2026-04-22 (Europe/London)
+Last updated: 2026-04-23 (Europe/London)
 
 This file is a durable handoff log for the release-readiness work currently in
 progress. It exists so work can continue safely even if the session stops
 unexpectedly.
+
+Follow-on hardening work is tracked separately in `API_HARDENING_PLAN.md`.
 
 ## Goal
 
@@ -273,12 +275,7 @@ Intent:
 
 - Run the full release checklist on a clean build
 
-Status: in progress
-
-Needs:
-
-- paper-reproduction validation in supported environment
-- final install/package recheck from the latest tree
+Status: verified
 
 Completed so far on 2026-04-22:
 
@@ -327,9 +324,16 @@ Important current status:
   - guarded smoke
   - docs build
   - protected example rebuilds with in-repo reference data
-- Phase 7 is not yet fully closed because two final checks remain:
-  - final install/downstream package recheck from the latest tree
-  - paper-reproduction validation in the supported environment
+- The final install/downstream package recheck from the latest tree now also
+  passes:
+  - clean install succeeded to `build/install_phase7_final`
+  - fresh downstream `find_package(DSpecM1D)` configure succeeded against that
+    install
+  - downstream consumer built successfully in
+    `work/phase5_consumer/build_phase7_final`
+  - the downstream consumer executable ran with exit code `0`
+- Paper-reproduction validation in the supported environment has now been
+  confirmed by the user.
 
 ## Files Changed So Far
 
