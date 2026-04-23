@@ -1,0 +1,67 @@
+name: Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libfftw3-dev \
+            libopenblas-dev \
+            liblapack-dev \
+            ninja-build \
+            doxygen
+
+      - name: Configure docs build
+        run: |
+          cmake -S . -B build/pages -G Ninja \
+            -DDSPECM1D_BUILD_DOCS=ON \
+            -DDSPECM1D_BUILD_TESTS=OFF \
+            -DDSPECM1D_BUILD_BENCHMARKS=OFF \
+            -DDSPECM1D_BUILD_TUTORIALS=OFF
+
+      - name: Build website
+        run: cmake --build build/pages --target website
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: build/pages/site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    permissions:
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

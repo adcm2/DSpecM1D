@@ -227,6 +227,11 @@ cmake --build build/docs --target preview-website
 
 The preview server runs at `http://127.0.0.1:8000`.
 
+The repository also includes a dedicated GitHub Pages workflow in
+`.github/workflows/pages.yml` that builds the same `website` target and deploys
+the generated `build/pages/site/` artifact. To activate it, set the repository
+Pages source to `GitHub Actions` in `Settings > Pages`.
+
 ---
 
 ## Repository

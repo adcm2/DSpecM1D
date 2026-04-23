@@ -58,6 +58,11 @@ cmake --build build/docs --target preview-website</code></pre>
         <p class="muted">The preview server runs at <code>http://127.0.0.1:8000</code> until you stop it.</p>
       </section>
       <section class="page-section">
+        <h2>GitHub Pages Deployment</h2>
+        <p>The repository includes a dedicated GitHub Pages workflow that builds the same <code>website</code> target in a docs-only build tree and deploys the generated static site artifact.</p>
+        <p>When you are ready to publish, set the repository Pages source to <code>GitHub Actions</code> in <code>Settings &gt; Pages</code>; pushes to <code>main</code> and manual workflow dispatches will then deploy the site.</p>
+      </section>
+      <section class="page-section">
         <h2>Downstream Reproducibility Note</h2>
         <p>The installed package recreates pinned dependency targets with <code>FetchContent</code>. That keeps the package usable without exporting third-party targets directly, but a first downstream configure may need network access unless those dependencies are already cached locally.</p>
       </section>
