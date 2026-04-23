@@ -21,7 +21,7 @@
  *
  * @note
  * The input parameter file is expected at:
- *   `<build_dir>/data/params/ex1.txt`
+ *   `<build_dir>/data/params/t1.txt`
  *
  * @author  Alex Myhill
  * @date    2026-03-06
@@ -119,7 +119,7 @@ main() {
 
   /// Path to the parameter file, resolved relative to the CMake build tree.
   std::string paramPath =
-      std::string(PROJECT_BUILD_DIR) + "data/params/ex1.txt";
+      std::string(PROJECT_BUILD_DIR) + "data/params/t1.txt";
 
   InputParameters params(paramPath);
   SRInfo srInfo(params);
@@ -198,17 +198,9 @@ main() {
    * assembles the stiffness/inertia matrices, solves the linear system at
    * each frequency, and accumulates the receiver seismograms.
    *
-   * @param myff        Frequency axis and taper.
-   * @param prem        1D Earth model.
-   * @param cmt         Earthquake CMT source.
-   * @param params      Simulation parameters (receivers, tolerances, etc.).
-   * @param NQ          GLL quadrature order.
-   * @param srInfo     Source–receiver geometry.
-   * @param rel_error   Relative tolerance for the iterative solver.
-   *
-   * @returns Matrix of complex spectra: rows = receivers × components,
-   *          cols = frequencies.
-   */
+ * @returns Matrix of complex spectra: rows = receivers × components,
+ *          cols = frequencies.
+ */
   SPARSESPEC::SparseFSpec specSolver;
   MatrixC vecRaw = specSolver.spectra(myff, prem, cmt, params, NQ, srInfo,
                                   params.relative_error());

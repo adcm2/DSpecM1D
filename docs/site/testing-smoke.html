@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Smoke and integration checks for DSpecM1D, covering ex1 build verification and the guarded t1 runtime smoke workflow.">
+  <title>Smoke Checks | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Smoke And Integration Checks</h1>
+        <p class="lede">These checks give a quick end-to-end signal that the build tree is sane before you spend time on heavier validation.</p>
+      </div>
+      <section class="page-section">
+        <h2>Covered Checks</h2>
+        <ul class="check-list">
+          <li><code>smoke_build_benchmark_ex1</code>: verifies that the protected <code>ex1</code> paper example still builds.</li>
+          <li><code>smoke_tutorial_t1</code>: runs the self-contained tutorial/integration workflow.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Guarded Runtime</h2>
+        <p>The <code>t1</code> smoke test is configured to run serially, with a capped OpenMP thread count and a timeout, so routine validation does not consume an uncontrolled number of CPU cores.</p>
+      </section>
+      <section class="page-section">
+        <h2>Recommended Use</h2>
+        <p>Run these after the unit/component suites and before the paper-reproduction workflows; if they fail, there is usually no point running the heavier examples yet.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

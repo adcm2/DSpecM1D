@@ -1,28 +1,54 @@
-# tests/CMakeLists.txt
-
-# 1. Fetch GoogleTest
 include(FetchContent)
 FetchContent_Declare(
   googletest
   GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        v1.14.0 # Latest stable version
+  GIT_TAG        v1.14.0
 )
-# For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+set(INSTALL_GTEST OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-# 2. Create your test executable
-add_executable(dspecm1d_tests 
-    test_math.cpp
-    # Add more test files here as your project grows: test_mesh.cpp, test_fft.cpp, etc.
+configure_file(
+  ${CMAKE_CURRENT_SOURCE_DIR}/config.h.in
+  ${CMAKE_CURRENT_BINARY_DIR}/config.h
+  @ONLY
 )
 
-# 3. Link GoogleTest AND your main library (DSpecM1D)
-target_link_libraries(dspecm1d_tests PRIVATE 
-    DSpecM1D 
-    gtest_main # gtest_main automatically provides the main() function!
-)
-
-# 4. Tell CMake to discover and register your GoogleTests automatically
 include(GoogleTest)
-gtest_discover_tests(dspecm1d_tests)
+
+function(dspecm1d_add_test_exe target)
+  add_executable(${target} ${ARGN})
+  target_link_libraries(${target} PRIVATE DSpecM1D gtest_main)
+  target_include_directories(${target} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+  gtest_discover_tests(
+    ${target}
+    PROPERTIES
+      LABELS "unit;component"
+  )
+endfunction()
+
+dspecm1d_add_test_exe(dspecm1d_parser_tests
+  test_input_parser.cpp
+  test_reference_series_io.cpp
+  test_spec_helpers.cpp
+)
+
+dspecm1d_add_test_exe(dspecm1d_input_context_tests
+  test_input_parameters_new.cpp
+)
+
+dspecm1d_add_test_exe(dspecm1d_solver_api_tests
+  test_solver_api.cpp
+)
+
+dspecm1d_add_test_exe(dspecm1d_output_writer_tests
+  test_output_writers.cpp
+)
+
+dspecm1d_add_test_exe(dspecm1d_signal_filter_tests
+  test_signal_filtering.cpp
+)
+
+dspecm1d_add_test_exe(dspecm1d_sem_component_tests
+  test_sem_component.cpp
+)

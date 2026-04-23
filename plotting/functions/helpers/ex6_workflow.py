@@ -29,12 +29,14 @@ def plot_ex6(
     dmf3 = loadtxt_or_exit(path_mf3)
     dfreqs = loadtxt_or_exit(path_freqs)
     dn2 = loadtxt_or_exit(path_n2)
+    
 
     nfreqs = dfreqs.shape[0]
     if nfreqs > max_freq_panels:
         nfreqs = max_freq_panels
 
     fig, axes = plt.subplots(3, nfreqs + 1, figsize=(14, 15), sharey=True)
+    # fig, axes = plt.subplots(3, nfreqs + 1, figsize=(14, 15))
     fig.subplots_adjust(wspace=0, hspace=0.1)
     apply_whitegrid_style()
 
@@ -56,16 +58,42 @@ def plot_ex6(
     up_rad = dn2[-1, 0]
     roman_numerals = ["i)", "ii)", "iii)", "iv)", "v)", "vi)"]
 
+    def robust_panel_xlim(*series, percentile=99.5, pad=1.1, fallback=1.0):
+        finite = []
+        for values in series:
+            arr = np.asarray(values, dtype=float)
+            arr = np.abs(arr[np.isfinite(arr)])
+            if arr.size:
+                finite.append(arr)
+
+        if not finite:
+            return fallback
+
+        combined = np.concatenate(finite)
+        robust = np.percentile(combined, percentile)
+        max_abs = np.max(combined)
+
+        if robust <= 0:
+            robust = max_abs
+        if robust <= 0:
+            return fallback
+
+        # Use a robust percentile so single-point spikes do not visually
+        # collapse the rest of the panel onto x=0.
+        limit = pad * robust
+        return max(limit, fallback)
+
     def plot_row(row_idx, data_mf, rad_v):
         for i in range(nfreqs):
             ax_data = axes[row_idx, i]
 
-            maxvalt = 1.1 * max(np.max(np.abs(data_mf[:, 6 * i + 1])), np.max(np.abs(data_mf[:, 6 * i + 4])))
-            if maxvalt == 0:
-                maxvalt = 1.0
-
-            ax_data.plot(data_mf[:, 6 * i + 1], rad_v, color=colors["u"], linewidth=lw, label="U")
-            ax_data.plot(data_mf[:, 6 * i + 4], rad_v, color=colors["v"], linewidth=lw, label="V")
+            u_series = data_mf[:, 6 * i + 1]
+            v_series = data_mf[:, 6 * i + 4]
+            # don't need robust one if there isn't an ocean layer, but it doesn't hurt to have it as a fallback in case of any unexpected spikes in the data. The robust percentile will help ensure that the x-axis limits are set in a way that allows the main features of the plot to be visible without being overly influenced by outliers.
+            # maxvalt = 1.1 * robust_panel_xlim(u_series, v_series)
+            maxvalt = max(np.abs(u_series).max(), np.abs(v_series).max()) * 1.1
+            ax_data.plot(u_series, rad_v, color=colors["u"], linewidth=lw, label="U")
+            ax_data.plot(v_series, rad_v, color=colors["v"], linewidth=lw, label="V")
 
             label_text = f"{roman_numerals[i]}"
             ax_data.text(0.05, 0.95, label_text, transform=ax_data.transAxes, fontsize=m_size, verticalalignment="top", fontweight="bold")

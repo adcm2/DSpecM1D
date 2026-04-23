@@ -10,11 +10,22 @@
 
 namespace DSpecM {
 
+/**
+ * @brief Bundle of reference time-series arrays used for comparison workflows.
+ */
 struct ReferenceTimeSeries {
   Eigen::MatrixXd yspecTime;
   Eigen::MatrixXd mineosTime;
 };
 
+/**
+ * @brief Loads a three-component YSpec time series into a fixed-size matrix.
+ *
+ * @param yspecPath Path to the YSpec four-column text file.
+ * @param ncols Number of output samples to allocate.
+ * @return Matrix with rows `Z`, `N`, `E` and `ncols` columns, padded with
+ * zeros when the file is shorter than requested.
+ */
 inline Eigen::MatrixXd
 loadYSpecTimeSeries(const std::string &yspecPath, int ncols) {
   YSPECREADER::DataColumns yspecData(yspecPath);
@@ -32,6 +43,15 @@ loadYSpecTimeSeries(const std::string &yspecPath, int ncols) {
   return yspecT;
 }
 
+/**
+ * @brief Loads a three-component SpecNM time series from semicolon-delimited
+ * text.
+ *
+ * @param specnmPath Path to the SpecNM four-column text file.
+ * @param ncols Number of output samples to allocate.
+ * @return Matrix with rows `Z`, `N`, `E` and `ncols` columns, padded with
+ * zeros when the file is shorter than requested.
+ */
 inline Eigen::MatrixXd
 loadSpecnmTimeSeries(const std::string &specnmPath, int ncols) {
   SPECNMREADER::DataColumns specnmData(specnmPath);
@@ -49,6 +69,17 @@ loadSpecnmTimeSeries(const std::string &specnmPath, int ncols) {
   return specnmT;
 }
 
+/**
+ * @brief Loads three Mineos component files into a single matrix.
+ *
+ * @param mineosZPath Path to the vertical component file.
+ * @param mineosNPath Path to the north component file.
+ * @param mineosEPath Path to the east component file.
+ * @param ncols Number of output samples to allocate.
+ * @param scale Multiplicative scale factor applied to all loaded amplitudes.
+ * @return Matrix with rows `Z`, `N`, `E` and `ncols` columns, padded with
+ * zeros when the files are shorter than requested.
+ */
 inline Eigen::MatrixXd
 loadMineosTimeSeries(const std::string &mineosZPath,
                      const std::string &mineosNPath,
@@ -77,6 +108,18 @@ loadMineosTimeSeries(const std::string &mineosZPath,
   return mineosT;
 }
 
+/**
+ * @brief Convenience loader that returns both YSpec and Mineos reference
+ * traces.
+ *
+ * @param yspecPath Path to the YSpec time-series file.
+ * @param mineosZPath Path to the Mineos vertical component file.
+ * @param mineosNPath Path to the Mineos north component file.
+ * @param mineosEPath Path to the Mineos east component file.
+ * @param ncols Number of output samples to allocate.
+ * @param mineosScale Multiplicative scale factor applied to Mineos amplitudes.
+ * @return Populated `ReferenceTimeSeries` bundle.
+ */
 inline ReferenceTimeSeries
 loadReferenceTimeSeries(const std::string &yspecPath,
                         const std::string &mineosZPath,

@@ -6,7 +6,7 @@
 
 namespace Full1D {
 
-inline SEM::SEM(const ::InputParametersNew &paramsNew)
+inline SEM::SEM(const InputParametersNew &paramsNew)
     : SEM(paramsNew.earthModel(), paramsNew.maxstep(), paramsNew.nq(),
           paramsNew.inputParameters().lmax()) {}
 

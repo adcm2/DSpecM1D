@@ -2,8 +2,8 @@
 #define EIGEN_DONT_PARALLELIZE
 #endif
 
-// Standard library includes
 #include "config.h"
+#include "PaperExampleSupport.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -12,36 +12,18 @@
 #include <cmath>
 #include <vector>
 
-// Project-specific includes
 #include <PlanetaryModel/All>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
 #include <SpectraSolver/FF>
-
-// constexpr double PI = 3.1415926535897932;
-// constexpr double TWO_PI = 2.0 * PI;
-
-// template <typename FLOAT> class prem_norm {
-// public:
-//   prem_norm() = default;
-
-//   FLOAT LengthNorm() const { return _length_norm; }
-//   FLOAT MassNorm() const { return _mass_norm; }
-//   FLOAT TimeNorm() const { return _time_norm; }
-
-// private:
-//   FLOAT _length_norm = 1000.0;
-//   FLOAT _mass_norm = 5515.0 * std::pow(_length_norm, 3.0);
-//   FLOAT _time_norm = 1.0 / std::sqrt(PI * 6.67230e-11 * 5515.0);
-// };
 
 int
 main() {
   using MatrixC = Eigen::MatrixXcd;
   Timer timer1;
 
-  // --- 1. Read Inputs & Earth Model ---
-  // get paths required for input parameters and Earth model
+  // ex5 is a convergence study, so it keeps the solver setup and postprocessing
+  // explicit while reusing the shared normalization/filter helpers.
   std::string paramPath =
       std::string(PROJECT_BUILD_DIR) + "data/params/ex5.txt";
   InputParameters params(paramPath);
@@ -52,7 +34,6 @@ main() {
   auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
-  // --- 2. Parameters ---
   int lval = params.lmax();
   int nq = 6;
   int qex = 1;
@@ -65,13 +46,13 @@ main() {
   double t1 = 0.0;
   double t2 = tout;
 
-  // --- 3. Setup Frequency Class ---
+  // Build the frequency helper once and reuse it for every convergence step.
   SpectraSolver::FreqFull myff(params.f1(), params.f2(), params.f11(),
                                params.f12(), params.f21(), params.f22(), dt,
                                tout, df0, wtb, t1, t2, qex, prem.TimeNorm());
   auto vecW = myff.w();
 
-  // --- 4. Setup Convergence Steps ---
+  // Sweep a logarithmically decreasing SEM step size to study convergence.
   int nSteps = 50;
   double step0 = 2.0 * 0.63 / myff.f22();
   std::cout << "Initial step: " << step0 << "\n";
@@ -83,26 +64,18 @@ main() {
         step0 / std::pow(10.0, 2.0 * idx / static_cast<double>(nSteps - 1)));
   }
 
-  // --- 5. Normalization ---
-  double normFactor = 1.0;
-  double accelNorm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
-
-  if (params.output_type() == 0) {
-    normFactor = prem.LengthNorm();
-  } else if (params.output_type() == 1) {
-    normFactor = prem.LengthNorm() / prem.TimeNorm();
-  } else if (params.output_type() == 2) {
-    normFactor = accelNorm;
-  }
+  double normFactor = PaperExamples::legacyNormFactor(params, prem);
   double hannW = 0.2;
+  auto filterOptions = PaperExamples::makeFilterOptions(hannW);
 
-  // --- 6. Execute Iterative Convergence Test ---
   SPARSESPEC::SparseFSpec specSolver;
   std::vector<Eigen::MatrixXcd> vecFinalW;
   std::vector<Eigen::MatrixXd> vecFinalT;
   vecFinalW.reserve(nSteps);
   vecFinalT.reserve(nSteps);
 
+  // For each SEM step size, rebuild the mesh, solve, and store the filtered
+  // frequency/time responses for later error analysis.
   for (int idx = 0; idx < nSteps; ++idx) {
     maxstep = vecStep[idx];
     int nskip = 3 * static_cast<int>(
@@ -114,18 +87,13 @@ main() {
 
     MatrixC vecRaw = specSolver.spectra(myff, sem, prem, cmt, params, nskip);
     vecRaw *= normFactor;
+    auto filtered = DSpecM::applyFilter(vecRaw, myff, filterOptions);
 
-    // Process responses
-    auto vecR2TB = processfunctions::freq2time(vecRaw, myff);
-    auto aFilt0 = processfunctions::fulltime2freq(vecR2TB, myff, 0.05);
-    auto vecFiltT = processfunctions::filtfreq2time(aFilt0, myff, false);
-    auto aFilt = processfunctions::fulltime2freq(vecFiltT, myff, hannW);
-
-    vecFinalW.push_back(aFilt);
-    vecFinalT.push_back(vecFiltT);
+    vecFinalW.push_back(filtered.frequencySeries);
+    vecFinalT.push_back(filtered.timeSeries);
   }
 
-  // --- 7. Error Calculation ---
+  // Compare every run against the finest-step result treated as the reference.
   std::size_t numErrSteps = vecStep.size() - 1;
   std::vector<std::vector<double>> vecErrT(numErrSteps,
                                            std::vector<double>(3, 0.0));
@@ -151,12 +119,10 @@ main() {
         .setZero();
   }
 
-  // "Exact" solution is the one with the smallest step
   auto idxBack = nSteps - 1;
   auto vecTEx = vecFinalT[idxBack];
   auto vecWEx = vecFinalW[idxBack];
 
-  // Reference Norms Setup
   auto tmpT = 100.0 / idxOut;
   auto mvT1 = tmpT / vecTEx.row(0).lpNorm<Eigen::Infinity>();
   auto mvT2 = tmpT / vecTEx.row(1).lpNorm<Eigen::Infinity>();
@@ -180,7 +146,6 @@ main() {
     auto vecTErr = vecFinalT[idx] - vecTEx;
     auto vecWErr = vecFinalW[idx] - vecWEx;
 
-    // L1 norms (scaled by exact solution's L-infinity norm)
     vecErrT[idx][0] = vecTErr.row(0).lpNorm<1>() * mvT1;
     vecErrT[idx][1] = vecTErr.row(1).lpNorm<1>() * mvT2;
     vecErrT[idx][2] = vecTErr.row(2).lpNorm<1>() * mvT3;
@@ -188,7 +153,6 @@ main() {
     vecErrW[idx][1] = vecWErr.row(1).lpNorm<1>() * mvW2;
     vecErrW[idx][2] = vecWErr.row(2).lpNorm<1>() * mvW3;
 
-    // L2 norms
     vecL2ErrT[idx][0] = vecTErr.row(0).norm() * mvT1L2;
     vecL2ErrT[idx][1] = vecTErr.row(1).norm() * mvT2L2;
     vecL2ErrT[idx][2] = vecTErr.row(2).norm() * mvT3L2;
@@ -197,10 +161,9 @@ main() {
     vecL2ErrW[idx][2] = vecWErr.row(2).norm() * mvW3L2;
   }
 
-  // --- 8. Outputs ---
+  // Write the stored convergence responses plus the derived L1/L2 error tables.
   double nval = 1.0 / prem.TimeNorm();
 
-  // 8a. Output Frequency Series
   std::string pathToFreqFile = std::string(PROJECT_BUILD_DIR) +
                                "../plotting/outputs/ex5_w_NQ" +
                                std::to_string(nq) + "_step.out";
@@ -229,7 +192,6 @@ main() {
   }
   freqFile.close();
 
-  // 8b. Output Time Series
   std::string pathToTimeFile = std::string(PROJECT_BUILD_DIR) +
                                "../plotting/outputs/ex5_t_NQ" +
                                std::to_string(nq) + "_step.out";
@@ -252,7 +214,6 @@ main() {
   }
   timeFile.close();
 
-  // 8c. Output Error Matrix (L1-based)
   std::string pathToErrFile =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex5_NQ" +
       std::to_string(nq) + "_step_error_" +
@@ -272,7 +233,6 @@ main() {
   }
   errFile.close();
 
-  // 8d. Output L2 Error Matrix
   std::string pathToL2File =
       std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex5_NQ" +
       std::to_string(nq) + "_step_error_l2_" +

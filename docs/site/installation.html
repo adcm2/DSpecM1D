@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Installation and quick-start guide for DSpecM1D, including build requirements, package installation, downstream consumption, and local website preview.">
+  <title>Installation | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Installation</h1>
+        <p class="lede">Build from source, install the package, and use the generated CMake config in downstream projects.</p>
+      </div>
+      <section class="page-section">
+        <h2>Requirements</h2>
+        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, a BLAS/LAPACK implementation, and OpenMP. The remaining dependencies are fetched automatically from pinned revisions during the first configure.</p>
+        <pre><code>sudo apt install libfftw3-dev libopenblas-dev liblapack-dev ninja-build
+
+cmake -S . -B build/release -G Ninja
+cmake --build build/release --parallel</code></pre>
+      </section>
+      <section class="page-section" id="quick-start">
+        <h2>Quick Start</h2>
+        <p>The recommended first executable is <code>t1</code>. It is the self-contained tutorial and the default runtime smoke example because it does not depend on the external comparison datasets used by the protected paper workflows.</p>
+        <pre><code>cmake -S . -B build/dev -G Ninja \
+  -DDSPECM1D_BUILD_TUTORIALS=ON
+cmake --build build/dev --target t1
+./build/dev/bin/t1</code></pre>
+      </section>
+      <section class="page-section">
+        <h2>Installed Package</h2>
+        <p>The release installs headers plus a package config for downstream CMake use. A consumer can locate the package and link to the public interface target:</p>
+        <pre><code>find_package(DSpecM1D REQUIRED)
+target_link_libraries(my_target PRIVATE DSpecM1D::DSpecM1D)</code></pre>
+      </section>
+      <section class="page-section">
+        <h2>Documentation Build And Local Preview</h2>
+        <p>The static site and Doxygen output are integrated into the CMake build. Use <code>website</code> to generate the site and <code>preview-website</code> to serve it locally.</p>
+        <pre><code>cmake -S . -B build/docs -G Ninja -DDSPECM1D_BUILD_DOCS=ON
+cmake --build build/docs --target website
+cmake --build build/docs --target preview-website</code></pre>
+        <p class="muted">The preview server runs at <code>http://127.0.0.1:8000</code> until you stop it.</p>
+      </section>
+      <section class="page-section">
+        <h2>GitHub Pages Deployment</h2>
+        <p>The repository includes a dedicated GitHub Pages workflow that builds the same <code>website</code> target in a docs-only build tree and deploys the generated static site artifact.</p>
+        <p>When you are ready to publish, set the repository Pages source to <code>GitHub Actions</code> in <code>Settings &gt; Pages</code>; pushes to <code>main</code> and manual workflow dispatches will then deploy the site.</p>
+      </section>
+      <section class="page-section">
+        <h2>Downstream Reproducibility Note</h2>
+        <p>The installed package recreates pinned dependency targets with <code>FetchContent</code>. That keeps the package usable without exporting third-party targets directly, but a first downstream configure may need network access unless those dependencies are already cached locally.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

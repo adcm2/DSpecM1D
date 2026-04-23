@@ -13,6 +13,13 @@
 
 namespace DSpecM {
 
+/**
+ * @brief Writes a two-way frequency-domain comparison file.
+ *
+ * The output is a semicolon-delimited table containing the converted
+ * frequency axis and the real, imaginary, and magnitude values for each
+ * of the three component rows in the primary and reference spectra.
+ */
 inline void
 writeFrequencyComparison(const std::string &path,
                          const std::vector<double> &angularFrequency,
@@ -57,6 +64,9 @@ writeFrequencyComparison(const std::string &path,
   }
 }
 
+/**
+ * @brief Writes a three-way frequency-domain comparison file.
+ */
 inline void
 writeFrequencyComparison(const std::string &path,
                          const std::vector<double> &angularFrequency,
@@ -115,6 +125,10 @@ writeFrequencyComparison(const std::string &path,
   }
 }
 
+/**
+ * @brief Convenience overload that derives frequency metadata from
+ * `InputParametersNew`.
+ */
 inline void
 writeFrequencyComparison(const std::string &path,
                          const InputParametersNew &paramsNew,
@@ -128,6 +142,10 @@ writeFrequencyComparison(const std::string &path,
                            extraFrequencies, precision);
 }
 
+/**
+ * @brief Convenience overload that derives frequency metadata from
+ * `InputParametersNew` for three-way comparisons.
+ */
 inline void
 writeFrequencyComparison(const std::string &path,
                          const InputParametersNew &paramsNew,
@@ -142,6 +160,9 @@ writeFrequencyComparison(const std::string &path,
                            secondaryReference, extraFrequencies, precision);
 }
 
+/**
+ * @brief Writes a two-way time-domain comparison file.
+ */
 inline void
 writeTimeComparison(const std::string &path,
                     const SpectraSolver::FreqFull &freq, double timeNorm,
@@ -172,6 +193,10 @@ writeTimeComparison(const std::string &path,
   }
 }
 
+/**
+ * @brief Convenience overload that derives the time metadata from
+ * `InputParametersNew`.
+ */
 inline void
 writeTimeComparison(const std::string &path,
                     const InputParametersNew &paramsNew,

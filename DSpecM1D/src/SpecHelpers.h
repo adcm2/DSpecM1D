@@ -6,6 +6,9 @@
 
 namespace SPARSESPEC {
 
+/**
+ * @brief Flags indicating which mode families should be included in a solve.
+ */
 struct ModeFlags {
   bool inc_rad = false, inc_tor = false, inc_sph = false;
 };
@@ -61,6 +64,13 @@ struct SpecConstants {
   double twopid, w0,
       twodivpi;   // twopid declared before w0 so init order is correct
 
+  /**
+   * @brief Pre-computes frequency-domain constants from damping and the
+   * reference period.
+   *
+   * @param ep Exponential damping parameter.
+   * @param tref Reference period from the Earth model.
+   */
   SpecConstants(double ep, double tref)
       : ieps{-ep * myi}, twopid{2.0 * M_PI}, w0{twopid / tref},
         twodivpi{2.0 / M_PI} {}

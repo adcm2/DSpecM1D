@@ -8,12 +8,20 @@
 #include <utility>
 #include <PlanetaryModel/All>
 #include <SpectraSolver/FF>
+#include "NormClass.h"
 #include "InputParser.h"
 #include "SRInfo.h"
 #include "SourceInfo.h"
 
-// Transitional aggregate input object for spectra workflows.
-// It intentionally coexists with InputParameters to keep adoption non-breaking.
+/**
+ * @brief Preferred release-facing aggregate input object for spectra
+ * workflows.
+ *
+ * This wrapper keeps the legacy ordered parameter-file format while bundling
+ * the parsed input parameters, Earth model, source, source-receiver geometry,
+ * and frequency axis into one object. It intentionally coexists with
+ * `InputParameters` to keep adoption non-breaking.
+ */
 class InputParametersNew {
 private:
   using ModelType = decltype(EarthModels::ModelInput(
@@ -58,6 +66,18 @@ private:
   int m_nskip;
 
 public:
+  /**
+   * @brief Builds a complete spectra workflow context from a parameter file.
+   *
+   * @param paramPath Path to the legacy ordered parameter file.
+   * @param nq GLL points per element used by SEM construction.
+   * @param nskip Re-factorization interval for repeated solves.
+   * @param maxstep Maximum non-dimensional element width.
+   * @param df0 Base frequency resolution in mHz.
+   * @param wtb Initial taper width.
+   * @param t1 Time-window start in minutes.
+   * @param qex Taper exponent.
+   */
   explicit InputParametersNew(const std::string &paramPath, int nq = 5,
                               int nskip = 10, double maxstep = 0.05,
                               double df0 = 1.0, double wtb = 0.05,
@@ -72,25 +92,31 @@ public:
         m_maxstep(maxstep), m_nq(std::max(1, nq)), m_nskip(std::max(1, nskip)) {
   }
 
+  /// Returns the underlying legacy parameter object.
   InputParameters &inputParameters() { return m_params; }
   const InputParameters &inputParameters() const { return m_params; }
 
+  /// Returns the parsed earthquake source.
   SourceInfo::EarthquakeCMT &cmt() { return m_cmt; }
   const SourceInfo::EarthquakeCMT &cmt() const { return m_cmt; }
 
+  /// Returns the source-receiver geometry helper.
   SRInfo &srInfo() { return m_srInfo; }
   const SRInfo &srInfo() const { return m_srInfo; }
 
+  /// Returns the loaded 1D Earth model.
   ModelType &earthModel() { return m_model; }
   const ModelType &earthModel() const { return m_model; }
   const std::string &earthModelPath() const { return m_modelPath; }
 
+  /// Returns the configured frequency-domain helper.
   SpectraSolver::FreqFull &freqFull() { return m_freqFull; }
   const SpectraSolver::FreqFull &freqFull() const { return m_freqFull; }
 
   double timeNorm() const { return m_model.TimeNorm(); }
   double tref() const { return m_model.TREF(); }
 
+  /// Returns the SI conversion factor implied by `output_type`.
   double normFactor() const {
     if (m_params.output_type() == 0)
       return m_model.LengthNorm();
@@ -102,12 +128,15 @@ public:
   }
 
   double maxstep() const { return m_maxstep; }
+  /// Updates the maximum non-dimensional element width.
   void setMaxstep(double maxstep) { m_maxstep = maxstep; }
 
   int nq() const { return m_nq; }
+  /// Updates the GLL order, clamped to at least 1.
   void setNq(int nq) { m_nq = std::max(1, nq); }
 
   int nskip() const { return m_nskip; }
+  /// Updates the solver re-factorization cadence, clamped to at least 1.
   void setNskip(int nskip) { m_nskip = std::max(1, nskip); }
 };
 

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Guide to the protected DSpecM1D paper-reproduction examples ex1 through ex7, including their role, external comparison dependencies, and validation scope.">
+  <title>Paper Reproduction | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Paper Reproduction Examples</h1>
+        <p class="lede">The executables <code>ex1</code> through <code>ex7</code> are protected workflows for reproducing the results discussed in the accompanying paper.</p>
+      </div>
+      <section class="page-section">
+        <div class="callout">
+          <strong>Important:</strong> these examples intentionally keep their external comparisons. They are not accidental couplings and should not be simplified into generic unit tests.
+        </div>
+      </section>
+      <section class="page-section">
+        <h2>Role In The Release</h2>
+        <ul class="check-list">
+          <li><code>t1</code> remains the self-contained tutorial and smoke example.</li>
+          <li><code>ex1</code> through <code>ex7</code> remain paper-reproduction validation workflows.</li>
+          <li>The modular test suite is the main automated regression safety net for code changes.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>External Comparison Inputs</h2>
+        <p>The protected examples compare against outputs from other tools such as YSpec, SpecNM, and MinEOS. The canonical comparison files used by these workflows are now stored in the repository under <code>data/reference/</code> and copied into the build tree with the rest of the project data.</p>
+      </section>
+      <section class="page-section">
+        <h2>Validation Expectation</h2>
+        <p>These examples should continue to build and run with the same output flow and comparison logic as the current known-good baseline. They are best used as a heavier validation layer after unit/component tests and the <code>t1</code> smoke test have already passed.</p>
+      </section>
+      <section class="page-section">
+        <h2>Recommended Execution Order</h2>
+        <ol>
+          <li>Configure and build the library.</li>
+          <li>Run the modular unit/component tests.</li>
+          <li>Run the self-contained <code>t1</code> smoke example.</li>
+          <li>Run the protected paper-reproduction workflows in the supported environment.</li>
+        </ol>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

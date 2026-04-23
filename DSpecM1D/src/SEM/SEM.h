@@ -17,7 +17,15 @@ class InputParametersNew;
 
 namespace Full1D {
 
-// spectral element solver
+/**
+ * @brief Spectral element model builder and operator factory for 1D problems.
+ *
+ * `SEM` owns the radial mesh, material interpolation, local-to-global maps,
+ * and sparse matrices/vectors required by the frequency-domain solver. It is
+ * part of the public API, but most release users should access it through the
+ * higher-level `SparseFSpec` and `InputParametersNew` workflow unless they
+ * need low-level matrix or vector access.
+ */
 class SEM {
 private:
   // abbreviations
@@ -70,22 +78,28 @@ private:
 
 public:
   SEM() {};
+  /// Constructs the SEM directly from the preferred workflow aggregate.
   explicit SEM(const InputParametersNew &);
+  /// Legacy low-level constructor retained for compatibility.
   template <class model1d> SEM(const model1d &, double, int, int);
 
-  // local-to-global maps
+  /// Local-to-global map for spheroidal unknowns.
   auto ltgS(int, int, int) const;
+  /// Local-to-global map for toroidal unknowns.
   auto ltgT(int, int) const;
+  /// Local-to-global map for radial unknowns.
   auto ltgR(int, int, int) const;
   auto el() const { return m_el; };
   auto eu() const { return m_eu; };
 
-  // source / receiver element queries
+  /// Returns the element indices containing all receivers.
   auto receiverElements(InputParameters &) const;
+  /// Returns the source element index.
   auto sourceElement(SourceInfo::EarthquakeCMT &) const;
 
-  // accessors
+  /// Returns the SEM radial mesh.
   const EarthMesh::RadialMesh &mesh() const { return m_mesh; };
+  /// Returns the mesh-interpolated material model.
   const MeshModel &meshModel() const { return m_meshModel; };
 
   // spheroidal force vectors
