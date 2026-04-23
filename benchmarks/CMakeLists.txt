@@ -33,7 +33,7 @@ if(DSPECM1D_ENABLE_SMOKE_TESTS AND TARGET ex1)
         NAME smoke_build_benchmark_ex1
         COMMAND ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR} --target ex1
     )
-    set_tests_properties(smoke_build_benchmark_ex1 PROPERTIES LABELS "smoke")
+    set_tests_properties(smoke_build_benchmark_ex1 PROPERTIES LABELS "dspecm1d_smoke")
 endif()
 
 if(DSPECM1D_ENABLE_PAPER_VALIDATION AND TARGET paper_examples)

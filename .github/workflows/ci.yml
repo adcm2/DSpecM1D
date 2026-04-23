@@ -34,7 +34,7 @@ jobs:
         run: ctest --test-dir build --output-on-failure -L "unit|component"
 
       - name: Run smoke checks
-        run: ctest --test-dir build --output-on-failure -L smoke
+        run: ctest --test-dir build --output-on-failure -L dspecm1d_smoke
 
       - name: Build docs site
         run: cmake --build build --target website
