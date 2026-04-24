@@ -28,8 +28,10 @@ find_package(FFTW)
 find_package(OpenMP REQUIRED)
 
 # --- Parallel Dependency Fetching (CMake 3.24+) ---
-# Store downloads in a hidden .deps folder so 'rm -rf build' doesn't delete them!
-set(FETCHCONTENT_BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/.deps)
+# Keep FetchContent build/subbuild state local to each build tree. Sharing this
+# cache across build directories can mix generators and break reconfigure.
+set(FETCHCONTENT_BASE_DIR "${CMAKE_BINARY_DIR}/_deps" CACHE PATH
+    "FetchContent dependency cache for this build tree" FORCE)
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE BOOL "Disable FetchContent updates")
 include(FetchContent)
 
@@ -45,11 +47,8 @@ FetchContent_Declare(
 )
 FetchContent_Declare(FFTWpp           GIT_REPOSITORY https://github.com/da380/FFTWpp.git           GIT_TAG 06cc1fb04c4398407839e637cb5414b179b0e9c3 GIT_SHALLOW TRUE)
 FetchContent_Declare(GaussQuad        GIT_REPOSITORY https://github.com/da380/GaussQuad.git        GIT_TAG fbe37c7eef93695317dbf9c48715110bf64c800f GIT_SHALLOW TRUE)
-FetchContent_Declare(PlanetaryModel   GIT_REPOSITORY https://github.com/da380/PlanetaryModel.git   GIT_TAG a801b9e9c2205c3b32daa745fd523d596a9d2ede GIT_SHALLOW TRUE)
 FetchContent_Declare(GSHTRANS         GIT_REPOSITORY https://github.com/da380/GSHTrans.git         GIT_TAG b880ac9aeacdb54a6480fca3aee70a20a727c678 GIT_SHALLOW TRUE)
 FetchContent_Declare(Interpolation    GIT_REPOSITORY https://github.com/da380/Interpolation.git    GIT_TAG 1557aad571ceac1899c2d3795696aa4047f41d8a GIT_SHALLOW TRUE)
-FetchContent_Declare(EarthMesh        GIT_REPOSITORY https://github.com/adcm2/EarthMesh.git        GIT_TAG fc0db1eba3bebb3cbd876f39e7248b9ede78e303 GIT_SHALLOW TRUE)
-FetchContent_Declare(SpectraSolver    GIT_REPOSITORY https://github.com/adcm2/SpectraSolver.git    GIT_TAG 48e75c5ebf7d10f5ea4a85303368a705a1898f02 GIT_SHALLOW TRUE)
 
 # 2. Modify our helper function to accept a LIST of targets
 function(FetchContent_MakeAvailable_NoInstall)
@@ -62,8 +61,8 @@ endfunction()
 # 3. Fire them all off at once! 
 # CMake will handle the "local vs git" logic automatically.
 FetchContent_MakeAvailable_NoInstall(
-    Eigen3 FFTWpp GaussQuad PlanetaryModel GSHTRANS 
-    Interpolation EarthMesh SpectraSolver
+    Eigen3 FFTWpp GaussQuad GSHTRANS
+    Interpolation
 )
 
 # --- Target Definition ---
@@ -71,12 +70,9 @@ add_library(DSpecM1D INTERFACE)
 
 target_link_libraries(DSpecM1D INTERFACE 
     Eigen3::Eigen
-    FFTWpp
-    Interpolation
     GaussQuad
-    PlanetaryModel
-    EarthMesh
-    SpectraSolver
+    Interpolation
+    GSHTrans
     OpenMP::OpenMP_CXX
 )
 
@@ -119,6 +115,7 @@ if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     option(DSPECM1D_BUILD_TUTORIALS "Whether or not tutorials should be built" ON)
     option(DSPECM1D_BUILD_TESTS "Build DSPECM1D Tests" OFF)
     option(DSPECM1D_ENABLE_SMOKE_TESTS "Register lightweight executable smoke tests" OFF)
+    option(DSPECM1D_ENABLE_MIGRATION_TESTS "Register temporary migration validation checks" OFF)
     option(DSPECM1D_ENABLE_PAPER_VALIDATION "Register optional paper reproduction validation checks" OFF)
     option(DSPECM1D_BUILD_DOCS "Build DSpecM1D documentation targets" OFF)
 

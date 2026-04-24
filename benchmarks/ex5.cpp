@@ -12,10 +12,10 @@
 #include <cmath>
 #include <vector>
 
-#include <PlanetaryModel/All>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 
 int
 main() {
@@ -31,7 +31,7 @@ main() {
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
   prem_norm<double> normClass;
-  auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, normClass);
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   int lval = params.lmax();

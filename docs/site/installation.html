@@ -29,18 +29,21 @@
       </div>
       <section class="page-section">
         <h2>Requirements</h2>
-        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, a BLAS/LAPACK implementation, and OpenMP. The remaining dependencies are fetched automatically from pinned revisions during the first configure.</p>
-        <pre><code>sudo apt install libfftw3-dev libopenblas-dev liblapack-dev ninja-build
+        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, a BLAS/LAPACK implementation, and OpenMP. The remaining third-party dependencies are fetched automatically from pinned revisions during the first configure. NetCDF is not required. The former <code>PlanetaryModel</code> and <code>EarthMesh</code> layers are now maintained in-house under <code>DSpecM1D/src/model_info/</code>, and the frequency-axis plus FFT/post-processing helpers formerly provided through <code>SpectraSolver</code> now live in <code>DSpecM1D/src/frequency_info/</code>.</p>
+        <pre><code>sudo apt install build-essential cmake git libfftw3-dev libopenblas-dev liblapack-dev
 
-cmake -S . -B build/release -G Ninja
+cmake -S . -B build/release
 cmake --build build/release --parallel</code></pre>
+        <p class="muted">Ninja is optional. If it is installed and you prefer it, add <code>-G Ninja</code> to the configure command.</p>
+        <p class="muted">If you switch CMake generators for an existing build tree, use a new build directory or remove the old one first. CMake build trees are generator-specific.</p>
       </section>
       <section class="page-section" id="quick-start">
         <h2>Quick Start</h2>
         <p>The recommended first executable is <code>t1</code>. It is the self-contained tutorial and the default runtime smoke example because it does not depend on the external comparison datasets used by the protected paper workflows.</p>
-        <pre><code>cmake -S . -B build/dev -G Ninja \
+        <pre><code>cmake -S . -B build/dev \
   -DDSPECM1D_BUILD_TUTORIALS=ON
 cmake --build build/dev --target t1
+export OMP_NUM_THREADS=2
 ./build/dev/bin/t1</code></pre>
       </section>
       <section class="page-section">
@@ -52,7 +55,7 @@ target_link_libraries(my_target PRIVATE DSpecM1D::DSpecM1D)</code></pre>
       <section class="page-section">
         <h2>Documentation Build And Local Preview</h2>
         <p>The static site and Doxygen output are integrated into the CMake build. Use <code>website</code> to generate the site and <code>preview-website</code> to serve it locally.</p>
-        <pre><code>cmake -S . -B build/docs -G Ninja -DDSPECM1D_BUILD_DOCS=ON
+        <pre><code>cmake -S . -B build/docs -DDSPECM1D_BUILD_DOCS=ON
 cmake --build build/docs --target website
 cmake --build build/docs --target preview-website</code></pre>
         <p class="muted">The preview server runs at <code>http://127.0.0.1:8000</code> until you stop it.</p>
@@ -64,7 +67,7 @@ cmake --build build/docs --target preview-website</code></pre>
       </section>
       <section class="page-section">
         <h2>Downstream Reproducibility Note</h2>
-        <p>The installed package recreates pinned dependency targets with <code>FetchContent</code>. That keeps the package usable without exporting third-party targets directly, but a first downstream configure may need network access unless those dependencies are already cached locally.</p>
+        <p>The installed package recreates the remaining pinned third-party targets with <code>FetchContent</code>. That keeps the package usable without exporting third-party targets directly, but a first downstream configure may need network access unless those dependencies are already cached locally.</p>
       </section>
     </div>
   </main>

@@ -1,10 +1,13 @@
-#ifndef MESH_MODEL_H
-#define MESH_MODEL_H
+#ifndef DSPECM1D_MODEL_INFO_MESHMODEL_H
+#define DSPECM1D_MODEL_INFO_MESHMODEL_H
+
+#include <cmath>
+#include <vector>
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-#include <vector>
-#include <EarthMesh/All>
+
+#include <DSpecM1D/EarthMesh>
 
 class MeshModel {
 public:
@@ -127,14 +130,12 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
       _vec_pslow[idxe][idxn] =
           1.0 / (_vec_vp[idxe][idxn] * _vec_vp[idxe][idxn]);
 
-      // for s slow we change if vs is 0 to avoid divide by zero
       double vsequiv = _vec_vs[idxe][idxn];
       if (_vec_vs[idxe][idxn] == 0.0) {
         vsequiv = 1e-15;
       }
       _vec_sslow[idxe][idxn] = 1.0 / (vsequiv * vsequiv);
 
-      // equivalent attenuation parameters
       auto ratkappa = _vec_Kappa[idxe][idxn] / _vec_qkappa[idxe][idxn];
       auto ratmu = _vec_Mu[idxe][idxn] / _vec_qmu[idxe][idxn];
       if (_vec_qmu[idxe][idxn] != 0.0) {
@@ -157,7 +158,6 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
       6.67230 * std::pow(10.0, -11.0) / inp_model.GravitationalConstant();
   auto pi_db = 3.14159265358979323846;
   auto q = mesh.GLL();
-  // compute gravity at all nodes
   for (int idxe = 0; idxe < NE; ++idxe) {
     int laynum = mesh.LayerNumber(idxe);
     if (idxe != 0) {
@@ -179,7 +179,6 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
     }
   }
 
-  // divide by r^2:
   for (int idxe = 0; idxe < NE; ++idxe) {
     int idxlow = (idxe == 0);
     for (int idxn = idxlow; idxn < NQ; ++idxn) {
@@ -189,4 +188,4 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
   }
 }
 
-#endif   // MESH_MODEL_H
+#endif  // DSPECM1D_MODEL_INFO_MESHMODEL_H

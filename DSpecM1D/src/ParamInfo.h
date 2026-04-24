@@ -8,9 +8,9 @@
 #include <GSHTrans/Core>
 #include <Interpolation/Lagrange>
 #include "SourceInfo.h"
-#include <EarthMesh/All>
+#include <DSpecM1D/EarthMesh>
 #include "InputParser.h"
-#include "MeshModel.h"
+#include "model_info/MeshModel.h"
 
 class ParamInfo {
 public:

@@ -5,7 +5,7 @@
 #include <cmath>       // std::sqrt, std::abs
 #include <vector>      // std::vector
 #include "SourceInfo.h"
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 
 namespace SpectralTools {
 

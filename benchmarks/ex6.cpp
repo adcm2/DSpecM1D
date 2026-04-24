@@ -11,10 +11,10 @@
 #include <cmath>
 #include <vector>
 
-#include <PlanetaryModel/All>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 
 int
 main() {
@@ -44,7 +44,7 @@ main() {
   // mesh-level quantities as well as solve-level quantities.
   timer1.start();
   prem_norm<double> normClass;
-  auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, normClass);
 
   Full1D::SEM sem(prem, maxstep, nq, lval);
   auto mesh = sem.mesh();

@@ -54,3 +54,27 @@ TEST(InputParametersNewTests, SetterClampsToMinimumPositiveIntegers) {
   EXPECT_EQ(paramsNew.nq(), 1);
   EXPECT_EQ(paramsNew.nskip(), 1);
 }
+
+TEST(InputParametersNewTests, PreservesAnisotropicColumnsFromModelInputFile) {
+  DSpecMTest::TempDir temp;
+  auto path = DSpecMTest::writeFile(
+      temp.path() / "params.txt",
+      DSpecMTest::makeParameterText(DSpecMTest::modelPath().string()));
+
+  InputParametersNew paramsNew(path.string());
+  const auto &model = paramsNew.earthModel();
+
+  bool foundAnisotropicLayer = false;
+  for (int layer = 0; layer < model.NumberOfLayers(); ++layer) {
+    const double r = 0.5 * (model.LowerRadius(layer) + model.UpperRadius(layer));
+    const double vpDiff = std::abs(model.VPH(layer)(r) - model.VPV(layer)(r));
+    const double vsDiff = std::abs(model.VSH(layer)(r) - model.VSV(layer)(r));
+    const double etaDiff = std::abs(model.Eta(layer)(r) - 1.0);
+    if (vpDiff > 1e-12 || vsDiff > 1e-12 || etaDiff > 1e-12) {
+      foundAnisotropicLayer = true;
+      break;
+    }
+  }
+
+  EXPECT_TRUE(foundAnisotropicLayer);
+}

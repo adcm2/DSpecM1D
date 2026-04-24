@@ -2,7 +2,7 @@
 #define DSPECM1D_FULL_SPEC_H
 
 #include <iostream>
-#include <PlanetaryModel/All>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/Timer>
 #include "ReadStation.h"
 #include "SourceInfo.h"

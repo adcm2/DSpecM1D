@@ -8,9 +8,8 @@
   "configurePresets": [
     {
       "name": "dev",
-      "displayName": "Development (Ninja)",
+      "displayName": "Development",
       "description": "Default development preset with tests, tutorials, benchmarks, and smoke checks.",
-      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/dev",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "RelWithDebInfo",
@@ -22,9 +21,8 @@
     },
     {
       "name": "release",
-      "displayName": "Release (Ninja)",
+      "displayName": "Release",
       "description": "Optimized release preset for benchmarking and exercise validation.",
-      "generator": "Ninja",
       "binaryDir": "${sourceDir}/build/release",
       "cacheVariables": {
         "CMAKE_BUILD_TYPE": "Release",

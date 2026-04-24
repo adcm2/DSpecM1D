@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <DSpecM1D/src/NormClass.h>
 #include <DSpecM1D/src/SignalFiltering.h>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 #include "test_utils.h"
 
 namespace {

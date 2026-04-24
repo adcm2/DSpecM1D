@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 #include <Eigen/Core>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 #include "InputParametersNew.h"
 
 namespace DSpecM {

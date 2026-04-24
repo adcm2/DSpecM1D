@@ -12,10 +12,10 @@
 #include <cmath>
 #include <filesystem>
 
-#include <PlanetaryModel/All>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 
 int
 main() {

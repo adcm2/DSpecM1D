@@ -6,8 +6,8 @@
 #include <stdexcept>
 #include <string>
 #include <utility>
-#include <PlanetaryModel/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/ModelInput>
+#include <DSpecM1D/FrequencyTools>
 #include "NormClass.h"
 #include "InputParser.h"
 #include "SRInfo.h"
@@ -25,7 +25,7 @@
 class InputParametersNew {
 private:
   using ModelType = decltype(EarthModels::ModelInput(
-      std::declval<std::string>(), std::declval<prem_norm<double>>(), "true"));
+      std::declval<std::string>(), std::declval<prem_norm<double>>()));
 
   static std::string resolveModelPath(const std::string &paramPath,
                                       const InputParameters &params) {
@@ -51,7 +51,7 @@ private:
 
   static ModelType loadEarthModel(const std::string &modelPath) {
     prem_norm<double> normClass;
-    auto tmp = EarthModels::ModelInput(modelPath, normClass, "true");
+    auto tmp = EarthModels::ModelInput(modelPath, normClass);
     return tmp;
   }
 

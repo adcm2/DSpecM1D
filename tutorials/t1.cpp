@@ -41,8 +41,8 @@
 #include "config.h"
 #include <DSpecM1D/All>
 #include <DSpecM1D/Timer>
-#include <PlanetaryModel/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/ModelInput>
+#include <DSpecM1D/FrequencyTools>
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -167,7 +167,7 @@ main() {
   prem_norm<double> norm_class;
 
   /// 1D PREM model, non-dimensionalised using @p norm_class.
-  auto prem = EarthModels::ModelInput(earthModelPath, norm_class, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, norm_class);
 
   /**
    * @brief Frequency axis and Hann-taper helper.

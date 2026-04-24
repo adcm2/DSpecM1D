@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <Eigen/Core>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 
 namespace DSpecM {
 

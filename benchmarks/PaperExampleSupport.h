@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 #include <Eigen/Core>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 #include <DSpecM1D/All>
 
 namespace PaperExamples {

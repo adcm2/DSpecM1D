@@ -36,6 +36,21 @@ if(DSPECM1D_ENABLE_SMOKE_TESTS AND TARGET ex1)
     set_tests_properties(smoke_build_benchmark_ex1 PROPERTIES LABELS "dspecm1d_smoke")
 endif()
 
+if(DSPECM1D_ENABLE_MIGRATION_TESTS AND TARGET ex2)
+    add_test(
+        NAME migration_ex2_reference_check
+        COMMAND ${CMAKE_COMMAND}
+            -DEX2_EXECUTABLE=$<TARGET_FILE:ex2>
+            -DEX2_TIME_EXPECTED=${CMAKE_SOURCE_DIR}/plotting/outputs/ex2_t.out
+            -DEX2_TIME_ACTUAL=${CMAKE_BINARY_DIR}/migration_checks/ex2_t.out
+            -DEX2_FREQ_ACTUAL=${CMAKE_BINARY_DIR}/migration_checks/ex2_w.out
+            -P ${CMAKE_SOURCE_DIR}/tests/run_ex2_reference_check.cmake
+    )
+    set_tests_properties(migration_ex2_reference_check PROPERTIES
+        LABELS "migration;reference"
+    )
+endif()
+
 if(DSPECM1D_ENABLE_PAPER_VALIDATION AND TARGET paper_examples)
     add_test(
         NAME validate_build_paper_examples

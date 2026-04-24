@@ -29,10 +29,7 @@ angular degree _ℓ_ and solving the resulting linear system at each frequency, 
 | [FFTWpp](https://github.com/da380/FFTWpp) | ✓ |
 | [GaussQuad](https://github.com/da380/GaussQuad) | ✓ |
 | [GSHTrans](https://github.com/da380/GSHTrans) | ✓ |
-| [PlanetaryModel](https://github.com/da380/PlanetaryModel) | ✓ |
 | [Interpolation](https://github.com/da380/Interpolation) | ✓ |
-| [EarthMesh](https://github.com/adcm2/EarthMesh) | ✓ |
-| [SpectraSolver](https://github.com/adcm2/SpectraSolver) | ✓ |
 | [FFTW3](https://www.fftw.org/) | **System** |
 | BLAS / LAPACK | **System** |
 | OpenMP | **System** |
@@ -40,7 +37,7 @@ angular degree _ℓ_ and solving the resulting linear system at each frequency, 
 FFTW3 plus a BLAS/LAPACK implementation must be installed on your system before building. On Ubuntu/Debian:
 
 ```bash
-sudo apt install libfftw3-dev libopenblas-dev liblapack-dev
+sudo apt install build-essential cmake git libfftw3-dev libopenblas-dev liblapack-dev
 ```
 
 On macOS with Homebrew:
@@ -49,6 +46,15 @@ On macOS with Homebrew:
 brew install fftw openblas
 ```
 
+NetCDF is not required by DSpecM1D. OpenMP support is provided by the compiler
+toolchain; on Ubuntu/Debian, GCC normally provides it through `libgomp`.
+
+`PlanetaryModel` and `EarthMesh` are now maintained in-house within the
+DSpecM1D source tree under `DSpecM1D/src/model_info/`.
+The frequency-axis and FFT/post-processing utilities formerly provided via
+`SpectraSolver` are now maintained in-house under
+`DSpecM1D/src/frequency_info/`.
+
 ---
 
 ## Building
@@ -56,13 +62,15 @@ brew install fftw openblas
 ```bash
 git clone https://github.com/adcm2/DSpecM1D.git
 cd DSpecM1D
-mkdir build && cd build
-cmake ..
-cmake --build . --parallel
+cmake -S . -B build
+cmake --build build --parallel
 ```
 
 CMake will automatically download all header-only dependencies during the
 configure step. An internet connection is required on first build.
+
+If you switch CMake generators for an existing build tree, use a new build
+directory or remove the old one first. CMake build trees are generator-specific.
 
 ### Build options
 
@@ -72,6 +80,7 @@ configure step. An internet connection is required on first build.
 | `DSPECM1D_BUILD_TUTORIALS` | `ON` | Build the tutorial executables |
 | `DSPECM1D_BUILD_TESTS` | `OFF` | Build the self-contained unit/component test suite |
 | `DSPECM1D_ENABLE_SMOKE_TESTS` | `OFF` | Register runtime smoke checks such as `t1` |
+| `DSPECM1D_ENABLE_MIGRATION_TESTS` | `OFF` | Register temporary migration-only checks such as the `ex2` tolerance comparison |
 | `DSPECM1D_ENABLE_PAPER_VALIDATION` | `OFF` | Register optional paper-reproduction validation checks |
 | `DSPECM1D_BUILD_DOCS` | `OFF` | Enable Doxygen and static website build targets |
 
@@ -111,14 +120,27 @@ paper-reproduction workflows.
 Example development build:
 
 ```bash
-cmake -S . -B build/dev -G Ninja \
+cmake -S . -B build/dev \
   -DDSPECM1D_BUILD_TESTS=ON \
   -DDSPECM1D_BUILD_TUTORIALS=ON \
   -DDSPECM1D_BUILD_BENCHMARKS=ON \
   -DDSPECM1D_ENABLE_SMOKE_TESTS=ON
 cmake --build build/dev --parallel
 ctest --test-dir build/dev --output-on-failure -L "unit|component"
-ctest --test-dir build/dev --output-on-failure -L smoke
+ctest --test-dir build/dev --output-on-failure -L dspecm1d_smoke
+```
+
+Temporary migration-only validation, if enabled:
+
+```bash
+ctest --test-dir build/dev --output-on-failure -L migration
+```
+
+For manual tutorial or benchmark runs, cap OpenMP explicitly if you do not want
+the solver to use all available cores:
+
+```bash
+export OMP_NUM_THREADS=2
 ```
 
 ---
@@ -172,12 +194,21 @@ expected order:
 ```
 DSpecM1D_Draft/
 ├── DSpecM1D/
+│   ├── ModelInput             # Public Earth model entry point
+│   ├── EarthMesh              # Public radial-mesh entry point
 │   └── src/
 │       ├── SpectraMaster.h    # Core SEM orchestration
-│       ├── MeshModel.h        # Material parameter interpolation
 │       ├── InputParser.h      # Parameter file reader
 │       ├── InputParametersNew.h
 │       ├── SignalFiltering.h
+│       ├── frequency_info/
+│       │   ├── FreqFull.h
+│       │   └── PostprocessFunctions.h
+│       ├── model_info/
+│       │   ├── ModelInput.h
+│       │   ├── ModelConcepts.h
+│       │   ├── MeshModel.h
+│       │   └── earthmesh/
 │       └── ...
 ├── benchmarks/                # Benchmark executables
 │   └── ex1.cpp ... ex7.cpp    # Paper-reproduction examples
@@ -212,7 +243,7 @@ These are encapsulated by the normalization helper in `DSpecM1D/src/NormClass.h`
 Enable documentation targets with:
 
 ```bash
-cmake -S . -B build/docs -G Ninja -DDSPECM1D_BUILD_DOCS=ON
+cmake -S . -B build/docs -DDSPECM1D_BUILD_DOCS=ON
 cmake --build build/docs --target website
 ```
 

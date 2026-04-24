@@ -36,11 +36,16 @@
       </section>
       <section class="page-section">
         <h2>Guarded Runtime</h2>
-        <p>The <code>t1</code> smoke test is configured to run serially, with a capped OpenMP thread count and a timeout, so routine validation does not consume an uncontrolled number of CPU cores.</p>
+        <p>The <code>t1</code> smoke test is configured to run serially, with a capped OpenMP thread count and a timeout, so routine validation does not consume an uncontrolled number of CPU cores. For manual tutorial or benchmark runs, set <code>OMP_NUM_THREADS</code> explicitly.</p>
       </section>
       <section class="page-section">
         <h2>Recommended Use</h2>
-        <p>Run these after the unit/component suites and before the paper-reproduction workflows; if they fail, there is usually no point running the heavier examples yet.</p>
+        <pre><code>ctest --test-dir build/dev --output-on-failure -L dspecm1d_smoke</code></pre>
+        <p>Run these after the unit/component suites and before the paper-reproduction workflows; if they fail, there is usually no point running the heavier examples yet. Use a clean build tree when reporting failures so stale dependency tests are not mixed into the result.</p>
+      </section>
+      <section class="page-section">
+        <h2>Migration Note</h2>
+        <p>The temporary <code>migration</code> label is separate from smoke. It is used for in-progress dependency migration checks such as the <code>ex2</code> tolerance comparison and is not part of the normal release baseline.</p>
       </section>
     </div>
   </main>

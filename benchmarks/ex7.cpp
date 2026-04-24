@@ -12,10 +12,10 @@
 #include <cmath>
 #include <algorithm>
 
-#include <PlanetaryModel/All>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 
 int
 main() {
@@ -36,7 +36,7 @@ main() {
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   prem_norm<double> normClass;
-  auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, normClass);
 
   int nq = 6;
   double dt = params.time_step_sec();

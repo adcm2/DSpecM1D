@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <PlanetaryModel/All>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/src/SEM/SEM.h>
 #include <DSpecM1D/src/SourceInfo.h>
 #include <DSpecM1D/src/InputParametersNew.h>
@@ -36,8 +36,7 @@ makeTinySemParams() {
 
 TEST(SEMComponentTests, LocalToGlobalMapsAreMonotonicOnMinimalModel) {
   prem_norm<double> norm;
-  auto model =
-      EarthModels::ModelInput(DSpecMTest::modelPath().string(), norm, "true");
+  auto model = EarthModels::ModelInput(DSpecMTest::modelPath().string(), norm);
   Full1D::SEM sem(model, 0.05, 4, 4);
 
   EXPECT_LT(sem.ltgS(0, 0, 0), sem.ltgS(1, 0, 0));

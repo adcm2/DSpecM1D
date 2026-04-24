@@ -11,10 +11,10 @@
 #include <complex>
 #include <cmath>
 
-#include <PlanetaryModel/All>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 
 int
 main() {
@@ -48,7 +48,7 @@ main() {
                                params.f12(), params.f21(), params.f22(), dt,
                                tout, df0, wtb, t1, t2, qex, timeNorm);
 
-  auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, normClass);
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   // Solve for the raw spectra and then filter them back to the time domain.

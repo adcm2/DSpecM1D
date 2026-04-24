@@ -6,18 +6,27 @@
 #include "PaperExampleSupport.h"
 #include <iostream>
 #include <string>
+#include <cstdlib>
 #include <complex>
 #include <cmath>
 
-#include <PlanetaryModel/All>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/Timer>
 #include <DSpecM1D/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/FrequencyTools>
 
 int
 main() {
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
+  auto overridePath = [](const char *envName, const std::string &fallback) {
+    if (const char *value = std::getenv(envName)) {
+      if (*value != '\0') {
+        return std::string(value);
+      }
+    }
+    return fallback;
+  };
 
   Timer timer1;
 
@@ -33,7 +42,7 @@ main() {
   auto cmt = SourceInfo::EarthquakeCMT(params);
 
   prem_norm<double> normClass;
-  auto prem = EarthModels::ModelInput(earthModelPath, normClass, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, normClass);
 
   double dt = params.time_step_sec();
   double tout = params.t_out() / 60.0;
@@ -147,14 +156,16 @@ main() {
 
   // Write the final comparison products consumed by the paper plotting scripts.
   std::string pathToFreqFile =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_w.out";
+      overridePath("DSPECM1D_EX2_FREQ_OUT",
+                   std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_w.out");
   double nval = 1.0 / prem.TimeNorm();
   PaperExamples::writeFourWayFrequencyComparison(
       pathToFreqFile, vecW, myff, nval, aFilt, aFiltYSpec, aFiltMineos,
       aFiltSpecnm);
 
   std::string pathToTimeFile =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_t.out";
+      overridePath("DSPECM1D_EX2_TIME_OUT",
+                   std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_t.out");
   PaperExamples::writeFourWayTimeComparison(
       pathToTimeFile, myff, prem.TimeNorm(), params.t_out(), vecFiltT,
       vecFiltTYSpec, vecFiltTMineos, vecFiltTSpecnm,
