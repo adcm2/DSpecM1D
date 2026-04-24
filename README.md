@@ -59,6 +59,8 @@ The frequency-axis and FFT/post-processing utilities formerly provided via
 
 ## Building
 
+Quick start:
+
 ```bash
 git clone https://github.com/adcm2/DSpecM1D.git
 cd DSpecM1D
@@ -72,6 +74,25 @@ configure step. An internet connection is required on first build.
 If you switch CMake generators for an existing build tree, use a new build
 directory or remove the old one first. CMake build trees are generator-specific.
 
+### Presets
+
+The repository includes three configure/build/test presets:
+
+- `dev`: `RelWithDebInfo` with tests, tutorials, benchmarks, and smoke checks
+- `release`: optimized release build with tests, tutorials, benchmarks, and smoke checks
+- `debug`: debug build with tests, tutorials, benchmarks, and smoke checks
+
+Example preset usage:
+
+```bash
+cmake --preset dev
+cmake --build --preset dev
+ctest --preset dev -L "unit|component"
+ctest --preset dev -L dspecm1d_smoke
+```
+
+For a release or debug tree, replace `dev` with `release` or `debug`.
+
 ### Build options
 
 | Option | Default | Description |
@@ -84,8 +105,13 @@ directory or remove the old one first. CMake build trees are generator-specific.
 | `DSPECM1D_ENABLE_PAPER_VALIDATION` | `OFF` | Register optional paper-reproduction validation checks |
 | `DSPECM1D_BUILD_DOCS` | `OFF` | Enable Doxygen and static website build targets |
 
+For example, to build only the tutorial executables:
+
 ```bash
-cmake .. -DDSPECM1D_BUILD_BENCHMARKS=OFF -DDSPECM1D_BUILD_TUTORIALS=ON
+cmake -S . -B build/tutorials-only \
+  -DDSPECM1D_BUILD_BENCHMARKS=OFF \
+  -DDSPECM1D_BUILD_TUTORIALS=ON
+cmake --build build/tutorials-only --parallel
 ```
 
 ---
@@ -117,7 +143,7 @@ paper-reproduction workflows.
 - `ex1` through `ex7`: protected paper-reproduction examples that intentionally
   keep their YSpec / MinEOS / SpecNM comparisons
 
-Example development build:
+Manual development build:
 
 ```bash
 cmake -S . -B build/dev \
@@ -128,6 +154,15 @@ cmake -S . -B build/dev \
 cmake --build build/dev --parallel
 ctest --test-dir build/dev --output-on-failure -L "unit|component"
 ctest --test-dir build/dev --output-on-failure -L dspecm1d_smoke
+```
+
+Equivalent preset workflow:
+
+```bash
+cmake --preset dev
+cmake --build --preset dev
+ctest --preset dev -L "unit|component"
+ctest --preset dev -L dspecm1d_smoke
 ```
 
 Temporary migration-only validation, if enabled:
@@ -150,32 +185,77 @@ export OMP_NUM_THREADS=2
 The input file controls all aspects of the simulation. The current parser reads
 an ordered sequence of value lines, not a keyed `name value` format. Comments
 and blank lines are ignored, but the remaining values must appear in the
-expected order:
+expected order. Full-line comments beginning with `#` are supported; trailing
+inline comments on value lines are not.
 
-```
-"./output/yspec.lf.out"
+```text
+# prefix for output files
+"./output/t1.out"
+
+# Earth model
 "models/prem.200.noatten.txt"
+
+# which type of modes to include
 4
+
+# attenuation switch: 1 = on, 0 = off
 0
+
+# gravitation: 0 = none, 1 = cowling, 2 = self
 2
+
+# output: 0 = displacement, 1 = velocity, 2 = acceleration
 0
+
+# potential and tilt corrections: 0 = no, 1 = yes
 0
-1e-5
+
+# relative error
+1e-3
+
+# lmin
 0
-100
-0.1
-7.0
-6000
+
+# lmax
+150
+
+# fmin (mHz)
+1.5
+
+# fmax (mHz)
+10.0
+
+# length of time series (min)
+240
+
+# time step (sec)
 1.0
-0.1
-0.2
-4.9
-5.0
+
+# f11 filter (mHz)
+1.9
+
+# f12 filter (mHz)
+2.0
+
+# f21 filter (mHz)
+9.0
+
+# f22 filter (mHz)
+10.0
+
+# source depth (km)
 647.1
+
+# source latitude (deg)
 -13.82
+
+# source longitude (deg)
 -67.25
+
 ...
 ```
+
+See [data/params/t1.txt](/home/adcm2/Documents/c++/DSpecM1D_Draft/data/params/t1.txt) for a fully commented example in the exact parser order.
 
 ---
 

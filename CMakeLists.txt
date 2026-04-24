@@ -108,16 +108,18 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
 )
 
-# --- Benchmarks ---
-if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
+# --- Top-Level Build Options ---
+option(DSPECM1D_BUILD_BENCHMARKS "Whether or not benchmarks should be built" ON)
+option(DSPECM1D_BUILD_TUTORIALS "Whether or not tutorials should be built" ON)
+option(DSPECM1D_BUILD_TESTS "Build DSpecM1D tests" OFF)
+option(DSPECM1D_ENABLE_SMOKE_TESTS "Register lightweight executable smoke tests" OFF)
+option(DSPECM1D_ENABLE_MIGRATION_TESTS "Register temporary migration validation checks" OFF)
+option(DSPECM1D_ENABLE_PAPER_VALIDATION "Register optional paper reproduction validation checks" OFF)
+option(DSPECM1D_BUILD_DOCS "Build DSpecM1D documentation targets" OFF)
+
+# --- Developer Targets ---
+if(PROJECT_IS_TOP_LEVEL)
     enable_testing()
-    option(DSPECM1D_BUILD_BENCHMARKS "Whether or not benchmarks should be built" ON)
-    option(DSPECM1D_BUILD_TUTORIALS "Whether or not tutorials should be built" ON)
-    option(DSPECM1D_BUILD_TESTS "Build DSPECM1D Tests" OFF)
-    option(DSPECM1D_ENABLE_SMOKE_TESTS "Register lightweight executable smoke tests" OFF)
-    option(DSPECM1D_ENABLE_MIGRATION_TESTS "Register temporary migration validation checks" OFF)
-    option(DSPECM1D_ENABLE_PAPER_VALIDATION "Register optional paper reproduction validation checks" OFF)
-    option(DSPECM1D_BUILD_DOCS "Build DSpecM1D documentation targets" OFF)
 
     if(DSPECM1D_BUILD_BENCHMARKS OR DSPECM1D_BUILD_TUTORIALS)
         add_custom_target(CopyData
