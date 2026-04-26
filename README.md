@@ -1,5 +1,7 @@
 # DSpecM1D
 
+NOTE: The current release should be viewed as a pre-release version of the software. API changes and a general cleaning up of the library will be complete soon.
+
 DSpecM1D is a C++23 spectral element library for computing synthetic
 seismograms in a spherically symmetric (1D) Earth model.
 
