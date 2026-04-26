@@ -131,9 +131,9 @@ API details, and the paper-reproduction workflows, use the website.
 
 Planned next steps after the first release:
 
-- highest priority: Love numbers
+- highest priority: further cleanup and small API improvements
+- next: Love numbers
 - next: optional LAPACK banded solver support
-- next: further cleanup and small API improvements
 
 ## Documentation
 
