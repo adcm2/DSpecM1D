@@ -1,158 +1,162 @@
 # DSpecM1D
 
-NOTE: The current release should be viewed as a pre-release version of the software. API changes and a general cleaning up of the library will be complete soon.
+DSpecM1D is a C++23 spectral element library for computing synthetic
+seismograms in a spherically symmetric (1D) Earth model.
 
-A C++23 spectral element library for computing synthetic seismograms in a
-spherically symmetric (1D) Earth model. The solver works in the
-frequency domain, assembling sparse stiffness and inertia matrices for each
-angular degree _ℓ_ and solving the resulting linear system at each frequency, before performing an inverse Fourier-Laplace transform.
+The README is a quick-start guide for the first public release. Full
+documentation, testing notes, debugging guidance, and release-facing API
+reference live on the website:
 
----
+- Live docs: `https://adcm2.github.io/DSpecM1D/`
+- Repository: `https://github.com/adcm2/DSpecM1D`
+- Issues: `https://github.com/adcm2/DSpecM1D/issues`
 
 ## Features
 
-- Spheroidal, toroidal, and radial mode computation
-- Sparse frequency-domain SEM solver with OpenMP parallelisation
-- Centroid-moment-tensor (CMT) source representation
-- Arbitrary receiver geometry (Z / T / R components)
-- Hann-window bandpass filtering pipeline
-- Non-dimensionalisation against a user-supplied reference model (PREM by default)
-- Clean dependency management via CMake `FetchContent`
-
----
+- Sparse frequency-domain SEM solver for radial, spheroidal, and toroidal modes
+- CMT earthquake source representation with arbitrary receiver geometry
+- Filtered time-domain seismogram generation from standard parameter files
+- Self-contained unit/component tests plus protected paper-reproduction examples
+- Static website and Doxygen API reference
 
 ## Dependencies
 
-| Library | Fetched automatically |
-|---|---|
-| [Eigen 3.4](https://gitlab.com/libeigen/eigen) | ✓ |
-| [FFTWpp](https://github.com/da380/FFTWpp) | ✓ |
-| [GaussQuad](https://github.com/da380/GaussQuad) | ✓ |
-| [GSHTrans](https://github.com/da380/GSHTrans) | ✓ |
-| [PlanetaryModel](https://github.com/da380/PlanetaryModel) | ✓ |
-| [TomographyModels](https://github.com/adcm2/TomographyModels) | ✓ |
-| [Interpolation](https://github.com/da380/Interpolation) | ✓ |
-| [EarthMesh](https://github.com/adcm2/EarthMesh) | ✓ |
-| [SpectraSolver](https://github.com/adcm2/SpectraSolver) | ✓ |
-| [FFTW3](https://www.fftw.org/) | **System** |
-| OpenMP | **System** |
+Required system packages for the first release:
 
-FFTW3 must be installed on your system before building. On Ubuntu/Debian:
+- FFTW3
+- OpenMP-capable compiler toolchain
+- CMake 3.24 or newer
+
+Remaining third-party C++ dependencies are fetched automatically from pinned
+revisions during the first configure.
+
+On Ubuntu or Debian:
 
 ```bash
-sudo apt install libfftw3-dev
+sudo apt install build-essential cmake git libfftw3-dev
 ```
 
 On macOS with Homebrew:
 
 ```bash
-brew install fftw
+brew install cmake fftw
 ```
 
----
+This first release does not require NetCDF, BLAS, or LAPACK.
 
 ## Building
+
+The default single-config build now configures in `Release` mode when
+`CMAKE_BUILD_TYPE` is unset, so a fresh clone builds in release mode by
+default:
 
 ```bash
 git clone https://github.com/adcm2/DSpecM1D.git
 cd DSpecM1D
-mkdir build && cd build
-cmake ..
-cmake --build . --parallel
+cmake -S . -B build
+cmake --build build --parallel
 ```
 
-CMake will automatically download all header-only dependencies during the
-configure step. An internet connection is required on first build.
-
-### Build options
-
-| Option | Default | Description |
-|---|---|---|
-| `BUILD_BENCHMARKS` | `ON` | Build the benchmark executables |
-| `BUILD_TUTORIALS` | `ON` | Build the tutorial executables |
+If you prefer presets:
 
 ```bash
-cmake .. -DBUILD_BENCHMARKS=OFF -DBUILD_TUTORIALS=ON
+cmake --preset release
+cmake --build --preset release
 ```
-
----
 
 ## Quick Start
 
-After building, the tutorial binaries are placed in `build/bin/`. Tutorial 1
-runs a complete seismogram synthesis for a single earthquake and receiver
-geometry defined in the parameter file:
+The main user-facing executable for the first release is
+`generate_seismogram`. It reads a standard DSpecM1D parameter file and writes a
+filtered time-domain seismogram to the output prefix specified inside that
+parameter file.
+
+Using the bundled tutorial parameter file:
 
 ```bash
+cmake -S . -B build
+cmake --build build --target generate_seismogram
 cd build
-./bin/t1
+export OMP_NUM_THREADS=2
+./bin/generate_seismogram data/params/t1.txt
 ```
 
-The parameter file is expected at `build/data/params/ex1.txt`. See
-[`tutorials/t1.cpp`](tutorials/t1.cpp) for a fully documented walkthrough of
-the pipeline.
+That writes:
 
----
+```text
+build/output/t1.out_t.out
+```
+
+The output location comes from the parameter-file `output_prefix`. The CLI does
+not take a separate output-path override for this first release.
+
+The output file is a semicolon-delimited table with:
+
+- column 1: time in seconds
+- remaining columns: seismogram rows in solver order
+
+For one receiver, those rows correspond to the three output components. For
+multiple receivers, the component triplets are written in parameter-file order.
+
+`t1` remains the self-contained tutorial and runtime smoke example, while
+`ex1` through `ex7` remain protected paper-reproduction workflows.
 
 ## Parameter File Format
 
-The input file controls all aspects of the simulation. Key fields are:
+The parser reads an ordered sequence of value lines, not a keyed `name value`
+format. Blank lines and full-line comments beginning with `#` are ignored, but
+the remaining values must appear in the expected order.
 
-```
-earth_model    prem.txt        # path relative to data/
-lmax           200             # maximum angular degree
-NQ             5               # GLL quadrature points per element
-f1  0.3  f2  10.0              # passband corners (mHz)
-f11 0.2  f12 0.5               # lower taper corners (mHz)
-f21 9.0  f22 11.0              # upper taper corners (mHz)
-dt  1.0                        # time step (s)
-t_out  60.0                    # output duration (minutes)
-output_type  2                 # 0=displacement, 1=velocity, 2=acceleration
-```
+See:
 
----
-
-## Repository Layout
-
-```
-DSpecM1D_Draft/
-├── DSpecM1D/
-│   └── src/
-│       ├── spectra_master.h   # Core SEM class (specsem)
-│       ├── mesh_model.h       # Material parameter interpolation
-│       ├── input_parser.h     # Parameter file reader
-│       └── ...
-├── benchmarks/                # Benchmark executables
-├── tutorials/
-│   └── t1.cpp                 # Tutorial 1: basic seismogram synthesis
-├── data/
-│   ├── params/                # Input parameter files
-│   └── prem.txt               # Reference Earth model
-├── cmake/                     # CMake helper modules
-└── CMakeLists.txt
-```
-
----
+- [data/params/t1.txt](data/params/t1.txt)
+- website parameter-file guide: `https://adcm2.github.io/DSpecM1D/parameter-files.html`
 
 ## Normalisation
 
-All quantities are non-dimensionalised against three reference scales:
+DSpecM1D uses three reference scales:
 
-| Scale | Value |
-|---|---|
-| Length | 1 km = 1000 m |
-| Density | ρ_ref = 5515 kg m⁻³ |
-| Time | `1 / √(π G ρ_ref)` |
+- length: `1 km = 1000 m`
+- density: `5515 kg m^-3`
+- time: `1 / sqrt(pi G rho_ref)`
 
-These are encapsulated in the `prem_norm<FLOAT>` helper class defined in each
-executable.
+The corresponding helper is documented in `DSpecM1D/src/NormClass.h` and in the
+API reference on the docs site.
 
----
+## First Release Notes
+
+This is the first public release. The README intentionally stays short and
+focuses on getting the library compiled and running. For testing, debugging,
+API details, and the paper-reproduction workflows, use the website.
+
+Planned next steps after the first release:
+
+- highest priority: further cleanup and small API improvements
+- next: Love numbers
+- next: optional LAPACK banded solver support
+
+## Documentation
+
+To build the static site locally:
+
+```bash
+cmake -S . -B build/docs -DDSPECM1D_BUILD_DOCS=ON
+cmake --build build/docs --target website
+cmake --build build/docs --target preview-website
+```
+
+The local preview server runs at `http://127.0.0.1:8000`.
+
+The repository also includes `.github/workflows/pages.yml`, which publishes the
+same site through GitHub Pages from `main`.
+
+## Repository
+
+- Repository: `https://github.com/adcm2/DSpecM1D`
+- Issues: `https://github.com/adcm2/DSpecM1D/issues`
+- Contact: use the issue tracker for questions, bug reports, and release feedback
 
 ## License
 
-To be added.
-
-## Contact
-
-To be added.
+DSpecM1D is released under the GNU General Public License v3.0.
+See [LICENSE](LICENSE).

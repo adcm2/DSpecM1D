@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Release notes and public metadata for the DSpecM1D release-readiness pass.">
+  <title>Release Notes | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Release Notes</h1>
+        <p class="lede">The first public DSpecM1D release separates protected scientific-reproduction workflows from day-to-day library testing, while adding a public seismogram-generation CLI, documentation, and downstream packaging support.</p>
+      </div>
+      <section class="page-section">
+        <h2>Highlights</h2>
+        <ul class="check-list">
+          <li>Added a modular self-contained unit/component test suite.</li>
+          <li>Added the public <code>generate_seismogram</code> executable for parameter-file-driven time-domain output.</li>
+          <li>Kept <code>t1</code> as the tutorial and smoke example.</li>
+          <li>Preserved <code>ex1</code> through <code>ex7</code> as paper-reproduction workflows.</li>
+          <li>Added Doxygen-driven API documentation and a static documentation website.</li>
+          <li>Added install rules and downstream <code>find_package(DSpecM1D)</code> support.</li>
+          <li>Introduced a local site preview target and GitHub Pages deployment workflow.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Release Gates</h2>
+        <ul class="check-list">
+          <li>Build the library, tutorial, and examples.</li>
+          <li>Run modular unit/component tests.</li>
+          <li>Run the public <code>generate_seismogram</code> smoke check.</li>
+          <li>Run the self-contained <code>t1</code> smoke test.</li>
+          <li>Run protected paper-reproduction workflows in the supported environment.</li>
+          <li>Build the website and API docs.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>What Comes Next</h2>
+        <ul class="check-list">
+          <li>Highest priority: further cleanup and small API improvements.</li>
+          <li>Next priority: Love numbers.</li>
+          <li>Next priority: optional LAPACK banded-solver support.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Repository Metadata</h2>
+        <div class="meta-list">
+          <div class="meta-item">
+            <strong>Repository</strong>
+            <a href="https://github.com/adcm2/DSpecM1D">github.com/adcm2/DSpecM1D</a>
+          </div>
+          <div class="meta-item">
+            <strong>Issues</strong>
+            <a href="https://github.com/adcm2/DSpecM1D/issues">github.com/adcm2/DSpecM1D/issues</a>
+          </div>
+          <div class="meta-item">
+            <strong>Contact</strong>
+            Use the repository issue tracker for release feedback and usage questions unless a more specific public contact is added later.
+          </div>
+          <div class="meta-item">
+            <strong>License Status</strong>
+            GNU General Public License v3.0. See the repository <code>LICENSE</code> file.
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

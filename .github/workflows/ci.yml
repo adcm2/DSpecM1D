@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  build-test-smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfftw3-dev ninja-build doxygen
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DDSPECM1D_BUILD_TESTS=ON \
+            -DDSPECM1D_BUILD_BENCHMARKS=ON \
+            -DDSPECM1D_BUILD_TUTORIALS=ON \
+            -DDSPECM1D_BUILD_TOOLS=ON \
+            -DDSPECM1D_ENABLE_SMOKE_TESTS=ON \
+            -DDSPECM1D_BUILD_DOCS=ON
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run unit and component tests
+        run: ctest --test-dir build --output-on-failure -L "unit|component"
+
+      - name: Run smoke checks
+        run: ctest --test-dir build --output-on-failure -L dspecm1d_smoke
+
+      - name: Build docs site
+        run: cmake --build build --target website

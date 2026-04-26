@@ -7,7 +7,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
-#include "input_parser.h"   // Include the input parser for the InputParameters class
+#include "InputParser.h"
 
 namespace SourceInfo {
 

@@ -21,7 +21,7 @@
  *
  * @note
  * The input parameter file is expected at:
- *   `<build_dir>/data/params/ex1.txt`
+ *   `<build_dir>/data/params/t1.txt`
  *
  * @author  Alex Myhill
  * @date    2026-03-06
@@ -41,8 +41,8 @@
 #include "config.h"
 #include <DSpecM1D/All>
 #include <DSpecM1D/Timer>
-#include <PlanetaryModel/All>
-#include <SpectraSolver/FF>
+#include <DSpecM1D/ModelInput>
+#include <DSpecM1D/FrequencyTools>
 
 // ---------------------------------------------------------------------------
 // Constants
@@ -111,20 +111,20 @@
 int
 main() {
   using Complex = std::complex<double>;
-  using MATRIX = Eigen::MatrixXcd;
+  using MatrixC = Eigen::MatrixXcd;
 
   // -------------------------------------------------------------------------
   // Step 1: Load input parameters
   // -------------------------------------------------------------------------
 
   /// Path to the parameter file, resolved relative to the CMake build tree.
-  std::string param_path =
-      std::string(PROJECT_BUILD_DIR) + "data/params/ex1.txt";
+  std::string paramPath =
+      std::string(PROJECT_BUILD_DIR) + "data/params/t1.txt";
 
-  InputParameters params(param_path);
-  SRInfo sr_info(params);
+  InputParameters params(paramPath);
+  SRInfo srInfo(params);
 
-  std::string earth_model_path =
+  std::string earthModelPath =
       std::string(PROJECT_BUILD_DIR) + "data/" + params.earth_model();
 
   // -------------------------------------------------------------------------
@@ -167,7 +167,7 @@ main() {
   prem_norm<double> norm_class;
 
   /// 1D PREM model, non-dimensionalised using @p norm_class.
-  auto prem = EarthModels::ModelInput(earth_model_path, norm_class, "true");
+  auto prem = EarthModels::ModelInput(earthModelPath, norm_class);
 
   /**
    * @brief Frequency axis and Hann-taper helper.
@@ -182,7 +182,7 @@ main() {
                                params.f12(), params.f21(), params.f22(), dt,
                                tout, df0, wtb, t1, t2, qex, prem.TimeNorm());
 
-  auto vec_w = myff.w();   ///< Non-dimensional angular frequency vector.
+  auto vecW = myff.w();   ///< Non-dimensional angular frequency vector.
 
   // -------------------------------------------------------------------------
   // Step 5: Define the earthquake source and compute the raw spectrum
@@ -194,23 +194,15 @@ main() {
   /**
    * @brief Sparse SEM frequency-domain solver.
    *
-   * @c Spectra() iterates over all angular degrees @p l up to @p lval,
+   * @c spectra() iterates over all angular degrees @p l up to @p lval,
    * assembles the stiffness/inertia matrices, solves the linear system at
    * each frequency, and accumulates the receiver seismograms.
    *
-   * @param myff        Frequency axis and taper.
-   * @param prem        1D Earth model.
-   * @param cmt         Earthquake CMT source.
-   * @param params      Simulation parameters (receivers, tolerances, etc.).
-   * @param NQ          GLL quadrature order.
-   * @param sr_info     Source–receiver geometry.
-   * @param rel_error   Relative tolerance for the iterative solver.
-   *
-   * @returns Matrix of complex spectra: rows = receivers × components,
-   *          cols = frequencies.
-   */
-  SPARSESPEC::Sparse_F_Spec mytest;
-  MATRIX vec_raw = mytest.Spectra(myff, prem, cmt, params, NQ, sr_info,
+ * @returns Matrix of complex spectra: rows = receivers × components,
+ *          cols = frequencies.
+ */
+  SPARSESPEC::SparseFSpec specSolver;
+  MatrixC vecRaw = specSolver.spectra(myff, prem, cmt, params, NQ, srInfo,
                                   params.relative_error());
 
   // -------------------------------------------------------------------------
@@ -220,24 +212,24 @@ main() {
   /**
    * @brief Scale factor to convert from non-dimensional units to SI.
    *
-   * | output_type | units          | norm_factor                  |
+   * | output_type | units          | normFactor                  |
    * |-------------|----------------|------------------------------|
    * | 0           | displacement   | LengthNorm (m)               |
    * | 1           | velocity       | LengthNorm / TimeNorm (m/s)  |
    * | 2           | acceleration   | LengthNorm / TimeNorm² (m/s²)|
    */
   double accel_norm = prem.LengthNorm() / (prem.TimeNorm() * prem.TimeNorm());
-  double norm_factor = 1.0;
+  double normFactor = 1.0;
 
   if (params.output_type() == 0) {
-    norm_factor = prem.LengthNorm();
+    normFactor = prem.LengthNorm();
   } else if (params.output_type() == 1) {
-    norm_factor = prem.LengthNorm() / prem.TimeNorm();
+    normFactor = prem.LengthNorm() / prem.TimeNorm();
   } else if (params.output_type() == 2) {
-    norm_factor = accel_norm;
+    normFactor = accel_norm;
   }
 
-  vec_raw *= norm_factor;
+  vecRaw *= normFactor;
 
   // -------------------------------------------------------------------------
   // Step 7: Time-domain filtering pipeline
@@ -251,17 +243,17 @@ main() {
    * taper (width @p wtb = 0.05) to remove aliasing. (c) @c
    * filtfreq2time — apply the bandpass filter defined by [f11, f12, f21, f22]
    * and inverse FFT. (d) @c fulltime2freq — final re-FFT with the
-   * user-specified Hann taper (width @p hann_w = 0.5) for smooth spectra.
+   * user-specified Hann taper (width @p hannW = 0.5) for smooth spectra.
    */
 
   /// Hann-window half-width (wrt whole time series), ie 0.5 = taper over the
   /// first/last 50% of the time series.
-  double hann_w = 0.5;
+  double hannW = 0.5;
 
-  auto vec_r2t_b = processfunctions::freq2time(vec_raw, myff);
-  auto a_filt0 = processfunctions::fulltime2freq(vec_r2t_b, myff, 0.05);
-  auto vec_filt_t = processfunctions::filtfreq2time(a_filt0, myff, false);
-  auto a_filt = processfunctions::fulltime2freq(vec_filt_t, myff, hann_w);
+  auto vecR2TB = processfunctions::freq2time(vecRaw, myff);
+  auto aFilt0 = processfunctions::fulltime2freq(vecR2TB, myff, 0.05);
+  auto vecFiltT = processfunctions::filtfreq2time(aFilt0, myff, false);
+  auto aFilt = processfunctions::fulltime2freq(vecFiltT, myff, hannW);
 
   return 0;
 }

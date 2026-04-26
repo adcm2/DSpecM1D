@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Reference I/O and output-writer tests for DSpecM1D, covering YSpec, SpecNM, MinEOS readers and comparison file writers.">
+  <title>Reference I/O And Writers | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Reference I/O And Output-Writer Tests</h1>
+        <p class="lede">These tests keep the comparison-data plumbing small and local so format or truncation mistakes are caught close to their source.</p>
+      </div>
+      <section class="page-section">
+        <h2>Reference Readers</h2>
+        <ul class="check-list">
+          <li>YSpec loading is checked for truncation and zero padding.</li>
+          <li>SpecNM loading is checked for semicolon parsing and short-input padding.</li>
+          <li>MinEOS loading is checked for amplitude scaling and truncation to the shortest component.</li>
+          <li>The bundled YSpec + MinEOS helper is checked directly.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Output Writers</h2>
+        <ul class="check-list">
+          <li>Two-way and three-way frequency writers are checked for layout, truncation, and failure on bad output paths.</li>
+          <li>Time writers are checked for output-window truncation, shortest-input truncation, and bad-path handling.</li>
+          <li><code>InputParametersNew</code> convenience writer overloads are checked directly.</li>
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

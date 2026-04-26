@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Parser and workflow-context tests for DSpecM1D, covering InputParser, InputParameters, InputParametersNew, and SpectraRunContext.">
+  <title>Parser And Context Tests | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Parser And Workflow-Context Tests</h1>
+        <p class="lede">These tests protect the small but high-leverage entry points that turn parameter files into usable solver context.</p>
+      </div>
+      <section class="page-section">
+        <h2>What Is Covered</h2>
+        <ul class="check-list">
+          <li><code>InputParser</code> helpers for skipping comments, parsing scalars, and reading latitude/longitude pairs.</li>
+          <li>The legacy <code>InputParameters</code> parser on valid input and on invalid geographic input.</li>
+          <li><code>InputParametersNew</code> path resolution, normalization-factor selection, and setter clamping.</li>
+          <li><code>SpectraRunContext</code> construction and accessor behavior.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Why These Tests Matter</h2>
+        <p>Small parser or context regressions can make every example fail in confusing ways, so these tests are designed to catch malformed input handling and context-assembly mistakes as early as possible.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

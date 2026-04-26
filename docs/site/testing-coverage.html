@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Coverage summary for the hardened DSpecM1D API surface, including direct modular coverage, paper-example coverage, and residual risks.">
+  <title>Testing Coverage | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Testing Coverage</h1>
+        <p class="lede">This page folds the API coverage matrix into the docs site so the current test surface and the intentional remaining gaps are visible without leaving the website.</p>
+      </div>
+      <section class="page-section">
+        <h2>Direct Modular Coverage</h2>
+        <ul class="check-list">
+          <li><code>InputParametersNew</code>, <code>SpectraRunContext</code>, preferred <code>SparseFSpec</code> overloads, and <code>SEM(InputParametersNew)</code>.</li>
+          <li><code>FilterOptions</code> and both <code>applyFilter(...)</code> overloads.</li>
+          <li>Reference-data loaders and output-writer overloads.</li>
+          <li>Selected helper utilities and targeted SEM matrix/vector/indexing contracts.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Paper-Example And Smoke Coverage</h2>
+        <ul class="check-list">
+          <li>The smoke layer now includes the public <code>generate_seismogram</code> CLI plus the self-contained <code>t1</code> runtime check.</li>
+          <li><code>ex1</code> is still the clearest modern public-path example.</li>
+          <li><code>ex2</code> through <code>ex7</code> remain the main protection for scientific workflow fidelity and the specialist legacy/low-level paths used in the paper.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Residual Risks</h2>
+        <ul class="check-list">
+          <li>Some low-level SEM helpers are still covered mainly through solver execution and paper examples rather than one-function unit tests.</li>
+          <li>Legacy <code>SparseFSpec</code> workflows are now directly sampled by small tests, but the paper examples remain the authoritative scientific check for them.</li>
+          <li>Specialist low-level access such as <code>meshModel()</code> is lightly contract-checked and still mainly relevant to workflows like <code>ex6</code>.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>Full Matrix In Repository</h2>
+        <p>The repo also keeps a fuller written matrix in <code>API_COVERAGE_MATRIX.md</code> for development bookkeeping and future maintenance.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

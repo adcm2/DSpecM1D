@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Installation and quick-start guide for DSpecM1D, including build requirements, generate_seismogram, package installation, and local website preview.">
+  <title>Installation | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Installation</h1>
+        <p class="lede">Build from source, run the public CLI, install the package, and use the generated CMake config in downstream projects.</p>
+      </div>
+      <section class="page-section">
+        <h2>Requirements</h2>
+        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, and an OpenMP-capable compiler toolchain. The remaining third-party C++ dependencies are fetched automatically from pinned revisions during the first configure. NetCDF, BLAS, and LAPACK are not required for the first public release build.</p>
+        <pre><code>sudo apt install build-essential cmake git libfftw3-dev
+
+cmake -S . -B build/release
+cmake --build build/release --parallel</code></pre>
+        <p class="muted">Ninja is optional. If it is installed and you prefer it, add <code>-G Ninja</code> to the configure command.</p>
+        <p class="muted">If you switch CMake generators for an existing build tree, use a new build directory or remove the old one first. CMake build trees are generator-specific.</p>
+      </section>
+      <section class="page-section" id="quick-start">
+        <h2>Quick Start</h2>
+        <p>The recommended first executable is <code>generate_seismogram</code>. It reads a standard parameter file and writes a filtered time-domain seismogram to the output prefix specified in that file.</p>
+        <pre><code>cmake -S . -B build/dev \
+  -DDSPECM1D_BUILD_TOOLS=ON
+cmake --build build/dev --target generate_seismogram
+cd build/dev
+export OMP_NUM_THREADS=2
+./bin/generate_seismogram data/params/t1.txt</code></pre>
+        <p class="muted">For the bundled <code>t1.txt</code> file, this writes <code>output/t1.out_t.out</code> inside the active build tree. More generally, the destination comes from the parameter-file <code>output_prefix</code>; the CLI does not take a separate output-path override in this first release.</p>
+        <p class="muted">The bundled <code>t1</code> executable remains the self-contained tutorial and guarded runtime smoke example. The paper-reproduction examples <code>ex1</code> through <code>ex7</code> remain separate on purpose.</p>
+      </section>
+      <section class="page-section">
+        <h2>Installed Package</h2>
+        <p>The release installs headers plus a package config for downstream CMake use. A consumer can locate the package and link to the public interface target:</p>
+        <pre><code>find_package(DSpecM1D REQUIRED)
+target_link_libraries(my_target PRIVATE DSpecM1D::DSpecM1D)</code></pre>
+      </section>
+      <section class="page-section">
+        <h2>Documentation Build And Local Preview</h2>
+        <p>The static site and Doxygen output are integrated into the CMake build. Use <code>website</code> to generate the site and <code>preview-website</code> to serve it locally.</p>
+        <pre><code>cmake -S . -B build/docs -DDSPECM1D_BUILD_DOCS=ON
+cmake --build build/docs --target website
+cmake --build build/docs --target preview-website</code></pre>
+        <p class="muted">The preview server runs at <code>http://127.0.0.1:8000</code> until you stop it.</p>
+      </section>
+      <section class="page-section">
+        <h2>GitHub Pages Deployment</h2>
+        <p>The repository includes a dedicated GitHub Pages workflow that builds the same <code>website</code> target in a docs-only build tree and deploys the generated static site artifact.</p>
+        <p>When you are ready to publish, set the repository Pages source to <code>GitHub Actions</code> in <code>Settings &gt; Pages</code>; pushes to <code>main</code> and manual workflow dispatches will then deploy the site.</p>
+      </section>
+      <section class="page-section">
+        <h2>Downstream Reproducibility Note</h2>
+        <p>The installed package recreates the remaining pinned third-party targets with <code>FetchContent</code>. That keeps the package usable without exporting third-party targets directly, but a first downstream configure may need network access unless those dependencies are already cached locally.</p>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

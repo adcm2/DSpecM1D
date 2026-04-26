@@ -1,18 +1,23 @@
-#ifndef NEW_COUPLING_ALL_H
-#define NEW_COUPLING_ALL_H
+#ifndef DSPECM1D_ALL_H
+#define DSPECM1D_ALL_H
 
 // Header files
-#include "src/Timer_Class.h"
+#include "src/Timer.h"
 #include "src/BiCGSTABT.h"
-#include "src/FEM_Preconditioner.h"
-#include "src/full_spec.h"
-#include "src/spectra_master.h"
-#include "src/read_station.h"
-#include "src/input_parser.h"   // Use the new input parser
-#include "src/read_yspec.h"
-#include "src/read_mineos.h"
-#include "src/full_spec.h"
-#include "src/spectra_master.h"
-#include "src/SR_Info.h"
-#include "src/norm_class.h"
-#endif
+#include "src/FEMPreconditioner.h"
+#include "src/FullSpec.h"
+#include "src/SpectraMaster.h"
+#include "src/ReadStation.h"
+#include "src/InputParser.h"
+#include "src/InputParametersNew.h"
+#include "ModelInput"
+#include "EarthMesh"
+#include "src/ReadYSpec.h"
+#include "src/ReadSpecnm.h"
+#include "src/ReadMineos.h"
+#include "src/ReferenceSeriesIO.h"
+#include "src/SignalFiltering.h"
+#include "src/OutputWriters.h"
+#include "src/SRInfo.h"
+#include "src/NormClass.h"
+#endif   // DSPECM1D_ALL_H
