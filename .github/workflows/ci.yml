@@ -18,7 +18,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libfftw3-dev libopenblas-dev liblapack-dev ninja-build doxygen
+          sudo apt-get install -y libfftw3-dev ninja-build doxygen
 
       - name: Configure
         run: |
@@ -26,6 +26,7 @@ jobs:
             -DDSPECM1D_BUILD_TESTS=ON \
             -DDSPECM1D_BUILD_BENCHMARKS=ON \
             -DDSPECM1D_BUILD_TUTORIALS=ON \
+            -DDSPECM1D_BUILD_TOOLS=ON \
             -DDSPECM1D_ENABLE_SMOKE_TESTS=ON \
             -DDSPECM1D_BUILD_DOCS=ON
 

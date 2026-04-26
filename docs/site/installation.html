@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Installation and quick-start guide for DSpecM1D, including build requirements, package installation, downstream consumption, and local website preview.">
+  <meta name="description" content="Installation and quick-start guide for DSpecM1D, including build requirements, generate_seismogram, package installation, and local website preview.">
   <title>Installation | DSpecM1D</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -25,12 +25,12 @@
     <div class="page">
       <div class="page-header">
         <h1>Installation</h1>
-        <p class="lede">Build from source, install the package, and use the generated CMake config in downstream projects.</p>
+        <p class="lede">Build from source, run the public CLI, install the package, and use the generated CMake config in downstream projects.</p>
       </div>
       <section class="page-section">
         <h2>Requirements</h2>
-        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, a BLAS/LAPACK implementation, and OpenMP. The remaining third-party dependencies are fetched automatically from pinned revisions during the first configure. NetCDF is not required. The former <code>PlanetaryModel</code> and <code>EarthMesh</code> layers are now maintained in-house under <code>DSpecM1D/src/model_info/</code>, and the frequency-axis plus FFT/post-processing helpers formerly provided through <code>SpectraSolver</code> now live in <code>DSpecM1D/src/frequency_info/</code>.</p>
-        <pre><code>sudo apt install build-essential cmake git libfftw3-dev libopenblas-dev liblapack-dev
+        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, and an OpenMP-capable compiler toolchain. The remaining third-party C++ dependencies are fetched automatically from pinned revisions during the first configure. NetCDF, BLAS, and LAPACK are not required for the first public release build.</p>
+        <pre><code>sudo apt install build-essential cmake git libfftw3-dev
 
 cmake -S . -B build/release
 cmake --build build/release --parallel</code></pre>
@@ -39,12 +39,15 @@ cmake --build build/release --parallel</code></pre>
       </section>
       <section class="page-section" id="quick-start">
         <h2>Quick Start</h2>
-        <p>The recommended first executable is <code>t1</code>. It is the self-contained tutorial and the default runtime smoke example because it does not depend on the external comparison datasets used by the protected paper workflows.</p>
+        <p>The recommended first executable is <code>generate_seismogram</code>. It reads a standard parameter file and writes a filtered time-domain seismogram to the output prefix specified in that file.</p>
         <pre><code>cmake -S . -B build/dev \
-  -DDSPECM1D_BUILD_TUTORIALS=ON
-cmake --build build/dev --target t1
+  -DDSPECM1D_BUILD_TOOLS=ON
+cmake --build build/dev --target generate_seismogram
+cd build/dev
 export OMP_NUM_THREADS=2
-./build/dev/bin/t1</code></pre>
+./bin/generate_seismogram data/params/t1.txt</code></pre>
+        <p class="muted">For the bundled <code>t1.txt</code> file, this writes <code>output/t1.out_t.out</code> inside the active build tree. More generally, the destination comes from the parameter-file <code>output_prefix</code>; the CLI does not take a separate output-path override in this first release.</p>
+        <p class="muted">The bundled <code>t1</code> executable remains the self-contained tutorial and guarded runtime smoke example. The paper-reproduction examples <code>ex1</code> through <code>ex7</code> remain separate on purpose.</p>
       </section>
       <section class="page-section">
         <h2>Installed Package</h2>

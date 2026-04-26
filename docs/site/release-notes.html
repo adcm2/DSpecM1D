@@ -25,17 +25,18 @@
     <div class="page">
       <div class="page-header">
         <h1>Release Notes</h1>
-        <p class="lede">This release-readiness pass separates protected scientific-reproduction workflows from day-to-day library testing, while improving documentation and packaging for downstream users.</p>
+        <p class="lede">The first public DSpecM1D release separates protected scientific-reproduction workflows from day-to-day library testing, while adding a public seismogram-generation CLI, documentation, and downstream packaging support.</p>
       </div>
       <section class="page-section">
         <h2>Highlights</h2>
         <ul class="check-list">
           <li>Added a modular self-contained unit/component test suite.</li>
+          <li>Added the public <code>generate_seismogram</code> executable for parameter-file-driven time-domain output.</li>
           <li>Kept <code>t1</code> as the tutorial and smoke example.</li>
           <li>Preserved <code>ex1</code> through <code>ex7</code> as paper-reproduction workflows.</li>
           <li>Added Doxygen-driven API documentation and a static documentation website.</li>
           <li>Added install rules and downstream <code>find_package(DSpecM1D)</code> support.</li>
-          <li>Introduced a local site preview target for documentation review.</li>
+          <li>Introduced a local site preview target and GitHub Pages deployment workflow.</li>
         </ul>
       </section>
       <section class="page-section">
@@ -43,9 +44,18 @@
         <ul class="check-list">
           <li>Build the library, tutorial, and examples.</li>
           <li>Run modular unit/component tests.</li>
+          <li>Run the public <code>generate_seismogram</code> smoke check.</li>
           <li>Run the self-contained <code>t1</code> smoke test.</li>
           <li>Run protected paper-reproduction workflows in the supported environment.</li>
           <li>Build the website and API docs.</li>
+        </ul>
+      </section>
+      <section class="page-section">
+        <h2>What Comes Next</h2>
+        <ul class="check-list">
+          <li>Highest priority: Love numbers.</li>
+          <li>Next priority: optional LAPACK banded-solver support.</li>
+          <li>Next priority: further cleanup and small API improvements.</li>
         </ul>
       </section>
       <section class="page-section">

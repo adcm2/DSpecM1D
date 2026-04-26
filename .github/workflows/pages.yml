@@ -28,8 +28,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             libfftw3-dev \
-            libopenblas-dev \
-            liblapack-dev \
             ninja-build \
             doxygen
 
@@ -39,7 +37,8 @@ jobs:
             -DDSPECM1D_BUILD_DOCS=ON \
             -DDSPECM1D_BUILD_TESTS=OFF \
             -DDSPECM1D_BUILD_BENCHMARKS=OFF \
-            -DDSPECM1D_BUILD_TUTORIALS=OFF
+            -DDSPECM1D_BUILD_TUTORIALS=OFF \
+            -DDSPECM1D_BUILD_TOOLS=OFF
 
       - name: Build website
         run: cmake --build build/pages --target website

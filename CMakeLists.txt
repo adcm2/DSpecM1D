@@ -65,11 +65,19 @@ FetchContent_MakeAvailable_NoInstall(
     Interpolation
 )
 
+foreach(_dspecm1d_dep IN ITEMS fftwpp gaussquad gshtrans interpolation)
+    if(NOT EXISTS "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build/cmake_install.cmake")
+        file(MAKE_DIRECTORY "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build")
+        file(WRITE "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build/cmake_install.cmake" "")
+    endif()
+endforeach()
+
 # --- Target Definition ---
 add_library(DSpecM1D INTERFACE)
 
 target_link_libraries(DSpecM1D INTERFACE 
     Eigen3::Eigen
+    FFTWpp
     GaussQuad
     Interpolation
     GSHTrans
@@ -111,6 +119,7 @@ install(FILES
 # --- Top-Level Build Options ---
 option(DSPECM1D_BUILD_BENCHMARKS "Whether or not benchmarks should be built" ON)
 option(DSPECM1D_BUILD_TUTORIALS "Whether or not tutorials should be built" ON)
+option(DSPECM1D_BUILD_TOOLS "Build DSpecM1D command-line tools" ON)
 option(DSPECM1D_BUILD_TESTS "Build DSpecM1D tests" OFF)
 option(DSPECM1D_ENABLE_SMOKE_TESTS "Register lightweight executable smoke tests" OFF)
 option(DSPECM1D_ENABLE_MIGRATION_TESTS "Register temporary migration validation checks" OFF)
@@ -121,7 +130,7 @@ option(DSPECM1D_BUILD_DOCS "Build DSpecM1D documentation targets" OFF)
 if(PROJECT_IS_TOP_LEVEL)
     enable_testing()
 
-    if(DSPECM1D_BUILD_BENCHMARKS OR DSPECM1D_BUILD_TUTORIALS)
+    if(DSPECM1D_BUILD_BENCHMARKS OR DSPECM1D_BUILD_TUTORIALS OR DSPECM1D_BUILD_TOOLS)
         add_custom_target(CopyData
             COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/data
             COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/data ${CMAKE_BINARY_DIR}/data
@@ -135,6 +144,10 @@ if(PROJECT_IS_TOP_LEVEL)
 
     if(DSPECM1D_BUILD_TUTORIALS)
         add_subdirectory(tutorials)
+    endif()
+
+    if(DSPECM1D_BUILD_TOOLS)
+        add_subdirectory(tools)
     endif()
 
     if(DSPECM1D_BUILD_TESTS)

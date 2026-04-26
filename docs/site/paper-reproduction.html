@@ -35,7 +35,7 @@
       <section class="page-section">
         <h2>Role In The Release</h2>
         <ul class="check-list">
-          <li><code>t1</code> remains the self-contained tutorial and smoke example.</li>
+          <li><code>generate_seismogram</code> is the public end-user CLI, while <code>t1</code> remains the self-contained tutorial and smoke example.</li>
           <li><code>ex1</code> through <code>ex7</code> remain paper-reproduction validation workflows.</li>
           <li>The modular test suite is the main automated regression safety net for code changes.</li>
         </ul>
@@ -43,10 +43,11 @@
       <section class="page-section">
         <h2>External Comparison Inputs</h2>
         <p>The protected examples compare against outputs from other tools such as YSpec, SpecNM, and MinEOS. The canonical comparison files used by these workflows are now stored in the repository under <code>data/reference/</code> and copied into the build tree with the rest of the project data.</p>
+        <p>The repository folder <code>plotting/</code> is also part of this protected workflow: it contains the example plotting scripts as well as the output locations used by the paper-oriented benchmark runs. For this release it should be treated as part of the scientific validation layout, not as a generic optional plotting add-on.</p>
       </section>
       <section class="page-section">
         <h2>Validation Expectation</h2>
-        <p>These examples should continue to build and run with the same output flow and comparison logic as the current known-good baseline. They are best used as a heavier validation layer after unit/component tests and the <code>t1</code> smoke test have already passed.</p>
+        <p>These examples should continue to build and run with the same output flow and comparison logic as the current known-good baseline. They are best used as a heavier validation layer after unit/component tests plus the <code>generate_seismogram</code> and <code>t1</code> smoke checks have already passed.</p>
       </section>
       <section class="page-section">
         <h2>Recommended Execution Order</h2>

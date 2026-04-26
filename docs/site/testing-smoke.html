@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Smoke and integration checks for DSpecM1D, covering ex1 build verification and the guarded t1 runtime smoke workflow.">
+  <meta name="description" content="Smoke and integration checks for DSpecM1D, covering generate_seismogram, ex1 build verification, and the guarded t1 runtime smoke workflow.">
   <title>Smoke Checks | DSpecM1D</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
@@ -30,22 +30,19 @@
       <section class="page-section">
         <h2>Covered Checks</h2>
         <ul class="check-list">
+          <li><code>smoke_generate_seismogram</code>: runs the public CLI on a small bundled parameter file and verifies that a non-empty time-series output file is written.</li>
           <li><code>smoke_build_benchmark_ex1</code>: verifies that the protected <code>ex1</code> paper example still builds.</li>
           <li><code>smoke_tutorial_t1</code>: runs the self-contained tutorial/integration workflow.</li>
         </ul>
       </section>
       <section class="page-section">
         <h2>Guarded Runtime</h2>
-        <p>The <code>t1</code> smoke test is configured to run serially, with a capped OpenMP thread count and a timeout, so routine validation does not consume an uncontrolled number of CPU cores. For manual tutorial or benchmark runs, set <code>OMP_NUM_THREADS</code> explicitly.</p>
+        <p>The smoke checks are configured with capped OpenMP thread counts, and the heavier runtime paths also use timeouts and serial execution, so routine validation does not consume an uncontrolled number of CPU cores. For manual CLI, tutorial, or benchmark runs, set <code>OMP_NUM_THREADS</code> explicitly.</p>
       </section>
       <section class="page-section">
         <h2>Recommended Use</h2>
         <pre><code>ctest --test-dir build/dev --output-on-failure -L dspecm1d_smoke</code></pre>
         <p>Run these after the unit/component suites and before the paper-reproduction workflows; if they fail, there is usually no point running the heavier examples yet. Use a clean build tree when reporting failures so stale dependency tests are not mixed into the result.</p>
-      </section>
-      <section class="page-section">
-        <h2>Migration Note</h2>
-        <p>The temporary <code>migration</code> label is separate from smoke. It is used for in-progress dependency migration checks such as the <code>ex2</code> tolerance comparison and is not part of the normal release baseline.</p>
       </section>
     </div>
   </main>

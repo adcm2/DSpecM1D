@@ -42,8 +42,7 @@
         <ul class="check-list">
           <li><strong>Unit:</strong> parser rules, quoted and unquoted values, range checking, helper functions, normalization, and file-format readers.</li>
           <li><strong>Component:</strong> output writers, filter option validation, and minimal SEM/local-to-global checks.</li>
-          <li><strong>Smoke:</strong> runtime execution of <code>t1</code>.</li>
-          <li><strong>Migration:</strong> temporary tolerance-based checks used during dependency in-housing work, such as the <code>ex2</code> trace comparison.</li>
+          <li><strong>Smoke:</strong> runtime execution of <code>generate_seismogram</code>, plus guarded end-to-end execution of <code>t1</code>.</li>
           <li><strong>Paper validation:</strong> environment-specific workflows for <code>ex1</code> through <code>ex7</code>.</li>
         </ul>
       </section>
@@ -59,17 +58,8 @@ ctest --test-dir build/dev --output-on-failure -L "unit|component"
 ctest --test-dir build/dev --output-on-failure -L dspecm1d_smoke</code></pre>
       </section>
       <section class="page-section">
-        <h2>Migration-Phase Check</h2>
-        <p>A temporary migration-only check is available during the current dependency cleanup work. It reruns <code>ex2</code> and compares the DSpecM1D traces against the checked-in reference using numerical tolerances rather than exact file identity.</p>
-        <pre><code>cmake -S . -B build/dev \
-  -DDSPECM1D_BUILD_TESTS=ON \
-  -DDSPECM1D_BUILD_BENCHMARKS=ON \
-  -DDSPECM1D_ENABLE_MIGRATION_TESTS=ON
-ctest --test-dir build/dev --output-on-failure -L migration</code></pre>
-      </section>
-      <section class="page-section">
         <h2>Smoke-Test Safety</h2>
-        <p>The <code>t1</code> smoke test is configured to run serially, with a capped OpenMP thread count and a timeout, so routine validation does not consume an uncontrolled number of CPU cores. For manual tutorial or benchmark runs, set <code>OMP_NUM_THREADS</code> explicitly.</p>
+        <p>The smoke checks are configured to run serially where needed, with capped OpenMP thread counts and timeouts, so routine validation does not consume an uncontrolled number of CPU cores. For manual CLI, tutorial, or benchmark runs, set <code>OMP_NUM_THREADS</code> explicitly.</p>
       </section>
       <section class="page-section">
         <h2>Coverage Summary</h2>

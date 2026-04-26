@@ -54,6 +54,7 @@ endfunction()
 
 dspecm1d_fetchcontent_make_available_noinstall(
   Eigen3
+  FFTWpp
   GaussQuad
   GSHTRANS
   Interpolation
@@ -65,6 +66,6 @@ if(NOT TARGET DSpecM1D::DSpecM1D)
   add_library(DSpecM1D::DSpecM1D INTERFACE IMPORTED)
   set_target_properties(DSpecM1D::DSpecM1D PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES "${DSPECM1D_INCLUDE_DIR}"
-    INTERFACE_LINK_LIBRARIES "Eigen3::Eigen;GaussQuad;Interpolation;GSHTrans;OpenMP::OpenMP_CXX"
+    INTERFACE_LINK_LIBRARIES "Eigen3::Eigen;FFTWpp;GaussQuad;Interpolation;GSHTrans;OpenMP::OpenMP_CXX"
   )
 endif()

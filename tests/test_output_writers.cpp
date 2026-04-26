@@ -56,6 +56,17 @@ makeRealMatrix(int cols, double base) {
   return out;
 }
 
+Eigen::MatrixXd
+makeTallRealMatrix(int rows, int cols, double base) {
+  Eigen::MatrixXd out(rows, cols);
+  for (int row = 0; row < out.rows(); ++row) {
+    for (int col = 0; col < out.cols(); ++col) {
+      out(row, col) = base + row + 0.1 * col;
+    }
+  }
+  return out;
+}
+
 InputParametersNew
 makeParamsNew(const std::filesystem::path &dir) {
   const auto path = DSpecMTest::writeFile(
@@ -218,4 +229,19 @@ TEST(OutputWriterTests, TimeWriterConvenienceOverloadUsesInputParametersNew) {
   const auto lines = readLines(path);
   ASSERT_FALSE(lines.empty());
   EXPECT_EQ(countChar(lines.front(), ';'), 6u);
+}
+
+TEST(OutputWriterTests, TimeSeriesWriterWritesAllRows) {
+  DSpecMTest::TempDir temp;
+  const auto path = temp.path() / "time_series.out";
+  auto paramsNew = makeParamsNew(temp.path());
+
+  const auto series = makeTallRealMatrix(6, 3, 1.0);
+
+  DSpecM::writeTimeSeries(path.string(), paramsNew, series, 4);
+
+  const auto lines = readLines(path);
+  ASSERT_EQ(lines.size(), 3u);
+  EXPECT_EQ(countChar(lines.front(), ';'), 6u);
+  EXPECT_TRUE(lines.front().rfind("0.0000;", 0) == 0);
 }

@@ -207,6 +207,49 @@ writeTimeComparison(const std::string &path,
       paramsNew.inputParameters().t_out(), primary, reference, precision);
 }
 
+/**
+ * @brief Writes a standalone time-domain seismogram table.
+ *
+ * The first column is time in seconds. Each remaining column corresponds to
+ * one row from the input matrix, making the helper suitable for single- or
+ * multi-receiver outputs without assuming a comparison layout.
+ */
+inline void
+writeTimeSeries(const std::string &path, const SpectraSolver::FreqFull &freq,
+                double timeNorm, double tOutMinutes,
+                const Eigen::MatrixXd &timeSeries, int precision = 16) {
+  std::ofstream file(path);
+  if (!file) {
+    throw std::runtime_error("Error: unable to open output file: " + path);
+  }
+
+  file << std::fixed << std::setprecision(precision);
+  for (Eigen::Index idx = 0; idx < timeSeries.cols(); ++idx) {
+    const double currentTime =
+        static_cast<double>(idx) * freq.dt() * timeNorm;
+    file << currentTime;
+    for (Eigen::Index row = 0; row < timeSeries.rows(); ++row) {
+      file << ';' << timeSeries(row, idx);
+    }
+    file << '\n';
+
+    if (currentTime > tOutMinutes * 60.0) {
+      break;
+    }
+  }
+}
+
+/**
+ * @brief Convenience overload that derives the time metadata from
+ * `InputParametersNew`.
+ */
+inline void
+writeTimeSeries(const std::string &path, const InputParametersNew &paramsNew,
+                const Eigen::MatrixXd &timeSeries, int precision = 16) {
+  writeTimeSeries(path, paramsNew.freqFull(), paramsNew.earthModel().TimeNorm(),
+                  paramsNew.inputParameters().t_out(), timeSeries, precision);
+}
+
 }   // namespace DSpecM
 
 #endif   // DSPECM1D_OUTPUT_WRITERS_H

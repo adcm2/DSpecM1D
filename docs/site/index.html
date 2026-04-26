@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Release-facing documentation for DSpecM1D, including installation, quick start, testing, paper-reproduction workflows, API reference, and release notes.">
+  <meta name="description" content="Release-facing documentation for DSpecM1D, including installation, quick start with generate_seismogram, testing, paper-reproduction workflows, API reference, and release notes.">
   <title>DSpecM1D Documentation</title>
   <link rel="stylesheet" href="assets/style.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,7 +16,7 @@
       <div>
         <div class="tag">Release Documentation</div>
         <h1>DSpecM1D</h1>
-        <p class="lede">A C++23 spectral element library for synthetic seismograms in a spherically symmetric Earth model, with protected paper-reproduction examples and a separate self-contained regression test strategy.</p>
+        <p class="lede">A C++23 spectral element library for synthetic seismograms in a spherically symmetric Earth model, with a public seismogram-generation CLI, protected paper-reproduction examples, and a separate self-contained regression test strategy.</p>
         <div class="pill-row">
           <span class="pill">C++23</span>
           <span class="pill">Sparse SEM</span>
@@ -53,7 +53,7 @@
         <div class="toc">
           <ul class="link-list">
             <li><a href="installation.html">Installation and downstream package use</a></li>
-            <li><a href="installation.html#quick-start">Quick start with <code>t1</code></a></li>
+            <li><a href="installation.html#quick-start">Quick start with <code>generate_seismogram</code></a></li>
             <li><a href="parameter-files.html">Real parameter-file format and parser behavior</a></li>
             <li><a href="library-testing.html">Testing hub, modular tests, smoke checks, and coverage status</a></li>
             <li><a href="paper-reproduction.html">Protected paper-reproduction workflows</a></li>
@@ -66,6 +66,10 @@
         <p class="eyebrow">Project Metadata</p>
         <h2>Repository And Support</h2>
         <div class="meta-list">
+          <div class="meta-item">
+            <strong>Live Docs</strong>
+            <a href="https://adcm2.github.io/DSpecM1D/">adcm2.github.io/DSpecM1D</a>
+          </div>
           <div class="meta-item">
             <strong>Repository</strong>
             <a href="https://github.com/adcm2/DSpecM1D">github.com/adcm2/DSpecM1D</a>
@@ -93,8 +97,8 @@
       </section>
       <section class="card">
         <h2>Quick Start</h2>
-        <p><code>t1</code> is the self-contained tutorial and smoke example. It is the recommended first executable.</p>
-        <p><a href="installation.html#quick-start">Run tutorial 1</a></p>
+        <p><code>generate_seismogram</code> is the recommended first executable for release users. It reads a standard parameter file and writes a filtered time-domain seismogram.</p>
+        <p><a href="installation.html#quick-start">Run the public CLI</a></p>
       </section>
       <section class="card">
         <h2>Parameter Files</h2>

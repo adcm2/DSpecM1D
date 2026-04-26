@@ -4,6 +4,7 @@ This file groups the current tests by library area so it is easy to see which pa
 
 ## Build And Smoke Checks
 
+- `smoke_generate_seismogram`: Runs the public `generate_seismogram` CLI on a small bundled parameter file and checks that a non-empty time-series output file is created.
 - `smoke_build_benchmark_ex1`: Verifies that the protected `ex1` paper example still builds in the configured tree.
 - `smoke_tutorial_t1`: Runs the self-contained `t1` tutorial/integration workflow to confirm the main synthesis pipeline still executes end to end.
 
@@ -57,6 +58,7 @@ This file groups the current tests by library area so it is easy to see which pa
 - `OutputWriterTests.TimeWriterTruncatesToShortestInputAndKeepsLayout`: Checks that the time writer truncates mismatched inputs to the shortest series while preserving the expected column layout.
 - `OutputWriterTests.TimeWriterThrowsWhenParentDirectoryIsMissing`: Checks that the time writer reports an error when its parent output directory does not exist.
 - `OutputWriterTests.TimeWriterConvenienceOverloadUsesInputParametersNew`: Checks that the `InputParametersNew` time writer convenience overload emits the expected output layout.
+- `OutputWriterTests.TimeSeriesWriterWritesAllRows`: Checks that the standalone time-series writer emits one time column plus all signal rows, making it suitable for the public CLI output.
 
 ## Filtering
 
