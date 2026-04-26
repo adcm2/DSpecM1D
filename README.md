@@ -7,9 +7,9 @@ The README is a quick-start guide for the first public release. Full
 documentation, testing notes, debugging guidance, and release-facing API
 reference live on the website:
 
-- Live docs: `https://adcm2.github.io/DSpecM1D/`
-- Repository: `https://github.com/adcm2/DSpecM1D`
-- Issues: `https://github.com/adcm2/DSpecM1D/issues`
+- Live docs: [adcm2.github.io/DSpecM1D](https://adcm2.github.io/DSpecM1D/)
+- Repository: [github.com/adcm2/DSpecM1D](https://github.com/adcm2/DSpecM1D)
+- Issues: [github.com/adcm2/DSpecM1D/issues](https://github.com/adcm2/DSpecM1D/issues)
 
 ## Features
 
@@ -110,7 +110,7 @@ the remaining values must appear in the expected order.
 See:
 
 - [data/params/t1.txt](data/params/t1.txt)
-- website parameter-file guide: `https://adcm2.github.io/DSpecM1D/parameter-files.html`
+- website parameter-file guide: [adcm2.github.io/DSpecM1D/parameter-files.html](https://adcm2.github.io/DSpecM1D/parameter-files.html)
 
 ## Normalisation
 
@@ -145,15 +145,12 @@ cmake --build build/docs --target website
 cmake --build build/docs --target preview-website
 ```
 
-The local preview server runs at `http://127.0.0.1:8000`.
-
-The repository also includes `.github/workflows/pages.yml`, which publishes the
-same site through GitHub Pages from `main`.
+The local preview server runs at [127.0.0.1:8000](http://127.0.0.1:8000).
 
 ## Repository
 
-- Repository: `https://github.com/adcm2/DSpecM1D`
-- Issues: `https://github.com/adcm2/DSpecM1D/issues`
+- Repository: [github.com/adcm2/DSpecM1D](https://github.com/adcm2/DSpecM1D)
+- Issues: [github.com/adcm2/DSpecM1D/issues](https://github.com/adcm2/DSpecM1D/issues)
 - Contact: use the issue tracker for questions, bug reports, and release feedback
 
 ## License
