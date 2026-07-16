@@ -197,13 +197,13 @@ def plot_ex7_comparison(comparison, lowidx=400, upidx=1301, tup=None, show=True)
     mineos_av_diff_e = s["e_stats"]["mineos_vs_dspecm"].average_percent
 
     _annotate_avg_diffs(axes[0], s["yspec_av_diff_z"], mineos_av_diff_z, s["specnm_av_diff_z"])
-    axes[0].text(s["tup"], -z_mval, "Z displacement", fontsize=bigger_size, color=colors["text"], ha="right")
+    axes[0].text(s["tup"], -z_mval, "Z acceleration", fontsize=bigger_size, color=colors["text"], ha="right")
 
     _annotate_avg_diffs(axes[1], s["yspec_av_diff_n"], mineos_av_diff_n, s["specnm_av_diff_n"])
-    axes[1].text(s["tup"], -n_mval, "N displacement", fontsize=bigger_size, color=colors["text"], ha="right")
+    axes[1].text(s["tup"], -n_mval, "N acceleration", fontsize=bigger_size, color=colors["text"], ha="right")
 
     _annotate_avg_diffs(axes[2], s["yspec_av_diff_e"], mineos_av_diff_e, s["specnm_av_diff_e"])
-    axes[2].text(s["tup"], -e_mval, "E displacement", fontsize=bigger_size, color=colors["text"], ha="right")
+    axes[2].text(s["tup"], -e_mval, "E acceleration", fontsize=bigger_size, color=colors["text"], ha="right")
 
     plt.tight_layout(rect=[0, 0, 1, 0.94])
     if show:

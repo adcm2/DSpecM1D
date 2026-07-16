@@ -232,21 +232,21 @@ def plot_ex3_comparison(comparison, lowidx=400, upidx=1301, show=True):
     )
     style_component_axis(ax_data, offset=offset, label_size=m_size, hide_bottom_spine=True, hide_x_ticks=True)
     z_mval = 1.0
-    z_axlim = 1.1 * z_mval
+    z_axlim = 1.0 * z_mval
     set_symmetric_ylim_and_ticks(ax_data, z_axlim)
 
     ax_data = axes[1]
     style_component_axis(ax_data, offset=offset, label_size=m_size, hide_bottom_spine=True, hide_x_ticks=True)
     n_mval = np.max(np.abs(s["yspec_n"]))
     n_mval = 1.0
-    n_axlim = 1.1 * n_mval
+    n_axlim = 1.0 * n_mval
     set_symmetric_ylim_and_ticks(ax_data, n_axlim)
 
     ax_data = axes[2]
     style_component_axis(ax_data, offset=offset, label_size=m_size, hide_bottom_spine=False, hide_x_ticks=False)
     e_mval = np.max(np.abs(s["yspec_e"]))
     e_mval = 1.0
-    e_axlim = 1.1 * e_mval
+    e_axlim = 1.0 * e_mval
     set_symmetric_ylim_and_ticks(ax_data, e_axlim)
     xticks = [
         s["tlow"],
