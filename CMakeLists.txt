@@ -48,7 +48,7 @@ FetchContent_Declare(
 FetchContent_Declare(FFTWpp           GIT_REPOSITORY https://github.com/da380/FFTWpp.git           GIT_TAG 06cc1fb04c4398407839e637cb5414b179b0e9c3)
 FetchContent_Declare(GaussQuad        GIT_REPOSITORY https://github.com/da380/GaussQuad.git        GIT_TAG fbe37c7eef93695317dbf9c48715110bf64c800f)
 FetchContent_Declare(GSHTRANS         GIT_REPOSITORY https://github.com/da380/GSHTrans.git         GIT_TAG b880ac9aeacdb54a6480fca3aee70a20a727c678)
-FetchContent_Declare(Interpolation    GIT_REPOSITORY https://github.com/da380/Interpolation.git    GIT_TAG 1557aad571ceac1899c2d3795696aa4047f41d8a)
+FetchContent_Declare(Interpolation    GIT_REPOSITORY https://github.com/da380/Interpolation.git    GIT_TAG 4508a7b3d2205f5647e87cdbaa4496cc0283c389)
 
 # 2. Modify our helper function to accept a LIST of targets
 function(FetchContent_MakeAvailable_NoInstall)
