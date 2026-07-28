@@ -177,9 +177,7 @@ def run_driver(command):
         elif fields[0] == "diagnostic":
             diagnostics[int(fields[1])] = (
                 int(fields[2]),
-                float(fields[3]),
-                float(fields[4]),
-                float(fields[5]),
+                *map(float, fields[3:]),
             )
         elif fields[0] == "floating_point_flags":
             floating_point_flags = (
@@ -435,6 +433,12 @@ def main():
                     f"dspec={dspec_residual:.17e} "
                     f"gia3d={gia_residual:.17e}"
                 )
+            print(
+                f"reciprocity model={model_name} N={elements} "
+                f"l={degree} "
+                f"dspec={dspec_residuals[3]:.17e} "
+                f"gia3d={gia_residuals[3]:.17e}"
+            )
 
             for component, dspec_value, gia_value in zip(
                 COMPONENTS,

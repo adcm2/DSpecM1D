@@ -11,6 +11,7 @@ program controlled_love_numbers
                                         density_norm, &
                                         gravitational_potential_norm, &
                                         length_norm, load_norm
+  use module_PREM
   use module_spherical_mesh
   use full_domain_matrix
   implicit none
@@ -43,7 +44,11 @@ program controlled_love_numbers
   call ieee_set_flag(ieee_invalid,.false.)
   call ieee_set_flag(ieee_divide_by_zero,.false.)
 
-  model = elastic_DECK(trim(model_file))
+  if(trim(model_file) == 'analytic-prem') then
+     model = elastic_PREM(.false.)
+  else
+     model = elastic_DECK(trim(model_file))
+  end if
   mesh = spherical_mesh(5,model,maximum_radial_step)
   element_count = count_elements(mesh)
 
@@ -130,7 +135,7 @@ contains
 
     integer(i4b) :: info,surface_element,surface_layer,surface_node
     integer(i4b) :: surface_potential,surface_radial
-    real(dp) :: h_phi,h_t,h_u,k_phi,k_t,k_u
+    real(dp) :: h_phi,h_t,h_u,k_phi,k_t,k_u,reciprocity_error
     real(dp) :: surface_gravity,surface_radius
     real(dp), dimension(3) :: residuals
     real(dp), dimension(:,:), allocatable :: original_matrix
@@ -216,10 +221,17 @@ contains
     if(.not.all(ieee_is_finite(residuals))) &
         error stop 'non-finite controlled residual'
 
+    reciprocity_error = surface_gravity*acceleration_norm*h_phi-k_u
+    if(max(abs(surface_gravity*acceleration_norm*h_phi),abs(k_u)) > &
+       0.0_dp) then
+       reciprocity_error = reciprocity_error / &
+           max(abs(surface_gravity*acceleration_norm*h_phi),abs(k_u))
+    end if
+
     write(*,'(i0,1x,8(es26.17e3,1x))') &
         degree,h_u,k_u,h_phi,k_phi,h_u+h_phi,k_u+k_phi,h_t,k_t
-    write(error_unit,'(a,1x,2(i0,1x),3(es26.17e3,1x))') &
-        'diagnostic',degree,matrix%ndim,residuals
+    write(error_unit,'(a,1x,2(i0,1x),4(es26.17e3,1x))') &
+        'diagnostic',degree,matrix%ndim,residuals,reciprocity_error
   end subroutine solve_degree
 
 

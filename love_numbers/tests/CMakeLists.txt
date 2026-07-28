@@ -34,6 +34,10 @@ add_executable(dspecm1d_love_numbers_public_private_tests
     test_public_private.cpp
 )
 
+add_executable(dspecm1d_love_numbers_cli_tests
+    test_cli.cpp
+)
+
 if(DSPECM1D_ENABLE_PAPER_VALIDATION)
     add_executable(dspecm1d_love_numbers_reference_validation
         test_reference_validation.cpp
@@ -93,6 +97,14 @@ target_link_libraries(dspecm1d_love_numbers_public_private_tests
         DSpecM1D
         gtest_main
 )
+
+target_link_libraries(dspecm1d_love_numbers_cli_tests
+    PRIVATE
+        DSpecM1D::LoveNumbers
+        gtest_main
+)
+
+add_dependencies(dspecm1d_love_numbers_cli_tests dspecm1d-love)
 
 if(DSPECM1D_ENABLE_PAPER_VALIDATION)
     target_link_libraries(dspecm1d_love_numbers_reference_validation
@@ -166,6 +178,13 @@ target_compile_definitions(dspecm1d_love_numbers_static_degree_one_tests
 target_compile_definitions(dspecm1d_love_numbers_public_private_tests
     PRIVATE
         DSPECM1D_LOVE_NUMBERS_TI_MODEL="${CMAKE_CURRENT_SOURCE_DIR}/data/all_solid_ti.txt"
+)
+
+target_compile_definitions(dspecm1d_love_numbers_cli_tests
+    PRIVATE
+        DSPECM1D_LOVE_NUMBERS_CLI="$<TARGET_FILE:dspecm1d-love>"
+        DSPECM1D_LOVE_NUMBERS_CLI_MODEL="${CMAKE_CURRENT_SOURCE_DIR}/data/all_solid_isotropic.txt"
+        DSPECM1D_LOVE_NUMBERS_CLI_OCEAN_MODEL="${PROJECT_SOURCE_DIR}/data/models/prem.200.noatten.txt"
 )
 
 if(DSPECM1D_ENABLE_PAPER_VALIDATION)
@@ -274,6 +293,12 @@ gtest_discover_tests(
 
 gtest_discover_tests(
     dspecm1d_love_numbers_public_private_tests
+    PROPERTIES
+        LABELS "unit;component"
+)
+
+gtest_discover_tests(
+    dspecm1d_love_numbers_cli_tests
     PROPERTIES
         LABELS "unit;component"
 )

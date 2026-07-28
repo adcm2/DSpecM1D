@@ -11,6 +11,13 @@ target_link_libraries(DSpecM1DLoveNumbers
     PUBLIC DSpecM1D
 )
 
+add_executable(dspecm1d-love
+    app/dspecm1d-love.cpp
+)
+target_link_libraries(dspecm1d-love
+    PRIVATE DSpecM1D::LoveNumbers
+)
+
 target_include_directories(DSpecM1DLoveNumbers
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>

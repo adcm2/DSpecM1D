@@ -16,6 +16,34 @@ The public result units are:
 - `h_t`: s^2 m^-1;
 - `k_t`: dimensionless.
 
+## Command-line calculator
+
+Build with `DSPECM1D_BUILD_LOVE_NUMBERS=ON`, then run:
+
+```text
+dspecm1d-love MODEL_FILE LMAX OUTPUT_FILE \
+              [POLYNOMIAL_ORDER] [MAXIMUM_RADIAL_STEP]
+```
+
+The defaults are polynomial degree 6 and maximum relative radial step 0.01.
+Use `-` as `OUTPUT_FILE` to write to standard output. For example:
+
+```text
+dspecm1d-love data/models/prem.200.no.noatten.txt 10 love.txt
+```
+
+The text output has metadata lines beginning with `#`, followed by:
+
+```text
+l h_u k_u h_phi k_phi h_load k_load h_t k_t
+```
+
+`h_u`, `h_phi`, and `h_load` use m^3 kg^-1; `k_u`, `k_phi`, and
+`k_load` use m^4 kg^-1 s^-2; `h_t` uses s^2 m^-1; and `k_t` is
+dimensionless. Rows are ordered from degree zero through `LMAX`.
+Surface fluids and oceans are unsupported. Degree one uses the exact
+surface condition `P(a) = 0`.
+
 For `l = 0`, continuous `U` and `P` fields exist at every radial node,
 including in fluids, with interleaved `U, P` ordering. For `l >= 1`, `P` is
 continuous everywhere, while `U` and `V` exist only on solid elements and are
@@ -56,8 +84,9 @@ its constant tidal potential has zero gradient. Degree one uses the static
 spheroidal equations with the full centre space and the exact surface condition
 `P(a) = 0`. Its constrained gravitational right-hand side and all surface
 potential responses are zero. The public in-memory `calculate()` function
-returns degrees zero through `maximum_degree` in ascending order. CLI and file
-output remain unimplemented.
+returns degrees zero through `maximum_degree` in ascending order. The
+`dspecm1d-love` executable writes those results to a plain text file or
+standard output.
 
 An optional paper-validation diagnostic compares all six public components
 with the PREM values in `da380/SLReciprocityGJI` for degrees 1, 2, 3, 10, 20,

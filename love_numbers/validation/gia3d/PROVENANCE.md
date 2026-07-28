@@ -121,3 +121,65 @@ became non-finite and the IEEE invalid flag was set. The validation build
 therefore applies `patches/safe_central_fluid_tide.patch` only to a copied
 `module_force.f90`. It sets the combined coefficient to zero when
 `g = 0`, before division. The upstream checkout remains unchanged.
+
+## Controlled isotropized PREM
+
+Stage 14 uses the same pinned `gia3D` and `core` revisions above and calls
+`elastic_PREM(.false.)`, retaining its 12 solid-surface layers and
+`6368000 m` outer radius. The validation-only
+`export_isotropic_prem.f90` program accepts:
+
+```text
+export_isotropic_prem maximum_knot_spacing_m dspec_file gia3d_file
+```
+
+For every solid-layer knot it evaluates the analytic PREM coefficients and
+forms
+
+```text
+kappa = (C + 4 A - 4 N + 4 F) / 9
+mu    = (C + A + 6 L + 5 N - 2 F) / 15
+VP    = sqrt((kappa + 4 mu / 3) / rho)
+VS    = sqrt(mu / rho).
+```
+
+The outer core retains its analytic fluid `kappa` and uses `VS = 0`.
+Each layer is divided into the smallest number of equal intervals that does
+not exceed the requested maximum spacing, with at least three intervals
+(four knots). Every material radius is written once for the layer below and
+once for the layer above. The paired files therefore have identical radius,
+density, VP, and VS values. The DSpecM1D file additionally uses
+`VPH = VPV`, `VSH = VSV`, `eta = 1`, `Qkappa = 1000`, and `Qmu = 600`.
+
+The paper-validation build generates paired models for maximum knot spacings
+`100 km`, `50 km`, `25 km`, and `12.5 km` under
+`isotropic-prem-models/`. The comparison program reports the SHA-256 checksum
+of every generated file, along with the exact per-layer and total knot counts.
+The validated GNU Fortran 13.3.0 generation produced:
+
+- `100km`, 95 knots:
+  DSpecM1D `688d59063a7ce3a4b5c66cf23089fb9444520aa4491ffd22828628f1c9864337`,
+  gia3D `0dc055ef8109627240540fe9ce775eaba29bc22beb36e8e0f6b9c1bf56dd1df4`;
+- `50km`, 154 knots:
+  DSpecM1D `b9b092aefe80be327f503387d9d1818af34a92d1c462d137062bf4605e48d69e`,
+  gia3D `46f7e1afe58287918674cd8de95af033e2b1ee77bdea268769c4fda2a36f3070`;
+- `25km`, 278 knots:
+  DSpecM1D `b3fba4406d4f4794e7fa93498b265bfe9642552ab7f3c24f1d26acf111aa22a4`,
+  gia3D `2c3f80b199158ac727f87a3bf3c1f712cf43e450f6484fb491ea5e79600be769`;
+- `12.5km`, 532 knots:
+  DSpecM1D `9fcb12eb8434ecb22a4ae90fa8ddefa2a904c3915e3ec72490363e65109556e0`,
+  gia3D `a6343309b6cf9381535c96dd4ad1ebee0dc170a8e891d49489bd9766fc4e5342`.
+
+The full-domain three-way comparison uses five GLL nodes, DSpecM1D polynomial
+degree `p = 4`, relative radial steps `0.01`, `0.005`, and `0.0025`, and
+degrees 1, 2, 10, and 50. It reports separately:
+
+- DSpecM1D sampled deck minus gia3D sampled deck;
+- gia3D sampled deck minus gia3D analytic PREM;
+- DSpecM1D sampled deck minus gia3D analytic PREM.
+
+Component values, surface radius and gravity, layer element counts, radial
+nodes, total degrees of freedom, three-column solve residuals, reciprocity,
+mesh convergence, and knot-spacing convergence are diagnostic only. No
+inter-code numerical tolerance is imposed. This comparison is isotropic and
+does not validate DSpecM1D's full transversely isotropic operator.

@@ -23,8 +23,11 @@ using DSpecM1D::LoveNumbers::detail::LoveDofMap;
 using DSpecM1D::LoveNumbers::detail::RadialState;
 using DSpecM1D::LoveNumbers::detail::assembleStaticOperator;
 using DSpecM1D::LoveNumbers::detail::assembleStaticRightHandSides;
+using DSpecM1D::LoveNumbers::detail::solveStaticDegree;
 
-void printDiagnostics(RadialState &state, int degree) {
+void printDiagnostics(RadialState &state, int degree,
+                      const DegreeResult &result,
+                      double surface_gravity) {
   const LoveDofMap degrees_of_freedom(state.mesh(), degree);
   const Eigen::SparseMatrix<double> matrix =
       assembleStaticOperator(state, degrees_of_freedom, degree);
@@ -70,26 +73,50 @@ void printDiagnostics(RadialState &state, int degree) {
         std::max(1.0, right_hand_sides.col(column).norm());
     std::cerr << ' ' << residual;
   }
-  std::cerr << '\n';
+  const double first = surface_gravity * result.h_phi;
+  const double scale = std::max(std::abs(first), std::abs(result.k_u));
+  const double reciprocity_error =
+      scale == 0.0 ? 0.0 : (first - result.k_u) / scale;
+  std::cerr << ' ' << reciprocity_error << '\n';
 }
 
 }   // namespace
 
 int main(int argc, char **argv) {
-  if (argc < 4) {
+  const bool selected_degrees =
+      argc > 1 && std::string(argv[1]) == "--selected";
+  const bool configured =
+      argc > 1 && std::string(argv[1]) == "--configured";
+  const int model_argument =
+      selected_degrees || configured ? 2 : 1;
+  const int elements_argument = selected_degrees ? 3 : 2;
+  const int first_degree_argument =
+      configured ? 5 : (selected_degrees ? 4 : 3);
+  if (argc <= first_degree_argument) {
     std::cerr
-        << "usage: controlled_love_numbers model elements degree...\n";
+        << "usage: controlled_love_numbers "
+           "[--selected] model elements degree...\n"
+           "   or: controlled_love_numbers --configured "
+           "model polynomial_order maximum_radial_step degree...\n";
     return 2;
   }
 
-  const int requested_elements = std::stoi(argv[2]);
-  if (requested_elements < 1) {
-    throw std::invalid_argument("elements must be positive");
+  int polynomial_order = 4;
+  double maximum_radial_step = 0.0;
+  if (configured) {
+    polynomial_order = std::stoi(argv[3]);
+    maximum_radial_step = std::stod(argv[4]);
+  } else {
+    const int requested_elements = std::stoi(argv[elements_argument]);
+    if (requested_elements < 1) {
+      throw std::invalid_argument("elements must be positive");
+    }
+    maximum_radial_step = 1.0 / requested_elements;
   }
 
   std::vector<int> degrees;
   int maximum_degree = 0;
-  for (int argument = 3; argument < argc; ++argument) {
+  for (int argument = first_degree_argument; argument < argc; ++argument) {
     const int degree = std::stoi(argv[argument]);
     if (degree < 0) {
       throw std::invalid_argument("degrees must be non-negative");
@@ -100,14 +127,22 @@ int main(int argc, char **argv) {
 
   std::feclearexcept(FE_INVALID | FE_DIVBYZERO);
 
-  const EarthModels::ModelInput<double> model(argv[1]);
+  const EarthModels::ModelInput<double> model(argv[model_argument]);
   const Config config{
       .maximum_degree = maximum_degree,
-      .polynomial_order = 4,
-      .maximum_radial_step = 1.0 / requested_elements,
+      .polynomial_order = polynomial_order,
+      .maximum_radial_step = maximum_radial_step,
   };
-  const std::vector<DegreeResult> results = calculate(model, config);
   RadialState state(model, config);
+  std::vector<DegreeResult> results;
+  if (selected_degrees) {
+    results.resize(maximum_degree + 1);
+    for (const int degree : degrees) {
+      results.at(degree) = solveStaticDegree(model, state, degree);
+    }
+  } else {
+    results = calculate(model, config);
+  }
 
   const int elements = state.mesh().NE();
   const int radial_nodes =
@@ -178,8 +213,8 @@ int main(int argc, char **argv) {
   }
 
   for (const int degree : degrees) {
-    printDiagnostics(state, degree);
     const DegreeResult &result = results.at(degree);
+    printDiagnostics(state, degree, result, surface_gravity);
     std::cout << degree << ' ' << result.h_u << ' ' << result.k_u
               << ' ' << result.h_phi << ' ' << result.k_phi << ' '
               << result.h_load() << ' ' << result.k_load() << ' '
