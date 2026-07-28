@@ -1,0 +1,40 @@
+#ifndef DSPECM1D_LOVE_NUMBERS_H
+#define DSPECM1D_LOVE_NUMBERS_H
+
+#include <vector>
+
+#include <DSpecM1D/ModelInput>
+
+namespace DSpecM1D::LoveNumbers {
+
+struct Config {
+  int maximum_degree;
+  // Polynomial degree p; each element uses p + 1 GLL nodes.
+  int polynomial_order = 6;
+  double maximum_radial_step = 0.01;
+};
+
+struct DegreeResult {
+  int degree;
+
+  // h_u, h_phi, h_load: m^3 kg^-1
+  // k_u, k_phi, k_load: m^4 kg^-1 s^-2
+  // h_t: s^2 m^-1; k_t: dimensionless
+  double h_u;
+  double k_u;
+  double h_phi;
+  double k_phi;
+  double h_t;
+  double k_t;
+
+  double h_load() const noexcept { return h_u + h_phi; }
+
+  double k_load() const noexcept { return k_u + k_phi; }
+};
+
+std::vector<DegreeResult>
+calculate(const EarthModels::ModelInput<double> &model, const Config &config);
+
+}   // namespace DSpecM1D::LoveNumbers
+
+#endif   // DSPECM1D_LOVE_NUMBERS_H
