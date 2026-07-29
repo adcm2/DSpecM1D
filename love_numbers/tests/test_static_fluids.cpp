@@ -41,7 +41,6 @@ double relativeSymmetryError(const Eigen::SparseMatrix<double> &matrix) {
 double potentialBlockError(RadialState &state, int degree,
                            const Eigen::SparseMatrix<double> &matrix) {
   const auto &mesh = state.mesh();
-  const auto &model = state.meshModel();
   const auto &quadrature = state.quadrature();
   const auto lagrange = Interpolation::LagrangePolynomial(
       quadrature.Points().begin(), quadrature.Points().end());
@@ -130,7 +129,6 @@ double potentialBlockError(RadialState &state, int degree,
 
 double densityGradientContributionNorm(RadialState &state) {
   const auto &mesh = state.mesh();
-  const auto &model = state.meshModel();
   const auto &quadrature = state.quadrature();
   double squared_norm = 0.0;
 

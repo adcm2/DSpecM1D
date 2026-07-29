@@ -1,6 +1,7 @@
 add_library(DSpecM1DLoveNumbers
     src/LoveNumbers.cpp
     src/LoveDofMap.h
+    src/RadialState.h
     src/StaticForcing.h
     src/StaticOperator.h
     src/StaticSolve.h

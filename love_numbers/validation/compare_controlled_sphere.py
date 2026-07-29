@@ -35,7 +35,7 @@ MODELS = {
         "interfaces": (),
     },
     "solid-fluid-solid": {
-        "elements": (8, 16, 32),
+        "elements": (8, 16, 32, 64, 128, 256),
         "layer_fractions": (0.25, 0.25, 0.5),
         "solid_layers": (0, 2),
         "rows": (

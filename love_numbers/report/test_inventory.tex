@@ -1,0 +1,170 @@
+% Generated from ../TESTS.md by generate_test_appendix.py.
+\small
+\subsection*{Radial state, material model, and gravity}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{RadialStateTests.PolynomialOrderUsesOneMoreGllNode}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Checks that polynomial degree \texttt{p} creates exactly \texttt{p+1} GLL nodes per element.
+\item {\footnotesize\texttt{RadialStateTests.MeshEndsAtSurfaceWithoutExteriorBall}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Checks that the mesh contains no exterior ball and ends at the model outer radius.
+\item {\footnotesize\texttt{RadialStateTests.SampledModelValuesAreFinite}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Samples density, TI moduli, gravity, and the density derivative at every element node and requires finite values.
+\item {\footnotesize\texttt{RadialStateTests.HomogeneousSphereGravityIsAnalyticAtEveryNode}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Compares every nodal gravity value with the homogeneous-sphere analytic solution, including the finite zero at the centre.
+\item {\footnotesize\texttt{RadialStateTests.ControlledSolidFluidSolidGravityIsAnalytic}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Compares nodal gravity with the piecewise analytic solid--fluid--solid density integral.
+\item {\footnotesize\texttt{RadialStateTests.ControlledCentralFluidGravityIsAnalytic}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Checks the analytic gravity of a constant-density central fluid and solid exterior.
+\item {\footnotesize\texttt{RadialStateTests.GravityIsContinuousAcrossEveryBoundary}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Requires identical gravity values on both copies of every element and material boundary.
+\item {\footnotesize\texttt{RadialStateTests.DensityDerivativeUsesElementLayerSpline}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Compares each sampled derivative with the derivative of that element's density spline.
+\item {\footnotesize\texttt{RadialStateTests.MaterialInterfaceUsesOneSidedDensityDerivatives}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Checks that duplicated-radius interface nodes use the lower and upper layer derivatives independently.
+\item {\footnotesize\texttt{RadialStateTests.RejectsSurfaceFluid}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Requires a clear exception when the outermost layer is fluid.
+\item {\footnotesize\texttt{RadialStateTests.RejectsInvalidConfiguration}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Rejects negative maximum degree, polynomial order below one, and non-positive radial step.
+\end{itemize}
+\subsection*{DOF mapping}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{LoveDofMapTests.DegreeZeroInterleavesEveryNodeAndMatchesRadialSemMap}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Checks continuous interleaved \texttt{U,P} indexing and exact agreement with the existing radial SEM map.
+\item {\footnotesize\texttt{LoveDofMapTests.DegreeZeroRetainsCentreFields}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Verifies independent \texttt{U(0)} and \texttt{P(0)} coefficients.
+\item {\footnotesize\texttt{LoveDofMapTests.AllSolidDegreeTwoInterleavesEveryField}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Checks all-solid \texttt{U,V,P} interleaving, dimension, and exact agreement with the existing spheroidal SEM map.
+\item {\footnotesize\texttt{LoveDofMapTests.SolidCentreRetainsThreeIndependentFields}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Verifies independent \texttt{U(0)}, \texttt{V(0)}, and \texttt{P(0)} coefficients.
+\item {\footnotesize\texttt{LoveDofMapTests.PotentialIsSharedAcrossEveryElementBoundary}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Checks continuity of the single potential coefficient across solid, fluid, and material boundaries.
+\item {\footnotesize\texttt{LoveDofMapTests.DisplacementsAreSharedAcrossSolidBoundaries}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Checks that adjacent solid elements share their \texttt{U} and \texttt{V} boundary coefficients.
+\item {\footnotesize\texttt{LoveDofMapTests.DisplacementsAreAbsentFromFluidElements}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Requires \texttt{U} and \texttt{V} to return \texttt{nullopt} at every fluid node.
+\item {\footnotesize\texttt{LoveDofMapTests.InterfacesKeepDisplacementsOnlyOnSolidSide}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Exercises both interface orientations and checks that displacement exists only on the solid side while \texttt{P} is shared.
+\item {\footnotesize\texttt{LoveDofMapTests.InternalFluidDimensionsMatchTopologyFormulas}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Compares explicit map sizes with the radial-node and separate-solid-run dimension formulas.
+\item {\footnotesize\texttt{LoveDofMapTests.DegreeOneOnlyOmitsSurfacePotential}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Compares degree one and degree two and requires the sole missing coefficient to be surface \texttt{P}.
+\item {\footnotesize\texttt{LoveDofMapTests.DegreeOneRetainsSurfaceDisplacements}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Verifies that degree-one surface \texttt{U} and \texttt{V} remain present.
+\item {\footnotesize\texttt{LoveDofMapTests.RejectsNegativeDegree}}\\
+\emph{normal; \texttt{tests/test\_love\_dof\_map.cpp}.} Requires a negative degree to throw \texttt{std::invalid\_argument}.
+\end{itemize}
+\subsection*{All-solid operator}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{StaticOperatorTests.MatchesIsotropicReference}}\\
+\emph{normal; \texttt{tests/test\_static\_operator.cpp}.} Compares degree 2 and 10 isotropic matrices with \texttt{Full1D::SEM::hS(l)}, including dimensions and roundoff symmetry.
+\item {\footnotesize\texttt{StaticOperatorTests.MatchesTransverselyIsotropicReference}}\\
+\emph{normal; \texttt{tests/test\_static\_operator.cpp}.} Repeats the degree 2 and 10 \texttt{hS(l)} matrix comparison for a genuinely TI constant-density model.
+\item {\footnotesize\texttt{StaticOperatorTests.RetainsCentreFieldsAndMatchesSemOrdering}}\\
+\emph{normal; \texttt{tests/test\_static\_operator.cpp}.} Checks the three centre coefficients and exact all-solid SEM ordering.
+\item {\footnotesize\texttt{StaticOperatorTests.RejectsNegativeDegree}}\\
+\emph{normal; \texttt{tests/test\_static\_operator.cpp}.} Requires the private static operator to reject a negative degree.
+\end{itemize}
+\subsection*{Fluid operator and interfaces}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{StaticFluidOperatorTests.InterfaceSignsUseFluidSideDensity}}\\
+\emph{normal; \texttt{tests/test\_static\_fluids.cpp}.} Isolates both solid--fluid interface orientations and verifies sign, fluid-side density, shared \texttt{P}, and solid-side \texttt{U}.
+\item {\footnotesize\texttt{StaticFluidOperatorTests.NonconstantFluidBlockUsesPositiveDensityGradient}}\\
+\emph{normal; \texttt{tests/test\_static\_fluids.cpp}.} Compares the fluid potential block with an independent quadrature assembly containing \texttt{+r\textasciicircum{}2 rho'/g}.
+\item {\footnotesize\texttt{StaticFluidOperatorTests.ConstantDensityCentralFluidIsFinite}}\\
+\emph{normal; \texttt{tests/test\_static\_fluids.cpp}.} Checks zero stratification, a finite central-fluid matrix, and safe handling of \texttt{r=g=0}.
+\item {\footnotesize\texttt{StaticFluidOperatorTests.InternalFluidMatricesAreCompleteAndSymmetric}}\\
+\emph{normal; \texttt{tests/test\_static\_fluids.cpp}.} Requires internal-fluid and no-ocean PREM matrices to have the map dimension, roundoff symmetry, and no empty row or column.
+\end{itemize}
+\subsection*{Forcing, solve, residuals, and reciprocity}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{StaticForcingTests.SurfaceLoadsHaveExpectedEntriesAndSigns}}\\
+\emph{normal; \texttt{tests/test\_static\_solve.cpp}.} Checks the displacement and gravitational surface load entries after the single \texttt{KX=-L} negation.
+\item {\footnotesize\texttt{StaticForcingTests.AllSolidTideMatchesIndependentAssembly}}\\
+\emph{normal; \texttt{tests/test\_static\_solve.cpp}.} Compares the all-solid tidal column with a test-local GLL assembly at degrees 2 and 10.
+\item {\footnotesize\texttt{StaticForcingTests.InternalFluidTideMatchesBothInterfaceOrientations}}\\
+\emph{normal; \texttt{tests/test\_static\_solve.cpp}.} Independently assembles solid, fluid-gradient, and both oriented interface tidal terms.
+\item {\footnotesize\texttt{StaticSolveTests.OneFactorizationSolvesAllColumnsAndExtractsResults}}\\
+\emph{normal; \texttt{tests/test\_static\_solve.cpp}.} Checks three-column residuals, combined-load linearity, dimensional extraction, reciprocity, and finite results for isotropic, TI, fluid, and PREM models.
+\item {\footnotesize\texttt{StaticSolveTests.RejectsNegativeDegree}}\\
+\emph{normal; \texttt{tests/test\_static\_solve.cpp}.} Requires the private solve function to reject a negative degree.
+\end{itemize}
+\subsection*{Degree zero}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{StaticRadialOperatorTests.MatchesRadialSemForSupportedModels}}\\
+\emph{normal; \texttt{tests/test\_static\_radial.cpp}.} Compares degree-zero matrices with \texttt{Full1D::SEM::hR()} for constant-density isotropic and TI models, with symmetry and ordering checks.
+\item {\footnotesize\texttt{StaticRadialOperatorTests.RetainsCentreFields}}\\
+\emph{normal; \texttt{tests/test\_static\_radial.cpp}.} Verifies independent radial \texttt{U(0)} and \texttt{P(0)} coefficients.
+\item {\footnotesize\texttt{StaticRadialForcingTests.SurfaceLoadsAndZeroTideAreExact}}\\
+\emph{normal; \texttt{tests/test\_static\_radial.cpp}.} Checks the two surface loads and requires an identically zero degree-zero tidal column.
+\item {\footnotesize\texttt{StaticRadialSolveTests.SolvesSupportedModels}}\\
+\emph{normal; \texttt{tests/test\_static\_radial.cpp}.} Checks degree-zero residuals, reciprocity, finite model coverage, and exact zero \texttt{h\_t,k\_t}.
+\end{itemize}
+\subsection*{Degree one}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{StaticDegreeOneOperatorTests.AllSolidMatricesMatchConstrainedSem}}\\
+\emph{normal; \texttt{tests/test\_static\_degree\_one.cpp}.} Compares isotropic and TI matrices with the principal submatrix of \texttt{hS(1)} after removing surface \texttt{P}, and evaluates the full translation null vector.
+\item {\footnotesize\texttt{StaticDegreeOneOperatorTests.RetainsCentreAndSurfaceFields}}\\
+\emph{normal; \texttt{tests/test\_static\_degree\_one.cpp}.} Checks independent centre \texttt{U,V,P}, retained surface \texttt{U,V}, and absent surface \texttt{P}.
+\item {\footnotesize\texttt{StaticDegreeOneOperatorTests.InternalFluidMatricesHaveExpectedSizeAndSymmetry}}\\
+\emph{normal; \texttt{tests/test\_static\_degree\_one.cpp}.} Checks map dimension and roundoff symmetry for an internal fluid and no-ocean PREM.
+\item {\footnotesize\texttt{StaticDegreeOneForcingTests.SurfaceLoadsAndIndependentTidesAreCorrect}}\\
+\emph{normal; \texttt{tests/test\_static\_degree\_one.cpp}.} Verifies the displacement load, exactly zero gravitational column, and independent all-solid and fluid tidal assemblies.
+\item {\footnotesize\texttt{StaticDegreeOneSolveTests.SolvesSupportedModels}}\\
+\emph{normal; \texttt{tests/test\_static\_degree\_one.cpp}.} Checks constrained residuals, finite remaining responses, and exact zero potential-related outputs.
+\end{itemize}
+\subsection*{Public API}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{LoveNumbersTests.LoadSumsCombineGeneralizedResponses}}\\
+\emph{normal; \texttt{tests/test\_love\_numbers.cpp}.} Checks that \texttt{h\_load()} and \texttt{k\_load()} return the sums of their generalized components.
+\item {\footnotesize\texttt{LoveNumbersTests.PublicHeaderCalculatesOrderedDegreeRange}}\\
+\emph{normal; \texttt{tests/test\_love\_numbers.cpp}.} Uses only the public header and checks an ordered result for every degree from zero through the configured maximum.
+\item {\footnotesize\texttt{LoveNumbersTests.MaximumDegreeZeroIsValid}}\\
+\emph{normal; \texttt{tests/test\_love\_numbers.cpp}.} Checks that a degree-zero-only public calculation succeeds and returns one result.
+\item {\footnotesize\texttt{LoveNumbersTests.SupportedModelsReturnFiniteValues}}\\
+\emph{normal; \texttt{tests/test\_love\_numbers.cpp}.} Runs the public API on isotropic, TI, internal-fluid, and no-ocean PREM models and checks special-degree zeros and finite values.
+\item {\footnotesize\texttt{LoveNumbersTests.RejectsInvalidConfigurationAndSurfaceFluid}}\\
+\emph{normal; \texttt{tests/test\_love\_numbers.cpp}.} Checks public rejection of invalid configuration values and a surface fluid.
+\item {\footnotesize\texttt{LoveNumbersPublicPrivateTests.PublicResultsMatchPrivateSolves}}\\
+\emph{normal; \texttt{tests/test\_public\_private.cpp}.} Compares every public component directly with private solves at selected degrees including 0, 1, 2, and 10.
+\end{itemize}
+\subsection*{CLI}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{LoveNumbersCliTests.ExplicitOptionsWriteFileAndMatchPublicResults}}\\
+\emph{normal; \texttt{tests/test\_cli.cpp}.} Runs explicit optional arguments, parses the file metadata and nine columns, and compares every value with \texttt{calculate}.
+\item {\footnotesize\texttt{LoveNumbersCliTests.DefaultsWriteStandardOutput}}\\
+\emph{normal; \texttt{tests/test\_cli.cpp}.} Runs the default polynomial order and radial step through standard output and checks ordered rows.
+\item {\footnotesize\texttt{LoveNumbersCliTests.InvalidArgumentsAndMissingModelFail}}\\
+\emph{normal; \texttt{tests/test\_cli.cpp}.} Requires non-zero status and clear diagnostics for malformed arguments and a missing model.
+\item {\footnotesize\texttt{LoveNumbersCliTests.SurfaceFluidIsRejectedClearly}}\\
+\emph{normal; \texttt{tests/test\_cli.cpp}.} Runs the CLI on a surface-fluid model and checks the explicit no-ocean error.
+\end{itemize}
+\subsection*{gia3D validation}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{LoveNumbersGia3DReference.ReportsDirectComparison}}\\
+\emph{paper validation; \texttt{validation/gia3d/compare\_reference.py}.} Runs the pinned original-truncation PREM driver, reports three independent solutions and stock combined-load agreement, and requires finite residuals and degree-one zeros.
+\item {\footnotesize\texttt{LoveNumbersGia3DReference.ReportsControlledSphereComparison}}\\
+\emph{paper validation; \texttt{validation/compare\_controlled\_sphere.py}.} Compares matched homogeneous-sphere meshes, dimensions, gravity, residuals, reciprocity, and eight response components.
+\item {\footnotesize\texttt{LoveNumbersGia3DReference.ReportsSolidFluidSolidComparison}}\\
+\emph{paper validation; \texttt{validation/compare\_controlled\_sphere.py}.} Repeats the matched comparison for two interface orientations and a non-zero fluid density derivative, now through \texttt{N=256}.
+\item {\footnotesize\texttt{LoveNumbersGia3DReference.ReportsCentralFluidComparison}}\\
+\emph{paper validation; \texttt{validation/compare\_controlled\_sphere.py}.} Checks a central fluid for finite matrices and responses, zero stratification, matching topology, and no invalid floating-point flags.
+\item {\footnotesize\texttt{LoveNumbersGia3DReference.ReportsIsotropicPremComparison}}\\
+\emph{paper validation; \texttt{validation/compare\_isotropic\_prem.py}.} Performs the analytic-gia3D, sampled-gia3D, and sampled-DSpecM1D PREM comparison across mesh and knot refinements.
+\end{itemize}
+\subsection*{ELLN validation}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{LoveNumbersELLNReference.ValidatesConversion}}\\
+\emph{paper validation; \texttt{validation/elln/validate\_elln.py}.} Algebraically round-trips the dimensional-to-conventional \texttt{h\_l,k\_l} conversions and their signs.
+\item {\footnotesize\texttt{LoveNumbersELLNReference.AuditsOfficialExample}}\\
+\emph{paper validation; \texttt{validation/elln/validate\_elln.py}.} Verifies the official archive, source and model checksums, runs the non-GUI example when possible, and otherwise reports the publisher table.
+\item {\footnotesize\texttt{LoveNumbersELLNReference.AuditsDegreeOneConvention}}\\
+\emph{paper validation; \texttt{validation/elln/validate\_elln.py}.} Traces ELLN's deformed-centre subtraction and demonstrates why it is not the \texttt{P(a)=0} generic conversion.
+\item {\footnotesize\texttt{LoveNumbersELLNReference.ReportsTiPremComparison}}\\
+\emph{paper validation; \texttt{validation/elln/compare\_ti\_prem.py}.} Validates generated TI decks and reports degree-10 Table S7 differences, mesh/knot convergence, residuals, and the differing gravitational constants.
+\item {\footnotesize\texttt{LoveNumbersELLNReference.ReportsGravitationalConstantSensitivity}}\\
+\emph{paper validation; \texttt{validation/elln/compare\_gravitational\_constants.py}.} Compares production and ELLN \texttt{G}, reports sensitivity and explained discrepancy, and audits exported \texttt{rho,A,C,F,L,N} against the official model.
+\end{itemize}
+\subsection*{Other gated diagnostics}
+\begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
+\item {\footnotesize\texttt{LoveNumbersReferenceValidation.ReportsPremConvergence}}\\
+\emph{paper validation; \texttt{tests/test\_reference\_validation.cpp}.} Reports selected-degree convergence against the published \texttt{love.dat} subset without treating the sampled-model comparison as a regression oracle.
+\end{itemize}

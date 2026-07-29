@@ -14,6 +14,22 @@
 
 namespace DSpecM1D::LoveNumbers::detail {
 
+using FormEntry = std::pair<int, double>;
+using LocalForm = std::vector<FormEntry>;
+
+inline void addOuterProduct(std::vector<Eigen::Triplet<double>> &triplets,
+                            double coefficient, const LocalForm &left,
+                            const LocalForm &right) {
+  for (const auto &[row, left_value] : left) {
+    for (const auto &[column, right_value] : right) {
+      const double value = coefficient * left_value * right_value;
+      if (value != 0.0) {
+        triplets.emplace_back(row, column, value);
+      }
+    }
+  }
+}
+
 inline Eigen::SparseMatrix<double>
 assembleStaticRadialOperator(RadialState &state,
                              const LoveDofMap &dof_map) {
@@ -27,22 +43,7 @@ assembleStaticRadialOperator(RadialState &state,
   const double potential_scale =
       1.0 / (4.0 * 3.14159265358979323846 * gravitational_constant);
 
-  using FormEntry = std::pair<int, double>;
-  using LocalForm = std::vector<FormEntry>;
   std::vector<Eigen::Triplet<double>> triplets;
-
-  auto add_outer_product =
-      [&triplets](double coefficient, const LocalForm &left,
-                  const LocalForm &right) {
-        for (const auto &[row, left_value] : left) {
-          for (const auto &[column, right_value] : right) {
-            const double value = coefficient * left_value * right_value;
-            if (value != 0.0) {
-              triplets.emplace_back(row, column, value);
-            }
-          }
-        }
-      };
 
   for (int element = 0; element < mesh.NE(); ++element) {
     const double element_width = mesh.EW(element);
@@ -75,14 +76,14 @@ assembleStaticRadialOperator(RadialState &state,
         potential_derivative.emplace_back(p, derivative);
       }
 
-      add_outer_product(integration_weight * c * radius * radius,
-                        displacement_derivative,
-                        displacement_derivative);
-      add_outer_product(integration_weight * 2.0 * f * radius,
-                        displacement_derivative, displacement);
-      add_outer_product(integration_weight * 2.0 * f * radius,
-                        displacement, displacement_derivative);
-      add_outer_product(
+      addOuterProduct(triplets, integration_weight * c * radius * radius,
+                      displacement_derivative, displacement_derivative);
+      addOuterProduct(triplets, integration_weight * 2.0 * f * radius,
+                      displacement_derivative, displacement);
+      addOuterProduct(triplets, integration_weight * 2.0 * f * radius,
+                      displacement, displacement_derivative);
+      addOuterProduct(
+          triplets,
           integration_weight * 4.0 *
               (density *
                    (3.14159265358979323846 * gravitational_constant *
@@ -91,11 +92,14 @@ assembleStaticRadialOperator(RadialState &state,
                    radius +
                a - n),
           displacement, displacement);
-      add_outer_product(integration_weight * density * radius * radius,
-                        displacement, potential_derivative);
-      add_outer_product(integration_weight * density * radius * radius,
-                        potential_derivative, displacement);
-      add_outer_product(
+      addOuterProduct(triplets,
+                      integration_weight * density * radius * radius,
+                      displacement, potential_derivative);
+      addOuterProduct(triplets,
+                      integration_weight * density * radius * radius,
+                      potential_derivative, displacement);
+      addOuterProduct(
+          triplets,
           integration_weight * potential_scale * radius * radius,
           potential_derivative, potential_derivative);
     }
@@ -136,22 +140,7 @@ assembleStaticOperator(RadialState &state, const LoveDofMap &dof_map,
   const double potential_scale =
       1.0 / (4.0 * 3.14159265358979323846 * gravitational_constant);
 
-  using FormEntry = std::pair<int, double>;
-  using LocalForm = std::vector<FormEntry>;
   std::vector<Eigen::Triplet<double>> triplets;
-
-  auto add_outer_product =
-      [&triplets](double coefficient, const LocalForm &left,
-                  const LocalForm &right) {
-        for (const auto &[row, left_value] : left) {
-          for (const auto &[column, right_value] : right) {
-            const double value = coefficient * left_value * right_value;
-            if (value != 0.0) {
-              triplets.emplace_back(row, column, value);
-            }
-          }
-        }
-      };
 
   for (int element = 0; element < mesh.NE(); ++element) {
     const double element_width = mesh.EW(element);
@@ -196,10 +185,12 @@ assembleStaticOperator(RadialState &state, const LoveDofMap &dof_map,
         tangential_displacement.emplace_back(v, value);
       }
 
-      add_outer_product(
+      addOuterProduct(
+          triplets,
           integration_weight * potential_scale * radius * radius,
           potential_derivative, potential_derivative);
-      add_outer_product(
+      addOuterProduct(
+          triplets,
           integration_weight * potential_scale * angular_degree, potential,
           potential);
 
@@ -215,7 +206,8 @@ assembleStaticOperator(RadialState &state, const LoveDofMap &dof_map,
                 "from r = 0.");
           }
         }
-        add_outer_product(
+        addOuterProduct(
+            triplets,
             integration_weight * density_gradient_coefficient, potential,
             potential);
         continue;
@@ -229,39 +221,49 @@ assembleStaticOperator(RadialState &state, const LoveDofMap &dof_map,
       const double l = model.L(element, point);
       const double n = model.N(element, point);
 
-      add_outer_product(integration_weight * c, radial_derivative,
-                        radial_derivative);
-      add_outer_product(integration_weight * angular_degree * l, shear,
-                        shear);
-      add_outer_product(integration_weight * (a - n), trace, trace);
-      add_outer_product(integration_weight * f, radial_derivative, trace);
-      add_outer_product(integration_weight * f, trace, radial_derivative);
-      add_outer_product(
+      addOuterProduct(triplets, integration_weight * c, radial_derivative,
+                      radial_derivative);
+      addOuterProduct(triplets, integration_weight * angular_degree * l,
+                      shear, shear);
+      addOuterProduct(triplets, integration_weight * (a - n), trace, trace);
+      addOuterProduct(triplets, integration_weight * f, radial_derivative,
+                      trace);
+      addOuterProduct(triplets, integration_weight * f, trace,
+                      radial_derivative);
+      addOuterProduct(
+          triplets,
           integration_weight * angular_degree * (angular_degree - 2.0) * n,
           tangential_displacement, tangential_displacement);
 
-      add_outer_product(
+      addOuterProduct(
+          triplets,
           integration_weight * 4.0 * density *
               (3.14159265358979323846 * gravitational_constant * density *
                    radius -
                gravity) *
               radius,
           radial_displacement, radial_displacement);
-      add_outer_product(
+      addOuterProduct(
+          triplets,
           integration_weight * angular_degree * density * gravity * radius,
           radial_displacement, tangential_displacement);
-      add_outer_product(
+      addOuterProduct(
+          triplets,
           integration_weight * angular_degree * density * gravity * radius,
           tangential_displacement, radial_displacement);
 
-      add_outer_product(integration_weight * density * radius * radius,
-                        radial_displacement, potential_derivative);
-      add_outer_product(integration_weight * density * radius * radius,
-                        potential_derivative, radial_displacement);
-      add_outer_product(
+      addOuterProduct(triplets,
+                      integration_weight * density * radius * radius,
+                      radial_displacement, potential_derivative);
+      addOuterProduct(triplets,
+                      integration_weight * density * radius * radius,
+                      potential_derivative, radial_displacement);
+      addOuterProduct(
+          triplets,
           integration_weight * angular_degree * density * radius,
           tangential_displacement, potential);
-      add_outer_product(
+      addOuterProduct(
+          triplets,
           integration_weight * angular_degree * density * radius, potential,
           tangential_displacement);
     }

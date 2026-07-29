@@ -1,0 +1,11 @@
+# model=controlled solid-fluid-solid sphere
+# quantity=absolute surface-gravity error relative to the piecewise analytic density integral; units=m s^-2
+# resolution=five GLL nodes per element; total element count N
+# source=compare_controlled_sphere.py and its two controlled validation executables
+elements,legacy_mesh_model_absolute_error,corrected_love_number_absolute_error,gia3d_absolute_error
+8,3.78772894365653201e-03,3.55271367880050093e-15,5.50273155042191320e-06
+16,9.46932235914133003e-04,3.55271367880050093e-15,3.01351429143892346e-07
+32,2.36733058978089161e-04,5.32907051820075139e-15,1.76674923579867027e-08
+64,5.91832647387491306e-05,1.77635683940025046e-15,1.07747233357713412e-09
+128,1.47958161846872827e-05,3.55271367880050093e-15,1.02797770296092494e-10
+256,3.69895403551367963e-06,1.77635683940025046e-15,1.33201893959267181e-10

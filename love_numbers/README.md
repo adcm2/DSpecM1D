@@ -1,118 +1,111 @@
 # Static Love numbers
 
-This module will calculate elastic, static, self-gravitating Love numbers for
-radially transversely isotropic Earth models using the reference moduli
-`A`, `C`, `F`, `L`, and `N`.
+This optional module calculates elastic, static, self-gravitating Love
+numbers for spherical, radially transversely isotropic models. Solids use the
+five elastic coefficients `A`, `C`, `F`, `L`, and `N`; internal static fluids
+are supported with gravitational potential as their only field. A fluid or
+ocean at the surface is rejected.
 
-For unit displacement/traction, gravitational-potential, and tidal-potential
-forcing, respectively, it will return
-`h_u, k_u, h_phi, k_phi, h_t, k_t`, with the physical load sums
-`h_load = h_u + h_phi` and `k_load = k_u + k_phi`.
+## C++ API
 
-The public result units are:
+Enable the module with:
 
-- `h_u`, `h_phi`, `h_load`: m^3 kg^-1;
-- `k_u`, `k_phi`, `k_load`: m^4 kg^-1 s^-2;
-- `h_t`: s^2 m^-1;
-- `k_t`: dimensionless.
+```text
+-DDSPECM1D_BUILD_LOVE_NUMBERS=ON
+```
 
-## Command-line calculator
+The public header is `<DSpecM1D/LoveNumbers>`. A calculation is:
 
-Build with `DSPECM1D_BUILD_LOVE_NUMBERS=ON`, then run:
+```cpp
+EarthModels::ModelInput<double> model(model_path);
+DSpecM1D::LoveNumbers::Config config{
+    .maximum_degree = 10,
+    .polynomial_order = 6,
+    .maximum_radial_step = 0.01,
+};
+const auto results = DSpecM1D::LoveNumbers::calculate(model, config);
+```
+
+Results are returned in ascending order from degree zero through
+`maximum_degree`. `polynomial_order` is the polynomial degree `p`, so every
+element has `p + 1` GLL nodes. `maximum_radial_step` is passed directly to the
+existing DSpecM1D radial mesh as its relative radial step; it is not a length
+in metres.
+
+Each result contains:
+
+| Value | Units |
+| --- | --- |
+| `h_u`, `h_phi`, `h_load()` | m^3 kg^-1 |
+| `k_u`, `k_phi`, `k_load()` | m^4 kg^-1 s^-2 |
+| `h_t` | s^2 m^-1 |
+| `k_t` | dimensionless |
+
+The generalized physical-loading response is
+`h_load = h_u + h_phi`, `k_load = k_u + k_phi`.
+
+## Command line
+
+The same build provides:
 
 ```text
 dspecm1d-love MODEL_FILE LMAX OUTPUT_FILE \
               [POLYNOMIAL_ORDER] [MAXIMUM_RADIAL_STEP]
 ```
 
-The defaults are polynomial degree 6 and maximum relative radial step 0.01.
-Use `-` as `OUTPUT_FILE` to write to standard output. For example:
+The optional arguments default to `6` and `0.01`. Use `-` as
+`OUTPUT_FILE` for standard output. For example:
 
 ```text
 dspecm1d-love data/models/prem.200.no.noatten.txt 10 love.txt
 ```
 
-The text output has metadata lines beginning with `#`, followed by:
+Metadata lines begin with `#`. Data rows have nine columns:
 
 ```text
 l h_u k_u h_phi k_phi h_load k_load h_t k_t
 ```
 
-`h_u`, `h_phi`, and `h_load` use m^3 kg^-1; `k_u`, `k_phi`, and
-`k_load` use m^4 kg^-1 s^-2; `h_t` uses s^2 m^-1; and `k_t` is
-dimensionless. Rows are ordered from degree zero through `LMAX`.
-Surface fluids and oceans are unsupported. Degree one uses the exact
-surface condition `P(a) = 0`.
+They use the units listed above and are written from `l = 0` through `LMAX`.
 
-For `l = 0`, continuous `U` and `P` fields exist at every radial node,
-including in fluids, with interleaved `U, P` ordering. For `l >= 1`, `P` is
-continuous everywhere, while `U` and `V` exist only on solid elements and are
-shared only across solid-solid boundaries. At a fluid-solid interface the
-solid side has `U` and `V`, and both sides share the single `P` degree of
-freedom.
+## Conventions and limits
 
-The full SEM trial space extends to `r = 0`: a solid centre retains `U(0)`,
-`V(0)`, and `P(0)` for `l >= 1`, and `U(0)` and `P(0)` for `l = 0`, without
-strong-form centre conditions. For `l = 1`, the surface `P(a)` degree of
-freedom is omitted exactly while surface `U` and `V` are retained.
+- Degree zero uses continuous radial displacement `U` and potential `P`,
+  retains both centre coefficients, and has exactly zero tidal response.
+- Degrees one and above use `U,V,P` in solids and `P` only in fluids. `P` is
+  continuous across every interface; solid displacement is not continued
+  through a fluid.
+- The complete applicable centre SEM space is retained without a strong
+  centre condition.
+- Degree one removes only the surface `P(a)` coefficient, imposing
+  `P(a) = 0` exactly. Its generalized gravitational load and surface
+  potential responses are zero in this convention.
+- Density derivatives are evaluated inside each density-spline layer, so
+  duplicated-radius interfaces retain their one-sided derivatives and
+  density jumps are not volume derivatives.
+- Surface fluids and oceans are unsupported. Internal fluid layers,
+  including a central fluid, are supported.
+- Horizontal, toroidal, dynamic, viscoelastic, and rotational responses are
+  not provided.
 
-`polynomial_order` is the polynomial degree `p`, so each radial element uses
-`p + 1` GLL nodes. `maximum_radial_step` is the existing DSpecM1D relative
-radial step. Outermost fluid layers are rejected, while internal fluid regions
-are allowed. Density derivatives are evaluated within each model layer, giving
-the appropriate one-sided values at duplicated-radius material interfaces.
-The Love-number radial state computes background gravity by integrating each
-layer density spline exactly between its knots with three-point
-Gauss--Legendre quadrature. Enclosed mass and gravity remain continuous across
-element and material boundaries, without treating density jumps as volume
-terms.
-Exact comparisons with the legacy `hS(l)` and `hR()` matrices use
-constant-density isotropic and TI test fixtures, where the legacy and
-Love-number gravity calculations coincide. Varying-density gravity is tested
-against analytic models and the independent controlled gia3D comparison.
+The module owns a corrected background-gravity calculation: it integrates
+the model density splines between their knots and preserves enclosed mass
+across material boundaries. It does not use `MeshModel::Gravity` in the
+operator or forcing.
 
-The radial state, degree-of-freedom map, and degree-one-and-above TI static
-spheroidal operator are implemented. The operator is assembled directly from
-the weak form and retains all centre degrees of freedom. Internal fluids use
-`P` only and include the `rho'/g` volume term. Both solid-fluid and fluid-solid
-interface orientations are supported. Surface fluids remain unsupported, so a
-PREM ocean must be removed rather than replaced by artificial solid material.
-Forcing vectors, the solver, and dimensional surface extraction are implemented
-privately for the three forced problems. Degree zero uses the static radial
-`U, P` equations, retains `U(0)` and `P(0)`, and has zero tidal response because
-its constant tidal potential has zero gradient. Degree one uses the static
-spheroidal equations with the full centre space and the exact surface condition
-`P(a) = 0`. Its constrained gravitational right-hand side and all surface
-potential responses are zero. The public in-memory `calculate()` function
-returns degrees zero through `maximum_degree` in ascending order. The
-`dspecm1d-love` executable writes those results to a plain text file or
-standard output.
+## Validation summary
 
-An optional paper-validation diagnostic compares all six public components
-with the PREM values in `da380/SLReciprocityGJI` for degrees 1, 2, 3, 10, 20,
-50, and 100. The units, load signs, orthonormal-harmonic convention, 6368 km
-solid surface, ocean removal, and degree-one `P(a) = 0` frame convention
-match. The available repository deck is sampled and rounded, however, while
-the reference used analytic PREM, and the exact generalized-data generation
-revision is not recorded upstream. Moreover, gia3D's solid matrix is
-isotropic: it derives equivalent `kappa` and `mu` from the analytic PREM
-`A`, `C`, `F`, `L`, and `N` coefficients rather than assembling the full TI
-operator. The existing comparison against a sampled local deck therefore does
-not independently validate the full TI implementation. At polynomial order 6
-and maximum radial step 0.005, nonzero relative differences range from about
-3.2e-6 to 3.3e-2 and mostly plateau under refinement. The stored
-`prem_love_reference.dat` values are consequently kept behind
-`DSPECM1D_ENABLE_PAPER_VALIDATION` as a published-data diagnostic, not an
-exact regression oracle.
+Constant-density radial and spheroidal matrices are checked against the
+existing `hR()` and `hS(l)` implementations. Gated paper validation uses
+pinned `gia3D` and `core` revisions for matched all-solid and internal-fluid
+models, and for a three-way isotropized-PREM comparison. The corrected
+module-owned gravity brings the varying-density controlled comparisons to
+the solver-discretization scale.
 
-The same option also builds a direct Fortran reference from pinned
-`da380/gia3D` and `da380/core` revisions without adding Fortran to the normal
-build. Its validation-only driver uses analytic, ocean-free PREM and gia3D's
-original isotropic solid matrix and centre truncation. It reports independent
-displacement, potential, and tidal solutions for degrees 1, 2, and 10, plus
-stock combined-load agreement and residuals. A build-tree-only patch
-initializes the fluid quadrature radius before evaluating `r^2 rho'/g`.
-Published-data differences remain diagnostic and have no permanent numerical
-tolerance.
-
-Configure with `-DDSPECM1D_BUILD_LOVE_NUMBERS=ON` to build this module.
+The official Chen--Pan--Bevis ELLN TI example is also audited. Its degree-10
+loading result is an independent diagnostic, not a ground-truth oracle:
+ELLN and DSpecM1D use different physical gravitational constants, have
+different model representations, and retain a small unresolved inter-code or
+tabulation difference. Detailed provenance and diagnostics live under
+`validation/`; they are enabled only by
+`DSPECM1D_ENABLE_PAPER_VALIDATION`.
