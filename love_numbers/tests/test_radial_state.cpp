@@ -25,10 +25,8 @@ Config gravityConfig() {
 }
 
 struct GravityErrors {
-  double new_maximum_absolute_si = 0.0;
-  double old_maximum_absolute_si = 0.0;
-  double new_maximum_scaled = 0.0;
-  double old_maximum_scaled = 0.0;
+  double maximum_absolute_si = 0.0;
+  double maximum_scaled = 0.0;
 };
 
 template <typename EnclosedDensityMoment>
@@ -50,23 +48,16 @@ GravityErrors measureGravityErrors(
               : 4.0 * pi * gravitational_constant *
                     enclosed_density_moment(radius) / (radius * radius);
       const double scale = std::max(1.0, std::abs(expected));
-      const double new_error =
+      const double error =
           std::abs(state.gravity(element, node) - expected);
-      const double old_error =
-          std::abs(state.meshModel().Gravity(element, node) - expected);
-      errors.new_maximum_absolute_si =
-          std::max(errors.new_maximum_absolute_si,
-                   new_error * model.AccelerationNorm());
-      errors.old_maximum_absolute_si =
-          std::max(errors.old_maximum_absolute_si,
-                   old_error * model.AccelerationNorm());
-      errors.new_maximum_scaled =
-          std::max(errors.new_maximum_scaled, new_error / scale);
-      errors.old_maximum_scaled =
-          std::max(errors.old_maximum_scaled, old_error / scale);
+      errors.maximum_absolute_si =
+          std::max(errors.maximum_absolute_si,
+                   error * model.AccelerationNorm());
+      errors.maximum_scaled =
+          std::max(errors.maximum_scaled, error / scale);
 
       EXPECT_TRUE(std::isfinite(state.gravity(element, node)));
-      EXPECT_LE(new_error / scale, gravity_tolerance);
+      EXPECT_LE(error / scale, gravity_tolerance);
     }
   }
   return errors;
@@ -144,10 +135,9 @@ TEST(RadialStateTests, HomogeneousSphereGravityIsAnalyticAtEveryNode) {
       });
 
   std::cout << std::setprecision(17)
-            << "homogeneous_gravity_new_max_abs_si="
-            << errors.new_maximum_absolute_si
-            << " old_max_abs_si=" << errors.old_maximum_absolute_si
-            << " new_max_scaled=" << errors.new_maximum_scaled << '\n';
+            << "homogeneous_gravity_max_abs_si="
+            << errors.maximum_absolute_si
+            << " max_scaled=" << errors.maximum_scaled << '\n';
   EXPECT_EQ(state.gravity(0, 0), 0.0);
 }
 
@@ -205,11 +195,9 @@ TEST(RadialStateTests, ControlledSolidFluidSolidGravityIsAnalytic) {
       enclosed_density_moment(radius) / (radius * radius);
 
   std::cout << std::setprecision(17)
-            << "controlled_SFS_gravity_new_max_abs_si="
-            << errors.new_maximum_absolute_si
-            << " old_max_abs_si=" << errors.old_maximum_absolute_si
-            << " new_max_scaled=" << errors.new_maximum_scaled
-            << " old_max_scaled=" << errors.old_maximum_scaled << '\n';
+            << "controlled_SFS_gravity_max_abs_si="
+            << errors.maximum_absolute_si
+            << " max_scaled=" << errors.maximum_scaled << '\n';
   EXPECT_NEAR(state.surfaceGravity(), expected_surface,
               gravity_tolerance * std::max(1.0,
                                            std::abs(expected_surface)));
@@ -241,10 +229,9 @@ TEST(RadialStateTests, ControlledCentralFluidGravityIsAnalytic) {
       enclosed_density_moment(radius) / (radius * radius);
 
   std::cout << std::setprecision(17)
-            << "controlled_central_gravity_new_max_abs_si="
-            << errors.new_maximum_absolute_si
-            << " old_max_abs_si=" << errors.old_maximum_absolute_si
-            << " new_max_scaled=" << errors.new_maximum_scaled << '\n';
+            << "controlled_central_gravity_max_abs_si="
+            << errors.maximum_absolute_si
+            << " max_scaled=" << errors.maximum_scaled << '\n';
   EXPECT_EQ(state.gravity(0, 0), 0.0);
   EXPECT_TRUE(std::isfinite(state.gravity(0, 0)));
   EXPECT_NEAR(state.surfaceGravity(), expected_surface,
@@ -260,6 +247,19 @@ TEST(RadialStateTests, GravityIsContinuousAcrossEveryBoundary) {
     const RadialState state(model, gravityConfig());
     const auto &mesh = state.mesh();
     int material_boundaries = 0;
+
+    for (int element = 0; element < mesh.NE(); ++element) {
+      for (int node = 0; node < mesh.NN(); ++node) {
+        EXPECT_DOUBLE_EQ(
+            state.gravity(element, node),
+            state.meshModel().Gravity(element, node));
+        EXPECT_TRUE(std::isfinite(state.gravity(element, node)));
+      }
+    }
+    EXPECT_DOUBLE_EQ(state.gravity(0, 0), 0.0);
+    EXPECT_DOUBLE_EQ(
+        state.surfaceGravity(),
+        state.meshModel().Gravity(mesh.NE() - 1, mesh.NN() - 1));
 
     for (int lower = 0; lower + 1 < mesh.NE(); ++lower) {
       const int upper = lower + 1;

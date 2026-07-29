@@ -20,7 +20,6 @@ public:
         mesh_model_(mesh_, model),
         density_derivatives_(
             mesh_.NE(), std::vector<double>(mesh_.NN(), 0.0)),
-        gravity_(mesh_.NE(), std::vector<double>(mesh_.NN(), 0.0)),
         dimensionless_gravitational_constant_(
             6.67230e-11 / model.GravitationalConstant()) {
     for (int element = 0; element < mesh_.NE(); ++element) {
@@ -31,7 +30,6 @@ public:
         density_derivatives_[element][node] = density.Derivative(radius);
       }
     }
-    sampleGravity(model);
   }
 
   const EarthMesh::RadialMesh &mesh() const noexcept { return mesh_; }
@@ -51,7 +49,7 @@ public:
   }
 
   double gravity(int element, int node) const {
-    return gravity_[element][node];
+    return mesh_model_.Gravity(element, node);
   }
 
   double surfaceRadius() const {
@@ -63,56 +61,6 @@ public:
   }
 
 private:
-  static double integrateDensityMoment(
-      const EarthModels::ModelInput<double>::InterpA &density,
-      double lower_radius, double upper_radius,
-      const GaussQuad::Quadrature1D<double> &quadrature) {
-    const double half_width = 0.5 * (upper_radius - lower_radius);
-    const double centre = 0.5 * (upper_radius + lower_radius);
-    double integral = 0.0;
-    for (int point = 0; point < quadrature.N(); ++point) {
-      const double radius =
-          centre + half_width * quadrature.X(point);
-      integral += quadrature.W(point) * density(radius) * radius * radius;
-    }
-    return half_width * integral;
-  }
-
-  void sampleGravity(const EarthModels::ModelInput<double> &model) {
-    // Three Gauss--Legendre points integrate degree-five polynomials exactly.
-    const auto quadrature =
-        GaussQuad::GaussLegendreQuadrature1D<double>(3);
-    constexpr double pi = 3.14159265358979323846;
-    double enclosed_density_moment = 0.0;
-
-    for (int element = 0; element < mesh_.NE(); ++element) {
-      const int layer = mesh_.LayerNumber(element);
-      const auto density = model.Density(layer);
-      const auto knots = model.LayerRadii(layer);
-      if (element > 0) {
-        gravity_[element][0] =
-            gravity_[element - 1][mesh_.NN() - 1];
-      }
-
-      for (int node = 1; node < mesh_.NN(); ++node) {
-        double lower_radius = mesh_.NodeRadius(element, node - 1);
-        const double upper_radius = mesh_.NodeRadius(element, node);
-        for (const double knot : knots) {
-          if (knot > lower_radius && knot < upper_radius) {
-            enclosed_density_moment += integrateDensityMoment(
-                density, lower_radius, knot, quadrature);
-            lower_radius = knot;
-          }
-        }
-        enclosed_density_moment += integrateDensityMoment(
-            density, lower_radius, upper_radius, quadrature);
-        gravity_[element][node] =
-            4.0 * pi * dimensionless_gravitational_constant_ *
-            enclosed_density_moment / (upper_radius * upper_radius);
-      }
-    }
-  }
-
   static int validatedNodeCount(
       const EarthModels::ModelInput<double> &model, const Config &config) {
     if (config.maximum_degree < 0) {
@@ -135,7 +83,6 @@ private:
   EarthMesh::RadialMesh mesh_;
   MeshModel mesh_model_;
   std::vector<std::vector<double>> density_derivatives_;
-  std::vector<std::vector<double>> gravity_;
   double dimensionless_gravitational_constant_;
 };
 

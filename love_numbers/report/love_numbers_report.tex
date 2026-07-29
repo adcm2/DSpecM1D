@@ -101,8 +101,8 @@ post-processing convention used by the ELLN reference software.
 Validation proceeds from analytic and algebraic checks to independent
 inter-code comparisons.  Constant-density matrices agree with DSpecM1D's
 existing radial and spheroidal SEM matrices to roundoff.  Analytic,
-piecewise-density tests show that the module's corrected background gravity
-is continuous and accurate to roundoff.  On a controlled internal-fluid
+piecewise-density tests show that the corrected main-library background
+gravity is continuous and accurate to roundoff.  On a controlled internal-fluid
 sphere the maximum DSpecM1D--gia3D response difference falls from
 \(6.3\times10^{-6}\) at eight elements to \(3.4\times10^{-11}\) at 256
 elements.  Sampled isotropized PREM calculations agree at approximately the
@@ -401,8 +401,8 @@ constructs splines for density and elastic properties.  DSpecM1D's existing
 normalization maps length, density, and time to the nondimensional variables
 used in assembly.  \code{RadialState} owns one
 \code{EarthMesh::RadialMesh}, the sampled \code{MeshModel}, one-sided
-density derivatives, and the corrected gravity used throughout the
-Love-number calculation.
+density derivatives, and access to the \code{MeshModel} gravity used
+throughout the Love-number calculation.
 
 The mesh is constructed with the existing DSpecM1D relative radial-step
 algorithm.  The public \code{polynomial\_order} is the polynomial degree
@@ -427,8 +427,12 @@ the resulting units are listed in Table~\ref{tab:units}.
 
 \subsection{Corrected background gravity}
 
-The Love-number module deliberately does not use
-\code{MeshModel::Gravity}.  Its private state integrates enclosed mass:
+The main DSpecM1D \code{MeshModel} background-gravity integration was
+corrected in commit
+\begin{center}
+\code{207b6462ab169a86b7cd4ea183424e2a65d7c34b}.
+\end{center}
+The authoritative calculation integrates enclosed mass:
 \begin{equation}
  I(r)=\int_0^r\rho(s)s^2\dd s,\qquad
  g(r)=\frac{4\pi G I(r)}{r^2},\qquad g(0)=0. \label{eq:gravity}
@@ -436,15 +440,13 @@ The Love-number module deliberately does not use
 Integration is cumulative from the centre, so enclosed mass and gravity are
 continuous at every duplicated element and material boundary.  Each interval
 is split at the density-spline knots returned for its model layer, and
-density is evaluated at the actual quadrature radius.  Within a knot
-interval, a cubic density spline multiplied by \(r^2\) has degree five;
-three-point Gauss--Legendre quadrature is therefore the smallest fixed
-Gaussian rule that integrates it exactly.
+density is evaluated at the actual quadrature radius.
 
-This change is local to the Love-number state.  Correcting the general
-DSpecM1D \code{MeshModel} gravity integration, followed by broader radial,
-spheroidal, matrix, and seismogram regression testing, remains a separate
-future task.
+\code{RadialState::gravity} and \code{surfaceGravity} now delegate directly
+to the owned \code{MeshModel}.  The former duplicate private Love-number
+integration has been removed, while the operator and forcing continue to use
+the same \code{RadialState} accessors.  The current production implementation
+therefore has one authoritative gravity calculation.
 
 \section{Validation and benchmarking}
 
@@ -478,20 +480,24 @@ Love-number or gravity calculation.  Exact commands are listed in
 \subsection{Analytic gravity and controlled models}
 
 Figure~\ref{fig:gravity} isolates the background-gravity correction on the
-controlled solid--fluid--solid sphere.  The previous
+controlled solid--fluid--solid sphere.  This historical benchmark predates
+commit \code{207b6462ab169a86b7cd4ea183424e2a65d7c34b}: the former
 \code{MeshModel::Gravity} surface error decreases by a factor of four per
-mesh doubling, consistent with second-order accuracy.  The private
-Love-number integral remains between \(1.8\times10^{-15}\) and
+mesh doubling, consistent with second-order accuracy, while the former
+private Love-number integral remains between \(1.8\times10^{-15}\) and
 \(5.3\times10^{-15}\,\mathrm{m\,s^{-2}}\).  gia3D converges until its own
-roundoff/discretisation floor is reached.
+roundoff/discretisation floor is reached.  The figure remains a record of the
+defect before correction; current Love-number calculations use the corrected
+\code{MeshModel} implementation directly.
 
 \begin{figure}[!htbp]
 \centering
 \includegraphics[width=0.86\textwidth]{figures/background_gravity_correction.pdf}
 \caption{Absolute surface-gravity error for the controlled
-solid--fluid--solid density profile.  The legacy curve is the existing
-\code{MeshModel} value, the orange curve is the gravity used by the
-Love-number module, and the green curve is the pinned gia3D reference.}
+solid--fluid--solid density profile before the main-library correction.  The
+legacy curve is the pre-correction \code{MeshModel} value, the orange curve
+is the former private Love-number integration, and the green curve is the
+pinned gia3D reference.  The historical data are retained unchanged.}
 \label{fig:gravity}
 \end{figure}
 

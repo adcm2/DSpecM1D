@@ -88,10 +88,11 @@ They use the units listed above and are written from `l = 0` through `LMAX`.
 - Horizontal, toroidal, dynamic, viscoelastic, and rotational responses are
   not provided.
 
-The module owns a corrected background-gravity calculation: it integrates
-the model density splines between their knots and preserves enclosed mass
-across material boundaries. It does not use `MeshModel::Gravity` in the
-operator or forcing.
+The main DSpecM1D `MeshModel` background-gravity integration was corrected
+in commit `207b6462ab169a86b7cd4ea183424e2a65d7c34b`. `RadialState` now
+delegates its gravity accessors to `MeshModel::Gravity`; the former duplicate
+private Love-number integration has been removed. The production calculation
+therefore has one authoritative background-gravity implementation.
 
 ## Validation summary
 
@@ -99,8 +100,8 @@ Constant-density radial and spheroidal matrices are checked against the
 existing `hR()` and `hS(l)` implementations. Gated paper validation uses
 pinned `gia3D` and `core` revisions for matched all-solid and internal-fluid
 models, and for a three-way isotropized-PREM comparison. The corrected
-module-owned gravity brings the varying-density controlled comparisons to
-the solver-discretization scale.
+`MeshModel` gravity brings the varying-density controlled comparisons to the
+solver-discretization scale.
 
 The official Chen--Pan--Bevis ELLN TI example is also audited. Its degree-10
 loading result is an independent diagnostic, not a ground-truth oracle:

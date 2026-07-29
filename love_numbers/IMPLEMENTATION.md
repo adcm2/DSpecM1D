@@ -33,18 +33,19 @@ k_t                   dimensionless
 
 ## Radial state and gravity
 
-`RadialState` owns the `EarthMesh::RadialMesh`, sampled `MeshModel`, density
-derivative at every element node, and the gravity used by this module. A
-configuration polynomial order is the degree `p`; the mesh constructor
-therefore receives `p + 1` GLL nodes. `maximum_radial_step` is the existing
-DSpecM1D relative radial-step argument.
+`RadialState` owns the `EarthMesh::RadialMesh`, sampled `MeshModel`, and
+density derivative at every element node. A configuration polynomial order
+is the degree `p`; the mesh constructor therefore receives `p + 1` GLL
+nodes. `maximum_radial_step` is the existing DSpecM1D relative radial-step
+argument.
 
 Density derivatives are evaluated as
 `model.Density(layer).Derivative(radius)` using each element's own layer.
 Duplicated-radius interfaces consequently retain the two one-sided spline
 derivatives. A density jump is never inserted into a volume derivative.
 
-Gravity is calculated from:
+The main DSpecM1D `MeshModel` background-gravity integration was corrected
+in commit `207b6462ab169a86b7cd4ea183424e2a65d7c34b`. It calculates:
 
 ```text
 I(r) = integral_0^r rho(s) s^2 ds
@@ -52,11 +53,13 @@ g(r) = 4 pi G I(r) / r^2,     g(0) = 0.
 ```
 
 The integration proceeds outwards, splits at every density-spline knot, and
-uses three-point Gauss--Legendre quadrature. This is exact for a cubic spline
-times `r^2` within each knot interval. The accumulated density moment is
+evaluates density at the quadrature radii. The accumulated density moment is
 shared across element and material boundaries, so enclosed mass and gravity
-are continuous even when density jumps. The operator and forcing use
-`RadialState::gravity`, not `MeshModel::Gravity`.
+are continuous even when density jumps. `RadialState::gravity` and
+`surfaceGravity` delegate directly to the owned `MeshModel`; the former
+duplicate private Love-number integration has been removed. The operator and
+forcing continue to use the `RadialState` accessors, leaving one authoritative
+production gravity calculation.
 
 ## Degrees of freedom
 
@@ -181,7 +184,8 @@ degree-one convention, columns, and units. Each data row is
 
 - `include/DSpecM1D/LoveNumbers`: public configuration, results, and
   `calculate`.
-- `src/RadialState.h`: mesh, sampled model, density derivative, and gravity.
+- `src/RadialState.h`: mesh, sampled model, density derivative, and
+  `MeshModel` gravity access.
 - `src/LoveDofMap.h`: degree-dependent private field topology.
 - `src/StaticOperator.h`: radial, spheroidal, fluid, and interface matrices.
 - `src/StaticForcing.h`: the three load columns.
@@ -197,9 +201,9 @@ Normal tests cover topology, centre and degree-one treatment, one-sided
 density derivatives, analytic gravity, fluid volume and interface signs,
 matrix symmetry, independent forcing assemblies, residuals, linearity,
 reciprocity, dimensional conversion, public results, and CLI parsing.
-Constant-density matrices are compared with `hR()` and `hS(l)`; restricting
-these exact oracles to constant density avoids importing the older
-`MeshModel::Gravity` approximation.
+Constant-density matrices are compared with `hR()` and `hS(l)` so those
+exact oracles isolate the operator algebra; both paths now use the corrected
+`MeshModel::Gravity`.
 
 Paper validation is gated by `DSPECM1D_ENABLE_PAPER_VALIDATION`; the normal
 build requires no Fortran, MATLAB, Octave, BLAS, LAPACK, or network access.
@@ -268,17 +272,12 @@ love_numbers/report/build_report.sh
 `love_numbers/report/README.md` gives the full fresh-build commands and maps
 each stored dataset to its generating validation command.
 
-## Limits and future work
+## Limits
 
 The module does not support a surface ocean, horizontal output, toroidal
 response, rotation, dynamics, or viscoelasticity. The Love-number target and
 header are build-tree interfaces only; installation and CMake package export
 have not been restructured.
 
-The separate main-library task is:
-
-```text
-Correct the main DSpecM1D MeshModel background-gravity integration in a
-separate branch, then revalidate radial, spheroidal, matrix, and
-seismogram regressions.
-```
+The main-library gravity correction and Love-number delegation are complete;
+there is no separate private Love-number gravity implementation.

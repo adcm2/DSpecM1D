@@ -1,10 +1,9 @@
 diff --git a/src/RadialState.h b/src/RadialState.h
 --- a/src/RadialState.h
 +++ b/src/RadialState.h
-@@ -22,7 +22,7 @@ public:
+@@ -21,7 +21,7 @@ public:
          density_derivatives_(
              mesh_.NE(), std::vector<double>(mesh_.NN(), 0.0)),
-         gravity_(mesh_.NE(), std::vector<double>(mesh_.NN(), 0.0)),
          dimensionless_gravitational_constant_(
 -            6.67230e-11 / model.GravitationalConstant()) {
 +            6.67384e-11 / model.GravitationalConstant()) {
