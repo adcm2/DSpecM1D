@@ -1,0 +1,11 @@
+diff --git a/src/module_matrix.f90 b/src/module_matrix.f90
+--- a/src/module_matrix.f90
++++ b/src/module_matrix.f90
+@@ -938,6 +938,7 @@ contains
+             ! phi-phi'
+             drhot = drho(inode,ispec)
+             gt = g(inode,ispec)
++            rt = r(inode,ispec)
+             fac = rt*rt*drhot
+             if(gt /= 0.0_dp) fac = fac/gt
+             a(k,j) = a(k,j) + fac*w(inode)*jac(ispec)

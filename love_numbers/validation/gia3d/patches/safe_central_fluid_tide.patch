@@ -1,0 +1,11 @@
+diff --git a/src/module_force.f90 b/src/module_force.f90
+--- a/src/module_force.f90
++++ b/src/module_force.f90
+@@ -210,4 +210,6 @@ contains
+             ! phi'
+             i = ibool%get(1,inode,ispec)
+-            b(i,1) = b(i,1) - drhot*rt*w(inode)*jac(ispec)/gt
++            fac = 0.0_dp
++            if(gt /= 0.0_dp) fac = drhot*rt/gt
++            b(i,1) = b(i,1) - fac*w(inode)*jac(ispec)
+          end do

@@ -1,5 +1,12 @@
 set(DSPECM1D_DOCS_OUTPUT_DIR ${CMAKE_BINARY_DIR}/docs)
 set(DSPECM1D_SITE_OUTPUT_DIR ${CMAKE_BINARY_DIR}/site)
+set(DSPECM1D_LOVE_NUMBERS_REPORT
+    ${CMAKE_SOURCE_DIR}/love_numbers/report/love_numbers_report.pdf)
+
+if(NOT EXISTS "${DSPECM1D_LOVE_NUMBERS_REPORT}")
+    message(FATAL_ERROR
+        "Love-number report is missing: ${DSPECM1D_LOVE_NUMBERS_REPORT}")
+endif()
 
 find_package(Doxygen QUIET)
 find_program(DSPECM1D_DOT_EXECUTABLE dot)
@@ -31,6 +38,11 @@ add_custom_target(website
     COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${CMAKE_CURRENT_SOURCE_DIR}/site
             ${DSPECM1D_SITE_OUTPUT_DIR}
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+            ${DSPECM1D_SITE_OUTPUT_DIR}/reports
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${DSPECM1D_LOVE_NUMBERS_REPORT}
+            ${DSPECM1D_SITE_OUTPUT_DIR}/reports/love_numbers_report.pdf
     COMMENT "Building the DSpecM1D static website"
     VERBATIM
 )
