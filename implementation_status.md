@@ -1,5 +1,20 @@
 # Implementation Status
 
+## 2026-07-29 — MeshModel gravity integration correction
+
+- Added focused analytic regression coverage for constant density, linearly
+  varying density, and a duplicated two-region density interface.
+- Corrected each gravity quadrature contribution to evaluate the existing
+  layer-density interpolant at the mapped quadrature radius, splitting only at
+  density-spline knots inside the current integration interval.
+- Preserved cumulative centre-to-surface storage and exact copying at duplicated
+  element and material boundaries, without adding a new model-interface
+  requirement.
+- Verification completed:
+  - all 3 focused analytic gravity tests passed;
+  - all 53 registered project tests passed;
+  - `git diff --check` passed.
+
 ## 2026-07-21 — Corrected upstream Interpolation pin
 
 - Updated the project build and installed package configuration to pin
