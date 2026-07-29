@@ -12,6 +12,8 @@
 \emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Compares every nodal gravity value with the homogeneous-sphere analytic solution, including the finite zero at the centre.
 \item {\footnotesize\texttt{RadialStateTests.ControlledSolidFluidSolidGravityIsAnalytic}}\\
 \emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Compares nodal gravity with the piecewise analytic solid--fluid--solid density integral.
+\item {\footnotesize\texttt{RadialStateTests.MinimumPolynomialOrderExactlyIntegratesCubicDensityGravity}}\\
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Checks roundoff-level analytic surface gravity for cubic density at the minimum polynomial order \texttt{p=3}.
 \item {\footnotesize\texttt{RadialStateTests.ControlledCentralFluidGravityIsAnalytic}}\\
 \emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Checks the analytic gravity of a constant-density central fluid and solid exterior.
 \item {\footnotesize\texttt{RadialStateTests.GravityIsContinuousAcrossEveryBoundary}}\\
@@ -23,7 +25,7 @@
 \item {\footnotesize\texttt{RadialStateTests.RejectsSurfaceFluid}}\\
 \emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Requires a clear exception when the outermost layer is fluid.
 \item {\footnotesize\texttt{RadialStateTests.RejectsInvalidConfiguration}}\\
-\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Rejects negative maximum degree, polynomial order below one, and non-positive radial step.
+\emph{normal; \texttt{tests/test\_radial\_state.cpp}.} Rejects negative maximum degree and non-positive radial step.
 \end{itemize}
 \subsection*{DOF mapping}
 \begin{itemize}[leftmargin=1.4em,itemsep=0.35em]
@@ -123,6 +125,8 @@
 \emph{normal; \texttt{tests/test\_love\_numbers.cpp}.} Runs the public API on isotropic, TI, internal-fluid, and no-ocean PREM models and checks special-degree zeros and finite values.
 \item {\footnotesize\texttt{LoveNumbersTests.RejectsInvalidConfigurationAndSurfaceFluid}}\\
 \emph{normal; \texttt{tests/test\_love\_numbers.cpp}.} Checks public rejection of invalid configuration values and a surface fluid.
+\item {\footnotesize\texttt{LoveNumbersTests.EnforcesMinimumPolynomialOrder}}\\
+\emph{normal; \texttt{tests/test\_love\_numbers.cpp}.} Requires the public calculation to reject polynomial orders below three and accept \texttt{p=3}.
 \item {\footnotesize\texttt{LoveNumbersPublicPrivateTests.PublicResultsMatchPrivateSolves}}\\
 \emph{normal; \texttt{tests/test\_public\_private.cpp}.} Compares every public component directly with private solves at selected degrees including 0, 1, 2, and 10.
 \end{itemize}
@@ -134,6 +138,8 @@
 \emph{normal; \texttt{tests/test\_cli.cpp}.} Runs the default polynomial order and radial step through standard output and checks ordered rows.
 \item {\footnotesize\texttt{LoveNumbersCliTests.InvalidArgumentsAndMissingModelFail}}\\
 \emph{normal; \texttt{tests/test\_cli.cpp}.} Requires non-zero status and clear diagnostics for malformed arguments and a missing model.
+\item {\footnotesize\texttt{LoveNumbersCliTests.RejectsUnderintegratedPolynomialOrders}}\\
+\emph{normal; \texttt{tests/test\_cli.cpp}.} Requires non-zero status and the \texttt{p >= 3} diagnostic for \texttt{p=1} and \texttt{p=2}.
 \item {\footnotesize\texttt{LoveNumbersCliTests.SurfaceFluidIsRejectedClearly}}\\
 \emph{normal; \texttt{tests/test\_cli.cpp}.} Runs the CLI on a surface-fluid model and checks the explicit no-ocean error.
 \end{itemize}

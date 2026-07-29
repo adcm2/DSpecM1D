@@ -63,9 +63,9 @@ def main():
         else:
             paper += 1
 
-    if (normal, paper) != (55, 11):
+    if (normal, paper) != (58, 11):
         raise RuntimeError(
-            f"Expected 55 normal and 11 paper tests, got {normal} and {paper}"
+            f"Expected 58 normal and 11 paper tests, got {normal} and {paper}"
         )
 
     lines = [

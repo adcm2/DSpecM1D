@@ -1,8 +1,8 @@
 # Love-number test inventory
 
 This inventory is based on `ctest --show-only=json-v1` from a configured
-paper-validation build. It contains 55 normal tests and 11
-paper-validation tests: 66 Love-number tests in total. Core DSpecM1D tests
+paper-validation build. It contains 58 normal tests and 11
+paper-validation tests: 69 Love-number tests in total. Core DSpecM1D tests
 are excluded. Classifications and descriptions were checked against the
 registered commands and the corresponding test bodies.
 
@@ -13,12 +13,13 @@ registered commands and the corresponding test bodies.
 - **normal** `RadialStateTests.SampledModelValuesAreFinite` — `tests/test_radial_state.cpp` — Samples density, TI moduli, gravity, and the density derivative at every element node and requires finite values.
 - **normal** `RadialStateTests.HomogeneousSphereGravityIsAnalyticAtEveryNode` — `tests/test_radial_state.cpp` — Compares every nodal gravity value with the homogeneous-sphere analytic solution, including the finite zero at the centre.
 - **normal** `RadialStateTests.ControlledSolidFluidSolidGravityIsAnalytic` — `tests/test_radial_state.cpp` — Compares nodal gravity with the piecewise analytic solid--fluid--solid density integral.
+- **normal** `RadialStateTests.MinimumPolynomialOrderExactlyIntegratesCubicDensityGravity` — `tests/test_radial_state.cpp` — Checks roundoff-level analytic surface gravity for cubic density at the minimum polynomial order `p=3`.
 - **normal** `RadialStateTests.ControlledCentralFluidGravityIsAnalytic` — `tests/test_radial_state.cpp` — Checks the analytic gravity of a constant-density central fluid and solid exterior.
 - **normal** `RadialStateTests.GravityIsContinuousAcrossEveryBoundary` — `tests/test_radial_state.cpp` — Requires identical gravity values on both copies of every element and material boundary.
 - **normal** `RadialStateTests.DensityDerivativeUsesElementLayerSpline` — `tests/test_radial_state.cpp` — Compares each sampled derivative with the derivative of that element's density spline.
 - **normal** `RadialStateTests.MaterialInterfaceUsesOneSidedDensityDerivatives` — `tests/test_radial_state.cpp` — Checks that duplicated-radius interface nodes use the lower and upper layer derivatives independently.
 - **normal** `RadialStateTests.RejectsSurfaceFluid` — `tests/test_radial_state.cpp` — Requires a clear exception when the outermost layer is fluid.
-- **normal** `RadialStateTests.RejectsInvalidConfiguration` — `tests/test_radial_state.cpp` — Rejects negative maximum degree, polynomial order below one, and non-positive radial step.
+- **normal** `RadialStateTests.RejectsInvalidConfiguration` — `tests/test_radial_state.cpp` — Rejects negative maximum degree and non-positive radial step.
 
 ## DOF mapping
 
@@ -79,6 +80,7 @@ registered commands and the corresponding test bodies.
 - **normal** `LoveNumbersTests.MaximumDegreeZeroIsValid` — `tests/test_love_numbers.cpp` — Checks that a degree-zero-only public calculation succeeds and returns one result.
 - **normal** `LoveNumbersTests.SupportedModelsReturnFiniteValues` — `tests/test_love_numbers.cpp` — Runs the public API on isotropic, TI, internal-fluid, and no-ocean PREM models and checks special-degree zeros and finite values.
 - **normal** `LoveNumbersTests.RejectsInvalidConfigurationAndSurfaceFluid` — `tests/test_love_numbers.cpp` — Checks public rejection of invalid configuration values and a surface fluid.
+- **normal** `LoveNumbersTests.EnforcesMinimumPolynomialOrder` — `tests/test_love_numbers.cpp` — Requires the public calculation to reject polynomial orders below three and accept `p=3`.
 - **normal** `LoveNumbersPublicPrivateTests.PublicResultsMatchPrivateSolves` — `tests/test_public_private.cpp` — Compares every public component directly with private solves at selected degrees including 0, 1, 2, and 10.
 
 ## CLI
@@ -86,6 +88,7 @@ registered commands and the corresponding test bodies.
 - **normal** `LoveNumbersCliTests.ExplicitOptionsWriteFileAndMatchPublicResults` — `tests/test_cli.cpp` — Runs explicit optional arguments, parses the file metadata and nine columns, and compares every value with `calculate`.
 - **normal** `LoveNumbersCliTests.DefaultsWriteStandardOutput` — `tests/test_cli.cpp` — Runs the default polynomial order and radial step through standard output and checks ordered rows.
 - **normal** `LoveNumbersCliTests.InvalidArgumentsAndMissingModelFail` — `tests/test_cli.cpp` — Requires non-zero status and clear diagnostics for malformed arguments and a missing model.
+- **normal** `LoveNumbersCliTests.RejectsUnderintegratedPolynomialOrders` — `tests/test_cli.cpp` — Requires non-zero status and the `p >= 3` diagnostic for `p=1` and `p=2`.
 - **normal** `LoveNumbersCliTests.SurfaceFluidIsRejectedClearly` — `tests/test_cli.cpp` — Runs the CLI on a surface-fluid model and checks the explicit no-ocean error.
 
 ## gia3D validation
