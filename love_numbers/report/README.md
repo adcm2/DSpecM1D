@@ -56,7 +56,7 @@ these validation paths:
 
 | Dataset | Reproducing validation command |
 | --- | --- |
-| `background_gravity_sfs.csv` | `compare_controlled_sphere.py ... solid_fluid_solid.dspec solid_fluid_solid.gia3d solid-fluid-solid` |
+| `background_gravity_sfs.csv` | Current DSpecM1D and gia3D absolute surface-gravity errors from `compare_controlled_sphere.py ... solid_fluid_solid.dspec solid_fluid_solid.gia3d solid-fluid-solid` |
 | `controlled_sfs_convergence.csv` | The same controlled solid--fluid--solid command, including `N=8,16,32,64,128,256` |
 | `controlled_finest_summary.csv` | `compare_controlled_sphere.py` separately for the homogeneous, central-fluid, and solid--fluid--solid paired decks |
 | `isotropic_prem_knot_convergence.csv` | `compare_isotropic_prem.py $PAPER_BUILD/bin/dspecm1d_controlled_love_numbers $PAPER_BUILD/bin/dspecm1d_gia3d_controlled_reference $PAPER_BUILD/bin/dspecm1d_gia3d_export_isotropic_prem $PAPER_BUILD/love_numbers/validation/isotropic-prem-models` |
@@ -67,7 +67,9 @@ these validation paths:
 
 Each CSV begins with comment lines recording its model, quantity definition,
 resolution, and generating validation script. The labelled column row follows
-those comments.
+those comments. The earlier defective `MeshModel` curve is not retained as an
+active benchmark; current collection uses the corrected shared gravity
+implementation.
 
 ## 3. Figures
 

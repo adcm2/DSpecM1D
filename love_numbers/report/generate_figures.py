@@ -50,12 +50,7 @@ def background_gravity():
     rows = read_csv("background_gravity_sfs.csv")
     elements = [int(row["elements"]) for row in rows]
     curves = (
-        ("legacy_mesh_model_absolute_error", "MeshModel gravity", "o"),
-        (
-            "corrected_love_number_absolute_error",
-            "Love-number gravity",
-            "s",
-        ),
+        ("dspecm1d_absolute_error", "DSpecM1D", "o"),
         ("gia3d_absolute_error", "gia3D", "^"),
     )
     figure, axis = plt.subplots(figsize=(5.8, 3.6))
@@ -72,7 +67,7 @@ def background_gravity():
     axis.legend(frameon=False)
     axis.set_xticks(elements)
     axis.set_xticklabels(elements)
-    save(figure, "background_gravity_correction.pdf")
+    save(figure, "background_gravity_current.pdf")
 
 
 def controlled_fluid():

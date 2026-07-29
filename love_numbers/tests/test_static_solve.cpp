@@ -298,7 +298,7 @@ TEST(StaticSolveTests, OneFactorizationSolvesAllColumnsAndExtractsResults) {
     const Config config =
         name == "PREM no-ocean"
             ? Config{.maximum_degree = 10,
-                     .polynomial_order = 2,
+                     .polynomial_order = 3,
                      .maximum_radial_step = 0.2}
             : smallModelConfig();
     for (const int degree : {2, 10}) {

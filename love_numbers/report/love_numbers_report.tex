@@ -479,25 +479,23 @@ Love-number or gravity calculation.  Exact commands are listed in
 
 \subsection{Analytic gravity and controlled models}
 
-Figure~\ref{fig:gravity} isolates the background-gravity correction on the
-controlled solid--fluid--solid sphere.  This historical benchmark predates
-commit \code{207b6462ab169a86b7cd4ea183424e2a65d7c34b}: the former
-\code{MeshModel::Gravity} surface error decreases by a factor of four per
-mesh doubling, consistent with second-order accuracy, while the former
-private Love-number integral remains between \(1.8\times10^{-15}\) and
-\(5.3\times10^{-15}\,\mathrm{m\,s^{-2}}\).  gia3D converges until its own
-roundoff/discretisation floor is reached.  The figure remains a record of the
-defect before correction; current Love-number calculations use the corrected
-\code{MeshModel} implementation directly.
+Figure~\ref{fig:gravity} compares current background gravity on the
+controlled solid--fluid--solid sphere with its piecewise analytic value.
+The DSpecM1D error remains between \(1.8\times10^{-15}\) and
+\(1.1\times10^{-14}\,\mathrm{m\,s^{-2}}\), while gia3D converges towards its
+roundoff/discretisation floor.  An earlier \code{MeshModel} quadrature defect
+was identified during Love-number validation and corrected in commit
+\code{207b6462ab169a86b7cd4ea183424e2a65d7c34b}.  Current Love-number
+calculations use that corrected shared implementation; the obsolete
+defective-output curve is no longer retained as an active benchmark.
 
 \begin{figure}[!htbp]
 \centering
-\includegraphics[width=0.86\textwidth]{figures/background_gravity_correction.pdf}
+\includegraphics[width=0.86\textwidth]{figures/background_gravity_current.pdf}
 \caption{Absolute surface-gravity error for the controlled
-solid--fluid--solid density profile before the main-library correction.  The
-legacy curve is the pre-correction \code{MeshModel} value, the orange curve
-is the former private Love-number integration, and the green curve is the
-pinned gia3D reference.  The historical data are retained unchanged.}
+solid--fluid--solid density profile.  DSpecM1D uses the corrected shared
+\code{MeshModel} implementation; gia3D is the pinned independent reference.
+Both errors are measured against the piecewise analytic density integral.}
 \label{fig:gravity}
 \end{figure}
 

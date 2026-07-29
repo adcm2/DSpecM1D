@@ -419,8 +419,14 @@ if(DSPECM1D_ELLN_ARCHIVE OR DSPECM1D_ELLN_SOURCE_DIR)
         "${CMAKE_CURRENT_BINARY_DIR}/elln-gravity-copy"
     )
     file(MAKE_DIRECTORY
+        "${elln_gravity_copy}/DSpecM1D/src/model_info"
         "${elln_gravity_copy}/src"
         "${elln_gravity_copy}/validation"
+    )
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/../../DSpecM1D/src/model_info/MeshModel.h"
+        "${elln_gravity_copy}/DSpecM1D/src/model_info/MeshModel.h"
+        COPYONLY
     )
     foreach(source IN ITEMS
             LoveDofMap.h
@@ -461,7 +467,8 @@ if(DSPECM1D_ELLN_ARCHIVE OR DSPECM1D_ELLN_SOURCE_DIR)
         "${elln_gravity_copy}/validation/controlled_love_numbers.cpp"
     )
     target_include_directories(
-        dspecm1d_controlled_love_numbers_elln_g PRIVATE
+        dspecm1d_controlled_love_numbers_elln_g BEFORE PRIVATE
+        "${elln_gravity_copy}"
         "${CMAKE_CURRENT_SOURCE_DIR}/../include"
     )
     target_link_libraries(
@@ -549,6 +556,7 @@ if(DSPECM1D_ELLN_ARCHIVE OR DSPECM1D_ELLN_SOURCE_DIR)
             "${CMAKE_CURRENT_SOURCE_DIR}/elln/compare_gravitational_constants.py"
             "$<TARGET_FILE:dspecm1d_controlled_love_numbers>"
             "$<TARGET_FILE:dspecm1d_controlled_love_numbers_elln_g>"
+            "$<TARGET_FILE:dspecm1d-love>"
             "${elln_ti_model_dir}/elln_ti_prem_6.25km.dspec"
             "${elln_ti_manifest}"
             "${CMAKE_CURRENT_SOURCE_DIR}/elln/official_ti_prem_table_s7.txt"

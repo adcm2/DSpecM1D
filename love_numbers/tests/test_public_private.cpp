@@ -44,7 +44,7 @@ TEST(LoveNumbersPublicPrivateTests, PublicResultsMatchPrivateSolves) {
       DSPECM1D_LOVE_NUMBERS_TI_MODEL);
   const Config config{
       .maximum_degree = 10,
-      .polynomial_order = 2,
+      .polynomial_order = 3,
       .maximum_radial_step = 0.4,
   };
   const std::vector<DegreeResult> public_results =

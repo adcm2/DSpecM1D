@@ -2,11 +2,11 @@
 +++ ELLN.m
 @@ -207,3 +207,3 @@
      LLNsRes=zeros(length(Nn),4);                                            %Matrix for saving the Love number
--    ProgressBar = waitbar(0,'Please wait...');                              %Monitoring the calculation progress    
+-    ProgressBar = waitbar(0,'Please wait...');                              %Monitoring the calculation progress
 +    ProgressBar = [];                                                       %Non-GUI validation run
      for II=1:length(Nn)
 @@ -215,3 +215,3 @@
-         per=II/length(Nn);                       
+         per=II/length(Nn);
 -        waitbar(per,ProgressBar,sprintf('Calculation finished %2.0f%%',per*100));  %display current norder
 +        % Progress display disabled for the non-GUI validation run.
          %disp(nOrder);

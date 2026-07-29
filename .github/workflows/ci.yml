@@ -41,3 +41,30 @@ jobs:
 
       - name: Build docs site
         run: cmake --build build --target website
+
+  love-numbers:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libfftw3-dev ninja-build
+
+      - name: Configure
+        run: |
+          cmake -S . -B build -G Ninja \
+            -DDSPECM1D_BUILD_LOVE_NUMBERS=ON \
+            -DDSPECM1D_BUILD_TESTS=ON \
+            -DDSPECM1D_ENABLE_PAPER_VALIDATION=OFF
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Run complete normal test suite
+        run: ctest --test-dir build --output-on-failure

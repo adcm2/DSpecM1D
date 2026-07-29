@@ -259,7 +259,8 @@ def patch_non_gui(source, destination, patch_path):
         raise RuntimeError("patch is required for a non-GUI ELLN run")
     subprocess.run(
         [
-            patch_executable, "--batch", "--forward", "-p0",
+            patch_executable, "--batch", "--forward",
+            "--ignore-whitespace", "-p0",
             f"--input={patch_path}",
         ],
         cwd=destination.parent,

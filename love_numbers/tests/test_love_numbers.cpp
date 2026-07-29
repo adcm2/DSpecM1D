@@ -19,7 +19,7 @@ using DSpecM1D::LoveNumbers::calculate;
 Config smallConfig(int maximum_degree) {
   return Config{
       .maximum_degree = maximum_degree,
-      .polynomial_order = 2,
+      .polynomial_order = 3,
       .maximum_radial_step = 0.4,
   };
 }
@@ -106,19 +106,13 @@ TEST(LoveNumbersTests, RejectsInvalidConfigurationAndSurfaceFluid) {
   EXPECT_THROW(calculate(
                    model,
                    Config{.maximum_degree = -1,
-                          .polynomial_order = 2,
+                          .polynomial_order = 3,
                           .maximum_radial_step = 0.4}),
                std::invalid_argument);
   EXPECT_THROW(calculate(
                    model,
                    Config{.maximum_degree = 2,
-                          .polynomial_order = 0,
-                          .maximum_radial_step = 0.4}),
-               std::invalid_argument);
-  EXPECT_THROW(calculate(
-                   model,
-                   Config{.maximum_degree = 2,
-                          .polynomial_order = 2,
+                          .polynomial_order = 3,
                           .maximum_radial_step = 0.0}),
                std::invalid_argument);
 
@@ -126,6 +120,36 @@ TEST(LoveNumbersTests, RejectsInvalidConfigurationAndSurfaceFluid) {
       DSPECM1D_LOVE_NUMBERS_OCEAN_MODEL);
   EXPECT_THROW(calculate(ocean_model, smallConfig(2)),
                std::invalid_argument);
+}
+
+TEST(LoveNumbersTests, EnforcesMinimumPolynomialOrder) {
+  const EarthModels::ModelInput<double> model(
+      DSPECM1D_LOVE_NUMBERS_ISOTROPIC_MODEL);
+
+  for (const int polynomial_order : {1, 2}) {
+    try {
+      static_cast<void>(calculate(
+          model,
+          Config{.maximum_degree = 0,
+                 .polynomial_order = polynomial_order,
+                 .maximum_radial_step = 0.4}));
+      FAIL() << "Accepted polynomial order " << polynomial_order;
+    } catch (const std::invalid_argument &error) {
+      EXPECT_STREQ(error.what(),
+                   "Love-number polynomial order must be at least 3.");
+    } catch (...) {
+      FAIL() << "Unexpected exception for polynomial order "
+             << polynomial_order;
+    }
+  }
+
+  const std::vector<DegreeResult> results =
+      calculate(model,
+                Config{.maximum_degree = 0,
+                       .polynomial_order = 3,
+                       .maximum_radial_step = 0.4});
+  ASSERT_EQ(results.size(), 1);
+  EXPECT_EQ(results.front().degree, 0);
 }
 
 }   // namespace

@@ -1,3 +1,14 @@
+diff --git a/DSpecM1D/src/model_info/MeshModel.h b/DSpecM1D/src/model_info/MeshModel.h
+--- a/DSpecM1D/src/model_info/MeshModel.h
++++ b/DSpecM1D/src/model_info/MeshModel.h
+@@ -156,6 +156,6 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
+   _vec_gravity = VVECTOR(NE, VECTOR(NQ, 0.0));
+   auto bigg_db =
+-      6.67230 * std::pow(10.0, -11.0) / inp_model.GravitationalConstant();
++      6.67384 * std::pow(10.0, -11.0) / inp_model.GravitationalConstant();
+   auto pi_db = 3.14159265358979323846;
+   auto q = mesh.GLL();
+   for (int idxe = 0; idxe < NE; ++idxe) {
 diff --git a/src/RadialState.h b/src/RadialState.h
 --- a/src/RadialState.h
 +++ b/src/RadialState.h

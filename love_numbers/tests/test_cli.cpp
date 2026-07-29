@@ -129,13 +129,13 @@ TEST(LoveNumbersCliTests, ExplicitOptionsWriteFileAndMatchPublicResults) {
       temporary_directory.path() / "love.txt";
   const CommandResult command = runCli(
       {DSPECM1D_LOVE_NUMBERS_CLI_MODEL, "2", output.string(),
-       "2", "0.4"},
+       "3", "0.4"},
       temporary_directory);
 
   ASSERT_EQ(command.status, 0) << command.standard_error;
   EXPECT_TRUE(command.standard_output.empty());
   const std::string text = readText(output);
-  EXPECT_NE(text.find("# polynomial_order: 2"), std::string::npos);
+  EXPECT_NE(text.find("# polynomial_order: 3"), std::string::npos);
   EXPECT_NE(
       text.find("# maximum_radial_step: 4.0000000000000002e-01"),
       std::string::npos);
@@ -148,7 +148,7 @@ TEST(LoveNumbersCliTests, ExplicitOptionsWriteFileAndMatchPublicResults) {
       DSpecM1D::LoveNumbers::calculate(
           model,
           {.maximum_degree = 2,
-           .polynomial_order = 2,
+           .polynomial_order = 3,
            .maximum_radial_step = 0.4});
 
   for (int degree = 0; degree <= 2; ++degree) {
@@ -182,6 +182,19 @@ TEST(LoveNumbersCliTests, DefaultsWriteStandardOutput) {
       parseRows(command.standard_output);
   ASSERT_EQ(rows.size(), 1);
   EXPECT_EQ(rows.front().degree, 0);
+
+  const EarthModels::ModelInput<double> model(
+      DSPECM1D_LOVE_NUMBERS_CLI_MODEL);
+  const auto expected = DSpecM1D::LoveNumbers::calculate(
+      model, {.maximum_degree = 0});
+  ASSERT_EQ(expected.size(), 1);
+  const std::array<double, 8> expected_values{
+      expected[0].h_u,      expected[0].k_u,
+      expected[0].h_phi,    expected[0].k_phi,
+      expected[0].h_load(), expected[0].k_load(),
+      expected[0].h_t,      expected[0].k_t,
+  };
+  EXPECT_EQ(rows.front().values, expected_values);
 }
 
 TEST(LoveNumbersCliTests, InvalidArgumentsAndMissingModelFail) {
@@ -201,17 +214,33 @@ TEST(LoveNumbersCliTests, InvalidArgumentsAndMissingModelFail) {
 
   const CommandResult missing = runCli(
       {(temporary_directory.path() / "missing-model.txt").string(),
-       "0", "-", "2", "0.4"},
+       "0", "-", "3", "0.4"},
       temporary_directory);
   EXPECT_NE(missing.status, 0);
   EXPECT_NE(missing.standard_error.find("dspecm1d-love:"),
             std::string::npos);
 }
 
+TEST(LoveNumbersCliTests, RejectsUnderintegratedPolynomialOrders) {
+  TemporaryDirectory temporary_directory;
+  for (const std::string polynomial_order : {"1", "2"}) {
+    const CommandResult command = runCli(
+        {DSPECM1D_LOVE_NUMBERS_CLI_MODEL, "0", "-",
+         polynomial_order, "0.4"},
+        temporary_directory);
+
+    EXPECT_NE(command.status, 0);
+    EXPECT_NE(
+        command.standard_error.find(
+            "Love-number polynomial order must be at least 3"),
+        std::string::npos);
+  }
+}
+
 TEST(LoveNumbersCliTests, SurfaceFluidIsRejectedClearly) {
   TemporaryDirectory temporary_directory;
   const CommandResult command = runCli(
-      {DSPECM1D_LOVE_NUMBERS_CLI_OCEAN_MODEL, "0", "-", "2", "0.4"},
+      {DSPECM1D_LOVE_NUMBERS_CLI_OCEAN_MODEL, "0", "-", "3", "0.4"},
       temporary_directory);
 
   EXPECT_NE(command.status, 0);

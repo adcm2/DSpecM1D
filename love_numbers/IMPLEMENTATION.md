@@ -36,8 +36,10 @@ k_t                   dimensionless
 `RadialState` owns the `EarthMesh::RadialMesh`, sampled `MeshModel`, and
 density derivative at every element node. A configuration polynomial order
 is the degree `p`; the mesh constructor therefore receives `p + 1` GLL
-nodes. `maximum_radial_step` is the existing DSpecM1D relative radial-step
-argument.
+nodes. The module requires `p >= 3`, so the GLL rule, exact through degree
+`2p - 1`, exactly integrates the degree-five product of a cubic density
+spline and `r^2` on each spline segment. `maximum_radial_step` is the
+existing DSpecM1D relative radial-step argument.
 
 Density derivatives are evaluated as
 `model.Density(layer).Derivative(radius)` using each element's own layer.
@@ -59,7 +61,9 @@ are continuous even when density jumps. `RadialState::gravity` and
 `surfaceGravity` delegate directly to the owned `MeshModel`; the former
 duplicate private Love-number integration has been removed. The operator and
 forcing continue to use the `RadialState` accessors, leaving one authoritative
-production gravity calculation.
+production gravity calculation. The defect was identified during Love-number
+validation; its obsolete output curve is no longer retained as an active
+benchmark.
 
 ## Degrees of freedom
 

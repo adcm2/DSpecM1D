@@ -4,6 +4,7 @@ import argparse
 import json
 import math
 from pathlib import Path
+import subprocess
 import sys
 
 sys.dont_write_bytecode = True
@@ -30,6 +31,7 @@ def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("default_executable")
     parser.add_argument("elln_g_executable")
+    parser.add_argument("production_executable")
     parser.add_argument("model", type=Path)
     parser.add_argument("manifest", type=Path)
     parser.add_argument("official_table", type=Path)
@@ -178,6 +180,53 @@ def conventional(result, gravity, radius, gravitational_constant):
     )
 
 
+def run_production(executable, model):
+    completed = subprocess.run(
+        [
+            executable, str(model), str(DEGREE), "-", "6", RADIAL_STEP,
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    if completed.returncode != 0:
+        sys.stderr.write(completed.stdout)
+        sys.stderr.write(completed.stderr)
+        raise RuntimeError(
+            "production Love-number calculation failed with exit code "
+            f"{completed.returncode}"
+        )
+    for line in completed.stdout.splitlines():
+        fields = line.split()
+        if fields and not line.startswith("#") and int(fields[0]) == DEGREE:
+            return tuple(map(float, fields[1:]))
+    raise RuntimeError("production Love-number output has no degree-10 row")
+
+
+def check_production_match(default, production):
+    absolute_errors = tuple(
+        abs(validation - normal)
+        for validation, normal in zip(default["result"], production)
+    )
+    relative_errors = tuple(
+        abs(relative_difference(validation, normal))
+        for validation, normal in zip(default["result"], production)
+    )
+    maximum_absolute = max(absolute_errors)
+    maximum_relative = max(relative_errors)
+    tolerance = 32.0 * sys.float_info.epsilon
+    print(
+        "production_match "
+        f"maximum_absolute_difference={maximum_absolute:.17e} "
+        f"maximum_relative_difference={maximum_relative:.17e}"
+    )
+    if maximum_relative > tolerance:
+        raise RuntimeError(
+            "default-G validation executable does not match the normal "
+            "production calculation"
+        )
+
+
 def run_case(label, executable, model, gravitational_constant):
     run = run_driver([
         executable, "--configured", str(model), "6", RADIAL_STEP,
@@ -205,7 +254,12 @@ def run_case(label, executable, model, gravitational_constant):
             f"relative_difference="
             f"{relative_difference(value, reference):.17e}"
         )
-    return {"h": h, "k": k}
+    return {
+        "h": h,
+        "k": k,
+        "gravity": gravity,
+        "result": result,
+    }
 
 
 def main():
@@ -223,6 +277,30 @@ def main():
     elln = run_case(
         "elln_G", arguments.elln_g_executable, arguments.model, ELLN_G
     )
+    check_production_match(
+        default,
+        run_production(arguments.production_executable, arguments.model),
+    )
+    if elln["gravity"] == default["gravity"]:
+        raise RuntimeError(
+            "ELLN-G and default-G calculations reported identical gravity"
+        )
+    gravity_ratio = elln["gravity"] / default["gravity"]
+    constant_ratio = ELLN_G / DEFAULT_G
+    gravity_ratio_error = abs(
+        relative_difference(gravity_ratio, constant_ratio)
+    )
+    gravity_ratio_tolerance = 32.0 * sys.float_info.epsilon
+    print(
+        f"gravity_ratio value={gravity_ratio:.17e} "
+        f"expected={constant_ratio:.17e} "
+        f"relative_error={gravity_ratio_error:.17e}"
+    )
+    if gravity_ratio_error > gravity_ratio_tolerance:
+        raise RuntimeError(
+            "surface-gravity ratio does not match the gravitational-constant "
+            "ratio"
+        )
     relative_g_change = (ELLN_G - DEFAULT_G) / DEFAULT_G
     for name, reference in (("h", OFFICIAL_H), ("k", OFFICIAL_K)):
         original = default[name] - reference

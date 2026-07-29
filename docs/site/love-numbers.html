@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Build and use the optional DSpecM1D static loading and tidal Love-number module.">
+  <title>Love Numbers | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <nav>
+    <div class="shell">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="installation.html">Installation</a></li>
+        <li><a href="parameter-files.html">Parameter Files</a></li>
+        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
+        <li><a href="library-testing.html">Library Testing</a></li>
+        <li><a href="release-notes.html">Release Notes</a></li>
+        <li><a href="love-numbers.html">Love Numbers</a></li>
+        <li><a href="api/index.html">API Reference</a></li>
+      </ul>
+    </div>
+  </nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <h1>Static Love Numbers</h1>
+        <p class="lede">The optional Love-number module calculates dimensional static generalized loading and tidal responses for spherically symmetric, self-gravitating, radially transversely isotropic Earth models.</p>
+      </div>
+
+      <section class="page-section">
+        <h2>Overview</h2>
+        <p>The calculated components are:</p>
+        <pre><code>h_u k_u h_phi k_phi h_t k_t
+h_load = h_u + h_phi
+k_load = k_u + k_phi</code></pre>
+      </section>
+
+      <section class="page-section">
+        <h2>Enabling The Module</h2>
+        <p>The option defaults to <code>OFF</code>. Enable it when configuring DSpecM1D:</p>
+        <pre><code>cmake -S . -B build \
+  -DDSPECM1D_BUILD_LOVE_NUMBERS=ON</code></pre>
+      </section>
+
+      <section class="page-section">
+        <h2>Command-Line Use</h2>
+        <pre><code>dspecm1d-love MODEL_FILE LMAX OUTPUT_FILE \
+              [POLYNOMIAL_ORDER] [MAXIMUM_RADIAL_STEP]</code></pre>
+        <ul class="check-list">
+          <li>The default polynomial order is <code>6</code>.</li>
+          <li>The default maximum radial step is <code>0.01</code>.</li>
+          <li><code>OUTPUT_FILE=-</code> writes to standard output.</li>
+          <li>The polynomial order must satisfy <code>p &gt;= 3</code>.</li>
+        </ul>
+        <p>For example, calculate degrees 0 through 10 for the no-ocean PREM model:</p>
+        <pre><code>dspecm1d-love data/models/prem.200.no.noatten.txt 10 love-numbers.txt</code></pre>
+      </section>
+
+      <section class="page-section">
+        <h2>Output</h2>
+        <p>Each degree produces one row with nine columns:</p>
+        <pre><code>l h_u k_u h_phi k_phi h_load k_load h_t k_t</code></pre>
+        <ul class="check-list">
+          <li><code>h_u</code>, <code>h_phi</code>, <code>h_load</code>: m<sup>3</sup> kg<sup>-1</sup></li>
+          <li><code>k_u</code>, <code>k_phi</code>, <code>k_load</code>: m<sup>4</sup> kg<sup>-1</sup> s<sup>-2</sup></li>
+          <li><code>h_t</code>: s<sup>2</sup> m<sup>-1</sup></li>
+          <li><code>k_t</code>: dimensionless</li>
+        </ul>
+      </section>
+
+      <section class="page-section">
+        <h2>Physical And Numerical Scope</h2>
+        <ul class="check-list">
+          <li>The calculation is a static elastic, self-gravitating response.</li>
+          <li>Radial transverse isotropy and internal fluid regions are supported.</li>
+          <li>A surface ocean is not supported.</li>
+          <li>Degree zero uses the radial system.</li>
+          <li>Degree one uses the exact surface convention <code>P(a) = 0</code>.</li>
+          <li>Polynomial degree <code>p</code> uses <code>p + 1</code> GLL nodes.</li>
+          <li>Background gravity uses the corrected shared <code>MeshModel::Gravity</code> implementation.</li>
+        </ul>
+      </section>
+
+      <section class="page-section">
+        <h2>Validation</h2>
+        <p>Validation includes analytic gravity and matrix tests, controlled all-solid and internal-fluid comparisons with gia3D, an isotropized PREM comparison, and an independent transversely isotropic comparison with ELLN. External codes are comparisons, not ground truth. GitHub CI exercises all 58 normal Love-number tests.</p>
+      </section>
+
+      <section class="page-section">
+        <h2>Further Documentation</h2>
+        <div class="meta-list">
+          <div class="meta-item">
+            <strong>Full Technical Report</strong>
+            <a href="reports/love_numbers_report.pdf">Open the Love-number PDF report</a>
+          </div>
+          <div class="meta-item">
+            <strong>User Guide</strong>
+            <a href="https://github.com/adcm2/DSpecM1D/blob/master/love_numbers/README.md">Read love_numbers/README.md</a>
+          </div>
+          <div class="meta-item">
+            <strong>Implementation</strong>
+            <a href="https://github.com/adcm2/DSpecM1D/blob/master/love_numbers/IMPLEMENTATION.md">Read love_numbers/IMPLEMENTATION.md</a>
+          </div>
+          <div class="meta-item">
+            <strong>Test Inventory</strong>
+            <a href="https://github.com/adcm2/DSpecM1D/blob/master/love_numbers/TESTS.md">Read love_numbers/TESTS.md</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

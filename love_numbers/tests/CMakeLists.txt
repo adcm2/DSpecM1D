@@ -121,6 +121,7 @@ target_compile_definitions(dspecm1d_love_numbers_radial_state_tests
         DSPECM1D_LOVE_NUMBERS_HOMOGENEOUS_MODEL="${CMAKE_CURRENT_SOURCE_DIR}/../validation/data/homogeneous_sphere.dspec"
         DSPECM1D_LOVE_NUMBERS_CONTROLLED_SFS_MODEL="${CMAKE_CURRENT_SOURCE_DIR}/../validation/data/solid_fluid_solid.dspec"
         DSPECM1D_LOVE_NUMBERS_CONTROLLED_CENTRAL_FLUID_MODEL="${CMAKE_CURRENT_SOURCE_DIR}/../validation/data/central_fluid.dspec"
+        DSPECM1D_LOVE_NUMBERS_SFS_MODEL="${CMAKE_CURRENT_SOURCE_DIR}/data/internal_fluid_sfs.txt"
 )
 
 target_compile_definitions(dspecm1d_love_numbers_tests

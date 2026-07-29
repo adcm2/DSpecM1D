@@ -19,7 +19,7 @@ constexpr double pi = 3.14159265358979323846;
 Config gravityConfig() {
   return Config{
       .maximum_degree = 2,
-      .polynomial_order = 4,
+      .polynomial_order = 3,
       .maximum_radial_step = 0.1,
   };
 }
@@ -63,6 +63,35 @@ GravityErrors measureGravityErrors(
   return errors;
 }
 
+double exactSurfaceGravity(
+    const EarthModels::ModelInput<double> &model,
+    const RadialState &state) {
+  const auto quadrature =
+      GaussQuad::GaussLegendreQuadrature1D<double>(3);
+  double density_moment = 0.0;
+  for (int layer = 0; layer < model.NumberOfLayers(); ++layer) {
+    const auto density = model.Density(layer);
+    const auto radii = model.LayerRadii(layer);
+    for (std::size_t interval = 1; interval < radii.size(); ++interval) {
+      const double half_width =
+          0.5 * (radii[interval] - radii[interval - 1]);
+      const double centre =
+          0.5 * (radii[interval] + radii[interval - 1]);
+      for (int point = 0; point < quadrature.N(); ++point) {
+        const double radius =
+            centre + half_width * quadrature.X(point);
+        density_moment +=
+            half_width * quadrature.W(point) *
+            density(radius) * radius * radius;
+      }
+    }
+  }
+
+  const double radius = state.surfaceRadius();
+  return 4.0 * pi * state.dimensionlessGravitationalConstant() *
+         density_moment / (radius * radius);
+}
+
 TEST(RadialStateTests, PolynomialOrderUsesOneMoreGllNode) {
   const EarthModels::ModelInput<double> model{
       DSPECM1D_LOVE_NUMBERS_SOLID_SURFACE_MODEL};
@@ -82,7 +111,7 @@ TEST(RadialStateTests, MeshEndsAtSurfaceWithoutExteriorBall) {
       DSPECM1D_LOVE_NUMBERS_SOLID_SURFACE_MODEL};
   const Config config{
       .maximum_degree = 2,
-      .polynomial_order = 2,
+      .polynomial_order = 3,
       .maximum_radial_step = 0.2,
   };
 
@@ -100,7 +129,7 @@ TEST(RadialStateTests, SampledModelValuesAreFinite) {
       DSPECM1D_LOVE_NUMBERS_SOLID_SURFACE_MODEL};
   const Config config{
       .maximum_degree = 2,
-      .polynomial_order = 2,
+      .polynomial_order = 3,
       .maximum_radial_step = 0.2,
   };
 
@@ -201,6 +230,27 @@ TEST(RadialStateTests, ControlledSolidFluidSolidGravityIsAnalytic) {
   EXPECT_NEAR(state.surfaceGravity(), expected_surface,
               gravity_tolerance * std::max(1.0,
                                            std::abs(expected_surface)));
+}
+
+TEST(RadialStateTests,
+     MinimumPolynomialOrderExactlyIntegratesCubicDensityGravity) {
+  const EarthModels::ModelInput<double> model{
+      DSPECM1D_LOVE_NUMBERS_SFS_MODEL};
+  const Config config{
+      .maximum_degree = 2,
+      .polynomial_order = 3,
+      .maximum_radial_step = 0.125,
+  };
+  const RadialState state(model, config);
+  const double expected = exactSurfaceGravity(model, state);
+  const double error =
+      std::abs(state.surfaceGravity() - expected) /
+      std::max(1.0, std::abs(expected));
+
+  std::cout << std::setprecision(17)
+            << "cubic_density_p3_surface_gravity_error="
+            << error << '\n';
+  EXPECT_LE(error, 32.0 * std::numeric_limits<double>::epsilon());
 }
 
 TEST(RadialStateTests, ControlledCentralFluidGravityIsAnalytic) {
@@ -347,7 +397,7 @@ TEST(RadialStateTests, RejectsSurfaceFluid) {
       DSPECM1D_LOVE_NUMBERS_OCEAN_MODEL};
   const Config config{
       .maximum_degree = 2,
-      .polynomial_order = 2,
+      .polynomial_order = 3,
       .maximum_radial_step = 0.2,
   };
 
@@ -369,19 +419,13 @@ TEST(RadialStateTests, RejectsInvalidConfiguration) {
   EXPECT_THROW(
       RadialState(model,
                   Config{.maximum_degree = -1,
-                         .polynomial_order = 2,
+                         .polynomial_order = 3,
                          .maximum_radial_step = 0.2}),
       std::invalid_argument);
   EXPECT_THROW(
       RadialState(model,
                   Config{.maximum_degree = 2,
-                         .polynomial_order = 0,
-                         .maximum_radial_step = 0.2}),
-      std::invalid_argument);
-  EXPECT_THROW(
-      RadialState(model,
-                  Config{.maximum_degree = 2,
-                         .polynomial_order = 2,
+                         .polynomial_order = 3,
                          .maximum_radial_step = 0.0}),
       std::invalid_argument);
 }

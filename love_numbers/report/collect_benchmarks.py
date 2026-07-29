@@ -59,7 +59,9 @@ def write_csv(path, comments, fields, rows):
     with path.open("w", encoding="utf-8", newline="") as stream:
         for comment in comments:
             stream.write(f"# {comment}\n")
-        writer = csv.DictWriter(stream, fieldnames=fields)
+        writer = csv.DictWriter(
+            stream, fieldnames=fields, lineterminator="\n"
+        )
         writer.writeheader()
         for row in rows:
             formatted = {}
@@ -242,10 +244,7 @@ def main():
         gravity = controlled["solid-fluid-solid"][0]
         gravity_rows.append({
             "elements": elements,
-            "legacy_mesh_model_absolute_error":
-                gravity[(elements, "dspec_legacy")],
-            "corrected_love_number_absolute_error":
-                gravity[(elements, "dspec")],
+            "dspecm1d_absolute_error": gravity[(elements, "dspec")],
             "gia3d_absolute_error": gravity[(elements, "gia3d")],
         })
     write_csv(
@@ -260,8 +259,7 @@ def main():
         ),
         (
             "elements",
-            "legacy_mesh_model_absolute_error",
-            "corrected_love_number_absolute_error",
+            "dspecm1d_absolute_error",
             "gia3d_absolute_error",
         ),
         gravity_rows,
@@ -389,6 +387,7 @@ def main():
         validation / "elln" / "compare_gravitational_constants.py",
         binary / "dspecm1d_controlled_love_numbers",
         binary / "dspecm1d_controlled_love_numbers_elln_g",
+        binary / "dspecm1d-love",
         elln_model_dir / "elln_ti_prem_6.25km.dspec",
         elln_model_dir / "elln_ti_prem_manifest.json",
         validation / "elln" / "official_ti_prem_table_s7.txt",

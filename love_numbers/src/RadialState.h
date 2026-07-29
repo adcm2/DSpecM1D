@@ -66,8 +66,9 @@ private:
     if (config.maximum_degree < 0) {
       throw std::invalid_argument("maximum_degree must be non-negative.");
     }
-    if (config.polynomial_order < 1) {
-      throw std::invalid_argument("polynomial_order must be at least 1.");
+    if (config.polynomial_order < 3) {
+      throw std::invalid_argument(
+          "Love-number polynomial order must be at least 3.");
     }
     if (!(config.maximum_radial_step > 0.0)) {
       throw std::invalid_argument("maximum_radial_step must be positive.");

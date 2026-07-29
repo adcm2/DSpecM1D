@@ -151,16 +151,11 @@ int main(int argc, char **argv) {
       state.surfaceRadius() * model.LengthNorm();
   const double surface_gravity =
       state.surfaceGravity() * model.AccelerationNorm();
-  const double legacy_surface_gravity =
-      state.meshModel().Gravity(elements - 1, state.mesh().NN() - 1) *
-      model.AccelerationNorm();
 
   std::cout << std::scientific << std::setprecision(17);
   std::cerr << std::scientific << std::setprecision(17);
   std::cerr << "metadata " << surface_radius << ' ' << surface_gravity
             << ' ' << elements << ' ' << radial_nodes << '\n';
-  std::cerr << "legacy_surface_gravity " << legacy_surface_gravity
-            << '\n';
 
   std::vector<int> layer_elements(model.NumberOfLayers(), 0);
   for (int element = 0; element < state.mesh().NE(); ++element) {

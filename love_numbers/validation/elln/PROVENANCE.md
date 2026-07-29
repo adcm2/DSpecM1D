@@ -244,23 +244,29 @@ were at most `7.26e-14`.
 ## Stage 17 gravitational-constant isolation
 
 The paper-validation build copies the six private Love-number
-implementation files and `controlled_love_numbers.cpp` into
-`elln-gravity-copy` in the build tree. It then applies
-`patches/elln_gravitational_constant.patch`, whose only source change is
+implementation files, `controlled_love_numbers.cpp`, and the main-library
+`MeshModel.h` into `elln-gravity-copy` in the build tree. It places that
+build-tree root first on the ELLN-`G` target's include path, so
+`RadialState` resolves the copied `MeshModel.h`; normal targets continue
+to resolve the production header. It then applies
+`patches/elln_gravitational_constant.patch`, whose source changes are
 
 ```text
 6.67230e-11 / model.GravitationalConstant()
-    -> 6.67384e-11 / model.GravitationalConstant().
+    -> 6.67384e-11 / model.GravitationalConstant()
+
+6.67230 * 10^-11 / model.GravitationalConstant()
+    -> 6.67384 * 10^-11 / model.GravitationalConstant().
 ```
 
-This is the sole physical-`G` literal in the Love-number implementation.
-It defines `RadialState::dimensionlessGravitationalConstant()`;
-`RadialState` uses that value for background gravity, the static
-operator uses the same accessor and sampled gravity, and the forcing
-uses the sampled gravity. The Stage 17 comparison separately uses the
-matching physical constant in the dimensional-to-conventional `h_l`
-and `k_l` conversion. All model values and normalization scales are
-unchanged. The source-tree implementation is not patched.
+The first value defines
+`RadialState::dimensionlessGravitationalConstant()` for the static
+operator. The second makes the delegated `MeshModel::Gravity` use the
+same validation constant; forcing terms obtain that gravity through
+`RadialState`. The Stage 17 comparison separately uses the matching
+physical constant in the dimensional-to-conventional `h_l` and `k_l`
+conversion. All model values and normalization scales are unchanged.
+No source-tree implementation is patched.
 
 For the 6.25 km deck, polynomial order 6, degree 10, and maximum radial
 step 0.00125, the two calculations are:

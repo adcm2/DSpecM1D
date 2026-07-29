@@ -28,9 +28,11 @@ const auto results = DSpecM1D::LoveNumbers::calculate(model, config);
 
 Results are returned in ascending order from degree zero through
 `maximum_degree`. `polynomial_order` is the polynomial degree `p`, so every
-element has `p + 1` GLL nodes. `maximum_radial_step` is passed directly to the
-existing DSpecM1D radial mesh as its relative radial step; it is not a length
-in metres.
+element has `p + 1` GLL nodes. The Love-number module requires `p >= 3`.
+This makes the GLL rule exact for the degree-five product of a cubic density
+spline and `r^2` on each spline segment. `maximum_radial_step` is passed
+directly to the existing DSpecM1D radial mesh as its relative radial step; it
+is not a length in metres.
 
 Each result contains:
 

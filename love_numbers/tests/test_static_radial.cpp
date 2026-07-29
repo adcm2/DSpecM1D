@@ -44,7 +44,7 @@ Config smallModelConfig() {
 Config premConfig() {
   return Config{
       .maximum_degree = 2,
-      .polynomial_order = 2,
+      .polynomial_order = 3,
       .maximum_radial_step = 0.2,
   };
 }

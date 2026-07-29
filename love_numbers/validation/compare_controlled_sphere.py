@@ -153,7 +153,6 @@ def run_driver(command):
     metadata = None
     layer_elements = None
     floating_point_flags = None
-    legacy_surface_gravity = None
     diagnostics = {}
     fluids = {}
     for line in completed.stderr.splitlines():
@@ -184,8 +183,6 @@ def run_driver(command):
                 parse_flag(fields[1]),
                 parse_flag(fields[2]),
             )
-        elif fields[0] == "legacy_surface_gravity":
-            legacy_surface_gravity = float(fields[1])
 
     results = {}
     for line in completed.stdout.splitlines():
@@ -199,8 +196,6 @@ def run_driver(command):
     if floating_point_flags is None:
         raise RuntimeError("driver did not report floating-point flags")
     values = metadata[:2]
-    if legacy_surface_gravity is not None:
-        values += (legacy_surface_gravity,)
     values += tuple(value for row in diagnostics.values() for value in row[1:])
     values += tuple(value for row in fluids.values() for value in row)
     values += tuple(value for row in results.values() for value in row)
@@ -217,7 +212,6 @@ def run_driver(command):
         "diagnostics": diagnostics,
         "results": results,
         "floating_point_flags": floating_point_flags,
-        "legacy_surface_gravity": legacy_surface_gravity,
     }
 
 
@@ -351,18 +345,6 @@ def main():
                 f"signed_difference={gravity-analytic_gravity:.17e} "
                 f"relative_difference="
                 f"{relative_difference(gravity, analytic_gravity):.17e}"
-            )
-        if dspec["legacy_surface_gravity"] is not None:
-            legacy_gravity = dspec["legacy_surface_gravity"]
-            print(
-                f"gravity model={model_name} N={elements} "
-                "implementation=dspec_legacy "
-                f"calculated={legacy_gravity:.17e} "
-                f"analytic={analytic_gravity:.17e} "
-                f"signed_difference="
-                f"{legacy_gravity-analytic_gravity:.17e} "
-                f"relative_difference="
-                f"{relative_difference(legacy_gravity, analytic_gravity):.17e}"
             )
         print(
             f"mesh model={model_name} N={elements} "
