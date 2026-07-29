@@ -160,6 +160,8 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
   auto q = mesh.GLL();
   for (int idxe = 0; idxe < NE; ++idxe) {
     int laynum = mesh.LayerNumber(idxe);
+    auto density = inp_model.Density(laynum);
+    auto density_knots = inp_model.LayerRadii(laynum);
     if (idxe != 0) {
       _vec_gravity[idxe][0] = _vec_gravity[idxe - 1][NQ - 1];
     }
@@ -168,13 +170,22 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
       double urad = mesh.NodeRadius(idxe, idxn);
       double lrad = mesh.NodeRadius(idxe, idxn - 1);
       double tmp = 0.0;
-      double ewidth2 = 0.5 * (urad - lrad);
-      double crad2 = 0.5 * (urad + lrad);
-      for (int idxi = 0; idxi < NQ; ++idxi) {
-        double cradi = ewidth2 * q.X(idxi) + crad2;
-        tmp += q.W(idxi) * _vec_density[idxe][idxi] * cradi * cradi;
+      double segment_lrad = lrad;
+      auto integrate_segment = [&](double segment_urad) {
+        double ewidth2 = 0.5 * (segment_urad - segment_lrad);
+        double crad2 = 0.5 * (segment_urad + segment_lrad);
+        for (int idxi = 0; idxi < NQ; ++idxi) {
+          double cradi = ewidth2 * q.X(idxi) + crad2;
+          tmp += q.W(idxi) * density(cradi) * cradi * cradi * ewidth2;
+        }
+        segment_lrad = segment_urad;
+      };
+      for (double knot : density_knots) {
+        if (knot > segment_lrad && knot < urad) {
+          integrate_segment(knot);
+        }
       }
-      tmp *= ewidth2;
+      integrate_segment(urad);
       _vec_gravity[idxe][idxn] = _vec_gravity[idxe][idxn - 1] + tmp;
     }
   }
