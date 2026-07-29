@@ -8,7 +8,8 @@
   layer-density interpolant at the mapped quadrature radius, splitting only at
   density-spline knots inside the current integration interval.
 - Preserved cumulative centre-to-surface storage and exact copying at duplicated
-  element and material boundaries.
+  element and material boundaries, without adding a new model-interface
+  requirement.
 - Verification completed:
   - all 3 focused analytic gravity tests passed;
   - all 53 registered project tests passed;

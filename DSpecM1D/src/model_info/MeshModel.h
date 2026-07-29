@@ -161,7 +161,10 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
   for (int idxe = 0; idxe < NE; ++idxe) {
     int laynum = mesh.LayerNumber(idxe);
     auto density = inp_model.Density(laynum);
-    auto density_knots = inp_model.LayerRadii(laynum);
+    std::vector<double> density_knots;
+    if constexpr (requires { inp_model.LayerRadii(laynum); }) {
+      density_knots = inp_model.LayerRadii(laynum);
+    }
     if (idxe != 0) {
       _vec_gravity[idxe][0] = _vec_gravity[idxe - 1][NQ - 1];
     }
