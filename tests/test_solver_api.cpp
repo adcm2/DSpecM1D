@@ -113,7 +113,7 @@ TEST(PreferredSolverApiTests, PreferredSolverOverloadsReturnStableShapes) {
   EXPECT_TRUE(withSharedSem.isApprox(withSharedSemReversed, 1e-12));
 }
 
-TEST(PreferredSolverApiTests, SingleSemAllModePathReturnsFiniteOutput) {
+TEST(PreferredSolverApiTests, AllModePathsReturnFiniteOutput) {
   auto paramsNew = makeTinyPreferredParams(4);
   paramsNew.setNq(5);
   paramsNew.setNskip(2);
@@ -122,12 +122,19 @@ TEST(PreferredSolverApiTests, SingleSemAllModePathReturnsFiniteOutput) {
   SPARSESPEC::SparseFSpec solver;
   Full1D::SEM sem(paramsNew);
   const auto result = solver.spectra(paramsNew, sem);
+  const auto multiResult = solver.spectra(paramsNew);
 
   EXPECT_EQ(result.rows(), 3 * paramsNew.inputParameters().num_receivers());
   EXPECT_EQ(result.cols(),
             static_cast<Eigen::Index>(paramsNew.freqFull().w().size()));
   EXPECT_TRUE(result.real().array().isFinite().all());
   EXPECT_TRUE(result.imag().array().isFinite().all());
+  EXPECT_EQ(multiResult.rows(),
+            3 * paramsNew.inputParameters().num_receivers());
+  EXPECT_EQ(multiResult.cols(),
+            static_cast<Eigen::Index>(paramsNew.freqFull().w().size()));
+  EXPECT_TRUE(multiResult.real().array().isFinite().all());
+  EXPECT_TRUE(multiResult.imag().array().isFinite().all());
 }
 
 TEST(PreferredSolverApiTests, LegacyMultiSemOverloadReturnsFiniteOutput) {

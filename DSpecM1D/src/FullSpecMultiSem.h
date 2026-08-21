@@ -3,7 +3,23 @@
 
 #include "FullSpec.h"
 
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+#include "LapackBandSolver.h"
+#endif
+
 namespace SPARSESPEC {
+
+namespace detail {
+
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+using MultiSemSolver = LapackBandSolver;
+#else
+using MultiSemSolver =
+    Eigen::SparseLU<Eigen::SparseMatrix<std::complex<double>>,
+                    Eigen::COLAMDOrdering<int>>;
+#endif
+
+} // namespace detail
 
 inline Eigen::MatrixXcd
 SparseFSpec::spectra(InputParametersNew &paramsNew) {
@@ -21,8 +37,6 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
   using SparseMatrixC = Eigen::SparseMatrix<Complex>;
-  using SparseLUType =
-      Eigen::SparseLU<SparseMatrixC, Eigen::COLAMDOrdering<int>>;
   Timer timer1;
 
   auto vecW = myff.w();
@@ -99,7 +113,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
     sems.emplace_back(inp_model, maxSteps[idx], NQ, params.lmax());
 
   timer1.start();
-  SparseLUType solver, solver1;
+  detail::MultiSemSolver solver, solver1;
 
   int lmin = params.lmin();
   int lmax = params.lmax();
