@@ -53,6 +53,10 @@ dspecm1d_add_test_exe(dspecm1d_sem_component_tests
   test_sem_component.cpp
 )
 
+dspecm1d_add_test_exe(dspecm1d_lapack_band_storage_tests
+  test_lapack_band_storage.cpp
+)
+
 dspecm1d_add_test_exe(dspecm1d_mesh_model_gravity_tests
   test_mesh_model_gravity.cpp
 )
