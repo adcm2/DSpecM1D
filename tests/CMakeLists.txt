@@ -57,6 +57,12 @@ dspecm1d_add_test_exe(dspecm1d_lapack_band_storage_tests
   test_lapack_band_storage.cpp
 )
 
+if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
+  dspecm1d_add_test_exe(dspecm1d_lapack_band_solver_tests
+    test_lapack_band_solver.cpp
+  )
+endif()
+
 dspecm1d_add_test_exe(dspecm1d_mesh_model_gravity_tests
   test_mesh_model_gravity.cpp
 )
