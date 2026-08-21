@@ -1,0 +1,115 @@
+{
+  "campaign": "DSpecM1D Stage I PR1 solver benchmark",
+  "accepted_git_revision": "48dc38a240a14e9a37838346887d334371015c2c",
+  "configuration": {
+    "api": "preferred adaptive multi-SEM SparseFSpec::spectra(InputParametersNew &)",
+    "input": "data/params/ex3.txt",
+    "model": "PREM",
+    "mode_type": 4,
+    "attenuation": true,
+    "lmax": 750,
+    "fmax_mHz": [5, 10, 20, 35, 55],
+    "warmups_per_backend_fmax": 1,
+    "measured_repetitions_per_backend_fmax": 3,
+    "measurement_scope": "complete spectra() call only"
+  },
+  "lapack_pr1_pipeline": "form Eigen sparse frequency matrix -> pack into LAPACK general-band storage -> zgbtrf/zgbtrs factorize and solve",
+  "machine": {
+    "hostname": "earth-tunya",
+    "cpu_model": "AMD EPYC 9334 32-Core Processor",
+    "logical_cpus": 128,
+    "sockets": 2,
+    "cores_per_socket": 32,
+    "threads_per_core": 2
+  },
+  "compiler": {
+    "path": "/opt/gcc-15.2.0/bin/g++",
+    "version": "g++ (GCC) 15.2.0",
+    "cmake_version": "3.25.1",
+    "build_type": "Release",
+    "cxx_flags": "",
+    "cxx_flags_release": "-O3 -DNDEBUG",
+    "cxx_standard": 23
+  },
+  "builds": {
+    "eigen": {
+      "path": "/tmp/dspecm1d-stage-g-off-verify",
+      "DSPECM1D_USE_LAPACK_BAND_SOLVER": false
+    },
+    "lapack": {
+      "path": "/tmp/dspecm1d-stage-e-verify",
+      "DSPECM1D_USE_LAPACK_BAND_SOLVER": true
+    },
+    "otherwise_identical": true
+  },
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "representative_pilot": {
+    "purpose": "confirmed both backends, complete spectra() timing scope, fair backend order/thread controls, numerical sanity, and practical runtime before the full grid",
+    "fmax_mHz": 5,
+    "template_lmax": 750,
+    "warmups_per_backend": 1,
+    "measured_repetitions_per_backend": 1,
+    "eigen_seconds": 10.388261539,
+    "lapack_seconds": 10.102468484,
+    "result_shape": [6, 16385],
+    "finite": true,
+    "eigen_norm": 0.000023812146758686836,
+    "lapack_norm": 0.000023812146758376107,
+    "same_compiler_build_and_thread_settings_as_final": true,
+    "raw_timings": {
+      "path": "results/stage_i/stage_i_pilot_timings.tsv",
+      "sha256": "cd379fb046c0577172e5866818a3db850f0ca7117ace8f18101cc18f746436dd"
+    },
+    "metadata": {
+      "path": "results/stage_i/stage_i_pilot_metadata.json",
+      "sha256": "53a37121d6813919712563b79b05322a6b1ef5b9656bfc6c6512b9fe806af2c7"
+    }
+  },
+  "backend_order": "Eigen first at 5, 20, and 55 mHz; LAPACK first at 10 and 35 mHz; detached 55 completion repeated both backends in Eigen-then-LAPACK order",
+  "segmented_execution": [
+    {
+      "segment": "initial_grid",
+      "command": "python3 scripts/stage_i_benchmark.py --eigen-build /tmp/dspecm1d-stage-g-off-verify --lapack-build /tmp/dspecm1d-stage-e-verify --output-dir results/stage_i --fmax 5 10 20 35 55 --threads 2 --repetitions 3 --tag stage_i",
+      "outcome": "5, 10, 20, and 35 mHz completed; interrupted during the buffered first 55 mHz Eigen invocation before any 55 mHz row was retained",
+      "retained_rows": "final dataset rows 1-24",
+      "source_sha256_before_merge": "74729bfd9f1bf3b2b7558a2da7c24bf0a7c13ed50ae8fad9a7c1202ccb701af1"
+    },
+    {
+      "segment": "interactive_55_resume",
+      "outcome": "three Eigen rows completed, then the parent turn was interrupted during LAPACK; these rows are retained only as an audit artifact and are excluded from the final dataset",
+      "source": "results/stage_i/stage_i_55_resume_timings.tsv",
+      "source_sha256": "0ecf6f9e9ca1456dd8f920e35453af0d4feed4467d4631d7bb3df2fe0bc39916"
+    },
+    {
+      "segment": "detached_55_completion",
+      "command": "python3 scripts/stage_i_benchmark.py --eigen-build /tmp/dspecm1d-stage-g-off-verify --lapack-build /tmp/dspecm1d-stage-e-verify --output-dir results/stage_i --fmax 55 --threads 2 --repetitions 3 --tag stage_i_55_detached",
+      "outcome": "both backends completed; all six rows are used as final dataset rows 25-30",
+      "source": "results/stage_i/stage_i_55_detached_timings.tsv",
+      "source_sha256": "a86f94d4f125eb329b9b7ce6678e6705f0d4f419b2357613b4b940ebc7e5cbed",
+      "source_metadata": "results/stage_i/stage_i_55_detached_metadata.json",
+      "source_metadata_sha256": "5a1a5f74e827a40c2b3033edc9503c52c127e5eeba4541782fb09d60cc6faa94"
+    }
+  ],
+  "final_artifacts": {
+    "raw_timings": {
+      "path": "results/stage_i/stage_i_timings.tsv",
+      "data_rows": 30,
+      "sha256": "6a3df0e61a6f731a5ce221e855dc3326f17569ec5c4081587c1fcceaeee52c70"
+    },
+    "summary": {
+      "path": "results/stage_i/stage_i_summary.json",
+      "sha256": "575b463ff85de64aab8e1e298126c613d08a3ecd7cddfd77d0f934d5cdae78c3"
+    },
+    "figure": {
+      "path": "results/stage_i/stage_i_wall_time.png",
+      "sha256": "2d2c060a110d3e4697041df4b54619d2083cea698c9124444cdf669b3b45f341",
+      "axes": "x=fmax [mHz], y=median complete spectra wall time [s]; no second y-axis"
+    }
+  }
+}

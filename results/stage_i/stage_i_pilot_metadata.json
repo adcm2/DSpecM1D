@@ -1,0 +1,49 @@
+{
+  "backend_order": "alternating first backend per fmax",
+  "campaign": "DSpecM1D Stage I PR1 solver benchmark",
+  "cmake_version": "cmake version 3.25.1",
+  "command": "scripts/stage_i_benchmark.py --eigen-build /tmp/dspecm1d-stage-g-off-verify --lapack-build /tmp/dspecm1d-stage-e-verify --output-dir /tmp/dspecm1d-stage-i-pilot5 --fmax 5 --threads 2 --repetitions 1 --tag pilot_fmax5_lmax750",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "compiler_version": "g++ (GCC) 15.2.0",
+  "configuration": "ex3/PREM-style type-4 all-mode attenuation=1",
+  "created_utc": "2026-08-21T17:09:02.497524+00:00",
+  "eigen_build": "/tmp/dspecm1d-stage-g-off-verify",
+  "eigen_cmake_flags": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
+  },
+  "git_revision": "48dc38a240a14e9a37838346887d334371015c2c",
+  "git_status": "?? benchmarks/stage_i_solver_benchmark.cpp\n?? docs/stage_i_benchmark.md\n?? scripts/",
+  "grid_fmax_mHz": [
+    5.0
+  ],
+  "lapack_build": "/tmp/dspecm1d-stage-e-verify",
+  "lapack_cmake_flags": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
+  },
+  "lapack_pr1_pipeline": "Eigen sparse frequency matrix -> LAPACK band packing -> zgbtrf/zgbtrs",
+  "machine": {
+    "CPU(s)": "128",
+    "Core(s) per socket": "32",
+    "Flags": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good amd_lbr_v2 nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 invpcid_single hw_pstate ssbd mba perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd amd_ppin cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif x2avic v_spec_ctrl avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid overflow_recov succor smca fsrm flush_l1d ibpb_exit_to_user",
+    "Model name": "AMD EPYC 9334 32-Core Processor",
+    "Socket(s)": "2",
+    "Thread(s) per core": "2",
+    "hostname": "earth-tunya"
+  },
+  "measurement": "complete preferred adaptive multi-SEM SparseFSpec::spectra(paramsNew)",
+  "one_untimed_warmup_per_backend_fmax": true,
+  "raw_timing_file": "/tmp/dspecm1d-stage-i-pilot5/pilot_fmax5_lmax750_timings.tsv",
+  "repetitions": 1,
+  "template": "/space/adcm2/CleanBuilds/DSpecM1D/data/params/ex3.txt",
+  "threads": {
+    "BLIS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "1"
+  }
+}
