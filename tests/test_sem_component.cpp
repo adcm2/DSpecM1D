@@ -1,4 +1,6 @@
+#include <algorithm>
 #include <gtest/gtest.h>
+#include <utility>
 #include <DSpecM1D/ModelInput>
 #include <DSpecM1D/src/SEM/SEM.h>
 #include <DSpecM1D/src/SourceInfo.h>
@@ -6,6 +8,21 @@
 #include "test_utils.h"
 
 namespace {
+
+template <class SparseMatrix>
+std::pair<Eigen::Index, Eigen::Index>
+storedBandwidth(const SparseMatrix &matrix) {
+  Eigen::Index lower = 0;
+  Eigen::Index upper = 0;
+  for (Eigen::Index column = 0; column < matrix.outerSize(); ++column) {
+    for (typename SparseMatrix::InnerIterator entry(matrix, column); entry;
+         ++entry) {
+      lower = std::max(lower, entry.row() - entry.col());
+      upper = std::max(upper, entry.col() - entry.row());
+    }
+  }
+  return {lower, upper};
+}
 
 InputParametersNew
 makeTinySemParams() {
@@ -94,6 +111,24 @@ TEST(SEMComponentTests, SystemMatricesExposeConsistentShapes) {
   EXPECT_GT(hR.nonZeros(), 0);
   EXPECT_TRUE(std::isfinite(sem.meshModel().Density(0, 0)));
   EXPECT_TRUE(std::isfinite(sem.meshModel().Gravity(0, 0)));
+}
+
+TEST(SEMComponentTests, FluidSolidNq5MatricesHaveExpectedStructuralBandwidth) {
+  prem_norm<double> norm;
+  auto model = EarthModels::ModelInput(DSpecMTest::modelPath().string(), norm);
+  Full1D::SEM sem(model, 0.05, 5, 15);
+
+  ASSERT_EQ(sem.mesh().NN(), 5);
+  ASSERT_TRUE(sem.mesh().HasFluid());
+  ASSERT_FALSE(sem.mesh().FS_Boundaries().empty());
+
+  const auto radial = storedBandwidth(sem.hR());
+  const auto toroidal = storedBandwidth(sem.hTk(4));
+  const auto spheroidal = storedBandwidth(sem.hS(15));
+
+  EXPECT_EQ(radial, (std::pair<Eigen::Index, Eigen::Index>{9, 9}));
+  EXPECT_EQ(toroidal, (std::pair<Eigen::Index, Eigen::Index>{4, 4}));
+  EXPECT_EQ(spheroidal, (std::pair<Eigen::Index, Eigen::Index>{15, 15}));
 }
 
 TEST(SEMComponentTests, ReceiverVectorsHaveExpectedDimensions) {
