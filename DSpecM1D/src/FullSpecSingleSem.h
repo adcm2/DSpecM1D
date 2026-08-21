@@ -29,6 +29,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem) {
   auto &myff = request.freqFull();
   auto &cmt = request.cmt();
   auto &params = request.params();
+  // Single-SEM retains the cadence supplied by the caller.
   const int nskip = request.nskip();
 
   auto vecW = myff.w();

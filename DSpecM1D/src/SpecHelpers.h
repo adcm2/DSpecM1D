@@ -76,9 +76,9 @@ struct SpecConstants {
         twodivpi{2.0 / M_PI} {}
 };
 
-/// Calls solver.compute() every nskip steps (full symbolic + numeric
-/// factorization) and solver.factorize() otherwise (numeric only).
-/// This amortises the cost of symbolic analysis over many solves.
+/// Applies the established nskip cadence to repeated solves: call
+/// solver.compute() at the first position and every nskip positions after it,
+/// and solver.factorize() at intermediate positions.
 template <class Solver, class Matrix>
 void
 factorizeOrCompute(Solver &solver, const Matrix &mat, int idxn, int nskip) {

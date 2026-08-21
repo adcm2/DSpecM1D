@@ -71,7 +71,9 @@ public:
    *
    * @param paramPath Path to the legacy ordered parameter file.
    * @param nq GLL points per element used by SEM construction.
-   * @param nskip Re-factorization interval for repeated solves.
+   * @param nskip Frequency truncation and factorization cadence for
+   *              single/reused-SEM solves; adaptive multi-SEM derives its
+   *              cadence internally.
    * @param maxstep Maximum non-dimensional element width.
    * @param df0 Base frequency resolution in mHz.
    * @param wtb Initial taper width.
@@ -136,7 +138,8 @@ public:
   void setNq(int nq) { m_nq = std::max(1, nq); }
 
   int nskip() const { return m_nskip; }
-  /// Updates the solver re-factorization cadence, clamped to at least 1.
+  /// Updates the single/reused-SEM truncation and factorization cadence,
+  /// clamped to at least 1.
   void setNskip(int nskip) { m_nskip = std::max(1, nskip); }
 };
 

@@ -12,6 +12,10 @@ namespace SpectralTools {
 namespace detail {
 
 /// Shared implementation for allIndicesTor and allIndicesSph.
+/// Frequencies are visited from high to low.  A start element is recomputed
+/// at the first frequency and every nskip positions thereafter; the
+/// intervening lower frequencies reuse the start element from the next higher
+/// frequency.
 /// GetStartIdx is a callable: (double omega) -> std::size_t
 /// that returns the global DOF index of the lowest element at that frequency.
 template <class GetStartIdx>
@@ -54,7 +58,8 @@ startElementClean(semtype &sem, int l, double omega_in, bool isP,
   double tolval = (idx_source < 0) ? 12.0 : 14.0;
   int idx = 0;
 
-  // start from source element if provided, otherwise from the top
+  // Start immediately below the source element so the retained trailing
+  // domain still contains the source; otherwise start from the top.
   int idx_start =
       (idx_source >= 0 && idx_source < NE) ? idx_source - 1 : NE - 1;
 

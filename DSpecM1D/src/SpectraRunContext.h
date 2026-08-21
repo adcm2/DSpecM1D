@@ -27,7 +27,8 @@ public:
    * @param cmt Earthquake source object.
    * @param params Legacy parameter object.
    * @param tref Reference period of the active Earth model.
-   * @param nskip Re-factorization cadence for repeated solves.
+   * @param nskip Frequency truncation and factorization cadence for repeated
+   *              solves.
    */
   SpectraRunContext(SpectraSolver::FreqFull &freqFull,
                     SourceInfo::EarthquakeCMT &cmt, InputParameters &params,
@@ -53,7 +54,7 @@ public:
   InputParameters &params() const { return *m_params; }
   /// Returns the Earth-model reference period used in attenuation terms.
   double tref() const { return m_tref; }
-  /// Returns the solve re-factorization cadence.
+  /// Returns the frequency truncation and factorization cadence.
   int nskip() const { return m_nskip; }
 
 private:

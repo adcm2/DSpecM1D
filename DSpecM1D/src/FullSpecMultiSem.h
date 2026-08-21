@@ -34,6 +34,8 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   auto twopid = sc.twopid;
 
   auto numRec = params.num_receivers();
+  // Multi-SEM keeps its existing internally derived cadence.  Single-SEM
+  // requests receive nskip through SpectraRunContext instead.
   int nskip = std::max(1, (myff.i2() - myff.i1()) / 20);
   auto iBegin = myff.i1();
   auto iEnd = myff.i2();   // one past last valid index
