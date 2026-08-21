@@ -8,10 +8,10 @@
 namespace {
 
 InputParametersNew
-makeTinyPreferredParams() {
+makeTinyPreferredParams(int type = 1) {
   DSpecMTest::TempDir temp;
   DSpecMTest::ParameterOptions options;
-  options.type = 1;
+  options.type = type;
   options.lmax = 2;
   options.f1 = 0.1;
   options.f2 = 0.2;
@@ -24,10 +24,23 @@ makeTinyPreferredParams() {
   options.numReceivers = 1;
   options.receivers = {{45.0, 90.0}};
   options.relativeError = 1e-3;
+  if (type == 4) {
+    options.lmax = 6;
+    options.f1 = 0.8;
+    options.f2 = 1.0;
+    options.f11 = 0.8;
+    options.f12 = 0.85;
+    options.f21 = 0.9;
+    options.f22 = 1.0;
+  }
 
   const auto path = DSpecMTest::writeFile(
       temp.path() / "tiny_params.txt",
-      DSpecMTest::makeParameterText(DSpecMTest::modelPath().string(), options));
+      DSpecMTest::makeParameterText(
+          (type == 4 ? DSpecMTest::repoRoot() / "data/models/prem.200.no.txt"
+                     : DSpecMTest::modelPath())
+              .string(),
+          options));
 
   InputParametersNew paramsNew(path.string(), 3, 2, 0.2, 1.0, 0.05, 0.0, 1);
   return paramsNew;
@@ -98,6 +111,23 @@ TEST(PreferredSolverApiTests, PreferredSolverOverloadsReturnStableShapes) {
   EXPECT_EQ(withSharedSem.rows(), withSharedSemReversed.rows());
   EXPECT_EQ(withSharedSem.cols(), withSharedSemReversed.cols());
   EXPECT_TRUE(withSharedSem.isApprox(withSharedSemReversed, 1e-12));
+}
+
+TEST(PreferredSolverApiTests, SingleSemAllModePathReturnsFiniteOutput) {
+  auto paramsNew = makeTinyPreferredParams(4);
+  paramsNew.setNq(5);
+  paramsNew.setNskip(2);
+  paramsNew.setMaxstep(0.2);
+
+  SPARSESPEC::SparseFSpec solver;
+  Full1D::SEM sem(paramsNew);
+  const auto result = solver.spectra(paramsNew, sem);
+
+  EXPECT_EQ(result.rows(), 3 * paramsNew.inputParameters().num_receivers());
+  EXPECT_EQ(result.cols(),
+            static_cast<Eigen::Index>(paramsNew.freqFull().w().size()));
+  EXPECT_TRUE(result.real().array().isFinite().all());
+  EXPECT_TRUE(result.imag().array().isFinite().all());
 }
 
 TEST(PreferredSolverApiTests, LegacyMultiSemOverloadReturnsFiniteOutput) {
