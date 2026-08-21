@@ -1,0 +1,23 @@
+# Find the LAPACKE C interface and expose LAPACKE::LAPACKE.
+
+find_path(LAPACKE_INCLUDE_DIR NAMES lapacke.h)
+find_library(LAPACKE_LIBRARY NAMES lapacke)
+
+include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(LAPACKE
+    REQUIRED_VARS LAPACKE_LIBRARY LAPACKE_INCLUDE_DIR)
+
+if(LAPACKE_FOUND)
+    set(LAPACKE_INCLUDE_DIRS "${LAPACKE_INCLUDE_DIR}")
+    set(LAPACKE_LIBRARIES "${LAPACKE_LIBRARY}")
+
+    if(NOT TARGET LAPACKE::LAPACKE)
+        add_library(LAPACKE::LAPACKE UNKNOWN IMPORTED)
+        set_target_properties(LAPACKE::LAPACKE PROPERTIES
+            IMPORTED_LOCATION "${LAPACKE_LIBRARY}"
+            INTERFACE_INCLUDE_DIRECTORIES "${LAPACKE_INCLUDE_DIR}"
+            INTERFACE_LINK_LIBRARIES LAPACK::LAPACK)
+    endif()
+endif()
+
+mark_as_advanced(LAPACKE_INCLUDE_DIR LAPACKE_LIBRARY)

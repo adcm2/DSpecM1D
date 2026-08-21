@@ -23,9 +23,18 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
+# Optional LAPACK/LAPACKE support for consumers that provide a band solver.
+option(DSPECM1D_USE_LAPACK_BAND_SOLVER
+       "Discover LAPACK and LAPACKE for the optional band solver" OFF)
+
 # --- System Dependencies ---
 find_package(FFTW)
 find_package(OpenMP REQUIRED)
+
+if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
+    find_package(LAPACK REQUIRED)
+    find_package(LAPACKE REQUIRED)
+endif()
 
 # --- Parallel Dependency Fetching (CMake 3.24+) ---
 # Keep FetchContent build/subbuild state local to each build tree. Sharing this
@@ -84,6 +93,12 @@ target_link_libraries(DSpecM1D INTERFACE
     OpenMP::OpenMP_CXX
 )
 
+if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
+    target_compile_definitions(DSpecM1D INTERFACE
+        DSPECM1D_USE_LAPACK_BAND_SOLVER)
+    target_link_libraries(DSpecM1D INTERFACE LAPACKE::LAPACKE)
+endif()
+
 target_include_directories(DSpecM1D INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
@@ -96,6 +111,12 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D
 install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindFFTW.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
 )
+
+if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
+    install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindLAPACKE.cmake
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
+    )
+endif()
 
 write_basic_package_version_file(
     ${CMAKE_CURRENT_BINARY_DIR}/DSpecM1DConfigVersion.cmake
