@@ -61,6 +61,9 @@ if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
   dspecm1d_add_test_exe(dspecm1d_lapack_band_solver_tests
     test_lapack_band_solver.cpp
   )
+  dspecm1d_add_test_exe(dspecm1d_lapack_sem_comparison_tests
+    test_lapack_sem_comparison.cpp
+  )
 endif()
 
 dspecm1d_add_test_exe(dspecm1d_mesh_model_gravity_tests
