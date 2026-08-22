@@ -1,0 +1,25 @@
+probe	threads	metric	seconds	n	kl	ku	nrhs	systems	repeats
+lapack_band_concurrency	1	zgbtrf_only	0.095459983999999998	1554	15	15	3	128	
+lapack_band_concurrency	1	zgbtrs_only_allocate	0.056843551999999999	1554	15	15	3	128	
+lapack_band_concurrency	1	zgbtrs_only_reused	0.057010571000000003	1554	15	15	3	128	
+lapack_band_concurrency	1	zgbtrf_plus_zgbtrs	0.16261595600000001	1554	15	15	3	128	
+lapack_band_concurrency	10	zgbtrf_only	0.0099226910000000008	1554	15	15	3	128	
+lapack_band_concurrency	10	zgbtrs_only_allocate	0.0064257209999999997	1554	15	15	3	128	
+lapack_band_concurrency	10	zgbtrs_only_reused	0.0063756170000000001	1554	15	15	3	128	
+lapack_band_concurrency	10	zgbtrf_plus_zgbtrs	0.018006652000000001	1554	15	15	3	128	
+lapack_band_concurrency	32	zgbtrf_only	0.0031314239999999998	1554	15	15	3	128	
+lapack_band_concurrency	32	zgbtrs_only_allocate	0.002255791	1554	15	15	3	128	
+lapack_band_concurrency	32	zgbtrs_only_reused	0.0021880990000000002	1554	15	15	3	128	
+lapack_band_concurrency	32	zgbtrf_plus_zgbtrs	0.0057233850000000001	1554	15	15	3	128	
+lapack_band_concurrency	50	zgbtrf_only	0.0025495270000000002	1554	15	15	3	128	
+lapack_band_concurrency	50	zgbtrs_only_allocate	0.0020757509999999998	1554	15	15	3	128	
+lapack_band_concurrency	50	zgbtrs_only_reused	0.0020275499999999999	1554	15	15	3	128	
+lapack_band_concurrency	50	zgbtrf_plus_zgbtrs	0.004526693	1554	15	15	3	128	
+lapack_solve_allocation	1	zgbtrs_allocate	0.15662396100000001	17	4	4	3	128	512
+lapack_solve_allocation	1	zgbtrs_reused	0.155908886	17	4	4	3	128	512
+lapack_solve_allocation	10	zgbtrs_allocate	0.69312717400000001	17	4	4	3	128	512
+lapack_solve_allocation	10	zgbtrs_reused	0.69525927300000001	17	4	4	3	128	512
+lapack_solve_allocation	32	zgbtrs_allocate	0.69207842399999997	17	4	4	3	128	512
+lapack_solve_allocation	32	zgbtrs_reused	0.69467884800000002	17	4	4	3	128	512
+lapack_solve_allocation	50	zgbtrs_allocate	0.65402862500000003	17	4	4	3	128	512
+lapack_solve_allocation	50	zgbtrs_reused	0.64996140599999996	17	4	4	3	128	512

@@ -1,0 +1,523 @@
+{
+  "controls": {
+    "BLIS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_NUM_THREADS": "32",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "derived_artifacts": {
+    "microbenchmarks": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_scaling_diagnostic/lapack_scaling_microbenchmarks.tsv",
+      "sha256": "16156107496feac81f2594a4dc6a8527f42965cfcd151ccb34e2f170557f407d"
+    },
+    "profiles": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_scaling_diagnostic/lapack_scaling_profiles.tsv",
+      "sha256": "0095253a000c753696d5944d06b922c43a1726d486ce657dcca98256fc716483"
+    },
+    "summary": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_scaling_diagnostic/lapack_scaling_diagnostic_summary.json",
+      "sha256": "9da99eaf8423cba1dd7b9b56c508a31a8f7abd1074dfd9397e6de44e6486b468"
+    }
+  },
+  "effective_thread_probe": {
+    "interpretation": "32 outer OpenMP workers, no hidden BLAS worker threads",
+    "nominal_omp_threads": 32,
+    "observed_process_nlwp": [
+      1,
+      32
+    ],
+    "openblas_num_threads": 1,
+    "samples": [
+      {
+        "OMP_DYNAMIC": "FALSE",
+        "OMP_NUM_THREADS": "32",
+        "OPENBLAS_NUM_THREADS": "1",
+        "backend": "lapack",
+        "process_nlwp": "1",
+        "sample_seconds": "0"
+      },
+      {
+        "OMP_DYNAMIC": "FALSE",
+        "OMP_NUM_THREADS": "32",
+        "OPENBLAS_NUM_THREADS": "1",
+        "backend": "lapack",
+        "process_nlwp": "32",
+        "sample_seconds": "1"
+      },
+      {
+        "OMP_DYNAMIC": "FALSE",
+        "OMP_NUM_THREADS": "32",
+        "OPENBLAS_NUM_THREADS": "1",
+        "backend": "lapack",
+        "process_nlwp": "32",
+        "sample_seconds": "2"
+      },
+      {
+        "OMP_DYNAMIC": "FALSE",
+        "OMP_NUM_THREADS": "32",
+        "OPENBLAS_NUM_THREADS": "1",
+        "backend": "lapack",
+        "process_nlwp": "32",
+        "sample_seconds": "3"
+      },
+      {
+        "OMP_DYNAMIC": "FALSE",
+        "OMP_NUM_THREADS": "32",
+        "OPENBLAS_NUM_THREADS": "1",
+        "backend": "lapack",
+        "process_nlwp": "32",
+        "sample_seconds": "4"
+      },
+      {
+        "OMP_DYNAMIC": "FALSE",
+        "OMP_NUM_THREADS": "32",
+        "OPENBLAS_NUM_THREADS": "1",
+        "backend": "lapack",
+        "process_nlwp": "32",
+        "sample_seconds": "5"
+      }
+    ]
+  },
+  "executables": {
+    "allocation_probe": {
+      "path": "/tmp/dspecm1d-backend-on-gcc15-final/bin/lapack_solve_allocation_probe",
+      "sha256": "d8559a9a42a07885968bc77020b00f1c4cb6200b8036ee44a97b2fb57dbb060f"
+    },
+    "band_probe": {
+      "path": "/tmp/dspecm1d-backend-on-gcc15-final/bin/lapack_band_concurrency_probe",
+      "sha256": "68c3d6bb5d782b043065a04f5bf7ee51c79170748cda66cad518b1fffdcd5f46"
+    },
+    "final": {
+      "path": "/tmp/dspecm1d-final-benchmark-gcc15/bin/final_solver_benchmark",
+      "sha256": "fcfe902d8bb2e4e1cdbcc6505e5a4fc0d154b7fc04679efc8423f05ef00d3ee2"
+    },
+    "profiling": {
+      "path": "/tmp/dspecm1d-backend-on-gcc15-final/bin/stage_profile_solver",
+      "sha256": "75b82f88c7b22fb6fb5f169dcf188a82fba614c76804217be68b41462790a775"
+    }
+  },
+  "git_status_short": "?? benchmarks/lapack_band_concurrency_probe.cpp\n?? benchmarks/lapack_solve_allocation_probe.cpp\n?? docs/lapack_scaling_diagnostic.md\n?? results/lapack_scaling_diagnostic/\n?? scripts/lapack_scaling_diagnostic.py",
+  "linked_libraries": {
+    "final_executable": "linux-vdso.so.1 (0x00007ffe9eaef000)\n\tlibfftw3.so.3 => /lib/x86_64-linux-gnu/libfftw3.so.3 (0x00007f8b65e00000)\n\tlibfftw3f.so.3 => /lib/x86_64-linux-gnu/libfftw3f.so.3 (0x00007f8b65a00000)\n\tlibfftw3l.so.3 => /lib/x86_64-linux-gnu/libfftw3l.so.3 (0x00007f8b65d09000)\n\tlibgomp.so.1 => /opt/gcc-15.2.0/lib64/libgomp.so.1 (0x00007f8b65cb3000)\n\tliblapacke.so.3 => /lib/x86_64-linux-gnu/liblapacke.so.3 (0x00007f8b65600000)\n\tlibopenblas.so.0 => /lib/x86_64-linux-gnu/libopenblas.so.0 (0x00007f8b63318000)\n\tlibstdc++.so.6 => /opt/gcc-15.2.0/lib64/libstdc++.so.6 (0x00007f8b63000000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f8b65920000)\n\tlibgcc_s.so.1 => /opt/gcc-15.2.0/lib64/libgcc_s.so.1 (0x00007f8b65c86000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f8b62e1e000)\n\tlibblas.so.3 => /lib/x86_64-linux-gnu/libblas.so.3 (0x00007f8b658bd000)\n\tliblapack.so.3 => /lib/x86_64-linux-gnu/liblapack.so.3 (0x00007f8b62600000)\n\tlibtmglib.so.3 => /lib/x86_64-linux-gnu/libtmglib.so.3 (0x00007f8b6585a000)\n\tlibgfortran.so.5 => /opt/gcc-15.2.0/lib64/libgfortran.so.5 (0x00007f8b62200000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f8b6604e000)",
+    "profiling_executable": "linux-vdso.so.1 (0x00007fff6a3ad000)\n\tlibfftw3.so.3 => /lib/x86_64-linux-gnu/libfftw3.so.3 (0x00007f7d7ec00000)\n\tlibfftw3f.so.3 => /lib/x86_64-linux-gnu/libfftw3f.so.3 (0x00007f7d7e800000)\n\tlibfftw3l.so.3 => /lib/x86_64-linux-gnu/libfftw3l.so.3 (0x00007f7d7ef0b000)\n\tlibgomp.so.1 => /opt/gcc-15.2.0/lib64/libgomp.so.1 (0x00007f7d7eeb5000)\n\tliblapacke.so.3 => /lib/x86_64-linux-gnu/liblapacke.so.3 (0x00007f7d7e400000)\n\tlibopenblas.so.0 => /lib/x86_64-linux-gnu/libopenblas.so.0 (0x00007f7d7c118000)\n\tlibstdc++.so.6 => /opt/gcc-15.2.0/lib64/libstdc++.so.6 (0x00007f7d7be00000)\n\tlibm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00007f7d7eb20000)\n\tlibgcc_s.so.1 => /opt/gcc-15.2.0/lib64/libgcc_s.so.1 (0x00007f7d7ee86000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f7d7bc1e000)\n\tlibblas.so.3 => /lib/x86_64-linux-gnu/libblas.so.3 (0x00007f7d7ee23000)\n\tliblapack.so.3 => /lib/x86_64-linux-gnu/liblapack.so.3 (0x00007f7d7b400000)\n\tlibtmglib.so.3 => /lib/x86_64-linux-gnu/libtmglib.so.3 (0x00007f7d7eabd000)\n\tlibgfortran.so.5 => /opt/gcc-15.2.0/lib64/libgfortran.so.5 (0x00007f7d7b000000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f7d7f018000)"
+  },
+  "machine": {
+    "hostname": "earth-tunya",
+    "lscpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           52 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  128\nOn-line CPU(s) list:                     0-127\nVendor ID:                               AuthenticAMD\nModel name:                              AMD EPYC 9334 32-Core Processor\nCPU family:                              25\nModel:                                   17\nThread(s) per core:                      2\nCore(s) per socket:                      32\nSocket(s):                               2\nStepping:                                1\nFrequency boost:                         enabled\nCPU(s) scaling MHz:                      42%\nCPU max MHz:                             3911.7019\nCPU min MHz:                             1500.0000\nBogoMIPS:                                5392.27\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good amd_lbr_v2 nopl nonstop_tsc cpuid extd_apicid aperfmperf rapl pni pclmulqdq monitor ssse3 fma cx16 pcid sse4_1 sse4_2 x2apic movbe popcnt aes xsave avx f16c rdrand lahf_lm cmp_legacy svm extapic cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw ibs skinit wdt tce topoext perfctr_core perfctr_nb bpext perfctr_llc mwaitx cpb cat_l3 cdp_l3 invpcid_single hw_pstate ssbd mba perfmon_v2 ibrs ibpb stibp ibrs_enhanced vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local avx512_bf16 clzero irperf xsaveerptr rdpru wbnoinvd amd_ppin cppc arat npt lbrv svm_lock nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold avic v_vmsave_vmload vgif x2avic v_spec_ctrl avx512vbmi umip pku ospke avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid overflow_recov succor smca fsrm flush_l1d ibpb_exit_to_user\nVirtualization:                          AMD-V\nL1d cache:                               2 MiB (64 instances)\nL1i cache:                               2 MiB (64 instances)\nL2 cache:                                64 MiB (64 instances)\nL3 cache:                                256 MiB (8 instances)\nNUMA node(s):                            2\nNUMA node0 CPU(s):                       0-31,64-95\nNUMA node1 CPU(s):                       32-63,96-127\nVulnerability Gather data sampling:      Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Mitigation; safe RET\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; STIBP always-on; PBRSB-eIBRS Not affected; BHI Not affected\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Vulnerable: Clear CPU buffers attempted, no microcode\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace"
+  },
+  "microbenchmark_rows": [
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrf_only",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.095459983999999998",
+      "systems": "128",
+      "threads": "1"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrs_only_allocate",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.056843551999999999",
+      "systems": "128",
+      "threads": "1"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrs_only_reused",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.057010571000000003",
+      "systems": "128",
+      "threads": "1"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrf_plus_zgbtrs",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.16261595600000001",
+      "systems": "128",
+      "threads": "1"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrf_only",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0099226910000000008",
+      "systems": "128",
+      "threads": "10"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrs_only_allocate",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0064257209999999997",
+      "systems": "128",
+      "threads": "10"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrs_only_reused",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0063756170000000001",
+      "systems": "128",
+      "threads": "10"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrf_plus_zgbtrs",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.018006652000000001",
+      "systems": "128",
+      "threads": "10"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrf_only",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0031314239999999998",
+      "systems": "128",
+      "threads": "32"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrs_only_allocate",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.002255791",
+      "systems": "128",
+      "threads": "32"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrs_only_reused",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0021880990000000002",
+      "systems": "128",
+      "threads": "32"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrf_plus_zgbtrs",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0057233850000000001",
+      "systems": "128",
+      "threads": "32"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrf_only",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0025495270000000002",
+      "systems": "128",
+      "threads": "50"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrs_only_allocate",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0020757509999999998",
+      "systems": "128",
+      "threads": "50"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrs_only_reused",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.0020275499999999999",
+      "systems": "128",
+      "threads": "50"
+    },
+    {
+      "kl": "15",
+      "ku": "15",
+      "metric": "zgbtrf_plus_zgbtrs",
+      "n": "1554",
+      "nrhs": "3",
+      "probe": "lapack_band_concurrency",
+      "seconds": "0.004526693",
+      "systems": "128",
+      "threads": "50"
+    },
+    {
+      "kl": "4",
+      "ku": "4",
+      "metric": "zgbtrs_allocate",
+      "n": "17",
+      "nrhs": "3",
+      "probe": "lapack_solve_allocation",
+      "repeats": "512",
+      "seconds": "0.15662396100000001",
+      "systems": "128",
+      "threads": "1"
+    },
+    {
+      "kl": "4",
+      "ku": "4",
+      "metric": "zgbtrs_reused",
+      "n": "17",
+      "nrhs": "3",
+      "probe": "lapack_solve_allocation",
+      "repeats": "512",
+      "seconds": "0.155908886",
+      "systems": "128",
+      "threads": "1"
+    },
+    {
+      "kl": "4",
+      "ku": "4",
+      "metric": "zgbtrs_allocate",
+      "n": "17",
+      "nrhs": "3",
+      "probe": "lapack_solve_allocation",
+      "repeats": "512",
+      "seconds": "0.69312717400000001",
+      "systems": "128",
+      "threads": "10"
+    },
+    {
+      "kl": "4",
+      "ku": "4",
+      "metric": "zgbtrs_reused",
+      "n": "17",
+      "nrhs": "3",
+      "probe": "lapack_solve_allocation",
+      "repeats": "512",
+      "seconds": "0.69525927300000001",
+      "systems": "128",
+      "threads": "10"
+    },
+    {
+      "kl": "4",
+      "ku": "4",
+      "metric": "zgbtrs_allocate",
+      "n": "17",
+      "nrhs": "3",
+      "probe": "lapack_solve_allocation",
+      "repeats": "512",
+      "seconds": "0.69207842399999997",
+      "systems": "128",
+      "threads": "32"
+    },
+    {
+      "kl": "4",
+      "ku": "4",
+      "metric": "zgbtrs_reused",
+      "n": "17",
+      "nrhs": "3",
+      "probe": "lapack_solve_allocation",
+      "repeats": "512",
+      "seconds": "0.69467884800000002",
+      "systems": "128",
+      "threads": "32"
+    },
+    {
+      "kl": "4",
+      "ku": "4",
+      "metric": "zgbtrs_allocate",
+      "n": "17",
+      "nrhs": "3",
+      "probe": "lapack_solve_allocation",
+      "repeats": "512",
+      "seconds": "0.65402862500000003",
+      "systems": "128",
+      "threads": "50"
+    },
+    {
+      "kl": "4",
+      "ku": "4",
+      "metric": "zgbtrs_reused",
+      "n": "17",
+      "nrhs": "3",
+      "probe": "lapack_solve_allocation",
+      "repeats": "512",
+      "seconds": "0.64996140599999996",
+      "systems": "128",
+      "threads": "50"
+    }
+  ],
+  "openblas": {
+    "config": "OpenBLAS 0.3.21 NO_LAPACKE DYNAMIC_ARCH NO_AFFINITY Cooperlake MAX_THREADS=64",
+    "environment": {
+      "BLIS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "OMP_DYNAMIC": "FALSE",
+      "OMP_NUM_THREADS": "32",
+      "OPENBLAS_NUM_THREADS": "1"
+    },
+    "parallel_code": 1,
+    "parallel_kind": "pthread",
+    "path": "/lib/x86_64-linux-gnu/libopenblas.so.0",
+    "runtime_threads": 1
+  },
+  "probe_build_coherence": {
+    "lapack_band_concurrency_probe.cpp": {
+      "executable": "/tmp/dspecm1d-backend-on-gcc15-final/bin/lapack_band_concurrency_probe",
+      "executable_mtime_ns": 1787418987184237070,
+      "source": "/space/adcm2/CleanBuilds/DSpecM1D/benchmarks/lapack_band_concurrency_probe.cpp",
+      "source_mtime_ns": 1787418953624584799
+    },
+    "lapack_solve_allocation_probe.cpp": {
+      "executable": "/tmp/dspecm1d-backend-on-gcc15-final/bin/lapack_solve_allocation_probe",
+      "executable_mtime_ns": 1787418656331681033,
+      "source": "/space/adcm2/CleanBuilds/DSpecM1D/benchmarks/lapack_solve_allocation_probe.cpp",
+      "source_mtime_ns": 1787418647155776632
+    }
+  },
+  "probe_source_sha256": {
+    "lapack_band_concurrency_probe.cpp": "b2a958b0e931f091ce9fc0b2b2706d233157ae49130690c414f7a160dec3d8d1",
+    "lapack_solve_allocation_probe.cpp": "6953e5f6ab36d0d6ae1400ee3a88f8150912f800dcb4b9c7c0ac2b0fcbb4484b"
+  },
+  "profile_records": [
+    {
+      "base_operator_worker_seconds": 3.1970268739999996,
+      "counts": {
+        "band_packs": 0,
+        "degrees": 1500,
+        "dimension_max": 1554,
+        "dimension_min": 17,
+        "eigen_compute": 0,
+        "eigen_factorize": 0,
+        "frequency_systems": 1720146,
+        "kl_max": 15,
+        "kl_min": 4,
+        "ku_max": 15,
+        "ku_min": 4,
+        "lapack_factorize": 1720146,
+        "nnz_max": 21816,
+        "nnz_min": 97,
+        "rhs": 5158146,
+        "sems": 4,
+        "solves": 1720146
+      },
+      "dynamic_matrix_worker_seconds": 17.14225590000064,
+      "factorization_worker_seconds": 125.7583786059987,
+      "projection_worker_seconds": 1.3306714769999493,
+      "solve_worker_seconds": 146.29698168999954,
+      "source": "results/lapack_scaling_diagnostic/lapack_f35_t10_profile.txt",
+      "spheroidal_factorization_worker_seconds": 120.13704434699847,
+      "spheroidal_solve_worker_seconds": 93.89306489100022,
+      "threads": 10,
+      "unclassified_worker_seconds": 14.826587156000498,
+      "wall_seconds": 31.542303962,
+      "worker_categorized_seconds": 300.37605188099957,
+      "worker_total_seconds": 315.20251276900007,
+      "worker_unclassified_seconds": 14.826460888000497
+    },
+    {
+      "base_operator_worker_seconds": 3.460561221,
+      "counts": {
+        "band_packs": 0,
+        "degrees": 1500,
+        "dimension_max": 1554,
+        "dimension_min": 17,
+        "eigen_compute": 0,
+        "eigen_factorize": 0,
+        "frequency_systems": 1720146,
+        "kl_max": 15,
+        "kl_min": 4,
+        "ku_max": 15,
+        "ku_min": 4,
+        "lapack_factorize": 1720146,
+        "nnz_max": 21816,
+        "nnz_min": 97,
+        "rhs": 5158146,
+        "sems": 4,
+        "solves": 1720146
+      },
+      "dynamic_matrix_worker_seconds": 17.37103615899995,
+      "factorization_worker_seconds": 126.58954146400028,
+      "projection_worker_seconds": 1.5293704629999871,
+      "solve_worker_seconds": 553.3806427050013,
+      "source": "results/lapack_scaling_diagnostic/lapack_f35_t32_profile.txt",
+      "spheroidal_factorization_worker_seconds": 120.90609350800015,
+      "spheroidal_solve_worker_seconds": 346.197854163,
+      "threads": 32,
+      "unclassified_worker_seconds": 18.305640456998713,
+      "wall_seconds": 22.750765234,
+      "worker_categorized_seconds": 708.9533066150013,
+      "worker_total_seconds": 727.25881159,
+      "worker_unclassified_seconds": 18.305504974998712
+    }
+  ],
+  "raw_artifacts": {
+    "allocation_probe": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_scaling_diagnostic/lapack_solve_allocation.tsv",
+      "sha256": "512fab45b83faaac17340b0d588a3de99d8058030780d53c7b55fc47816e3adb"
+    },
+    "band_probe": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_scaling_diagnostic/lapack_band_concurrency.tsv",
+      "sha256": "104750ad26b362f88c24edd6e3d359b85e74d4932dd813c19fb1826dea0943b8"
+    },
+    "effective_thread_probe": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_scaling_diagnostic/effective_thread_probe.tsv",
+      "sha256": "a82b42c86ed4cb99c16f79861ceab6b46184c62d9c3e9efd7a6da55cee85208a"
+    },
+    "profile_t10": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_scaling_diagnostic/lapack_f35_t10_profile.txt",
+      "sha256": "a897b7b0e64c56e9dd7011f617ce4268159589646a09111c69948e7de8ce9ebf"
+    },
+    "profile_t32": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_scaling_diagnostic/lapack_f35_t32_profile.txt",
+      "sha256": "caf5d18646af2e9212e5aa0cbbc6119a1bfccb1640d8a7e8b6f2accea5fe8722"
+    }
+  },
+  "resolved_library_targets": {
+    "blas": "/usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3",
+    "lapack": "/usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3",
+    "lapacke": "/usr/lib/x86_64-linux-gnu/liblapacke.so.3.11.0",
+    "openblas": "/usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.21.so"
+  },
+  "revision": "fdbc2a79ab05df46f3a8cead5bf5f221c9661755",
+  "source_sha256": {
+    "DSpecM1D/src/LapackBandSolver.h": "8768ad5c37c14c903f77e77ff35c06c628262352d21fd7a1180d2954c3344969",
+    "benchmarks/lapack_band_concurrency_probe.cpp": "b2a958b0e931f091ce9fc0b2b2706d233157ae49130690c414f7a160dec3d8d1",
+    "benchmarks/lapack_solve_allocation_probe.cpp": "6953e5f6ab36d0d6ae1400ee3a88f8150912f800dcb4b9c7c0ac2b0fcbb4484b",
+    "benchmarks/stage_profile_solver.cpp": "1125992c7cc5a1bbe72d25e0afdde4b23b180c186b16f2570fa374220e4dc977",
+    "scripts/lapack_scaling_diagnostic.py": "815bc93da5de003971b0a17d757e3ad0002fb18f5b398d1ed975d477d59478cd"
+  }
+}
