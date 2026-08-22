@@ -1,0 +1,11 @@
+--- DSpecM1D/src/FullSpecMultiSem.h	2026-08-22 16:59:32.397526015 +0100
++++ /tmp/e1_override/DSpecM1D/src/FullSpecMultiSem.h	2026-08-22 20:28:01.352551369 +0100
+@@ -14,7 +14,7 @@
+ 
+ using EigenMultiSemSolver =
+     Eigen::SparseLU<Eigen::SparseMatrix<std::complex<double>>,
+-                    Eigen::COLAMDOrdering<int>>;
++                    Eigen::NaturalOrdering<int>>;
+ #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
+ using LapackMultiSemSolver = LapackBandSolver;
+ #endif

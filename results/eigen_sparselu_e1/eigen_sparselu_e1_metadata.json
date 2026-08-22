@@ -1,0 +1,135 @@
+{
+  "experiment": "eigen_sparselu_e1",
+  "git_head": "d2d435d39e40204400f49c859fcd996124ba1887",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "focused_kernel_threads": {
+    "OMP_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "pilot_threads": {
+    "f5_t1": {
+      "OMP_NUM_THREADS": "1",
+      "OMP_DYNAMIC": "FALSE",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "BLIS_NUM_THREADS": "1"
+    },
+    "f30_t32": {
+      "OMP_NUM_THREADS": "32",
+      "OMP_DYNAMIC": "FALSE",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "BLIS_NUM_THREADS": "1"
+    }
+  },
+  "warmup": 1,
+  "measured_repetitions": 1,
+  "omega": 0.7,
+  "systems": [
+    "radial_large",
+    "radial_medium",
+    "radial_small",
+    "spheroidal_fluid_solid_large",
+    "spheroidal_large",
+    "spheroidal_max_max",
+    "spheroidal_medium",
+    "spheroidal_small",
+    "toroidal_large",
+    "toroidal_medium",
+    "toroidal_small"
+  ],
+  "model": {
+    "path": "/tmp/dspecm1d-backend-on-gcc15-final/data/models/prem.200.no.txt",
+    "sha256": "4e64ef450a0304e6846a453d5d02ed45355fac853ed1f7a4cbad03cf6716dd9f"
+  },
+  "executable_source": {
+    "path": "benchmarks/eigen_sparselu_e1.cpp",
+    "sha256": "eed0fe174695d9e0e7bb29386e350c14d5e8d0f76eef8ae3059db3a1b0d6cae3"
+  },
+  "raw": {
+    "path": "results/eigen_sparselu_e1/eigen_sparselu_e1_raw.tsv",
+    "sha256": "44093bbc95a34afd9dd327a8dc531b551e52eecf8b9d8c20cd4b8960e69cd8c7"
+  },
+  "summary": {
+    "path": "results/eigen_sparselu_e1/eigen_sparselu_e1_summary.json",
+    "sha256": "42c99ee34b6f1dc8d8a167c10946475a46aa41215492ac827d644281dca35438"
+  },
+  "production_pilot": {
+    "f5_t1": {
+      "default": {
+        "path": "results/eigen_sparselu_e1/pilot_f5_t1_default.txt",
+        "sha256": "e3fab4c2e605d7c1fe08841732e5e8eca7dd340b0b426a8ba47b8aeda2122c29"
+      },
+      "natural": {
+        "path": "results/eigen_sparselu_e1/pilot_f5_t1_natural.txt",
+        "sha256": "95e70eb684e5aa676b748bd2a92e357bbe080ad93e488d24afd3ab62f2e48e96"
+      }
+    },
+    "f30_t32": {
+      "default": {
+        "path": "results/eigen_sparselu_e1/pilot_f30_t32_default.txt",
+        "sha256": "d21eafc0d02793259c68337bcbaf13a0af6784e82adc08c958db25d4b0ea8155"
+      },
+      "natural": {
+        "path": "results/eigen_sparselu_e1/pilot_f30_t32_natural.txt",
+        "sha256": "f03717594a1e6b88ede55ed5d70c7a0610adafdba67079e152341d47ec3655bd"
+      }
+    }
+  },
+  "provenance": {
+    "focused_kernel": {
+      "path": "/tmp/dspecm1d-backend-on-gcc15-final/bin/eigen_sparselu_e1",
+      "sha256": "157c69ca9e5f2877fdbbf95c158dc987b3abea841cbce5a49e5449364ae05d0a",
+      "build_command": "cmake --build /tmp/dspecm1d-backend-on-gcc15-final --target eigen_sparselu_e1 -j4",
+      "run_command": "OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/dspecm1d-backend-on-gcc15-final/bin/eigen_sparselu_e1 /tmp/dspecm1d-backend-on-gcc15-final/data/models/prem.200.no.txt"
+    },
+    "pilot_source": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/benchmarks/eigen_sparselu_e1_pilot.cpp",
+      "sha256": "62b316769eed10ca0ae3490593e4fa7cfc7d670784a08d7c74d58396eae1b436",
+      "note": "same source/configuration compiled twice; one binary uses committed COLAMD and one uses the one-line temporary MultiSem alias override"
+    },
+    "pilot_executables": {
+      "default": {
+        "path": "/tmp/dspecm1d-backend-on-gcc15-final/bin/eigen_sparselu_e1_pilot",
+        "sha256": "477de4d76c81910b2ed7d47689f3a718fe18c9507e2b1cdbd199456c35d215f4"
+      },
+      "natural": {
+        "path": "/tmp/eigen_sparselu_e1_natural_pilot",
+        "sha256": "64e80ba38777acff62d1a6452188794d86e9a8d3cfd7b56cbabdd8d089b1fb35"
+      }
+    },
+    "pilot_build_method": {
+      "default": "cmake --build /tmp/dspecm1d-backend-on-gcc15-final --target eigen_sparselu_e1_pilot -j4",
+      "natural": "copy repository DSpecM1D to /tmp/e1_override; replace only Eigen::COLAMDOrdering<int> with Eigen::NaturalOrdering<int> in FullSpecMultiSem.h; compile benchmarks/eigen_sparselu_e1_pilot.cpp with GCC 15.2, the same Release flags/includes/libs, output /tmp/eigen_sparselu_e1_natural_pilot",
+      "natural_command": "/opt/gcc-15.2.0/bin/g++ -DDSPECM1D_ENABLE_LAPACK_BAND_SOLVER -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_CPP -I/tmp/e1_override -I/tmp/dspecm1d-backend-on-gcc15-final/benchmarks -I/space/adcm2/CleanBuilds/DSpecM1D -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/eigen3-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/fftwpp-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/numericconcepts-src/include -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gaussquad-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gshtrans-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/interpolation-src -O3 -DNDEBUG -fopenmp -std=gnu++23 benchmarks/eigen_sparselu_e1_pilot.cpp -o /tmp/eigen_sparselu_e1_natural_pilot /usr/lib/x86_64-linux-gnu/libfftw3.so /usr/lib/x86_64-linux-gnu/libfftw3f.so /usr/lib/x86_64-linux-gnu/libfftw3l.so /opt/gcc-15.2.0/lib64/libgomp.so /lib/x86_64-linux-gnu/libpthread.a /usr/lib/x86_64-linux-gnu/liblapacke.so -lm -ldl /usr/lib/x86_64-linux-gnu/libopenblas.so"
+    },
+    "pilot_parameters": {
+      "f5_t1": {
+        "path": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/e1_pilot_f5.txt",
+        "sha256": "224a8dce7dc785467459c2a7b47abc691ecbb2d0d76593329cd5a882a6e222f8"
+      },
+      "f30_t32": {
+        "path": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/e1_pilot_f30.txt",
+        "sha256": "b6b9bac301784ae43dd6579c43b99fab91634e75bdc9fdd32c3aef47a86cbbf9"
+      }
+    },
+    "pilot_commands": {
+      "f5_t1_default": "cd /tmp/dspecm1d-backend-on-gcc15-final && OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 ./bin/eigen_sparselu_e1_pilot data/params/e1_pilot_f5.txt",
+      "f5_t1_natural": "cd /tmp/dspecm1d-backend-on-gcc15-final && OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/eigen_sparselu_e1_natural_pilot data/params/e1_pilot_f5.txt",
+      "f30_t32_default": "cd /tmp/dspecm1d-backend-on-gcc15-final && OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 ./bin/eigen_sparselu_e1_pilot data/params/e1_pilot_f30.txt",
+      "f30_t32_natural": "cd /tmp/dspecm1d-backend-on-gcc15-final && OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/eigen_sparselu_e1_natural_pilot data/params/e1_pilot_f30.txt"
+    },
+    "natural_override": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/eigen_sparselu_e1/natural_ordering_override.diff",
+      "sha256": "1650b255d764307d3e4b9fb4986d3a6584b666b153befb2183804b673cdcd477",
+      "scope": "exactly one alias line in FullSpecMultiSem.h; no committed production file was changed"
+    },
+    "analyzer": {
+      "path": "/space/adcm2/CleanBuilds/DSpecM1D/scripts/eigen_sparselu_e1_analyze.py",
+      "sha256": "d39e9394482efd2f715c1a64d3d3a816ef165725f8811d805b1298f8f6abfa62"
+    }
+  }
+}
