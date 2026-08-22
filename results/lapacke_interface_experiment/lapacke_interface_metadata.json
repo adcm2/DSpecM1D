@@ -1,0 +1,38 @@
+{
+  "executable": {
+    "path": "/tmp/dspecm1d-backend-on-gcc15-final/bin/lapacke_interface_probe",
+    "sha256": "af29a9bff84d2ff8c397cfcf398ed09bf82781ad6d3c2e82f28745c832daed10"
+  },
+  "lapacke": {
+    "path": "/usr/lib/x86_64-linux-gnu/liblapacke.so.3.11.0",
+    "sha256": "a2d9428f902e4bde9f853a8f011c0820456deb6850f5006de25fe3595672e55c"
+  },
+  "raw": {
+    "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapacke_interface_experiment/lapacke_interface_timings.tsv",
+    "sha256": "8f7bde24251201a62e08b532eb4a5d624d64a6b662aa37275ed074393eb1fd99"
+  },
+  "revision": "711eb5d36c15475093d4b18793f3995d89d2265b",
+  "source_package": {
+    "archive_sha256": "4b9ba79bfd4921ca820e83979db76ab3363155709444a787979e81c22285ffa9",
+    "archive_url": "http://deb.debian.org/debian/pool/main/l/lapack/lapack_3.11.0.orig.tar.gz",
+    "name": "Debian lapack 3.11.0-2",
+    "upstream_tag": "v3.11.0",
+    "wrapper_source_sha256": {
+      "lapacke_zgbtrf.c": "466ae668e6f25247e801783dd1242c5a54b06d3b0956db57b04658f36a6f15f9",
+      "lapacke_zgbtrf_work.c": "4450fd4b785d7d6a556d0186d7b3a6b1db77d97da624ffb010a54c93c7621167",
+      "lapacke_zgbtrs.c": "4f5f757ba97a9dfa35064a50d4ca652d8abe9c68474297108fdf29c3762531b3",
+      "lapacke_zgbtrs_work.c": "7685fe064c3605159c8ea8d693ffbb55ddbe5301997ea40b117981e8b38406cc"
+    }
+  },
+  "summary": {
+    "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapacke_interface_experiment/lapacke_interface_summary.json",
+    "sha256": "246634f11756c8d3991e738ebf327eea497d2302cd54e21c5ea1f4f6024c192e"
+  },
+  "thread_environment": {
+    "BLIS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "timing_policy": "one untimed warm-up and one measured run per point"
+}
