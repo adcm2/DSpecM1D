@@ -95,7 +95,9 @@ target_link_libraries(DSpecM1D INTERFACE
 
 if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
     target_compile_definitions(DSpecM1D INTERFACE
-        DSPECM1D_USE_LAPACK_BAND_SOLVER)
+        DSPECM1D_USE_LAPACK_BAND_SOLVER
+        HAVE_LAPACK_CONFIG_H
+        LAPACK_COMPLEX_CPP)
     target_link_libraries(DSpecM1D INTERFACE LAPACKE::LAPACKE)
 endif()
 

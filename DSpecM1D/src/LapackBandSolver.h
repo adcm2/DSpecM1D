@@ -3,7 +3,7 @@
 
 #include <algorithm>
 #include <complex>
-#include <complex.h>
+#include <type_traits>
 #include <vector>
 
 #include <lapacke.h>
@@ -17,7 +17,8 @@ class LapackBandSolver {
 public:
   using Complex = std::complex<double>;
   using SparseMatrix = Eigen::SparseMatrix<Complex>;
-  using DenseMatrix = Eigen::Matrix<Complex, Eigen::Dynamic, Eigen::Dynamic>;
+  using DenseMatrix = Eigen::Matrix<Complex, Eigen::Dynamic, Eigen::Dynamic,
+                                    Eigen::ColMajor>;
 
   // This is deliberately outside LAPACK's ordinary argument-error range.
   static constexpr lapack_int kBandStructureMismatch = -1001;
@@ -25,10 +26,32 @@ public:
 
   LapackBandSolver &compute(const SparseMatrix &matrix) {
     try {
-      m_band = packLapackBand(matrix);
-      m_pivots.assign(static_cast<std::size_t>(m_band.n), 0);
+      {
+        profiling::Scope profilePack(profiling::Context::active(),
+                                     profiling::Category::band_pack,
+                                     profiling::Context::mode());
+        packLapackBandInto(matrix, m_band);
+        if (auto *profile = profiling::Context::active())
+          profile->countBandPack();
+      }
+      resizePivotWorkspaceIfNeeded();
       m_factored = false;
-      factorizePacked();
+      factorize();
+    } catch (...) {
+      clearFailure(kInvalidState);
+    }
+    return *this;
+  }
+
+  /// Copy and factorize a packed band matrix.  Direct assembly should use
+  /// bandWorkspace() and factorize(ridx), which avoids this copy path.
+  LapackBandSolver &compute(const LapackBandMatrix &band,
+                            Eigen::Index ridx = 0) {
+    try {
+      m_band = band;
+      resizePivotWorkspaceIfNeeded();
+      m_factored = false;
+      factorize(ridx);
     } catch (...) {
       clearFailure(kInvalidState);
     }
@@ -45,6 +68,7 @@ public:
       clearFailure(kBandStructureMismatch);
       return *this;
     }
+    resizePivotWorkspaceIfNeeded();
 
     {
       profiling::Scope profilePack(profiling::Context::active(),
@@ -63,7 +87,7 @@ public:
         return *this;
       }
 
-      std::fill(m_band.data.begin(), m_band.data.end(), Complex{});
+      m_band.data.setZero();
       for (Eigen::Index column = 0; column < matrix.outerSize(); ++column) {
         for (SparseMatrix::InnerIterator entry(matrix, column); entry; ++entry)
           m_band.at(entry.row(), entry.col()) = entry.value();
@@ -72,12 +96,56 @@ public:
         profile->countBandPack();
     }
     m_factored = false;
-    factorizePacked();
+    factorize();
+    return *this;
+  }
+
+  /// Return the mutable solver-owned LAPACK workspace.
+  LapackBandMatrix &bandWorkspace() { return m_band; }
+  const LapackBandMatrix &bandWorkspace() const { return m_band; }
+
+  /// Allocate the solver-owned workspace for direct band assembly.
+  LapackBandMatrix &bandWorkspace(Eigen::Index n, Eigen::Index kl,
+                                  Eigen::Index ku) {
+    if (n <= 0 || kl < 0 || ku < 0)
+      throw std::invalid_argument("invalid LAPACK band dimensions");
+    m_band.n = n;
+    m_band.kl = kl;
+    m_band.ku = ku;
+    m_band.ldab = 2 * kl + ku + 1;
+    m_band.data = LapackBandMatrix::Storage::Zero(m_band.ldab, n);
+    resizePivotWorkspaceIfNeeded();
+    m_factored = false;
+    m_info = kInvalidState;
+    return m_band;
+  }
+
+  /// Factorize the current workspace in place, optionally at a trailing
+  /// principal subsystem.  This is the direct-band hot path.
+  LapackBandSolver &factorize(Eigen::Index ridx = 0) {
+    m_factored = false;
+    factorizePacked(ridx);
+    return *this;
+  }
+
+  /// Copy and refactorize a packed band matrix; this is not the direct-band
+  /// hot path.
+  LapackBandSolver &factorize(const LapackBandMatrix &band,
+                              Eigen::Index ridx = 0) {
+    if (band.n <= 0 || band.kl != m_band.kl || band.ku != m_band.ku ||
+        band.ldab != m_band.ldab || band.n != m_band.n) {
+      clearFailure(kBandStructureMismatch);
+      return *this;
+    }
+    m_band = band;
+    resizePivotWorkspaceIfNeeded();
+    m_factored = false;
+    factorize(ridx);
     return *this;
   }
 
   DenseMatrix solve(const DenseMatrix &rhs) {
-    if (!m_factored || rhs.rows() != m_band.n || rhs.cols() <= 0) {
+    if (!m_factored || rhs.rows() != m_activeN || rhs.cols() <= 0) {
       m_info = kInvalidState;
       return DenseMatrix{};
     }
@@ -85,14 +153,9 @@ public:
     if (auto *profile = profiling::Context::active())
       profile->countSolve(static_cast<long>(rhs.cols()));
 
-    std::vector<lapack_complex_double> b(
-        static_cast<std::size_t>(rhs.size()));
-    for (Eigen::Index column = 0; column < rhs.cols(); ++column)
-      for (Eigen::Index row = 0; row < rhs.rows(); ++row)
-        b[static_cast<std::size_t>(row + rhs.rows() * column)] =
-            toLapack(rhs(row, column));
+    DenseMatrix result = rhs;
 
-    const lapack_int n = static_cast<lapack_int>(m_band.n);
+    const lapack_int n = static_cast<lapack_int>(m_activeN);
     const lapack_int nrhs = static_cast<lapack_int>(rhs.cols());
     {
       profiling::Scope profileSolve(profiling::Context::active(),
@@ -100,48 +163,42 @@ public:
                                     profiling::Context::mode());
       m_info = LAPACKE_zgbtrs(
           LAPACK_COL_MAJOR, 'N', n, static_cast<lapack_int>(m_band.kl),
-          static_cast<lapack_int>(m_band.ku), nrhs, m_factors.data(),
-          static_cast<lapack_int>(m_band.ldab), m_pivots.data(), b.data(), n);
+          static_cast<lapack_int>(m_band.ku), nrhs,
+          m_band.data.data() + m_band.ldab * m_activeOffset,
+          static_cast<lapack_int>(m_band.ldab), m_pivots.data(),
+          result.data(), n);
     }
-
-    DenseMatrix result(rhs.rows(), rhs.cols());
-    for (Eigen::Index column = 0; column < result.cols(); ++column)
-      for (Eigen::Index row = 0; row < result.rows(); ++row)
-        result(row, column) = fromLapack(
-            b[static_cast<std::size_t>(row + result.rows() * column)]);
     return result;
   }
 
   lapack_int info() const { return m_info; }
+  const LapackBandMatrix &band() const { return m_band; }
+  Eigen::Index activeOffset() const { return m_activeOffset; }
+  Eigen::Index activeSize() const { return m_activeN; }
 
 private:
-  static lapack_complex_double toLapack(const Complex &value) {
-    return lapack_make_complex_double(value.real(), value.imag());
-  }
-
-  static Complex fromLapack(const lapack_complex_double &value) {
-    return {lapack_complex_double_real(value),
-            lapack_complex_double_imag(value)};
-  }
-
-  void factorizePacked() {
-    const lapack_int n = static_cast<lapack_int>(m_band.n);
-    {
-      profiling::Scope profilePrepare(profiling::Context::active(),
-                                      profiling::Category::band_pack,
-                                      profiling::Context::mode());
-      m_factors.resize(m_band.data.size());
-      for (std::size_t index = 0; index < m_band.data.size(); ++index)
-        m_factors[index] = toLapack(m_band.data[index]);
+  void factorizePacked(Eigen::Index ridx = 0) {
+    static_assert(std::is_same_v<Complex, lapack_complex_double>,
+                  "LAPACKE must use the C++ complex representation");
+    if (m_band.n <= 0 || ridx < 0 || ridx >= m_band.n ||
+        m_band.data.rows() != m_band.ldab ||
+        m_band.data.cols() != m_band.n) {
+      clearFailure(kInvalidState);
+      return;
     }
+    m_activeOffset = ridx;
+    m_activeN = m_band.n - ridx;
 
     {
       profiling::Scope profileFactorize(profiling::Context::active(),
                                         profiling::Category::factorization,
                                         profiling::Context::mode());
       m_info = LAPACKE_zgbtrf(
-          LAPACK_COL_MAJOR, n, n, static_cast<lapack_int>(m_band.kl),
-          static_cast<lapack_int>(m_band.ku), m_factors.data(),
+          LAPACK_COL_MAJOR, static_cast<lapack_int>(m_activeN),
+          static_cast<lapack_int>(m_activeN),
+          static_cast<lapack_int>(m_band.kl),
+          static_cast<lapack_int>(m_band.ku),
+          m_band.data.data() + m_band.ldab * m_activeOffset,
           static_cast<lapack_int>(m_band.ldab), m_pivots.data());
     }
     m_factored = (m_info == 0);
@@ -154,11 +211,17 @@ private:
     m_factored = false;
   }
 
+  void resizePivotWorkspaceIfNeeded() {
+    if (m_pivots.size() != static_cast<std::size_t>(m_band.n))
+      m_pivots.resize(static_cast<std::size_t>(m_band.n));
+  }
+
   LapackBandMatrix m_band;
   std::vector<lapack_int> m_pivots;
-  std::vector<lapack_complex_double> m_factors;
   lapack_int m_info = kInvalidState;
   bool m_factored = false;
+  Eigen::Index m_activeOffset = 0;
+  Eigen::Index m_activeN = 0;
 };
 
 } // namespace SPARSESPEC::detail

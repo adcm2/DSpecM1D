@@ -1,4 +1,5 @@
 #include <complex>
+#include <type_traits>
 
 #include <gtest/gtest.h>
 #include <Eigen/Sparse>
@@ -35,9 +36,12 @@ TEST(LapackBandStorageTests, PacksStoredSparseEntriesInColumnMajorLayout) {
   EXPECT_EQ(band.ku, 2);
   EXPECT_EQ(band.ldab, 7);
   EXPECT_EQ(band.data.size(), 35U);
-  EXPECT_EQ(band.data[4], Complex(1.0, 1.0));
-  EXPECT_EQ(band.data[16], Complex(5.0, 3.0));
-  EXPECT_EQ(band.data[30], Complex(7.0, 4.0));
+  static_assert(!decltype(band.data)::IsRowMajor,
+                "LAPACK storage must remain column-major");
+  EXPECT_EQ(band.data.data()[4], Complex(1.0, 1.0));
+  EXPECT_EQ(band.data.data()[16], Complex(5.0, 3.0));
+  EXPECT_EQ(band.data.data()[30], Complex(7.0, 4.0));
+  EXPECT_EQ(band.data.outerStride(), band.ldab);
 
   for (Eigen::Index row = 0; row < band.n; ++row) {
     for (Eigen::Index column = 0; column < band.n; ++column) {
