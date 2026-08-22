@@ -1,0 +1,44 @@
+{
+  "backend_order": "alternating first backend per fmax",
+  "campaign": "DSpecM1D profiling stage",
+  "command": "scripts/stage_profile.py --eigen-build /tmp/dspecm1d-stage-g-off-verify --lapack-build /tmp/dspecm1d-stage-e-verify --output-dir results/profiling --fmax 1 --lmax 20 --threads 2 --repetitions 1 --tag stage_profile_pilot",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "compiler_version": "g++ (GCC) 15.2.0",
+  "completed_backends": [
+    {
+      "backend": "eigen",
+      "fmax_mHz": 1.0
+    },
+    {
+      "backend": "lapack",
+      "fmax_mHz": 1.0
+    }
+  ],
+  "completed_points": [
+    1.0
+  ],
+  "configuration": "ex3/PREM-style type-4 all-mode attenuation=1",
+  "created_utc": "2026-08-21T21:18:04.721252+00:00",
+  "eigen_build": "/tmp/dspecm1d-stage-g-off-verify",
+  "grid_fmax_mHz": [
+    1.0
+  ],
+  "lapack_build": "/tmp/dspecm1d-stage-e-verify",
+  "lapack_pr1_pipeline": "Eigen sparse matrix -> LAPACK band packing -> zgbtrf/zgbtrs",
+  "lmax": 20,
+  "machine": {
+    "hostname": "earth-tunya"
+  },
+  "measurement": "complete preferred adaptive multi-SEM spectra(paramsNew)",
+  "one_untimed_warmup_per_backend_fmax": true,
+  "raw_profile_file": "/space/adcm2/CleanBuilds/DSpecM1D/results/profiling/stage_profile_pilot_profiles.jsonl",
+  "repetitions": 1,
+  "status": "complete",
+  "threads": {
+    "BLIS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "1"
+  }
+}

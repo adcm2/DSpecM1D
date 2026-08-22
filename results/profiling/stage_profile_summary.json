@@ -1,0 +1,495 @@
+{
+  "accounting_basis": "wall_seconds is complete spectra wall time; category and worker values inside OpenMP are summed thread-work seconds and are not wall-additive",
+  "campaign": "DSpecM1D profiling stage",
+  "groups": [
+    {
+      "backend": "eigen",
+      "counts": {
+        "band_packs": 0,
+        "degrees": 1500,
+        "dimension_max": 930,
+        "dimension_min": 17,
+        "eigen_compute": 33655,
+        "eigen_factorize": 949500,
+        "frequency_systems": 983155,
+        "kl_max": 15,
+        "kl_min": 4,
+        "ku_max": 15,
+        "ku_min": 4,
+        "lapack_factorize": 0,
+        "nnz_max": 13576,
+        "nnz_min": 97,
+        "rhs": 2948155,
+        "sems": 2,
+        "solves": 983155
+      },
+      "fmax_mHz": 20.0,
+      "max_worker_accounting_residual": 0.0,
+      "norms": [
+        0.001501448636646385,
+        0.0015014486366463852,
+        0.001501448636646385
+      ],
+      "wall_seconds": {
+        "max": 65.662426128,
+        "median": 65.614107801,
+        "min": 65.536863627,
+        "samples": [
+          65.662426128,
+          65.614107801,
+          65.536863627
+        ]
+      },
+      "worker_accounting_median_seconds": {
+        "categorized": 128.78610462900264,
+        "total": 131.21457001,
+        "unclassified": 2.3572416100000453
+      },
+      "worker_categories_median_seconds": {
+        "base_operator_preparation": 0.5330984900000002,
+        "factorization": 76.15797652200473,
+        "frequency_matrix_construction": 25.19303667499844,
+        "lapack_band_packing": 0.0,
+        "solve": 21.718214965000012,
+        "source_receiver_projection": 0.6727432679996252,
+        "sparse_compression": 0.0452775899999497,
+        "start_truncation_extraction": 4.469677311997494,
+        "unclassified": 2.4245451879997404
+      },
+      "worker_category_share_percent": {
+        "base_operator_preparation": 0.4062799504349039,
+        "factorization": 58.04079266212636,
+        "frequency_matrix_construction": 19.199877477842936,
+        "lapack_band_packing": 0.0,
+        "solve": 16.551679408273674,
+        "source_receiver_projection": 0.5127047003609088,
+        "sparse_compression": 0.03450652621618091,
+        "start_truncation_extraction": 3.40638795802696,
+        "unclassified": 1.8477713167180774
+      },
+      "worker_mode_share_percent": {
+        "radial": 0.3004231869753166,
+        "spheroidal": 89.75227858691667,
+        "toroidal": 9.946567038252953
+      },
+      "worker_modes_median_seconds": {
+        "radial": 0.394198993,
+        "spheroidal": 117.768066422,
+        "toroidal": 13.051345170000001
+      },
+      "worker_total_median_seconds": 131.21457001
+    },
+    {
+      "backend": "lapack",
+      "counts": {
+        "band_packs": 983155,
+        "degrees": 1500,
+        "dimension_max": 930,
+        "dimension_min": 17,
+        "eigen_compute": 0,
+        "eigen_factorize": 0,
+        "frequency_systems": 983155,
+        "kl_max": 15,
+        "kl_min": 4,
+        "ku_max": 15,
+        "ku_min": 4,
+        "lapack_factorize": 983155,
+        "nnz_max": 13576,
+        "nnz_min": 97,
+        "rhs": 2948155,
+        "sems": 2,
+        "solves": 983155
+      },
+      "fmax_mHz": 20.0,
+      "max_worker_accounting_residual": 0.0,
+      "norms": [
+        0.0015014486366430782,
+        0.0015014486366430782,
+        0.0015014486366430782
+      ],
+      "wall_seconds": {
+        "max": 64.436439767,
+        "median": 64.308841504,
+        "min": 64.252643089,
+        "samples": [
+          64.436439767,
+          64.252643089,
+          64.308841504
+        ]
+      },
+      "worker_accounting_median_seconds": {
+        "categorized": 123.98496461400201,
+        "total": 128.603779169,
+        "unclassified": 4.674331136032748
+      },
+      "worker_categories_median_seconds": {
+        "base_operator_preparation": 0.5299092719999996,
+        "factorization": 44.45844910100212,
+        "frequency_matrix_construction": 24.868232589997604,
+        "lapack_band_packing": 21.17123897200548,
+        "solve": 27.781102098999547,
+        "source_receiver_projection": 0.6851868479999401,
+        "sparse_compression": 0.044464011999914926,
+        "start_truncation_extraction": 4.3820344009976,
+        "unclassified": 4.68316187399779
+      },
+      "worker_category_share_percent": {
+        "base_operator_preparation": 0.41204797823525735,
+        "factorization": 34.57009536444388,
+        "frequency_matrix_construction": 19.33709316373815,
+        "lapack_band_packing": 16.462377006964985,
+        "solve": 21.602088428903798,
+        "source_receiver_projection": 0.5327890458798467,
+        "sparse_compression": 0.03457442097520645,
+        "start_truncation_extraction": 3.407391625124102,
+        "unclassified": 3.6415429657347644
+      },
+      "worker_mode_share_percent": {
+        "radial": 0.21975827602127343,
+        "spheroidal": 91.202714228069,
+        "toroidal": 8.577780546793692
+      },
+      "worker_modes_median_seconds": {
+        "radial": 0.282617448,
+        "spheroidal": 117.29013720200001,
+        "toroidal": 11.031349952
+      },
+      "worker_total_median_seconds": 128.603779169
+    },
+    {
+      "backend": "eigen",
+      "counts": {
+        "band_packs": 0,
+        "degrees": 1500,
+        "dimension_max": 1554,
+        "dimension_min": 17,
+        "eigen_compute": 37146,
+        "eigen_factorize": 1683000,
+        "frequency_systems": 1720146,
+        "kl_max": 15,
+        "kl_min": 4,
+        "ku_max": 15,
+        "ku_min": 4,
+        "lapack_factorize": 0,
+        "nnz_max": 22728,
+        "nnz_min": 97,
+        "rhs": 5158146,
+        "sems": 4,
+        "solves": 1720146
+      },
+      "fmax_mHz": 35.0,
+      "max_worker_accounting_residual": 0.0,
+      "norms": [
+        0.011419649597482002,
+        0.011419649597482002,
+        0.011419649597482002
+      ],
+      "wall_seconds": {
+        "max": 181.773379104,
+        "median": 181.679605856,
+        "min": 181.653740983,
+        "samples": [
+          181.773379104,
+          181.679605856,
+          181.653740983
+        ]
+      },
+      "worker_accounting_median_seconds": {
+        "categorized": 357.5540519830161,
+        "total": 363.327879453,
+        "unclassified": 5.908811709980284
+      },
+      "worker_categories_median_seconds": {
+        "base_operator_preparation": 1.4398040950000026,
+        "factorization": 216.60114433201227,
+        "frequency_matrix_construction": 69.8989230520036,
+        "lapack_band_packing": 0.0,
+        "solve": 61.405666570998775,
+        "source_receiver_projection": 1.2052803060001316,
+        "sparse_compression": 0.08392282399977465,
+        "start_truncation_extraction": 6.903571948000385,
+        "unclassified": 5.78956632498506
+      },
+      "worker_category_share_percent": {
+        "base_operator_preparation": 0.3962823048888147,
+        "factorization": 59.615888727865084,
+        "frequency_matrix_construction": 19.23852448571751,
+        "lapack_band_packing": 0.0,
+        "solve": 16.90089586944076,
+        "source_receiver_projection": 0.3317335041326071,
+        "sparse_compression": 0.023098371676327934,
+        "start_truncation_extraction": 1.9000941954671635,
+        "unclassified": 1.5934825408117346
+      },
+      "worker_mode_share_percent": {
+        "radial": 0.266485465540843,
+        "spheroidal": 90.99665476917208,
+        "toroidal": 8.761973505013707
+      },
+      "worker_modes_median_seconds": {
+        "radial": 0.968215991,
+        "spheroidal": 330.61621614600006,
+        "toroidal": 31.834692534
+      },
+      "worker_total_median_seconds": 363.327879453
+    },
+    {
+      "backend": "lapack",
+      "counts": {
+        "band_packs": 1720146,
+        "degrees": 1500,
+        "dimension_max": 1554,
+        "dimension_min": 17,
+        "eigen_compute": 0,
+        "eigen_factorize": 0,
+        "frequency_systems": 1720146,
+        "kl_max": 15,
+        "kl_min": 4,
+        "ku_max": 15,
+        "ku_min": 4,
+        "lapack_factorize": 1720146,
+        "nnz_max": 22728,
+        "nnz_min": 97,
+        "rhs": 5158146,
+        "sems": 4,
+        "solves": 1720146
+      },
+      "fmax_mHz": 35.0,
+      "max_worker_accounting_residual": 0.0,
+      "norms": [
+        0.011419649597481487,
+        0.011419649597481487,
+        0.011419649597481487
+      ],
+      "wall_seconds": {
+        "max": 175.552801274,
+        "median": 175.171070899,
+        "min": 175.084691399,
+        "samples": [
+          175.171070899,
+          175.084691399,
+          175.552801274
+        ]
+      },
+      "worker_accounting_median_seconds": {
+        "categorized": 338.4318563399916,
+        "total": 350.30882323800006,
+        "unclassified": 11.876966898008448
+      },
+      "worker_categories_median_seconds": {
+        "base_operator_preparation": 1.4079002679999997,
+        "factorization": 125.45205321700276,
+        "frequency_matrix_construction": 67.9987296240036,
+        "lapack_band_packing": 58.139527435982316,
+        "solve": 77.7166127469932,
+        "source_receiver_projection": 1.1980694220006183,
+        "sparse_compression": 0.08136935599971806,
+        "start_truncation_extraction": 6.551095453998527,
+        "unclassified": 11.763465714019333
+      },
+      "worker_category_share_percent": {
+        "base_operator_preparation": 0.4019025998221778,
+        "factorization": 35.81184511923371,
+        "frequency_matrix_construction": 19.411081055701874,
+        "lapack_band_packing": 16.59664946448759,
+        "solve": 22.185171366406745,
+        "source_receiver_projection": 0.34200378138538895,
+        "sparse_compression": 0.023227892248787484,
+        "start_truncation_extraction": 1.8700914791254653,
+        "unclassified": 3.3580272415882675
+      },
+      "worker_mode_share_percent": {
+        "radial": 0.1974734468877517,
+        "spheroidal": 92.13229685817109,
+        "toroidal": 7.670229694941154
+      },
+      "worker_modes_median_seconds": {
+        "radial": 0.6917669080000001,
+        "spheroidal": 322.747564946,
+        "toroidal": 26.869491384
+      },
+      "worker_total_median_seconds": 350.30882323800006
+    },
+    {
+      "backend": "eigen",
+      "counts": {
+        "band_packs": 0,
+        "degrees": 1500,
+        "dimension_max": 2418,
+        "dimension_min": 17,
+        "eigen_compute": 37802,
+        "eigen_factorize": 2667000,
+        "frequency_systems": 2704802,
+        "kl_max": 15,
+        "kl_min": 4,
+        "ku_max": 15,
+        "ku_min": 4,
+        "lapack_factorize": 0,
+        "nnz_max": 35400,
+        "nnz_min": 97,
+        "rhs": 8110802,
+        "sems": 6,
+        "solves": 2704802
+      },
+      "fmax_mHz": 55.0,
+      "max_worker_accounting_residual": 0.0,
+      "norms": [
+        0.06364459161410761,
+        0.06364459161410761,
+        0.06364459161410761
+      ],
+      "wall_seconds": {
+        "max": 493.634639166,
+        "median": 492.463648469,
+        "min": 492.165809779,
+        "samples": [
+          493.634639166,
+          492.165809779,
+          492.463648469
+        ]
+      },
+      "worker_accounting_median_seconds": {
+        "categorized": 970.5747049460103,
+        "total": 984.8689903740001,
+        "unclassified": 14.331336749026377
+      },
+      "worker_categories_median_seconds": {
+        "base_operator_preparation": 3.0526266819999983,
+        "factorization": 597.2758087529919,
+        "frequency_matrix_construction": 188.4299028800355,
+        "lapack_band_packing": 0.0,
+        "solve": 169.10359780096894,
+        "source_receiver_projection": 2.01482981899969,
+        "sparse_compression": 0.1726891530010924,
+        "start_truncation_extraction": 10.6286502630162,
+        "unclassified": 14.190885022986663
+      },
+      "worker_category_share_percent": {
+        "base_operator_preparation": 0.30995256342072214,
+        "factorization": 60.645204041420655,
+        "frequency_matrix_construction": 19.132484088922325,
+        "lapack_band_packing": 0.0,
+        "solve": 17.170161661476673,
+        "source_receiver_projection": 0.20457846055591275,
+        "sparse_compression": 0.017534225840079944,
+        "start_truncation_extraction": 1.0791943260372137,
+        "unclassified": 1.4408906323264103
+      },
+      "worker_mode_share_percent": {
+        "radial": 0.22216766304816774,
+        "spheroidal": 91.81081296951258,
+        "toroidal": 7.978897743258107
+      },
+      "worker_modes_median_seconds": {
+        "radial": 2.18806042,
+        "spheroidal": 904.2162267470001,
+        "toroidal": 78.581689647
+      },
+      "worker_total_median_seconds": 984.8689903740001
+    },
+    {
+      "backend": "lapack",
+      "counts": {
+        "band_packs": 2704802,
+        "degrees": 1500,
+        "dimension_max": 2418,
+        "dimension_min": 17,
+        "eigen_compute": 0,
+        "eigen_factorize": 0,
+        "frequency_systems": 2704802,
+        "kl_max": 15,
+        "kl_min": 4,
+        "ku_max": 15,
+        "ku_min": 4,
+        "lapack_factorize": 2704802,
+        "nnz_max": 35400,
+        "nnz_min": 97,
+        "rhs": 8110802,
+        "sems": 6,
+        "solves": 2704802
+      },
+      "fmax_mHz": 55.0,
+      "max_worker_accounting_residual": 0.0,
+      "norms": [
+        0.06364459161410305,
+        0.06364459161410305,
+        0.06364459161410305
+      ],
+      "wall_seconds": {
+        "max": 471.91478852,
+        "median": 471.712082774,
+        "min": 471.234336053,
+        "samples": [
+          471.91478852,
+          471.712082774,
+          471.234336053
+        ]
+      },
+      "worker_accounting_median_seconds": {
+        "categorized": 913.1785056881616,
+        "total": 943.3619694050001,
+        "unclassified": 30.183463716838446
+      },
+      "worker_categories_median_seconds": {
+        "base_operator_preparation": 3.0003454790000044,
+        "factorization": 345.82296422099455,
+        "frequency_matrix_construction": 183.69265511798272,
+        "lapack_band_packing": 157.0994024111347,
+        "solve": 211.25296696097587,
+        "source_receiver_projection": 1.9810331040012004,
+        "sparse_compression": 0.13696724800097748,
+        "start_truncation_extraction": 10.085691373017767,
+        "unclassified": 30.289943489892266
+      },
+      "worker_category_share_percent": {
+        "base_operator_preparation": 0.31804816987612833,
+        "factorization": 36.65856536903994,
+        "frequency_matrix_construction": 19.472128522823734,
+        "lapack_band_packing": 16.65314137162227,
+        "solve": 22.393627664916142,
+        "source_receiver_projection": 0.20999713453052204,
+        "sparse_compression": 0.014519055510300659,
+        "start_truncation_extraction": 1.0691221079623383,
+        "unclassified": 3.2108506037186157
+      },
+      "worker_mode_share_percent": {
+        "radial": 0.16578788648713894,
+        "spheroidal": 92.80336218399603,
+        "toroidal": 6.9694731247718575
+      },
+      "worker_modes_median_seconds": {
+        "radial": 1.563979871,
+        "spheroidal": 875.471625173,
+        "toroidal": 65.747358927
+      },
+      "worker_total_median_seconds": 943.3619694050001
+    }
+  ],
+  "input_sha256": {
+    "stage_profile_full_metadata.json": "1e626d4baf47204989d74b2556153c903b27db69750a95e53e6fb138f45e1b11",
+    "stage_profile_full_profiles.jsonl": "b959b68ac1aef050528e3891d73fd97bc48bfab4fbc6431e0e2b840438d16841"
+  },
+  "numerical_sanity": [
+    {
+      "eigen_norm": 0.001501448636646385,
+      "fmax_mHz": 20.0,
+      "lapack_norm": 0.0015014486366430782,
+      "relative_norm_difference": 2.202417415667877e-12,
+      "wall_speedup_eigen_over_lapack": 1.0202968404728425
+    },
+    {
+      "eigen_norm": 0.011419649597482002,
+      "fmax_mHz": 35.0,
+      "lapack_norm": 0.011419649597481487,
+      "relative_norm_difference": 4.511634686923446e-14,
+      "wall_speedup_eigen_over_lapack": 1.0371553072296549
+    },
+    {
+      "eigen_norm": 0.06364459161410761,
+      "fmax_mHz": 55.0,
+      "lapack_norm": 0.06364459161410305,
+      "relative_norm_difference": 7.173888735832334e-14,
+      "wall_speedup_eigen_over_lapack": 1.0439920164286787
+    }
+  ]
+}

@@ -46,23 +46,30 @@ public:
       return *this;
     }
 
-    Eigen::Index matrixKl = 0;
-    Eigen::Index matrixKu = 0;
-    for (Eigen::Index column = 0; column < matrix.outerSize(); ++column) {
-      for (SparseMatrix::InnerIterator entry(matrix, column); entry; ++entry) {
-        matrixKl = std::max(matrixKl, entry.row() - entry.col());
-        matrixKu = std::max(matrixKu, entry.col() - entry.row());
+    {
+      profiling::Scope profilePack(profiling::Context::active(),
+                                   profiling::Category::band_pack,
+                                   profiling::Context::mode());
+      Eigen::Index matrixKl = 0;
+      Eigen::Index matrixKu = 0;
+      for (Eigen::Index column = 0; column < matrix.outerSize(); ++column) {
+        for (SparseMatrix::InnerIterator entry(matrix, column); entry; ++entry) {
+          matrixKl = std::max(matrixKl, entry.row() - entry.col());
+          matrixKu = std::max(matrixKu, entry.col() - entry.row());
+        }
       }
-    }
-    if (matrixKl > m_band.kl || matrixKu > m_band.ku) {
-      clearFailure(kBandStructureMismatch);
-      return *this;
-    }
+      if (matrixKl > m_band.kl || matrixKu > m_band.ku) {
+        clearFailure(kBandStructureMismatch);
+        return *this;
+      }
 
-    std::fill(m_band.data.begin(), m_band.data.end(), Complex{});
-    for (Eigen::Index column = 0; column < matrix.outerSize(); ++column) {
-      for (SparseMatrix::InnerIterator entry(matrix, column); entry; ++entry)
-        m_band.at(entry.row(), entry.col()) = entry.value();
+      std::fill(m_band.data.begin(), m_band.data.end(), Complex{});
+      for (Eigen::Index column = 0; column < matrix.outerSize(); ++column) {
+        for (SparseMatrix::InnerIterator entry(matrix, column); entry; ++entry)
+          m_band.at(entry.row(), entry.col()) = entry.value();
+      }
+      if (auto *profile = profiling::Context::active())
+        profile->countBandPack();
     }
     m_factored = false;
     factorizePacked();
@@ -75,6 +82,9 @@ public:
       return DenseMatrix{};
     }
 
+    if (auto *profile = profiling::Context::active())
+      profile->countSolve(static_cast<long>(rhs.cols()));
+
     std::vector<lapack_complex_double> b(
         static_cast<std::size_t>(rhs.size()));
     for (Eigen::Index column = 0; column < rhs.cols(); ++column)
@@ -84,10 +94,15 @@ public:
 
     const lapack_int n = static_cast<lapack_int>(m_band.n);
     const lapack_int nrhs = static_cast<lapack_int>(rhs.cols());
-    m_info = LAPACKE_zgbtrs(
-        LAPACK_COL_MAJOR, 'N', n, static_cast<lapack_int>(m_band.kl),
-        static_cast<lapack_int>(m_band.ku), nrhs, m_factors.data(),
-        static_cast<lapack_int>(m_band.ldab), m_pivots.data(), b.data(), n);
+    {
+      profiling::Scope profileSolve(profiling::Context::active(),
+                                    profiling::Category::solve,
+                                    profiling::Context::mode());
+      m_info = LAPACKE_zgbtrs(
+          LAPACK_COL_MAJOR, 'N', n, static_cast<lapack_int>(m_band.kl),
+          static_cast<lapack_int>(m_band.ku), nrhs, m_factors.data(),
+          static_cast<lapack_int>(m_band.ldab), m_pivots.data(), b.data(), n);
+    }
 
     DenseMatrix result(rhs.rows(), rhs.cols());
     for (Eigen::Index column = 0; column < result.cols(); ++column)
@@ -111,15 +126,27 @@ private:
 
   void factorizePacked() {
     const lapack_int n = static_cast<lapack_int>(m_band.n);
-    m_factors.resize(m_band.data.size());
-    for (std::size_t index = 0; index < m_band.data.size(); ++index)
-      m_factors[index] = toLapack(m_band.data[index]);
+    {
+      profiling::Scope profilePrepare(profiling::Context::active(),
+                                      profiling::Category::band_pack,
+                                      profiling::Context::mode());
+      m_factors.resize(m_band.data.size());
+      for (std::size_t index = 0; index < m_band.data.size(); ++index)
+        m_factors[index] = toLapack(m_band.data[index]);
+    }
 
-    m_info = LAPACKE_zgbtrf(
-        LAPACK_COL_MAJOR, n, n, static_cast<lapack_int>(m_band.kl),
-        static_cast<lapack_int>(m_band.ku), m_factors.data(),
-        static_cast<lapack_int>(m_band.ldab), m_pivots.data());
+    {
+      profiling::Scope profileFactorize(profiling::Context::active(),
+                                        profiling::Category::factorization,
+                                        profiling::Context::mode());
+      m_info = LAPACKE_zgbtrf(
+          LAPACK_COL_MAJOR, n, n, static_cast<lapack_int>(m_band.kl),
+          static_cast<lapack_int>(m_band.ku), m_factors.data(),
+          static_cast<lapack_int>(m_band.ldab), m_pivots.data());
+    }
     m_factored = (m_info == 0);
+    if (auto *profile = profiling::Context::active())
+      profile->countFactorize(true);
   }
 
   void clearFailure(lapack_int status) {

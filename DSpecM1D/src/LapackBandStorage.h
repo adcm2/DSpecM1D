@@ -9,6 +9,8 @@
 
 #include <Eigen/SparseCore>
 
+#include "Profiling.h"
+
 namespace SPARSESPEC::detail {
 
 /// Internal column-major storage for a square LAPACK general-band matrix.
@@ -34,6 +36,9 @@ struct LapackBandMatrix {
 
 inline LapackBandMatrix
 packLapackBand(const Eigen::SparseMatrix<std::complex<double>> &matrix) {
+  profiling::Scope profilePack(profiling::Context::active(),
+                               profiling::Category::band_pack,
+                               profiling::Context::mode());
   if (matrix.rows() != matrix.cols())
     throw std::invalid_argument(
         "LAPACK general-band storage requires a square matrix");
@@ -57,6 +62,9 @@ packLapackBand(const Eigen::SparseMatrix<std::complex<double>> &matrix) {
          entry; ++entry) {
       band.at(entry.row(), entry.col()) = entry.value();
     }
+  }
+  if (auto *profile = profiling::Context::active()) {
+    profile->countBandPack();
   }
   return band;
 }

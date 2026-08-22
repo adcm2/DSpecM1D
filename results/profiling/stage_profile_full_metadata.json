@@ -1,0 +1,97 @@
+{
+  "backend_order": "alternating first backend per fmax",
+  "campaign": "DSpecM1D profiling stage",
+  "command": "scripts/stage_profile.py --eigen-build /tmp/dspecm1d-stage-g-off-verify --lapack-build /tmp/dspecm1d-stage-e-verify --output-dir results/profiling --fmax 20 35 55 --lmax 750 --threads 2 --repetitions 3 --tag stage_profile_full",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "compiler_version": "g++ (GCC) 15.2.0",
+  "completed_backends": [
+    {
+      "backend": "eigen",
+      "fmax_mHz": 20.0
+    },
+    {
+      "backend": "lapack",
+      "fmax_mHz": 20.0
+    },
+    {
+      "backend": "lapack",
+      "fmax_mHz": 35.0
+    },
+    {
+      "backend": "eigen",
+      "fmax_mHz": 35.0
+    },
+    {
+      "backend": "eigen",
+      "fmax_mHz": 55.0
+    },
+    {
+      "backend": "lapack",
+      "fmax_mHz": 55.0
+    }
+  ],
+  "completed_points": [
+    20.0,
+    35.0,
+    55.0
+  ],
+  "configuration": "ex3/PREM-style type-4 all-mode attenuation=1",
+  "created_utc": "2026-08-21T21:38:51.186200+00:00",
+  "eigen_build": "/tmp/dspecm1d-stage-g-off-verify",
+  "eigen_cmake": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "CMAKE_CXX_STANDARD": "23",
+    "DSPECM1D_USE_LAPACK_BAND_SOLVER": "OFF",
+    "effective_release_flags": "-O3 -DNDEBUG -fopenmp -std=gnu++23"
+  },
+  "git": {
+    "revision": "04d5708c684101cce4efb8d3a99ff6a3e2ad597b",
+    "status_short": "M DSpecM1D/src/FullSpecMultiSem.h\n M DSpecM1D/src/LapackBandSolver.h\n M DSpecM1D/src/LapackBandStorage.h\n M benchmarks/CMakeLists.txt\n?? DSpecM1D/src/Profiling.h\n?? benchmarks/stage_profile_solver.cpp\n?? docs/stage_profile.md\n?? results/profiling/\n?? scripts/stage_profile.py"
+  },
+  "grid_fmax_mHz": [
+    20.0,
+    35.0,
+    55.0
+  ],
+  "lapack_build": "/tmp/dspecm1d-stage-e-verify",
+  "lapack_cmake": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "CMAKE_CXX_STANDARD": "23",
+    "DSPECM1D_USE_LAPACK_BAND_SOLVER": "ON",
+    "effective_release_flags": "-O3 -DNDEBUG -fopenmp -std=gnu++23"
+  },
+  "lapack_pr1_pipeline": "Eigen sparse matrix -> LAPACK band packing -> zgbtrf/zgbtrs",
+  "lmax": 750,
+  "machine": {
+    "CPU(s)": "128",
+    "Core(s) per socket": "32",
+    "Model name": "AMD EPYC 9334 32-Core Processor",
+    "Socket(s)": "2",
+    "Thread(s) per core": "2",
+    "hostname": "earth-tunya"
+  },
+  "measurement": "complete preferred adaptive multi-SEM spectra(paramsNew)",
+  "one_untimed_warmup_per_backend_fmax": true,
+  "profiling_source_sha256": {
+    "DSpecM1D/src/FullSpecMultiSem.h": "c8d1095e9237fd3a79df29f7bb3c07700afb3ca29a5481c91edd3a900f8972f2",
+    "DSpecM1D/src/LapackBandSolver.h": "bd58078a94816a9ebf007cf083246f2b24a8b79d281a7ce079c02d93fb2fbe66",
+    "DSpecM1D/src/LapackBandStorage.h": "3639ea0ca1efd9413c5fddd8f5f036a6636e910cf539782aa80a4074d04c0712",
+    "DSpecM1D/src/Profiling.h": "7b7595ae5bf1ccfaba714b20695c4208a937afbd220c082b22e205a70d881604",
+    "benchmarks/stage_profile_solver.cpp": "0ca2aefaae8a742911f5b46a08b2effce1d2fda9f6a040e3a21c682bcdc47ddf",
+    "scripts/stage_profile.py": "6c18c9efd44f2e081c03ebbe891d387ae20b1c375cb80cc0bd51285517718110"
+  },
+  "raw_profile_file": "/space/adcm2/CleanBuilds/DSpecM1D/results/profiling/stage_profile_full_profiles.jsonl",
+  "repetitions": 3,
+  "status": "complete",
+  "threads": {
+    "BLIS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_NUM_THREADS": "2",
+    "OPENBLAS_NUM_THREADS": "1"
+  }
+}

@@ -2,6 +2,7 @@
 #define DSPECM1D_FULL_SPEC_MULTI_SEM_H
 
 #include "FullSpec.h"
+#include "Profiling.h"
 
 #ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
 #include "LapackBandSolver.h"
@@ -37,6 +38,11 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
   using SparseMatrixC = Eigen::SparseMatrix<Complex>;
+  detail::profiling::Context profile;
+  profile.activate();
+#ifdef DSPECM1D_ENABLE_PROFILING
+  const auto profileStart = std::chrono::steady_clock::now();
+#endif
   Timer timer1;
 
   auto vecW = myff.w();
@@ -99,6 +105,14 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
     double step = std::min(newLen / fref, 0.05);
     maxSteps.push_back(step);
   }
+#ifdef DSPECM1D_ENABLE_PROFILING
+  profile.addTime(
+      detail::profiling::Category::unclassified,
+      detail::profiling::Mode::all,
+      std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                    profileStart)
+          .count());
+#endif
 
   MatrixC vecRaw = MatrixC::Zero(3 * params.num_receivers(), vecW.size());
 
@@ -109,8 +123,13 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 
   // build one SEM per chunk
   std::vector<Full1D::SEM> sems;
-  for (int idx = 0; idx < numChunks; ++idx)
-    sems.emplace_back(inp_model, maxSteps[idx], NQ, params.lmax());
+  {
+    detail::profiling::Scope profileMesh(profile, detail::profiling::Category::sem_mesh);
+    for (int idx = 0; idx < numChunks; ++idx) {
+      sems.emplace_back(inp_model, maxSteps[idx], NQ, params.lmax());
+      profile.countSem();
+    }
+  }
 
   timer1.start();
   detail::MultiSemSolver solver, solver1;
@@ -118,6 +137,21 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   int lmin = params.lmin();
   int lmax = params.lmax();
   ParamRedInfo paramInfo(params, lmax);
+
+#ifdef DSPECM1D_ENABLE_PROFILING
+  auto recordSystem = [&](const SparseMatrixC &matrix) {
+    Eigen::Index kl = 0, ku = 0;
+    for (Eigen::Index column = 0; column < matrix.outerSize(); ++column)
+      for (SparseMatrixC::InnerIterator entry(matrix, column); entry;
+           ++entry) {
+        kl = std::max(kl, entry.row() - entry.col());
+        ku = std::max(ku, entry.col() - entry.row());
+      }
+    profile.countFrequencySystem(static_cast<long>(matrix.rows()),
+                                 static_cast<long>(matrix.nonZeros()),
+                                 static_cast<long>(kl), static_cast<long>(ku));
+  };
+#endif
 
   ModeFlags flags = resolveModeFlags(params.type(), lmin, lmax);
   bool inc_rad = flags.inc_rad;
@@ -134,27 +168,87 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
       auto lowidx = sem.ltgR(0, recElems[0], 0);
       auto upidx = sem.ltgR(1, recElems.back(), NQ - 1);
       int lenidx = upidx - lowidx + 1;
-      SparseMatrixC keR = sem.hR().cast<Complex>();
-      SparseMatrixC inR = sem.pR().cast<Complex>();
-      SparseMatrixC keRAtten = sem.hRa().cast<Complex>();
-      keR.makeCompressed();
-      inR.makeCompressed();
-      keRAtten.makeCompressed();
-      MatrixC fR = sem.calculateForceRedR(cmt);
-      MatrixC vecRedZ = sem.rvRedZR(params);
+      SparseMatrixC keR;
+      SparseMatrixC inR;
+      SparseMatrixC keRAtten;
+      {
+        detail::profiling::Scope profileBase(profile, detail::profiling::Category::base_operator,
+                                     detail::profiling::Mode::radial);
+        keR = sem.hR().cast<Complex>();
+        inR = sem.pR().cast<Complex>();
+        keRAtten = sem.hRa().cast<Complex>();
+      }
+      {
+        detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
+                                            detail::profiling::Mode::radial);
+        keR.makeCompressed();
+        inR.makeCompressed();
+        keRAtten.makeCompressed();
+      }
+      MatrixC fR;
+      MatrixC vecRedZ;
+      {
+        detail::profiling::Scope projectionProfile(profile, detail::profiling::Category::projection,
+                                           detail::profiling::Mode::radial);
+        fR = sem.calculateForceRedR(cmt);
+        vecRedZ = sem.rvRedZR(params);
+      }
 #pragma omp parallel default(shared) private(solver)
       {
+        profile.setMode(detail::profiling::Mode::radial);
+        detail::profiling::WorkerScope workerProfile(
+            profile, detail::profiling::Mode::radial);
 #pragma omp for schedule(dynamic)
         for (int idx = 0; idx < (int) idxChunks[idxChunk].size(); ++idx) {
           double wval = freqChunks[idxChunk][idx];
           int idxw = idxChunks[idxChunk][idx];
           Complex w = wval + ieps;
+#ifdef DSPECM1D_ENABLE_PROFILING
+          const auto matrixStart = std::chrono::steady_clock::now();
+#endif
           SparseMatrixC wR = -w * w * inR + keR;
           if (params.attenuation())
             wR += attenFactor(wval, w0, twodivpi, myi) * keRAtten;
-          wR.makeCompressed();
+#ifdef DSPECM1D_ENABLE_PROFILING
+          profile.addTime(
+              detail::profiling::Category::dynamic_matrix,
+              detail::profiling::Mode::radial,
+              std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                            matrixStart)
+                  .count());
+#endif
+          {
+            detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
+                                                detail::profiling::Mode::radial);
+            wR.makeCompressed();
+          }
+#ifdef DSPECM1D_ENABLE_PROFILING
+          recordSystem(wR);
+#endif
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
           solver.compute(wR);
-          MatrixC vecX = solver.solve(fR);
+#else
+          {
+            detail::profiling::Scope factorProfile(profile, detail::profiling::Category::factorization,
+                                           detail::profiling::Mode::radial);
+            solver.compute(wR);
+            if (auto *active = detail::profiling::Context::active()) active->countCompute();
+          }
+#endif
+          MatrixC vecX;
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+          vecX = solver.solve(fR);
+#else
+          {
+            detail::profiling::Scope solveProfile(profile, detail::profiling::Category::solve,
+                                          detail::profiling::Mode::radial);
+            vecX = solver.solve(fR);
+            if (auto *active = detail::profiling::Context::active())
+              active->countSolve(static_cast<long>(fR.cols()));
+          }
+#endif
+          detail::profiling::Scope projectionProfile(profile, detail::profiling::Category::projection,
+                                             detail::profiling::Mode::radial);
           auto tmp = vecX.block(lowidx, 0, lenidx, 1);
           auto resval = (vecRedZ.transpose() * tmp).sum();
           for (int idxr = 0; idxr < numRec; ++idxr) {
@@ -175,8 +269,12 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
     std::cout << "Doing Toroidal Modes\n";
 #pragma omp parallel default(shared) private(solver1)
     {
+      profile.setMode(detail::profiling::Mode::toroidal);
+      detail::profiling::WorkerScope workerProfile(
+          profile, detail::profiling::Mode::toroidal);
 #pragma omp for schedule(dynamic)
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
+        profile.countDegree();
         MatrixC rvVals = srInfo.rvRedTor(idxl);
         for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
           Full1D::SEM &sem = sems[idxChunk];
@@ -197,23 +295,47 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           auto lentor = sem.ltgT(sem.eu() - 1, NQ - 1) + 1;
           // std::cout << "Debug 3\n";
 
-          SparseMatrixC hTor = sem.hTk(idxl).cast<Complex>();
-          SparseMatrixC pTor = sem.pTk(idxl).cast<Complex>();
-          SparseMatrixC hTorAtten = sem.hTa(idxl).cast<Complex>();
-          hTor.makeCompressed();
-          pTor.makeCompressed();
-          hTorAtten.makeCompressed();
+          SparseMatrixC hTor;
+          SparseMatrixC pTor;
+          SparseMatrixC hTorAtten;
+          {
+            detail::profiling::Scope baseProfile(profile, detail::profiling::Category::base_operator,
+                                         detail::profiling::Mode::toroidal);
+            hTor = sem.hTk(idxl).cast<Complex>();
+            pTor = sem.pTk(idxl).cast<Complex>();
+            hTorAtten = sem.hTa(idxl).cast<Complex>();
+          }
+          {
+            detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
+                                                detail::profiling::Mode::toroidal);
+            hTor.makeCompressed();
+            pTor.makeCompressed();
+            hTorAtten.makeCompressed();
+          }
 
           // std::cout << "Debug 4\n";
-          MatrixC fVals = sem.calculateForceRedCoefficientsT(cmt, idxl, 0.0);
+          MatrixC fVals;
           // std::cout << "Debug 5\n";
-          MatrixC redC = rvVals * fVals;
-          MatrixC fBase = sem.calculateForceAllT(cmt, idxl);
+          MatrixC redC;
+          MatrixC fBase;
           // std::cout << "Debug 6\n";
-          MatrixC rvBase = sem.rvBaseFullT(params, idxl);
+          MatrixC rvBase;
           // std::cout << "Debug 7\n";
-          auto ridxtor = SpectralTools::allIndicesTor(
-              sem, idxl, freqChunks[idxChunk], idxSource, nskip);
+          {
+            detail::profiling::Scope projectionProfile(profile, detail::profiling::Category::projection,
+                                               detail::profiling::Mode::toroidal);
+            fVals = sem.calculateForceRedCoefficientsT(cmt, idxl, 0.0);
+            redC = rvVals * fVals;
+            fBase = sem.calculateForceAllT(cmt, idxl);
+            rvBase = sem.rvBaseFullT(params, idxl);
+          }
+          std::vector<int> ridxtor;
+          {
+            detail::profiling::Scope truncationProfile(profile, detail::profiling::Category::truncation,
+                                               detail::profiling::Mode::toroidal);
+            ridxtor = SpectralTools::allIndicesTor(
+                sem, idxl, freqChunks[idxChunk], idxSource, nskip);
+          }
           auto i1 = idxChunks[idxChunk][0];
           auto lenChunk = freqChunks[idxChunk].size();
           MatrixC vecRawL = MatrixC::Zero(3 * params.num_receivers(), lenChunk);
@@ -222,16 +344,57 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             Complex w = wval + ieps;
             std::size_t ridx = ridxtor[idx];
             std::size_t len_ms = lentor - ridx;
+#ifdef DSPECM1D_ENABLE_PROFILING
+            const auto matrixStart = std::chrono::steady_clock::now();
+#endif
             SparseMatrixC mat = hTor.block(ridx, ridx, len_ms, len_ms) -
                                 w * w * pTor.block(ridx, ridx, len_ms, len_ms);
             if (params.attenuation())
               mat += attenFactor(wval, w0, twodivpi, myi) *
                      hTorAtten.block(ridx, ridx, len_ms, len_ms);
-            mat.makeCompressed();
+#ifdef DSPECM1D_ENABLE_PROFILING
+            profile.addTime(
+                detail::profiling::Category::dynamic_matrix,
+                detail::profiling::Mode::toroidal,
+                std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                              matrixStart)
+                    .count());
+#endif
+            {
+              detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
+                                                detail::profiling::Mode::toroidal);
+              mat.makeCompressed();
+            }
+#ifdef DSPECM1D_ENABLE_PROFILING
+            recordSystem(mat);
+#endif
             auto fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
             factorizeOrCompute(solver1, mat, (int) lenChunk - idx - 1, nskip);
-            MatrixC vecSol = solver1.solve(fRed);
+#else
+            const bool recompute =
+                ((static_cast<int>(lenChunk) - idx - 1) % nskip) == 0;
+            {
+              detail::profiling::Scope factorProfile(profile, detail::profiling::Category::factorization,
+                                             detail::profiling::Mode::toroidal);
+              factorizeOrCompute(solver1, mat, (int) lenChunk - idx - 1, nskip);
+            }
+            if (recompute) profile.countCompute(); else profile.countFactorize(false);
+#endif
+            MatrixC vecSol;
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+            vecSol = solver1.solve(fRed);
+#else
+            {
+              detail::profiling::Scope solveProfile(profile, detail::profiling::Category::solve,
+                                            detail::profiling::Mode::toroidal);
+              vecSol = solver1.solve(fRed);
+              profile.countSolve(static_cast<long>(fRed.cols()));
+            }
+#endif
             auto lidx = lowidx - ridx;
+            detail::profiling::Scope projectionProfile(profile, detail::profiling::Category::projection,
+                                               detail::profiling::Mode::toroidal);
             vecRawL.col(idx) +=
                 redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 2))
                     .rowwise()
@@ -252,8 +415,12 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
     std::cout << "\nDoing Spheroidal Modes\n";
 #pragma omp parallel default(shared) private(solver1)
     {
+      profile.setMode(detail::profiling::Mode::spheroidal);
+      detail::profiling::WorkerScope workerProfile(
+          profile, detail::profiling::Mode::spheroidal);
 #pragma omp for schedule(dynamic)
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
+        profile.countDegree();
         MatrixC rvVals = srInfo.rvRedSph(idxl);
         for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
           Full1D::SEM &sem = sems[idxChunk];
@@ -263,18 +430,42 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           auto upidx = sem.ltgS(1, recElems.back(), NQ - 1);
           int lenidx = upidx - lowidx + 1;
           auto lensph = sem.ltgS(2, sem.mesh().NE() - 1, NQ - 1) + 1;
-          SparseMatrixC pS = sem.pS(idxl).cast<Complex>();
-          SparseMatrixC hS = sem.hS(idxl).cast<Complex>();
-          SparseMatrixC hSa = sem.hSa(idxl).cast<Complex>();
-          pS.makeCompressed();
-          hS.makeCompressed();
-          hSa.makeCompressed();
-          MatrixC fVals = sem.calculateForceRedCoefficients(cmt, idxl, 0.0);
-          MatrixC redC = rvVals * fVals;
-          MatrixC fBase = sem.calculateForceAll(cmt, idxl);
-          MatrixC rvBase = sem.rvBaseFull(params, idxl);
-          auto ridxsph = SpectralTools::allIndicesSph(
-              sem, idxl, freqChunks[idxChunk], idxSource, nskip);
+          SparseMatrixC pS;
+          SparseMatrixC hS;
+          SparseMatrixC hSa;
+          {
+            detail::profiling::Scope baseProfile(profile, detail::profiling::Category::base_operator,
+                                         detail::profiling::Mode::spheroidal);
+            pS = sem.pS(idxl).cast<Complex>();
+            hS = sem.hS(idxl).cast<Complex>();
+            hSa = sem.hSa(idxl).cast<Complex>();
+          }
+          {
+            detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
+                                                detail::profiling::Mode::spheroidal);
+            pS.makeCompressed();
+            hS.makeCompressed();
+            hSa.makeCompressed();
+          }
+          MatrixC fVals;
+          MatrixC redC;
+          MatrixC fBase;
+          MatrixC rvBase;
+          {
+            detail::profiling::Scope projectionProfile(profile, detail::profiling::Category::projection,
+                                               detail::profiling::Mode::spheroidal);
+            fVals = sem.calculateForceRedCoefficients(cmt, idxl, 0.0);
+            redC = rvVals * fVals;
+            fBase = sem.calculateForceAll(cmt, idxl);
+            rvBase = sem.rvBaseFull(params, idxl);
+          }
+          std::vector<int> ridxsph;
+          {
+            detail::profiling::Scope truncationProfile(profile, detail::profiling::Category::truncation,
+                                               detail::profiling::Mode::spheroidal);
+            ridxsph = SpectralTools::allIndicesSph(
+                sem, idxl, freqChunks[idxChunk], idxSource, nskip);
+          }
           auto i1 = idxChunks[idxChunk][0];
           auto lenChunk = freqChunks[idxChunk].size();
           MatrixC vecRawL = MatrixC::Zero(3 * params.num_receivers(), lenChunk);
@@ -283,16 +474,68 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             std::size_t ridx = ridxsph[idx];
             std::size_t len_ms = lensph - ridx;
             Complex w = wval + ieps;
+#ifdef DSPECM1D_ENABLE_PROFILING
+            const auto matrixStart = std::chrono::steady_clock::now();
+#endif
             SparseMatrixC wS = hS.block(ridx, ridx, len_ms, len_ms) -
                                w * w * pS.block(ridx, ridx, len_ms, len_ms);
             if (params.attenuation())
               wS += attenFactor(wval, w0, twodivpi, myi) *
                     hSa.block(ridx, ridx, len_ms, len_ms);
-            wS.makeCompressed();
+#ifdef DSPECM1D_ENABLE_PROFILING
+            profile.addTime(
+                detail::profiling::Category::dynamic_matrix,
+                detail::profiling::Mode::spheroidal,
+                std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                              matrixStart)
+                    .count());
+#endif
+            {
+              detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
+                                                detail::profiling::Mode::spheroidal);
+              wS.makeCompressed();
+            }
+#ifdef DSPECM1D_ENABLE_PROFILING
+            recordSystem(wS);
+#endif
+#ifdef DSPECM1D_ENABLE_PROFILING
+            const auto rhsStart = std::chrono::steady_clock::now();
+#endif
             MatrixC fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
+#ifdef DSPECM1D_ENABLE_PROFILING
+            profile.addTime(
+                detail::profiling::Category::truncation,
+                detail::profiling::Mode::spheroidal,
+                std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                              rhsStart)
+                    .count());
+#endif
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
             factorizeOrCompute(solver1, wS, (int) lenChunk - idx - 1, nskip);
-            MatrixC vecSol = solver1.solve(fRed);
+#else
+            const bool recompute =
+                ((static_cast<int>(lenChunk) - idx - 1) % nskip) == 0;
+            {
+              detail::profiling::Scope factorProfile(profile, detail::profiling::Category::factorization,
+                                             detail::profiling::Mode::spheroidal);
+              factorizeOrCompute(solver1, wS, (int) lenChunk - idx - 1, nskip);
+            }
+            if (recompute) profile.countCompute(); else profile.countFactorize(false);
+#endif
+            MatrixC vecSol;
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+            vecSol = solver1.solve(fRed);
+#else
+            {
+              detail::profiling::Scope solveProfile(profile, detail::profiling::Category::solve,
+                                            detail::profiling::Mode::spheroidal);
+              vecSol = solver1.solve(fRed);
+              profile.countSolve(static_cast<long>(fRed.cols()));
+            }
+#endif
             auto lidx = lowidx - ridx;
+            detail::profiling::Scope projectionProfile(profile, detail::profiling::Category::projection,
+                                               detail::profiling::Mode::spheroidal);
             vecRawL.col(idx) +=
                 redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 4))
                     .rowwise()
@@ -308,6 +551,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
     }
   }
 
+  {
+    detail::profiling::Scope outputProfile(
+        profile, detail::profiling::Category::projection,
+        detail::profiling::Mode::all);
   // backazimuth rotation
   for (int idxr = 0; idxr < params.num_receivers(); ++idxr) {
     auto baz = srInfo.backazimuths(idxr);
@@ -329,6 +576,16 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
       vecRaw.col(idxw) *= outputFactor(params.output_type(), w, myi);
     }
   }
+  }
+#ifdef DSPECM1D_ENABLE_PROFILING
+  profile.addTime(
+      detail::profiling::Category::total, detail::profiling::Mode::all,
+      std::chrono::duration<double>(std::chrono::steady_clock::now() -
+                                    profileStart)
+          .count());
+  detail::profiling::publish(profile.finish());
+#endif
+  profile.deactivate();
   return vecRaw;
 }
 

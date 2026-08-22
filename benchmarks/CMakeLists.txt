@@ -20,6 +20,11 @@ foreach(SRC_FILE IN LISTS BENCHMARK_SOURCES)
 
 endforeach()
 
+if(TARGET stage_profile_solver)
+    target_compile_definitions(stage_profile_solver PRIVATE
+        DSPECM1D_ENABLE_PROFILING)
+endif()
+
 if(TARGET ex1 AND TARGET ex2 AND TARGET ex3 AND TARGET ex4 AND TARGET ex5
    AND TARGET ex6 AND TARGET ex7)
     add_custom_target(paper_examples
