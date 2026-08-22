@@ -1,0 +1,145 @@
+{
+  "backend_order": "alternating first backend across ordered points",
+  "blas_threads": 1,
+  "build": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_CXX_COMPILER": "/opt/gcc-15.2.0/bin/g++",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "DSPECM1D_ENABLE_LAPACK_BAND_SOLVER": "ON"
+  },
+  "campaign": "final production same-binary solver benchmark",
+  "comparisons_sha256": "833bc4f401c1377c6ba031d24d3534bca2f2e9e9e591b8e6011f66178159b859",
+  "compiler_version": "g++ (GCC) 15.2.0",
+  "completed_points": [
+    "primary_f10_t32",
+    "primary_f20_t32",
+    "primary_f35_t32",
+    "primary_f55_t32",
+    "primary_f5_t32",
+    "scaling_f35_t10",
+    "scaling_f35_t20",
+    "scaling_f35_t50",
+    "single_thread_f10_t1",
+    "single_thread_f20_t1",
+    "single_thread_f5_t1"
+  ],
+  "completed_utc": "2026-08-22T16:48:54.674771+00:00",
+  "created_utc": "2026-08-22T16:22:24.815436+00:00",
+  "git_revision": "d08fc5a063816d9e4a8f4851a2c40b9e65019b63",
+  "git_status_at_start": "?? benchmarks/final_solver_benchmark.cpp\n?? results/final_benchmark/\n?? scripts/final_solver_benchmark.py",
+  "machine": {
+    "CPU(s)": "128",
+    "Core(s) per socket": "32",
+    "Model name": "AMD EPYC 9334 32-Core Processor",
+    "Socket(s)": "2",
+    "Thread(s) per core": "2",
+    "hostname": "earth-tunya"
+  },
+  "measurement": "complete preferred adaptive multi-SEM spectra() call",
+  "omp_dynamic": "FALSE",
+  "physics": "ex3/PREM all modes, attenuation enabled, identical per backend",
+  "raw_sha256": "cff2223db59efdff5d431cf6c9ffcd4b0b1cad1da28df13364c1794cdcc76803",
+  "request": {
+    "driver_sha256": "a44618c6cf6c4d9368a6722e8f814c9250a9eeba614bbd03091bf2a33b7bb5e0",
+    "executable_sha256": "fcfe902d8bb2e4e1cdbcc6505e5a4fc0d154b7fc04679efc8423f05ef00d3ee2",
+    "harness_source_sha256": "8c71a3ac9dac6b5598cd470c43d54003549683a2757903ca93b14308313e0361",
+    "lmax": 750,
+    "points": [
+      {
+        "first_backend": "eigen",
+        "fmax": 5.0,
+        "point_id": "primary_f5_t32",
+        "repetitions": 3,
+        "series": "primary",
+        "threads": 32
+      },
+      {
+        "first_backend": "lapack",
+        "fmax": 10.0,
+        "point_id": "primary_f10_t32",
+        "repetitions": 3,
+        "series": "primary",
+        "threads": 32
+      },
+      {
+        "first_backend": "eigen",
+        "fmax": 20.0,
+        "point_id": "primary_f20_t32",
+        "repetitions": 3,
+        "series": "primary",
+        "threads": 32
+      },
+      {
+        "first_backend": "lapack",
+        "fmax": 35.0,
+        "point_id": "primary_f35_t32",
+        "repetitions": 3,
+        "series": "primary",
+        "threads": 32
+      },
+      {
+        "first_backend": "eigen",
+        "fmax": 55.0,
+        "point_id": "primary_f55_t32",
+        "repetitions": 3,
+        "series": "primary",
+        "threads": 32
+      },
+      {
+        "first_backend": "lapack",
+        "fmax": 5.0,
+        "point_id": "single_thread_f5_t1",
+        "repetitions": 1,
+        "series": "single_thread",
+        "threads": 1
+      },
+      {
+        "first_backend": "eigen",
+        "fmax": 10.0,
+        "point_id": "single_thread_f10_t1",
+        "repetitions": 1,
+        "series": "single_thread",
+        "threads": 1
+      },
+      {
+        "first_backend": "lapack",
+        "fmax": 20.0,
+        "point_id": "single_thread_f20_t1",
+        "repetitions": 1,
+        "series": "single_thread",
+        "threads": 1
+      },
+      {
+        "first_backend": "eigen",
+        "fmax": 35.0,
+        "point_id": "scaling_f35_t10",
+        "repetitions": 2,
+        "series": "scaling",
+        "threads": 10
+      },
+      {
+        "first_backend": "lapack",
+        "fmax": 35.0,
+        "point_id": "scaling_f35_t20",
+        "repetitions": 2,
+        "series": "scaling",
+        "threads": 20
+      },
+      {
+        "first_backend": "eigen",
+        "fmax": 35.0,
+        "point_id": "scaling_f35_t50",
+        "repetitions": 2,
+        "series": "scaling",
+        "threads": 50
+      }
+    ],
+    "template_sha256": "0f46f5f194350b97b0f73c288a14904ba4024b2e1df319f45a060b913bb19a63",
+    "tolerance": 1e-09
+  },
+  "scaling_32_threads": "reuse primary fmax=35 mHz, 32-thread measurements",
+  "state": "complete",
+  "updated_utc": "2026-08-22T16:48:54.672264+00:00",
+  "warmup": "one untimed spectra() call per backend and point"
+}
