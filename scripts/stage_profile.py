@@ -47,7 +47,7 @@ def cpu_metadata() -> dict[str, str]:
 def build_metadata(build: Path) -> dict[str, str]:
     wanted = {"CMAKE_BUILD_TYPE", "CMAKE_CXX_FLAGS",
               "CMAKE_CXX_FLAGS_RELEASE", "CMAKE_CXX_STANDARD",
-              "DSPECM1D_USE_LAPACK_BAND_SOLVER"}
+              "DSPECM1D_ENABLE_LAPACK_BAND_SOLVER"}
     result: dict[str, str] = {}
     for line in (build / "CMakeCache.txt").read_text().splitlines():
         if line.startswith(("#", "//")) or "=" not in line or ":" not in line:

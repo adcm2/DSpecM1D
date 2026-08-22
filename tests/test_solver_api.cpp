@@ -2,6 +2,7 @@
 #include <DSpecM1D/src/InputParametersNew.h>
 #include <DSpecM1D/src/FullSpec.h>
 #include <DSpecM1D/src/SpectraRunContext.h>
+#include <DSpecM1D/src/Profiling.h>
 #include <DSpecM1D/src/SEM/SEM.h>
 #include "test_utils.h"
 
@@ -50,6 +51,13 @@ makeTinyPreferredParams(int type = 1) {
 
 TEST(PreferredSolverApiTests, SpectraRunContextExposesWorkflowObjects) {
   auto paramsNew = makeTinyPreferredParams();
+
+  EXPECT_EQ(paramsNew.solverBackend(), SPARSESPEC::SolverBackend::EigenSparseLU);
+#ifndef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
+  EXPECT_THROW(
+      paramsNew.setSolverBackend(SPARSESPEC::SolverBackend::LapackBandLU),
+      std::invalid_argument);
+#endif
 
   SPARSESPEC::SpectraRunContext request(paramsNew.freqFull(), paramsNew.cmt(),
                                         paramsNew.inputParameters(),
@@ -111,6 +119,11 @@ TEST(PreferredSolverApiTests, PreferredSolverOverloadsReturnStableShapes) {
   EXPECT_EQ(withSharedSem.rows(), withSharedSemReversed.rows());
   EXPECT_EQ(withSharedSem.cols(), withSharedSemReversed.cols());
   EXPECT_TRUE(withSharedSem.isApprox(withSharedSemReversed, 1e-12));
+
+#ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
+  paramsNew.setSolverBackend(SPARSESPEC::SolverBackend::LapackBandLU);
+  EXPECT_THROW(solver.spectra(paramsNew, sem), std::invalid_argument);
+#endif
 }
 
 TEST(PreferredSolverApiTests, AllModePathsReturnFiniteOutput) {
@@ -135,6 +148,35 @@ TEST(PreferredSolverApiTests, AllModePathsReturnFiniteOutput) {
             static_cast<Eigen::Index>(paramsNew.freqFull().w().size()));
   EXPECT_TRUE(multiResult.real().array().isFinite().all());
   EXPECT_TRUE(multiResult.imag().array().isFinite().all());
+
+#ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
+#ifdef DSPECM1D_ENABLE_PROFILING
+  const auto eigenProfile = SPARSESPEC::detail::profiling::last();
+  EXPECT_GT(eigenProfile.counts.eigenCompute +
+                eigenProfile.counts.eigenFactorize,
+            0U);
+  EXPECT_EQ(eigenProfile.counts.lapackFactorize, 0U);
+#endif
+  paramsNew.setSolverBackend(SPARSESPEC::SolverBackend::LapackBandLU);
+  const auto lapackResult = solver.spectra(paramsNew);
+#ifdef DSPECM1D_ENABLE_PROFILING
+  const auto lapackProfile = SPARSESPEC::detail::profiling::last();
+#endif
+  ASSERT_EQ(lapackResult.rows(), multiResult.rows());
+  ASSERT_EQ(lapackResult.cols(), multiResult.cols());
+  EXPECT_TRUE(lapackResult.real().array().isFinite().all());
+  EXPECT_TRUE(lapackResult.imag().array().isFinite().all());
+  const auto maxDifference = (multiResult - lapackResult).cwiseAbs().maxCoeff();
+  std::cout << "Eigen/LAPACK max elementwise discrepancy: " << maxDifference
+            << '\n';
+  EXPECT_LT(maxDifference, 1e-9);
+#ifdef DSPECM1D_ENABLE_PROFILING
+  EXPECT_GT(lapackProfile.counts.lapackFactorize, 0U);
+  EXPECT_EQ(lapackProfile.counts.eigenCompute, 0U);
+  EXPECT_EQ(lapackProfile.counts.eigenFactorize, 0U);
+  EXPECT_EQ(lapackProfile.counts.bandPacks, 0U);
+#endif
+#endif
 }
 
 TEST(PreferredSolverApiTests, LegacyMultiSemOverloadReturnsFiniteOutput) {

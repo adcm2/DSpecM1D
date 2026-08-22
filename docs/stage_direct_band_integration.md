@@ -12,9 +12,13 @@ the base operators. It removes per-frequency sparse `A(w)` construction,
 compression, bandwidth scanning, and sparse-to-band packing, but it does not
 yet assemble `H`, `P`, or `Ha` directly in band form.
 
-The Eigen SparseLU pathway remains unchanged. The current compile-time option
-still selects the production experiment pathway; exposing Eigen and LAPACK as
-simultaneously user-selectable backends is a later integration task.
+The Eigen SparseLU pathway remains available in every build. The
+`DSPECM1D_ENABLE_LAPACK_BAND_SOLVER` option adds LAPACK capability without
+replacing Eigen, and the preferred adaptive API defaults to Eigen:
+`params.setSolverBackend(SPARSESPEC::SolverBackend::LapackBandLU)` selects the
+direct-band path when that capability is enabled. The preferred reused/single-
+SEM API remains Eigen-only for now and reports this limitation if the LAPACK
+backend is requested.
 
 ## Performance pilot
 

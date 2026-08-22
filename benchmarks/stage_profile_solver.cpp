@@ -16,6 +16,14 @@ using SPARSESPEC::detail::profiling::Category;
 using SPARSESPEC::detail::profiling::Data;
 using SPARSESPEC::detail::profiling::Mode;
 
+SPARSESPEC::SolverBackend parseBackend(const std::string &label) {
+  if (label == "eigen")
+    return SPARSESPEC::SolverBackend::EigenSparseLU;
+  if (label == "lapack")
+    return SPARSESPEC::SolverBackend::LapackBandLU;
+  throw std::invalid_argument("backend must be 'eigen' or 'lapack'");
+}
+
 void writeCounts(std::ostream &out, const Data &data) {
   const auto &c = data.counts;
   out << "\"counts\":{";
@@ -86,6 +94,7 @@ int main(int argc, char **argv) {
       throw std::runtime_error("rep numbers must be positive");
 
     InputParametersNew params(argv[1], 5, 10, 0.05, 1.0, 0.05, 0.0, 1);
+    params.setSolverBackend(parseBackend(argv[2]));
     SPARSESPEC::SparseFSpec solver;
     std::ofstream sink("/dev/null");
     auto *saved = std::cout.rdbuf(sink.rdbuf());

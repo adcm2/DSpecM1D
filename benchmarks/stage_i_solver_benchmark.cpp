@@ -16,6 +16,14 @@ namespace {
 
 using Clock = std::chrono::steady_clock;
 
+SPARSESPEC::SolverBackend parseBackend(const std::string &label) {
+  if (label == "eigen")
+    return SPARSESPEC::SolverBackend::EigenSparseLU;
+  if (label == "lapack")
+    return SPARSESPEC::SolverBackend::LapackBandLU;
+  throw std::invalid_argument("backend must be 'eigen' or 'lapack'");
+}
+
 struct Result {
   double seconds;
   Eigen::Index rows;
@@ -23,8 +31,10 @@ struct Result {
   double norm;
 };
 
-std::vector<Result> runMeasured(const std::string &paramPath, int repetitions) {
+std::vector<Result> runMeasured(const std::string &paramPath,
+                                const std::string &backend, int repetitions) {
   InputParametersNew params(paramPath, 5, 10, 0.05, 1.0, 0.05, 0.0, 1);
+  params.setSolverBackend(parseBackend(backend));
   SPARSESPEC::SparseFSpec solver;
 
   // The warm-up and all timed calls use the same complete preferred adaptive
@@ -67,7 +77,7 @@ int main(int argc, char **argv) {
     const int repetitions = std::stoi(argv[4]);
     if (firstRep < 1 || repetitions < 1)
       throw std::runtime_error("rep numbers must be positive");
-    const auto results = runMeasured(argv[1], repetitions);
+    const auto results = runMeasured(argv[1], argv[2], repetitions);
     for (std::size_t index = 0; index < results.size(); ++index) {
       const auto &result = results[index];
       std::cout << std::setprecision(17) << "RESULT\t" << argv[2] << "\t"

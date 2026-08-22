@@ -3,26 +3,21 @@
 
 #include "FullSpec.h"
 
-#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
-#include "LapackBandSolver.h"
-#endif
-
 namespace SPARSESPEC {
 
 namespace detail {
 
-#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
-using SingleSemSolver = LapackBandSolver;
-#else
 using SingleSemSolver =
     Eigen::SparseLU<Eigen::SparseMatrix<std::complex<double>>,
                     Eigen::COLAMDOrdering<int>>;
-#endif
 
 } // namespace detail
 
 inline Eigen::MatrixXcd
 SparseFSpec::spectra(InputParametersNew &paramsNew, Full1D::SEM &sem) {
+  if (paramsNew.solverBackend() != SolverBackend::EigenSparseLU)
+    throw std::invalid_argument(
+        "LapackBandLU selection is currently supported only by the adaptive multi-SEM API.");
   SpectraRunContext request(paramsNew.freqFull(), paramsNew.cmt(),
                             paramsNew.inputParameters(), paramsNew.tref(),
                             paramsNew.nskip());

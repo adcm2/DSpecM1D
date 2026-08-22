@@ -24,14 +24,14 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
 # Optional LAPACK/LAPACKE support for consumers that provide a band solver.
-option(DSPECM1D_USE_LAPACK_BAND_SOLVER
+option(DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
        "Discover LAPACK and LAPACKE for the optional band solver" OFF)
 
 # --- System Dependencies ---
 find_package(FFTW)
 find_package(OpenMP REQUIRED)
 
-if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
+if(DSPECM1D_ENABLE_LAPACK_BAND_SOLVER)
     find_package(LAPACK REQUIRED)
     find_package(LAPACKE REQUIRED)
 endif()
@@ -93,9 +93,9 @@ target_link_libraries(DSpecM1D INTERFACE
     OpenMP::OpenMP_CXX
 )
 
-if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
+if(DSPECM1D_ENABLE_LAPACK_BAND_SOLVER)
     target_compile_definitions(DSpecM1D INTERFACE
-        DSPECM1D_USE_LAPACK_BAND_SOLVER
+        DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
         HAVE_LAPACK_CONFIG_H
         LAPACK_COMPLEX_CPP)
     target_link_libraries(DSpecM1D INTERFACE LAPACKE::LAPACKE)
@@ -114,7 +114,7 @@ install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindFFTW.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
 )
 
-if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
+if(DSPECM1D_ENABLE_LAPACK_BAND_SOLVER)
     install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindLAPACKE.cmake
         DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
     )

@@ -54,7 +54,8 @@ public:
   template <class model1d>
   Eigen::MatrixXcd spectra(SpectraSolver::FreqFull &, model1d &,
                            SourceInfo::EarthquakeCMT &, InputParameters &, int,
-                           SRInfo &, double = 1e-4);
+                           SRInfo &, double = 1e-4,
+                           SolverBackend = SolverBackend::EigenSparseLU);
 
 private:
 };

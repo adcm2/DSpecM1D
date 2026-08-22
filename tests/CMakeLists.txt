@@ -40,6 +40,8 @@ dspecm1d_add_test_exe(dspecm1d_input_context_tests
 dspecm1d_add_test_exe(dspecm1d_solver_api_tests
   test_solver_api.cpp
 )
+target_compile_definitions(dspecm1d_solver_api_tests PRIVATE
+  DSPECM1D_ENABLE_PROFILING)
 
 dspecm1d_add_test_exe(dspecm1d_output_writer_tests
   test_output_writers.cpp
@@ -57,7 +59,7 @@ dspecm1d_add_test_exe(dspecm1d_lapack_band_storage_tests
   test_lapack_band_storage.cpp
 )
 
-if(DSPECM1D_USE_LAPACK_BAND_SOLVER)
+if(DSPECM1D_ENABLE_LAPACK_BAND_SOLVER)
   dspecm1d_add_test_exe(dspecm1d_lapack_band_solver_tests
     test_lapack_band_solver.cpp
   )

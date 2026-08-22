@@ -12,6 +12,7 @@
 #include "InputParser.h"
 #include "SRInfo.h"
 #include "SourceInfo.h"
+#include "SolverBackend.h"
 
 /**
  * @brief Preferred release-facing aggregate input object for spectra
@@ -64,6 +65,8 @@ private:
   double m_maxstep;
   int m_nq;
   int m_nskip;
+  SPARSESPEC::SolverBackend m_solverBackend =
+      SPARSESPEC::SolverBackend::EigenSparseLU;
 
 public:
   /**
@@ -141,6 +144,18 @@ public:
   /// Updates the single/reused-SEM truncation and factorization cadence,
   /// clamped to at least 1.
   void setNskip(int nskip) { m_nskip = std::max(1, nskip); }
+
+  SPARSESPEC::SolverBackend solverBackend() const { return m_solverBackend; }
+
+  /// Selects the preferred adaptive solver backend.
+  void setSolverBackend(SPARSESPEC::SolverBackend backend) {
+#ifndef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
+    if (backend == SPARSESPEC::SolverBackend::LapackBandLU)
+      throw std::invalid_argument(
+          "LapackBandLU was requested, but DSpecM1D was built without LAPACK support.");
+#endif
+    m_solverBackend = backend;
+  }
 };
 
 #endif   // DSPECM1D_INPUT_PARAMETERS_NEW_H
