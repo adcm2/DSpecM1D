@@ -6,6 +6,7 @@
 #include <type_traits>
 #include <vector>
 
+#include <Eigen/Dense>
 #include <lapacke.h>
 
 #include "LapackBandStorage.h"
@@ -169,18 +170,14 @@ public:
 
     DenseMatrix result = rhs;
 
-    const lapack_int n = static_cast<lapack_int>(m_activeN);
-    const lapack_int nrhs = static_cast<lapack_int>(rhs.cols());
     {
       profiling::Scope profileSolve(profiling::Context::active(),
                                     profiling::Category::solve,
                                     profiling::Context::mode());
-      m_info = LAPACKE_zgbtrs(
-          LAPACK_COL_MAJOR, 'N', n, static_cast<lapack_int>(m_band.kl),
-          static_cast<lapack_int>(m_band.ku), nrhs,
-          m_band.data.data() + m_band.ldab * m_activeOffset,
-          static_cast<lapack_int>(m_band.ldab), m_pivots.data(),
-          result.data(), n);
+      // Experimental post-zgbtrf solve: replay the exact TRANS='N' ZGBTRS
+      // operations with Eigen expressions, avoiding millions of tiny BLAS
+      // calls under outer OpenMP concurrency.
+      solveWithEigen(result);
     }
     return result;
   }
@@ -191,6 +188,53 @@ public:
   Eigen::Index activeSize() const { return m_activeN; }
 
 private:
+  // Retained as the local LAPACKE reference implementation for validation of
+  // the experimental Eigen/C++ solve path.  zgbtrf and its pivots are shared.
+  lapack_int solveWithLapacke(DenseMatrix &result) {
+    return LAPACKE_zgbtrs(
+        LAPACK_COL_MAJOR, 'N', static_cast<lapack_int>(m_activeN),
+        static_cast<lapack_int>(m_band.kl), static_cast<lapack_int>(m_band.ku),
+        static_cast<lapack_int>(result.cols()),
+        m_band.data.data() + m_band.ldab * m_activeOffset,
+        static_cast<lapack_int>(m_band.ldab), m_pivots.data(), result.data(),
+        static_cast<lapack_int>(m_activeN));
+  }
+
+  // Exact LAPACK 3.11.0 ZGBTRS TRANS='N' replay for all RHS at once.  The
+  // factor buffer is a zgbtrf result and no BLAS/LAPACK call is made here.
+  void solveWithEigen(DenseMatrix &result) {
+    using FactorMap =
+        Eigen::Map<const DenseMatrix, Eigen::Unaligned, Eigen::OuterStride<>>;
+    const FactorMap factors(
+        m_band.data.data() + m_band.ldab * m_activeOffset,
+        m_band.ldab, m_activeN, Eigen::OuterStride<>(m_band.ldab));
+    const Eigen::Index n = m_activeN;
+    const Eigen::Index kd = m_band.kl + m_band.ku;
+
+    for (Eigen::Index j = 0; j < n - 1; ++j) {
+      const Eigen::Index lm = std::min(m_band.kl, n - j - 1);
+      const Eigen::Index pivot = m_pivots[static_cast<std::size_t>(j)] - 1;
+      if (pivot != j)
+        result.row(pivot).swap(result.row(j));
+      if (lm != 0) {
+        const auto multipliers = factors.col(j).segment(kd + 1, lm);
+        result.middleRows(j + 1, lm).noalias() -=
+            multipliers * result.row(j);
+      }
+    }
+
+    for (Eigen::Index j = n - 1; j >= 0; --j) {
+      result.row(j) /= factors(kd, j);
+      const Eigen::Index len = std::min(kd, j);
+      if (len != 0) {
+        const auto upperSegment = factors.col(j).segment(kd - len, len);
+        result.middleRows(j - len, len).noalias() -=
+            upperSegment * result.row(j);
+      }
+    }
+    m_info = 0;
+  }
+
   void factorizePacked(Eigen::Index ridx = 0) {
     static_assert(std::is_same_v<Complex, lapack_complex_double>,
                   "LAPACKE must use the C++ complex representation");

@@ -1,0 +1,123 @@
+{
+  "backend_order": "alternating first backend per fmax",
+  "campaign": "DSpecM1D profiling stage",
+  "command": "scripts/stage_profile.py --eigen-build /tmp/dspecm1d-stage-g-off-verify --lapack-build /tmp/dspecm1d-custom-backsolve-gcc15 --output-dir results/lapack_custom_backsolve --fmax 35 --lmax 750 --threads 32 --repetitions 1 --tag custom_f35_t32_pilot",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "compiler_version": "g++ (GCC) 15.2.0",
+  "completed_backends": [
+    {
+      "backend": "eigen",
+      "fmax_mHz": 35.0
+    },
+    {
+      "backend": "lapack",
+      "fmax_mHz": 35.0
+    }
+  ],
+  "completed_points": [
+    35.0
+  ],
+  "configuration": "ex3/PREM-style type-4 all-mode attenuation=1",
+  "created_utc": "2026-08-22T18:15:41.011386+00:00",
+  "eigen_build": "/tmp/dspecm1d-stage-g-off-verify",
+  "eigen_cmake": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "CMAKE_CXX_STANDARD": "23",
+    "DSPECM1D_ENABLE_LAPACK_BAND_SOLVER": "OFF",
+    "effective_release_flags": "-O3 -DNDEBUG -fopenmp -std=gnu++23"
+  },
+  "git": {
+    "revision": "8f7a5d3c03b14425e5644a5ffd2faaeb996a3129",
+    "status_short": "M DSpecM1D/src/LapackBandSolver.h\n?? benchmarks/lapack_custom_backsolve_probe.cpp\n?? results/lapack_custom_backsolve/"
+  },
+  "grid_fmax_mHz": [
+    35.0
+  ],
+  "lapack_build": "/tmp/dspecm1d-custom-backsolve-gcc15",
+  "profiling_executable": {
+    "path": "/tmp/dspecm1d-custom-backsolve-gcc15/bin/stage_profile_solver",
+    "sha256": "bceb4f3607bab9a9231930fb8423343cae830299e0748da74bfa72770922fb3b"
+  },
+  "profiling_execution": {
+    "command": "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 python3 scripts/stage_profile.py --eigen-build /tmp/dspecm1d-stage-g-off-verify --lapack-build /tmp/dspecm1d-custom-backsolve-gcc15 --output-dir results/lapack_custom_backsolve --fmax 35 --lmax 750 --threads 32 --repetitions 1 --tag custom_f35_t32_pilot",
+    "raw_profile_path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_custom_backsolve/custom_f35_t32_pilot_profiles.jsonl",
+    "raw_profile_sha256": "80f1f6c45119989eb04a5fdd044682c0e55fc4e03b596463c966f9759c241ec4"
+  },
+  "final_check_executable": {
+    "path": "/tmp/dspecm1d-custom-backsolve-gcc15/bin/final_solver_benchmark",
+    "sha256": "fd4982407f70c7d8184727f74a4bc38677b4d18c57b05257959b5c75fc2cb9fa"
+  },
+  "final_check_execution": {
+    "command": "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/dspecm1d-custom-backsolve-gcc15/bin/final_solver_benchmark /tmp/dspecm1d-custom-backsolve-gcc15/data/params/custom_f35_t32_pilot_35.txt lapack 1 1e-9 > results/lapack_custom_backsolve/custom_f35_t32_final_check.txt 2>&1",
+    "output_path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_custom_backsolve/custom_f35_t32_final_check.txt",
+    "output_sha256": "829d822818a5b1888d37b2d64ed88ab1bd5d0d6328969c8cfc5b1cfa7ffe3b03"
+  },
+  "lapack_cmake": {
+    "CMAKE_BUILD_TYPE": "Release",
+    "CMAKE_CXX_FLAGS": "",
+    "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+    "CMAKE_CXX_STANDARD": "23",
+    "DSPECM1D_ENABLE_LAPACK_BAND_SOLVER": "ON",
+    "effective_release_flags": "-O3 -DNDEBUG -fopenmp -std=gnu++23"
+  },
+  "lapack_pr1_pipeline": "direct-band H/P/Ha workspaces -> direct-band A(w) -> zgbtrf -> experimental Eigen/C++ ZGBTRS TRANS=N replay",
+  "lmax": 750,
+  "machine": {
+    "CPU(s)": "128",
+    "Core(s) per socket": "32",
+    "Model name": "AMD EPYC 9334 32-Core Processor",
+    "Socket(s)": "2",
+    "Thread(s) per core": "2",
+    "hostname": "earth-tunya"
+  },
+  "measurement": "complete preferred adaptive multi-SEM spectra(paramsNew)",
+  "one_untimed_warmup_per_backend_fmax": true,
+  "retained_hashes": {
+    "production_lapack_band_solver": "2852dd29f7c78608bd7d5d68735814647cfccea43a82ce0077099fba298fa68e",
+    "analyzer": "24d7652806c0b6822f59be377e4c9f0b4709366b6d25c26a20b3f3fe4bbc6435",
+    "benchmark_source": "4f76052a701135c63592bd25af3446244aaa4d13ac445ef54fa3eb84bcf2bfd6",
+    "loaded_runtime_libraries": {
+      "lapacke": {
+        "path": "/usr/lib/x86_64-linux-gnu/liblapacke.so.3.11.0",
+        "sha256": "a2d9428f902e4bde9f853a8f011c0820456deb6850f5006de25fe3595672e55c"
+      },
+      "lapack": {
+        "path": "/usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3",
+        "sha256": "379e77b455f3b66fed1b74b8a4aad43b72d1398521a25e07a0addf953d17f41b"
+      },
+      "openblas": {
+        "path": "/usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.21.so",
+        "sha256": "234bd1960ceeed3c44b275ba10583407ed7b9760d45d33d743420f70c46a0745"
+      },
+      "blas": {
+        "path": "/usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3",
+        "sha256": "5b50307ccdfbb3ff8de9285c17b79b8f8f69f7680e9357dff6bacbec5a035297"
+      }
+    },
+    "zgbtrs_source": {
+      "version": "3.11.0",
+      "path": "Reference-LAPACK/lapack v3.11.0/SRC/zgbtrs.f",
+      "sha256": "96e35c7c9ceb47aa7cc51bd21f16365a5f713b44ceb635802fa5eb1ac58ae550"
+    }
+  },
+  "profiling_source_sha256": {
+    "DSpecM1D/src/FullSpecMultiSem.h": "04e427e3cad47db6b21a51aba4699ed7d7adf43ce9463c4df82a299004fbad7b",
+    "DSpecM1D/src/LapackBandSolver.h": "2852dd29f7c78608bd7d5d68735814647cfccea43a82ce0077099fba298fa68e",
+    "DSpecM1D/src/LapackBandStorage.h": "a23f34e4e7c39de88b510dd8cd185ffbbc5da913da549946eebfefc48d0c468c",
+    "DSpecM1D/src/Profiling.h": "7b7595ae5bf1ccfaba714b20695c4208a937afbd220c082b22e205a70d881604",
+    "benchmarks/stage_profile_solver.cpp": "1125992c7cc5a1bbe72d25e0afdde4b23b180c186b16f2570fa374220e4dc977",
+    "scripts/stage_profile.py": "4acc16b554aa7731235b066c89ba65fe32de9f0aeadaaf4bcf891c062d45fc72"
+  },
+  "raw_profile_file": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_custom_backsolve/custom_f35_t32_pilot_profiles.jsonl",
+  "repetitions": 1,
+  "status": "complete",
+  "threads": {
+    "BLIS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_NUM_THREADS": "32",
+    "OPENBLAS_NUM_THREADS": "1"
+  }
+}

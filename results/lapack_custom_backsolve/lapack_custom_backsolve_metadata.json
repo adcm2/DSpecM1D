@@ -1,0 +1,115 @@
+{
+  "algorithm": "LAPACK 3.11.0 ZGBTRS TRANS=N replay of ZSWAP/ZGERU/ ZTBSV",
+  "campaign": "focused post-zgbtrf Eigen/C++ backsolve experiment",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "environment": {
+    "BLIS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "executable": {
+    "path": "/tmp/dspecm1d-custom-backsolve-gcc15/bin/lapack_custom_backsolve_probe",
+    "sha256": "c43af0bc630e4b3d6d245e0b636a5dfc7bba762f313a63f971d952b6a3047dfa"
+  },
+  "executions": {
+    "full_output_check": {
+      "command": "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/dspecm1d-custom-backsolve-gcc15/bin/final_solver_benchmark /tmp/dspecm1d-custom-backsolve-gcc15/data/params/custom_f35_t32_pilot_35.txt lapack 1 1e-9 > results/lapack_custom_backsolve/custom_f35_t32_final_check.txt 2>&1",
+      "executable": "/tmp/dspecm1d-custom-backsolve-gcc15/bin/final_solver_benchmark",
+      "executable_sha256": "fd4982407f70c7d8184727f74a4bc38677b4d18c57b05257959b5c75fc2cb9fa",
+      "output_path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_custom_backsolve/custom_f35_t32_final_check.txt",
+      "output_sha256": "829d822818a5b1888d37b2d64ed88ab1bd5d0d6328969c8cfc5b1cfa7ffe3b03"
+    },
+    "profiling_pilot": {
+      "command": "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 python3 scripts/stage_profile.py --eigen-build /tmp/dspecm1d-stage-g-off-verify --lapack-build /tmp/dspecm1d-custom-backsolve-gcc15 --output-dir results/lapack_custom_backsolve --fmax 35 --lmax 750 --threads 32 --repetitions 1 --tag custom_f35_t32_pilot",
+      "executable": "/tmp/dspecm1d-custom-backsolve-gcc15/bin/stage_profile_solver",
+      "executable_sha256": "bceb4f3607bab9a9231930fb8423343cae830299e0748da74bfa72770922fb3b",
+      "raw_path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_custom_backsolve/custom_f35_t32_pilot_profiles.jsonl",
+      "raw_sha256": "80f1f6c45119989eb04a5fdd044682c0e55fc4e03b596463c966f9759c241ec4"
+    },
+    "serial_f20_gate": {
+      "custom": {
+        "command": "env OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 ./bin/stage_profile_solver ./data/params/custom_backsolve_serial_f20.txt lapack 1 1",
+        "executable": "/tmp/dspecm1d-custom-backsolve-gcc15/bin/stage_profile_solver",
+        "executable_sha256": "bceb4f3607bab9a9231930fb8423343cae830299e0748da74bfa72770922fb3b"
+      },
+      "eigen_control": {
+        "command": "env OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 ./bin/stage_profile_solver ./data/params/custom_backsolve_serial_f20.txt eigen 1 1",
+        "executable": "/tmp/dspecm1d-custom-backsolve-gcc15/bin/stage_profile_solver",
+        "executable_sha256": "bceb4f3607bab9a9231930fb8423343cae830299e0748da74bfa72770922fb3b"
+      },
+      "environment": {
+        "BLIS_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OMP_DYNAMIC": "FALSE",
+        "OMP_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1"
+      },
+      "parameter_sha256": "dad298c571ce0f3a14f6c130b61b4dbf0665cefea718bc229e6d9c7fe616a569",
+      "policy": "one untimed warm-up and one measured run per backend",
+      "zgbtrs": {
+        "command": "env OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 ./bin/stage_profile_solver ./data/params/custom_backsolve_serial_f20.txt lapack 1 1",
+        "executable": "/tmp/dspecm1d-zgbtrs-serial-gcc15/bin/stage_profile_solver",
+        "executable_sha256": "17ba92135bec221c5b43a7ca858c0c41b4802aab1e74475978748f094a6c0c43",
+        "revision": "8f7a5d3c03b14425e5644a5ffd2faaeb996a3129"
+      }
+    }
+  },
+  "raw_artifacts": {
+    "results/lapack_custom_backsolve/custom_f35_t32_final_check.txt": "829d822818a5b1888d37b2d64ed88ab1bd5d0d6328969c8cfc5b1cfa7ffe3b03",
+    "results/lapack_custom_backsolve/custom_f35_t32_pilot_profiles.jsonl": "80f1f6c45119989eb04a5fdd044682c0e55fc4e03b596463c966f9759c241ec4",
+    "results/lapack_custom_backsolve/lapack_custom_backsolve_raw.tsv": "fd264a99086b8f57cc7d816bd976e44a219c847d2a84b84160c00bfa520401f1",
+    "results/lapack_custom_backsolve/serial_f20_custom_profile.txt": "763ca59c574138075698689d740330a8780350bc3d58c1dc072639bf52ddf6de",
+    "results/lapack_custom_backsolve/serial_f20_eigen_profile.txt": "560d66fd89b596fd567227b58faa8d796ff929ecfc0b24f9c595486437712b31",
+    "results/lapack_custom_backsolve/serial_f20_zgbtrs_profile.txt": "a35d2aa621a4ff879d629229d7a4d6e8deb0f1a1b84d6e5683bf3424e71c0add"
+  },
+  "retained_baseline": {
+    "comparison": "primary_f35_t32 LAPACK median 22.496827324 s",
+    "path": "results/final_benchmark/final_production_timings.tsv",
+    "sha256": "cff2223db59efdff5d431cf6c9ffcd4b0b1cad1da28df13364c1794cdcc76803"
+  },
+  "retained_hashes": {
+    "analyzer": "24d7652806c0b6822f59be377e4c9f0b4709366b6d25c26a20b3f3fe4bbc6435",
+    "benchmark_source": "4f76052a701135c63592bd25af3446244aaa4d13ac445ef54fa3eb84bcf2bfd6",
+    "loaded_runtime_libraries": {
+      "blas": {
+        "path": "/usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3",
+        "sha256": "5b50307ccdfbb3ff8de9285c17b79b8f8f69f7680e9357dff6bacbec5a035297"
+      },
+      "lapack": {
+        "path": "/usr/lib/x86_64-linux-gnu/openblas-pthread/liblapack.so.3",
+        "sha256": "379e77b455f3b66fed1b74b8a4aad43b72d1398521a25e07a0addf953d17f41b"
+      },
+      "lapacke": {
+        "path": "/usr/lib/x86_64-linux-gnu/liblapacke.so.3.11.0",
+        "sha256": "a2d9428f902e4bde9f853a8f011c0820456deb6850f5006de25fe3595672e55c"
+      },
+      "openblas": {
+        "path": "/usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.21.so",
+        "sha256": "234bd1960ceeed3c44b275ba10583407ed7b9760d45d33d743420f70c46a0745"
+      }
+    },
+    "pilot_metadata": "1a1366bcf074fbfb1abfd5e86fb6a8b04a5513da0a93f6b8307eae15c637e340",
+    "production_lapack_band_solver": "2852dd29f7c78608bd7d5d68735814647cfccea43a82ce0077099fba298fa68e",
+    "zgbtrs_source": {
+      "path": "Reference-LAPACK/lapack v3.11.0/SRC/zgbtrs.f",
+      "sha256": "96e35c7c9ceb47aa7cc51bd21f16365a5f713b44ceb635802fa5eb1ac58ae550",
+      "version": "3.11.0"
+    }
+  },
+  "source": {
+    "path": "benchmarks/lapack_custom_backsolve_probe.cpp",
+    "sha256": "4f76052a701135c63592bd25af3446244aaa4d13ac445ef54fa3eb84bcf2bfd6"
+  },
+  "summary": {
+    "path": "/space/adcm2/CleanBuilds/DSpecM1D/results/lapack_custom_backsolve/lapack_custom_backsolve_summary.json",
+    "sha256": "27a999b643346fc23c1002f0747f48b873702b1d80ab97bbbd532663c4def41f"
+  },
+  "threads": [
+    1,
+    10,
+    32,
+    50
+  ],
+  "validation_gate": "passed; universal experimental production pilot run"
+}
