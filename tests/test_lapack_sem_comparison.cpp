@@ -59,6 +59,75 @@ double denseInfinityNorm(const DenseMatrix &matrix) {
   return rowSums.maxCoeff();
 }
 
+void compareDirectBand(const Eigen::SparseMatrix<double> &h,
+                       const Eigen::SparseMatrix<double> &p,
+                       const Eigen::SparseMatrix<double> &hAtten,
+                       double omega, double epsilon, double tref,
+                       Eigen::Index ridx, int rhsColumns) {
+  const auto hComplex = h.cast<Complex>();
+  const auto pComplex = p.cast<Complex>();
+  const auto aComplex = hAtten.cast<Complex>();
+  const auto hBandwidth = SPARSESPEC::detail::lapackBandBandwidth(hComplex);
+  const auto pBandwidth = SPARSESPEC::detail::lapackBandBandwidth(pComplex);
+  const auto aBandwidth = SPARSESPEC::detail::lapackBandBandwidth(aComplex);
+  const Eigen::Index kl = std::max(
+      {hBandwidth.first, pBandwidth.first, aBandwidth.first});
+  const Eigen::Index ku = std::max(
+      {hBandwidth.second, pBandwidth.second, aBandwidth.second});
+
+  SPARSESPEC::detail::LapackBandMatrix hBand, pBand, aBand;
+  SPARSESPEC::detail::packLapackBandInto(hComplex, hBand, kl, ku);
+  SPARSESPEC::detail::packLapackBandInto(pComplex, pBand, kl, ku);
+  SPARSESPEC::detail::packLapackBandInto(aComplex, aBand, kl, ku);
+
+  SPARSESPEC::SpecConstants constants(epsilon, tref);
+  const Complex omegaHat = omega + constants.ieps;
+  const Complex chi = SPARSESPEC::attenFactor(
+      omega, constants.w0, constants.twodivpi, constants.myi);
+  const SparseMatrix matrix = frequencyMatrix(
+      h, p, hAtten, omega, epsilon, tref);
+  const Eigen::Index activeSize = matrix.rows() - ridx;
+
+  SPARSESPEC::detail::LapackBandSolver solver;
+  auto &workspace = solver.bandWorkspace(matrix.rows(), kl, ku);
+  workspace.coefficients().middleCols(ridx, activeSize) =
+      hBand.coefficients().middleCols(ridx, activeSize) -
+      (omegaHat * omegaHat) * pBand.coefficients().middleCols(ridx, activeSize) +
+      chi * aBand.coefficients().middleCols(ridx, activeSize);
+
+  // Check the exact physical band entries before LAPACK overwrites them with
+  // LU factors.  Entries outside the active principal subsystem are omitted.
+  for (Eigen::Index column = ridx; column < matrix.cols(); ++column) {
+    for (Eigen::Index row = ridx; row < matrix.rows(); ++row) {
+      if (row - column > kl || column - row > ku)
+        continue;
+      const Complex expected = matrix.coeff(row, column);
+      const Complex actual = workspace.at(row, column);
+      EXPECT_NEAR(std::abs(actual - expected), 0.0, 1e-13)
+          << "coefficient (" << row << "," << column << ")";
+    }
+  }
+
+  solver.factorize(ridx);
+  ASSERT_EQ(solver.info(), 0);
+  const SparseMatrix active = matrix.block(ridx, ridx, activeSize, activeSize);
+  const DenseMatrix rhs = makeRhs(activeSize, rhsColumns);
+  const DenseMatrix lapackSolution = solver.solve(rhs);
+  ASSERT_EQ(solver.info(), 0);
+
+  Eigen::SparseLU<SparseMatrix, Eigen::COLAMDOrdering<int>> reference;
+  reference.compute(active);
+  ASSERT_EQ(reference.info(), Eigen::Success);
+  const DenseMatrix referenceSolution = reference.solve(rhs);
+  EXPECT_LT(denseInfinityNorm(active * lapackSolution - rhs) /
+                (matrixInfinityNorm(active) * denseInfinityNorm(lapackSolution) +
+                 denseInfinityNorm(rhs)),
+            1e-11);
+  EXPECT_LT((lapackSolution - referenceSolution).norm() /
+                referenceSolution.norm(),
+            1e-9);
+}
+
 void compareSolvers(const SparseMatrix &matrix, int rhsColumns) {
   ASSERT_GT(matrix.rows(), 0);
   ASSERT_EQ(matrix.rows(), matrix.cols());
@@ -111,6 +180,8 @@ TEST(LapackSEMComparisonTests, RealAttenuatedRadialToroidalAndSpheroidalSystems)
   const SparseMatrix radial = frequencyMatrix(
       sem.hR(), sem.pR(), sem.hRa(), 0.70, 0.01, model.TREF());
   ASSERT_EQ(radial.rows(), sem.hR().rows());
+  compareDirectBand(sem.hR(), sem.pR(), sem.hRa(), 0.70, 0.01, model.TREF(),
+                    0, 1);
   compareSolvers(radial, 1);
 
   // Toroidal: discard a genuine inner prefix of the mantle domain.
@@ -126,6 +197,9 @@ TEST(LapackSEMComparisonTests, RealAttenuatedRadialToroidalAndSpheroidalSystems)
   const auto toroidal = toroidalFull.block(
       toroidalStart, toroidalStart, toroidalFull.rows() - toroidalStart,
       toroidalFull.cols() - toroidalStart);
+  compareDirectBand(sem.hTk(toroidalDegree), sem.pTk(toroidalDegree),
+                    sem.hTa(toroidalDegree), 0.85, 0.01, model.TREF(),
+                    toroidalStart, 2);
   compareSolvers(toroidal, 2);
 
   // Spheroidal: begin before a fluid-solid boundary so the retained domain
@@ -143,5 +217,8 @@ TEST(LapackSEMComparisonTests, RealAttenuatedRadialToroidalAndSpheroidalSystems)
   const auto spheroidal = spheroidalFull.block(
       spheroidalStart, spheroidalStart, spheroidalFull.rows() - spheroidalStart,
       spheroidalFull.cols() - spheroidalStart);
+  compareDirectBand(sem.hS(spheroidalDegree), sem.pS(spheroidalDegree),
+                    sem.hSa(spheroidalDegree), 1.00, 0.01, model.TREF(),
+                    spheroidalStart, 4);
   compareSolvers(spheroidal, 4);
 }

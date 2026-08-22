@@ -5,6 +5,8 @@
 #include <cstddef>
 #include <complex>
 #include <stdexcept>
+#include <tuple>
+#include <utility>
 #include <vector>
 
 #include <Eigen/SparseCore>
@@ -76,6 +78,68 @@ inline void packLapackBandInto(
       band.at(entry.row(), entry.col()) = entry.value();
     }
   }
+}
+
+/// Pack into an already selected containing band.  This is used when several
+/// sparse operators share one direct-band workspace; the supplied bandwidth
+/// is retained even when an individual operator is narrower.
+inline void packLapackBandInto(
+    const Eigen::SparseMatrix<std::complex<double>> &matrix,
+    LapackBandMatrix &band, Eigen::Index kl, Eigen::Index ku) {
+  if (matrix.rows() != matrix.cols() || kl < 0 || ku < 0 ||
+      matrix.rows() <= 0)
+    throw std::invalid_argument("invalid LAPACK general-band dimensions");
+  band.n = matrix.rows();
+  band.kl = kl;
+  band.ku = ku;
+  band.ldab = 2 * kl + ku + 1;
+  band.data = LapackBandMatrix::Storage::Zero(band.ldab, band.n);
+  for (Eigen::Index column = 0; column < matrix.outerSize(); ++column) {
+    for (Eigen::SparseMatrix<std::complex<double>>::InnerIterator entry(
+             matrix, column);
+         entry; ++entry) {
+      const auto row = entry.row();
+      const auto distance = row - entry.col();
+      if (distance > kl || -distance > ku)
+        throw std::invalid_argument("sparse entry lies outside LAPACK band");
+      band.at(row, entry.col()) = entry.value();
+    }
+  }
+}
+
+inline std::pair<Eigen::Index, Eigen::Index>
+lapackBandBandwidth(
+    const Eigen::SparseMatrix<std::complex<double>> &matrix) {
+  Eigen::Index kl = 0, ku = 0;
+  for (Eigen::Index column = 0; column < matrix.outerSize(); ++column)
+    for (Eigen::SparseMatrix<std::complex<double>>::InnerIterator entry(
+             matrix, column);
+         entry; ++entry) {
+      kl = std::max(kl, entry.row() - entry.col());
+      ku = std::max(ku, entry.col() - entry.row());
+    }
+  return {kl, ku};
+}
+
+/// Return the active coefficient count and actual active lower/upper widths.
+/// Used only for profiling the already-populated direct-band matrix.
+inline std::tuple<long, Eigen::Index, Eigen::Index>
+lapackBandActiveStats(const LapackBandMatrix &band, Eigen::Index ridx = 0) {
+  long count = 0;
+  Eigen::Index kl = 0, ku = 0;
+  for (Eigen::Index column = 0; column < band.n; ++column)
+    if (column >= ridx)
+    for (Eigen::Index row = band.kl;
+         row < band.kl + band.kl + band.ku + 1; ++row)
+      if (band.data(row, column) != LapackBandMatrix::Complex(0.0, 0.0)) {
+        const Eigen::Index matrixRow = column + row - band.kl - band.ku;
+        if (matrixRow < ridx || matrixRow >= band.n)
+          continue;
+        ++count;
+        kl = std::max(kl, matrixRow - column);
+        ku = std::max(ku, column - matrixRow);
+      }
+  return {count, kl, ku};
 }
 
 inline LapackBandMatrix

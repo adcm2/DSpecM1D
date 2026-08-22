@@ -185,6 +185,34 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
         inR.makeCompressed();
         keRAtten.makeCompressed();
       }
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+      const auto radialBandwidth = [&] {
+        auto result = detail::lapackBandBandwidth(keR);
+        const auto pBandwidth = detail::lapackBandBandwidth(inR);
+        result.first = std::max(result.first, pBandwidth.first);
+        result.second = std::max(result.second, pBandwidth.second);
+        if (params.attenuation()) {
+          const auto aBandwidth = detail::lapackBandBandwidth(keRAtten);
+          result.first = std::max(result.first, aBandwidth.first);
+          result.second = std::max(result.second, aBandwidth.second);
+        }
+        return result;
+      }();
+      detail::LapackBandMatrix keRBand, inRBand, keRAttenBand;
+      {
+        detail::profiling::Scope bandBaseProfile(
+            profile, detail::profiling::Category::base_operator,
+            detail::profiling::Mode::radial);
+        detail::packLapackBandInto(keR, keRBand, radialBandwidth.first,
+                                   radialBandwidth.second);
+        detail::packLapackBandInto(inR, inRBand, radialBandwidth.first,
+                                   radialBandwidth.second);
+        if (params.attenuation())
+          detail::packLapackBandInto(keRAtten, keRAttenBand,
+                                     radialBandwidth.first,
+                                     radialBandwidth.second);
+      }
+#endif
       MatrixC fR;
       MatrixC vecRedZ;
       {
@@ -198,6 +226,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
         profile.setMode(detail::profiling::Mode::radial);
         detail::profiling::WorkerScope workerProfile(
             profile, detail::profiling::Mode::radial);
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+        solver.ensureBandWorkspace(keR.rows(), radialBandwidth.first,
+                                   radialBandwidth.second);
+#endif
 #pragma omp for schedule(dynamic)
         for (int idx = 0; idx < (int) idxChunks[idxChunk].size(); ++idx) {
           double wval = freqChunks[idxChunk][idx];
@@ -206,9 +238,23 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 #ifdef DSPECM1D_ENABLE_PROFILING
           const auto matrixStart = std::chrono::steady_clock::now();
 #endif
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+          auto &band = solver.bandWorkspace();
+          auto activeA = band.coefficients();
+          const auto hActive = keRBand.coefficients();
+          const auto pActive = inRBand.coefficients();
+          if (params.attenuation()) {
+            const auto haActive = keRAttenBand.coefficients();
+            activeA = hActive - (w * w) * pActive +
+                      attenFactor(wval, w0, twodivpi, myi) * haActive;
+          } else {
+            activeA = hActive - (w * w) * pActive;
+          }
+#else
           SparseMatrixC wR = -w * w * inR + keR;
           if (params.attenuation())
             wR += attenFactor(wval, w0, twodivpi, myi) * keRAtten;
+#endif
 #ifdef DSPECM1D_ENABLE_PROFILING
           profile.addTime(
               detail::profiling::Category::dynamic_matrix,
@@ -218,15 +264,25 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                   .count());
 #endif
           {
+#ifndef DSPECM1D_USE_LAPACK_BAND_SOLVER
             detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
                                                 detail::profiling::Mode::radial);
             wR.makeCompressed();
+#endif
           }
 #ifdef DSPECM1D_ENABLE_PROFILING
+#ifndef DSPECM1D_USE_LAPACK_BAND_SOLVER
           recordSystem(wR);
+#else
+          const auto stats = detail::lapackBandActiveStats(band);
+          profile.countFrequencySystem(static_cast<long>(band.n),
+                                       std::get<0>(stats),
+                                       static_cast<long>(std::get<1>(stats)),
+                                       static_cast<long>(std::get<2>(stats)));
+#endif
 #endif
 #ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
-          solver.compute(wR);
+          solver.factorize();
 #else
           {
             detail::profiling::Scope factorProfile(profile, detail::profiling::Category::factorization,
@@ -312,6 +368,34 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             pTor.makeCompressed();
             hTorAtten.makeCompressed();
           }
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+          const auto torBandwidth = [&] {
+            auto result = detail::lapackBandBandwidth(hTor);
+            const auto pBandwidth = detail::lapackBandBandwidth(pTor);
+            result.first = std::max(result.first, pBandwidth.first);
+            result.second = std::max(result.second, pBandwidth.second);
+            if (params.attenuation()) {
+              const auto aBandwidth = detail::lapackBandBandwidth(hTorAtten);
+              result.first = std::max(result.first, aBandwidth.first);
+              result.second = std::max(result.second, aBandwidth.second);
+            }
+            return result;
+          }();
+          detail::LapackBandMatrix hTorBand, pTorBand, hTorAttenBand;
+          {
+            detail::profiling::Scope bandBaseProfile(
+                profile, detail::profiling::Category::base_operator,
+                detail::profiling::Mode::toroidal);
+            detail::packLapackBandInto(hTor, hTorBand, torBandwidth.first,
+                                       torBandwidth.second);
+            detail::packLapackBandInto(pTor, pTorBand, torBandwidth.first,
+                                       torBandwidth.second);
+            if (params.attenuation())
+              detail::packLapackBandInto(hTorAtten, hTorAttenBand,
+                                         torBandwidth.first,
+                                         torBandwidth.second);
+          }
+#endif
 
           // std::cout << "Debug 4\n";
           MatrixC fVals;
@@ -339,6 +423,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           auto i1 = idxChunks[idxChunk][0];
           auto lenChunk = freqChunks[idxChunk].size();
           MatrixC vecRawL = MatrixC::Zero(3 * params.num_receivers(), lenChunk);
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+          solver1.ensureBandWorkspace(hTor.rows(), torBandwidth.first,
+                                      torBandwidth.second);
+#endif
           for (int idx = (int) lenChunk - 1; idx > -1; --idx) {
             auto wval = freqChunks[idxChunk][idx];
             Complex w = wval + ieps;
@@ -347,11 +435,31 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 #ifdef DSPECM1D_ENABLE_PROFILING
             const auto matrixStart = std::chrono::steady_clock::now();
 #endif
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+            auto &band = solver1.bandWorkspace();
+            const auto activeSize = static_cast<Eigen::Index>(len_ms);
+            const auto ridxEigen = static_cast<Eigen::Index>(ridx);
+            auto activeA = band.coefficients().middleCols(
+                ridxEigen, activeSize);
+            const auto hActive = hTorBand.coefficients().middleCols(
+                ridxEigen, activeSize);
+            const auto pActive = pTorBand.coefficients().middleCols(
+                ridxEigen, activeSize);
+            if (params.attenuation()) {
+              const auto haActive = hTorAttenBand.coefficients().middleCols(
+                  ridxEigen, activeSize);
+              activeA = hActive - (w * w) * pActive +
+                        attenFactor(wval, w0, twodivpi, myi) * haActive;
+            } else {
+              activeA = hActive - (w * w) * pActive;
+            }
+#else
             SparseMatrixC mat = hTor.block(ridx, ridx, len_ms, len_ms) -
                                 w * w * pTor.block(ridx, ridx, len_ms, len_ms);
             if (params.attenuation())
               mat += attenFactor(wval, w0, twodivpi, myi) *
                      hTorAtten.block(ridx, ridx, len_ms, len_ms);
+#endif
 #ifdef DSPECM1D_ENABLE_PROFILING
             profile.addTime(
                 detail::profiling::Category::dynamic_matrix,
@@ -361,16 +469,27 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                     .count());
 #endif
             {
+#ifndef DSPECM1D_USE_LAPACK_BAND_SOLVER
               detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
                                                 detail::profiling::Mode::toroidal);
               mat.makeCompressed();
+#endif
             }
 #ifdef DSPECM1D_ENABLE_PROFILING
+#ifndef DSPECM1D_USE_LAPACK_BAND_SOLVER
             recordSystem(mat);
+#else
+            const auto stats = detail::lapackBandActiveStats(
+                band, ridxEigen);
+            profile.countFrequencySystem(static_cast<long>(len_ms),
+                                         std::get<0>(stats),
+                                         static_cast<long>(std::get<1>(stats)),
+                                         static_cast<long>(std::get<2>(stats)));
+#endif
 #endif
             auto fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
 #ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
-            factorizeOrCompute(solver1, mat, (int) lenChunk - idx - 1, nskip);
+            solver1.factorize(ridxEigen);
 #else
             const bool recompute =
                 ((static_cast<int>(lenChunk) - idx - 1) % nskip) == 0;
@@ -447,6 +566,33 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             hS.makeCompressed();
             hSa.makeCompressed();
           }
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+          const auto sphBandwidth = [&] {
+            auto result = detail::lapackBandBandwidth(hS);
+            const auto pBandwidth = detail::lapackBandBandwidth(pS);
+            result.first = std::max(result.first, pBandwidth.first);
+            result.second = std::max(result.second, pBandwidth.second);
+            if (params.attenuation()) {
+              const auto aBandwidth = detail::lapackBandBandwidth(hSa);
+              result.first = std::max(result.first, aBandwidth.first);
+              result.second = std::max(result.second, aBandwidth.second);
+            }
+            return result;
+          }();
+          detail::LapackBandMatrix hSBand, pSBand, hSaBand;
+          {
+            detail::profiling::Scope bandBaseProfile(
+                profile, detail::profiling::Category::base_operator,
+                detail::profiling::Mode::spheroidal);
+            detail::packLapackBandInto(hS, hSBand, sphBandwidth.first,
+                                       sphBandwidth.second);
+            detail::packLapackBandInto(pS, pSBand, sphBandwidth.first,
+                                       sphBandwidth.second);
+            if (params.attenuation())
+              detail::packLapackBandInto(hSa, hSaBand, sphBandwidth.first,
+                                         sphBandwidth.second);
+          }
+#endif
           MatrixC fVals;
           MatrixC redC;
           MatrixC fBase;
@@ -469,6 +615,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           auto i1 = idxChunks[idxChunk][0];
           auto lenChunk = freqChunks[idxChunk].size();
           MatrixC vecRawL = MatrixC::Zero(3 * params.num_receivers(), lenChunk);
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+          solver1.ensureBandWorkspace(hS.rows(), sphBandwidth.first,
+                                      sphBandwidth.second);
+#endif
           for (int idx = (int) lenChunk - 1; idx > -1; --idx) {
             auto wval = freqChunks[idxChunk][idx];
             std::size_t ridx = ridxsph[idx];
@@ -477,11 +627,31 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 #ifdef DSPECM1D_ENABLE_PROFILING
             const auto matrixStart = std::chrono::steady_clock::now();
 #endif
+#ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
+            auto &band = solver1.bandWorkspace();
+            const auto activeSize = static_cast<Eigen::Index>(len_ms);
+            const auto ridxEigen = static_cast<Eigen::Index>(ridx);
+            auto activeA = band.coefficients().middleCols(
+                ridxEigen, activeSize);
+            const auto hActive = hSBand.coefficients().middleCols(
+                ridxEigen, activeSize);
+            const auto pActive = pSBand.coefficients().middleCols(
+                ridxEigen, activeSize);
+            if (params.attenuation()) {
+              const auto haActive = hSaBand.coefficients().middleCols(
+                  ridxEigen, activeSize);
+              activeA = hActive - (w * w) * pActive +
+                        attenFactor(wval, w0, twodivpi, myi) * haActive;
+            } else {
+              activeA = hActive - (w * w) * pActive;
+            }
+#else
             SparseMatrixC wS = hS.block(ridx, ridx, len_ms, len_ms) -
                                w * w * pS.block(ridx, ridx, len_ms, len_ms);
             if (params.attenuation())
               wS += attenFactor(wval, w0, twodivpi, myi) *
                     hSa.block(ridx, ridx, len_ms, len_ms);
+#endif
 #ifdef DSPECM1D_ENABLE_PROFILING
             profile.addTime(
                 detail::profiling::Category::dynamic_matrix,
@@ -491,12 +661,23 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                     .count());
 #endif
             {
+#ifndef DSPECM1D_USE_LAPACK_BAND_SOLVER
               detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
                                                 detail::profiling::Mode::spheroidal);
               wS.makeCompressed();
+#endif
             }
 #ifdef DSPECM1D_ENABLE_PROFILING
+#ifndef DSPECM1D_USE_LAPACK_BAND_SOLVER
             recordSystem(wS);
+#else
+            const auto stats = detail::lapackBandActiveStats(
+                band, ridxEigen);
+            profile.countFrequencySystem(static_cast<long>(len_ms),
+                                         std::get<0>(stats),
+                                         static_cast<long>(std::get<1>(stats)),
+                                         static_cast<long>(std::get<2>(stats)));
+#endif
 #endif
 #ifdef DSPECM1D_ENABLE_PROFILING
             const auto rhsStart = std::chrono::steady_clock::now();
@@ -511,7 +692,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                     .count());
 #endif
 #ifdef DSPECM1D_USE_LAPACK_BAND_SOLVER
-            factorizeOrCompute(solver1, wS, (int) lenChunk - idx - 1, nskip);
+            solver1.factorize(ridxEigen);
 #else
             const bool recompute =
                 ((static_cast<int>(lenChunk) - idx - 1) % nskip) == 0;

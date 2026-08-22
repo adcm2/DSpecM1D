@@ -53,3 +53,12 @@ TEST(LapackBandStorageTests, PacksStoredSparseEntriesInColumnMajorLayout) {
   EXPECT_EQ(band.at(0, 2), Complex(5.0, 3.0));
   EXPECT_EQ(band.at(2, 4), Complex(7.0, 4.0));
 }
+
+TEST(LapackBandStorageTests, SuppliedBandRejectsOutOfBandEntries) {
+  Eigen::SparseMatrix<Complex> matrix(3, 3);
+  matrix.insert(0, 2) = Complex(1.0, -0.5);
+  matrix.makeCompressed();
+  SPARSESPEC::detail::LapackBandMatrix band;
+  EXPECT_THROW(SPARSESPEC::detail::packLapackBandInto(matrix, band, 0, 0),
+               std::invalid_argument);
+}

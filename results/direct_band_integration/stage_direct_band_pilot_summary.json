@@ -1,0 +1,31 @@
+{
+  "fmax_mHz": 20,
+  "medians": {
+    "sparse_pack": {
+      "wall_seconds": 64.423216,
+      "base_operator_thread_seconds": 0.5235762819999998,
+      "dynamic_matrix_thread_seconds": 24.96391573799736,
+      "compression_thread_seconds": 0.07701335299993067,
+      "band_pack_thread_seconds": 21.16614705302707,
+      "factorization_thread_seconds": 44.43956111400044,
+      "solve_thread_seconds": 27.822986015999604,
+      "band_packs": 983155
+    },
+    "direct_band": {
+      "wall_seconds": 44.379945196999998,
+      "base_operator_thread_seconds": 0.7098873739999999,
+      "dynamic_matrix_thread_seconds": 6.1380419500016963,
+      "compression_thread_seconds": 0.00028086600000000472,
+      "band_pack_thread_seconds": 0.0,
+      "factorization_thread_seconds": 44.368077689000344,
+      "solve_thread_seconds": 27.891423446001422,
+      "band_packs": 0
+    }
+  },
+  "wall_speedup": 1.4516290120239916,
+  "wall_reduction_percent": 31.11187557448234,
+  "numerical_sanity": {
+    "maximum_absolute_output_norm_difference": 2.168404344971009e-19,
+    "reference_output_norm": 0.0015014486366430782
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "status": "complete",
+  "fmax_mHz": 20,
+  "physics": "ex3/PREM-style all-mode attenuating adaptive multi-SEM",
+  "accepted_foundation_head": "e5fb10b96f2daef4eff8c0070bf9c443d44a33ed",
+  "comparison": {
+    "baseline": "LAPACK with per-frequency sparse A construction and sparse-to-band packing",
+    "candidate": "LAPACK with one-time sparse H/P/Ha conversion and per-frequency direct-band A construction"
+  },
+  "method": {
+    "warmups_per_backend": 1,
+    "measured_repetitions_per_backend": 3,
+    "execution_order": ["sparse_pack", "direct_band"],
+    "candidate_rerun": "Direct-band measurements were replaced after combining attenuated A(w) into one Eigen assignment; the sparse-pack baseline was not rerun.",
+    "timed_region": "complete spectra() call",
+    "same_machine": true
+  },
+  "build": {
+    "type": "Release",
+    "compiler": "g++ (GCC) 15.2.0",
+    "build_directory": "/tmp/dspecm1d-stage-e-verify",
+    "baseline_executable": "/tmp/dspecm1d-stage-e-verify/bin/stage_profile_solver_sparse_pack_baseline",
+    "baseline_executable_sha256": "0e49c520118a92a475a9fb7677a2ca6f77834dba281c2d944cafa0043ab71f73",
+    "candidate_executable": "/tmp/dspecm1d-stage-e-verify/bin/stage_profile_solver",
+    "candidate_executable_sha256": "22da537c33c60e05b31f13a70419c5bc60aa716daad9d9f12dbe2c20a8c16fb1"
+  },
+  "parameter_file": {
+    "path": "/tmp/dspecm1d-stage-e-verify/data/params/stage_profile_full_20.txt",
+    "sha256": "dad298c571ce0f3a14f6c130b61b4dbf0665cefea718bc229e6d9c7fe616a569"
+  },
+  "machine": {
+    "kernel": "Linux 6.1.0-49-amd64 x86_64 GNU/Linux",
+    "cpu": "AMD EPYC 9334 32-Core Processor",
+    "sockets": 2,
+    "cores_per_socket": 32,
+    "threads_per_core": 2
+  },
+  "environment": {
+    "OMP_NUM_THREADS": "2",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  }
+}

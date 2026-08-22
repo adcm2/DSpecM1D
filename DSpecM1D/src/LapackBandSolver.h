@@ -120,6 +120,20 @@ public:
     return m_band;
   }
 
+  /// Reuse the existing coefficient/factor workspace when its shape is
+  /// unchanged; direct callers fill the returned storage before factorizing.
+  LapackBandMatrix &ensureBandWorkspace(Eigen::Index n, Eigen::Index kl,
+                                        Eigen::Index ku) {
+    if (m_band.n != n || m_band.kl != kl || m_band.ku != ku ||
+        m_band.data.rows() != 2 * kl + ku + 1 ||
+        m_band.data.cols() != n)
+      return bandWorkspace(n, kl, ku);
+    resizePivotWorkspaceIfNeeded();
+    m_factored = false;
+    m_info = kInvalidState;
+    return m_band;
+  }
+
   /// Factorize the current workspace in place, optionally at a trailing
   /// principal subsystem.  This is the direct-band hot path.
   LapackBandSolver &factorize(Eigen::Index ridx = 0) {
