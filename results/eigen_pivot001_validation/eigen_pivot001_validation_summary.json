@@ -1,0 +1,192 @@
+{
+  "decision": "PASS",
+  "decision_semantics": "Explicit scientific interpretation supplied after inspecting the full factor-growth distributions; it is not an arbitrary automated cutoff.",
+  "rows": 216,
+  "candidate_rows": 108,
+  "baseline_rows": 108,
+  "grid_points_per_system": 3,
+  "epsilon_count": 3,
+  "attenuation_count": 2,
+  "families": {
+    "radial": 18,
+    "toroidal": 36,
+    "spheroidal": 36,
+    "fluid-solid": 18
+  },
+  "systems": [
+    "fluid_solid_0S40",
+    "radial_0S0",
+    "spheroidal_0S12",
+    "spheroidal_0S2",
+    "toroidal_0T12",
+    "toroidal_0T2"
+  ],
+  "epsilons": [
+    0.003229401443736645,
+    0.032294014437366445,
+    0.3229401443736645
+  ],
+  "max_threshold_001": {
+    "residual": 1.5270140987379321e-16,
+    "solution_vs_threshold1": 1.0429308544890226e-07,
+    "transfer_vs_threshold1": 6.054127477618764e-20,
+    "transfer_relative_vs_threshold1": 4.8084761287929855e-08,
+    "solution_vs_lapack": 8.803423864866869e-08,
+    "transfer_vs_lapack": 4.87774482800569e-20,
+    "transfer_relative_vs_lapack": 2.532400820662189e-08,
+    "min_abs_diag_u": 104.45362498194919,
+    "max_abs_diag_u": 5.6073327811816474e+17,
+    "max_abs_u": 8.889069633472128e+17,
+    "max_abs_l": 99.86259004993806,
+    "max_abs_a": 8.898425323104026e+17,
+    "growth_u_over_a": 0.9989493036290786,
+    "nonidentity_pivots": 331,
+    "pivot_fraction": 0.5152941176470588,
+    "max_pivot_displacement": 384
+  },
+  "max_threshold_one": {
+    "residual": 1.5277938153621558e-16,
+    "min_abs_diag_u": 378.04835860160887,
+    "max_abs_diag_u": 5.59749442525675e+17,
+    "max_abs_u": 8.878299165632896e+17,
+    "max_abs_l": 0.999999998013822,
+    "max_abs_a": 8.898425323104026e+17,
+    "growth_u_over_a": 0.997738234636047,
+    "nonidentity_pivots": 1508,
+    "pivot_fraction": 0.9893617021276596,
+    "max_pivot_displacement": 280
+  },
+  "factor_growth_distributions": {
+    "threshold_001_max_abs_l": {
+      "minimum": 1.2049358975968594,
+      "median": 86.68386864378299,
+      "p95": 99.8582440556574,
+      "maximum": 99.86259004993806
+    },
+    "threshold_one_max_abs_l": {
+      "minimum": 0.9970657391355866,
+      "median": 0.9992127711316471,
+      "p95": 0.9999999851695317,
+      "maximum": 0.999999998013822
+    },
+    "threshold_001_u_over_a": {
+      "minimum": 0.6290707555885462,
+      "median": 0.9977379805865196,
+      "p95": 0.998944461166277,
+      "maximum": 0.9989493036290786
+    },
+    "threshold_one_u_over_a": {
+      "minimum": 0.9977379801173574,
+      "median": 0.9977379845956693,
+      "p95": 0.9977382346349424,
+      "maximum": 0.997738234636047
+    },
+    "same_case_l_ratio_001_to_one": {
+      "median": 86.72747841440648,
+      "p95": 99.89172699475844,
+      "maximum": 99.99017436037937
+    },
+    "same_case_u_growth_ratio_001_to_one": {
+      "median": 1.0,
+      "p95": 1.0012089614496777,
+      "maximum": 1.0012138151772787
+    }
+  },
+  "per_system_growth": {
+    "fluid_solid_0S40": {
+      "n": 1610,
+      "threshold_001_max_abs_l": 96.30426835384765,
+      "threshold_one_max_abs_l": 0.999960880566633,
+      "max_l_ratio_001_to_one": 96.30803586963955,
+      "threshold_001_max_u_over_a": 0.9989493036290786,
+      "threshold_one_max_u_over_a": 0.997738234636047,
+      "threshold_001_max_pivot_fraction": 0.20559006211180125
+    },
+    "radial_0S0": {
+      "n": 282,
+      "threshold_001_max_abs_l": 90.92071675842963,
+      "threshold_one_max_abs_l": 0.999999998013822,
+      "max_l_ratio_001_to_one": 90.92071693901437,
+      "threshold_001_max_u_over_a": 0.9977379801177426,
+      "threshold_one_max_u_over_a": 0.9977379801177426,
+      "threshold_001_max_pivot_fraction": 0.5141843971631206
+    },
+    "spheroidal_0S12": {
+      "n": 425,
+      "threshold_001_max_abs_l": 82.71385198876969,
+      "threshold_one_max_abs_l": 0.9990445950437926,
+      "max_l_ratio_001_to_one": 82.79295278620067,
+      "threshold_001_max_u_over_a": 0.9984289234281604,
+      "threshold_one_max_u_over_a": 0.9977380043507639,
+      "threshold_001_max_pivot_fraction": 0.3835294117647059
+    },
+    "spheroidal_0S2": {
+      "n": 425,
+      "threshold_001_max_abs_l": 99.86259004993806,
+      "threshold_one_max_abs_l": 0.9999742381719913,
+      "max_l_ratio_001_to_one": 99.86516275908512,
+      "threshold_001_max_u_over_a": 0.997737981059892,
+      "threshold_one_max_u_over_a": 0.997737981059892,
+      "threshold_001_max_pivot_fraction": 0.5152941176470588
+    },
+    "toroidal_0T12": {
+      "n": 81,
+      "threshold_001_max_abs_l": 1.206018151701727,
+      "threshold_one_max_abs_l": 0.9999893181908042,
+      "max_l_ratio_001_to_one": 1.2060310342951195,
+      "threshold_001_max_u_over_a": 0.6290736693462804,
+      "threshold_one_max_u_over_a": 0.997737988131452,
+      "threshold_001_max_pivot_fraction": 0.0
+    },
+    "toroidal_0T2": {
+      "n": 81,
+      "threshold_001_max_abs_l": 1.206302671873705,
+      "threshold_one_max_abs_l": 0.9992159960930784,
+      "max_l_ratio_001_to_one": 1.2072491599317194,
+      "threshold_001_max_u_over_a": 0.6290708289906619,
+      "threshold_one_max_u_over_a": 0.9977379804349626,
+      "threshold_001_max_pivot_fraction": 0.0
+    }
+  },
+  "rejected_threshold_zero_comparison": {
+    "max_abs_l": 5013.549795341349,
+    "threshold_one_max_abs_l": 0.999999998013822,
+    "ratio_zero_to_one": 5013.549805299151
+  },
+  "max_lapack_reference": {
+    "residual": 1.7118776044372532e-16,
+    "solution_vs_threshold1": 1.6358034075635807e-07,
+    "transfer_vs_threshold1": 6.392747731606087e-20,
+    "transfer_relative_vs_threshold1": 5.177558147859067e-08
+  },
+  "worst_cases": {
+    "threshold_001_max_l": {
+      "name": "spheroidal_0S2",
+      "freq_mhz": 0.274658203125,
+      "epsilon": 0.3229401443736645,
+      "attenuation": 0,
+      "threshold": 0.01
+    },
+    "threshold_001_max_u_growth": {
+      "name": "fluid_solid_0S40",
+      "freq_mhz": 4.730224609375,
+      "epsilon": 0.003229401443736645,
+      "attenuation": 0,
+      "threshold": 0.01
+    },
+    "threshold_001_max_solution_difference": {
+      "name": "radial_0S0",
+      "freq_mhz": 0.8544921875,
+      "epsilon": 0.032294014437366445,
+      "attenuation": 1,
+      "threshold": 0.01
+    },
+    "threshold_001_max_transfer_difference": {
+      "name": "spheroidal_0S2",
+      "freq_mhz": 0.30517578125,
+      "epsilon": 0.003229401443736645,
+      "attenuation": 1,
+      "threshold": 0.01
+    }
+  }
+}

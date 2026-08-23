@@ -1,0 +1,32 @@
+--- DSpecM1D/src/FullSpecMultiSem.h	2026-08-23 11:34:51.713018515 +0100
++++ /tmp/eigen-pivot001-baseline-overlay/DSpecM1D/src/FullSpecMultiSem.h	2026-08-23 14:07:38.113195671 +0100
+@@ -365,9 +365,7 @@
+           double wval = freqChunks[idxChunk][idx];
+           int idxw = idxChunks[idxChunk][idx];
+           Complex w = wval + ieps;
+-#ifdef DSPECM1D_ENABLE_PROFILING
+           bool patternRebuilt = false;
+-#endif
+ #ifdef DSPECM1D_ENABLE_PROFILING
+           const auto matrixStart = std::chrono::steady_clock::now();
+ #endif
+@@ -590,8 +588,8 @@
+             Complex w = wval + ieps;
+             std::size_t ridx = ridxtor[idx];
+             std::size_t len_ms = lentor - ridx;
+-#ifdef DSPECM1D_ENABLE_PROFILING
+             bool patternRebuilt = false;
++#ifdef DSPECM1D_ENABLE_PROFILING
+             profile.countRidx(static_cast<long>(ridx));
+ #endif
+ #ifdef DSPECM1D_ENABLE_PROFILING
+@@ -811,8 +809,8 @@
+             auto wval = freqChunks[idxChunk][idx];
+             std::size_t ridx = ridxsph[idx];
+             std::size_t len_ms = lensph - ridx;
+-#ifdef DSPECM1D_ENABLE_PROFILING
+             bool patternRebuilt = false;
++#ifdef DSPECM1D_ENABLE_PROFILING
+             profile.countRidx(static_cast<long>(ridx));
+ #endif
+             Complex w = wval + ieps;

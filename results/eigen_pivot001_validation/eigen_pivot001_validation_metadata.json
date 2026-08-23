@@ -1,0 +1,67 @@
+{
+  "stage": "Eigen NaturalOrdering pivot-threshold 0.01 robustness validation",
+  "branch": "dev/lapack-banded-pr1",
+  "head": "be8ba43c7c1ced669ed991aea87e4993b96ab231",
+  "production_adoption": false,
+  "compiler": "g++ (GCC) 15.2.0",
+  "compiler_path": "/opt/gcc-15.2.0/bin/g++",
+  "optimization": "-O3 -DNDEBUG for production pilots; -O2 -DNDEBUG for physical stress validation",
+  "machine": "earth-tunya",
+  "cpu": "AMD EPYC 9334 32-Core Processor; 2 sockets; 32 cores/socket; 2 threads/core",
+  "thread_environment": {
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": 1,
+    "MKL_NUM_THREADS": 1,
+    "BLIS_NUM_THREADS": 1
+  },
+  "stress_validation": {
+    "rows": 216,
+    "thresholds": [1.0, 0.01],
+    "lapack_reference": "current pivoted LAPACK general-band LU with custom C++ backsolve",
+    "benchmark_source_sha256": "732cbfad2d50e1f85a23cc87388bc9d5e2baafad687f8a0739c8b5610921564a",
+    "analysis_script_sha256": "5ddc395f99e3b2517124e32f6270fadef25ecf792cb2df76578d629a5c833f62",
+    "raw_sha256": "795dd8a3ac076b5cc022361a55c086e8a495496129bf1c6f5f80004e62c1a66b",
+    "summary_sha256": "00cdab8c7d7e97a0e8458435a0e5e9021b6992b5c340905aef2aeed6d60fef16",
+    "physical_peak_scan_sha256": "d89349d9ced9f0bf4de882fa6234ff6f7e41189cf2d96e24cd96d1c6fa84a6ee",
+    "selected_modes_sha256": "66f0d3657f9c93ec7bddf177977711a816e2a306c2d15053fbde6c69bb819cfa"
+  },
+  "pilot_builds": {
+    "baseline_executable": "/tmp/eigen-pivot001-pilots/default",
+    "baseline_executable_sha256": "ca8d5f0e669789c8f51c84a4921f00c7a46bee6ad560ac1b4f3fd41ef3174d69",
+    "candidate_executable": "/tmp/eigen-pivot001-pilots/candidate",
+    "candidate_executable_sha256": "3591871eb205dcaf1ae22506c15f6966c3310685c4dc9e083d64411f83dd5a3e",
+    "repository_header_sha256": "6aa68b54ebc83c6240e85cc1ef41d3970d4c444c4b0ae17fbe8195e0d3032da9",
+    "baseline_overlay_header_sha256": "66d7e2cf9e756bed60f7e300c72e7e1bffcc154acc8e225ff8304e03d5eb746f",
+    "candidate_overlay_header_sha256": "c9ea8d7549880db5591d8fc7161944df6131590d424da5e7f696e208260ee995",
+    "baseline_overlay_diff_sha256": "fc18d39a56d169d00428556fdc5cc1c99a78b61aa390ec6d1dfa3b8ba3ad0bb0",
+    "candidate_overlay_diff_sha256": "fd8242ad35a5f0aaf2a6597048045517dddebb706efdb985ab9a72414bfa0da0",
+    "shared_driver": "benchmarks/final_solver_benchmark.cpp",
+    "policy": "one internal untimed warm-up and one measured run per backend/configuration/point",
+    "order": [
+      "f5 threshold 1", "f5 threshold 0.01",
+      "f30 threshold 0.01", "f30 threshold 1"
+    ],
+    "pilot_table_sha256": "babb9ae76f8c9c3ad2947c0e24dd88a7fb5d5b1eef334db080229c2fec2ab483",
+    "raw_output_sha256": {
+      "pilot_f5_t1_threshold1.txt": "01fa07cecd80e1b95cf6e3e8c4af2eb1b9adf9ebc94439c4c429b157fd5278f1",
+      "pilot_f5_t1_threshold001.txt": "0ce01ed5961f31932351a36321b9a0110ed63643df2b37863069bd60d8ba92c2",
+      "pilot_f30_t32_threshold1.txt": "4aadb735e13daefd2d4093c126a641fe9e9502b2af7907dd1763b456494a61e4",
+      "pilot_f30_t32_threshold001.txt": "bb222260a9ca22d7fcd9713b4296a10de6fbc4341a7a2147517c1b13e045ceca"
+    }
+  },
+  "pilot_parameters": {
+    "f5_path": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/e2_pilot_f5.txt",
+    "f5_sha256": "b36bcd7cab58c75b6602c8efb765d235c99947aaf4410277a3335fc68a5f3d07",
+    "f30_path": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/e2_pilot_f30.txt",
+    "f30_sha256": "92056b1084942c015c5af496f46f86b73234e72699e57d970c40fd0079598c27",
+    "lmax": 750,
+    "attenuation": true
+  },
+  "pilot_results": {
+    "f5_t1_speedup": 1.070380663882615,
+    "f30_t32_speedup": 1.0967529684060562,
+    "f5_candidate_baseline_max_difference_upper_bound_via_common_lapack": 4.33343801327835e-17,
+    "f30_candidate_baseline_max_difference_upper_bound_via_common_lapack": 9.354400151345188e-16
+  },
+  "decision": "PASS: threshold 0.01 is robust on the accepted physical stress set and is a viable later production candidate"
+}
