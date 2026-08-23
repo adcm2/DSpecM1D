@@ -30,7 +30,15 @@ void writeCounts(std::ostream &out, const Data &data) {
   out << "\"sems\":" << c.sems << ",\"degrees\":" << c.degrees
       << ",\"frequency_systems\":" << c.frequencySystems
       << ",\"eigen_compute\":" << c.eigenCompute
+      << ",\"eigen_analyze_pattern\":" << c.eigenAnalyzePattern
+      << ",\"eigen_analyze_on_rebuilt_pattern\":"
+      << c.eigenAnalyzeOnRebuiltPattern
+      << ",\"eigen_analyze_on_unchanged_pattern\":"
+      << c.eigenAnalyzeOnUnchangedPattern
       << ",\"eigen_factorize\":" << c.eigenFactorize
+      << ",\"eigen_factorizations\":" << c.eigenFactorizations
+      << ",\"pattern_rebuilds\":" << c.patternRebuilds
+      << ",\"distinct_ridx\":" << c.distinctRidx
       << ",\"lapack_factorize\":" << c.lapackFactorize
       << ",\"solves\":" << c.solves << ",\"band_packs\":"
       << c.bandPacks << ",\"rhs\":" << c.rhs;

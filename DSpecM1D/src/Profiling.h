@@ -6,6 +6,7 @@
 #include <chrono>
 #include <cstddef>
 #include <limits>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -22,6 +23,7 @@ enum class Category : std::size_t {
   base_operator,
   truncation,
   dynamic_matrix,
+  analyze_pattern,
   compression,
   band_pack,
   factorization,
@@ -53,6 +55,7 @@ inline constexpr const char *categoryName(Category category) {
   case Category::base_operator: return "base_operator_preparation";
   case Category::truncation: return "start_truncation_extraction";
   case Category::dynamic_matrix: return "frequency_matrix_construction";
+  case Category::analyze_pattern: return "analyze_pattern";
   case Category::compression: return "sparse_compression";
   case Category::band_pack: return "lapack_band_packing";
   case Category::factorization: return "factorization";
@@ -66,7 +69,11 @@ inline constexpr const char *categoryName(Category category) {
 
 struct Counts {
   std::size_t sems = 0, degrees = 0, frequencySystems = 0;
-  std::size_t eigenCompute = 0, eigenFactorize = 0;
+  std::size_t eigenCompute = 0, eigenAnalyzePattern = 0;
+  std::size_t eigenAnalyzeOnRebuiltPattern = 0;
+  std::size_t eigenAnalyzeOnUnchangedPattern = 0;
+  std::size_t eigenFactorize = 0, eigenFactorizations = 0;
+  std::size_t patternRebuilds = 0, distinctRidx = 0;
   std::size_t lapackFactorize = 0, solves = 0, bandPacks = 0, rhs = 0;
   std::size_t dimensions = 0, nonzeros = 0;
   long dimensionMin = std::numeric_limits<long>::max();
@@ -96,6 +103,7 @@ class Context {
     std::array<std::array<double, categoryCount>, modeCount> workerSeconds{};
     std::array<double, modeCount> workerTotal{};
     Counts counts;
+    std::set<long> ridxValues;
   };
 
 public:
@@ -148,6 +156,14 @@ public:
     counts.kuMax = std::max(counts.kuMax, ku);
   }
   void countCompute() { ++slot().counts.eigenCompute; }
+  void countAnalyzePattern(bool patternRebuilt) {
+    ++slot().counts.eigenAnalyzePattern;
+    if (patternRebuilt)
+      ++slot().counts.eigenAnalyzeOnRebuiltPattern;
+    else
+      ++slot().counts.eigenAnalyzeOnUnchangedPattern;
+  }
+  void countNumericalFactorize() { ++slot().counts.eigenFactorizations; }
   void countFactorize(bool lapack) {
     if (lapack) ++slot().counts.lapackFactorize;
     else ++slot().counts.eigenFactorize;
@@ -158,9 +174,12 @@ public:
     counts.rhs += static_cast<std::size_t>(std::max(0L, rhs));
   }
   void countBandPack() { ++slot().counts.bandPacks; }
+  void countPatternRebuild() { ++slot().counts.patternRebuilds; }
+  void countRidx(long ridx) { slot().ridxValues.insert(ridx); }
 
   Data finish() const {
     Data result;
+    std::set<long> ridxValues;
     for (const auto &slot : slots_) {
       for (std::size_t mode = 0; mode < modeCount; ++mode)
         for (std::size_t category = 0; category < categoryCount; ++category) {
@@ -176,7 +195,14 @@ public:
       target.degrees += source.degrees;
       target.frequencySystems += source.frequencySystems;
       target.eigenCompute += source.eigenCompute;
+      target.eigenAnalyzePattern += source.eigenAnalyzePattern;
+      target.eigenAnalyzeOnRebuiltPattern +=
+          source.eigenAnalyzeOnRebuiltPattern;
+      target.eigenAnalyzeOnUnchangedPattern +=
+          source.eigenAnalyzeOnUnchangedPattern;
       target.eigenFactorize += source.eigenFactorize;
+      target.eigenFactorizations += source.eigenFactorizations;
+      target.patternRebuilds += source.patternRebuilds;
       target.lapackFactorize += source.lapackFactorize;
       target.solves += source.solves;
       target.bandPacks += source.bandPacks;
@@ -191,7 +217,9 @@ public:
       target.klMax = std::max(target.klMax, source.klMax);
       target.kuMin = std::min(target.kuMin, source.kuMin);
       target.kuMax = std::max(target.kuMax, source.kuMax);
+      ridxValues.insert(slot.ridxValues.begin(), slot.ridxValues.end());
     }
+    result.counts.distinctRidx = ridxValues.size();
     for (std::size_t mode = 0; mode < modeCount; ++mode) {
       result.workerUnclassified[mode] = std::max(
           0.0, result.workerTotal[mode] - result.workerCategorized[mode]);
@@ -265,9 +293,13 @@ public:
   void countDegree() {}
   void countFrequencySystem(long, long, long, long) {}
   void countCompute() {}
+  void countAnalyzePattern(bool) {}
+  void countNumericalFactorize() {}
   void countFactorize(bool) {}
   void countSolve(long) {}
   void countBandPack() {}
+  void countPatternRebuild() {}
+  void countRidx(long) {}
   Data finish() const { return {}; }
   static Context *active() { return nullptr; }
   static Mode mode() { return Mode::all; }

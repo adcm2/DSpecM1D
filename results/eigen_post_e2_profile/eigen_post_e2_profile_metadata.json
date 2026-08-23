@@ -1,0 +1,63 @@
+{
+  "build": "/tmp/dspecm1d-backend-on-gcc15-final",
+  "campaign": "Post-E2 Eigen SparseLU profiling reassessment",
+  "command": "/tmp/dspecm1d-backend-on-gcc15-final/bin/stage_profile_solver /tmp/dspecm1d-backend-on-gcc15-final/data/params/eigen_post_e2_profile_f30.txt eigen 1 1",
+  "configuration": "ex3/PREM-style type-4 all-mode attenuation=1, Eigen SparseLU NaturalOrdering",
+  "created_utc": "2026-08-23T10:36:48.406614+00:00",
+  "environment": {
+    "BLIS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_NUM_THREADS": "32",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "executable": "/tmp/dspecm1d-backend-on-gcc15-final/bin/stage_profile_solver",
+  "executable_sha256": "d3944be0ba7108ecf7cca3340e4ed1a688cf16296cabc220db7a4c92634ab37d",
+  "git": {
+    "revision": "0fc62f69ac433a742c5d41797b7ecb40d998f9cf",
+    "status_before_run": "M DSpecM1D/src/FullSpecMultiSem.h\n M DSpecM1D/src/Profiling.h\n M benchmarks/stage_profile_solver.cpp\n?? docs/eigen_post_e2_profile.md\n?? results/eigen_post_e2_profile/\n?? scripts/eigen_post_e2_profile.py"
+  },
+  "machine": {
+    "hostname": "earth-tunya"
+  },
+  "parameter_file": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/eigen_post_e2_profile_f30.txt",
+  "parameter_path_provenance": "generated from the retained repository ex3 template into the build data/params directory so InputParametersNew resolves data/models",
+  "parameter_sha256": "b0b9e747c58f8e730ef0abcdbcb4722778fdda88d02def53f2b279fe8adf8753",
+  "parameter_template": "/space/adcm2/CleanBuilds/DSpecM1D/data/params/ex3.txt",
+  "parameter_template_sha256": "0f46f5f194350b97b0f73c288a14904ba4024b2e1df319f45a060b913bb19a63",
+  "profile_counts": {
+    "band_packs": 0,
+    "degrees": 1500,
+    "dimension_max": 1362,
+    "dimension_min": 17,
+    "distinct_ridx": 138,
+    "eigen_analyze_on_rebuilt_pattern": 9878,
+    "eigen_analyze_on_unchanged_pattern": 22605,
+    "eigen_analyze_pattern": 32483,
+    "eigen_compute": 32483,
+    "eigen_factorizations": 1475483,
+    "eigen_factorize": 1443000,
+    "frequency_systems": 1475483,
+    "kl_max": 15,
+    "kl_min": 4,
+    "ku_max": 15,
+    "ku_min": 4,
+    "lapack_factorize": 0,
+    "nnz_max": 19912,
+    "nnz_min": 97,
+    "pattern_rebuilds": 9878,
+    "rhs": 4424483,
+    "sems": 3,
+    "solves": 1475483
+  },
+  "profile_wall_seconds": 7.045931729,
+  "raw_file": "/space/adcm2/CleanBuilds/DSpecM1D/results/eigen_post_e2_profile/eigen_post_e2_profile_raw.tsv",
+  "source_sha256": {
+    "DSpecM1D/src/FullSpecMultiSem.h": "6aa68b54ebc83c6240e85cc1ef41d3970d4c444c4b0ae17fbe8195e0d3032da9",
+    "DSpecM1D/src/Profiling.h": "542c5f089ea34bfcbc925ca67becd5f77ece15d175664b6a842c1b10e287a8a1",
+    "benchmarks/stage_profile_solver.cpp": "ddb48647c8584f99b47e0d1286f1821f68bca2a1972fd8aa1103cf899c49c07f",
+    "scripts/eigen_post_e2_profile.py": "79209d003b5dfe57368d3897e8768bc923c6277a9e061f96b025dd481237268b"
+  },
+  "status": "complete",
+  "summary_file": "/space/adcm2/CleanBuilds/DSpecM1D/results/eigen_post_e2_profile/eigen_post_e2_profile_summary.json"
+}

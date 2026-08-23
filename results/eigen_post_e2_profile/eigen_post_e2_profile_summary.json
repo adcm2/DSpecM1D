@@ -1,0 +1,72 @@
+{
+  "campaign": "Post-E2 Eigen SparseLU profiling reassessment",
+  "fmax_mHz": 30.0,
+  "measured_repetitions": 1,
+  "metadata_sha256": "2f8edf0f368d12baeb1cd85907855ac55c82606dede87290f3324d0b7d472a5a",
+  "one_untimed_warmup": true,
+  "profile": {
+    "counts": {
+      "band_packs": 0,
+      "degrees": 1500,
+      "dimension_max": 1362,
+      "dimension_min": 17,
+      "distinct_ridx": 138,
+      "eigen_analyze_on_rebuilt_pattern": 9878,
+      "eigen_analyze_on_unchanged_pattern": 22605,
+      "eigen_analyze_pattern": 32483,
+      "eigen_compute": 32483,
+      "eigen_factorizations": 1475483,
+      "eigen_factorize": 1443000,
+      "frequency_systems": 1475483,
+      "kl_max": 15,
+      "kl_min": 4,
+      "ku_max": 15,
+      "ku_min": 4,
+      "lapack_factorize": 0,
+      "nnz_max": 19912,
+      "nnz_min": 97,
+      "pattern_rebuilds": 9878,
+      "rhs": 4424483,
+      "sems": 3,
+      "solves": 1475483
+    },
+    "factorization_to_solve_ratio": 3.9095337191018253,
+    "norm": 0.0060603090464708366,
+    "output_shape": [
+      6,
+      16385
+    ],
+    "wall_seconds": 7.045931729,
+    "worker_categories_seconds": {
+      "adaptive_sem_mesh": 0.009567017,
+      "analyze_pattern": 0.358393603,
+      "base_operator_preparation": 1.0228131420000002,
+      "factorization": 150.9519722589994,
+      "frequency_matrix_construction": 20.739476043998668,
+      "lapack_band_packing": 0,
+      "solve": 38.611247045000304,
+      "source_receiver_projection": 0.9974808860000067,
+      "sparse_compression": 0.0007777169999999997,
+      "start_truncation_extraction": 5.788826520999788,
+      "total_spectra": 7.045931729,
+      "unclassified": 6.497484818001837
+    },
+    "worker_category_share_percent": {
+      "adaptive_sem_mesh": 0.004252632762201373,
+      "analyze_pattern": 0.15930946687783584,
+      "base_operator_preparation": 0.4546504597283903,
+      "factorization": 67.09963019272713,
+      "frequency_matrix_construction": 9.218900237722924,
+      "lapack_band_packing": 0.0,
+      "solve": 17.163077495631004,
+      "source_receiver_projection": 0.44339002381549875,
+      "sparse_compression": 0.00034570282397543186,
+      "start_truncation_extraction": 2.573190088185679
+    },
+    "worker_total_seconds": 224.966921316,
+    "worker_unclassified_seconds": 6.497387563001837
+  },
+  "raw_sha256": "b2a2214eacab64236ba4d3a5b8410e5532278e8f27c12e695feec460ad8089d2",
+  "status": "complete",
+  "threads": 32
+}

@@ -93,6 +93,41 @@ private:
   bool attenuation_;
 };
 
+#ifdef DSPECM1D_ENABLE_PROFILING
+// Eigen::SparseLU::compute() combines symbolic analysis and numerical
+// factorization.  The profiling-only route below expands that same operation
+// so the two costs can be measured independently; ordinary builds retain the
+// established compute()/factorize() calls below.
+template <typename Solver, typename Matrix>
+void profileEigenFactorizeOrCompute(Solver &solver, const Matrix &matrix,
+                                    int idxn, int nskip,
+                                    profiling::Context &profile,
+                                    profiling::Mode mode,
+                                    bool patternRebuilt) {
+  if ((idxn % nskip) == 0) {
+    {
+      profiling::Scope analyzeProfile(
+          profile, profiling::Category::analyze_pattern, mode);
+      solver.analyzePattern(matrix);
+    }
+    profile.countAnalyzePattern(patternRebuilt);
+    {
+      profiling::Scope factorProfile(profile, profiling::Category::factorization,
+                                     mode);
+      solver.factorize(matrix);
+    }
+    profile.countNumericalFactorize();
+    profile.countCompute();
+  } else {
+    profiling::Scope factorProfile(profile, profiling::Category::factorization,
+                                   mode);
+    solver.factorize(matrix);
+    profile.countNumericalFactorize();
+    profile.countFactorize(false);
+  }
+}
+#endif
+
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
 using LapackMultiSemSolver = LapackBandSolver;
 #endif
@@ -331,6 +366,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           int idxw = idxChunks[idxChunk][idx];
           Complex w = wval + ieps;
 #ifdef DSPECM1D_ENABLE_PROFILING
+          bool patternRebuilt = false;
+#endif
+#ifdef DSPECM1D_ENABLE_PROFILING
           const auto matrixStart = std::chrono::steady_clock::now();
 #endif
           MatrixC vecX;
@@ -352,9 +390,13 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 #endif
           {
             auto &fixed = radialFixed[omp_get_thread_num()];
-            if (!fixed)
+            if (!fixed) {
               fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
                   keR, inR, keRAtten, params.attenuation());
+              patternRebuilt = true;
+              if (auto *active = detail::profiling::Context::active())
+                active->countPatternRebuild();
+            }
             fixed->update(
                 w, params.attenuation()
                        ? attenFactor(wval, w0, twodivpi, myi)
@@ -390,14 +432,13 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           } else
 #endif
           {
-            {
-              detail::profiling::Scope factorProfile(
-                  profile, detail::profiling::Category::factorization,
-                  detail::profiling::Mode::radial);
-              eigenSolver.compute(*matrixForSolver);
-              if (auto *active = detail::profiling::Context::active())
-                active->countCompute();
-            }
+#ifdef DSPECM1D_ENABLE_PROFILING
+            detail::profileEigenFactorizeOrCompute(
+                eigenSolver, *matrixForSolver, 0, 1, profile,
+                detail::profiling::Mode::radial, patternRebuilt);
+#else
+            eigenSolver.compute(*matrixForSolver);
+#endif
             {
               detail::profiling::Scope solveProfile(
                   profile, detail::profiling::Category::solve,
@@ -550,6 +591,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             std::size_t ridx = ridxtor[idx];
             std::size_t len_ms = lentor - ridx;
 #ifdef DSPECM1D_ENABLE_PROFILING
+            bool patternRebuilt = false;
+            profile.countRidx(static_cast<long>(ridx));
+#endif
+#ifdef DSPECM1D_ENABLE_PROFILING
             const auto matrixStart = std::chrono::steady_clock::now();
 #endif
             const SparseMatrixC *matrixForSolver = nullptr;
@@ -586,6 +631,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                 fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
                     hActive, pActive, haActive, params.attenuation());
                 torFixedRidx[omp_get_thread_num()] = ridx;
+                patternRebuilt = true;
+                if (auto *active = detail::profiling::Context::active())
+                  active->countPatternRebuild();
               }
               fixed->update(
                   w, params.attenuation()
@@ -624,15 +672,15 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             } else
 #endif
             {
-              const bool recompute =
-                  ((static_cast<int>(lenChunk) - idx - 1) % nskip) == 0;
-              {
-                detail::profiling::Scope factorProfile(profile, detail::profiling::Category::factorization,
-                                               detail::profiling::Mode::toroidal);
-                factorizeOrCompute(eigenSolver1, *matrixForSolver,
-                                   (int) lenChunk - idx - 1, nskip);
-              }
-              if (recompute) profile.countCompute(); else profile.countFactorize(false);
+#ifdef DSPECM1D_ENABLE_PROFILING
+              detail::profileEigenFactorizeOrCompute(
+                  eigenSolver1, *matrixForSolver,
+                  (int) lenChunk - idx - 1, nskip, profile,
+                  detail::profiling::Mode::toroidal, patternRebuilt);
+#else
+              factorizeOrCompute(eigenSolver1, *matrixForSolver,
+                                 (int) lenChunk - idx - 1, nskip);
+#endif
               detail::profiling::Scope solveProfile(profile, detail::profiling::Category::solve,
                                             detail::profiling::Mode::toroidal);
               vecSol = eigenSolver1.solve(fRed);
@@ -763,6 +811,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             auto wval = freqChunks[idxChunk][idx];
             std::size_t ridx = ridxsph[idx];
             std::size_t len_ms = lensph - ridx;
+#ifdef DSPECM1D_ENABLE_PROFILING
+            bool patternRebuilt = false;
+            profile.countRidx(static_cast<long>(ridx));
+#endif
             Complex w = wval + ieps;
 #ifdef DSPECM1D_ENABLE_PROFILING
             const auto matrixStart = std::chrono::steady_clock::now();
@@ -801,6 +853,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                 fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
                     hActive, pActive, haActive, params.attenuation());
                 sphFixedRidx[omp_get_thread_num()] = ridx;
+                patternRebuilt = true;
+                if (auto *active = detail::profiling::Context::active())
+                  active->countPatternRebuild();
               }
               fixed->update(
                   w, params.attenuation()
@@ -850,15 +905,15 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             } else
 #endif
             {
-              const bool recompute =
-                  ((static_cast<int>(lenChunk) - idx - 1) % nskip) == 0;
-              {
-                detail::profiling::Scope factorProfile(profile, detail::profiling::Category::factorization,
-                                               detail::profiling::Mode::spheroidal);
-                factorizeOrCompute(eigenSolver1, *matrixForSolver,
-                                   (int) lenChunk - idx - 1, nskip);
-              }
-              if (recompute) profile.countCompute(); else profile.countFactorize(false);
+#ifdef DSPECM1D_ENABLE_PROFILING
+              detail::profileEigenFactorizeOrCompute(
+                  eigenSolver1, *matrixForSolver,
+                  (int) lenChunk - idx - 1, nskip, profile,
+                  detail::profiling::Mode::spheroidal, patternRebuilt);
+#else
+              factorizeOrCompute(eigenSolver1, *matrixForSolver,
+                                 (int) lenChunk - idx - 1, nskip);
+#endif
               detail::profiling::Scope solveProfile(profile, detail::profiling::Category::solve,
                                             detail::profiling::Mode::spheroidal);
               vecSol = eigenSolver1.solve(fRed);
