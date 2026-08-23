@@ -1,0 +1,70 @@
+{
+  "experiment": "eigen_factorization_probe",
+  "git_head": "9a05e8878c55d47dc3f7f487d8db35db8f0d3e46",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "build_type": "Release",
+  "source": {
+    "path": "benchmarks/eigen_factorization_probe.cpp",
+    "sha256": "2c9d4a7d8541638ff347676906170ac2dbd12f40bcac9063a8dcd6a02fc3fccf",
+    "command": "g++ -DDSPECM1D_ENABLE_PROFILING -DDSPECM1D_ENABLE_LAPACK_BAND_SOLVER -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_CPP -O3 -DNDEBUG -fopenmp -std=gnu++23",
+    "executable": "/tmp/eigen_factorization_probe",
+    "executable_sha256": "4f6c7ab35c0d8819a851660e5b4316013bdd6f7cf54da8284ebe31e2179c80b5"
+  },
+  "eigen_source": {
+    "path": "/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/eigen3-src",
+    "version": "3.4.0",
+    "revision": "3147391d946bb4b6c68edd901f2add6ac1f31f8c",
+    "pivot_default": 1.0,
+    "performance_defaults": {
+      "panel_size": 16,
+      "relax": 1,
+      "maxsuper": 128,
+      "rowblk": 16,
+      "colblk": 8,
+      "fillfactor": 20
+    }
+  },
+  "model": {
+    "path": "/tmp/dspecm1d-backend-on-gcc15-final/data/models/prem.200.no.txt",
+    "sha256": "4e64ef450a0304e6846a453d5d02ed45355fac853ed1f7a4cbad03cf6716dd9f"
+  },
+  "environment": {
+    "OMP_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "systems": [
+    {"name": "radial_small", "family": "radial", "n": 104},
+    {"name": "toroidal_small", "family": "toroidal", "n": 37},
+    {"name": "spheroidal_small", "family": "spheroidal", "n": 158},
+    {"name": "spheroidal_medium", "family": "spheroidal", "n": 257},
+    {"name": "spheroidal_large", "family": "spheroidal", "n": 860},
+    {"name": "spheroidal_fluid_solid", "family": "spheroidal", "n": 860},
+    {"name": "spheroidal_max", "family": "spheroidal", "n": 1610}
+  ],
+  "timing": {
+    "warmup": "one untimed factorize/solve per configuration and system",
+    "measured_batch": "four factorize calls and four solve calls per configuration, system, and frequency",
+    "frequencies_fixed": [0.18, 0.41, 0.67, 1.05],
+    "scan": "NaturalOrdering threshold 1 scan over 0.10..1.20 selects worst backward-residual and pivot-displacement frequencies"
+  },
+  "raw": {
+    "path": "results/eigen_factorization_probe/eigen_factorization_probe_raw.tsv",
+    "sha256": "f0c573f42b6b37b99b12d6ed161f0d4acd65483d01ef3939c53831d3a6c36e62",
+    "rows": 600
+  },
+  "scan": {
+    "path": "results/eigen_factorization_probe/eigen_factorization_probe_scan.tsv",
+    "sha256": "f5a73949d5ab98b529bf7b16677da0656adc77967ad61f2f451372a9e48ac3c2"
+  },
+  "summary": {
+    "path": "results/eigen_factorization_probe/eigen_factorization_probe_summary.json",
+    "sha256": "88e1325409f375cf0cb4685bbbc9eb8748e2d8989a47d4fdb74883f8e0e0d100"
+  },
+  "analyzer": {
+    "path": "scripts/eigen_factorization_probe_analyze.py",
+    "sha256": "b7103ad95f3273614b172e808a188541cccb8fc3208c12d084dbe8a73a8ef3fd"
+  }
+}
