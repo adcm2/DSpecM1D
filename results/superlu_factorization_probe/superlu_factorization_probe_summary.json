@@ -1,0 +1,80 @@
+{
+  "aggregate": {
+    "eigen_factor_seconds_sum": 0.0083812240625,
+    "eigen_over_superlu_factor_speedup": 0.9309202939204225,
+    "max_eigen_residual": 8.035166590559007e-17,
+    "max_eigen_vs_lapack": 6.436612522003904e-09,
+    "max_lapack_residual": 1.1420544300740359e-16,
+    "max_solution_discrepancy": 3.167093150877828e-08,
+    "max_superlu_residual": 7.542851379966555e-17,
+    "max_superlu_vs_lapack": 3.482899387890527e-08,
+    "superlu_samepattern_seconds_sum": 0.0090031596875
+  },
+  "concurrency_probe": "not run because the serial SamePattern gate did not show a material factorization gain",
+  "decision": "B",
+  "decision_text": "SuperLU SamePattern is not materially faster overall; the added dependency is not justified.",
+  "experiment": "superlu_factorization_probe",
+  "frequencies_per_system": 2,
+  "per_system": [
+    {
+      "eigen_factor_seconds_sum": 0.0001319413125,
+      "eigen_over_superlu_factor_speedup": 1.092220366553257,
+      "eigen_over_superlu_solve_speedup": 0.9267792945908842,
+      "n": 110,
+      "superlu_samepattern_seconds_sum": 0.000120801,
+      "system": "radial_small"
+    },
+    {
+      "eigen_factor_seconds_sum": 0.0019192091875000002,
+      "eigen_over_superlu_factor_speedup": 0.9930377222978932,
+      "eigen_over_superlu_solve_speedup": 1.3213064047016654,
+      "n": 876,
+      "superlu_samepattern_seconds_sum": 0.0019326649375000001,
+      "system": "spheroidal_fluid_solid"
+    },
+    {
+      "eigen_factor_seconds_sum": 0.0018772828125,
+      "eigen_over_superlu_factor_speedup": 1.0796882330705502,
+      "eigen_over_superlu_solve_speedup": 1.3256569265121596,
+      "n": 876,
+      "superlu_samepattern_seconds_sum": 0.00173872675,
+      "system": "spheroidal_large"
+    },
+    {
+      "eigen_factor_seconds_sum": 0.0036530881875,
+      "eigen_over_superlu_factor_speedup": 0.8297471098388983,
+      "eigen_over_superlu_solve_speedup": 1.3024986962383711,
+      "n": 1626,
+      "superlu_samepattern_seconds_sum": 0.0044026525,
+      "system": "spheroidal_max"
+    },
+    {
+      "eigen_factor_seconds_sum": 0.0005053071250000001,
+      "eigen_over_superlu_factor_speedup": 1.0408942541897248,
+      "eigen_over_superlu_solve_speedup": 1.19405772622086,
+      "n": 270,
+      "superlu_samepattern_seconds_sum": 0.00048545481249999997,
+      "system": "spheroidal_medium"
+    },
+    {
+      "eigen_factor_seconds_sum": 0.000270700875,
+      "eigen_over_superlu_factor_speedup": 0.9208865502989492,
+      "eigen_over_superlu_solve_speedup": 1.0732290918321126,
+      "n": 168,
+      "superlu_samepattern_seconds_sum": 0.00029395681249999995,
+      "system": "spheroidal_small"
+    },
+    {
+      "eigen_factor_seconds_sum": 2.3694562500000003e-05,
+      "eigen_over_superlu_factor_speedup": 0.8197995009147016,
+      "eigen_over_superlu_solve_speedup": 0.604253015774822,
+      "n": 37,
+      "superlu_samepattern_seconds_sum": 2.8902875e-05,
+      "system": "toroidal_small"
+    }
+  ],
+  "production_spectra": "not run",
+  "repeats": 16,
+  "rows": 14,
+  "systems": 7
+}

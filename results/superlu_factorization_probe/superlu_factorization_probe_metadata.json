@@ -1,0 +1,75 @@
+{
+  "experiment": "superlu_factorization_probe",
+  "accepted_base_commit": "5eceeccf2810042bc4e998854d8ee89b2de87b8b",
+  "production_changes": false,
+  "system_superlu_audit": {
+    "usable_install_found": false,
+    "searched": [
+      "ldconfig cache",
+      "pkg-config",
+      "dpkg package database",
+      "/usr/include",
+      "/usr/local/include",
+      "/usr/lib",
+      "/usr/local/lib",
+      "/opt",
+      "/home/adcm2",
+      "/tmp"
+    ]
+  },
+  "superlu": {
+    "version": "7.0.1",
+    "source": "https://github.com/xiaoyeli/superlu",
+    "tag": "v7.0.1",
+    "commit": "83a3c82b9e44c966ca2bc26991ffdb2bf63e1e2b",
+    "source_directory": "/tmp/superlu-7.0.1-src",
+    "build_directory": "/tmp/superlu-7.0.1-build",
+    "install_directory": "/tmp/superlu-7.0.1-install",
+    "complex_double": true,
+    "library_sha256": "eb71dabc2b35e9065a5d09a034dc43f2aa9c56e14d287a0fb33324313eab1a4e",
+    "compiler_comment": "GCC: (GNU) 15.2.0",
+    "blas": "/usr/lib/x86_64-linux-gnu/libopenblas.so",
+    "cmake": "cmake -S /tmp/superlu-7.0.1-src -B /tmp/superlu-7.0.1-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/tmp/superlu-7.0.1-install -DCMAKE_C_COMPILER=/opt/gcc-15.2.0/bin/gcc -DCMAKE_Fortran_COMPILER=/opt/gcc-15.2.0/bin/gfortran -Denable_tests=OFF -Denable_examples=OFF -DBUILD_SHARED_LIBS=ON",
+    "build": "cmake --build /tmp/superlu-7.0.1-build -j 8",
+    "install": "cmake --install /tmp/superlu-7.0.1-build"
+  },
+  "compiler": "g++ (GCC) 15.2.0",
+  "compile_command": "/opt/gcc-15.2.0/bin/g++ -DDSPECM1D_ENABLE_PROFILING -DDSPECM1D_ENABLE_LAPACK_BAND_SOLVER -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_CPP -I/tmp/dspecm1d-backend-on-gcc15-final/benchmarks -I/space/adcm2/CleanBuilds/DSpecM1D -I/tmp/superlu-7.0.1-install/include -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/eigen3-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/fftwpp-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/numericconcepts-src/include -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gaussquad-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gshtrans-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/interpolation-src -O3 -DNDEBUG -fopenmp -std=gnu++23 scripts/superlu_factorization_probe.cpp -o /tmp/superlu_factorization_probe -L/tmp/superlu-7.0.1-install/lib -Wl,-rpath,/tmp/superlu-7.0.1-install/lib -lsuperlu /usr/lib/x86_64-linux-gnu/libfftw3.so /usr/lib/x86_64-linux-gnu/libfftw3f.so /usr/lib/x86_64-linux-gnu/libfftw3l.so /opt/gcc-15.2.0/lib64/libgomp.so /lib/x86_64-linux-gnu/libpthread.a /usr/lib/x86_64-linux-gnu/liblapacke.so -lm -ldl /usr/lib/x86_64-linux-gnu/libopenblas.so",
+  "binary_sha256": "fe3486f100cd9379b2b8127fa577ea5c093144adf4fcc130b4efb28840bceb01",
+  "machine": "AMD EPYC 9334 32-Core Processor; 2 sockets; 32 cores/socket; SMT2; 128 logical CPUs; 2 NUMA nodes",
+  "kernel": "Linux 6.1.0-49-amd64 x86_64",
+  "environment": {
+    "OMP_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "run_command": "/tmp/superlu_factorization_probe data/models/prem.200",
+  "timing_policy": "one untimed warm-up followed by one measured batch of 16 operations per matrix",
+  "ordering": {
+    "eigen": "NaturalOrdering<int>",
+    "superlu": "NATURAL (identity initial column order, followed by SuperLU's required elimination-tree postorder)"
+  },
+  "pivot_threshold": 1.0,
+  "superlu_modes": ["DOFACT", "SamePattern"],
+  "same_row_permutation_mode_used": false,
+  "numerical_references": [
+    "Eigen SparseLU NaturalOrdering threshold 1.0",
+    "current pivoted LAPACK general-band LU with custom backsolve"
+  ],
+  "matrix_path": "FixedPatternFrequencyMatrix compressed union pattern with direct valuePtr updates",
+  "attenuation": true,
+  "rhs_columns": 3,
+  "conversion_timing": "std::complex<double> values to SuperLU doublecomplex measured separately; excluded from factorization",
+  "concurrency_probe": "not run: SamePattern failed the material serial speedup gate",
+  "production_spectra": "not run",
+  "sha256": {
+    "model": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+    "probe_source": "f4fd4ddf64804b85397adfa37f7ec4c394224577fcfbc3dbcefa74a720a965d6",
+    "analyzer": "29985571b103f74bd9171d5989373d0ddfe79970658b60cfb2080fad5b438fbf",
+    "raw": "6980a202ca90d3b700ba7f7339d33fcc406ce0660882e12b46208300680b8e89",
+    "summary_json": "f95c8daa34e0e10acb69003c51c4b4a7d916e61e068d292847a33b5c6e123772",
+    "summary_tsv": "e327fbff93b00841d7f11d1c2b8d8b1d4a141be6e76c886b08e741fb5cde6082"
+  }
+}
