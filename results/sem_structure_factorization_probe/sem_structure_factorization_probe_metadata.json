@@ -1,0 +1,70 @@
+{
+  "stage": "structure-aware 1-D SEM factorization feasibility",
+  "base_commit": "f25c131fd3c84ed809706437b9af016a37fa46aa",
+  "branch": "dev/lapack-banded-pr1",
+  "date": "2026-08-23",
+  "machine": {
+    "cpu": "AMD EPYC 9334 32-Core Processor",
+    "sockets": 2,
+    "cores_per_socket": 32,
+    "logical_cpus": 128
+  },
+  "software": {
+    "compiler": "g++ (GCC) 15.2.0",
+    "lapacke": "3.11.0-2",
+    "openblas": "0.3.21+ds-4",
+    "build_type": "Release (-O3 -DNDEBUG)",
+    "language": "GNU C++23"
+  },
+  "threads": {
+    "OMP_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "timing_policy": {
+    "warmups_per_solver_system": 1,
+    "measured_batches": 1,
+    "repeats_in_measured_batch": 3,
+    "reported_statistic": "arithmetic mean within the one measured batch"
+  },
+  "physics": {
+    "model": "data/models/prem.200",
+    "attenuation": true,
+    "epsilon": "production FreqFull epsilon",
+    "dynamic_matrix": "A = H - w*w*P + chi*Ha",
+    "rhs_columns": 3,
+    "frequencies_mhz": {
+      "radial_0S0": 0.8146635,
+      "toroidal_0T12": 1.881496,
+      "spheroidal_0S12": 2.003070,
+      "fluid_solid_0S40": 4.761725,
+      "large_0S40": 4.761725
+    }
+  },
+  "prototype": {
+    "matrix_source": "benchmark-only extraction from the assembled production E2 matrix",
+    "base_extraction_timing": "reported once per SEM and excluded from the per-frequency intrinsic kernel",
+    "local_dynamic_preparation": "timed H-w*w*P+chi*Ha assignments from retained local base blocks",
+    "reduced_workspace": "prototype allocation/zero/dense-to-band copy timed separately; a production design could preallocate and assemble directly",
+    "local_factorization": "LAPACKE_zgetrf with partial pivoting",
+    "local_solve": "LAPACKE_zgetrs",
+    "reduced_factorization": "current LapackBandSolver zgbtrf",
+    "reduced_solve": "current pivoted custom Eigen/C++ band backsolve",
+    "reference_eigen": "SparseLU NaturalOrdering, pivot threshold 1.0",
+    "reference_lapack": "current zgbtrf plus custom backsolve"
+  },
+  "compile_command": "/opt/gcc-15.2.0/bin/g++ -DDSPECM1D_ENABLE_PROFILING -DDSPECM1D_ENABLE_LAPACK_BAND_SOLVER -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_CPP -I/tmp/dspecm1d-backend-on-gcc15-final/benchmarks -I/space/adcm2/CleanBuilds/DSpecM1D -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/eigen3-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/fftwpp-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/numericconcepts-src/include -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gaussquad-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gshtrans-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/interpolation-src -O3 -DNDEBUG -fopenmp -std=gnu++23 scripts/sem_structure_factorization_probe.cpp -o /tmp/sem_structure_factorization_probe /usr/lib/x86_64-linux-gnu/libfftw3.so /usr/lib/x86_64-linux-gnu/libfftw3f.so /usr/lib/x86_64-linux-gnu/libfftw3l.so /opt/gcc-15.2.0/lib64/libgomp.so /lib/x86_64-linux-gnu/libpthread.a /usr/lib/x86_64-linux-gnu/liblapacke.so -lm -ldl /usr/lib/x86_64-linux-gnu/libopenblas.so",
+  "run_command": "env OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 LD_LIBRARY_PATH=/opt/gcc-15.2.0/lib64 /tmp/sem_structure_factorization_probe data/models/prem.200 > results/sem_structure_factorization_probe/sem_structure_factorization_probe_raw.tsv",
+  "analysis_command": "python3 scripts/sem_structure_factorization_probe_analyze.py results/sem_structure_factorization_probe/sem_structure_factorization_probe_raw.tsv results/sem_structure_factorization_probe/sem_structure_factorization_probe_summary.json results/sem_structure_factorization_probe/sem_structure_factorization_probe_summary.tsv",
+  "sha256": {
+    "model": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+    "prototype_source": "1b042a9361cae71f98ac9346d8648fbb52861b1a4affd652f1e15ef5d5b6524b",
+    "analyzer": "e80e35af387f30e904f32102072a0d031b22b277896b0d1116f9e560ded5068e",
+    "binary": "9f9fe2d3e14d127fb7db96fc4a8b1a681818c37d0966b9aa4a1bd0c7433cf904",
+    "raw": "79cb2931aab3e2698fea2cc532bff58f0cb3544d4ca460d2cb1bef251db252d5",
+    "summary_json": "865010545d571fff20bd95705d8795f82c4fd927b82c0cb0357110e171acb42f",
+    "summary_tsv": "20331b4a1cf56432c3c89c89019c4262ba4ef0e54763dbdf3eb5cf3373644a30"
+  }
+}

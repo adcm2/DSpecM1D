@@ -1,0 +1,36 @@
+{
+  "decision": "C_NO_WIN",
+  "systems": 5,
+  "warmups_per_solver_system": 1,
+  "measured_repeats_per_solver_system": 3,
+  "aggregate": {
+    "lapack_factor_s": 0.0016890286666666667,
+    "lapack_factor_plus_solve_s": 0.0027123916666666665,
+    "condensed_intrinsic_setup_s": 0.00172927,
+    "condensed_intrinsic_setup_plus_full_solve_s": 0.002723315333333333,
+    "condensed_with_benchmark_scaffolding_plus_full_solve_s": 0.002752292333333333,
+    "setup_speedup_vs_lapack_factor": 0.9767292942494039,
+    "intrinsic_total_speedup_vs_lapack": 0.9959888351771236,
+    "scaffold_total_speedup_vs_lapack": 0.9855027512217998
+  },
+  "ranges": {
+    "n": [
+      81,
+      1626
+    ],
+    "reduced_n": [
+      17,
+      330
+    ],
+    "intrinsic_total_speedup_vs_lapack": [
+      0.7391919996460021,
+      1.1232073998292909
+    ]
+  },
+  "validation": {
+    "max_condensed_residual": 6.065921311875932e-17,
+    "max_condensed_vs_eigen": 4.9455074390170865e-09,
+    "max_condensed_vs_lapack": 5.354661643488683e-09
+  },
+  "raw_sha256": "79cb2931aab3e2698fea2cc532bff58f0cb3544d4ca460d2cb1bef251db252d5"
+}
