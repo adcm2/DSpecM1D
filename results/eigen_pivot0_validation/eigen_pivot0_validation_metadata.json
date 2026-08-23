@@ -1,0 +1,35 @@
+{
+  "base_revision": "b8a6b9c81fef427bfd7a91f6b668b280f8a2b8d5",
+  "model": "data/models/prem.200.no.txt",
+  "parameters": "data/params/ex3.txt",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "eigen_source": "/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/eigen3-src",
+  "eigen_pivot_source_sha256": "5ad1a6b28183f605213c8987d9fe15dd17d57876dbc958210ec3ed0213306c5b",
+  "probe_source_sha256": "ba306c33e4f3eb07c43c6ede82fb2bccc587505d7d8c6980b8bb3ffd05e948cd",
+  "analyzer_sha256": "079e62071080ad218624acd34dc01ba48eba925eafeb251dfd7104e5b1d8d9fe",
+  "binary_sha256": "719a1459d15672ca439abf39dd7f12d4f4a2fbbf0a51c0c56d87d2f30c4c9a0b",
+  "raw_sha256": "cb5ad6531161d3ea0f330f95bbdeb90617b455e1b5e68cf409edf18e5591f076",
+  "physical_peak_scan_sha256": "d89349d9ced9f0bf4de882fa6234ff6f7e41189cf2d96e24cd96d1c6fa84a6ee",
+  "selected_modes_sha256": "66f0d3657f9c93ec7bddf177977711a816e2a306c2d15053fbde6c69bb819cfa",
+  "summary_sha256": "5777c680ef3ffa300a2300116039fb989f6a0cd761f640cdeb94d27f8acd49a3",
+  "threads": 1,
+  "epsilons": [0.3229401443736645, 0.032294014437366445, 0.003229401443736645],
+  "attenuation": [true, false],
+  "sem_discretizations": {
+    "radial": {"maxstep": 0.05, "nq": 6, "dimension": 282},
+    "toroidal": {"maxstep": 0.05, "nq": 6, "dimension": 81},
+    "spheroidal": {"maxstep": 0.05, "nq": 6, "dimension": 425},
+    "fluid_solid_spheroidal": {"maxstep": 0.01, "nq": 6, "dimension": 1610}
+  },
+  "production_grid_df_mhz": 0.030517578125,
+  "frequency_grid_offsets": [-1, 0, 1],
+  "catalogue": "/home/adcm2/space/c++/mineos/DEMO/MYEX/lf_prem_R, lf_prem_S, lf_prem_T",
+  "catalogue_sha256": {
+    "lf_prem_R": "20f1a3b745da36542cbff8f3a3263c42322744133781d7e90b865164bb838d72",
+    "lf_prem_S": "e416d5fd390b646ade25457623d67e2d2aa52654a9172fc4fe1b0f39e5fbe960",
+    "lf_prem_T": "6abd0e8688392c50c5d289568e1208b97e1cb4de3dd64aadc8f5ebc24028873b"
+  },
+  "decision": "FAIL",
+  "decision_basis": "threshold-zero off-diagonal L multiplier is 5013.549805299151x the threshold-one maximum",
+  "production_pilots": "not run: numerical robustness gate failed"
+}

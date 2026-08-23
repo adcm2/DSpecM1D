@@ -1,0 +1,87 @@
+{
+  "rows": 216,
+  "expected_rows": 216,
+  "threshold_zero_rows": 108,
+  "threshold_one_rows": 108,
+  "grid_points_per_system": 3,
+  "epsilon_count": 3,
+  "attenuation_count": 2,
+  "families": {
+    "radial": 18,
+    "toroidal": 36,
+    "spheroidal": 36,
+    "fluid-solid": 18
+  },
+  "systems": [
+    "fluid_solid_0S40",
+    "radial_0S0",
+    "spheroidal_0S12",
+    "spheroidal_0S2",
+    "toroidal_0T12",
+    "toroidal_0T2"
+  ],
+  "epsilons": [
+    0.003229401443736645,
+    0.032294014437366445,
+    0.3229401443736645
+  ],
+  "attenuation_values": [
+    0,
+    1
+  ],
+  "max_threshold_zero": {
+    "residual": 1.5270140987379321e-16,
+    "solution_vs_threshold1": 1.0443773380094574e-07,
+    "transfer_vs_threshold1": 6.012601980978945e-20,
+    "transfer_relative_vs_threshold1": 4.832215365781625e-08,
+    "solution_vs_lapack": 8.6274718093585e-08,
+    "transfer_vs_lapack": 4.8604027376255415e-20,
+    "transfer_relative_vs_lapack": 2.533225470948861e-08,
+    "growth_u_over_a": 0.6290736693462804,
+    "max_abs_u": 5.5974721118918125e+17,
+    "max_abs_l": 5013.549795341349,
+    "max_abs_a": 8.898425323104026e+17
+  },
+  "max_threshold_one": {
+    "max_abs_l": 0.999999998013822,
+    "max_abs_u": 8.878299165632896e+17,
+    "growth_u_over_a": 0.997738234636047,
+    "min_abs_diag_u": 378.04835860160887,
+    "max_abs_a": 8.898425323104026e+17
+  },
+  "max_lapack_reference": {
+    "residual": 1.7118776044372532e-16,
+    "solution_vs_threshold1": 1.6358034075635807e-07,
+    "transfer_vs_threshold1": 6.392747731606087e-20,
+    "transfer_relative_vs_threshold1": 5.177558147859067e-08
+  },
+  "threshold_zero_nonidentity_pivots": 0,
+  "l_multiplier_ratio_zero_to_one": 5013.549805299151,
+  "growth_ratio_rejection_threshold": 100.0,
+  "growth_absolute_rejection_threshold": 100.0,
+  "growth_rejection_observed": true,
+  "worst_cases": {
+    "threshold_zero_max_l": {
+      "name": "spheroidal_0S12",
+      "freq_mhz": 2.01416015625,
+      "epsilon": 0.003229401443736645,
+      "attenuation": 1,
+      "threshold": 0
+    },
+    "threshold_zero_max_solution_difference": {
+      "name": "radial_0S0",
+      "freq_mhz": 0.8544921875,
+      "epsilon": 0.032294014437366445,
+      "attenuation": 1,
+      "threshold": 0
+    },
+    "threshold_zero_max_transfer_difference": {
+      "name": "spheroidal_0S2",
+      "freq_mhz": 0.30517578125,
+      "epsilon": 0.003229401443736645,
+      "attenuation": 1,
+      "threshold": 0
+    }
+  },
+  "decision": "FAIL"
+}
