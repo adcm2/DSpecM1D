@@ -4,6 +4,11 @@
 #include "FullSpec.h"
 #include "Profiling.h"
 
+#include <map>
+#include <memory>
+#include <limits>
+#include <vector>
+
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
 #include "LapackBandSolver.h"
 #endif
@@ -15,6 +20,79 @@ namespace detail {
 using EigenMultiSemSolver =
     Eigen::SparseLU<Eigen::SparseMatrix<std::complex<double>>,
                     Eigen::NaturalOrdering<int>>;
+
+/// Owns one compressed union-pattern matrix and updates only its values for
+/// each frequency.  The component matrices are copied into aligned value
+/// arrays once when the active truncation changes; the hot path then performs
+/// no sparse insertion, merging, or compression.
+class FixedPatternFrequencyMatrix {
+public:
+  using Complex = std::complex<double>;
+  using SparseMatrix = Eigen::SparseMatrix<Complex>;
+
+  FixedPatternFrequencyMatrix(const SparseMatrix &h, const SparseMatrix &p,
+                              const SparseMatrix &ha, bool attenuation)
+      : matrix_(h.rows(), h.cols()), attenuation_(attenuation) {
+    std::map<std::pair<Eigen::Index, Eigen::Index>, Eigen::Index> positions;
+    auto collect = [&](const SparseMatrix &part) {
+      for (Eigen::Index col = 0; col < part.outerSize(); ++col)
+        for (typename SparseMatrix::InnerIterator entry(part, col); entry;
+             ++entry)
+          positions.emplace(std::make_pair(entry.row(), entry.col()), 0);
+    };
+    collect(h);
+    collect(p);
+    if (attenuation)
+      collect(ha);
+
+    std::vector<Eigen::Triplet<Complex>> triplets;
+    triplets.reserve(positions.size());
+    for (const auto &entry : positions)
+      triplets.emplace_back(entry.first.first, entry.first.second, Complex{});
+    matrix_.setFromTriplets(triplets.begin(), triplets.end());
+    matrix_.makeCompressed();
+    for (Eigen::Index col = 0; col < matrix_.outerSize(); ++col)
+      for (Eigen::Index k = matrix_.outerIndexPtr()[col];
+           k < matrix_.outerIndexPtr()[col + 1]; ++k)
+        positions.at({matrix_.innerIndexPtr()[k], col}) = k;
+
+    hValues_.assign(matrix_.nonZeros(), Complex{});
+    pValues_.assign(matrix_.nonZeros(), Complex{});
+    haValues_.assign(matrix_.nonZeros(), Complex{});
+    copyValues(h, hValues_, positions);
+    copyValues(p, pValues_, positions);
+    if (attenuation)
+      copyValues(ha, haValues_, positions);
+  }
+
+  void update(Complex w, Complex chi) {
+    Complex *values = matrix_.valuePtr();
+    if (attenuation_) {
+      for (Eigen::Index k = 0; k < matrix_.nonZeros(); ++k)
+        values[k] = hValues_[k] - (w * w) * pValues_[k] + chi * haValues_[k];
+    } else {
+      for (Eigen::Index k = 0; k < matrix_.nonZeros(); ++k)
+        values[k] = hValues_[k] - (w * w) * pValues_[k];
+    }
+  }
+
+  const SparseMatrix &matrix() const { return matrix_; }
+
+private:
+  template <typename Positions>
+  void copyValues(const SparseMatrix &part, std::vector<Complex> &values,
+                  const Positions &positions) {
+    for (Eigen::Index col = 0; col < part.outerSize(); ++col)
+      for (typename SparseMatrix::InnerIterator entry(part, col); entry;
+           ++entry)
+        values.at(positions.at({entry.row(), col})) = entry.value();
+  }
+
+  SparseMatrix matrix_;
+  std::vector<Complex> hValues_, pValues_, haValues_;
+  bool attenuation_;
+};
+
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
 using LapackMultiSemSolver = LapackBandSolver;
 #endif
@@ -231,6 +309,8 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
         fR = sem.calculateForceRedR(cmt);
         vecRedZ = sem.rvRedZR(params);
       }
+      std::vector<std::unique_ptr<detail::FixedPatternFrequencyMatrix>>
+          radialFixed(omp_get_max_threads());
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
 #pragma omp parallel default(shared) private(eigenSolver, lapackSolver)
 #else
@@ -254,7 +334,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           const auto matrixStart = std::chrono::steady_clock::now();
 #endif
           MatrixC vecX;
-          SparseMatrixC wR;
+          const SparseMatrixC *matrixForSolver = nullptr;
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
           if (useLapack) {
             auto &band = lapackSolver.bandWorkspace();
@@ -271,14 +351,15 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           } else
 #endif
           {
-            wR = -w * w * inR + keR;
-            if (params.attenuation())
-              wR += attenFactor(wval, w0, twodivpi, myi) * keRAtten;
-            {
-              detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
-                                                  detail::profiling::Mode::radial);
-              wR.makeCompressed();
-            }
+            auto &fixed = radialFixed[omp_get_thread_num()];
+            if (!fixed)
+              fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
+                  keR, inR, keRAtten, params.attenuation());
+            fixed->update(
+                w, params.attenuation()
+                       ? attenFactor(wval, w0, twodivpi, myi)
+                       : Complex{});
+            matrixForSolver = &fixed->matrix();
           }
 #ifdef DSPECM1D_ENABLE_PROFILING
           profile.addTime(
@@ -290,7 +371,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 #endif
 #ifdef DSPECM1D_ENABLE_PROFILING
           if (!useLapack)
-            recordSystem(wR);
+            recordSystem(*matrixForSolver);
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
           else {
             const auto stats = detail::lapackBandActiveStats(
@@ -313,7 +394,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
               detail::profiling::Scope factorProfile(
                   profile, detail::profiling::Category::factorization,
                   detail::profiling::Mode::radial);
-              eigenSolver.compute(wR);
+              eigenSolver.compute(*matrixForSolver);
               if (auto *active = detail::profiling::Context::active())
                 active->countCompute();
             }
@@ -346,6 +427,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   // toroidals
   if (inc_tor) {
     std::cout << "Doing Toroidal Modes\n";
+    std::vector<std::unique_ptr<detail::FixedPatternFrequencyMatrix>>
+        torFixed(omp_get_max_threads());
+    std::vector<std::size_t> torFixedRidx(
+        omp_get_max_threads(), std::numeric_limits<std::size_t>::max());
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
 #pragma omp parallel default(shared) private(eigenSolver1, lapackSolver1)
 #else
@@ -360,6 +445,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
         profile.countDegree();
         MatrixC rvVals = srInfo.rvRedTor(idxl);
         for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
+          torFixed[omp_get_thread_num()].reset();
+          torFixedRidx[omp_get_thread_num()] =
+              std::numeric_limits<std::size_t>::max();
           Full1D::SEM &sem = sems[idxChunk];
           auto idxSource = sem.sourceElement(cmt);
           auto recElems = sem.receiverElements(params);
@@ -464,7 +552,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 #ifdef DSPECM1D_ENABLE_PROFILING
             const auto matrixStart = std::chrono::steady_clock::now();
 #endif
-            SparseMatrixC mat;
+            const SparseMatrixC *matrixForSolver = nullptr;
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
             Eigen::Index ridxEigen = static_cast<Eigen::Index>(ridx);
             if (useLapack) {
@@ -487,11 +575,23 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             } else
 #endif
             {
-              mat = hTor.block(ridx, ridx, len_ms, len_ms) -
-                    w * w * pTor.block(ridx, ridx, len_ms, len_ms);
-              if (params.attenuation())
-                mat += attenFactor(wval, w0, twodivpi, myi) *
-                       hTorAtten.block(ridx, ridx, len_ms, len_ms);
+              auto &fixed = torFixed[omp_get_thread_num()];
+              if (!fixed || torFixedRidx[omp_get_thread_num()] != ridx) {
+                SparseMatrixC hActive =
+                    hTor.block(ridx, ridx, len_ms, len_ms);
+                SparseMatrixC pActive =
+                    pTor.block(ridx, ridx, len_ms, len_ms);
+                SparseMatrixC haActive =
+                    hTorAtten.block(ridx, ridx, len_ms, len_ms);
+                fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
+                    hActive, pActive, haActive, params.attenuation());
+                torFixedRidx[omp_get_thread_num()] = ridx;
+              }
+              fixed->update(
+                  w, params.attenuation()
+                         ? attenFactor(wval, w0, twodivpi, myi)
+                         : Complex{});
+              matrixForSolver = &fixed->matrix();
             }
 #ifdef DSPECM1D_ENABLE_PROFILING
             profile.addTime(
@@ -501,14 +601,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                                               matrixStart)
                     .count());
 #endif
-            if (!useLapack) {
-              detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
-                                                detail::profiling::Mode::toroidal);
-              mat.makeCompressed();
-            }
 #ifdef DSPECM1D_ENABLE_PROFILING
             if (!useLapack) {
-              recordSystem(mat);
+              recordSystem(*matrixForSolver);
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
             } else {
               const auto stats = detail::lapackBandActiveStats(
@@ -534,7 +629,8 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
               {
                 detail::profiling::Scope factorProfile(profile, detail::profiling::Category::factorization,
                                                detail::profiling::Mode::toroidal);
-                factorizeOrCompute(eigenSolver1, mat, (int) lenChunk - idx - 1, nskip);
+                factorizeOrCompute(eigenSolver1, *matrixForSolver,
+                                   (int) lenChunk - idx - 1, nskip);
               }
               if (recompute) profile.countCompute(); else profile.countFactorize(false);
               detail::profiling::Scope solveProfile(profile, detail::profiling::Category::solve,
@@ -563,6 +659,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   // spheroidals
   if (inc_sph) {
     std::cout << "\nDoing Spheroidal Modes\n";
+    std::vector<std::unique_ptr<detail::FixedPatternFrequencyMatrix>>
+        sphFixed(omp_get_max_threads());
+    std::vector<std::size_t> sphFixedRidx(
+        omp_get_max_threads(), std::numeric_limits<std::size_t>::max());
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
 #pragma omp parallel default(shared) private(eigenSolver1, lapackSolver1)
 #else
@@ -577,6 +677,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
         profile.countDegree();
         MatrixC rvVals = srInfo.rvRedSph(idxl);
         for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
+          sphFixed[omp_get_thread_num()].reset();
+          sphFixedRidx[omp_get_thread_num()] =
+              std::numeric_limits<std::size_t>::max();
           Full1D::SEM &sem = sems[idxChunk];
           auto idxSource = sem.sourceElement(cmt);
           auto recElems = sem.receiverElements(params);
@@ -664,7 +767,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
 #ifdef DSPECM1D_ENABLE_PROFILING
             const auto matrixStart = std::chrono::steady_clock::now();
 #endif
-            SparseMatrixC wS;
+            const SparseMatrixC *matrixForSolver = nullptr;
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
             const auto ridxEigen = static_cast<Eigen::Index>(ridx);
             if (useLapack) {
@@ -687,11 +790,23 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             } else
 #endif
             {
-              wS = hS.block(ridx, ridx, len_ms, len_ms) -
-                   w * w * pS.block(ridx, ridx, len_ms, len_ms);
-              if (params.attenuation())
-                wS += attenFactor(wval, w0, twodivpi, myi) *
-                      hSa.block(ridx, ridx, len_ms, len_ms);
+              auto &fixed = sphFixed[omp_get_thread_num()];
+              if (!fixed || sphFixedRidx[omp_get_thread_num()] != ridx) {
+                SparseMatrixC hActive =
+                    hS.block(ridx, ridx, len_ms, len_ms);
+                SparseMatrixC pActive =
+                    pS.block(ridx, ridx, len_ms, len_ms);
+                SparseMatrixC haActive =
+                    hSa.block(ridx, ridx, len_ms, len_ms);
+                fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
+                    hActive, pActive, haActive, params.attenuation());
+                sphFixedRidx[omp_get_thread_num()] = ridx;
+              }
+              fixed->update(
+                  w, params.attenuation()
+                         ? attenFactor(wval, w0, twodivpi, myi)
+                         : Complex{});
+              matrixForSolver = &fixed->matrix();
             }
 #ifdef DSPECM1D_ENABLE_PROFILING
             profile.addTime(
@@ -701,14 +816,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                                               matrixStart)
                     .count());
 #endif
-            if (!useLapack) {
-              detail::profiling::Scope compressionProfile(profile, detail::profiling::Category::compression,
-                                                detail::profiling::Mode::spheroidal);
-              wS.makeCompressed();
-            }
 #ifdef DSPECM1D_ENABLE_PROFILING
             if (!useLapack) {
-              recordSystem(wS);
+              recordSystem(*matrixForSolver);
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
             } else {
               const auto stats = detail::lapackBandActiveStats(
@@ -745,7 +855,8 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
               {
                 detail::profiling::Scope factorProfile(profile, detail::profiling::Category::factorization,
                                                detail::profiling::Mode::spheroidal);
-                factorizeOrCompute(eigenSolver1, wS, (int) lenChunk - idx - 1, nskip);
+                factorizeOrCompute(eigenSolver1, *matrixForSolver,
+                                   (int) lenChunk - idx - 1, nskip);
               }
               if (recompute) profile.countCompute(); else profile.countFactorize(false);
               detail::profiling::Scope solveProfile(profile, detail::profiling::Category::solve,

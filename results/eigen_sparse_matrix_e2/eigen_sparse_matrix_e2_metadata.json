@@ -1,0 +1,47 @@
+{
+  "experiment": "eigen_sparse_matrix_e2",
+  "git_head": "c1e6e00cb700ce352523be09f944cb0e761c6491",
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "build_type": "Release",
+  "kernel": {
+    "executable": "/tmp/dspecm1d-backend-on-gcc15-final/bin/eigen_sparse_matrix_e2",
+    "executable_sha256": "c86b630c89b37d58d6cde0d3ce269b48f5841646227c79fc101f83ff0e26092d",
+    "source": "benchmarks/eigen_sparse_matrix_e2.cpp",
+    "source_sha256": "63cb86a701d453f39f9b00e28b8e6289a40d948e37e56db3545bf2bad38aaa09",
+    "model": "/tmp/dspecm1d-backend-on-gcc15-final/data/models/prem.200.no.txt",
+    "model_sha256": "4e64ef450a0304e6846a453d5d02ed45355fac853ed1f7a4cbad03cf6716dd9f",
+    "threads": 1,
+    "warmup_batches": 1,
+    "measured_batches": 1,
+    "frequencies_per_batch": 64,
+    "attenuation_modes": [0, 1],
+    "raw": "results/eigen_sparse_matrix_e2/eigen_sparse_matrix_e2_raw.tsv",
+    "raw_sha256": "7d8d635b08472a368277f217728d3a020c9eb8f9c7c38760286ffb59d914c7e2",
+    "summary": "results/eigen_sparse_matrix_e2/eigen_sparse_matrix_e2_summary.json",
+    "summary_sha256": "c7e095db48d026544544c2b40bcfe709037917161967700249bd88aeb161dc22"
+  },
+  "production_pilots": {
+    "timing_policy": "one untimed warm-up and one measured spectra() call per configuration and point",
+    "environment": {
+      "OMP_DYNAMIC": "FALSE",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "BLIS_NUM_THREADS": "1"
+    },
+    "e2_executable": "/tmp/dspecm1d-backend-on-gcc15-final/bin/eigen_sparselu_e1_pilot",
+    "e2_executable_sha256": "cf66ca90a8c643eb7e23e686aaa668e92100e69aad81271e3e340910cee80401",
+    "control_executable": "/tmp/eigen_sparselu_e1_natural_pilot",
+    "control_executable_sha256": "64e80ba38777acff62d1a6452188794d86e9a8d3cfd7b56cbabdd8d089b1fb35",
+    "parameter_files": {
+      "f5": {"path": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/e2_pilot_f5.txt", "sha256": "b36bcd7cab58c75b6602c8efb765d235c99947aaf4410277a3335fc68a5f3d07"},
+      "f30": {"path": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/e2_pilot_f30.txt", "sha256": "92056b1084942c015c5af496f46f86b73234e72699e57d970c40fd0079598c27"}
+    },
+    "raw": "results/eigen_sparse_matrix_e2/eigen_sparse_matrix_e2_pilots.tsv",
+    "raw_sha256": "11069e2fea85484dd7e5b14e4ef23ab0abb5b19e089a894fb4c14c17e7b503f7"
+  },
+  "production_source_sha256": "94d0d8cf025da37b0d1f86be51ee5615bc359d54a91c2ebe43e1d299b001c241",
+  "analyzer": {
+    "path": "scripts/eigen_sparse_matrix_e2_analyze.py",
+    "sha256": "fed1a6617dce1e4ba03b63920d0d8c6191a2addc010bd5d91494c9215ad88792"
+  }
+}
