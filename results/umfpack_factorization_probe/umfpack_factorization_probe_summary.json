@@ -1,0 +1,194 @@
+{
+  "decision": "C",
+  "decision_text": "robust UMFPACK is slower than Eigen",
+  "records": 56,
+  "systems": 7,
+  "dimensions": {
+    "minimum": 37,
+    "maximum": 1626
+  },
+  "aggregate": [
+    {
+      "policy": "robust",
+      "ordering": "natural",
+      "matrix_count": 14,
+      "symbolic_seconds_sum": 0.001479242,
+      "eigen_factor_seconds_sum": 0.00832262875,
+      "umf_numeric_seconds_sum": 0.0102199024375,
+      "eigen_over_umf_numeric": 0.8143550098347013,
+      "umf_numeric_percent_slower": 22.79656758088602,
+      "eigen_solve_seconds_sum": 0.0016401745625,
+      "umf_raw_solve_seconds_sum": 0.0015545214374999999,
+      "eigen_over_umf_raw_solve": 1.0550993527228216,
+      "umf_refined_solve_seconds_sum": 0.016824239499999998,
+      "strategy_used": [
+        3
+      ],
+      "ordering_used": [
+        5
+      ],
+      "total_off_diagonal_pivots": 4988
+    },
+    {
+      "policy": "robust",
+      "ordering": "default_amd",
+      "matrix_count": 14,
+      "symbolic_seconds_sum": 0.0013483759999999999,
+      "eigen_factor_seconds_sum": 0.0083191298125,
+      "umf_numeric_seconds_sum": 0.0122184918125,
+      "eigen_over_umf_numeric": 0.6808638856711596,
+      "umf_numeric_percent_slower": 46.87223409040897,
+      "eigen_solve_seconds_sum": 0.001642002,
+      "umf_raw_solve_seconds_sum": 0.0015995730625,
+      "eigen_over_umf_raw_solve": 1.0265251638044512,
+      "umf_refined_solve_seconds_sum": 0.0169246875625,
+      "strategy_used": [
+        3
+      ],
+      "ordering_used": [
+        1
+      ],
+      "total_off_diagonal_pivots": 3324
+    },
+    {
+      "policy": "default",
+      "ordering": "natural",
+      "matrix_count": 14,
+      "symbolic_seconds_sum": 0.0014788409999999998,
+      "eigen_factor_seconds_sum": 0.008306375125,
+      "umf_numeric_seconds_sum": 0.0091650718125,
+      "eigen_over_umf_numeric": 0.9063076967570678,
+      "umf_numeric_percent_slower": 10.337802887273284,
+      "eigen_solve_seconds_sum": 0.001657413875,
+      "umf_raw_solve_seconds_sum": 0.0013869569375000001,
+      "eigen_over_umf_raw_solve": 1.1950002413106642,
+      "umf_refined_solve_seconds_sum": 0.0159675816875,
+      "strategy_used": [
+        3
+      ],
+      "ordering_used": [
+        5
+      ],
+      "total_off_diagonal_pivots": 0
+    },
+    {
+      "policy": "default",
+      "ordering": "default_amd",
+      "matrix_count": 14,
+      "symbolic_seconds_sum": 0.0013026879999999998,
+      "eigen_factor_seconds_sum": 0.008321747937499999,
+      "umf_numeric_seconds_sum": 0.009715983624999999,
+      "eigen_over_umf_numeric": 0.856500819545175,
+      "umf_numeric_percent_slower": 16.75412062431265,
+      "eigen_solve_seconds_sum": 0.0016412347500000004,
+      "umf_raw_solve_seconds_sum": 0.0013223346874999997,
+      "eigen_over_umf_raw_solve": 1.2411644083109639,
+      "umf_refined_solve_seconds_sum": 0.0153032805625,
+      "strategy_used": [
+        3
+      ],
+      "ordering_used": [
+        1
+      ],
+      "total_off_diagonal_pivots": 12
+    }
+  ],
+  "maxima": {
+    "eigen_residual": {
+      "value": 8.035166590559007e-17,
+      "system": "toroidal_small",
+      "frequency_index": 1,
+      "frequency_mhz": 1.861572265625,
+      "policy": "robust",
+      "ordering": "natural"
+    },
+    "umf_raw_residual": {
+      "value": 8.626570823552093e-17,
+      "system": "toroidal_small",
+      "frequency_index": 1,
+      "frequency_mhz": 1.861572265625,
+      "policy": "robust",
+      "ordering": "natural"
+    },
+    "umf_refined_residual": {
+      "value": 8.307110879103919e-17,
+      "system": "toroidal_small",
+      "frequency_index": 1,
+      "frequency_mhz": 1.861572265625,
+      "policy": "default",
+      "ordering": "default_amd"
+    },
+    "lapack_residual": {
+      "value": 1.1420544300740359e-16,
+      "system": "toroidal_small",
+      "frequency_index": 0,
+      "frequency_mhz": 1.8310546875,
+      "policy": "robust",
+      "ordering": "natural"
+    },
+    "umf_raw_vs_eigen": {
+      "value": 1.4893118187306456e-08,
+      "system": "spheroidal_small",
+      "frequency_index": 0,
+      "frequency_mhz": 0.30517578125,
+      "policy": "robust",
+      "ordering": "default_amd"
+    },
+    "umf_refined_vs_eigen": {
+      "value": 1.4728698720885567e-08,
+      "system": "spheroidal_small",
+      "frequency_index": 0,
+      "frequency_mhz": 0.30517578125,
+      "policy": "default",
+      "ordering": "natural"
+    },
+    "eigen_vs_lapack": {
+      "value": 6.436612522003904e-09,
+      "system": "spheroidal_small",
+      "frequency_index": 1,
+      "frequency_mhz": 0.335693359375,
+      "policy": "robust",
+      "ordering": "natural"
+    },
+    "umf_raw_vs_lapack": {
+      "value": 1.801632500602702e-08,
+      "system": "spheroidal_small",
+      "frequency_index": 0,
+      "frequency_mhz": 0.30517578125,
+      "policy": "robust",
+      "ordering": "default_amd"
+    },
+    "umf_refined_vs_lapack": {
+      "value": 1.784051792235446e-08,
+      "system": "spheroidal_small",
+      "frequency_index": 0,
+      "frequency_mhz": 0.30517578125,
+      "policy": "default",
+      "ordering": "natural"
+    },
+    "transfer_raw_vs_eigen": {
+      "value": 1.5786595063691717e-08,
+      "system": "spheroidal_small",
+      "frequency_index": 0,
+      "frequency_mhz": 0.30517578125,
+      "policy": "robust",
+      "ordering": "default_amd"
+    },
+    "transfer_refined_vs_eigen": {
+      "value": 1.5616904784923038e-08,
+      "system": "spheroidal_small",
+      "frequency_index": 0,
+      "frequency_mhz": 0.30517578125,
+      "policy": "default",
+      "ordering": "default_amd"
+    }
+  },
+  "validation": {
+    "all_statuses_success": true,
+    "all_outputs_finite": true,
+    "maximum_residual_below_1e-12": true,
+    "maximum_solution_discrepancy_below_1e-6": true
+  },
+  "concurrency_probe": "not run: robust serial UMFPACK failed the performance gate",
+  "production_spectra": "not run"
+}
