@@ -1,0 +1,54 @@
+{
+  "stage": "Eigen NaturalOrdering pivot numerical-error characterization",
+  "base_head": "0952f8474d43880d91484b93742c98ca01e8f4d5",
+  "production_adoption": false,
+  "production_timing_run": false,
+  "compiler": "/opt/gcc-15.2.0/bin/g++",
+  "optimization": "-O2 -DNDEBUG",
+  "machine": "earth-tunya",
+  "thread_environment": {
+    "OMP_NUM_THREADS": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "inputs": {
+    "model": "data/models/prem.200.no.txt",
+    "parameters": "data/params/ex3.txt",
+    "catalog_modes": "six accepted n=0 PREM modes; see selected_modes.tsv",
+    "epsilon": ["production", "production/10", "production/100"],
+    "attenuation": [true, false],
+    "production_grid_step_mhz": 0.030517578125,
+    "standard_grid_offsets": [-1, 0, 1],
+    "extra_grid_offsets": [-2, 2],
+    "extra_stencil_systems": ["radial_0S0", "spheroidal_0S2"],
+    "extra_stencil_reason": "largest receiver/output peak and prior worst threshold-.01 transfer discrepancy"
+  },
+  "thresholds": [1.0, 0.1, 0.01],
+  "reference": "current pivoted LAPACK general-band factorization with custom C++ backsolve",
+  "complex_transfer": "largest threshold-1 receiver/output matrix entry; row and RHS-column indices plus real/imaginary values are retained",
+  "local_response_scale": "maximum threshold-1 transfer infinity norm over the same case's +/-2 production-grid stencil",
+  "commands": {
+    "build": "/opt/gcc-15.2.0/bin/g++ -DDSPECM1D_ENABLE_PROFILING -DDSPECM1D_ENABLE_LAPACK_BAND_SOLVER -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_CPP -I/tmp/dspecm1d-backend-on-gcc15-final/benchmarks -I/space/adcm2/CleanBuilds/DSpecM1D -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/eigen3-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/fftwpp-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/numericconcepts-src/include -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gaussquad-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gshtrans-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/interpolation-src -O2 -DNDEBUG -fopenmp -std=gnu++23 benchmarks/eigen_pivot_error_characterization.cpp -o /tmp/eigen_pivot_error_characterization /usr/lib/x86_64-linux-gnu/libfftw3.so /usr/lib/x86_64-linux-gnu/libfftw3f.so /usr/lib/x86_64-linux-gnu/libfftw3l.so /opt/gcc-15.2.0/lib64/libgomp.so /lib/x86_64-linux-gnu/libpthread.a /usr/lib/x86_64-linux-gnu/liblapacke.so -lm -ldl /usr/lib/x86_64-linux-gnu/libopenblas.so",
+    "run": "OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/eigen_pivot_error_characterization data/models/prem.200.no.txt data/params/ex3.txt > results/eigen_pivot_error_characterization/eigen_pivot_error_characterization_raw.tsv 2> results/eigen_pivot_error_characterization/eigen_pivot_error_characterization_peak_scan.tsv",
+    "analyze": "python3 scripts/eigen_pivot_error_characterization_analyze.py results/eigen_pivot_error_characterization/eigen_pivot_error_characterization_raw.tsv results/eigen_pivot_error_characterization/eigen_pivot_error_characterization_summary.json"
+  },
+  "result_files": {
+    "benchmark": "benchmarks/eigen_pivot_error_characterization.cpp",
+    "analyzer": "scripts/eigen_pivot_error_characterization_analyze.py",
+    "raw": "results/eigen_pivot_error_characterization/eigen_pivot_error_characterization_raw.tsv",
+    "summary": "results/eigen_pivot_error_characterization/eigen_pivot_error_characterization_summary.json",
+    "peak_scan": "results/eigen_pivot_error_characterization/eigen_pivot_error_characterization_peak_scan.tsv",
+    "selected_modes": "results/eigen_pivot_error_characterization/eigen_pivot_error_characterization_selected_modes.tsv"
+  },
+  "sha256": {
+    "benchmark": "5b4060b865c9ce7b0f67e3579c48ab1d32bef8f0c265e910f0cc3acd270db4f7",
+    "analyzer": "e0531cccc96abe59a058dda024453f70531435884e9a78f5a8f42ad45ebc75ff",
+    "raw": "ad7c417296bb37a1d69de813d32f7bc6f9c871ca92f02ead4ba9d4020d8f80f2",
+    "summary": "c1a657ae47bb301edea44ea0ce98078c158fe9c938f2b12883316877ce26992f",
+    "peak_scan": "d89349d9ced9f0bf4de882fa6234ff6f7e41189cf2d96e24cd96d1c6fa84a6ee",
+    "selected_modes": "3c69f4eae99994bc68707464925dc9e9d9ac4cc3ddac3b28072dd36b8998f376"
+  },
+  "interpretation": "Characterization only. No production threshold is changed or recommended from this focused run."
+}
