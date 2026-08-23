@@ -1,0 +1,61 @@
+{
+  "measurement": "unprofiled complete spectra() wall time",
+  "timing_policy": "one untimed warm-up plus one measured run per backend/point",
+  "speedup_definition": "Eigen wall time divided by LAPACK wall time; greater than one means LAPACK wins",
+  "points": {
+    "5": {
+      "threads": 1,
+      "winner": "lapack",
+      "eigen_seconds": 16.836303676,
+      "lapack_seconds": 13.696712328,
+      "eigen_over_lapack_speedup": 1.229222259533171,
+      "lapack_percent_less_wall_time": 18.647747204010457,
+      "factorization_worker_ratio_eigen_over_lapack": null,
+      "max_abs_difference": 2.6527380832432932e-17,
+      "normalized_max_difference_by_output_norm": 1.938854545284828e-11
+    },
+    "30": {
+      "threads": 32,
+      "winner": "lapack",
+      "eigen_seconds": 6.917206552,
+      "lapack_seconds": 5.610110935,
+      "eigen_over_lapack_speedup": 1.232989263874512,
+      "lapack_percent_less_wall_time": 18.89629299304463,
+      "factorization_worker_ratio_eigen_over_lapack": 1.6180599995113856,
+      "max_abs_difference": 4.882986994403895e-16,
+      "normalized_max_difference_by_output_norm": 2.8960695993002742e-12
+    },
+    "100": {
+      "threads": 32,
+      "winner": "lapack",
+      "eigen_seconds": 107.134988079,
+      "lapack_seconds": 85.849940865,
+      "eigen_over_lapack_speedup": 1.2479331610428361,
+      "lapack_percent_less_wall_time": 19.86750322714805,
+      "factorization_worker_ratio_eigen_over_lapack": 1.6198908010805344,
+      "max_abs_difference": 1.3577375468803944e-15,
+      "normalized_max_difference_by_output_norm": 6.372202013740685e-13
+    }
+  },
+  "largest_output_discrepancy": {
+    "fmax_mhz": 100,
+    "threads": 32,
+    "eigen_seconds": 107.134988079,
+    "lapack_seconds": 85.849940865,
+    "eigen_over_lapack_speedup": 1.2479331610428361,
+    "lapack_percent_less_wall_time": 19.86750322714805,
+    "rows": 6,
+    "cols": 16385,
+    "eigen_norm": 0.0021307195596633657,
+    "lapack_norm": 0.0021307195596634255,
+    "max_abs_difference": 1.3577375468803944e-15,
+    "tolerance": 1e-09,
+    "normalized_max_difference_by_output_norm": 6.372202013740685e-13
+  },
+  "speedup_range": {
+    "minimum": 1.229222259533171,
+    "maximum": 1.2479331610428361
+  },
+  "kernel_interpretation": "LAPACK wins primarily through lower factorization worker time. Its custom backsolve is slower than Eigen's solve, partially offsetting that gain; direct band matrix formation is also cheaper at 30 and 100 mHz.",
+  "recommendation": "A substantial Eigen factorization gap remains at the parallel points, so a future alternative sparse or structure-aware factorizer investigation remains justified. No such optimization is made here."
+}

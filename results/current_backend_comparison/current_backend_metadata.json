@@ -1,0 +1,99 @@
+{
+  "stage": "focused comparison of current production EigenSparseLU and LapackBandLU backends",
+  "base_head": "3fcb02df45169877b08cc24c8b11c331e6c96906",
+  "branch": "dev/lapack-banded-pr1",
+  "git_status_at_start": "",
+  "production_changes": false,
+  "production_timing_repetitions": 1,
+  "warmup_per_backend_point": 1,
+  "measurement": "unprofiled complete preferred adaptive multi-SEM spectra() call",
+  "compiler": "g++ (GCC) 15.2.0",
+  "compiler_path": "/opt/gcc-15.2.0/bin/g++",
+  "release_flags": "-O3 -DNDEBUG -fopenmp -std=gnu++23",
+  "machine": {
+    "hostname": "earth-tunya",
+    "cpu": "AMD EPYC 9334 32-Core Processor",
+    "logical_cpus": 128,
+    "sockets": 2,
+    "cores_per_socket": 32,
+    "threads_per_core": 2
+  },
+  "thread_environment": {
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": 1,
+    "MKL_NUM_THREADS": 1,
+    "BLIS_NUM_THREADS": 1
+  },
+  "backend_selection": "runtime selection in one final_solver_benchmark executable",
+  "current_eigen_path": "NaturalOrdering; default pivot threshold 1; fixed-pattern sparse A(omega); Eigen SparseLU solve",
+  "current_lapack_path": "direct LAPACK-band A(omega); zgbtrf; local Eigen/C++ backsolve; zero production band packs",
+  "physics": "ex3/PREM all-mode attenuation-enabled production configuration; lmax 750; identical model/source/receivers/grid/damping/output per backend",
+  "points": [
+    {"fmax_mhz": 5, "threads": 1, "first_backend": "eigen", "parameter": "current_f5.txt"},
+    {"fmax_mhz": 30, "threads": 32, "first_backend": "lapack", "parameter": "current_f30.txt"},
+    {"fmax_mhz": 100, "threads": 32, "first_backend": "eigen", "parameter": "current_f100.txt"}
+  ],
+  "correction_provenance": "An independent audit found that the initial 5 and 30 mHz records used prem.200.no.txt. Those invalid records were discarded and both points were rerun with canonical prem.200; the already-canonical 100 mHz records were retained unchanged.",
+  "profiling": {
+    "separate_from_primary_timing": true,
+    "measurement": "one warm-up plus one measured profile per backend/point",
+    "category_units": "summed OpenMP worker seconds; categories do not add to wall time",
+    "kernel_interpretation_uses": [30, 100]
+  },
+  "nonprofiling_compile_workaround": {
+    "reason": "pre-existing profiling guard encloses patternRebuilt declarations but not every use",
+    "semantics": "declaration-only temporary overlay shared by both runtime-selected backends; no executed solver behavior changes",
+    "diff": "nonprofiling_compile_workaround.diff",
+    "repository_header_sha256": "6aa68b54ebc83c6240e85cc1ef41d3970d4c444c4b0ae17fbe8195e0d3032da9",
+    "overlay_header_sha256": "66d7e2cf9e756bed60f7e300c72e7e1bffcc154acc8e225ff8304e03d5eb746f",
+    "diff_sha256": "7d72d08c8128239194dbfd3c3f379a28e7083cb883f47eed1e2fc840c95f0887"
+  },
+  "commands": {
+    "primary_compile": "/opt/gcc-15.2.0/bin/g++ -DDSPECM1D_ENABLE_LAPACK_BAND_SOLVER -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_CPP -I/tmp/dspecm1d-backend-on-gcc15-final/benchmarks -I/tmp/current-backend-overlay -I/space/adcm2/CleanBuilds/DSpecM1D -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/eigen3-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/fftwpp-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/numericconcepts-src/include -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gaussquad-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gshtrans-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/interpolation-src -O3 -DNDEBUG -fopenmp -std=gnu++23 -c benchmarks/final_solver_benchmark.cpp -o /tmp/current-backend-comparison/final_solver_benchmark.o",
+    "primary_link": "/opt/gcc-15.2.0/bin/g++ -O3 -DNDEBUG /tmp/current-backend-comparison/final_solver_benchmark.o -o /tmp/current-backend-comparison/bin/final_solver_benchmark /usr/lib/x86_64-linux-gnu/libfftw3.so /usr/lib/x86_64-linux-gnu/libfftw3f.so /usr/lib/x86_64-linux-gnu/libfftw3l.so /opt/gcc-15.2.0/lib64/libgomp.so /lib/x86_64-linux-gnu/libpthread.a /usr/lib/x86_64-linux-gnu/liblapacke.so -lm -ldl /usr/lib/x86_64-linux-gnu/libopenblas.so",
+    "profile_compile": "/opt/gcc-15.2.0/bin/g++ -DDSPECM1D_ENABLE_PROFILING -DDSPECM1D_ENABLE_LAPACK_BAND_SOLVER -DHAVE_LAPACK_CONFIG_H -DLAPACK_COMPLEX_CPP -I/tmp/dspecm1d-backend-on-gcc15-final/benchmarks -I/space/adcm2/CleanBuilds/DSpecM1D -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/eigen3-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/fftwpp-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/numericconcepts-src/include -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gaussquad-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/gshtrans-src -I/home/adcm2/Documents/c++/DSpecM3D/build-docs/_deps/interpolation-src -O3 -DNDEBUG -fopenmp -std=gnu++23 -c benchmarks/stage_profile_solver.cpp -o /tmp/current-backend-comparison/stage_profile_solver.o",
+    "profile_link": "/opt/gcc-15.2.0/bin/g++ -O3 -DNDEBUG /tmp/current-backend-comparison/stage_profile_solver.o -o /tmp/current-backend-comparison/bin/stage_profile_solver /usr/lib/x86_64-linux-gnu/libfftw3.so /usr/lib/x86_64-linux-gnu/libfftw3f.so /usr/lib/x86_64-linux-gnu/libfftw3l.so /opt/gcc-15.2.0/lib64/libgomp.so /lib/x86_64-linux-gnu/libpthread.a /usr/lib/x86_64-linux-gnu/liblapacke.so -lm -ldl /usr/lib/x86_64-linux-gnu/libopenblas.so",
+    "primary_runs": [
+      "env OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/final_solver_benchmark data/params/current_f5.txt eigen 1 1e-9 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/current_f5_t1.txt 2>&1",
+      "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/final_solver_benchmark data/params/current_f30.txt lapack 1 1e-9 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/current_f30_t32.txt 2>&1",
+      "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/final_solver_benchmark data/params/current_f100.txt eigen 1 1e-9 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/current_f100_t32.txt 2>&1"
+    ],
+    "profile_runs": [
+      "env OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/stage_profile_solver data/params/current_f5.txt eigen 1 1 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/profile_f5_t1_eigen.txt 2>&1",
+      "env OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/stage_profile_solver data/params/current_f5.txt lapack 1 1 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/profile_f5_t1_lapack.txt 2>&1",
+      "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/stage_profile_solver data/params/current_f30.txt lapack 1 1 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/profile_f30_t32_lapack.txt 2>&1",
+      "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/stage_profile_solver data/params/current_f30.txt eigen 1 1 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/profile_f30_t32_eigen.txt 2>&1",
+      "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/stage_profile_solver data/params/current_f100.txt eigen 1 1 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/profile_f100_t32_eigen.txt 2>&1",
+      "env OMP_NUM_THREADS=32 OMP_DYNAMIC=FALSE OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1 BLIS_NUM_THREADS=1 /tmp/current-backend-comparison/bin/stage_profile_solver data/params/current_f100.txt lapack 1 1 > /space/adcm2/CleanBuilds/DSpecM1D/results/current_backend_comparison/profile_f100_t32_lapack.txt 2>&1"
+    ],
+    "analyze": "python3 scripts/current_backend_comparison_analyze.py results/current_backend_comparison"
+  },
+  "sha256": {
+    "model": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+    "parameter_template": "0f46f5f194350b97b0f73c288a14904ba4024b2e1df319f45a060b913bb19a63",
+    "parameter_f5": "224a8dce7dc785467459c2a7b47abc691ecbb2d0d76593329cd5a882a6e222f8",
+    "parameter_f30": "b6b9bac301784ae43dd6579c43b99fab91634e75bdc9fdd32c3aef47a86cbbf9",
+    "parameter_f100": "31f03095beb5d5d18a245e6f8fb0ca754b34cc7f9a001c964b3993a17a48d3b9",
+    "primary_executable": "ca8d5f0e669789c8f51c84a4921f00c7a46bee6ad560ac1b4f3fd41ef3174d69",
+    "profile_executable": "d3944be0ba7108ecf7cca3340e4ed1a688cf16296cabc220db7a4c92634ab37d",
+    "primary_harness": "8c71a3ac9dac6b5598cd470c43d54003549683a2757903ca93b14308313e0361",
+    "profile_harness": "ddb48647c8584f99b47e0d1286f1821f68bca2a1972fd8aa1103cf899c49c07f",
+    "analyzer": "d20b7b27e123b74ea2654e5ee0165a541a87fcffe25fa58644fbcf4eb57f26e4",
+    "full_spec_multi_sem": "6aa68b54ebc83c6240e85cc1ef41d3970d4c444c4b0ae17fbe8195e0d3032da9",
+    "lapack_band_solver": "2852dd29f7c78608bd7d5d68735814647cfccea43a82ce0077099fba298fa68e",
+    "primary_f5": "f53beca3e89892c5cea87854e828023d28ce19fafaca92c7a6883205841e627d",
+    "primary_f30": "a96bc1eb475fb518555b69541beba0410ee40993a5529e046d8b30536f7048e4",
+    "primary_f100": "60e61027a4d203f110c6474b7a10c00fc6f1a0f1b48c2fd3ce3e8d2b75ec8a12",
+    "profile_f5_eigen": "b63a2e212658b069aac3b17e3f69ff7ddf1128d688887ae8756c84d7b9df5fd7",
+    "profile_f5_lapack": "3df2accfe2473f9f06420bb283fbb851a6fc7365f69526a53295130a11fae821",
+    "profile_f30_eigen": "79f25c45fb2fc2c20720979394668ebba6e94542cec5f27f53738767e9181e77",
+    "profile_f30_lapack": "a2672b016e34b3e687e7e6c45cea9d396a7d161c4278fb847d5750eb9cbf36d5",
+    "profile_f100_eigen": "72674694925c6effe934961420462dca329b56ae13d1500a960523676612ddab",
+    "profile_f100_lapack": "897b8f1498dd9fa9da8d6f9062f5741cd5c89ceef2b58bdef0d8ba796575f0c2",
+    "timings": "4f4733426172c2ce295785a08f9dd6942ac3cb72f68f12cdff2b90a1b8400b8e",
+    "comparisons": "e7dc467dce2dfc4f873a6d7f8720f674008ca7f252948a8b0898a4ba9c6cb8aa",
+    "profiles": "4b2ddbbfa050224a171256acd5439691c3e96d5f8afb45e09ddb64f8e72ef22a",
+    "workloads": "cb402b156fa4bb63fba1af34c0849f201791ae1ed9aca314e6dc785d91022da6",
+    "summary": "270331bb930e2dc8d26eb3d93d5a5490408c5ca3d2b09782d4d141ff388358fd"
+  }
+}
