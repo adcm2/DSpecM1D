@@ -1,0 +1,62 @@
+{
+  "experiment": "eigen_sparselu_e1b",
+  "base_commit": "4e4b02f",
+  "production_change": "FullSpecMultiSem.h: EigenMultiSemSolver COLAMDOrdering<int> -> NaturalOrdering<int>",
+  "single_sem_unchanged": true,
+  "is_symmetric_hint_used": false,
+  "focused": {
+    "raw_path": "results/eigen_sparselu_e1b/eigen_sparselu_e1b_raw.tsv",
+    "raw_sha256": "03b28928e8990592af4a3ad35db73c98b1f7b97e1ba445d2dff0c3b6766c613d",
+    "systems": 11,
+    "rows": 44,
+    "families": ["radial", "toroidal", "spheroidal", "spheroidal_fluid_solid", "spheroidal_max"],
+    "max_solution_discrepancy": 2.848933726852794e-12,
+    "max_residual": 1.375788140840027e-16,
+    "all_info_factorize_zero": true,
+    "all_info_solve_zero": true,
+    "all_outputs_finite": true,
+    "mean_seconds_symmetric_false": {
+      "COLAMD": {"analyze": 0.00011162345454545455, "factorize": 0.0007265483636363637, "solve": 0.00011994927272727273},
+      "NaturalOrdering": {"analyze": 0.00003811018181818182, "factorize": 0.0005449208181818181, "solve": 0.0000956359090909091}
+    }
+  },
+  "pilots": {
+    "timing_policy": "one untimed warm-up and one measured run per configuration and point",
+    "environment": {"OMP_DYNAMIC": "FALSE", "OPENBLAS_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "BLIS_NUM_THREADS": "1"},
+    "f5_t1": {
+      "parameters": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/e1_pilot_f5.txt",
+      "parameters_sha256": "224a8dce7dc785467459c2a7b47abc691ecbb2d0d76593329cd5a882a6e222f8",
+      "threads": 1,
+      "colamd_output": "results/eigen_sparselu_e1/pilot_f5_t1_default.txt",
+      "colamd_seconds": 20.264759730000002,
+      "natural_output": "results/eigen_sparselu_e1b/pilot_f5_t1_natural.txt",
+      "natural_output_sha256": "0759c38a4f574bff25cbadfbe1d247bd12e967e3268747c8ff629d0a68106bb3",
+      "natural_seconds": 19.320262735,
+      "speedup": 1.0488863432115227,
+      "norm_absolute_difference": 7.1536e-18
+    },
+    "f30_t32": {
+      "parameters": "/tmp/dspecm1d-backend-on-gcc15-final/data/params/e1_pilot_f30.txt",
+      "parameters_sha256": "b6b9bac301784ae43dd6579c43b99fab91634e75bdc9fdd32c3aef47a86cbbf9",
+      "threads": 32,
+      "colamd_output": "results/eigen_sparselu_e1/pilot_f30_t32_default.txt",
+      "colamd_seconds": 8.3623492969999997,
+      "natural_output": "results/eigen_sparselu_e1b/pilot_f30_t32_natural.txt",
+      "natural_output_sha256": "bff4843aa3bdcdb820165804165b45616a9a8782c4a829a240df4eb96c1a0835",
+      "natural_seconds": 7.9370828449999999,
+      "speedup": 1.0535796917211087,
+      "norm_absolute_difference": 1.1601e-17
+    }
+  },
+  "build": {
+    "compiler": "/opt/gcc-15.2.0/bin/g++",
+    "configuration": "/tmp/dspecm1d-backend-on-gcc15-final",
+    "e1_binary": "/tmp/dspecm1d-backend-on-gcc15-final/bin/eigen_sparselu_e1",
+    "e1_binary_sha256": "157c69ca9e5f2877fdbbf95c158dc987b3abea841cbce5a49e5449364ae05d0a",
+    "pilot_binary": "/tmp/dspecm1d-backend-on-gcc15-final/bin/eigen_sparselu_e1_pilot",
+    "pilot_binary_sha256": "64e80ba38777acff62d1a6452188794d86e9a8d3cfd7b56cbabdd8d089b1fb35",
+    "focused_source_sha256": "eed0fe174695d9e0e7bb29386e350c14d5e8d0f76eef8ae3059db3a1b0d6cae3",
+    "pilot_source_sha256": "62b316769eed10ca0ae3490593e4fa7cfc7d670784a08d7c74d58396eae1b436"
+  },
+  "deferred": "Stage E2 fixed-pattern/direct-value sparse A(omega) formation"
+}

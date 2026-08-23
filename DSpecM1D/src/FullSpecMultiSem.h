@@ -14,7 +14,7 @@ namespace detail {
 
 using EigenMultiSemSolver =
     Eigen::SparseLU<Eigen::SparseMatrix<std::complex<double>>,
-                    Eigen::COLAMDOrdering<int>>;
+                    Eigen::NaturalOrdering<int>>;
 #ifdef DSPECM1D_ENABLE_LAPACK_BAND_SOLVER
 using LapackMultiSemSolver = LapackBandSolver;
 #endif
