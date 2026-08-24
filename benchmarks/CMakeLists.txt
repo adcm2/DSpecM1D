@@ -7,9 +7,29 @@ configure_file(
 # 2. Grab sources and watch the folder for new additions
 file(GLOB BENCHMARK_SOURCES CONFIGURE_DEPENDS "*.cpp")
 
+# These retained solver-development programs include LAPACK/LAPACKE directly
+# or require both backends.  Keep them out of an Eigen-only build so that
+# configuration has no LAPACK dependency.
+set(LAPACK_BENCHMARK_TARGETS
+    eigen_pivot001_validation
+    eigen_pivot0_validation
+    eigen_pivot_error_characterization
+    final_solver_benchmark
+    lapack_band_concurrency_probe
+    lapack_custom_backsolve_probe
+    lapack_solve_allocation_probe
+    lapacke_interface_probe
+)
+
 # 3. Loop through each file to create its own executable
 foreach(SRC_FILE IN LISTS BENCHMARK_SOURCES)
     get_filename_component(TARGET_NAME ${SRC_FILE} NAME_WE)
+
+    if(TARGET_NAME IN_LIST LAPACK_BENCHMARK_TARGETS
+       AND NOT DSPECM1D_ENABLE_LAPACK_BAND_SOLVER)
+        continue()
+    endif()
+
     add_executable(${TARGET_NAME} ${SRC_FILE})
     target_link_libraries(${TARGET_NAME} PRIVATE DSpecM1D)
     target_include_directories(${TARGET_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
