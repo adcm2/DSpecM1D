@@ -393,7 +393,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             if (!fixed) {
               fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
                   keR, inR, keRAtten, params.attenuation());
+#ifdef DSPECM1D_ENABLE_PROFILING
               patternRebuilt = true;
+#endif
               if (auto *active = detail::profiling::Context::active())
                 active->countPatternRebuild();
             }
@@ -631,7 +633,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                 fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
                     hActive, pActive, haActive, params.attenuation());
                 torFixedRidx[omp_get_thread_num()] = ridx;
+#ifdef DSPECM1D_ENABLE_PROFILING
                 patternRebuilt = true;
+#endif
                 if (auto *active = detail::profiling::Context::active())
                   active->countPatternRebuild();
               }
@@ -853,7 +857,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                 fixed = std::make_unique<detail::FixedPatternFrequencyMatrix>(
                     hActive, pActive, haActive, params.attenuation());
                 sphFixedRidx[omp_get_thread_num()] = ridx;
+#ifdef DSPECM1D_ENABLE_PROFILING
                 patternRebuilt = true;
+#endif
                 if (auto *active = detail::profiling::Context::active())
                   active->countPatternRebuild();
               }
