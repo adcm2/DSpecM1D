@@ -364,3 +364,161 @@ Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Co
 - The latest human instruction changes the stopping point to after Stage 7
   verification and its independent Luna-high review. Stages 8–9 have not
   begun. No checkpoint commit or push is authorized for this work.
+
+## 2026-10-07 — Cowling Stage 8 validation harness
+
+- Added an explicitly disabled focused PREM validation case to the existing
+  solver API tests. The opt-in case compares full and Cowling receiver
+  components at nearest available bins to 5, 10, 20, 40, and 80 mHz for
+  degrees 1, 20, and 100; emits complex, amplitude, and phase differences;
+  checks a hard cutoff against standalone results on its lower and upper
+  adjacent bins; and compares selected l=1 and l=100 responses on two mesh
+  resolutions. The existing short-window test helper now accepts optional
+  window length, GLL order, and mesh step for this campaign.
+- This is diagnostic evidence only: the case sets no universal acceptance or
+  monotonicity threshold. The test is disabled in ordinary CTest runs and is
+  invoked explicitly with `--gtest_also_run_disabled_tests`.
+- Reproducible source is `tests/test_solver_api.cpp`; the measured CSV, exact
+  input/model provenance, run command, and interpretation will be recorded in
+  `validation/cowling/` after execution.
+- After parent review, the diagnostic was tightened to use l=1, 20, and 100 on
+  the campaign mesh, test an explicit disabled GTest entry point, assert mixed
+  cutoff routing at the lower/equal/upper bins, and report switch excess beside
+  the natural full/full adjacent-bin change. The resolution table now records
+  receiver component and actual sampled frequencies plus each mesh's element
+  and formulation DOF counts; the refinement comparison is l=1/100 at 5/80
+  mHz. Results remain pending.
+- Initial execution passed in 0.261 s but showed that an absolute `1e-30`
+  response floor suppressed phase reporting for the SI-scale output, while a
+  `0.025` mesh step was not adequate to call the 80 mHz row resolved. Changed
+  the diagnostics to a `1e-12` per-component row-maximum floor and tightened
+  the campaign mesh to `nq=5, maxstep=0.01` with a selected-resolution pair at
+  `0.01` and `0.005`; final evidence is pending.
+- A second run passed in 0.949 s with 22 MB maximum RSS. The 0.01/0.005 mesh
+  pair changed 80 mHz components by 3.6–8.8% at l=1 and 11–44% at l=100,
+  although the relative full/Cowling differences were similar on both meshes.
+  To test further, raised the campaign mesh to `nq=5, maxstep=0.005` and the
+  selected resolution pair to `0.005`/`0.0025`; the final resolution result is
+  pending.
+- The `0.005`/`0.0025` run passed in 1.76 s at 47 MB maximum RSS. It used 207
+  and 406 elements (2490/4878 full-gravity DOFs; 1661/3253 Cowling DOFs).
+  At 79.6875 mHz, the maximum selected response change across refinement was
+  0.190% for l=1 and 0.785% for l=100. Parent review requested the same
+  adjacent-bin cutoff check at l=20 and 100 as well as l=1; the opt-in case now
+  reuses all three campaign spectra for that check. Final rerun pending.
+- Final opt-in run passed in 1.885 s at 50.3 MB maximum RSS; the 9 ordinary
+  `PreferredSolverApiTests.*` cases also passed after the helper changes. At
+  the computed bins 4.6875, 9.375, 20.3125, 40.625, and 79.6875 mHz, maximum
+  component-wise relative complex errors across l=1/20/100 were respectively
+  2.47e-2, 1.12e-2, 1.13e-2, 1.01e-2, and 3.59e-4. The l=100 series is
+  nonmonotone at 20–40 mHz; the endpoints show stronger high-frequency
+  agreement. At the 20.3125 mHz cutoff, maximum switch excess over components
+  0–2 was 1.19e-5, 0.353%, and 0.748% for l=1/20/100, alongside natural
+  adjacent-bin changes up to 19.9%, 20.8%, and 33.8%. Exact mixed/full/Cowling
+  routing assertions passed for bins 18.75, 20.3125, and 21.875 mHz.
+- Saved reproducible inputs, raw stdout, separated CSV tables, mesh/DOF records,
+  hashes, commands, interpretation, MINEOS-reference limitation, and damping
+  caveats under `validation/cowling/`. The independent parent full-gravity
+  baseline regression passed byte-identically with output SHA-256
+  `ec838d8173387a019879565053f52fa7d7dcbe9cc449c8bae81e8370317e9c2b`.
+  The focused ordinary solver API filter passed 9/9 and `git diff --check`
+  passed; its output is also saved in the validation folder. Independent Stage
+  8 review is now pending; Stage 9 has not started.
+
+## 2026-10-07 — Cowling Stage 8 independent review
+
+- Fresh separate Luna-high review returned `PASS WITH NON-BLOCKING NOTES`,
+  with no blocking findings. The reviewer independently reran the campaign,
+  reproduced its CSV data byte-for-byte, checked provenance hashes, and passed
+  the nine focused solver API tests. Report: `validation/cowling/stage8_review.md`.
+- Notes concern diagnostic code size and the bounded resolution/cutoff/MINEOS
+  evidence. No automatic changes were made in response to these notes.
+- The human instruction to finish this phase authorizes Stage 9 and the final
+  complete-baseline Sol-high review after its own independent Luna-high gate.
+
+## 2026-10-07 — Cowling Stage 9 performance diagnostic (in progress)
+
+- Added a disabled opt-in PREM performance diagnostic to the existing solver
+  API test fixture. It reports full/Cowling DOFs, the matched physical
+  frequency, truncated matrix sizes and bandwidth/nonzero counts, repeated
+  factorization and four-RHS solve medians, shared SEM mesh/both-layout build
+  time, and prepared-SEM whole-spectrum medians. Symbolic analysis is included
+  in factorization; ordinary CTest does not run the diagnostic. The initial
+  run selected 18.75 mHz (nearest to 20 mHz), with 2490/1661 full/Cowling DOFs
+  and 2430/1621 reduced matrix rows. Final measurements follow after rebuilding
+  this construction-timing addition.
+- Results, reproducibility commands, build/compiler provenance, and the
+  simplification inspection are pending execution and documentation.
+- Corrected benchmark lookup to use the frequency-band-relative index returned
+  by `allIndicesSph`, and added a start-element/layout assertion against the
+  production helper before measuring; the initial run is superseded.
+- Removed one trailing space flagged by `git diff --check` in the new diagnostic.
+- Added the actual frequency-bin count and physical endpoint output so the
+  padded solver band is explicit; the preceding source hash/logs are superseded.
+- Final source hash is recorded in `validation/cowling/README.md`; the final
+  Release diagnostic passed with 13 bins over 6.25–81.25 mHz. At the matched
+  18.75 mHz row, full/Cowling DOFs are 2490/1661 (1.4991 ratio); production
+  truncation leaves 2406/1605 rows from starts 84/56. Stored nonzeros are
+  35224/19213 and lower/upper bandwidths 15/15 and 10/10. Median factorization
+  including symbolic analysis was 2.138/0.609 ms; four-RHS solve was
+  0.341/0.143 ms; prepared-SEM 13-bin spectrum was 41.645/16.112 ms. The
+  shared SEM build took 8.777 ms and constructs both layouts. These timings
+  are bounded to this warm-cache single-thread local case; all RHS residual
+  and finite checks passed.
+- Inspected the accumulated production feature against the Stage 9
+  simplification checklist. Shared full/Cowling traversal and selector-based
+  layout access remain concise and no production simplification was justified;
+  Stage 9 changed no production source. The Stage 8 CSV section remained
+  byte-identical (89 lines); the 9 focused solver API tests and
+  `git diff --check` passed. Evidence and reproducibility details are in
+  `validation/cowling/README.md`, `stage9_performance.log`, and
+  `stage8_after_stage9.log`. Stage 9 independent review is pending.
+
+## 2026-10-07 — Parent checks before Stage 9 review
+
+- Rebuilt current Release and Debug targets from this repository using cached
+  dependencies and `-j2`. All 63 active Release tests passed (two opt-in
+  diagnostics are disabled in ordinary CTest), plus nine Debug solver API and
+  eight Debug Cowling SEM component tests. `git diff --check` passed.
+- Saved logs and scope/provenance in `validation/cowling/final_checks.md`.
+  Production source remains unchanged during this phase; the refreshed
+  original-baseline full-gravity probe remains byte-identical.
+
+## 2026-10-07 — Stage 9 independent review and final checkpoint
+
+- Fresh separate Luna-high Stage 9 review returned `PASS WITH NON-BLOCKING
+  NOTES`, with no blocking findings. It reran the benchmark and nine focused
+  tests, verified structural counts/provenance and the preserved Stage 8 CSV,
+  and assessed the cumulative production diff for simplification. Report:
+  `validation/cowling/stage9_review.md`. No automatic code changes followed.
+- Stage 7's prior Luna-high gate and the fresh Stage 8–9 gates have passed.
+  The final fresh GPT-5.6 Sol-high reviewer will independently reassess the
+  complete feature against immutable baseline
+  `889452b6790d2c60afacc156b4c7512990758aee`, including the earlier code again.
+  Its complete report will be `validation/cowling/final_review.md`.
+- Review statistics and patches include uncommitted implementation/evidence
+  files. The raw baseline diff also contains four historical benchmark files
+  already committed at phase entry; they were not modified in Stages 8–9.
+- After the final review report, stop for human review without code changes,
+  commit, push, PR, merge, or further development.
+
+## 2026-10-07 — Cowling remote checkpoint hygiene
+
+- Human authorization covers packaging, a checkpoint commit and a normal push
+  only. Numerical implementation and reviewed tests remain unchanged; no new
+  validation or review-finding corrections are being performed.
+- Added narrowly scoped ignore rules for local Cowling logs, timing output,
+  derived result CSVs, temporary diffs and the three machine-specific archived
+  input templates. These inputs are recreated by the retained test harness;
+  intentional fixtures/reference data elsewhere remain visible to Git.
+- Retained the existing baseline-regression probe source by copying it verbatim
+  from the ignored local audit directory to `validation/cowling/full_regression.cpp`.
+  Reports and methodology remain source-controlled; generated artifacts remain
+  locally available. No tracked generated files require untracking.
+- Documentation packaging notes and reproduction instructions distinguish
+  local outputs from committed sources/reports. The historical benchmark PDFs
+  and their accompanying files already in branch history are unchanged.
+- Updated only packaging documentation: a portable Release build recipe,
+  explicit local-only output/input references, and a reproduction recipe for
+  the preserved baseline probe. Historical scientific results and review
+  verdicts remain unchanged. No command in those validation recipes was run.
