@@ -45,6 +45,10 @@
   - All 3 smoke tests passed.
   - The `website` documentation target passed.
 
+## 2026-10-01 — Unsupported historical benchmark reports
+
+Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Codes into benchmarks/unsupported/reports without altering or removing the originals. Added provenance.json with SHA-256 hashes and README.md describing historical scope, limitations and a future reproducible QSSP benchmark plan. Verified both copies byte-for-byte. No numerical source, build configuration, supported benchmark targets or website content changed; no simulations rerun.
+
 ## 2026-10-07 — Cowling Stage 1: two-field LTG declaration
 
 - Added the `SEM::ltgSC` declaration for the compact `(U, V)` Cowling map; no
@@ -302,3 +306,61 @@
   The previous checkpoint remains `5bc5ed840b6466b9c7af60bb5cda95ef41027e78`;
   Stages 4–6 remain uncommitted on `dev/cowling`. Stage 7 is not authorized
   before the next human review.
+
+## 2026-10-07 — Low-level Cowling selector naming
+
+- Renamed only the `SparseFSpec::spectra(SpectraRunContext, SEM, bool)`
+  parameter from `cowling` to `forceCowling` and updated its local uses. The
+  API comment states that true forces all spheroidal frequencies through
+  Cowling, while false follows the configured cutoff, including zero-disabled.
+- Added a test comment naming `forceCowling=true/false` and clarifying the
+  existing explicit-selector behavior;
+  no generic Cowling result variables, layout selectors, or semantics changed.
+- Verification: rebuilt the Debug `dspecm1d_solver_api_tests` target with `-j2`;
+  all 8 `PreferredSolverApiTests` passed with `OMP_NUM_THREADS=1`. Build and test
+  logs are saved at `/tmp/dspecm1d-cowling-ZwV33K/rename-debug-build.log` and
+  `/tmp/dspecm1d-cowling-ZwV33K/rename-debug-preferred-tests.log`.
+
+## 2026-10-07 — Cowling Stage 7 implementation
+
+- Extended only the multi-SEM spheroidal solve to split each existing chunk at
+  the configured physical-frequency cutoff. Each nonempty region selects its
+  full-gravity or Cowling matrices, maps, source and receiver operators while
+  retaining the original chunk assignment and output-column positions.
+- Each region now has a local SparseLU instance and restarts its existing
+  chunk-derived `nskip`/truncation cadence. A zero cutoff retains one
+  full-gravity region; empty chunks are skipped by the region bounds.
+- Updated `docs/site/parameter-files.html` to state that the configured
+  physical-mHz cutoff applies in both single-SEM and multi-SEM paths.
+- Added focused solver API coverage for cutoff disabled/above/below/crossing,
+  equality and adjacent bins, attenuation on/off, single- versus multi-SEM
+  agreement on a shared mesh, and a three-chunk mixed-region case. Fixture
+  inspection found two valid bins in its 2–8 mHz
+  requested band, so its minimum-bin assertion now reflects the actual grid.
+  The longer three-chunk fixture uses a 60-minute window and asserts its
+  computed chunk count and derived `nskip > 1`; the test prints both counts.
+- The new focused test passes in Debug. Its one-chunk 2–8 mHz cases use the
+  same capped 0.05 mesh step in both solver paths and agree within `1e-10` for
+  disabled, all-full, all-Cowling, and mixed cutoffs with attenuation both off
+  and on. The longer mixed fixture reports 157 bins, 3 chunks, and derived
+  `nskip=7`; the same-mesh single-/multi-SEM outputs agree within `1e-10`.
+- All 9 `PreferredSolverApiTests` pass in Debug with `OMP_NUM_THREADS=1`.
+  The full Release build succeeded with `-j2`, and all 63 Release CTest tests
+  pass with `OMP_NUM_THREADS=1`. The root agent's original-baseline regression
+  is separate and has not yet been reported. Stage 8 has not begun.
+- Saved logs: `/tmp/dspecm1d-cowling-ZwV33K/stage7-debug-focused-tests.log`
+  and `/tmp/dspecm1d-cowling-ZwV33K/stage7-release-ctest.log`. The Stage 7-only
+  patch against the approved start snapshot is
+  `/tmp/dspecm1d-cowling-ZwV33K/stage7-only.diff` (244 insertions, 42
+  deletions across the implementation, focused test, guide, and this status
+  entry).
+
+## 2026-10-07 — Stage 7 parent regression and stopping point
+
+- Original-baseline full single-SEM and multi-SEM spheroidal spectrum outputs
+  remain byte-identical at l=1–4 over 2–8 mHz, two receivers, attenuation
+  off/on, with one OpenMP thread. Evidence:
+  `/tmp/dspecm1d-cowling-ZwV33K/stage7-baseline-regression.log`.
+- The latest human instruction changes the stopping point to after Stage 7
+  verification and its independent Luna-high review. Stages 8–9 have not
+  begun. No checkpoint commit or push is authorized for this work.

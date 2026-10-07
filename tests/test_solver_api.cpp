@@ -64,6 +64,36 @@ makeCowlingSolveParams(bool attenuation = false, int lmin = 1, int lmax = 2) {
   return InputParametersNew(path.string(), 3, 2, 0.2, 1.0, 0.05, 0.0, 1);
 }
 
+InputParametersNew makeMultiCowlingSolveParams(double fmin, double fmax,
+                                               bool attenuation,
+                                               double toutMinutes = 1.0) {
+  DSpecMTest::TempDir temp;
+  DSpecMTest::ParameterOptions options;
+  options.type = 3;
+  options.attenuation = attenuation;
+  options.lmin = 1;
+  options.lmax = 1;
+  options.f1 = fmin;
+  options.f2 = fmax;
+  options.f11 = fmin;
+  options.f12 = fmin;
+  options.f21 = fmax;
+  options.f22 = fmax;
+  options.tOutMinutes = toutMinutes;
+  options.timeStepSec = 5.0;
+  options.numReceivers = 1;
+  options.receivers = {{45.0, 90.0}};
+  options.relativeError = 1.0;
+
+  const auto model = DSpecMTest::repoRoot() / "data" / "models" /
+                     (attenuation ? "prem.200.no.txt"
+                                  : "prem.200.noatten.txt");
+  const auto path = DSpecMTest::writeFile(
+      temp.path() / "multi_cowling_params.txt",
+      DSpecMTest::makeParameterText(model.string(), options));
+  return InputParametersNew(path.string(), 3, 2, 0.2, 1.0, 0.05, 0.0, 1);
+}
+
 }   // namespace
 
 TEST(PreferredSolverApiTests, SpectraRunContextExposesWorkflowObjects) {
@@ -143,6 +173,9 @@ TEST(PreferredSolverApiTests, StandaloneCowlingSpheroidalSolveOnPrem) {
 
   const auto defaultContext = solver.spectra(request, sem);
   const auto defaultApi = solver.spectra(paramsNew, sem);
+  // forceCowling=true forces every spheroidal bin through Cowling;
+  // forceCowling=false follows the configured cutoff, with zero leaving the
+  // full-gravity solve unchanged.
   const auto full = solver.spectra(request, sem, false);
   const auto cowling = solver.spectra(request, sem, true);
   const int begin = paramsNew.freqFull().i1();
@@ -316,6 +349,96 @@ TEST(PreferredSolverApiTests, MixedCutoffRestartsHighDegreeTruncationCadence) {
       EXPECT_TRUE(mixed.col(boundary - 1).isApprox(
           fullReference.col(boundary - 1), 0.0));
   }
+}
+
+TEST(PreferredSolverApiTests, MultiSemCowlingCutoffUsesChunkRegions) {
+  SPARSESPEC::SparseFSpec solver;
+  for (const bool attenuation : {false, true}) {
+    // A 2–8 mHz band forms one multi-SEM chunk. Both solver paths use the
+    // same explicitly capped 0.05 mesh step for the numerical comparison.
+    auto paramsNew = makeMultiCowlingSolveParams(2.0, 8.0, attenuation);
+    auto &freq = paramsNew.freqFull();
+    auto &params = paramsNew.inputParameters();
+    Full1D::SEM singleSem(paramsNew.earthModel(), 0.05, paramsNew.nq(),
+                          params.lmax());
+    SPARSESPEC::SpectraRunContext request(freq, paramsNew.cmt(), params,
+                                          paramsNew.tref(), 1);
+    const auto frequencyMhz = [&](int idx) {
+      return freq.f(idx) * 1000.0 / freq.timeNorm();
+    };
+    const int begin = freq.i1();
+    const int end = freq.i2();
+    ASSERT_GE(end - begin, 2);
+
+    paramsNew.setCowlingFrequencyMhz(0.0);
+    const auto multiDisabled = solver.spectra(
+        freq, paramsNew.earthModel(), paramsNew.cmt(), params, paramsNew.nq(),
+        paramsNew.srInfo(), params.relative_error());
+    const auto singleFull = solver.spectra(request, singleSem, false);
+    EXPECT_TRUE(multiDisabled.isApprox(singleFull, 1e-10));
+
+    paramsNew.setCowlingFrequencyMhz(frequencyMhz(end - 1) + 1.0);
+    const auto multiAbove = solver.spectra(
+        freq, paramsNew.earthModel(), paramsNew.cmt(), params, paramsNew.nq(),
+        paramsNew.srInfo(), params.relative_error());
+    EXPECT_TRUE(multiAbove.isApprox(multiDisabled, 0.0));
+
+    paramsNew.setCowlingFrequencyMhz(frequencyMhz(begin) - 1.0);
+    const auto multiBelow = solver.spectra(
+        freq, paramsNew.earthModel(), paramsNew.cmt(), params, paramsNew.nq(),
+        paramsNew.srInfo(), params.relative_error());
+    const auto singleCowling = solver.spectra(request, singleSem, true);
+    EXPECT_TRUE(multiBelow.isApprox(singleCowling, 1e-10));
+
+    const int boundary = begin + (end - begin) / 2;
+    paramsNew.setCowlingFrequencyMhz(frequencyMhz(boundary));
+    const auto multiMixed = solver.spectra(
+        freq, paramsNew.earthModel(), paramsNew.cmt(), params, paramsNew.nq(),
+        paramsNew.srInfo(), params.relative_error());
+    paramsNew.setCowlingFrequencyMhz(frequencyMhz(boundary));
+    const auto singleMixed = solver.spectra(request, singleSem, false);
+    EXPECT_TRUE(multiMixed.isApprox(singleMixed, 1e-10));
+    EXPECT_TRUE(multiMixed.col(boundary - 1).isApprox(
+        singleFull.col(boundary - 1), 1e-10));
+    EXPECT_TRUE(multiMixed.col(boundary).isApprox(
+        singleCowling.col(boundary), 1e-10));
+    if (boundary + 1 < end)
+      EXPECT_TRUE(multiMixed.col(boundary + 1).isApprox(
+          singleCowling.col(boundary + 1), 1e-10));
+  }
+
+  // The 5–35 mHz band forms three chunks: one stays full-gravity, one
+  // crosses the cutoff, and the last is entirely Cowling.
+  auto paramsNew = makeMultiCowlingSolveParams(5.0, 35.0, false, 60.0);
+  auto &freq = paramsNew.freqFull();
+  auto &params = paramsNew.inputParameters();
+  Full1D::SEM singleSem(paramsNew.earthModel(), 0.05, paramsNew.nq(),
+                        params.lmax());
+  SPARSESPEC::SpectraRunContext request(freq, paramsNew.cmt(), params,
+                                        paramsNew.tref(), 1);
+  const auto frequencyMhz = [&](int idx) {
+    return freq.f(idx) * 1000.0 / freq.timeNorm();
+  };
+  const int begin = freq.i1();
+  const int end = freq.i2();
+  const int derivedNskip = std::max(1, (end - begin) / 20);
+  const int expectedChunks = std::max(
+      1, static_cast<int>(std::floor((freq.f22() - freq.f11()) / 10.0) + 1.0));
+  ASSERT_GT(derivedNskip, 1);
+  ASSERT_EQ(expectedChunks, 3);
+  std::cout << "Multi-SEM cutoff fixture bins=" << end - begin
+            << " chunks=" << expectedChunks
+            << " derived_nskip=" << derivedNskip << "\n";
+  const int boundary = begin + (end - begin) / 2;
+  const double cutoffMhz = frequencyMhz(boundary);
+  paramsNew.setCowlingFrequencyMhz(cutoffMhz);
+  const auto multiMixed = solver.spectra(
+      freq, paramsNew.earthModel(), paramsNew.cmt(), params, paramsNew.nq(),
+      paramsNew.srInfo(), params.relative_error());
+  const auto singleMixed = solver.spectra(request, singleSem, false);
+  EXPECT_TRUE(multiMixed.real().array().isFinite().all());
+  EXPECT_TRUE(multiMixed.imag().array().isFinite().all());
+  EXPECT_TRUE(multiMixed.isApprox(singleMixed, 1e-10));
 }
 
 TEST(PreferredSolverApiTests, LegacyMultiSemOverloadReturnsFiniteOutput) {

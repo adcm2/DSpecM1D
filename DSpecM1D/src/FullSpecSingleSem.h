@@ -20,7 +20,7 @@ SparseFSpec::spectra(Full1D::SEM &sem, InputParametersNew &paramsNew) {
 
 inline Eigen::MatrixXcd
 SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
-                     bool cowling) {
+                     bool forceCowling) {
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
   using SparseMatrixC = Eigen::SparseMatrix<Complex>;
@@ -152,9 +152,9 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
   // spheroidals
   if (inc_sph) {
     auto recElems = sem.receiverElements(params);
-    int cowlingFirstIndex = cowling ? myff.i1() : myff.i2();
+    int cowlingFirstIndex = forceCowling ? myff.i1() : myff.i2();
     const double cutoffMhz = params.cowlingFrequencyMhz();
-    if (!cowling && cutoffMhz > 0.0) {
+    if (!forceCowling && cutoffMhz > 0.0) {
       for (int idx = myff.i1(); idx < myff.i2(); ++idx) {
         const double frequencyMhz = myff.f(idx) * 1000.0 / myff.timeNorm();
         if (frequencyMhz >= cutoffMhz) {
