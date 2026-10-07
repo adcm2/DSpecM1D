@@ -1,8 +1,11 @@
 #include <gtest/gtest.h>
+#include <algorithm>
 #include <array>
 #include <set>
+#include <vector>
 #include <DSpecM1D/ModelInput>
 #include <DSpecM1D/src/SEM/SEM.h>
+#include <DSpecM1D/src/StartElement.h>
 #include <DSpecM1D/src/SourceInfo.h>
 #include <DSpecM1D/src/InputParametersNew.h>
 #include "test_utils.h"
@@ -454,4 +457,93 @@ TEST(SEMComponentTests, CowlingForcesAndReceiversReusePhysicalUVEntries) {
   }
   EXPECT_TRUE((receiverFull * solutionFull)
                   .isApprox(receiverCowling * solutionCowling, 1e-14));
+}
+
+TEST(SEMComponentTests, CowlingStartIndicesPreserveTruncationAndCadence) {
+  auto paramsNew = makeTinySemParams();
+  Full1D::SEM sem(paramsNew);
+  const int l = 100;
+  const int source = sem.mesh().NE() - 1;
+  const int nskip = 3;
+  std::vector<double> frequencies{0.02, 0.025, 0.03, 0.035, 0.04, 0.045};
+
+  auto expected = [&](const std::vector<double> &w, int begin, int end,
+                      int sourceElement, int cadence, bool cowling) {
+    std::vector<int> indices(end - begin);
+    std::vector<int> elements(end - begin);
+    for (int idx = end - 1; idx >= begin; --idx) {
+      const int offset = idx - begin;
+      if ((end - 1 - idx) % cadence == 0) {
+        elements[offset] = sourceElement < 0
+                               ? SpectralTools::startElementSph(sem, l, w[idx])
+                               : SpectralTools::startElementSph(
+                                     sem, l, w[idx], sourceElement);
+        indices[offset] = cowling
+                              ? sem.ltgSC(0, elements[offset], 0)
+                              : sem.ltgS(0, elements[offset], 0);
+      } else {
+        elements[offset] = elements[offset + 1];
+        indices[offset] = indices[offset + 1];
+      }
+    }
+    return std::pair<std::vector<int>, std::vector<int>>(indices, elements);
+  };
+
+  const auto fullEvery = SpectralTools::allIndicesSph(
+      sem, l, frequencies, source, 1, false);
+  const auto cowlingEvery = SpectralTools::allIndicesSph(
+      sem, l, frequencies, source, 1, true);
+  const auto expectedFullEvery = expected(
+      frequencies, 0, static_cast<int>(frequencies.size()), source, 1, false);
+  const auto expectedCowlingEvery = expected(
+      frequencies, 0, static_cast<int>(frequencies.size()), source, 1, true);
+  EXPECT_EQ(fullEvery, expectedFullEvery.first);
+  EXPECT_EQ(cowlingEvery, expectedCowlingEvery.first);
+  EXPECT_EQ(expectedFullEvery.second, expectedCowlingEvery.second);
+  EXPECT_GT(*std::max_element(expectedFullEvery.second.begin(),
+                              expectedFullEvery.second.end()),
+            0);
+
+  const auto fullCadenced = SpectralTools::allIndicesSph(
+      sem, l, frequencies, source, nskip, false);
+  const auto cowlingCadenced = SpectralTools::allIndicesSph(
+      sem, l, frequencies, source, nskip, true);
+  const auto expectedFullCadenced = expected(
+      frequencies, 0, static_cast<int>(frequencies.size()), source, nskip,
+      false);
+  const auto expectedCowlingCadenced = expected(
+      frequencies, 0, static_cast<int>(frequencies.size()), source, nskip,
+      true);
+  EXPECT_EQ(fullCadenced, expectedFullCadenced.first);
+  EXPECT_EQ(cowlingCadenced, expectedCowlingCadenced.first);
+  EXPECT_EQ(expectedFullCadenced.second, expectedCowlingCadenced.second);
+  EXPECT_EQ(fullCadenced[5], fullEvery[5]);
+  EXPECT_EQ(fullCadenced[2], fullEvery[2]);
+  EXPECT_EQ(cowlingCadenced[5], cowlingEvery[5]);
+  EXPECT_EQ(cowlingCadenced[2], cowlingEvery[2]);
+
+  auto &freqFull = paramsNew.freqFull();
+  const auto fullFreqExpected = expected(
+      freqFull.w(), freqFull.i1(), freqFull.i2(), -1, 2, false);
+  const auto cowlingFreqExpected = expected(
+      freqFull.w(), freqFull.i1(), freqFull.i2(), -1, 2, true);
+  EXPECT_EQ(SpectralTools::allIndicesSph(sem, l, freqFull, 2),
+            fullFreqExpected.first);
+  EXPECT_EQ(SpectralTools::allIndicesSph(sem, l, freqFull, 2, true),
+            cowlingFreqExpected.first);
+
+  const auto fullFreqSourceExpected = expected(
+      freqFull.w(), freqFull.i1(), freqFull.i2(), source, 2, false);
+  const auto cowlingFreqSourceExpected = expected(
+      freqFull.w(), freqFull.i1(), freqFull.i2(), source, 2, true);
+  EXPECT_EQ(SpectralTools::allIndicesSph(sem, l, freqFull, source, 2),
+            fullFreqSourceExpected.first);
+  EXPECT_EQ(SpectralTools::allIndicesSph(sem, l, freqFull, source, 2, true),
+            cowlingFreqSourceExpected.first);
+
+  std::vector<double> sourceAtZero{0.02, 0.03};
+  const auto zeroSource = SpectralTools::allIndicesSph(
+      sem, l, sourceAtZero, 0, 1, true);
+  EXPECT_EQ(zeroSource,
+            (std::vector<int>{sem.ltgSC(0, 0, 0), sem.ltgSC(0, 0, 0)}));
 }

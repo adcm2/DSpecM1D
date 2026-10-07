@@ -169,3 +169,136 @@
   notes; Stage 2 passed a fresh rereview after the required test-only additions;
   Stage 3 passed. Integration Review A must inspect the complete accumulated
   diff against the immutable baseline before the first remote checkpoint.
+
+## 2026-10-07 — Cowling Stage 4: start-index / truncation support
+
+- Added an optional Cowling layout selector to each `allIndicesSph` overload.
+  All overloads retain the existing `startElementSph` physical selection and
+  `nskip` cadence, mapping the selected element's first U DOF through `ltgSC`
+  only when requested; existing calls continue to map through `ltgS`.
+- Added explicit `<vector>` and `StartElement.h` includes in the SEM component
+  test source to support direct truncation regressions.
+- Added checks for all three `allIndicesSph` overloads, both formulations,
+  source-constrained and unconstrained starts, `nskip=1` and cadence reuse,
+  plus the source-element-zero edge case. The fixture asserts that its chosen
+  finite positive frequencies produce a nonzero selected start element.
+- The first run showed degree 4 did not truncate on this mesh; increased the
+  test degree further to 100 after that guard still observed no truncation.
+- Verification: all 8 focused Debug `SEMComponentTests.Cowling*` tests passed
+  with `OMP_NUM_THREADS=1`; the full Release build completed and all 57 Release
+  CTest tests passed. `git diff --check` passed. Focused and full Release logs
+  and the Stage 4-only diff are saved under
+  `/tmp/dspecm1d-cowling-ZwV33K/stage4-{debug-focused,release-ctest}.log` and
+  `/tmp/dspecm1d-cowling-ZwV33K/stage4-only.diff`.
+
+## 2026-10-07 — Cowling Stage 5: standalone single-SEM solve
+
+- Added an opt-in `cowling` boolean to the low-level `SpectraRunContext` plus
+  single-SEM solver overload. It defaults to false; the existing public and
+  legacy entry points therefore retain the full-gravity calculation.
+- In the existing spheroidal loop, the selected formulation now supplies its
+  own matrices, global and receiver bounds, source vector, and frequency
+  truncation indices. Both formulations continue through the same attenuation,
+  sparse solve, receiver accumulation, and output code.
+- Added a PREM single-SEM regression that exercises both layouts across the
+  selected frequency band, checks default output equality, finite/nonzero
+  results, a nonzero Cowling start index, and the attenuation-enabled Cowling
+  path. It also samples full/Cowling relative differences in increasing
+  frequency order and reports their endpoint trend without imposing a test
+  acceptance threshold.
+- The first end-to-end Debug run exposed that Cowling has two displacement
+  fields but retains four source right-hand sides. The receiver product now
+  uses all four force columns, as in the existing full-gravity solve.
+- The PREM comparison band is 5–80 mHz at l=1–2. A separate one-degree l=100
+  Cowling solve checks a nonzero start element and finite, nonzero receiver
+  output after reduction.
+- Initial sampled differences decreased overall from the first to last bin but
+  fluctuated between bins; the test accepts only this fixture-specific endpoint
+  relationship and does not require monotonic differences.
+- Fresh Stage 5 review required the test to enforce the observed endpoint
+  trend. Added one fixture-specific assertion that the final sampled relative
+  difference is below the initial one, after the existing two-sample guard;
+  intermediate fluctuations remain allowed. No production code changed.
+- After the review correction, the focused Debug solver test passed with one
+  OpenMP thread, and the matching Release CTest passed (1/1).
+- Focused Debug `PreferredSolverApiTests.StandaloneCowlingSpheroidalSolveOnPrem`
+  passed with one OpenMP thread. It exercised 15 PREM elements with 3 GLL nodes
+  per element, a 5–80 mHz requested band (sampled bins 6.25–75 mHz), l=1–2,
+  attenuation off and on, and an actual l=100 reduced solve. Default context,
+  explicit full-gravity, and existing API outputs were identical on this run.
+- Relative full/Cowling spectrum differences by sampled frequency were:
+  6.25: 2.08132e-5; 12.5: 1.33465e-5; 18.75: 8.95589e-6; 25: 5.74779e-6;
+  31.25: 4.80171e-6; 37.5: 6.83836e-6; 43.75: 7.97056e-6; 50: 6.29792e-6;
+  56.25: 3.70785e-6; 62.5: 5.74482e-6; 68.75: 9.42314e-6; 75: 1.00119e-5.
+  These coarse-mesh, low-degree measurements fluctuate between bins; they are
+  diagnostic evidence for this fixture, not broad waveform validation.
+- Full Release build passed and all 58 CTest tests passed with one OpenMP
+  thread; `git diff --check` passed. Stage 5 independent review is pending.
+- Original-HEAD regression probes are byte-identical for full matrices, source
+  vectors and receiver vectors at l=1,2,7, and for full single-/multi-SEM
+  spheroidal spectra over l=1–4 and 2–8 mHz with attenuation off and on. The
+  evidence is in `/tmp/dspecm1d-cowling-ZwV33K/stage5-baseline-regression.log`.
+
+## 2026-10-07 — Cowling Stage 6: configurable cutoff setup
+
+- Added an optional final ordered parameter value, `cowling_frequency_mhz`,
+  defaulting to zero (disabled). The parser accepts comments/blanks around the
+  optional value, rejects malformed values and trailing tokens, and validates
+  that the cutoff is finite and nonnegative. Added getter/setter forwarding
+  through `InputParametersNew` for programmatic configuration.
+- Added a `FreqFull::timeNorm()` accessor so cutoff comparisons can convert
+  the frequency helper's dimensionless cycles to physical mHz using its own
+  normalization. The cutoff is documented as applying to the single-SEM path
+  at this checkpoint.
+- Updated the single-SEM spheroidal solve to route bins below the configured
+  cutoff through full gravity and bins at or above it through Cowling. Both
+  regions use fresh solver state; each frequency region restarts its own
+  `nskip` counter and computes its own start-index cadence anchors. The
+  standalone all-Cowling selector remains available.
+- Documented the optional physical-mHz value and its single-SEM-only scope in
+  the parameter-file guide. Added parser coverage for the disabled default,
+  valid optional values, malformed/trailing input, and setter validation.
+- Added single-SEM cutoff regressions for disabled and above-range exact
+  preservation, all-Cowling selection below range, and a mixed band whose exact
+  boundary and adjacent bins are checked against standalone formulations.
+  These run with attenuation both off and on. Added a high-degree mixed-band
+  case for `nskip=1,2,3` plus a cadence longer than the band. It verifies
+  nonzero truncation on the full-gravity side, each layout's region-local
+  endpoint anchor, and finite/nonzero mixed output.
+- Adjusted the high-degree test cutoff to begin near the low end of the band
+  after the first run showed the Cowling-only high-frequency segment did not
+  reach a truncated start element at the original switch bin.
+- The high-degree test uses a one-bin full-gravity region so that its cadence
+  restarts at the cutoff for `nskip=2,3`; this fixture's resulting global start
+  index also happens to match the old whole-band anchor, so the test directly
+  checks the region-local start mapping rather than claiming a differing index.
+- Added one cadence larger than the entire band. In that case the whole-band
+  anchor is reused throughout, while the one-bin full region must recompute its
+  nonzero start at the switch; the test compares those indices explicitly.
+- For this long-cadence case, the mixed solver's full-gravity boundary bin is
+  also compared exactly with an independent full solve using `nskip=1`.
+- Verification on the configured build trees: Debug parser and solver API
+  tests passed 15/15, Release parser and solver API tests passed 15/15, and the
+  full Release CTest suite passed 62/62 with `OMP_NUM_THREADS=1`. `git diff
+  --check` passed. Independent Stage 6 review is pending.
+
+## 2026-10-07 — Cowling Stages 4–6 review checkpoint preparation
+
+- Fresh independent Luna-high gates passed: Stage 4 `PASS`; Stage 5
+  `PASS WITH NON-BLOCKING NOTES` after its required endpoint-trend test
+  correction and fresh rereview; Stage 6 `PASS WITH NON-BLOCKING NOTES`.
+  Non-blocking notes were reported without automatic code changes.
+- Parent original-baseline regression after Stage 6 remains byte-identical for
+  full matrices, source vectors and receiver weights at l=1,2,7, and full
+  single-/multi-SEM spheroidal spectra at l=1–4 over 2–8 mHz, attenuation
+  off/on, with one OpenMP thread. Evidence:
+  `/tmp/dspecm1d-cowling-ZwV33K/stage6-baseline-regression.log`.
+- All 62 Release tests and the 15 focused Debug parser/solver tests passed.
+  The known original-baseline full-Debug receiver `ltgT` assertion is unchanged.
+- Production SEM headers from Stages 1–3 are unchanged from the approved
+  checkpoint. The approved direct `<vector>` test include was added in Stage 4.
+- Review B must inspect the complete feature against fixed baseline
+  `889452b6790d2c60afacc156b4c7512990758aee`, including earlier stages again.
+  The previous checkpoint remains `5bc5ed840b6466b9c7af60bb5cda95ef41027e78`;
+  Stages 4–6 remain uncommitted on `dev/cowling`. Stage 7 is not authorized
+  before the next human review.

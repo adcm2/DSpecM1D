@@ -153,35 +153,38 @@ allIndicesTor(semtype &sem, int l, std::vector<double> &vec_w, int idx_source,
 template <class semtype>
 auto
 allIndicesSph(semtype &sem, int l, SpectraSolver::FreqFull &myff,
-               int nskip = 10) {
+               int nskip = 10, bool cowling = false) {
   auto vec_w = myff.w();
   return detail::allIndicesImpl(vec_w, myff.i1(), myff.i2(), nskip,
                                 [&](double w) {
                                   auto idxlow_e = startElementSph(sem, l, w);
-                                  return sem.ltgS(0, idxlow_e, 0);
+                                  return cowling ? sem.ltgSC(0, idxlow_e, 0)
+                                                 : sem.ltgS(0, idxlow_e, 0);
                                 });
 }
 
 template <class semtype>
 auto
 allIndicesSph(semtype &sem, int l, SpectraSolver::FreqFull &myff,
-               int idx_source, int nskip) {
+               int idx_source, int nskip, bool cowling = false) {
   auto vec_w = myff.w();
   return detail::allIndicesImpl(
       vec_w, myff.i1(), myff.i2(), nskip, [&](double w) {
         auto idxlow_e = startElementSph(sem, l, w, idx_source);
-        return sem.ltgS(0, idxlow_e, 0);
+        return cowling ? sem.ltgSC(0, idxlow_e, 0)
+                       : sem.ltgS(0, idxlow_e, 0);
       });
 }
 
 template <class semtype>
 auto
 allIndicesSph(semtype &sem, int l, std::vector<double> &vec_w, int idx_source,
-               int nskip) {
+               int nskip, bool cowling = false) {
   return detail::allIndicesImpl(
       vec_w, 0, static_cast<int>(vec_w.size()), nskip, [&](double w) {
         auto idxlow_e = startElementSph(sem, l, w, idx_source);
-        return sem.ltgS(0, idxlow_e, 0);
+        return cowling ? sem.ltgSC(0, idxlow_e, 0)
+                       : sem.ltgS(0, idxlow_e, 0);
       });
 };
 

@@ -42,7 +42,8 @@ public:
   /// Preferred release-facing overload with reversed convenience arguments.
   Eigen::MatrixXcd spectra(Full1D::SEM &, InputParametersNew &);
   /// Preferred internal/reuse overload using an explicit run context.
-  Eigen::MatrixXcd spectra(const SpectraRunContext &, Full1D::SEM &);
+  Eigen::MatrixXcd spectra(const SpectraRunContext &, Full1D::SEM &,
+                           bool cowling = false);
 
   /// Legacy overload retained for compatibility with existing workflows.
   template <class model1d>
