@@ -37,6 +37,32 @@ SEM::pS(int idxl) const {
 };
 
 Eigen::SparseMatrix<double>
+SEM::hSC(int idxl) const {
+  auto k2 = idxl * (idxl + 1);
+  Eigen::SparseMatrix<double> tmp = m_vecKeSCBase[0];
+  tmp += m_vecKeSCBase[1] * k2;
+  tmp += m_vecKeSCBase[2] * k2 * k2;
+  return tmp;
+};
+
+Eigen::SparseMatrix<double>
+SEM::hSCa(int idxl) const {
+  auto k2 = idxl * (idxl + 1);
+  Eigen::SparseMatrix<double> tmp = m_vecKeSCAtten[0];
+  tmp += m_vecKeSCAtten[1] * k2;
+  tmp += m_vecKeSCAtten[2] * k2 * k2;
+  return tmp;
+};
+
+Eigen::SparseMatrix<double>
+SEM::pSC(int idxl) const {
+  auto k2 = idxl * (idxl + 1);
+  Eigen::SparseMatrix<double> tmp = m_vecInSCBase[0];
+  tmp += m_vecInSCBase[1] * k2;
+  return tmp;
+};
+
+Eigen::SparseMatrix<double>
 SEM::hTk(int idxl) const {
   auto k2 = idxl * (idxl + 1);
   Eigen::SparseMatrix<double> tmp = m_vecKeTBase[0] * k2;
