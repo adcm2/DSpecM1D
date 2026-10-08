@@ -245,6 +245,8 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           auto recElems = sem.receiverElements(params);
           MatrixC fVals = sem.calculateForceRedCoefficients(cmt, idxl, 0.0);
           MatrixC redC = rvVals * fVals;
+          const int lenChunk = static_cast<int>(idxChunks[idxChunk].size());
+          MatrixC vecRawL = MatrixC::Zero(3 * numRec, lenChunk);
           const double cutoffMhz = params.cowlingFrequencyMhz();
           int cowlingFirst = static_cast<int>(idxChunks[idxChunk].size());
           if (cutoffMhz > 0.0) {
@@ -300,7 +302,6 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             SparseLUType regionSolver;
             for (int idx = regionEnd - 1; idx >= regionBegin; --idx) {
               const int localRegionIdx = idx - regionBegin;
-              const int globalIdx = idxChunks[idxChunk][idx];
               const double wval = freqChunks[idxChunk][idx];
               const std::size_t ridx = ridxsph[localRegionIdx];
               const std::size_t len_ms = lensph - ridx;
@@ -315,14 +316,17 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
               factorizeOrCompute(regionSolver, wS, regionEnd - idx - 1, nskip);
               MatrixC vecSol = regionSolver.solve(fRed);
               const auto lidx = lowidx - ridx;
+              vecRawL.col(idx) +=
+                  redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 4))
+                      .rowwise()
+                      .sum();
+            }
+          }
+          if (lenChunk > 0) {
+            const int i1 = idxChunks[idxChunk].front();
 #pragma omp critical(torvecadd)
-              {
-                vecRaw.col(globalIdx) +=
-                    redC.cwiseProduct(
-                        rvBase * vecSol.block(lidx, 0, lenidx, 4))
-                        .rowwise()
-                        .sum();
-              }
+            {
+              vecRaw.block(0, i1, 3 * numRec, lenChunk) += vecRawL;
             }
           }
         }

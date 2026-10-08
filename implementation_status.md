@@ -522,3 +522,48 @@ Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Co
   explicit local-only output/input references, and a reproduction recipe for
   the preserved baseline probe. Historical scientific results and review
   verdicts remain unchanged. No command in those validation recipes was run.
+
+## 2026-10-08 — Approved final Cowling PR cleanup (in progress)
+
+- Restored one chunk-local spheroidal accumulator per degree/chunk in
+  `FullSpecMultiSem.h`, with one protected global block addition after both
+  full/Cowling regions. Frequency indices are assigned consecutively by the
+  unchanged chunk builder; empty chunks skip the final addition. Region split,
+  factorization/truncation cadence, weak forms and scaling remain unchanged.
+- Corrected three public cutoff accessor comments to cover single- and
+  multi-SEM. No API signature or configuration behavior changed.
+- Added one focused multi-degree chunk-accumulation test using the existing
+  parameter helper and single-SEM reference. It covers three chunks, full-only,
+  Cowling-only and a crossing cutoff, attenuation off/on, finite output and
+  untouched columns outside the band; execution with one/four threads follows.
+- Retained a small standalone validation driver in
+  `validation/cowling/multi_sem_cleanup.cpp`, using the existing input generator
+  to compare unchanged pre-cleanup/current headers for six routing/attenuation
+  cases and time one fixed four-thread mixed-cutoff multi-SEM case. Generated
+  outputs stay local; this adds no production or benchmark framework API.
+- Removed only the four feature-added `benchmarks/unsupported/` paths from
+  Git tracking with `git rm --cached`; all local bytes are preserved. Exact
+  path exclusions in `.git/info/exclude` keep those local copies out of status.
+  These paths did not exist in the immutable baseline. No history was rewritten.
+- Validation completed: 64 active Release tests; 10 focused solver tests in
+  Release/Debug with one/four threads. Serial pre-cleanup/current outputs for
+  six routing/attenuation cases and the original full-gravity baseline probe
+  are byte-identical; parallel differences are at most about `3.1e-16` relative.
+- The isolated four-thread whole multi-SEM benchmark measured 0.465767 s before
+  and 0.470966 s after (median of five warm calls). This is 1.1% slower in the
+  fixed case, with no demonstrated speed-up. Locks reduce to one per nonempty
+  degree/chunk. Methodology/results and reproduction driver are retained in
+  `validation/cowling/cleanup_checks.md` and `multi_sem_cleanup.cpp`.
+- Fresh independent Luna-high cleanup review returned `PASS`, checked all eight
+  requested areas and reran the focused tests in Release/Debug with one/four
+  threads. No code corrections followed. Final fresh Sol-high interaction,
+  OpenMP, evidence and complete-PR scope review is next; commit/push pending.
+- Fresh independent Sol-6.1-high review returned `PASS WITH NON-BLOCKING NOTES`,
+  with no required corrections. It reassessed the complete immutable-baseline
+  feature and cleanup, independently passed solver/component tests in both
+  builds with one/four threads, and verified snapshots, numerical comparisons,
+  performance wording and historical-file preservation. No code changed after
+  either review. Only these gate records were updated before the authorized
+  checkpoint commit/push and PR metadata update; CI must pass, then stop.
+- Validation, benchmark-file untracking, fresh Luna-high/Sol-high review and
+  the explicitly authorized normal commit/push are pending. Do not merge.

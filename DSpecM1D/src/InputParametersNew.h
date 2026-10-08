@@ -116,11 +116,11 @@ public:
   double timeNorm() const { return m_model.TimeNorm(); }
   double tref() const { return m_model.TREF(); }
 
-  /// Returns the single-SEM Cowling cutoff in physical mHz.
+  /// Returns the single- and multi-SEM Cowling cutoff in physical mHz.
   double cowlingFrequencyMhz() const {
     return m_params.cowlingFrequencyMhz();
   }
-  /// Updates the single-SEM Cowling cutoff in physical mHz; zero disables it.
+  /// Updates the single- and multi-SEM Cowling cutoff in physical mHz; zero disables it.
   void setCowlingFrequencyMhz(double frequency) {
     m_params.setCowlingFrequencyMhz(frequency);
   }

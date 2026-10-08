@@ -298,7 +298,7 @@ public:
   double receiver_depth() const { return m_receiver_depth; }
   /// Returns the Cowling cutoff in physical mHz; zero disables the cutoff.
   double cowlingFrequencyMhz() const { return m_cowling_frequency_mhz; }
-  /// Sets the single-SEM Cowling cutoff in physical mHz; zero disables it.
+  /// Sets the single- and multi-SEM Cowling cutoff in physical mHz; zero disables it.
   void setCowlingFrequencyMhz(double frequency) {
     if (!std::isfinite(frequency) || frequency < 0.0)
       throw std::invalid_argument(

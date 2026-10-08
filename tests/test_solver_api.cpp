@@ -76,13 +76,14 @@ makeCowlingSolveParams(bool attenuation = false, int lmin = 1, int lmax = 2,
 
 InputParametersNew makeMultiCowlingSolveParams(double fmin, double fmax,
                                                bool attenuation,
-                                               double toutMinutes = 1.0) {
+                                               double toutMinutes = 1.0,
+                                               int lmax = 1) {
   DSpecMTest::TempDir temp;
   DSpecMTest::ParameterOptions options;
   options.type = 3;
   options.attenuation = attenuation;
   options.lmin = 1;
-  options.lmax = 1;
+  options.lmax = lmax;
   options.f1 = fmin;
   options.f2 = fmax;
   options.f11 = fmin;
@@ -878,6 +879,41 @@ TEST(PreferredSolverApiTests, MultiSemCowlingCutoffUsesChunkRegions) {
   EXPECT_TRUE(multiMixed.real().array().isFinite().all());
   EXPECT_TRUE(multiMixed.imag().array().isFinite().all());
   EXPECT_TRUE(multiMixed.isApprox(singleMixed, 1e-10));
+}
+
+TEST(PreferredSolverApiTests, MultiSemChunkAccumulationMatchesSingleSemAcrossDegrees) {
+  SPARSESPEC::SparseFSpec solver;
+  for (const bool attenuation : {false, true}) {
+    // Four degrees exercise the parallel reduction when OMP_NUM_THREADS > 1.
+    // The three chunks use the same capped mesh as this single-SEM reference.
+    auto paramsNew = makeMultiCowlingSolveParams(5.0, 35.0, attenuation, 5.0, 4);
+    auto &freq = paramsNew.freqFull();
+    auto &params = paramsNew.inputParameters();
+    Full1D::SEM singleSem(paramsNew.earthModel(), 0.05, paramsNew.nq(),
+                         params.lmax());
+    const int derivedNskip = std::max(1, (freq.i2() - freq.i1()) / 20);
+    SPARSESPEC::SpectraRunContext request(freq, paramsNew.cmt(), params,
+                                        paramsNew.tref(), derivedNskip);
+    const auto frequencyMhz = [&](int idx) {
+      return freq.f(idx) * 1000.0 / freq.timeNorm();
+    };
+    const std::vector<double> cutoffs{
+        0.0, frequencyMhz(freq.i1()) / 2.0,
+        frequencyMhz(freq.i1() + (freq.i2() - freq.i1()) / 2)};
+    for (const double cutoff : cutoffs) {
+      SCOPED_TRACE(::testing::Message() << "attenuation=" << attenuation
+                                       << " cutoff_mhz=" << cutoff);
+      paramsNew.setCowlingFrequencyMhz(cutoff);
+      const auto multi = solver.spectra(paramsNew);
+      const auto single = solver.spectra(request, singleSem);
+      EXPECT_TRUE(multi.real().array().isFinite().all());
+      EXPECT_TRUE(multi.imag().array().isFinite().all());
+      EXPECT_GT(multi.norm(), 0.0);
+      EXPECT_TRUE(multi.isApprox(single, 1e-10));
+      EXPECT_TRUE(multi.leftCols(freq.i1()).isZero(0.0));
+      EXPECT_TRUE(multi.rightCols(multi.cols() - freq.i2()).isZero(0.0));
+    }
+  }
 }
 
 TEST(PreferredSolverApiTests, LegacyMultiSemOverloadReturnsFiniteOutput) {
