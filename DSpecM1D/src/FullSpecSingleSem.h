@@ -19,7 +19,8 @@ SparseFSpec::spectra(Full1D::SEM &sem, InputParametersNew &paramsNew) {
 }
 
 inline Eigen::MatrixXcd
-SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem) {
+SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
+                     bool forceCowling) {
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
   using SparseMatrixC = Eigen::SparseMatrix<Complex>;
@@ -151,50 +152,80 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem) {
   // spheroidals
   if (inc_sph) {
     auto recElems = sem.receiverElements(params);
-    auto lowidx = sem.ltgS(0, recElems[0], 0);
-    auto upidx = sem.ltgS(1, recElems.back(), NQ - 1);
-    int lenidx = upidx - lowidx + 1;
-    auto lensph = sem.ltgS(2, sem.mesh().NE() - 1, NQ - 1) + 1;
+    int cowlingFirstIndex = forceCowling ? myff.i1() : myff.i2();
+    const double cutoffMhz = params.cowlingFrequencyMhz();
+    if (!forceCowling && cutoffMhz > 0.0) {
+      for (int idx = myff.i1(); idx < myff.i2(); ++idx) {
+        const double frequencyMhz = myff.f(idx) * 1000.0 / myff.timeNorm();
+        if (frequencyMhz >= cutoffMhz) {
+          cowlingFirstIndex = idx;
+          break;
+        }
+      }
+    }
 #pragma omp parallel default(shared) private(solver1)
     {
 #pragma omp for schedule(dynamic)
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
-        SparseMatrixC hS = sem.hS(idxl).cast<Complex>();
-        SparseMatrixC pS = sem.pS(idxl).cast<Complex>();
-        SparseMatrixC hSa = sem.hSa(idxl).cast<Complex>();
-        hS.makeCompressed();
-        pS.makeCompressed();
-        hSa.makeCompressed();
         MatrixC rvVals = paramInfo.rvFullSph(idxl);
         MatrixC fVals = sem.calculateForceCoefficients(cmt, idxl);
         MatrixC redC = rvVals * fVals;
-        MatrixC fBase = sem.calculateForceAll(cmt, idxl);
-        MatrixC rvBase = sem.rvBaseFull(params, idxl);
-        auto vecRidx =
-            SpectralTools::allIndicesSph(sem, idxl, myff, idxSource, nskip);
-        // MatrixC vecRawL =
-        //     MatrixC::Zero(3 * params.num_receivers(), vecW.size());
-        for (int idx = myff.i2() - 1; idx > myff.i1() - 1; --idx) {
-          std::size_t idxRs = vecRidx[idx - myff.i1()];
-          std::size_t len_ms = lensph - idxRs;
-          Complex w = vecW[idx] + ieps;
-          SparseMatrixC matSph = hS.block(idxRs, idxRs, len_ms, len_ms) -
-                                 w * w * pS.block(idxRs, idxRs, len_ms, len_ms);
-          if (params.attenuation())
-            matSph += attenFactor(vecW[idx], w0, twodivpi, myi) *
-                      hSa.block(idxRs, idxRs, len_ms, len_ms);
-          matSph.makeCompressed();
-          auto fRed = fBase.block(idxRs, 0, len_ms, fBase.cols());
-          factorizeOrCompute(solver1, matSph, myff.i2() - idx - 1, nskip);
-          MatrixC vecSol = solver1.solve(fRed);
-          auto lidx = lowidx - idxRs;
+        // Separate slices restart each formulation's truncation and LU cadence.
+        for (int region = 1; region >= 0; --region) {
+          const bool useCowling = region == 1;
+          const int regionBegin = useCowling ? cowlingFirstIndex : myff.i1();
+          const int regionEnd = useCowling ? myff.i2() : cowlingFirstIndex;
+          if (regionBegin >= regionEnd)
+            continue;
+          const auto lowidx = useCowling ? sem.ltgSC(0, recElems[0], 0)
+                                         : sem.ltgS(0, recElems[0], 0);
+          const auto upidx = useCowling
+                                 ? sem.ltgSC(1, recElems.back(), NQ - 1)
+                                 : sem.ltgS(1, recElems.back(), NQ - 1);
+          const int lenidx = upidx - lowidx + 1;
+          const auto lensph = useCowling
+                                  ? sem.ltgSC(1, sem.mesh().NE() - 1, NQ - 1) + 1
+                                  : sem.ltgS(2, sem.mesh().NE() - 1, NQ - 1) + 1;
+          SparseMatrixC hS =
+              (useCowling ? sem.hSC(idxl) : sem.hS(idxl)).cast<Complex>();
+          SparseMatrixC pS =
+              (useCowling ? sem.pSC(idxl) : sem.pS(idxl)).cast<Complex>();
+          SparseMatrixC hSa =
+              (useCowling ? sem.hSCa(idxl) : sem.hSa(idxl)).cast<Complex>();
+          hS.makeCompressed();
+          pS.makeCompressed();
+          hSa.makeCompressed();
+          MatrixC fBase = sem.calculateForceAll(cmt, idxl, useCowling);
+          MatrixC rvBase = sem.rvBaseFull(params, idxl, useCowling);
+          std::vector<double> regionW(vecW.begin() + regionBegin,
+                                      vecW.begin() + regionEnd);
+          auto regionRidx = SpectralTools::allIndicesSph(
+              sem, idxl, regionW, idxSource, nskip, useCowling);
+          SparseLUType solver;
+          for (int idx = regionEnd - 1; idx >= regionBegin; --idx) {
+            const std::size_t idxRs = regionRidx[idx - regionBegin];
+            std::size_t len_ms = lensph - idxRs;
+            Complex w = vecW[idx] + ieps;
+            SparseMatrixC matSph = hS.block(idxRs, idxRs, len_ms, len_ms) -
+                                   w * w *
+                                       pS.block(idxRs, idxRs, len_ms, len_ms);
+            if (params.attenuation())
+              matSph += attenFactor(vecW[idx], w0, twodivpi, myi) *
+                        hSa.block(idxRs, idxRs, len_ms, len_ms);
+            matSph.makeCompressed();
+            auto fRed = fBase.block(idxRs, 0, len_ms, fBase.cols());
+            factorizeOrCompute(solver, matSph, regionEnd - idx - 1, nskip);
+            MatrixC vecSol = solver.solve(fRed);
+            auto lidx = lowidx - idxRs;
 
 #pragma omp critical(sphvecadd)
-          {
-            vecRaw.col(idx) +=
-                redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 4))
-                    .rowwise()
-                    .sum();
+            {
+              vecRaw.col(idx) +=
+                  redC.cwiseProduct(
+                      rvBase * vecSol.block(lidx, 0, lenidx, 4))
+                      .rowwise()
+                      .sum();
+            }
           }
         }
       }

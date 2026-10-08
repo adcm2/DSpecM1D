@@ -1,6 +1,7 @@
 #ifndef INPUT_PARSER_H
 #define INPUT_PARSER_H
 
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -163,6 +164,7 @@ private:
   double m_source_lon_deg;
   double m_m_rr, m_m_rt, m_m_rp, m_m_tt, m_m_tp, m_m_pp;   // Moment tensor
   double m_receiver_depth;
+  double m_cowling_frequency_mhz = 0.0;
   int m_num_receivers;
   std::vector<std::pair<double, double>> m_receivers;   // lat, lon
 
@@ -225,6 +227,24 @@ public:
       m_receivers.push_back(read_required_lat_lon(file, "receiver_lat_lon"));
     }
 
+    const std::string cutoffLine = get_next_value_line(file);
+    if (!cutoffLine.empty()) {
+      std::stringstream ss(cutoffLine);
+      if (!(ss >> m_cowling_frequency_mhz))
+        throw std::runtime_error(
+            "Invalid value for field: cowling_frequency_mhz (line: \"" +
+            cutoffLine + "\")");
+      ss >> std::ws;
+      if (!ss.eof())
+        throw std::runtime_error(
+            "Trailing tokens for field: cowling_frequency_mhz (line: \"" +
+            cutoffLine + "\")");
+      setCowlingFrequencyMhz(m_cowling_frequency_mhz);
+      if (!get_next_value_line(file).empty())
+        throw std::runtime_error(
+            "Unexpected value after cowling_frequency_mhz");
+    }
+
     require_condition(m_num_receivers > 0, "num_receivers must be > 0");
     require_condition(m_lmin >= 0 && m_lmax >= m_lmin, "Invalid lmin/lmax");
     require_positive(m_time_step_sec, "time_step_sec");
@@ -276,6 +296,15 @@ public:
   double m_tp() const { return m_m_tp; }
   double m_pp() const { return m_m_pp; }
   double receiver_depth() const { return m_receiver_depth; }
+  /// Returns the Cowling cutoff in physical mHz; zero disables the cutoff.
+  double cowlingFrequencyMhz() const { return m_cowling_frequency_mhz; }
+  /// Sets the single- and multi-SEM Cowling cutoff in physical mHz; zero disables it.
+  void setCowlingFrequencyMhz(double frequency) {
+    if (!std::isfinite(frequency) || frequency < 0.0)
+      throw std::invalid_argument(
+          "cowling_frequency_mhz must be finite and >= 0");
+    m_cowling_frequency_mhz = frequency;
+  }
   int num_receivers() const { return m_num_receivers; }
   const std::vector<std::pair<double, double>> &receivers() const {
     return m_receivers;

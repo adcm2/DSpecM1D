@@ -243,49 +243,91 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           Full1D::SEM &sem = sems[idxChunk];
           auto idxSource = sem.sourceElement(cmt);
           auto recElems = sem.receiverElements(params);
-          auto lowidx = sem.ltgS(0, recElems[0], 0);
-          auto upidx = sem.ltgS(1, recElems.back(), NQ - 1);
-          int lenidx = upidx - lowidx + 1;
-          auto lensph = sem.ltgS(2, sem.mesh().NE() - 1, NQ - 1) + 1;
-          SparseMatrixC pS = sem.pS(idxl).cast<Complex>();
-          SparseMatrixC hS = sem.hS(idxl).cast<Complex>();
-          SparseMatrixC hSa = sem.hSa(idxl).cast<Complex>();
-          pS.makeCompressed();
-          hS.makeCompressed();
-          hSa.makeCompressed();
           MatrixC fVals = sem.calculateForceRedCoefficients(cmt, idxl, 0.0);
           MatrixC redC = rvVals * fVals;
-          MatrixC fBase = sem.calculateForceAll(cmt, idxl);
-          MatrixC rvBase = sem.rvBaseFull(params, idxl);
-          auto ridxsph = SpectralTools::allIndicesSph(
-              sem, idxl, freqChunks[idxChunk], idxSource, nskip);
-          auto i1 = idxChunks[idxChunk][0];
-          auto lenChunk = freqChunks[idxChunk].size();
-          MatrixC vecRawL = MatrixC::Zero(3 * params.num_receivers(), lenChunk);
-          for (int idx = (int) lenChunk - 1; idx > -1; --idx) {
-            auto wval = freqChunks[idxChunk][idx];
-            std::size_t ridx = ridxsph[idx];
-            std::size_t len_ms = lensph - ridx;
-            Complex w = wval + ieps;
-            SparseMatrixC wS = hS.block(ridx, ridx, len_ms, len_ms) -
-                               w * w * pS.block(ridx, ridx, len_ms, len_ms);
-            if (params.attenuation())
-              wS += attenFactor(wval, w0, twodivpi, myi) *
-                    hSa.block(ridx, ridx, len_ms, len_ms);
-            wS.makeCompressed();
-            MatrixC fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
-            factorizeOrCompute(solver1, wS, (int) lenChunk - idx - 1, nskip);
-            MatrixC vecSol = solver1.solve(fRed);
-            auto lidx = lowidx - ridx;
-            vecRawL.col(idx) +=
-                redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 4))
-                    .rowwise()
-                    .sum();
+          const int lenChunk = static_cast<int>(idxChunks[idxChunk].size());
+          MatrixC vecRawL = MatrixC::Zero(3 * numRec, lenChunk);
+          const double cutoffMhz = params.cowlingFrequencyMhz();
+          int cowlingFirst = static_cast<int>(idxChunks[idxChunk].size());
+          if (cutoffMhz > 0.0) {
+            for (int idx = 0; idx < static_cast<int>(idxChunks[idxChunk].size());
+                 ++idx) {
+              const int globalIdx = idxChunks[idxChunk][idx];
+              const double frequencyMhz =
+                  myff.f(globalIdx) * 1000.0 / myff.timeNorm();
+              if (frequencyMhz >= cutoffMhz) {
+                cowlingFirst = idx;
+                break;
+              }
+            }
           }
+
+          // Each contiguous region owns its matrix layout and restarts the
+          // truncation/factorization cadence at the region boundary.
+          for (int region = 0; region < 2; ++region) {
+            const bool useCowling = region == 1;
+            const int regionBegin = useCowling ? cowlingFirst : 0;
+            const int regionEnd = useCowling
+                                      ? static_cast<int>(idxChunks[idxChunk].size())
+                                      : cowlingFirst;
+            if (regionBegin >= regionEnd)
+              continue;
+
+            const auto lowidx = useCowling
+                                    ? sem.ltgSC(0, recElems[0], 0)
+                                    : sem.ltgS(0, recElems[0], 0);
+            const auto upidx = useCowling
+                                   ? sem.ltgSC(1, recElems.back(), NQ - 1)
+                                   : sem.ltgS(1, recElems.back(), NQ - 1);
+            const int lenidx = upidx - lowidx + 1;
+            const auto lensph = useCowling
+                                    ? sem.ltgSC(1, sem.mesh().NE() - 1, NQ - 1) + 1
+                                    : sem.ltgS(2, sem.mesh().NE() - 1, NQ - 1) + 1;
+            SparseMatrixC pS =
+                (useCowling ? sem.pSC(idxl) : sem.pS(idxl)).cast<Complex>();
+            SparseMatrixC hS =
+                (useCowling ? sem.hSC(idxl) : sem.hS(idxl)).cast<Complex>();
+            SparseMatrixC hSa =
+                (useCowling ? sem.hSCa(idxl) : sem.hSa(idxl)).cast<Complex>();
+            pS.makeCompressed();
+            hS.makeCompressed();
+            hSa.makeCompressed();
+            MatrixC fBase = sem.calculateForceAll(cmt, idxl, useCowling);
+            MatrixC rvBase = sem.rvBaseFull(params, idxl, useCowling);
+
+            std::vector<double> regionW(freqChunks[idxChunk].begin() + regionBegin,
+                                        freqChunks[idxChunk].begin() + regionEnd);
+            auto ridxsph = SpectralTools::allIndicesSph(
+                sem, idxl, regionW, idxSource, nskip, useCowling);
+            SparseLUType regionSolver;
+            for (int idx = regionEnd - 1; idx >= regionBegin; --idx) {
+              const int localRegionIdx = idx - regionBegin;
+              const double wval = freqChunks[idxChunk][idx];
+              const std::size_t ridx = ridxsph[localRegionIdx];
+              const std::size_t len_ms = lensph - ridx;
+              const Complex w = wval + ieps;
+              SparseMatrixC wS = hS.block(ridx, ridx, len_ms, len_ms) -
+                                 w * w * pS.block(ridx, ridx, len_ms, len_ms);
+              if (params.attenuation())
+                wS += attenFactor(wval, w0, twodivpi, myi) *
+                      hSa.block(ridx, ridx, len_ms, len_ms);
+              wS.makeCompressed();
+              MatrixC fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
+              factorizeOrCompute(regionSolver, wS, regionEnd - idx - 1, nskip);
+              MatrixC vecSol = regionSolver.solve(fRed);
+              const auto lidx = lowidx - ridx;
+              vecRawL.col(idx) +=
+                  redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 4))
+                      .rowwise()
+                      .sum();
+            }
+          }
+          if (lenChunk > 0) {
+            const int i1 = idxChunks[idxChunk].front();
 #pragma omp critical(torvecadd)
-          {
-            vecRaw.block(0, i1, 3 * params.num_receivers(), lenChunk) +=
-                vecRawL;
+            {
+              vecRaw.block(0, i1, 3 * numRec, lenChunk) += vecRawL;
+            }
           }
         }
       }

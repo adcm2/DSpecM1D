@@ -116,6 +116,15 @@ public:
   double timeNorm() const { return m_model.TimeNorm(); }
   double tref() const { return m_model.TREF(); }
 
+  /// Returns the single- and multi-SEM Cowling cutoff in physical mHz.
+  double cowlingFrequencyMhz() const {
+    return m_params.cowlingFrequencyMhz();
+  }
+  /// Updates the single- and multi-SEM Cowling cutoff in physical mHz; zero disables it.
+  void setCowlingFrequencyMhz(double frequency) {
+    m_params.setCowlingFrequencyMhz(frequency);
+  }
+
   /// Returns the SI conversion factor implied by `output_type`.
   double normFactor() const {
     if (m_params.output_type() == 0)

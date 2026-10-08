@@ -19,6 +19,7 @@ namespace DSpecMTest {
 
 struct ParameterOptions {
   int type = 4;
+  int attenuation = 0;
   int outputType = 0;
   double relativeError = 1e-5;
   int lmin = 0;
@@ -53,7 +54,7 @@ makeParameterText(const std::string &earthModelPath,
   out << "\"./output/test.out\"\n"
       << "\"" << earthModelPath << "\"\n"
       << options.type << "\n"
-      << "0\n"
+      << options.attenuation << "\n"
       << "2\n"
       << options.outputType << "\n"
       << "0\n"

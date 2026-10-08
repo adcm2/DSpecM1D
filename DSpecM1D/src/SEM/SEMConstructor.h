@@ -338,11 +338,18 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
     m_vecKeSBase.reserve(3);
     m_vecKeSAtten.reserve(3);
     m_vecInSBase.reserve(2);
+    m_vecKeSCBase.reserve(3);
+    m_vecKeSCAtten.reserve(3);
+    m_vecInSCBase.reserve(2);
     auto totlen_S = this->ltgS(2, m_mesh.NE() - 1, NQ - 1) + 1;
+    auto totlen_SC = this->ltgSC(1, m_mesh.NE() - 1, NQ - 1) + 1;
     using T = Eigen::Triplet<double>;
     std::vector<T> tpl_in_0, tpl_in_1;
     std::vector<T> tpl_ke_0, tpl_ke_1, tpl_ke_2;
     std::vector<T> tpl_ke_a0, tpl_ke_a1, tpl_ke_a2;
+    std::vector<T> tpl_in_C0, tpl_in_C1;
+    std::vector<T> tpl_ke_C0, tpl_ke_C1, tpl_ke_C2;
+    std::vector<T> tpl_ke_Ca0, tpl_ke_Ca1, tpl_ke_Ca2;
 
     // inertia
     for (int idxe = 0; idxe < m_mesh.NE(); ++idxe) {
@@ -352,8 +359,12 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
                      m_meshModel.Density(idxe, i) * xrad * xrad;
         auto idx_uu = this->ltgS(0, idxe, i);
         auto idx_vv = this->ltgS(1, idxe, i);
+        auto idx_Cu = this->ltgSC(0, idxe, i);
+        auto idx_Cv = this->ltgSC(1, idxe, i);
         tpl_in_0.push_back(T(idx_uu, idx_uu, tmp));
         tpl_in_1.push_back(T(idx_vv, idx_vv, tmp));
+        tpl_in_C0.push_back(T(idx_Cu, idx_Cu, tmp));
+        tpl_in_C1.push_back(T(idx_Cv, idx_Cv, tmp));
       }
     }
 
@@ -374,15 +385,22 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
         auto idxtiu = this->ltgS(0, idxe, i);
         auto idxtiv = this->ltgS(1, idxe, i);
         auto idxtip = this->ltgS(2, idxe, i);
+        auto idx_Cu = this->ltgSC(0, idxe, i);
+        auto idx_Cv = this->ltgSC(1, idxe, i);
 
         tpl_ke_0.push_back(
             T(idxtiu, idxtiu,
               4.0 * tmp0 *
                   (crho * (pi_db * bigg_db * crho * crad - gi) * crad + Ai -
                    Ni)));
+        tpl_ke_C0.push_back(
+            T(idx_Cu, idx_Cu, 4.0 * tmp0 * (Ai - Ni - crho * gi * crad)));
         tpl_ke_1.push_back(T(idxtiu, idxtiu, tmp0 * Li));
         tpl_ke_1.push_back(T(idxtiv, idxtiv, tmp0 * (Li - 2 * Ni)));
         tpl_ke_2.push_back(T(idxtiv, idxtiv, tmp0 * Ai));
+        tpl_ke_C1.push_back(T(idx_Cu, idx_Cu, tmp0 * Li));
+        tpl_ke_C1.push_back(T(idx_Cv, idx_Cv, tmp0 * (Li - 2 * Ni)));
+        tpl_ke_C2.push_back(T(idx_Cv, idx_Cv, tmp0 * Ai));
         tpl_ke_1.push_back(T(idxtip, idxtip, tmp0 / (4.0 * pi_db * bigg_db)));
         tpl_ke_1.push_back(T(idxtip, idxtiv, tmp0 * crho * crad));
         tpl_ke_1.push_back(T(idxtiv, idxtip, tmp0 * crho * crad));
@@ -390,15 +408,25 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
             T(idxtiu, idxtiv, tmp0 * (crho * gi * crad - Li - 2 * (Ai - Ni))));
         tpl_ke_1.push_back(
             T(idxtiv, idxtiu, tmp0 * (crho * gi * crad - Li - 2 * (Ai - Ni))));
+        const auto tmp_uv = tmp0 * (crho * gi * crad - Li - 2 * (Ai - Ni));
+        tpl_ke_C1.push_back(T(idx_Cu, idx_Cv, tmp_uv));
+        tpl_ke_C1.push_back(T(idx_Cv, idx_Cu, tmp_uv));
 
         tpl_ke_a0.push_back(T(idxtiu, idxtiu, 4.0 * tmp0 * (Ai_a - Ni_a)));
+        tpl_ke_Ca0.push_back(T(idx_Cu, idx_Cu, 4.0 * tmp0 * (Ai_a - Ni_a)));
         tpl_ke_a1.push_back(T(idxtiu, idxtiu, tmp0 * Li_a));
         tpl_ke_a1.push_back(T(idxtiv, idxtiv, tmp0 * (Li_a - 2 * Ni_a)));
         tpl_ke_a2.push_back(T(idxtiv, idxtiv, tmp0 * Ai_a));
+        tpl_ke_Ca1.push_back(T(idx_Cu, idx_Cu, tmp0 * Li_a));
+        tpl_ke_Ca1.push_back(T(idx_Cv, idx_Cv, tmp0 * (Li_a - 2 * Ni_a)));
+        tpl_ke_Ca2.push_back(T(idx_Cv, idx_Cv, tmp0 * Ai_a));
         tpl_ke_a1.push_back(
             T(idxtiu, idxtiv, -tmp0 * (Li_a + 2 * (Ai_a - Ni_a))));
         tpl_ke_a1.push_back(
             T(idxtiv, idxtiu, -tmp0 * (Li_a + 2 * (Ai_a - Ni_a))));
+        const auto tmp_uv_a = -tmp0 * (Li_a + 2 * (Ai_a - Ni_a));
+        tpl_ke_Ca1.push_back(T(idx_Cu, idx_Cv, tmp_uv_a));
+        tpl_ke_Ca1.push_back(T(idx_Cv, idx_Cu, tmp_uv_a));
       }
     }
 
@@ -446,6 +474,10 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
           auto idx_v_i = this->ltgS(1, idxe, i),
                idx_v_j = this->ltgS(1, idxe, j);
           auto idx_p_i = this->ltgS(2, idxe, i);
+          auto idx_Cu_i = this->ltgSC(0, idxe, i),
+               idx_Cu_j = this->ltgSC(0, idxe, j);
+          auto idx_Cv_i = this->ltgSC(1, idxe, i),
+               idx_Cv_j = this->ltgSC(1, idxe, j);
           tpl_ke_0.push_back(T(idx_u_i, idx_u_j, tmp_uu_0));
           tpl_ke_0.push_back(T(idx_u_j, idx_u_i, tmp_uu_0));
           tpl_ke_1.push_back(T(idx_v_i, idx_v_j, tmp_vv_1));
@@ -454,6 +486,14 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
           tpl_ke_1.push_back(T(idx_v_j, idx_u_i, tmp_uvd_1));
           tpl_ke_1.push_back(T(idx_u_i, idx_v_j, tmp_udv_1));
           tpl_ke_1.push_back(T(idx_v_j, idx_u_i, tmp_udv_1));
+          tpl_ke_C0.push_back(T(idx_Cu_i, idx_Cu_j, tmp_uu_0));
+          tpl_ke_C0.push_back(T(idx_Cu_j, idx_Cu_i, tmp_uu_0));
+          tpl_ke_C1.push_back(T(idx_Cv_i, idx_Cv_j, tmp_vv_1));
+          tpl_ke_C1.push_back(T(idx_Cv_j, idx_Cv_i, tmp_vv_1));
+          tpl_ke_C1.push_back(T(idx_Cu_i, idx_Cv_j, tmp_uvd_1));
+          tpl_ke_C1.push_back(T(idx_Cv_j, idx_Cu_i, tmp_uvd_1));
+          tpl_ke_C1.push_back(T(idx_Cu_i, idx_Cv_j, tmp_udv_1));
+          tpl_ke_C1.push_back(T(idx_Cv_j, idx_Cu_i, tmp_udv_1));
           tpl_ke_0.push_back(T(idx_p_i, idx_u_j, tmp_pdu_0));
           tpl_ke_0.push_back(T(idx_u_j, idx_p_i, tmp_pdu_0));
           tpl_ke_a0.push_back(T(idx_u_i, idx_u_j, tmp_uu_0a));
@@ -464,6 +504,14 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
           tpl_ke_a1.push_back(T(idx_v_j, idx_u_i, tmp_uvd_1a));
           tpl_ke_a1.push_back(T(idx_u_i, idx_v_j, tmp_udv_1a));
           tpl_ke_a1.push_back(T(idx_v_j, idx_u_i, tmp_udv_1a));
+          tpl_ke_Ca0.push_back(T(idx_Cu_i, idx_Cu_j, tmp_uu_0a));
+          tpl_ke_Ca0.push_back(T(idx_Cu_j, idx_Cu_i, tmp_uu_0a));
+          tpl_ke_Ca1.push_back(T(idx_Cv_i, idx_Cv_j, tmp_vv_1a));
+          tpl_ke_Ca1.push_back(T(idx_Cv_j, idx_Cv_i, tmp_vv_1a));
+          tpl_ke_Ca1.push_back(T(idx_Cu_i, idx_Cv_j, tmp_uvd_1a));
+          tpl_ke_Ca1.push_back(T(idx_Cv_j, idx_Cu_i, tmp_uvd_1a));
+          tpl_ke_Ca1.push_back(T(idx_Cu_i, idx_Cv_j, tmp_udv_1a));
+          tpl_ke_Ca1.push_back(T(idx_Cv_j, idx_Cu_i, tmp_udv_1a));
         }
       }
 
@@ -486,12 +534,20 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
                idx_v_j = this->ltgS(1, idxe, j);
           auto idx_p_i = this->ltgS(2, idxe, i),
                idx_p_j = this->ltgS(2, idxe, j);
+          auto idx_Cu_i = this->ltgSC(0, idxe, i),
+               idx_Cu_j = this->ltgSC(0, idxe, j);
+          auto idx_Cv_i = this->ltgSC(1, idxe, i),
+               idx_Cv_j = this->ltgSC(1, idxe, j);
           tpl_ke_0.push_back(T(idx_u_i, idx_u_j, e2 * tmp_uu_0));
           tpl_ke_1.push_back(T(idx_v_i, idx_v_j, e2 * tmp_vv_1));
+          tpl_ke_C0.push_back(T(idx_Cu_i, idx_Cu_j, e2 * tmp_uu_0));
+          tpl_ke_C1.push_back(T(idx_Cv_i, idx_Cv_j, e2 * tmp_vv_1));
           tpl_ke_0.push_back(
               T(idx_p_i, idx_p_j, e2 * tmp_pp_0 / (4.0 * pi_db * bigg_db)));
           tpl_ke_a0.push_back(T(idx_u_i, idx_u_j, e2 * tmp_uu_0a));
           tpl_ke_a1.push_back(T(idx_v_i, idx_v_j, e2 * tmp_vv_1a));
+          tpl_ke_Ca0.push_back(T(idx_Cu_i, idx_Cu_j, e2 * tmp_uu_0a));
+          tpl_ke_Ca1.push_back(T(idx_Cv_i, idx_Cv_j, e2 * tmp_vv_1a));
         }
       }
     }
@@ -508,14 +564,28 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
       m.makeCompressed();
       return m;
     };
+    auto make_cowling = [&totlen_SC](std::vector<Eigen::Triplet<double>> &tpl) {
+      Eigen::SparseMatrix<double> m(totlen_SC, totlen_SC);
+      m.setFromTriplets(tpl.begin(), tpl.end());
+      m.makeCompressed();
+      return m;
+    };
     m_vecInSBase.push_back(make_in(tpl_in_0));
     m_vecInSBase.push_back(make_in(tpl_in_1));
+    m_vecInSCBase.push_back(make_cowling(tpl_in_C0));
+    m_vecInSCBase.push_back(make_cowling(tpl_in_C1));
     m_vecKeSBase.push_back(make_smat(tpl_ke_0));
     m_vecKeSBase.push_back(make_smat(tpl_ke_1));
     m_vecKeSBase.push_back(make_smat(tpl_ke_2));
     m_vecKeSAtten.push_back(make_smat(tpl_ke_a0));
     m_vecKeSAtten.push_back(make_smat(tpl_ke_a1));
     m_vecKeSAtten.push_back(make_smat(tpl_ke_a2));
+    m_vecKeSCBase.push_back(make_cowling(tpl_ke_C0));
+    m_vecKeSCBase.push_back(make_cowling(tpl_ke_C1));
+    m_vecKeSCBase.push_back(make_cowling(tpl_ke_C2));
+    m_vecKeSCAtten.push_back(make_cowling(tpl_ke_Ca0));
+    m_vecKeSCAtten.push_back(make_cowling(tpl_ke_Ca1));
+    m_vecKeSCAtten.push_back(make_cowling(tpl_ke_Ca2));
   }
 };
 
