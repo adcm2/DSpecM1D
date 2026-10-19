@@ -7,7 +7,7 @@
 #include <vector>
 
 #include <Eigen/Sparse>
-#include <Interpolation/Lagrange>
+#include <Interpolation/Lagrange.hpp>
 
 #include "LoveDofMap.h"
 #include "RadialState.h"
@@ -36,8 +36,7 @@ assembleStaticRadialOperator(RadialState &state,
   const auto &mesh = state.mesh();
   const auto &model = state.meshModel();
   const auto &quadrature = state.quadrature();
-  const auto lagrange = Interpolation::LagrangePolynomial(
-      quadrature.Points().begin(), quadrature.Points().end());
+  const auto lagrange = Interpolation::LagrangeBasis(quadrature.Points());
   const double gravitational_constant =
       state.dimensionlessGravitationalConstant();
   const double potential_scale =
@@ -70,7 +69,7 @@ assembleStaticRadialOperator(RadialState &state,
         const double value = node == point ? 1.0 : 0.0;
         const double derivative =
             derivative_scale *
-            lagrange.Derivative(node, quadrature.X(point));
+            lagrange.Evaluate<1>(node, quadrature.X(point));
         displacement.emplace_back(u, value);
         displacement_derivative.emplace_back(u, derivative);
         potential_derivative.emplace_back(p, derivative);
@@ -132,8 +131,7 @@ assembleStaticOperator(RadialState &state, const LoveDofMap &dof_map,
   const auto &mesh = state.mesh();
   const auto &model = state.meshModel();
   const auto &quadrature = state.quadrature();
-  const auto lagrange = Interpolation::LagrangePolynomial(
-      quadrature.Points().begin(), quadrature.Points().end());
+  const auto lagrange = Interpolation::LagrangeBasis(quadrature.Points());
   const double angular_degree = degree * (degree + 1);
   const double gravitational_constant =
       state.dimensionlessGravitationalConstant();
@@ -163,7 +161,7 @@ assembleStaticOperator(RadialState &state, const LoveDofMap &dof_map,
         const double value = node == point ? 1.0 : 0.0;
         const double derivative =
             derivative_scale *
-            lagrange.Derivative(node, quadrature.X(point));
+            lagrange.Evaluate<1>(node, quadrature.X(point));
 
         if (const auto p = dof_map.index(Field::P, element, node)) {
           potential.emplace_back(*p, value);

@@ -71,12 +71,12 @@ main() {
 
   // Write the frequency- and time-domain comparison products used for plotting.
   std::string pathToFile =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex1_w.out";
+      PaperExamples::outputPath("ex1_w.out");
   DSpecM::writeFrequencyComparison(pathToFile, paramsNew, aFilt, aFiltYSpec,
                                    aFiltSpecnm);
 
   std::string pathToMineosFile =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex1_t.out";
+      PaperExamples::outputPath("ex1_t.out");
   DSpecM::writeTimeComparison(pathToMineosFile, paramsNew, vecFiltT,
                               vecFiltTSpecnm);
 

@@ -164,9 +164,8 @@ main() {
   // Write the stored convergence responses plus the derived L1/L2 error tables.
   double nval = 1.0 / prem.TimeNorm();
 
-  std::string pathToFreqFile = std::string(PROJECT_BUILD_DIR) +
-                               "../plotting/outputs/ex5_w_NQ" +
-                               std::to_string(nq) + "_step.out";
+  std::string pathToFreqFile = PaperExamples::outputPath(
+      "ex5_w_NQ" + std::to_string(nq) + "_step.out");
   std::ofstream freqFile(pathToFreqFile);
   if (!freqFile) {
     std::cerr << "Error: unable to open output file_w: " << pathToFreqFile
@@ -192,9 +191,8 @@ main() {
   }
   freqFile.close();
 
-  std::string pathToTimeFile = std::string(PROJECT_BUILD_DIR) +
-                               "../plotting/outputs/ex5_t_NQ" +
-                               std::to_string(nq) + "_step.out";
+  std::string pathToTimeFile = PaperExamples::outputPath(
+      "ex5_t_NQ" + std::to_string(nq) + "_step.out");
   std::ofstream timeFile(pathToTimeFile);
   if (!timeFile) {
     std::cerr << "Error: unable to open output file_t: " << pathToTimeFile
@@ -214,10 +212,9 @@ main() {
   }
   timeFile.close();
 
-  std::string pathToErrFile =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex5_NQ" +
-      std::to_string(nq) + "_step_error_" +
-      std::to_string(static_cast<int>(params.f22())) + ".out";
+  std::string pathToErrFile = PaperExamples::outputPath(
+      "ex5_NQ" + std::to_string(nq) + "_step_error_" +
+      std::to_string(static_cast<int>(params.f22())) + ".out");
   std::ofstream errFile(pathToErrFile);
   if (!errFile) {
     std::cerr << "Error: unable to open output file_err: " << pathToErrFile
@@ -233,10 +230,9 @@ main() {
   }
   errFile.close();
 
-  std::string pathToL2File =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex5_NQ" +
-      std::to_string(nq) + "_step_error_l2_" +
-      std::to_string(static_cast<int>(params.f22())) + ".out";
+  std::string pathToL2File = PaperExamples::outputPath(
+      "ex5_NQ" + std::to_string(nq) + "_step_error_l2_" +
+      std::to_string(static_cast<int>(params.f22())) + ".out");
   std::ofstream l2File(pathToL2File);
   if (!l2File) {
     std::cerr << "Error: unable to open output file_l2: " << pathToL2File

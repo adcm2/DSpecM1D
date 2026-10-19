@@ -69,7 +69,7 @@ main() {
 
   // Write one row per time sample, with the three components for each receiver.
   std::string pathToFile =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex4.out";
+      PaperExamples::outputPath("ex4.out");
   std::ofstream file(pathToFile);
   if (!file) {
     std::cerr << "Error: unable to open output file: " << pathToFile << "\n";

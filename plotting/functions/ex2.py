@@ -1,9 +1,10 @@
 #%%
+from helpers.plot_paths import build_output_path
 from helpers.comparison_metrics import SpectraComparison
 from helpers.ex2_workflow import output_to_screen_code_diff_ex2, plot_ex2_comparison
 
 # User-editable configuration
-DATA_FILE = "../outputs/ex2_t.out"
+DATA_FILE = build_output_path("ex2_t.out")
 LOW_INDEX = 0
 UP_INDEX = 18001
 TIME_UPPER_LIMIT = 18000

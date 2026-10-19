@@ -18,7 +18,7 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y libfftw3-dev ninja-build doxygen
+          sudo apt-get install -y libfftw3-dev ninja-build doxygen python3-numpy python3-matplotlib python3-venv python3-pip
 
       - name: Configure
         run: |
@@ -31,7 +31,10 @@ jobs:
             -DDSPECM1D_BUILD_DOCS=ON
 
       - name: Build
-        run: cmake --build build --parallel
+        run: cmake --build build --parallel 2
+
+      - name: Run Python plotting checks
+        run: python3 -m unittest discover -s tests -p "test_*.py"
 
       - name: Run unit and component tests
         run: ctest --test-dir build --output-on-failure -L "unit|component"
@@ -39,8 +42,14 @@ jobs:
       - name: Run smoke checks
         run: ctest --test-dir build --output-on-failure -L dspecm1d_smoke
 
+      - name: Check first-seismogram plot
+        run: python3 plotting/functions/first_seismogram.py build/output/first_seismogram.out_t.out --save build/output/first_seismogram.png --no-show
+
       - name: Build docs site
         run: cmake --build build --target website
+
+      - name: Check internal documentation links
+        run: python3 tests/check_site_links.py build/site
 
   love-numbers:
     runs-on: ubuntu-latest
@@ -64,7 +73,7 @@ jobs:
             -DDSPECM1D_ENABLE_PAPER_VALIDATION=OFF
 
       - name: Build
-        run: cmake --build build --parallel
+        run: cmake --build build --parallel 2
 
       - name: Run complete normal test suite
         run: ctest --test-dir build --output-on-failure -L "unit|component"

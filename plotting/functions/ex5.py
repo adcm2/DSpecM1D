@@ -1,10 +1,11 @@
 #%%
+from helpers.plot_paths import build_output_path
 from helpers.ex5_workflow import output_to_screen_code_diff_ex5, plot_ex5
 
 # User-editable configuration
-NQ5_FILE = "../outputs/ex5_NQ5_step_error_50.out"
-NQ6_FILE = "../outputs/ex5_NQ6_step_error_50.out"
-NQ4_FILE = "../outputs/ex5_NQ4_step_error_50.out"
+NQ5_FILE = build_output_path("ex5_NQ5_step_error_50.out")
+NQ6_FILE = build_output_path("ex5_NQ6_step_error_50.out")
+NQ4_FILE = build_output_path("ex5_NQ4_step_error_50.out")
 
 
 def main():

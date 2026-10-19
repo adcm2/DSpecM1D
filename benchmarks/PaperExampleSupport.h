@@ -2,9 +2,11 @@
 #define DSPECM1D_PAPER_EXAMPLE_SUPPORT_H
 
 #include <algorithm>
+#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
+#include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -13,6 +15,47 @@
 #include <DSpecM1D/All>
 
 namespace PaperExamples {
+
+/**
+ * @brief Prepare and report the selected output path.
+ *
+ * The selected path may be outside the active build tree when an example's
+ * output environment variable supplies a destination.
+ */
+inline std::string prepareOutputPath(const std::filesystem::path &path) {
+  const auto output = path.lexically_normal();
+  if (!output.parent_path().empty()) {
+    std::filesystem::create_directories(output.parent_path());
+  }
+  std::cout << "Output: " << output.string() << '\n';
+  return output.string();
+}
+
+/**
+ * @brief Constructs the default output path without creating or reporting it.
+ */
+inline std::filesystem::path defaultOutputPath(const std::string &filename) {
+  return std::filesystem::path(PROJECT_BUILD_DIR) / "output" /
+         std::filesystem::path(filename).filename();
+}
+
+/**
+ * @brief Prepares an example output path, optionally using a named environment
+ * variable as the full destination path.
+ */
+inline std::string outputPath(
+    const std::string &filename,
+    const char *overrideEnvironmentVariable = nullptr) {
+  std::filesystem::path selectedPath = defaultOutputPath(filename);
+  if (overrideEnvironmentVariable != nullptr) {
+    if (const char *overrideValue = std::getenv(overrideEnvironmentVariable)) {
+      if (*overrideValue != '\0') {
+        selectedPath = std::filesystem::path(overrideValue);
+      }
+    }
+  }
+  return prepareOutputPath(selectedPath);
+}
 
 /**
  * @brief Returns the SI scaling implied by the legacy `output_type` flag.

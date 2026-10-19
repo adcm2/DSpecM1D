@@ -2,160 +2,52 @@
 
 [![DOI](https://zenodo.org/badge/1170173312.svg)](https://doi.org/10.5281/zenodo.19793472)
 
-DSpecM1D is a C++23 spectral element library for computing synthetic
-seismograms in a spherically symmetric (1D) Earth model.
+DSpecM1D is a C++23 spectral-element library for synthetic seismograms in a spherically symmetric Earth model. The quickest route is to build `generate_seismogram`, run the bundled one-receiver input, and plot its output.
 
-The README is a quick-start guide for the first public release. Full
-documentation, testing notes, debugging guidance, and release-facing API
-reference live on the website:
+- First calculation: [docs/site/first-seismogram.html](https://adcm2.github.io/DSpecM1D/first-seismogram.html)
+- Install and build: [docs/site/installation.html](https://adcm2.github.io/DSpecM1D/installation.html)
+- C++ library example: [docs/site/library-example.html](https://adcm2.github.io/DSpecM1D/library-example.html)
+- Parameter reference: [docs/site/parameter-files.html](https://adcm2.github.io/DSpecM1D/parameter-files.html)
+- Generated docs site: [adcm2.github.io/DSpecM1D](https://adcm2.github.io/DSpecM1D/)
 
-- Live docs: [adcm2.github.io/DSpecM1D](https://adcm2.github.io/DSpecM1D/)
-- Repository: [github.com/adcm2/DSpecM1D](https://github.com/adcm2/DSpecM1D)
-- Issues: [github.com/adcm2/DSpecM1D/issues](https://github.com/adcm2/DSpecM1D/issues)
+## Linux quick start
 
-## Features
-
-- Sparse frequency-domain SEM solver for radial, spheroidal, and toroidal modes
-- CMT earthquake source representation with arbitrary receiver geometry
-- Filtered time-domain seismogram generation from standard parameter files
-- Self-contained unit/component tests plus protected paper-reproduction examples
-- Static website and Doxygen API reference
-
-## Dependencies
-
-Required system packages for the first release:
-
-- FFTW3
-- OpenMP-capable compiler toolchain
-- CMake 3.24 or newer
-
-Remaining third-party C++ dependencies are fetched automatically from pinned
-revisions during the first configure.
-
-On Ubuntu or Debian:
+The primary documented build is Linux. Install a C++23/OpenMP-capable compiler, CMake 3.24 or newer, Git, and FFTW3 development files. The first CMake configure fetches the remaining dependencies from pinned revisions and needs network access.
 
 ```bash
+sudo apt update
 sudo apt install build-essential cmake git libfftw3-dev
-```
 
-On macOS with Homebrew:
-
-```bash
-brew install cmake fftw
-```
-
-This first release does not require NetCDF, BLAS, or LAPACK.
-
-## Building
-
-The default single-config build now configures in `Release` mode when
-`CMAKE_BUILD_TYPE` is unset, so a fresh clone builds in release mode by
-default:
-
-```bash
 git clone https://github.com/adcm2/DSpecM1D.git
 cd DSpecM1D
-cmake -S . -B build
-cmake --build build --parallel
+cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release \
+  -DDSPECM1D_BUILD_TOOLS=ON -DDSPECM1D_BUILD_TUTORIALS=ON
+cmake --build build/release --target generate_seismogram --parallel 2
+OMP_NUM_THREADS=2 build/release/bin/generate_seismogram \
+  build/release/data/params/first_seismogram.txt
 ```
 
-If you prefer presets:
+The CLI prints the generated file path: `build/release/output/first_seismogram.out_t.out`. The example uses attenuation off, one receiver, and a modest degree/frequency range. It demonstrates the workflow; it does not establish numerical convergence. Use `OMP_NUM_THREADS` to choose a modest runtime thread count independently of `--parallel` build jobs.
+
+## Build choices
+
+Use `build/release` for the documented user build and `build/dev` for development with tests and examples enabled. Keep separate CMake binary directories for distinct settings. Manual configuration requires CMake 3.24 or newer; the supplied preset file uses schema version 6 and requires CMake 3.25 or newer.
 
 ```bash
-cmake --preset release
-cmake --build --preset release
+# Development configuration
+cmake -S . -B build/dev \
+  -DDSPECM1D_BUILD_TESTS=ON -DDSPECM1D_BUILD_TUTORIALS=ON \
+  -DDSPECM1D_BUILD_BENCHMARKS=ON -DDSPECM1D_BUILD_TOOLS=ON \
+  -DDSPECM1D_ENABLE_SMOKE_TESTS=ON
+cmake --build build/dev --parallel 2
 ```
 
-## Quick Start
+For test options, configured targets, and the current CTest inventory, see [the testing guide](https://adcm2.github.io/DSpecM1D/library-testing.html) and run `ctest --test-dir build/dev -N`.
 
-The main user-facing executable for the first release is
-`generate_seismogram`. It reads a standard DSpecM1D parameter file and writes a
-filtered time-domain seismogram to the output prefix specified inside that
-parameter file.
+## Platform and dependencies
 
-Using the bundled tutorial parameter file:
-
-```bash
-cmake -S . -B build
-cmake --build build --target generate_seismogram
-cd build
-export OMP_NUM_THREADS=2
-./bin/generate_seismogram data/params/t1.txt
-```
-
-That writes:
-
-```text
-build/output/t1.out_t.out
-```
-
-The output location comes from the parameter-file `output_prefix`. The CLI does
-not take a separate output-path override for this first release.
-
-The output file is a semicolon-delimited table with:
-
-- column 1: time in seconds
-- remaining columns: seismogram rows in solver order
-
-For one receiver, those rows correspond to the three output components. For
-multiple receivers, the component triplets are written in parameter-file order.
-
-`t1` remains the self-contained tutorial and runtime smoke example, while
-`ex1` through `ex7` remain protected paper-reproduction workflows.
-
-## Parameter File Format
-
-The parser reads an ordered sequence of value lines, not a keyed `name value`
-format. Blank lines and full-line comments beginning with `#` are ignored, but
-the remaining values must appear in the expected order.
-
-See:
-
-- [data/params/t1.txt](data/params/t1.txt)
-- website parameter-file guide: [adcm2.github.io/DSpecM1D/parameter-files.html](https://adcm2.github.io/DSpecM1D/parameter-files.html)
-
-## Normalisation
-
-DSpecM1D uses three reference scales:
-
-- length: `1 km = 1000 m`
-- density: `5515 kg m^-3`
-- time: `1 / sqrt(pi G rho_ref)`
-
-The corresponding helper is documented in `DSpecM1D/src/NormClass.h` and in the
-API reference on the docs site.
-
-## First Release Notes
-
-This is the first public release. The README intentionally stays short and
-focuses on getting the library compiled and running. For testing, debugging,
-API details, and the paper-reproduction workflows, use the website.
-
-Planned next steps after the first release:
-
-- highest priority: further cleanup and small API improvements
-- next: Love numbers
-- next: optional LAPACK banded solver support
-
-## Documentation
-
-To build the static site locally:
-
-```bash
-cmake -S . -B build/docs -DDSPECM1D_BUILD_DOCS=ON
-cmake --build build/docs --target website
-cmake --build build/docs --target preview-website
-```
-
-The local preview server runs at [127.0.0.1:8000](http://127.0.0.1:8000).
-
-## Repository
-
-- Repository: [github.com/adcm2/DSpecM1D](https://github.com/adcm2/DSpecM1D)
-- Issues: [github.com/adcm2/DSpecM1D/issues](https://github.com/adcm2/DSpecM1D/issues)
-- Contact: use the issue tracker for questions, bug reports, and release feedback
+Linux is the primary documented platform. macOS is best-effort with a C++23 compiler, CMake, FFTW, and a matching OpenMP runtime such as `libomp`; check that CMake finds OpenMP. Windows has not been verified. NetCDF and LAPACK are not required. BLAS is not a required direct project dependency with the pinned GSHTrans configuration.
 
 ## License
 
-DSpecM1D is released under the GNU General Public License v3.0.
-See [LICENSE](LICENSE).
+GNU General Public License v3.0; see [LICENSE](LICENSE).

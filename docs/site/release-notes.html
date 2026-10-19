@@ -8,25 +8,18 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <nav>
-    <div class="shell">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="installation.html">Installation</a></li>
-        <li><a href="parameter-files.html">Parameter Files</a></li>
-        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
-        <li><a href="library-testing.html">Library Testing</a></li>
-        <li><a href="release-notes.html">Release Notes</a></li>
-        <li><a href="love-numbers.html">Love Numbers</a></li>
-        <li><a href="api/index.html">API Reference</a></li>
-      </ul>
-    </div>
-  </nav>
+  <nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
   <main>
     <div class="page">
       <div class="page-header">
         <h1>Release Notes</h1>
-        <p class="lede">The first public DSpecM1D release separates protected scientific-reproduction workflows from day-to-day library testing, while adding a public seismogram-generation CLI, documentation, and downstream packaging support.</p>
+        <p class="lede">The current repository provides a seismogram-generation CLI, a C++23 interface library, CMake package installation, and generated API documentation. Start with the first-run guide for the supported Linux workflow.</p>
       </div>
       <section class="page-section">
         <h2>Highlights</h2>
@@ -52,11 +45,10 @@
         </ul>
       </section>
       <section class="page-section">
-        <h2>What Comes Next</h2>
+        <h2>Optional Components</h2>
         <ul class="check-list">
-          <li>Highest priority: further cleanup and small API improvements.</li>
-          <li>Next priority: Love numbers.</li>
-          <li>Next priority: optional LAPACK banded-solver support.</li>
+          <li>The Love-number module is opt-in through <code>DSPECM1D_BUILD_LOVE_NUMBERS=ON</code>.</li>
+          <li>Migration and paper-validation checks are opt-in; see the <a href="library-testing.html">testing guide</a> for their CMake options.</li>
         </ul>
       </section>
       <section class="page-section">
@@ -82,5 +74,5 @@
       </section>
     </div>
   </main>
-</body>
+<script src="assets/site.js" defer></script></body>
 </html>

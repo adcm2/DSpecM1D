@@ -104,14 +104,14 @@ main() {
 
   // Write the four-way paper comparison in both frequency and time domains.
   std::string pathToFreqFile =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex7_w.out";
+      PaperExamples::outputPath("ex7_w.out");
   double nval = 1.0 / prem.TimeNorm();
   PaperExamples::writeFourWayFrequencyComparison(
       pathToFreqFile, vecW, myff, nval, aFilt, aFiltYSpec, aFiltMineos,
       aFiltSpecnm);
 
   std::string pathToTimeFile =
-      std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex7_t.out";
+      PaperExamples::outputPath("ex7_t.out");
   PaperExamples::writeFourWayTimeComparison(
       pathToTimeFile, myff, prem.TimeNorm(), params.t_out(), vecFiltT,
       vecFiltTYSpec, vecFiltTMineos, vecFiltTSpecnm);

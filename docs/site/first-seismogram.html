@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Build DSpecM1D and generate and plot a first displacement seismogram."><title>First Seismogram | DSpecM1D</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
+<main class="page"><header class="page-header"><p class="eyebrow">Get started</p><h1>Generate a first seismogram</h1><p class="lede">Build the command-line tool, run the bundled single-receiver example, and plot its three displacement components.</p></header>
+<section class="page-section"><h2>1. Install prerequisites</h2><p>On Ubuntu or Debian, install a C++23-capable compiler, CMake, Git, FFTW3 development files, and an OpenMP compiler runtime. GCC 13 or newer is a tested Linux toolchain for this build.</p><pre><code>sudo apt update
+sudo apt install build-essential cmake git libfftw3-dev python3-venv python3-pip</code></pre><p>The project requires CMake 3.24 or newer and an OpenMP-capable C++23 compiler. CMake fetches the remaining dependencies from pinned revisions, so the first configure needs network access.</p></section>
+<section class="page-section"><h2>2. Clone and build</h2><pre><code>git clone https://github.com/adcm2/DSpecM1D.git
+cd DSpecM1D
+cmake -S . -B build/release -DDSPECM1D_BUILD_TOOLS=ON -DDSPECM1D_BUILD_TUTORIALS=ON
+cmake --build build/release --target generate_seismogram first_seismogram --parallel 2</code></pre><p>Use a fresh build directory if you change generators or build settings. The manual commands work with the CMake 3.24 minimum; the presets use schema version 6 and require CMake 3.25 or newer.</p></section>
+<section class="page-section"><h2>3. Run the example</h2><pre><code>OMP_NUM_THREADS=2 build/release/bin/generate_seismogram build/release/data/params/first_seismogram.txt</code></pre><p>The CLI prints the output filename. The bundled single-receiver file writes <code>build/release/output/first_seismogram.out_t.out</code>. Its 152 time samples and modest degree/frequency band are an illustration of the workflow, not a convergence result. Attenuation is disabled in this example.</p></section>
+<section class="page-section"><h2>4. Plot the output</h2><p>Install the small Python plotting dependencies in an isolated environment:</p><pre><code>python3 -m venv .venv-plot
+. .venv-plot/bin/activate
+python -m pip install numpy matplotlib
+python plotting/functions/first_seismogram.py build/release/output/first_seismogram.out_t.out --save build/release/output/first_seismogram.png --no-show</code></pre><p>From a terminal with a display, omit <code>--no-show</code> to open the figure. The file has four semicolon-separated columns: time in seconds, then radial, north, and east displacement in metres for the single receiver.</p></section>
+<section class="page-section"><h2>Change the experiment</h2><p>Copy <code>data/params/first_seismogram.txt</code> before editing it. The ordered fields control receiver coordinates and depth, source depth/location/moment tensor, output quantity, included mode families, frequency band, degree range, and attenuation. Start by changing the source or receiver coordinates, then vary <code>lmax</code>, mesh resolution, and the frequency band to check convergence. Enabling attenuation requires an Earth model with attenuation parameters. The optional final Cowling cutoff is documented in the <a href="parameter-files.html">parameter reference</a>.</p></section>
+<section class="page-section"><h2>Next steps</h2><p><a href="library-example.html">Use the C++ library and install its CMake package</a> · <a href="parameter-files.html">Read every parameter field</a> · <a href="library-testing.html">Build the test suites</a></p></section>
+</main><footer class="shell">DSpecM1D · <a href="https://github.com/adcm2/DSpecM1D">GitHub repository</a></footer><script src="assets/site.js" defer></script></body></html>

@@ -27,7 +27,7 @@ public:
       const auto density = model.Density(layer);
       for (int node = 0; node < mesh_.NN(); ++node) {
         const double radius = mesh_.NodeRadius(element, node);
-        density_derivatives_[element][node] = density.Derivative(radius);
+        density_derivatives_[element][node] = density.Evaluate<1>(radius);
       }
     }
   }

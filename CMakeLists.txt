@@ -18,13 +18,10 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
-
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
 # --- System Dependencies ---
-find_package(FFTW)
 find_package(OpenMP REQUIRED)
 
 # --- Parallel Dependency Fetching (CMake 3.24+) ---
@@ -34,38 +31,10 @@ set(FETCHCONTENT_BASE_DIR "${CMAKE_BINARY_DIR}/_deps" CACHE PATH
     "FetchContent dependency cache for this build tree" FORCE)
 set(FETCHCONTENT_UPDATES_DISCONNECTED ON CACHE BOOL "Disable FetchContent updates")
 include(FetchContent)
+include(cmake/DSpecM1DDependencies.cmake)
+dspecm1d_fetch_dependencies()
 
-# 1. Declare everything upfront.
-# The FIND_PACKAGE_ARGS tells CMake to search your system for Eigen3 first.
-# If it finds it locally, it SKIPS the git download entirely!
-FetchContent_Declare(
-    Eigen3           
-    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git         
-    GIT_TAG        3.4.0
-    GIT_SHALLOW    TRUE
-    FIND_PACKAGE_ARGS NAMES Eigen3
-)
-FetchContent_Declare(FFTWpp           GIT_REPOSITORY https://github.com/da380/FFTWpp.git           GIT_TAG 06cc1fb04c4398407839e637cb5414b179b0e9c3)
-FetchContent_Declare(GaussQuad        GIT_REPOSITORY https://github.com/da380/GaussQuad.git        GIT_TAG fbe37c7eef93695317dbf9c48715110bf64c800f)
-FetchContent_Declare(GSHTRANS         GIT_REPOSITORY https://github.com/da380/GSHTrans.git         GIT_TAG b880ac9aeacdb54a6480fca3aee70a20a727c678)
-FetchContent_Declare(Interpolation    GIT_REPOSITORY https://github.com/da380/Interpolation.git    GIT_TAG 4508a7b3d2205f5647e87cdbaa4496cc0283c389)
-
-# 2. Modify our helper function to accept a LIST of targets
-function(FetchContent_MakeAvailable_NoInstall)
-    set(_dspecm1d_saved_skip_install_rules ${CMAKE_SKIP_INSTALL_RULES})
-    set(CMAKE_SKIP_INSTALL_RULES ON)
-    FetchContent_MakeAvailable(${ARGV})
-    set(CMAKE_SKIP_INSTALL_RULES ${_dspecm1d_saved_skip_install_rules} PARENT_SCOPE)
-endfunction()
-
-# 3. Fire them all off at once! 
-# CMake will handle the "local vs git" logic automatically.
-FetchContent_MakeAvailable_NoInstall(
-    Eigen3 FFTWpp GaussQuad GSHTRANS
-    Interpolation
-)
-
-foreach(_dspecm1d_dep IN ITEMS fftwpp gaussquad gshtrans interpolation)
+foreach(_dspecm1d_dep IN ITEMS numericconcepts fftwpp gaussquad gshtrans interpolation)
     if(NOT EXISTS "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build/cmake_install.cmake")
         file(MAKE_DIRECTORY "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build")
         file(WRITE "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build/cmake_install.cmake" "")
@@ -77,12 +46,15 @@ add_library(DSpecM1D INTERFACE)
 
 target_link_libraries(DSpecM1D INTERFACE 
     Eigen3::Eigen
+    NumericConcepts
     FFTWpp
     GaussQuad
     Interpolation
     GSHTrans
     OpenMP::OpenMP_CXX
 )
+
+target_compile_features(DSpecM1D INTERFACE cxx_std_23)
 
 target_include_directories(DSpecM1D INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -93,7 +65,7 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/DSpecM1D
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindFFTW.cmake
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/cmake/DSpecM1DDependencies.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/DSpecM1D
 )
 
