@@ -399,10 +399,12 @@ SEM::rvRedZR(InputParameters &param) {
 };
 
 Eigen::MatrixXcd
-SEM::rvBaseFull(InputParameters &param, int idxl) {
+SEM::rvBaseFull(InputParameters &param, int idxl, bool cowling) {
   auto rec_elems = this->receiverElements(param);
-  auto lowidx = this->ltgS(0, rec_elems[0], 0);
-  auto upidx = this->ltgS(1, rec_elems.back(), m_nq - 1);
+  auto lowidx = cowling ? this->ltgSC(0, rec_elems[0], 0)
+                        : this->ltgS(0, rec_elems[0], 0);
+  auto upidx = cowling ? this->ltgSC(1, rec_elems.back(), m_nq - 1)
+                       : this->ltgS(1, rec_elems.back(), m_nq - 1);
   int lenidx = upidx - lowidx + 1;
   auto nrec = param.num_receivers();
   Eigen::MatrixXcd mat_base = Eigen::MatrixXcd::Zero(3 * nrec, lenidx);
@@ -415,8 +417,10 @@ SEM::rvBaseFull(InputParameters &param, int idxl) {
     auto pleg =
         Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
     for (int idxq = 0; idxq < m_mesh.NN(); ++idxq) {
-      auto idx_u = this->ltgS(0, idx, idxq) - lowidx;
-      auto idx_v = this->ltgS(1, idx, idxq) - lowidx;
+      auto idx_u = (cowling ? this->ltgSC(0, idx, idxq)
+                            : this->ltgS(0, idx, idxq)) - lowidx;
+      auto idx_v = (cowling ? this->ltgSC(1, idx, idxq)
+                            : this->ltgS(1, idx, idxq)) - lowidx;
       auto zv = pleg(idxq, rad_r);
       auto tv = k / 2.0 * zv;
       for (int idxr = 0; idxr < nrec; ++idxr) {

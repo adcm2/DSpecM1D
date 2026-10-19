@@ -74,7 +74,8 @@ private:
     return m_mesh.PR() - 1000.0 * param.receiver_depth() / m_lengthNorm;
   }
   std::vector<SMAT> m_vecKeTBase, m_vecKeTAtten, m_vecKeSBase,
-      m_vecKeSAtten, m_vecInSBase;
+      m_vecKeSAtten, m_vecInSBase, m_vecKeSCBase, m_vecKeSCAtten,
+      m_vecInSCBase;
 
 public:
   SEM() {};
@@ -85,6 +86,8 @@ public:
 
   /// Local-to-global map for spheroidal unknowns.
   auto ltgS(int, int, int) const;
+  /// Local-to-global map for two-field Cowling spheroidal unknowns (U, V).
+  auto ltgSC(int, int, int) const;
   /// Local-to-global map for toroidal unknowns.
   auto ltgT(int, int) const;
   /// Local-to-global map for radial unknowns.
@@ -104,7 +107,8 @@ public:
 
   // spheroidal force vectors
   Eigen::MatrixXcd calculateForce(SourceInfo::EarthquakeCMT &, int);
-  Eigen::MatrixXcd calculateForceAll(SourceInfo::EarthquakeCMT &, int);
+  Eigen::MatrixXcd calculateForceAll(SourceInfo::EarthquakeCMT &, int,
+                                     bool cowling = false);
   Eigen::MatrixXcd calculateForceCoefficients(SourceInfo::EarthquakeCMT &, int);
   Eigen::MatrixXcd calculateForceRedCoefficients(SourceInfo::EarthquakeCMT &,
                                                  int, double);
@@ -126,6 +130,9 @@ public:
   SMAT hSa(int) const;
   SMAT hS(int) const;
   SMAT pS(int) const;
+  SMAT hSC(int) const;
+  SMAT hSCa(int) const;
+  SMAT pSC(int) const;
   SMAT hTk(int) const;
   SMAT pTk(int) const;
   SMAT hR() const { return m_matKe0; };
@@ -144,7 +151,7 @@ public:
   Eigen::MatrixXcd rvValPhi(InputParameters &, int, int);
   Eigen::MatrixXcd rvBasePhiT(InputParameters &, int, int);
   Eigen::MatrixXcd rvValPhiT(InputParameters &, int, int);
-  Eigen::MatrixXcd rvBaseFull(InputParameters &, int);
+  Eigen::MatrixXcd rvBaseFull(InputParameters &, int, bool cowling = false);
   Eigen::MatrixXcd rvBaseFullT(InputParameters &, int);
 
   // toroidal receiver vectors

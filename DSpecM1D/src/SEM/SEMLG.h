@@ -30,6 +30,23 @@ SEM::ltgS(int neig, int idx_e, int idx_n) const {
 };
 
 auto
+SEM::ltgSC(int field, int idx_e, int idx_n) const {
+  assert((field >= 0) && (field <= 1) &&
+         "Error: field must be 0 (U) or 1 (V) in ltgSC");
+  assert((idx_e >= 0) && (idx_e < m_mesh.NE()) &&
+         "Error: idx_e out of range in ltgSC");
+  assert((idx_n >= 0) && (idx_n < m_mesh.NN()) &&
+         "Error: idx_n out of range in ltgSC");
+
+  int offset_val = m_vecOffset[idx_e];
+  if (field == 0 && idx_n == 0 &&
+      std::find(m_fsb.begin(), m_fsb.end(), idx_e - 1) != m_fsb.end())
+    offset_val -= 1;
+
+  return 2 * idx_e * (m_mesh.NN() - 1) + 2 * idx_n + field + offset_val;
+};
+
+auto
 SEM::ltgR(int neig, int idx_e, int idx_n) const {
   assert((neig >= 0) && (neig < 2) && "Error: neig must be 0 or 1 in ltgR");
   assert((idx_e >= 0) && (idx_e < m_mesh.NE()) &&

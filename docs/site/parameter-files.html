@@ -72,6 +72,12 @@
 0 6</code></pre>
       </section>
       <section class="page-section">
+        <h2>Optional Cowling Cutoff</h2>
+        <p>After the receiver locations, a parameter file may include one optional final value named <code>cowling_frequency_mhz</code>. It is a physical frequency in mHz. The default value is zero, which disables the cutoff. With a positive cutoff, spheroidal bins below it use full self-gravity and bins at or above it use the Cowling approximation in both the single-SEM and multi-SEM solver paths.</p>
+        <pre><code># optional final value; zero disables the cutoff
+25.0</code></pre>
+      </section>
+      <section class="page-section">
         <h2>Recommended API</h2>
         <p>For release-facing code, prefer <code>InputParametersNew</code>. It preserves the legacy file format while aggregating the parsed parameters, Earth model, source, receiver geometry, and frequency axis in one object.</p>
       </section>

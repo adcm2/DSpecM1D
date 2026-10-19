@@ -41,8 +41,11 @@ public:
   Eigen::MatrixXcd spectra(InputParametersNew &, Full1D::SEM &);
   /// Preferred release-facing overload with reversed convenience arguments.
   Eigen::MatrixXcd spectra(Full1D::SEM &, InputParametersNew &);
-  /// Preferred internal/reuse overload using an explicit run context.
-  Eigen::MatrixXcd spectra(const SpectraRunContext &, Full1D::SEM &);
+  /// Preferred internal/reuse overload using an explicit run context. When
+  /// forceCowling is true, all spheroidal frequencies use Cowling; when false,
+  /// the configured cutoff applies (zero disables it).
+  Eigen::MatrixXcd spectra(const SpectraRunContext &, Full1D::SEM &,
+                           bool forceCowling = false);
 
   /// Legacy overload retained for compatibility with existing workflows.
   template <class model1d>

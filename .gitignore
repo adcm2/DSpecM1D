@@ -18,3 +18,17 @@ CTestTestfile.cmake
 *.cmake.tmp
 __pycache__/
 *.py[cod]
+
+# Generated Cowling diagnostics; retain source, reports and intentional fixtures.
+/validation/cowling/*.log
+/validation/cowling/*.patch
+/validation/cowling/*.diff
+/validation/cowling/campaign.time
+/validation/cowling/full_vs_cowling.csv
+/validation/cowling/resolution.csv
+/validation/cowling/resolution_meshes.csv
+/validation/cowling/cutoff_continuity.csv
+# Archived harness inputs contain local absolute paths and are regenerated.
+/validation/cowling/input_parameters_l1.txt
+/validation/cowling/input_parameters_l20.txt
+/validation/cowling/input_parameters_l100.txt

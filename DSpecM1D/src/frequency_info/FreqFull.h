@@ -106,6 +106,7 @@ public:
   double t2() const { return m_t2; }
   double ep() const { return m_ep; }
   double dt() const { return m_dt; }
+  double timeNorm() const { return m_timenorm; }
 
   int nt() const { return m_nt; }
   int nt0() const { return m_nt0; }

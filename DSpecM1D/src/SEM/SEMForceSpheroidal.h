@@ -81,10 +81,12 @@ SEM::calculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 };
 
 Eigen::MatrixXcd
-SEM::calculateForceAll(SourceInfo::EarthquakeCMT &cmt, int idxl) {
+SEM::calculateForceAll(SourceInfo::EarthquakeCMT &cmt, int idxl,
+                       bool cowling) {
   int nq = m_mesh.NN();
-  totlen = this->ltgS(2, m_mesh.NE() - 1, nq - 1) + 1;
-  Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(totlen, 4);
+  const int forceSize = cowling ? this->ltgSC(1, m_mesh.NE() - 1, nq - 1) + 1
+                                : this->ltgS(2, m_mesh.NE() - 1, nq - 1) + 1;
+  Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(forceSize, 4);
   double kval =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
   double kd2 = kval / std::sqrt(2.0);
@@ -101,8 +103,10 @@ SEM::calculateForceAll(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       for (int idxq = 0; idxq < nq; ++idxq) {
         auto w_val = pleg(idxq, rad_source) / rad_source;
         auto w_deriv = pleg.Derivative(idxq, rad_source);
-        auto idx_u = this->ltgS(0, idx, idxq);
-        auto idx_v = this->ltgS(1, idx, idxq);
+        auto idx_u = cowling ? this->ltgSC(0, idx, idxq)
+                             : this->ltgS(0, idx, idxq);
+        auto idx_v = cowling ? this->ltgSC(1, idx, idxq)
+                             : this->ltgS(1, idx, idxq);
 
         vec_lforce(idx_u, 0) = w_deriv;
         vec_lforce(idx_u, 1) = w_val;
