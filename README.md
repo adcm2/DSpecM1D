@@ -5,11 +5,13 @@
 DSpecM1D is a C++23 spectral element library for computing synthetic
 seismograms in a spherically symmetric (1D) Earth model.
 
+Current documentation: [DSpecM1D guides](https://adcm2.github.io/SpecRelab/dspecm1d/), [generated API](https://adcm2.github.io/SpecRelab/dspecm1d/api/). The legacy DSpecM1D Pages address remains a compatibility entry point.
+
 The README is a quick-start guide for the first public release. Full
 documentation, testing notes, debugging guidance, and release-facing API
 reference live on the website:
 
-- Live docs: [adcm2.github.io/DSpecM1D](https://adcm2.github.io/DSpecM1D/)
+- Live docs: [DSpecM1D guides on SpecRelab](https://adcm2.github.io/SpecRelab/dspecm1d/)
 - Repository: [github.com/adcm2/DSpecM1D](https://github.com/adcm2/DSpecM1D)
 - Issues: [github.com/adcm2/DSpecM1D/issues](https://github.com/adcm2/DSpecM1D/issues)
 
@@ -112,7 +114,7 @@ the remaining values must appear in the expected order.
 See:
 
 - [data/params/t1.txt](data/params/t1.txt)
-- website parameter-file guide: [adcm2.github.io/DSpecM1D/parameter-files.html](https://adcm2.github.io/DSpecM1D/parameter-files.html)
+- website parameter-file guide: [DSpecM1D parameter-file guide](https://adcm2.github.io/SpecRelab/dspecm1d/parameter-files.html)
 
 ## Normalisation
 
