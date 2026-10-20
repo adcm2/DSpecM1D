@@ -197,35 +197,54 @@ def compare_vectors(reference: list[complex], candidate: list[complex]) -> dict:
     }
 
 
-def validate_inverse_transform(spectra: dict[tuple[int, int], complex],
-                               time: list[float], channels: list[list[float]],
-                               meta: dict, label: str) -> list[dict]:
-    """Check each native time trace against a direct inverse-DFT oracle."""
+def inverse_samples(spectra: dict[tuple[int, int], complex],
+                    time: list[float], meta: dict,
+                    label: str = "inverse transform") -> list[list[float]]:
+    """Reconstruct ZNE samples directly from the saved physical spectrum."""
     nfft = int(meta["samples"])
     df = float(meta["frequency_spacing_hz"])
     epsilon = float(meta["damping_epsilon_rad_s"])
     dt = float(meta["sample_interval_s"])
-    if nfft < 2 or len(time) != len(channels[0]):
+    if nfft < 2:
         raise SystemExit(f"{label}: invalid time-transform dimensions")
-    checks = []
-    for component, actual_values in enumerate(channels):
-        frequency = [spectra.get((bin_index, component), 0j)
-                     for bin_index in range(nfft // 2 + 1)]
+    channels = []
+    for component in range(3):
+        frequency = {
+            bin_index: value for (bin_index, channel), value in spectra.items()
+            if channel == component and value != 0j
+        }
+        positive_bins = sorted(k for k in frequency if 1 <= k <= nfft // 2)
         expected = []
         for sample, t in enumerate(time):
             n = round(t / dt)
             if abs(t - n * dt) > 1e-12 * max(abs(t), dt, 1.0):
                 raise SystemExit(f"{label}: time sample is off the DFT grid")
-            value = frequency[0].real
+            value = frequency.get(0, 0j).real
             last_positive = nfft // 2
             if nfft % 2 == 0:
-                value += frequency[last_positive].real * ((-1) ** n)
+                value += frequency.get(last_positive, 0j).real * ((-1) ** n)
                 last_positive -= 1
-            for bin_index in range(1, last_positive + 1):
+            for bin_index in positive_bins:
+                if bin_index > last_positive:
+                    break
                 angle = 2.0 * math.pi * bin_index * n / nfft
                 value += 2.0 * (frequency[bin_index] *
                                 complex(math.cos(angle), math.sin(angle))).real
             expected.append(df * math.exp(epsilon * t) * value)
+        channels.append(expected)
+    return channels
+
+
+def validate_inverse_transform(spectra: dict[tuple[int, int], complex],
+                               time: list[float], channels: list[list[float]],
+                               meta: dict, label: str) -> list[dict]:
+    """Check each native time trace against a direct inverse-DFT oracle."""
+    if len(channels) != 3 or any(len(values) != len(time) for values in channels):
+        raise SystemExit(f"{label}: invalid time-transform dimensions")
+    expected_channels = inverse_samples(spectra, time, meta, label)
+    checks = []
+    for component, (expected, actual_values) in enumerate(
+            zip(expected_channels, channels)):
         metric = compare_vectors([complex(value) for value in expected],
                                  [complex(value) for value in actual_values])
         if metric["reference_peak"] == 0.0:
@@ -242,6 +261,121 @@ def validate_inverse_transform(spectra: dict[tuple[int, int], complex],
                              f"{metric['max_difference_over_reference_peak']}")
         checks.append({"component": component, **metric})
     return checks
+
+
+def compare_saved_run(case_id: str, result_dir: Path, label: str,
+                      degree: int | str) -> dict:
+    """Compare one sum or degree with the same spectrum, time, and DFT gates."""
+    suffix = "all" if degree == "all" else label
+    context = case_id if degree == "all" else f"{case_id} l={degree}"
+    dspec, dpoints = read_spectra(result_dir / f"dspec-{suffix}.spectra.csv")
+    yspec, ypoints = read_spectra(result_dir / f"yspecpp-{suffix}.spectra.csv")
+    dmeta = read_meta(result_dir / f"dspec-{suffix}.meta.json")
+    ymeta = read_meta(result_dir / f"yspecpp-{suffix}.meta.json")
+    if dmeta["samples"] != ymeta["samples"]:
+        raise SystemExit(f"{context}: FFT length mismatch: "
+                         f"{dmeta['samples']} vs {ymeta['samples']}")
+    if degree == "all" and dmeta["output_samples"] != ymeta["output_samples"]:
+        raise SystemExit(f"{case_id}: output sample count mismatch")
+    assert_close(f"{context}: frequency spacing",
+                 dmeta["frequency_spacing_hz"], ymeta["frequency_spacing_hz"])
+    if degree == "all":
+        assert_close(f"{case_id}: sample_interval_s",
+                     dmeta["sample_interval_s"], ymeta["sample_interval_s"])
+    assert_close(f"{context}: damping epsilon",
+                 dmeta["damping_epsilon_rad_s"],
+                 ymeta["damping_epsilon_rad_s"])
+
+    keys = sorted(dspec.keys() & yspec.keys())
+    if len(keys) != len(dspec) or len(keys) != len(yspec):
+        raise SystemExit(f"{context}: frequency/component grids do not match exactly")
+    grid = None
+    if degree == "all":
+        grid = {
+            "case": case_id,
+            "nfft_dspec": dmeta["samples"],
+            "nfft_yspecpp": ymeta["samples"],
+            "frequency_spacing_abs_difference_hz": abs(
+                dmeta["frequency_spacing_hz"] - ymeta["frequency_spacing_hz"]),
+            "damping_epsilon_abs_difference_rad_s": abs(
+                dmeta["damping_epsilon_rad_s"] - ymeta["damping_epsilon_rad_s"]),
+            "max_frequency_abs_difference_hz": 0.0,
+            "max_omega_real_abs_difference_rad_s": 0.0,
+            "max_omega_imag_abs_difference_rad_s": 0.0,
+        }
+    for key in keys:
+        for field in ("frequency_hz", "omega_real_rad_s", "omega_imag_rad_s"):
+            difference = abs(dpoints[key][field] - ypoints[key][field])
+            if grid is not None:
+                metric_name = {
+                    "frequency_hz": "max_frequency_abs_difference_hz",
+                    "omega_real_rad_s": "max_omega_real_abs_difference_rad_s",
+                    "omega_imag_rad_s": "max_omega_imag_abs_difference_rad_s",
+                }[field]
+                grid[metric_name] = max(grid[metric_name], difference)
+            assert_close(f"{context} bin {key} {field}", dpoints[key][field],
+                         ypoints[key][field],
+                         1e-10 if field == "omega_real_rad_s" else 1e-12)
+
+    spectra_records = []
+    for component in range(3):
+        component_keys = [key for key in keys if key[1] == component]
+        metric = compare_vectors([yspec[key] for key in component_keys],
+                                 [dspec[key] for key in component_keys])
+        record = {"case": case_id}
+        if degree != "all":
+            record["degree"] = degree
+        record.update({
+            "component": component,
+            "frequency_hz": [dpoints[key]["frequency_hz"]
+                             for key in component_keys],
+            "relative_l2": metric["relative_l2"],
+            "max_abs_difference": metric["max_abs_difference"],
+            "difference_over_peak": metric["max_difference_over_reference_peak"],
+            "yspec_peak": metric["reference_peak"],
+        })
+        spectra_records.append(record)
+        if degree == "all":
+            for key in component_keys:
+                difference = abs(dspec[key] - yspec[key])
+                spectra_records.append({
+                    "case": case_id, "component": component,
+                    "frequency_hz": dpoints[key]["frequency_hz"],
+                    "frequency_bin": key[0],
+                    "point_abs_difference": difference,
+                    "difference_over_peak": difference / metric["reference_peak"]
+                    if metric["reference_peak"] else None,
+                })
+
+    time_d, series_d = read_timeseries(
+        result_dir / f"dspec-{suffix}.timeseries.csv")
+    time_y, series_y = read_timeseries(
+        result_dir / f"yspecpp-{suffix}.timeseries.csv")
+    inverse = [
+        {"case": case_id, "degree": degree, "solver": solver,
+         "components": validate_inverse_transform(
+             spectra, times, series, meta, f"{case_id} {solver} {label}")}
+        for solver, spectra, times, series, meta in (
+            ("dspec", dspec, time_d, series_d, dmeta),
+            ("yspecpp", yspec, time_y, series_y, ymeta),
+        )
+    ]
+    if len(time_d) != len(time_y):
+        raise SystemExit(f"{context}: time grid sample counts do not match")
+    for index, (left, right) in enumerate(zip(time_d, time_y)):
+        assert_close(f"{context} time {index}", left, right)
+    series_records = []
+    for component, name in enumerate(("Z", "N", "E")):
+        metric = compare_vectors(
+            [complex(value) for value in series_y[component]],
+            [complex(value) for value in series_d[component]])
+        record = {"case": case_id}
+        if degree != "all":
+            record["degree"] = degree
+        record.update({"component": name, **metric})
+        series_records.append(record)
+    return {"spectra": spectra_records, "time_series": series_records,
+            "inverse_transform_checks": inverse, "grid_check": grid}
 
 
 def make_plots(case_id: str, outdir: Path, spectrum_metrics: list[dict]) -> None:
@@ -485,163 +619,19 @@ def main() -> None:
                  str(dspec_settings["maxstep"])])
             run([str(yspec_exe), str(yinput_path), str(prefix_y)])
 
-        dspec_full, dspec_points = read_spectra(result_dir / "dspec-all.spectra.csv")
-        yspec_full, yspec_points = read_spectra(result_dir / "yspecpp-all.spectra.csv")
-        meta_d = read_meta(result_dir / "dspec-all.meta.json")
-        meta_y = read_meta(result_dir / "yspecpp-all.meta.json")
-        for field in ("samples", "frequency_spacing_hz"):
-            if field == "samples":
-                if meta_d[field] != meta_y[field]:
-                    raise SystemExit(f"{case_id}: FFT length mismatch: {meta_d[field]} vs {meta_y[field]}")
+        for label, degree in [("all", "all"),
+                              *((f"l{value}", value)
+                                for value in defaults["degrees"])]:
+            compared = compare_saved_run(case_id, result_dir, label, degree)
+            if degree == "all":
+                spectrum_metrics.extend(compared["spectra"])
+                series_metrics.extend(compared["time_series"])
+                grid_checks.append(compared["grid_check"])
             else:
-                assert_close(f"{case_id}: {field}", meta_d[field], meta_y[field])
-        for field in ("output_samples", "sample_interval_s"):
-            if field == "output_samples":
-                if meta_d[field] != meta_y[field]:
-                    raise SystemExit(f"{case_id}: output sample count mismatch")
-            else:
-                assert_close(f"{case_id}: {field}", meta_d[field], meta_y[field])
-        assert_close(f"{case_id}: damping epsilon",
-                     meta_d["damping_epsilon_rad_s"],
-                     meta_y["damping_epsilon_rad_s"])
-        common_keys = sorted(dspec_full.keys() & yspec_full.keys())
-        if len(common_keys) != len(dspec_full) or len(common_keys) != len(yspec_full):
-            raise SystemExit(f"{case_id}: frequency/component grids do not match exactly")
-        grid_check = {
-            "case": case_id,
-            "nfft_dspec": meta_d["samples"],
-            "nfft_yspecpp": meta_y["samples"],
-            "frequency_spacing_abs_difference_hz": abs(
-                meta_d["frequency_spacing_hz"] - meta_y["frequency_spacing_hz"]),
-            "damping_epsilon_abs_difference_rad_s": abs(
-                meta_d["damping_epsilon_rad_s"] - meta_y["damping_epsilon_rad_s"]),
-            "max_frequency_abs_difference_hz": 0.0,
-            "max_omega_real_abs_difference_rad_s": 0.0,
-            "max_omega_imag_abs_difference_rad_s": 0.0,
-        }
-        for key in common_keys:
-            for field in ("frequency_hz", "omega_real_rad_s", "omega_imag_rad_s"):
-                difference = abs(dspec_points[key][field] - yspec_points[key][field])
-                metric_name = {
-                    "frequency_hz": "max_frequency_abs_difference_hz",
-                    "omega_real_rad_s": "max_omega_real_abs_difference_rad_s",
-                    "omega_imag_rad_s": "max_omega_imag_abs_difference_rad_s",
-                }[field]
-                grid_check[metric_name] = max(grid_check[metric_name], difference)
-                assert_close(f"{case_id} bin {key} {field}",
-                             dspec_points[key][field], yspec_points[key][field],
-                             1e-10 if field == "omega_real_rad_s" else 1e-12)
-        grid_checks.append(grid_check)
-        for component in range(3):
-            keys = [key for key in common_keys if key[1] == component]
-            metric = compare_vectors([yspec_full[key] for key in keys],
-                                     [dspec_full[key] for key in keys])
-            spectrum_metrics.append({
-                "case": case_id, "component": component,
-                "frequency_hz": [dspec_points[key]["frequency_hz"] for key in keys],
-                "relative_l2": metric["relative_l2"],
-                "max_abs_difference": metric["max_abs_difference"],
-                "difference_over_peak": metric["max_difference_over_reference_peak"],
-                "yspec_peak": metric["reference_peak"],
-            })
-            for key in keys:
-                difference = abs(dspec_full[key] - yspec_full[key])
-                spectrum_metrics.append({
-                    "case": case_id, "component": component,
-                    "frequency_hz": dspec_points[key]["frequency_hz"],
-                    "frequency_bin": key[0], "point_abs_difference": difference,
-                    "difference_over_peak": difference / metric["reference_peak"]
-                    if metric["reference_peak"] else None,
-                })
-
-        time_d, dseries = read_timeseries(result_dir / "dspec-all.timeseries.csv")
-        time_y, yseries = read_timeseries(result_dir / "yspecpp-all.timeseries.csv")
-        inverse_transform_checks.append({
-            "case": case_id, "degree": "all", "solver": "dspec",
-            "components": validate_inverse_transform(
-                dspec_full, time_d, dseries, meta_d, f"{case_id} DSpec all")})
-        inverse_transform_checks.append({
-            "case": case_id, "degree": "all", "solver": "yspecpp",
-            "components": validate_inverse_transform(
-                yspec_full, time_y, yseries, meta_y, f"{case_id} YSpecpp all")})
-        if len(time_d) != len(time_y):
-            raise SystemExit(f"{case_id}: time grid sample counts do not match")
-        for index, (time_left, time_right) in enumerate(zip(time_d, time_y)):
-            assert_close(f"{case_id} time sample {index}", time_left, time_right)
-        for component, label in enumerate(("Z", "N", "E")):
-            metric = compare_vectors(
-                [complex(value) for value in yseries[component]],
-                [complex(value) for value in dseries[component]],
-            )
-            series_metrics.append({"case": case_id, "component": label,
-                                   **metric})
-
-        for degree in defaults["degrees"]:
-            label = f"l{degree}"
-            dspec_degree, dspec_degree_points = read_spectra(
-                result_dir / f"dspec-{label}.spectra.csv")
-            yspec_degree, yspec_degree_points = read_spectra(
-                result_dir / f"yspecpp-{label}.spectra.csv")
-            meta_d_degree = read_meta(result_dir / f"dspec-{label}.meta.json")
-            meta_y_degree = read_meta(result_dir / f"yspecpp-{label}.meta.json")
-            if meta_d_degree["samples"] != meta_y_degree["samples"]:
-                raise SystemExit(f"{case_id} l={degree}: FFT length mismatch")
-            assert_close(f"{case_id} l={degree}: frequency spacing",
-                         meta_d_degree["frequency_spacing_hz"],
-                         meta_y_degree["frequency_spacing_hz"])
-            assert_close(f"{case_id} l={degree}: damping epsilon",
-                         meta_d_degree["damping_epsilon_rad_s"],
-                         meta_y_degree["damping_epsilon_rad_s"])
-            degree_keys = sorted(dspec_degree.keys() & yspec_degree.keys())
-            if len(degree_keys) != len(dspec_degree) or len(degree_keys) != len(yspec_degree):
-                raise SystemExit(f"{case_id} l={degree}: Fourier bins differ")
-            for key in degree_keys:
-                for field in ("frequency_hz", "omega_real_rad_s", "omega_imag_rad_s"):
-                    assert_close(f"{case_id} l={degree} bin {key} {field}",
-                                 dspec_degree_points[key][field],
-                                 yspec_degree_points[key][field],
-                                 1e-10 if field == "omega_real_rad_s" else 1e-12)
-            for component in range(3):
-                keys = [key for key in degree_keys if key[1] == component]
-                metric = compare_vectors(
-                    [yspec_degree[key] for key in keys],
-                    [dspec_degree[key] for key in keys])
-                degree_spectrum_metrics.append({
-                    "case": case_id, "degree": degree, "component": component,
-                    "frequency_hz": [dspec_degree_points[key]["frequency_hz"]
-                                     for key in keys],
-                    "relative_l2": metric["relative_l2"],
-                    "max_abs_difference": metric["max_abs_difference"],
-                    "difference_over_peak":
-                        metric["max_difference_over_reference_peak"],
-                    "yspec_peak": metric["reference_peak"],
-                })
-            time_d_degree, dseries_degree = read_timeseries(
-                result_dir / f"dspec-{label}.timeseries.csv")
-            time_y_degree, yseries_degree = read_timeseries(
-                result_dir / f"yspecpp-{label}.timeseries.csv")
-            inverse_transform_checks.append({
-                "case": case_id, "degree": degree, "solver": "dspec",
-                "components": validate_inverse_transform(
-                    dspec_degree, time_d_degree, dseries_degree, meta_d_degree,
-                    f"{case_id} DSpec l={degree}")})
-            inverse_transform_checks.append({
-                "case": case_id, "degree": degree, "solver": "yspecpp",
-                "components": validate_inverse_transform(
-                    yspec_degree, time_y_degree, yseries_degree, meta_y_degree,
-                    f"{case_id} YSpecpp l={degree}")})
-            if len(time_d_degree) != len(time_y_degree):
-                raise SystemExit(f"{case_id} l={degree}: time sample counts differ")
-            for index, (left, right) in enumerate(zip(time_d_degree, time_y_degree)):
-                assert_close(f"{case_id} l={degree} time {index}", left, right)
-            for component, component_name in enumerate(("Z", "N", "E")):
-                metric = compare_vectors(
-                    [complex(value) for value in yseries_degree[component]],
-                    [complex(value) for value in dseries_degree[component]])
-                degree_series_metrics.append({
-                    "case": case_id, "degree": degree,
-                    "component": component_name, **metric,
-                })
+                degree_spectrum_metrics.extend(compared["spectra"])
+                degree_series_metrics.extend(compared["time_series"])
+            inverse_transform_checks.extend(
+                compared["inverse_transform_checks"])
 
     run_metadata = {}
     for case in cases:
