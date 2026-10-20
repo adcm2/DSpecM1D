@@ -1,66 +1,69 @@
-name: Pages
+name: Legacy DSpecM1D compatibility pages
 
 on:
+  pull_request:
+    branches: ["master"]
   push:
-    branches: ["master", "main"]
+    branches: ["master"]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: pages
+  group: legacy-pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-
+    name: Build and check archived compatibility site
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
     steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Configure GitHub Pages
-        uses: actions/configure-pages@v6
-
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libfftw3-dev \
-            ninja-build \
-            doxygen
-
-      - name: Configure docs build
-        run: |
-          cmake -S . -B build/pages -G Ninja \
-            -DDSPECM1D_BUILD_DOCS=ON \
-            -DDSPECM1D_BUILD_TESTS=OFF \
-            -DDSPECM1D_BUILD_BENCHMARKS=OFF \
-            -DDSPECM1D_BUILD_TUTORIALS=OFF \
-            -DDSPECM1D_BUILD_TOOLS=OFF
-
-      - name: Build website
-        run: cmake --build build/pages --target website
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v5
+      - name: Check out source repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          path: build/pages/site
+          python-version: '3.12'
+      - name: Check out reviewed SpecRelab compatibility tooling
+        uses: actions/checkout@v4
+        with:
+          repository: adcm2/SpecRelab
+          ref: 8753d74e144a5581742ae1b4eb40fdac3eccc086
+          path: tooling
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            compatibility-map.json
+            legacy
+            scripts/legacy_compat.py
+      - name: Build legacy compatibility site
+        run: python3 tooling/scripts/legacy_compat.py build --scope dspecm1d --output tooling/.build/stage4/legacy-site
+      - name: Check archived routes and resource identities
+        run: python3 tooling/scripts/legacy_compat.py check --scope dspecm1d --output tooling/.build/stage4/legacy-site
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: tooling/.build/stage4/legacy-site
 
   deploy:
+    name: Deploy compatibility artifact from master
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/master')
     needs: build
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write
-
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy reviewed artifact
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@v4
