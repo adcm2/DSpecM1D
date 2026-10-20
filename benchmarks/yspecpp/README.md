@@ -21,22 +21,24 @@ different continuous PREM interpolation representations.
 The reviewed case matrix is tracked at
 `cases/paper-suite-protocol.json`; this is the default for the Figure 1, 3, 4,
 and 5 runners, so a clean checkout does not depend on ignored build data.
-Figure 5 remains blocked: DSpecM1D refuses the required degree 7500 because
-its current Wigner recursion is only safe through degree 1827. A separate,
-explicitly non-paper three-receiver pilot capped at degree 1827 exited with
-signal 11 before producing result files, so no supported-degree runtime
-estimate is claimed. Both failure records are preserved under the ignored
-suite output; no production code or angular guard was changed.
+The Figure 5 high-degree comparison is deferred. The pinned GSH
+`Wigner<double>` conservative degree-1827 guard refuses the required degree
+7500 to prevent seed underflow. Supporting `long double` requires DSpec
+precision integration and validation; no repair was made. A separate,
+explicitly non-paper three-receiver pilot capped at degree 1827 ended in
+SIGSEGV (signal 11) of unknown cause before producing result files; it is not
+a valid paper result. No supported-degree runtime estimate is claimed. Both
+failure records are preserved under the ignored suite output.
 
 Figure 6's internal convergence sweep uses `run_convergence_benchmark.py`
 (`--pilot` for the bounded cost check, `--full` for the sequential order/mesh
 sweep). Figure 7's isolated degree-2 tidal-resolution study uses
 `run_tidal_benchmark.py`; it preserves the old ex6 example and reports the
 normalized response without claiming an absolute forcing amplitude. Full
-Figure 1–4 comparisons are complete, Figure 5 is blocked as described above,
-Figure 6 has a bounded high-frequency pilot while its multi-hour convergence
-sweep awaits an execution preference, and Figure 7 has completed isolated
-degree-2 tidal runs. The suite and Figure 5 runners refuse to overwrite
+Figure 1–4 comparisons are complete, Figure 5 high-degree work is deferred as
+described above, Figure 6 has a bounded cost pilot and its full convergence
+sweep is deferred by decision with no convergence result, and Figure 7 has
+completed isolated degree-2 tidal runs. The suite and Figure 5 runners refuse to overwrite
 nonempty run directories; choose a new output root for a repeat measurement.
 
 ## Paper Figure 2 comparison

@@ -164,8 +164,8 @@
         <ul class="check-list">
           <li><strong>Figure 3 / ex7:</strong> full cross-solver comparison and independent review complete; results are shown above.</li>
           <li><strong>Figure 4 / ex3:</strong> full cross-solver comparison and independent review complete; results are shown above.</li>
-          <li><strong>Figure 5 / ex4:</strong> blocked at the GSH high-degree safe-degree guard of 1827; the paper setup requires degree 7500, so no valid high-degree result is available. The paper also does not identify the plotted quantity; acceleration is only the adopted legacy convention.</li>
-          <li><strong>Figure 6 / ex5:</strong> a cost pilot is complete; the full scientific convergence sweep awaits a resource decision. No convergence result is claimed.</li>
+          <li><strong>Figure 5 / ex4:</strong> high-degree work is deferred. The pinned GSH <code>Wigner&lt;double&gt;</code> conservative degree-1827 guard rejects the paper’s degree-7500 setup to prevent seed underflow; supporting <code>long double</code> requires DSpec precision integration and validation, and no repair was made. A separate degree-capped 1827 attempt ended in SIGSEGV of unknown cause and is not a valid paper result. The paper also does not identify the plotted quantity; acceleration is only the adopted legacy convention.</li>
+          <li><strong>Figure 6 / ex5:</strong> the full scientific convergence sweep is deferred by decision. Only the cost pilot is complete; no convergence result is available or claimed.</li>
           <li><strong>Figure 7 / ex6:</strong> 12 degree-2 tidal runs and independent saved-evidence review are complete; the resolution/stability results are shown above. This is not a YSpecpp accuracy comparison.</li>
         </ul>
       </section>
