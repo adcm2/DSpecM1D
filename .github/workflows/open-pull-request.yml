@@ -1,0 +1,47 @@
+name: Open pull request for personal review
+
+on:
+  workflow_dispatch:
+    inputs:
+      head:
+        description: Existing branch containing the proposed changes
+        required: true
+        type: string
+      title:
+        description: Pull request title
+        required: true
+        type: string
+      body:
+        description: Summary and validation
+        required: true
+        type: string
+      draft:
+        description: Keep unfinished changes in draft
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  open:
+    if: >-
+      github.repository == 'adcm2/DSpecM1D' &&
+      github.actor == 'adcm2' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Open pull request as github-actions bot
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR_HEAD: ${{ inputs.head }}
+          PR_TITLE: ${{ inputs.title }}
+          PR_BODY: ${{ inputs.body }}
+          PR_DRAFT: ${{ inputs.draft }}
+        run: |
+          gh api "repos/$GH_REPO/pulls" --method POST \
+            -f head="$PR_HEAD" -f base=master \
+            -f title="$PR_TITLE" -f body="$PR_BODY" \
+            -F draft="$PR_DRAFT" --jq '.html_url'
