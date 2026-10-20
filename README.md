@@ -4,11 +4,13 @@
 
 DSpecM1D is a C++23 spectral-element library for synthetic seismograms in a spherically symmetric Earth model. The quickest route is to build `generate_seismogram`, run the bundled one-receiver input, and plot its output.
 
-- First calculation: [docs/site/first-seismogram.html](https://adcm2.github.io/DSpecM1D/first-seismogram.html)
-- Install and build: [docs/site/installation.html](https://adcm2.github.io/DSpecM1D/installation.html)
-- C++ library example: [docs/site/library-example.html](https://adcm2.github.io/DSpecM1D/library-example.html)
-- Parameter reference: [docs/site/parameter-files.html](https://adcm2.github.io/DSpecM1D/parameter-files.html)
-- Generated docs site: [adcm2.github.io/DSpecM1D](https://adcm2.github.io/DSpecM1D/)
+Current documentation: [DSpecM1D guides](https://adcm2.github.io/SpecRelab/dspecm1d/), [generated API](https://adcm2.github.io/SpecRelab/dspecm1d/api/). The legacy DSpecM1D Pages address remains a compatibility entry point.
+
+- First calculation: [docs/site/first-seismogram.html](https://adcm2.github.io/SpecRelab/dspecm1d/first-seismogram.html)
+- Install and build: [docs/site/installation.html](https://adcm2.github.io/SpecRelab/dspecm1d/installation.html)
+- C++ library example: [docs/site/library-example.html](https://adcm2.github.io/SpecRelab/dspecm1d/library-example.html)
+- Parameter reference: [docs/site/parameter-files.html](https://adcm2.github.io/SpecRelab/dspecm1d/parameter-files.html)
+- Current docs: [SpecRelab DSpecM1D docs](https://adcm2.github.io/SpecRelab/dspecm1d/)
 
 ## Linux quick start
 
@@ -42,7 +44,7 @@ cmake -S . -B build/dev \
 cmake --build build/dev --parallel 2
 ```
 
-For test options, configured targets, and the current CTest inventory, see [the testing guide](https://adcm2.github.io/DSpecM1D/library-testing.html) and run `ctest --test-dir build/dev -N`.
+For test options, configured targets, and the current CTest inventory, see [the testing guide](https://adcm2.github.io/SpecRelab/dspecm1d/library-testing.html) and run `ctest --test-dir build/dev -N`.
 
 ## Platform and dependencies
 
