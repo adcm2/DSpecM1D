@@ -25,12 +25,14 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
       Eigen::SparseLU<SparseMatrixC, Eigen::COLAMDOrdering<int>>;
   Timer timer1;
 
+  if (params.attenuation())
+    validateAttenuationReferencePeriod(inp_model.TREF());
+
   auto vecW = myff.w();
   SpecConstants sc(myff.ep(), inp_model.TREF());
   auto myi = sc.myi;
   auto ieps = sc.ieps;
   auto w0 = sc.w0;
-  auto twodivpi = sc.twodivpi;
   auto twopid = sc.twopid;
 
   auto numRec = params.num_receivers();
@@ -143,7 +145,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           Complex w = wval + ieps;
           SparseMatrixC wR = -w * w * inR + keR;
           if (params.attenuation())
-            wR += attenFactor(wval, w0, twodivpi, myi) * keRAtten;
+            wR += attenFactor(w, w0) * keRAtten;
           wR.makeCompressed();
           solver.compute(wR);
           MatrixC vecX = solver.solve(fR);
@@ -211,7 +213,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             SparseMatrixC mat = hTor.block(ridx, ridx, len_ms, len_ms) -
                                 w * w * pTor.block(ridx, ridx, len_ms, len_ms);
             if (params.attenuation())
-              mat += attenFactor(wval, w0, twodivpi, myi) *
+              mat += attenFactor(w, w0) *
                      hTorAtten.block(ridx, ridx, len_ms, len_ms);
             mat.makeCompressed();
             auto fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
@@ -311,7 +313,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
               SparseMatrixC wS = hS.block(ridx, ridx, len_ms, len_ms) -
                                  w * w * pS.block(ridx, ridx, len_ms, len_ms);
               if (params.attenuation())
-                wS += attenFactor(wval, w0, twodivpi, myi) *
+                wS += attenFactor(w, w0) *
                       hSa.block(ridx, ridx, len_ms, len_ms);
               wS.makeCompressed();
               MatrixC fRed = fBase.block(ridx, 0, len_ms, fBase.cols());

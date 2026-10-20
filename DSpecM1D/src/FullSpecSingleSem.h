@@ -32,12 +32,14 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
   auto &params = request.params();
   const int nskip = request.nskip();
 
+  if (params.attenuation())
+    validateAttenuationReferencePeriod(request.tref());
+
   auto vecW = myff.w();
   SpecConstants sc(myff.ep(), request.tref());
   auto myi = sc.myi;
   auto ieps = sc.ieps;
   auto w0 = sc.w0;
-  auto twodivpi = sc.twodivpi;
 
   MatrixC vecRaw = MatrixC::Zero(3 * params.num_receivers(), vecW.size());
   SparseLUType solver, solver1;
@@ -84,7 +86,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
         Complex w = vecW[idx] + ieps;
         SparseMatrixC wR = -w * w * inR + keR;
         if (params.attenuation())
-          wR += attenFactor(vecW[idx], w0, twodivpi, myi) * keRAtten;
+          wR += attenFactor(w, w0) * keRAtten;
         wR.makeCompressed();
         solver.compute(wR);
         MatrixC vecX = solver.solve(fR);
@@ -133,7 +135,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
               hTor.block(ridx, ridx, len_ms, len_ms) -
               w * w * pTor.block(ridx, ridx, len_ms, len_ms);
           if (params.attenuation())
-            matWTorRed += attenFactor(vecW[idx], w0, twodivpi, myi) *
+            matWTorRed += attenFactor(w, w0) *
                           hTorAtten.block(ridx, ridx, len_ms, len_ms);
           matWTorRed.makeCompressed();
           auto fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
@@ -213,7 +215,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
                                    w * w *
                                        pS.block(idxRs, idxRs, len_ms, len_ms);
             if (params.attenuation())
-              matSph += attenFactor(vecW[idx], w0, twodivpi, myi) *
+              matSph += attenFactor(w, w0) *
                         hSa.block(idxRs, idxRs, len_ms, len_ms);
             matSph.makeCompressed();
             auto fRed = fBase.block(idxRs, 0, len_ms, fBase.cols());
