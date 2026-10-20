@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Setup, outputs and comparison scope for the DSpecM1D ex2 paper workflow.">
+  <title>EX2 Benchmark | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/benchmark-figures.css">
+</head>
+<body>
+  <nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <p><a href="paper-reproduction.html">Paper workflows</a> / <code>ex2</code></p>
+        <h1>EX2 · Bolivia medium-frequency comparison</h1>
+        <p class="lede">A medium-frequency event workflow with a Gaussian source-time-function stage. The plotted comparison includes DSpecM1D, YSpec, MINEOS and SpecNM.</p>
+      </div>
+      <figure class="benchmark-figure">
+        <a href="assets/benchmarks/ggag211fig2.jpeg"><img src="assets/benchmarks/ggag211fig2.jpeg" alt="Published Figure 2: three-component displacement seismograms for the Bolivia event." loading="lazy"></a>
+        <figcaption>Original Figure 2 from Myhill and Al-Attar (2026), <em>Geophysical Journal International</em> 246(2), ggag211. Reused unchanged under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="https://doi.org/10.1093/gji/ggag211">Published article</a>.</figcaption>
+      </figure>
+      <section class="page-section"><h2>Configuration</h2><p>The current <code>data/params/ex2.txt</code> uses a no-attenuation PREM model, a 1.5–25 mHz band and maximum degree 350; the executable calculates a 500-minute output. Published Figure 2 uses 1.5–21 mHz and maximum degree 300. The code applies the same STF/filter treatment to the relevant comparison traces.</p></section>
+      <section class="page-section"><h2>Comparison inputs</h2><p>YSpec, MINEOS and SpecNM files are read from <code>data/reference/</code>.</p></section>
+      <section class="page-section"><h2>Executable and outputs</h2><pre><code>cmake -S . -B build/release -DDSPECM1D_BUILD_BENCHMARKS=ON
+cmake --build build/release --target ex2 --parallel 2
+OMP_NUM_THREADS=2 ./build/release/bin/ex2</code></pre><p>The executable writes <code>ex2_t.out</code> and <code>ex2_w.out</code> to <code>build/release/output/</code>. A fresh build generates these files when the executable runs.</p></section>
+      <section class="page-section"><h2>Plot command</h2><p>Run from the repository root after producing the required output files:</p><pre><code>DSPECM1D_BUILD_DIR=build/release python3 plotting/functions/ex2.py</code></pre></section>
+      <section class="page-section"><h2>Scope and limits</h2><p>This is the published Figure 2 case. The article compares DSpecM1D with YSpec and specnm. The current repository ex2 workflow also loads MINEOS data. Although the executable calculates 500 minutes, the current plot script displays only samples from 0 through 18,000 seconds (five hours), matching the published plot interval. The current frequency band and maximum degree are wider/higher than the published 1.5–21 mHz and degree 300 settings. The published paper describes a Heaviside step-function source; this checkout’s ex2 applies a Gaussian STF to DSpecM1D, YSpec and MINEOS traces, while SpecNM receives the shared filter only.</p></section>
+      <section class="page-section"><p><a href="benchmark-ex1.html">← Previous</a> · <a href="paper-reproduction.html">All paper workflows</a> · <a href="benchmark-ex7.html">Next →</a></p></section>
+    </div>
+  </main>
+<script src="assets/site.js" defer></script></body>
+</html>

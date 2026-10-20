@@ -38,9 +38,19 @@ FetchContent_Declare(
     GIT_TAG d5a1711ca6a89fc8ad8148fe13212398fe569bc0)
 
 function(dspecm1d_fetch_dependencies)
-  set(_dspecm1d_saved_skip_install_rules ${CMAKE_SKIP_INSTALL_RULES})
-  set(CMAKE_SKIP_INSTALL_RULES ON)
+  get_property(_dspecm1d_subdirs_before DIRECTORY PROPERTY SUBDIRECTORIES)
   FetchContent_MakeAvailable(
       Eigen3 NumericConcepts FFTWpp GaussQuad GSHTRANS Interpolation)
-  set(CMAKE_SKIP_INSTALL_RULES ${_dspecm1d_saved_skip_install_rules} PARENT_SCOPE)
+  get_property(_dspecm1d_subdirs_after DIRECTORY PROPERTY SUBDIRECTORIES)
+
+  # Exclude only dependency directories added by this call. Content that was
+  # already populated or added belongs to the consuming project and must keep
+  # its existing build and install behavior.
+  foreach(_dspecm1d_subdir IN LISTS _dspecm1d_subdirs_after)
+    list(FIND _dspecm1d_subdirs_before "${_dspecm1d_subdir}" _dspecm1d_subdir_index)
+    if(_dspecm1d_subdir_index EQUAL -1)
+      set_property(DIRECTORY "${_dspecm1d_subdir}"
+          PROPERTY EXCLUDE_FROM_ALL TRUE)
+    endif()
+  endforeach()
 endfunction()

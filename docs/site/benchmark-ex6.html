@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Setup, outputs and comparison scope for the DSpecM1D ex6 paper workflow.">
+  <title>EX6 Benchmark | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/benchmark-figures.css">
+</head>
+<body>
+  <nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <p><a href="paper-reproduction.html">Paper workflows</a> / <code>ex6</code></p>
+        <h1>EX6 · Low-frequency fluid and radial response</h1>
+        <p class="lede">Uses the low-level SEM matrices for a tidal-forcing calculation, samples radial responses, computes the buoyancy-frequency profile in the fluid shell and reports the fluid share of kinetic energy.</p>
+      </div>
+      <figure class="benchmark-figure">
+        <a href="assets/benchmarks/ggag211fig7.jpeg"><img src="assets/benchmarks/ggag211fig7.jpeg" alt="Published Figure 7: radial response at several periods and mesh sizes with the squared Brunt-Väisälä frequency profile." loading="lazy"></a>
+        <figcaption>Original Figure 7 from Myhill and Al-Attar (2026), <em>Geophysical Journal International</em> 246(2), ggag211. Reused unchanged under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="https://doi.org/10.1093/gji/ggag211">Published article</a>.</figcaption>
+      </figure>
+      <section class="page-section"><h2>Configuration</h2><p>Uses <code>data/params/ex6.txt</code>. The executable prompts for the maximum SEM step size; it evaluates forcing periods of 12, 48, 168 and 1680 hours.</p></section>
+      <section class="page-section"><h2>Comparison inputs</h2><p>These outputs are computed from the DSpecM1D model and SEM solution; this case does not load YSpec, MINEOS or SpecNM traces.</p></section>
+      <section class="page-section"><h2>Executable and outputs</h2><pre><code>cmake -S . -B build/release -DDSPECM1D_BUILD_BENCHMARKS=ON
+cmake --build build/release --target ex6 --parallel 2
+OMP_NUM_THREADS=2 ./build/release/bin/ex6
+OMP_NUM_THREADS=2 ./build/release/bin/ex6
+OMP_NUM_THREADS=2 ./build/release/bin/ex6</code></pre><p>The executable prompts for the maximum SEM step size. Enter <code>0.01</code>, <code>0.001</code> and <code>0.0001</code> in order for the three invocations. The runs write files to <code>build/release/output/</code>; for the first step size, these include <code>ex6_radial_response_0.010000.out</code>, <code>ex6_N2_0.010000.out</code> and <code>ex6_w_0.010000.out</code>.</p></section>
+      <section class="page-section"><h2>Plot command</h2><p>After all three runs finish, run this from the repository root:</p><pre><code>DSPECM1D_BUILD_DIR=build/release python3 plotting/functions/ex6.py</code></pre></section>
+      <section class="page-section"><h2>Scope and limits</h2><p>This is published Figure 7. The paper shows mesh sizes 0.01a, 0.001a and 0.0001a and forcing periods expressed relative to the maximum Brunt–Väisälä period. The plotting script reads outputs from separate runs at all three mesh sizes. This is a fluid-response study, not an accuracy score.</p></section>
+      <section class="page-section"><p><a href="benchmark-ex5.html">← Previous</a> · <a href="paper-reproduction.html">All paper workflows</a> · <a href="benchmark-ex7.html">Next →</a></p></section>
+    </div>
+  </main>
+<script src="assets/site.js" defer></script></body>
+</html>

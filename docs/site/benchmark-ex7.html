@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Setup, outputs and comparison scope for the DSpecM1D ex7 paper workflow.">
+  <title>EX7 Benchmark | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/benchmark-figures.css">
+</head>
+<body>
+  <nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <p><a href="paper-reproduction.html">Paper workflows</a> / <code>ex7</code></p>
+        <h1>EX7 · Attenuating broadband comparison with alternate PREM input</h1>
+        <p class="lede">A second four-way time- and frequency-domain comparison using the ex7 parameter and model files, with attenuation enabled.</p>
+      </div>
+      <figure class="benchmark-figure">
+        <a href="assets/benchmarks/ggag211fig3.jpeg"><img src="assets/benchmarks/ggag211fig3.jpeg" alt="Published Figure 3: acceleration traces for the China event in an attenuating PREM model without an ocean layer." loading="lazy"></a>
+        <figcaption>Original Figure 3 from Myhill and Al-Attar (2026), <em>Geophysical Journal International</em> 246(2), ggag211. Reused unchanged under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="https://doi.org/10.1093/gji/ggag211">Published article</a>.</figcaption>
+      </figure>
+      <section class="page-section"><h2>Configuration</h2><p>Uses <code>data/params/ex7.txt</code> and <code>data/models/prem.200.no</code>, covering 0.1–55 mHz with a 240-minute time window.</p></section>
+      <section class="page-section"><h2>Comparison inputs</h2><p>YSpec, MINEOS and SpecNM comparison series are loaded from <code>data/reference/</code>.</p></section>
+      <section class="page-section"><h2>Executable and outputs</h2><pre><code>cmake -S . -B build/release -DDSPECM1D_BUILD_BENCHMARKS=ON
+cmake --build build/release --target ex7 --parallel 2
+OMP_NUM_THREADS=2 ./build/release/bin/ex7</code></pre><p>The executable writes <code>ex7_t.out</code> and <code>ex7_w.out</code> to <code>build/release/output/</code>. A fresh build generates these files when the executable runs.</p></section>
+      <section class="page-section"><h2>Plot command</h2><p>Run from the repository root after producing the required output files:</p><pre><code>DSPECM1D_BUILD_DIR=build/release python3 plotting/functions/ex7.py</code></pre></section>
+      <section class="page-section"><h2>Scope and limits</h2><p>This is the published Figure 3 case: attenuating PREM without an ocean layer. The article compares DSpecM1D, YSpec, specnm and MINEOS. The current ex7 parameters extend to 55 mHz and use a 49–50 mHz taper, while the published figure uses a 51 mHz maximum and a 50–50.5 mHz upper taper.</p></section>
+      <section class="page-section"><p><a href="benchmark-ex2.html">← Previous</a> · <a href="paper-reproduction.html">All paper workflows</a> · <a href="benchmark-ex3.html">Next →</a></p></section>
+    </div>
+  </main>
+<script src="assets/site.js" defer></script></body>
+</html>

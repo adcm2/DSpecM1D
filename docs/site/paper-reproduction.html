@@ -22,6 +22,21 @@
         <p class="lede">The executables <code>ex1</code> through <code>ex7</code> are protected workflows for reproducing the results discussed in the accompanying paper.</p>
       </div>
       <section class="page-section">
+        <h2>Benchmark cases</h2>
+        <p>Open a case page for its configured model and parameter file, comparison inputs, executable, plotting entry point, expected outputs and known limits.</p>
+        <p>For an exact reproduction of the published setup, use the paper's archived <a href="https://doi.org/10.5281/zenodo.19793473">DSpecM1D v1.0.0 code snapshot</a>. Commands and parameter values on these pages describe this repository checkout; each case page identifies material differences from the published figure.</p>
+        <ul class="check-list">
+          <li><a href="benchmark-ex1.html"><code>ex1</code> · low-frequency displacement comparison · Fig. 1</a></li>
+          <li><a href="benchmark-ex2.html"><code>ex2</code> · Bolivia medium-frequency comparison · Fig. 2</a></li>
+          <li><a href="benchmark-ex7.html"><code>ex7</code> · no-ocean broadband acceleration · Fig. 3</a></li>
+          <li><a href="benchmark-ex3.html"><code>ex3</code> · with-ocean broadband acceleration · Fig. 4</a></li>
+          <li><a href="benchmark-ex4.html"><code>ex4</code> · acceleration record section · Fig. 5</a></li>
+          <li><a href="benchmark-ex5.html"><code>ex5</code> · SEM step-size convergence · Fig. 6</a></li>
+          <li><a href="benchmark-ex6.html"><code>ex6</code> · low-frequency fluid and radial response · Fig. 7</a></li>
+        </ul>
+        <p>Figure mappings refer to the published version of A.D.C. Myhill and D. Al-Attar (2026), <a href="https://doi.org/10.1093/gji/ggag211"><em>The direct spectral element method for the calculation of synthetic seismograms in self-gravitating, spherically symmetric planets</em></a>, <em>Geophysical Journal International</em> 246(2), ggag211. The original publisher figure files are reused under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, with attribution on each case page.</p>
+      </section>
+      <section class="page-section">
         <div class="callout">
           <strong>Important:</strong> these examples intentionally keep their external comparisons. They are not accidental couplings and should not be simplified into generic unit tests.
         </div>
@@ -36,7 +51,7 @@
       </section>
       <section class="page-section">
         <h2>External Comparison Inputs</h2>
-        <p>The protected examples compare against outputs from other tools such as YSpec, SpecNM, and MinEOS. The canonical comparison files used by these workflows are now stored in the repository under <code>data/reference/</code> and copied into the build tree with the rest of the project data.</p>
+        <p>The protected examples compare against outputs from other tools such as YSpec, SpecNM, and MINEOS. The canonical comparison files used by these workflows are now stored in the repository under <code>data/reference/</code> and copied into the build tree with the rest of the project data.</p>
         <p>The repository folder <code>plotting/</code> is also part of this protected workflow: it contains the example plotting scripts as well as the output locations used by the paper-oriented benchmark runs. For this release it should be treated as part of the scientific validation layout, not as a generic optional plotting add-on.</p>
       </section>
       <section class="page-section">

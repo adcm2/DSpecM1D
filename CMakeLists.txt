@@ -34,13 +34,6 @@ include(FetchContent)
 include(cmake/DSpecM1DDependencies.cmake)
 dspecm1d_fetch_dependencies()
 
-foreach(_dspecm1d_dep IN ITEMS numericconcepts fftwpp gaussquad gshtrans interpolation)
-    if(NOT EXISTS "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build/cmake_install.cmake")
-        file(MAKE_DIRECTORY "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build")
-        file(WRITE "${FETCHCONTENT_BASE_DIR}/${_dspecm1d_dep}-build/cmake_install.cmake" "")
-    endif()
-endforeach()
-
 # --- Target Definition ---
 add_library(DSpecM1D INTERFACE)
 
