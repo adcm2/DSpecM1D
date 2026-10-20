@@ -21,8 +21,7 @@ SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   if (maxn > m_lmax)
     maxn = m_lmax;
   auto wigdmat =
-      GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Single, GSHTrans::ColumnMajor>(m_lmax, m_lmax,
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Single>(m_lmax, m_lmax,
                                                                 maxn, theta_s);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     auto dl = wigdmat[N];
@@ -39,11 +38,11 @@ SEM::calculateForceT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
         vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
-          Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
+          Interpolation::LagrangeBasis(vec_nodes);
 
       for (int idxq = 0; idxq < nq; ++idxq) {
-        auto w_val = pleg(idxq, rad_source) / rad_source;
-        auto w_prefactor = pleg.Derivative(idxq, rad_source) - w_val;
+        auto w_val = pleg.Evaluate(idxq, rad_source) / rad_source;
+        auto w_prefactor = pleg.Evaluate<1>(idxq, rad_source) - w_val;
         std::size_t ridx = this->ltgT(idx, idxq);
 
         for (int idxm = -idxl; idxm < idxl + 1; ++idxm) {
@@ -83,11 +82,11 @@ SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
         vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
-          Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
+          Interpolation::LagrangeBasis(vec_nodes);
 
       for (int idxq = 0; idxq < nq; ++idxq) {
-        auto w_val = pleg(idxq, rad_source) / rad_source;
-        auto w_deriv = pleg.Derivative(idxq, rad_source);
+        auto w_val = pleg.Evaluate(idxq, rad_source) / rad_source;
+        auto w_deriv = pleg.Evaluate<1>(idxq, rad_source);
         auto idx_v = this->ltgT(idx, idxq);
         vec_lforce(idx_v, 0) = kval * w_deriv;
         vec_lforce(idx_v, 1) = kval * w_val;
@@ -110,8 +109,7 @@ SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   if (maxn > idxl)
     maxn = idxl;
   auto wigdmat =
-      GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Single, GSHTrans::ColumnMajor>(idxl, idxl,
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Single>(idxl, idxl,
                                                                 maxn, theta_s);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     auto dl = wigdmat[N];

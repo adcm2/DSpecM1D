@@ -6,7 +6,7 @@
 #include <cmath>
 #include <Eigen/Core>
 #include <GSHTrans/Core>
-#include <Interpolation/Lagrange>
+#include <Interpolation/Lagrange.hpp>
 #include "../SourceInfo.h"
 #include <DSpecM1D/EarthMesh>
 #include "../InputParser.h"

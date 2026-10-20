@@ -1,91 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Reference for the real DSpecM1D parameter-file format as parsed today, including ordering rules and recommended release-facing API usage.">
-  <title>Parameter Files | DSpecM1D</title>
-  <link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-  <nav>
-    <div class="shell">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="installation.html">Installation</a></li>
-        <li><a href="parameter-files.html">Parameter Files</a></li>
-        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
-        <li><a href="library-testing.html">Library Testing</a></li>
-        <li><a href="release-notes.html">Release Notes</a></li>
-        <li><a href="love-numbers.html">Love Numbers</a></li>
-        <li><a href="api/index.html">API Reference</a></li>
-      </ul>
-    </div>
-  </nav>
-  <main>
-    <div class="page">
-      <div class="page-header">
-        <h1>Parameter Files</h1>
-        <p class="lede">DSpecM1D currently reads an ordered line-based input format. It does not read keyed <code>name value</code> pairs.</p>
-      </div>
-      <section class="page-section">
-        <h2>Parsing Rules</h2>
-        <ul class="check-list">
-          <li>Blank lines are ignored.</li>
-          <li>Comment lines are ignored.</li>
-          <li>Quoted and unquoted scalar values are accepted where the parser expects them.</li>
-          <li>After comments and blanks are skipped, the remaining values must appear in the exact expected order.</li>
-        </ul>
-      </section>
-      <section class="page-section">
-        <h2>Representative Ordered Input</h2>
-        <pre><code>"./output/yspec.lf.out"
-"models/prem.200.noatten.txt"
-4
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Ordered DSpecM1D parameter-file reference with units and current parser behavior."><title>Parameter Files | DSpecM1D</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
+<main class="page"><header class="page-header"><p class="eyebrow">Reference</p><h1>Parameter files</h1><p class="lede">The parser consumes one value line per field in a fixed order. It skips blank lines and full-line comments beginning with <code>#</code>; it does not parse keyed <code>name = value</code> syntax.</p></header>
+<section class="page-section"><h2>Field order and meaning</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>Field</th><th>Units or accepted values</th></tr></thead><tbody>
+<tr><td>1</td><td>Output prefix</td><td>Path prefix; CLI appends <code>_t.out</code> for time series.</td></tr><tr><td>2</td><td>Earth model</td><td>Model file path, commonly relative to <code>data/</code> for bundled files.</td></tr><tr><td>3</td><td>Mode type</td><td>1 radial, 2 toroidal, 3 spheroidal, 4 all families; radial modes are removed when <code>lmin &gt; 0</code>.</td></tr><tr><td>4</td><td>Attenuation</td><td>0 off, 1 on; the model must contain usable attenuation data.</td></tr><tr><td>5</td><td>Gravitation selector</td><td>Legacy integer is parsed but currently does not choose solver physics. See the Cowling cutoff note below.</td></tr><tr><td>6</td><td>Output type</td><td>0 displacement (m), 1 velocity (m s<sup>−1</sup>), 2 acceleration (m s<sup>−2</sup>). Time is written in seconds.</td></tr><tr><td>7</td><td>Potential/tilt corrections</td><td>Legacy integer is parsed but currently has no solver effect.</td></tr><tr><td>8</td><td>Relative error</td><td>Positive dimensionless accuracy setting used by the multi-SEM path.</td></tr><tr><td>9–10</td><td><code>lmin</code>, <code>lmax</code></td><td>Inclusive integer angular-degree bounds; <code>lmin ≥ 0</code>, <code>lmax ≥ lmin</code>.</td></tr><tr><td>11–12</td><td><code>fmin</code>, <code>fmax</code></td><td>Frequency limits in mHz; <code>fmin &lt; fmax</code>.</td></tr><tr><td>13–14</td><td>Duration, time step</td><td>Duration in minutes; sample interval in seconds. Both must be positive.</td></tr><tr><td>15–18</td><td><code>f11</code>, <code>f12</code>, <code>f21</code>, <code>f22</code></td><td>Filter corners in mHz; each pair is ordered low to high.</td></tr><tr><td>19–21</td><td>Source depth, latitude, longitude</td><td>Depth in km; angles in degrees.</td></tr><tr><td>22–27</td><td>Moment tensor</td><td><code>Mrr</code>, <code>Mrθ</code>, <code>Mrφ</code>, <code>Mθθ</code>, <code>Mθφ</code>, <code>Mφφ</code>, in N m.</td></tr><tr><td>28</td><td>Receiver depth</td><td>Depth below the surface in km; nonnegative.</td></tr><tr><td>29</td><td>Receiver count</td><td>Positive integer.</td></tr><tr><td>30…</td><td>Receiver locations</td><td>One latitude/longitude pair per receiver, in degrees. Three columns per receiver follow the time column: radial, north, and east.</td></tr><tr><td>Optional final</td><td>Cowling frequency cutoff</td><td>Physical frequency in mHz; omit or use zero to disable.</td></tr>
+</tbody></table></div></section>
+<section class="page-section"><h2>Gravity and Cowling behavior</h2><p>The fifth legacy field is read by the parser but is not consulted by the current solver. Solver paths use self-gravity unless the optional final cutoff is supplied: spheroidal frequency bins below a positive cutoff use full self-gravity, and bins at or above it use the Cowling approximation. The cutoff is a physical frequency in mHz; zero or omission disables it. This selector is independent of the legacy gravity field.</p></section>
+<section class="page-section"><h2>Supplied first-run file</h2><p><a href="data/params/first_seismogram.txt">Annotated source file</a>. Copy it before changing values; the parser validates field order and rejects extra trailing values. It intentionally uses attenuation off with the matching no-attenuation PREM model.</p></section>
+<section class="page-section"><h2>Example excerpt</h2><pre><code># mode family, attenuation, legacy gravity selector, output, legacy corrections
+3
 0
 2
 0
 0
-1e-5
-0
-100
-0.1
-7.0
-6000
-1.0
-0.1
-0.2
-4.9
-5.0
-647.1
--13.82
--67.25
--7.59e20
--2.50e21
-4.20e19
-7.75e20
--2.48e20
--1.60e19
-3.0001
-2
-80 0
-0 6</code></pre>
-      </section>
-      <section class="page-section">
-        <h2>Optional Cowling Cutoff</h2>
-        <p>After the receiver locations, a parameter file may include one optional final value named <code>cowling_frequency_mhz</code>. It is a physical frequency in mHz. The default value is zero, which disables the cutoff. With a positive cutoff, spheroidal bins below it use full self-gravity and bins at or above it use the Cowling approximation in both the single-SEM and multi-SEM solver paths.</p>
-        <pre><code># optional final value; zero disables the cutoff
-25.0</code></pre>
-      </section>
-      <section class="page-section">
-        <h2>Recommended API</h2>
-        <p>For release-facing code, prefer <code>InputParametersNew</code>. It preserves the legacy file format while aggregating the parsed parameters, Earth model, source, receiver geometry, and frequency axis in one object.</p>
-      </section>
-      <section class="page-section">
-        <h2>Why The Docs Call This Out Explicitly</h2>
-        <p>Earlier README-style examples could be read as if the input format were keyed. The release docs now describe the real parser behavior directly so users do not prepare the wrong kind of input file.</p>
-      </section>
-    </div>
-  </main>
-</body>
-</html>
+# relative error, lmin, lmax
+1e-3
+1
+32</code></pre><p>Read the full example in <code>data/params/first_seismogram.txt</code> or follow the <a href="first-seismogram.html">first calculation guide</a>.</p></section>
+</main><footer class="shell">DSpecM1D · <a href="https://github.com/adcm2/DSpecM1D">GitHub repository</a></footer><script src="assets/site.js" defer></script></body></html>

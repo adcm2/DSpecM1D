@@ -7,13 +7,32 @@
 #include <fstream>
 #include <iostream>
 #include <limits>
+#include <memory>
+#include <ranges>
+#include <span>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include <Interpolation/CubicSpline>
+#include <Interpolation/CubicSpline.hpp>
 
 namespace EarthModels {
+
+template <typename T>
+class SharedVectorView : public std::ranges::view_interface<SharedVectorView<T>> {
+public:
+  SharedVectorView() = default;
+  explicit SharedVectorView(const std::vector<T> &values)
+      : values_{std::make_shared<std::vector<T>>(values)} {}
+
+  auto begin() const { return values_->cbegin(); }
+  auto end() const { return values_->cend(); }
+  std::size_t size() const { return values_->size(); }
+  const T &operator[](std::size_t index) const { return (*values_)[index]; }
+
+private:
+  std::shared_ptr<std::vector<T>> values_;
+};
 
 template <typename FLOAT = double>
 class EarthConstants {
@@ -56,8 +75,8 @@ public:
   using size_type = INTEGRAL;
   using value_type = FLOAT;
   using myvector = std::vector<FLOAT>;
-  using myiter = typename myvector::iterator;
-  using InterpA = Interpolation::CubicSpline<myiter, myiter>;
+  using InterpView = SharedVectorView<double>;
+  using InterpA = Interpolation::CubicSpline<InterpView, InterpView>;
 
   ModelInput() = default;
   explicit ModelInput(const std::string &pathToFile);
@@ -392,17 +411,15 @@ ModelInput<FLOAT, INTEGRAL>::loadModel(const std::string &pathToFile,
   }
 
   for (int idx = 0; idx < m_numLayers; ++idx) {
-    auto it1 = m_layeredRadii[idx].begin();
-    auto it2 = m_layeredRadii[idx].end();
-
-    m_density.push_back(InterpA(it1, it2, m_layeredRho[idx].begin()));
-    m_vpv.push_back(InterpA(it1, it2, m_layeredVpv[idx].begin()));
-    m_vsv.push_back(InterpA(it1, it2, m_layeredVsv[idx].begin()));
-    m_qkappa.push_back(InterpA(it1, it2, m_layeredQkappa[idx].begin()));
-    m_qmu.push_back(InterpA(it1, it2, m_layeredQmu[idx].begin()));
-    m_vph.push_back(InterpA(it1, it2, m_layeredVph[idx].begin()));
-    m_vsh.push_back(InterpA(it1, it2, m_layeredVsh[idx].begin()));
-    m_eta.push_back(InterpA(it1, it2, m_layeredEta[idx].begin()));
+    const InterpView radii{m_layeredRadii[idx]};
+    m_density.emplace_back(radii, InterpView{m_layeredRho[idx]});
+    m_vpv.emplace_back(radii, InterpView{m_layeredVpv[idx]});
+    m_vsv.emplace_back(radii, InterpView{m_layeredVsv[idx]});
+    m_qkappa.emplace_back(radii, InterpView{m_layeredQkappa[idx]});
+    m_qmu.emplace_back(radii, InterpView{m_layeredQmu[idx]});
+    m_vph.emplace_back(radii, InterpView{m_layeredVph[idx]});
+    m_vsh.emplace_back(radii, InterpView{m_layeredVsh[idx]});
+    m_eta.emplace_back(radii, InterpView{m_layeredEta[idx]});
   }
 }
 

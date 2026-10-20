@@ -7,6 +7,9 @@ endif()
 if(NOT DEFINED GENERATE_SEISMOGRAM_OUTPUT_FILE)
   message(FATAL_ERROR "GENERATE_SEISMOGRAM_OUTPUT_FILE is required")
 endif()
+if(NOT DEFINED GENERATE_SEISMOGRAM_CHECKER OR NOT DEFINED GENERATE_SEISMOGRAM_PYTHON)
+  message(FATAL_ERROR "GENERATE_SEISMOGRAM_CHECKER and GENERATE_SEISMOGRAM_PYTHON are required")
+endif()
 if(NOT DEFINED GENERATE_SEISMOGRAM_WORKING_DIRECTORY)
   message(FATAL_ERROR "GENERATE_SEISMOGRAM_WORKING_DIRECTORY is required")
 endif()
@@ -37,4 +40,13 @@ if(_output_size LESS 1)
   message(FATAL_ERROR
     "generate_seismogram created an empty output file:\n"
     "  ${GENERATE_SEISMOGRAM_OUTPUT_FILE}")
+endif()
+
+execute_process(
+  COMMAND "${GENERATE_SEISMOGRAM_PYTHON}" "${GENERATE_SEISMOGRAM_CHECKER}"
+          "${GENERATE_SEISMOGRAM_OUTPUT_FILE}"
+  RESULT_VARIABLE _check_result
+)
+if(NOT _check_result EQUAL 0)
+  message(FATAL_ERROR "Seismogram output validation failed with exit code ${_check_result}")
 endif()

@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.24)
+project(DSpecM1DFirstSeismogram LANGUAGES CXX)
+find_package(DSpecM1D CONFIG REQUIRED)
+add_executable(first_seismogram_consumer ../first_seismogram.cpp)
+target_link_libraries(first_seismogram_consumer PRIVATE DSpecM1D::DSpecM1D)

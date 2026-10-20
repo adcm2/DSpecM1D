@@ -341,7 +341,7 @@ TEST(RadialStateTests, DensityDerivativeUsesElementLayerSpline) {
     for (int node = 0; node < mesh.NN(); ++node) {
       const double radius = mesh.NodeRadius(element, node);
       EXPECT_DOUBLE_EQ(state.densityDerivative(element, node),
-                       density.Derivative(radius));
+                       density.Evaluate<1>(radius));
     }
   }
 }
@@ -372,9 +372,9 @@ TEST(RadialStateTests, MaterialInterfaceUsesOneSidedDensityDerivatives) {
     const double radius = mesh.NodeRadius(lower_element, lower_node);
     const double upper_radius = mesh.NodeRadius(upper_element, 0);
     const double lower_derivative =
-        model.Density(lower_layer).Derivative(radius);
+        model.Density(lower_layer).Evaluate<1>(radius);
     const double upper_derivative =
-        model.Density(upper_layer).Derivative(upper_radius);
+        model.Density(upper_layer).Evaluate<1>(upper_radius);
     if (lower_derivative == upper_derivative) {
       continue;
     }

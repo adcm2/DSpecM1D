@@ -8,20 +8,13 @@
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <nav>
-    <div class="shell">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="installation.html">Installation</a></li>
-        <li><a href="parameter-files.html">Parameter Files</a></li>
-        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
-        <li><a href="library-testing.html">Library Testing</a></li>
-        <li><a href="release-notes.html">Release Notes</a></li>
-        <li><a href="love-numbers.html">Love Numbers</a></li>
-        <li><a href="api/index.html">API Reference</a></li>
-      </ul>
-    </div>
-  </nav>
+  <nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
   <main>
     <div class="page">
       <div class="page-header">
@@ -43,8 +36,8 @@
         <ul class="check-list">
           <li><strong>Unit:</strong> parser rules, quoted and unquoted values, range checking, helper functions, normalization, and file-format readers.</li>
           <li><strong>Component:</strong> output writers, filter option validation, and minimal SEM/local-to-global checks.</li>
-          <li><strong>Smoke:</strong> runtime execution of <code>generate_seismogram</code>, plus guarded end-to-end execution of <code>t1</code>.</li>
-          <li><strong>Paper validation:</strong> environment-specific workflows for <code>ex1</code> through <code>ex7</code>.</li>
+          <li><strong>Smoke:</strong> CLI and C++ first-seismogram outputs, an installed-package consumer, the <code>t1</code> tutorial, and the <code>ex1</code> build check when their targets are enabled. Label: <code>dspecm1d_smoke</code>.</li>
+          <li><strong>Migration and paper validation:</strong> optional reference comparisons are controlled by <code>DSPECM1D_ENABLE_MIGRATION_TESTS</code> and <code>DSPECM1D_ENABLE_PAPER_VALIDATION</code>; both are off by default.</li>
         </ul>
       </section>
       <section class="page-section">
@@ -53,10 +46,38 @@
   -DDSPECM1D_BUILD_TESTS=ON \
   -DDSPECM1D_BUILD_TUTORIALS=ON \
   -DDSPECM1D_BUILD_BENCHMARKS=ON \
+  -DDSPECM1D_BUILD_TOOLS=ON \
   -DDSPECM1D_ENABLE_SMOKE_TESTS=ON
-cmake --build build/dev --parallel
+cmake --build build/dev --parallel 2
 ctest --test-dir build/dev --output-on-failure -L "unit|component"
 ctest --test-dir build/dev --output-on-failure -L dspecm1d_smoke</code></pre>
+      </section>
+      <section class="page-section">
+        <h2>Build options and inventory</h2>
+        <p>These are the nine top-level project options and their defaults.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Option</th><th>Default</th><th>Effect when enabled</th></tr></thead>
+          <tbody>
+            <tr><td><code>DSPECM1D_BUILD_BENCHMARKS</code></td><td>ON</td><td>Build the programs in the benchmarks directory, including the paper examples.</td></tr>
+            <tr><td><code>DSPECM1D_BUILD_TUTORIALS</code></td><td>ON</td><td>Build tutorial programs.</td></tr>
+            <tr><td><code>DSPECM1D_BUILD_TOOLS</code></td><td>ON</td><td>Build command-line tools.</td></tr>
+            <tr><td><code>DSPECM1D_BUILD_TESTS</code></td><td>OFF</td><td>Build the seven core test executables.</td></tr>
+            <tr><td><code>DSPECM1D_BUILD_LOVE_NUMBERS</code></td><td>OFF</td><td>Build the optional static Love-number module and CLI; tests also require <code>DSPECM1D_BUILD_TESTS</code>.</td></tr>
+            <tr><td><code>DSPECM1D_ENABLE_SMOKE_TESTS</code></td><td>OFF</td><td>Register lightweight executable smoke checks.</td></tr>
+            <tr><td><code>DSPECM1D_ENABLE_MIGRATION_TESTS</code></td><td>OFF</td><td>Register temporary migration/reference comparisons.</td></tr>
+            <tr><td><code>DSPECM1D_ENABLE_PAPER_VALIDATION</code></td><td>OFF</td><td>Register paper and Love-number reference validation checks.</td></tr>
+            <tr><td><code>DSPECM1D_BUILD_DOCS</code></td><td>OFF</td><td>Build the Doxygen and static website documentation targets.</td></tr>
+          </tbody>
+        </table></div>
+        <p>The seven core executable targets are <code>dspecm1d_parser_tests</code>, <code>dspecm1d_input_context_tests</code>, <code>dspecm1d_solver_api_tests</code>, <code>dspecm1d_output_writer_tests</code>, <code>dspecm1d_signal_filter_tests</code>, <code>dspecm1d_sem_component_tests</code>, and <code>dspecm1d_mesh_model_gravity_tests</code>. Their discovered CTest cases carry both <code>unit</code> and <code>component</code> labels.</p>
+        <p>The optional Love-number suite adds <code>dspecm1d_love_numbers_tests</code>, <code>dspecm1d_love_numbers_radial_state_tests</code>, <code>dspecm1d_love_numbers_dof_map_tests</code>, <code>dspecm1d_love_numbers_static_operator_tests</code>, <code>dspecm1d_love_numbers_static_fluid_tests</code>, <code>dspecm1d_love_numbers_static_solve_tests</code>, <code>dspecm1d_love_numbers_static_radial_tests</code>, <code>dspecm1d_love_numbers_static_degree_one_tests</code>, <code>dspecm1d_love_numbers_public_private_tests</code>, and <code>dspecm1d_love_numbers_cli_tests</code>. Enabling paper validation additionally registers <code>dspecm1d_love_numbers_reference_validation</code>; see the <a href="love-numbers.html">Love-number guide</a>.</p>
+        <p>Build a specific example or core test target with bounded parallelism:</p>
+        <pre><code>cmake --build build/dev --target first_seismogram --parallel 2
+cmake --build build/dev --target dspecm1d_solver_api_tests --parallel 2
+ctest --test-dir build/dev -N
+ctest --test-dir build/dev --output-on-failure -L "unit|component"
+ctest --test-dir build/dev --output-on-failure -L dspecm1d_smoke</code></pre>
+        <p>The CTest inventory is configuration-dependent; use <code>ctest -N</code> instead of relying on a fixed count. Optional migration checks use the <code>migration</code>/<code>reference</code> labels, core paper checks use <code>validation</code>/<code>paper</code>, and optional Love-number reference checks use <code>paper-validation</code>. Python plotting checks run in CI with <code>python3 -m unittest discover -s tests -p "test_*.py"</code> and require NumPy and Matplotlib in that Python environment.</p>
       </section>
       <section class="page-section">
         <h2>Smoke-Test Safety</h2>
@@ -69,5 +90,5 @@ ctest --test-dir build/dev --output-on-failure -L dspecm1d_smoke</code></pre>
       </section>
     </div>
   </main>
-</body>
+<script src="assets/site.js" defer></script></body>
 </html>

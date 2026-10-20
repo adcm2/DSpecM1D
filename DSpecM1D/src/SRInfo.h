@@ -9,7 +9,7 @@
 #include <Eigen/Core>
 #include <DSpecM1D/EarthMesh>
 #include <GSHTrans/Core>
-#include <Interpolation/Lagrange>
+#include <Interpolation/Lagrange.hpp>
 #include "SourceInfo.h"
 #include "InputParser.h"
 #include "model_info/MeshModel.h"
@@ -20,8 +20,7 @@ private:
   using ComplexD = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
   using WignerType =
-      GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Multiple, GSHTrans::ColumnMajor>;
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Multiple>;
   WignerType m_wigner;
   int m_numReceivers;
   int m_mmax;

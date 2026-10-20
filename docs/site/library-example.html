@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Build the DSpecM1D C++ first-seismogram example from source or an installed package."><title>C++ Library Example | DSpecM1D</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav><main class="page"><header class="page-header"><p class="eyebrow">Examples</p><h1>Use the C++ library</h1><p class="lede">The same tutorial source works in the repository build and as a standalone consumer of an installed package.</p></header>
+<section class="page-section"><h2>The calculation</h2><p>The tutorial source is shared by the in-tree executable and standalone consumer. It reads the ordered parameter file, constructs the public input context, calculates and normalizes the spectrum, applies the standard filter, and writes the public time-series format to an explicit path.</p><pre><code>#include &lt;filesystem&gt;
+#include &lt;iostream&gt;
+#include &lt;stdexcept&gt;
+#include &lt;string&gt;
+#include &lt;DSpecM1D/src/FullSpec.h&gt;
+#include &lt;DSpecM1D/src/InputParametersNew.h&gt;
+#include &lt;DSpecM1D/src/OutputWriters.h&gt;
+#include &lt;DSpecM1D/src/SignalFiltering.h&gt;
+
+int main(int argc, char **argv) {
+  if (argc != 3) {
+    std::cerr &lt;&lt; &quot;Usage: first_seismogram &lt;parameter-file&gt; &lt;output-file&gt;\n&quot;;
+    return 1;
+  }
+  try {
+    InputParametersNew params(argv[1]);
+    SPARSESPEC::SparseFSpec solver;
+    auto spectra = solver.spectra(params);
+    spectra *= params.normFactor();
+    DSpecM::FilterOptions filterOptions;
+    const auto filtered =
+        DSpecM::applyFilter(spectra, params.freqFull(), filterOptions);
+    const std::filesystem::path output(argv[2]);
+    if (!output.parent_path().empty())
+      std::filesystem::create_directories(output.parent_path());
+    DSpecM::writeTimeSeries(output.string(), params, filtered.timeSeries);
+    std::cout &lt;&lt; &quot;Wrote time-domain seismogram to &quot; &lt;&lt; output.string() &lt;&lt; &#x27;\n&#x27;;
+  } catch (const std::exception &amp;error) {
+    std::cerr &lt;&lt; &quot;first_seismogram failed: &quot; &lt;&lt; error.what() &lt;&lt; &#x27;\n&#x27;;
+    return 2;
+  }
+}</code></pre><p>The full source also reports command-line usage and catches solver and file errors.</p></section>
+<section class="page-section"><h2>Build and run in the source tree</h2><pre><code>cmake -S . -B build/release -DDSPECM1D_BUILD_TUTORIALS=ON
+cmake --build build/release --target first_seismogram --parallel 2
+OMP_NUM_THREADS=2 build/release/bin/first_seismogram \
+  build/release/data/params/first_seismogram.txt \
+  build/release/output/library_first_seismogram.out</code></pre><p>The source is <code>tutorials/first_seismogram.cpp</code>. It accepts an explicit parameter-file path and output path, so it can be called from any working directory.</p></section>
+<section class="page-section"><h2>Install and build a downstream consumer</h2><p>From the repository root, install the package to a local prefix. The consumer uses the same source file as the in-tree tutorial and links the exported target; CMake supplies the C++23 requirement through that target.</p><p>The standalone <code>CMakeLists.txt</code> is:</p><pre><code>cmake_minimum_required(VERSION 3.24)
+project(DSpecM1DFirstSeismogram LANGUAGES CXX)
+find_package(DSpecM1D CONFIG REQUIRED)
+add_executable(first_seismogram_consumer ../first_seismogram.cpp)
+target_link_libraries(first_seismogram_consumer PRIVATE DSpecM1D::DSpecM1D)</code></pre><pre><code>cmake -S . -B build/release -DDSPECM1D_BUILD_TUTORIALS=ON
+cmake --build build/release --target first_seismogram --parallel 2
+cmake --install build/release --prefix "$PWD/build/release/install"
+cmake -S tutorials/first_seismogram -B build/release/consumer \
+  -DCMAKE_PREFIX_PATH="$PWD/build/release/install"
+cmake --build build/release/consumer --parallel 2
+OMP_NUM_THREADS=2 build/release/consumer/first_seismogram_consumer \
+  "$PWD/build/release/data/params/first_seismogram.txt" \
+  "$PWD/build/release/output/installed_first_seismogram.out"</code></pre><p>A first downstream configure also fetches the same pinned dependency closure if it is not already available locally, so it needs network access. Compare the in-tree CLI, tutorial, and consumer outputs to confirm they use the same parameter values and workflow.</p></section>
+<section class="page-section"><h2>Numerical scope</h2><p>The bundled input is intentionally small and fast. For a scientific result, test sensitivity to degree range, frequency range, and mesh resolution, then choose a model and physical options appropriate to the question. See the <a href="first-seismogram.html">first-seismogram guide</a> and <a href="parameter-files.html">parameter reference</a>.</p></section>
+</main><footer class="shell">DSpecM1D · <a href="https://github.com/adcm2/DSpecM1D">GitHub repository</a></footer><script src="assets/site.js" defer></script></body></html>

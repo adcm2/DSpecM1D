@@ -1,0 +1,50 @@
+# DSpecM1D first-seismogram input. Values remain in parser-required order.
+# Output prefix; CLI adds _t.out, paths resolve from repository/build context.
+"./output/first_seismogram.out"
+# Earth model path, relative to data/ when run with this bundled file.
+"models/prem.200.noatten.txt"
+# Mode family: 1 radial, 2 toroidal, 3 spheroidal, 4 all families.
+3
+# Attenuation flag: 0 off, 1 on (model must provide attenuation data).
+0
+# Legacy gravitation selector: parsed, currently does not select solver physics.
+2
+# Output quantity: 0 displacement, 1 velocity, 2 acceleration.
+0
+# Legacy potential/tilt correction flag: parsed, currently has no solver effect.
+0
+# Relative solver accuracy control (positive dimensionless value).
+1e-3
+# Minimum and maximum angular degree l (integer).
+1
+32
+# Frequency band fmin and fmax in mHz.
+0.5
+5.0
+# Output duration in minutes; sample interval in seconds.
+5
+2.0
+# Four filter corner frequencies f11, f12, f21, f22 in mHz.
+1.0
+1.5
+4.5
+5.0
+# Source depth in km; source latitude and longitude in degrees.
+15.0
+10.0
+20.0
+# Moment tensor components Mrr, Mr-theta, Mr-phi, Mtheta-theta,
+# Mtheta-phi, Mphi-phi in N m.
+1.0e20
+2.0e20
+3.0e20
+4.0e20
+5.0e20
+6.0e20
+# Receiver depth below the surface in km; one receiver follows.
+3.0
+1
+# One receiver latitude and longitude in degrees.
+45.0 90.0
+# Optional final Cowling cutoff in physical mHz. Omitted/zero disables it.
+# A positive value selects full self-gravity below cutoff and Cowling at/above.

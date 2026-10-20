@@ -8,7 +8,7 @@
 #include <vector>
 
 #include <Eigen/Dense>
-#include <Interpolation/Lagrange>
+#include <Interpolation/Lagrange.hpp>
 
 #include "LoveDofMap.h"
 #include "RadialState.h"
@@ -42,8 +42,7 @@ double potentialBlockError(RadialState &state, int degree,
                            const Eigen::SparseMatrix<double> &matrix) {
   const auto &mesh = state.mesh();
   const auto &quadrature = state.quadrature();
-  const auto lagrange = Interpolation::LagrangePolynomial(
-      quadrature.Points().begin(), quadrature.Points().end());
+  const auto lagrange = Interpolation::LagrangeBasis(quadrature.Points());
   const LoveDofMap map(mesh, degree);
   const double angular_degree = degree * (degree + 1);
   const double potential_scale =
@@ -71,7 +70,7 @@ double potentialBlockError(RadialState &state, int degree,
         const double row_value = row_node == point ? 1.0 : 0.0;
         const double row_derivative =
             derivative_scale *
-            lagrange.Derivative(row_node, quadrature.X(point));
+            lagrange.Evaluate<1>(row_node, quadrature.X(point));
 
         for (int column_node = 0; column_node < mesh.NN();
              ++column_node) {
@@ -81,7 +80,7 @@ double potentialBlockError(RadialState &state, int degree,
               column_node == point ? 1.0 : 0.0;
           const double column_derivative =
               derivative_scale *
-              lagrange.Derivative(column_node, quadrature.X(point));
+              lagrange.Evaluate<1>(column_node, quadrature.X(point));
           double integrand =
               potential_scale *
               (radius * radius * row_derivative * column_derivative +
@@ -155,12 +154,11 @@ double solidVolumeUpEntry(RadialState &state, int element, int node) {
   const auto &mesh = state.mesh();
   const auto &model = state.meshModel();
   const auto &quadrature = state.quadrature();
-  const auto lagrange = Interpolation::LagrangePolynomial(
-      quadrature.Points().begin(), quadrature.Points().end());
+  const auto lagrange = Interpolation::LagrangeBasis(quadrature.Points());
   const double radius = mesh.NodeRadius(element, node);
   const double derivative =
       2.0 / mesh.EW(element) *
-      lagrange.Derivative(node, quadrature.X(node));
+      lagrange.Evaluate<1>(node, quadrature.X(node));
   return 0.5 * mesh.EW(element) * quadrature.W(node) *
          model.Density(element, node) * radius * radius * derivative;
 }

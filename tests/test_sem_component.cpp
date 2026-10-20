@@ -8,6 +8,8 @@
 #include <DSpecM1D/src/StartElement.h>
 #include <DSpecM1D/src/SourceInfo.h>
 #include <DSpecM1D/src/InputParametersNew.h>
+#include <GSHTrans/Core>
+#include <GaussQuad/All>
 #include "test_utils.h"
 
 namespace {
@@ -97,6 +99,67 @@ expectCowlingTopology(const Full1D::SEM &sem, const Model &model) {
 }
 
 }   // namespace
+
+TEST(DependencyApiTests, GaussLobattoIntegratesItsExactPolynomialRange) {
+  const auto quadrature =
+      GaussQuad::GaussLobattoLegendreQuadrature1D<double>(7);
+  for (int degree = 0; degree <= 11; ++degree) {
+    double integral = 0.0;
+    for (int point = 0; point < quadrature.N(); ++point)
+      integral += quadrature.W(point) * std::pow(quadrature.X(point), degree);
+    const double exact = degree % 2 == 0 ? 2.0 / (degree + 1) : 0.0;
+    EXPECT_NEAR(integral, exact, 2e-14) << "degree " << degree;
+  }
+}
+
+TEST(DependencyApiTests, LagrangeBasisPreservesValuesAndDerivatives) {
+  const std::vector<double> nodes{-1.0, -0.2, 0.5, 1.0};
+  const auto basis = Interpolation::LagrangeBasis(nodes);
+  const auto polynomial = [](double x) { return x * x * x - 0.5 * x + 0.25; };
+  for (const double x : {-1.0, -0.4, -0.2, 0.1, 0.5, 0.8, 1.0}) {
+    double value = 0.0;
+    double derivative = 0.0;
+    double partition = 0.0;
+    double derivativeSum = 0.0;
+    for (std::size_t i = 0; i < nodes.size(); ++i) {
+      const double li = basis.Evaluate(i, x);
+      const double dli = basis.Evaluate<1>(i, x);
+      value += polynomial(nodes[i]) * li;
+      derivative += polynomial(nodes[i]) * dli;
+      partition += li;
+      derivativeSum += dli;
+    }
+    EXPECT_NEAR(value, polynomial(x), 3e-14);
+    EXPECT_NEAR(derivative, 3.0 * x * x - 0.5, 3e-14);
+    EXPECT_NEAR(partition, 1.0, 3e-14);
+    EXPECT_NEAR(derivativeSum, 0.0, 3e-14);
+  }
+}
+
+TEST(DependencyApiTests, WignerKeepsSignedOrdersPolesAndHighDegreeFinite) {
+  using Wigner =
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All,
+                       GSHTrans::Multiple>;
+  const std::array<double, 2> angles{0.0, 0.73};
+  const Wigner table{750, 750, 1, angles};
+
+  const double y00 = 1.0 / std::sqrt(4.0 * std::acos(-1.0));
+  EXPECT_DOUBLE_EQ((table[0, 0][0, 0]), y00);
+  const auto pole = table[0, 0];
+  for (const int order : {-1, 1})
+    EXPECT_DOUBLE_EQ((pole[1, order]), 0.0);
+  EXPECT_DOUBLE_EQ((table[1, 0][1, 1]), std::sqrt(3.0) * y00);
+  EXPECT_DOUBLE_EQ((table[1, 0][1, -1]), 0.0);
+
+  const auto highDegree = table[1, 1];
+  for (const int order : {-750, -1, 0, 1, 750})
+    EXPECT_TRUE(std::isfinite(highDegree[750, order]));
+
+  const GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All,
+                         GSHTrans::Single>
+      radialDegreeZero{0, 0, 0, 0.0};
+  EXPECT_DOUBLE_EQ((radialDegreeZero[0][0, 0]), y00);
+}
 
 TEST(SEMComponentTests, LocalToGlobalMapsAreMonotonicOnMinimalModel) {
   prem_norm<double> norm;
@@ -209,12 +272,11 @@ TEST(SEMComponentTests, CowlingStiffnessMatchesDirectWeakFormWithBackgroundGravi
   const int node = 1;
   const int n = sem.mesh().NN();
   const auto q = GaussQuad::GaussLobattoLegendreQuadrature1D<double>(n);
-  auto lagrange = Interpolation::LagrangePolynomial(q.Points().begin(),
-                                                     q.Points().end());
+  auto lagrange = Interpolation::LagrangeBasis(q.Points());
   const double width = sem.mesh().EW(element);
   std::vector<double> testDerivative(n);
   for (int k = 0; k < n; ++k)
-    testDerivative[k] = 2.0 / width * lagrange.Derivative(node, q.X(k));
+    testDerivative[k] = 2.0 / width * lagrange.Evaluate<1>(node, q.X(k));
 
   double expected = 0.0;
   const auto radius = sem.mesh().NodeRadius(element, node);

@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 #include <cmath>
+#include <tuple>
+#include <utility>
 #include <DSpecM1D/src/InputParametersNew.h>
 #include "test_utils.h"
 
@@ -77,4 +79,35 @@ TEST(InputParametersNewTests, PreservesAnisotropicColumnsFromModelInputFile) {
   }
 
   EXPECT_TRUE(foundAnisotropicLayer);
+}
+
+TEST(InputParametersNewTests, ModelInterpolantsSurviveOwnerCopyAndMove) {
+  using Model = EarthModels::ModelInput<double>;
+  const auto path = DSpecMTest::modelPath().string();
+  const int layer = 1;
+
+  auto [interpolant, copiedModel, movedModel, radius, referenceValue,
+        referenceDerivative] = [&] {
+    Model original(path);
+    const double r =
+        0.5 * (original.LowerRadius(layer) + original.UpperRadius(layer));
+    const auto spline = original.Density(layer);
+    const double value = spline.Evaluate(r);
+    const double derivative = spline.Evaluate<1>(r);
+
+    Model copied = original;
+    Model moved = std::move(copied);
+    Model assigned;
+    assigned = original;
+    Model moveAssigned;
+    moveAssigned = std::move(assigned);
+    return std::tuple{original.Density(layer), std::move(moved),
+                      std::move(moveAssigned), r, value, derivative};
+  }();
+
+  for (const auto &spline : {interpolant, copiedModel.Density(layer),
+                             movedModel.Density(layer)}) {
+    EXPECT_DOUBLE_EQ(spline.Evaluate(radius), referenceValue);
+    EXPECT_DOUBLE_EQ(spline.Evaluate<1>(radius), referenceDerivative);
+  }
 }

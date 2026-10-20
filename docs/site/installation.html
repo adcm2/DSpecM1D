@@ -1,74 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Installation and quick-start guide for DSpecM1D, including build requirements, generate_seismogram, package installation, and local website preview.">
-  <title>Installation | DSpecM1D</title>
-  <link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-  <nav>
-    <div class="shell">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="installation.html">Installation</a></li>
-        <li><a href="parameter-files.html">Parameter Files</a></li>
-        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
-        <li><a href="library-testing.html">Library Testing</a></li>
-        <li><a href="release-notes.html">Release Notes</a></li>
-        <li><a href="love-numbers.html">Love Numbers</a></li>
-        <li><a href="api/index.html">API Reference</a></li>
-      </ul>
-    </div>
-  </nav>
-  <main>
-    <div class="page">
-      <div class="page-header">
-        <h1>Installation</h1>
-        <p class="lede">Build from source, run the public CLI, install the package, and use the generated CMake config in downstream projects.</p>
-      </div>
-      <section class="page-section">
-        <h2>Requirements</h2>
-        <p>DSpecM1D requires a C++23 compiler, CMake 3.24 or newer, FFTW3, and an OpenMP-capable compiler toolchain. The remaining third-party C++ dependencies are fetched automatically from pinned revisions during the first configure. NetCDF, BLAS, and LAPACK are not required for the first public release build.</p>
-        <pre><code>sudo apt install build-essential cmake git libfftw3-dev
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="description" content="Linux prerequisites, source build, CMake options, and downstream install for DSpecM1D."><title>Install and Build | DSpecM1D</title><link rel="stylesheet" href="assets/style.css"></head>
+<body><nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
+<main class="page"><header class="page-header"><p class="eyebrow">Get started</p><h1>Install and build</h1><p class="lede">Supported first-run path: Linux with CMake, a C++23 compiler, FFTW3, and OpenMP.</p></header>
+<section class="page-section"><h2>Requirements</h2><p>The project declares CMake 3.24 as its minimum. Build with a C++23 compiler and its OpenMP runtime; GCC 13.3 was used for the Linux tutorial checks. FFTW3 development files are required. Remaining C++ libraries are fetched from pinned revisions at configure time, which requires network access on a cold build. BLAS/LAPACK are not required by the updated GSHTrans dependency.</p><pre><code>sudo apt update
+sudo apt install build-essential cmake git libfftw3-dev python3-venv python3-pip</code></pre><p>macOS is best-effort: install a C++23-capable compiler, CMake, FFTW, and a matching <code>libomp</code> runtime, then verify OpenMP is found during configure. Windows is not a verified build target.</p></section>
+<section class="page-section"><h2>Choose a build tree</h2><p>Every build uses a separate directory and can be configured with command-line options:</p><pre><code># small user build
+git clone https://github.com/adcm2/DSpecM1D.git
+cd DSpecM1D
+cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release -DDSPECM1D_BUILD_TOOLS=ON
+cmake --build build/release --target generate_seismogram --parallel 2
 
-cmake -S . -B build/release
-cmake --build build/release --parallel</code></pre>
-        <p class="muted">Ninja is optional. If it is installed and you prefer it, add <code>-G Ninja</code> to the configure command.</p>
-        <p class="muted">If you switch CMake generators for an existing build tree, use a new build directory or remove the old one first. CMake build trees are generator-specific.</p>
-      </section>
-      <section class="page-section" id="quick-start">
-        <h2>Quick Start</h2>
-        <p>The recommended first executable is <code>generate_seismogram</code>. It reads a standard parameter file and writes a filtered time-domain seismogram to the output prefix specified in that file.</p>
-        <pre><code>cmake -S . -B build/dev \
-  -DDSPECM1D_BUILD_TOOLS=ON
-cmake --build build/dev --target generate_seismogram
-cd build/dev
-export OMP_NUM_THREADS=2
-./bin/generate_seismogram data/params/t1.txt</code></pre>
-        <p class="muted">For the bundled <code>t1.txt</code> file, this writes <code>output/t1.out_t.out</code> inside the active build tree. More generally, the destination comes from the parameter-file <code>output_prefix</code>; the CLI does not take a separate output-path override in this first release.</p>
-        <p class="muted">The bundled <code>t1</code> executable remains the self-contained tutorial and guarded runtime smoke example. The paper-reproduction examples <code>ex1</code> through <code>ex7</code> remain separate on purpose.</p>
-      </section>
-      <section class="page-section">
-        <h2>Installed Package</h2>
-        <p>The release installs headers plus a package config for downstream CMake use. A consumer can locate the package and link to the public interface target:</p>
-        <pre><code>find_package(DSpecM1D REQUIRED)
-target_link_libraries(my_target PRIVATE DSpecM1D::DSpecM1D)</code></pre>
-      </section>
-      <section class="page-section">
-        <h2>Documentation Build And Local Preview</h2>
-        <p>The static site and Doxygen output are integrated into the CMake build. Use <code>website</code> to generate the site and <code>preview-website</code> to serve it locally.</p>
-        <pre><code>cmake -S . -B build/docs -DDSPECM1D_BUILD_DOCS=ON
-cmake --build build/docs --target website
-cmake --build build/docs --target preview-website</code></pre>
-        <p class="muted">The preview server runs at <code>http://127.0.0.1:8000</code> until you stop it.</p>
-      </section>
-      <section class="page-section">
-        <h2>Downstream Reproducibility Note</h2>
-        <p>The installed package recreates the remaining pinned third-party targets with <code>FetchContent</code>. That keeps the package usable without exporting third-party targets directly, but a first downstream configure may need network access unless those dependencies are already cached locally.</p>
-      </section>
-    </div>
-  </main>
-</body>
-</html>
+# development build with tests, examples, and smoke checks
+cmake -S . -B build/dev \
+  -DDSPECM1D_BUILD_TESTS=ON -DDSPECM1D_BUILD_TUTORIALS=ON \
+  -DDSPECM1D_BUILD_BENCHMARKS=ON -DDSPECM1D_BUILD_TOOLS=ON \
+  -DDSPECM1D_ENABLE_SMOKE_TESTS=ON
+cmake --build build/dev --parallel 2
+</code></pre><p>Build parallelism above is capped at two jobs as a practical starting point. Pick a value suited to available memory and CPU. For manual solver runs, set <code>OMP_NUM_THREADS=2</code> or another deliberate modest value; build parallelism and OpenMP runtime threads are separate controls.</p></section>
+<section class="page-section"><h2>Run the first calculation</h2><p>Follow the <a href="first-seismogram.html">first-seismogram guide</a> for a complete CLI and plotting workflow. Use <code>build/release</code> for the documented user build and <code>build/dev</code> for development. Presets use schema version 6 and require CMake 3.25 or newer; manual configuration works with CMake 3.24.</p></section>
+<section class="page-section"><h2>Install the CMake package</h2><p>Build and install to a local prefix:</p><pre><code>cmake -S . -B build/release -DCMAKE_BUILD_TYPE=Release
+cmake --build build/release --parallel 2
+cmake --install build/release --prefix "$PWD/build/release/install"
+cmake -S tutorials/first_seismogram -B build/release/consumer \
+  -DCMAKE_PREFIX_PATH="$PWD/build/release/install"
+cmake --build build/release/consumer --parallel 2</code></pre><p>Consumer projects call <code>find_package(DSpecM1D CONFIG REQUIRED)</code> and link <code>DSpecM1D::DSpecM1D</code>. The imported target carries the C++23 compile feature and OpenMP dependency. On a cold configure, the package configuration fetches the pinned dependency closure, so network access may be needed. The complete consumer run command is in the <a href="library-example.html">C++ example</a>.</p></section>
+<section class="page-section"><h2>Build the documentation</h2><pre><code>cmake -S . -B build/docs -DDSPECM1D_BUILD_DOCS=ON
+cmake --build build/docs --target website</code></pre><p>Doxygen is included in the API output when installed. The documentation build also copies the report asset used by the Love-number page.</p></section>
+</main><footer class="shell">DSpecM1D · <a href="https://github.com/adcm2/DSpecM1D">GitHub repository</a></footer><script src="assets/site.js" defer></script></body></html>

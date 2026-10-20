@@ -6,7 +6,6 @@
 #include "PaperExampleSupport.h"
 #include <iostream>
 #include <string>
-#include <cstdlib>
 #include <complex>
 #include <cmath>
 
@@ -19,15 +18,6 @@ int
 main() {
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
-  auto overridePath = [](const char *envName, const std::string &fallback) {
-    if (const char *value = std::getenv(envName)) {
-      if (*value != '\0') {
-        return std::string(value);
-      }
-    }
-    return fallback;
-  };
-
   Timer timer1;
 
   // This example keeps the legacy explicit setup because it inserts a
@@ -155,17 +145,15 @@ main() {
   auto &aFiltSpecnm = filteredSpecnm.frequencySeries;
 
   // Write the final comparison products consumed by the paper plotting scripts.
-  std::string pathToFreqFile =
-      overridePath("DSPECM1D_EX2_FREQ_OUT",
-                   std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_w.out");
+  std::string pathToFreqFile = PaperExamples::outputPath(
+      "ex2_w.out", "DSPECM1D_EX2_FREQ_OUT");
   double nval = 1.0 / prem.TimeNorm();
   PaperExamples::writeFourWayFrequencyComparison(
       pathToFreqFile, vecW, myff, nval, aFilt, aFiltYSpec, aFiltMineos,
       aFiltSpecnm);
 
-  std::string pathToTimeFile =
-      overridePath("DSPECM1D_EX2_TIME_OUT",
-                   std::string(PROJECT_BUILD_DIR) + "../plotting/outputs/ex2_t.out");
+  std::string pathToTimeFile = PaperExamples::outputPath(
+      "ex2_t.out", "DSPECM1D_EX2_TIME_OUT");
   PaperExamples::writeFourWayTimeComparison(
       pathToTimeFile, myff, prem.TimeNorm(), params.t_out(), vecFiltT,
       vecFiltTYSpec, vecFiltTMineos, vecFiltTSpecnm,

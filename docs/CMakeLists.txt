@@ -39,6 +39,11 @@ add_custom_target(website
             ${CMAKE_CURRENT_SOURCE_DIR}/site
             ${DSPECM1D_SITE_OUTPUT_DIR}
     COMMAND ${CMAKE_COMMAND} -E make_directory
+            ${DSPECM1D_SITE_OUTPUT_DIR}/data/params
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_SOURCE_DIR}/data/params/first_seismogram.txt
+            ${DSPECM1D_SITE_OUTPUT_DIR}/data/params/first_seismogram.txt
+    COMMAND ${CMAKE_COMMAND} -E make_directory
             ${DSPECM1D_SITE_OUTPUT_DIR}/reports
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
             ${DSPECM1D_LOVE_NUMBERS_REPORT}

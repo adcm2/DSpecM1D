@@ -3,6 +3,7 @@
 #endif
 
 #include "config.h"
+#include "PaperExampleSupport.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip>
@@ -70,7 +71,7 @@ main() {
     for (int idxn = 0; idxn < mesh.NN(); ++idxn) {
       auto crad = mesh.NodeRadius(idxe, idxn);
       auto rho = meshmodel.Density(idxe, idxn);
-      auto drho_dr = prem.Density(1).Derivative(crad);
+      auto drho_dr = prem.Density(1).Evaluate<1>(crad);
       auto gval = meshmodel.Gravity(idxe, idxn);
 
       auto tn2 =
@@ -181,9 +182,8 @@ main() {
 
   // Write the derived buoyancy-frequency profile, the frequency summary, and
   // the radial SEM response sampled across the mesh.
-  std::string n2OutPath = std::string(PROJECT_BUILD_DIR) +
-                          "../plotting/outputs/ex6_N2_" +
-                          std::to_string(maxstep) + ".out";
+  std::string n2OutPath = PaperExamples::outputPath(
+      "ex6_N2_" + std::to_string(maxstep) + ".out");
   std::ofstream n2File(n2OutPath);
   if (!n2File) {
     std::cerr << "Error: unable to open output file: " << n2OutPath << "\n";
@@ -201,9 +201,8 @@ main() {
   }
   n2File.close();
 
-  std::string freqOutPath = std::string(PROJECT_BUILD_DIR) +
-                            "../plotting/outputs/ex6_w_" +
-                            std::to_string(maxstep) + ".out";
+  std::string freqOutPath = PaperExamples::outputPath(
+      "ex6_w_" + std::to_string(maxstep) + ".out");
   std::ofstream freqFile(freqOutPath);
   if (!freqFile) {
     std::cerr << "Error: unable to open output file: " << freqOutPath << "\n";
@@ -217,9 +216,8 @@ main() {
   }
   freqFile.close();
 
-  std::string pathToFile = std::string(PROJECT_BUILD_DIR) +
-                           "../plotting/outputs/ex6_radial_response_" +
-                           std::to_string(maxstep) + ".out";
+  std::string pathToFile = PaperExamples::outputPath(
+      "ex6_radial_response_" + std::to_string(maxstep) + ".out");
   std::ofstream file(pathToFile);
   if (!file) {
     std::cerr << "Error: unable to open output file: " << pathToFile << "\n";

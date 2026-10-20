@@ -52,6 +52,7 @@ def _add_zoom_inset(
     lwidth2,
     connector_targets,
     mode_label_dy,
+    mode_files=None,
     alternate_labels=False,
 ):
     zoom_fmin, zoom_fmax = zoom_region
@@ -109,7 +110,7 @@ def _add_zoom_inset(
     rect = plt.Rectangle((x1, y1), x2 - x1, y2 - y1, facecolor="none", edgecolor="black", linewidth=lwidth2)
     ax_main.add_patch(rect)
 
-    names, xvalues = get_modes_in_range(zoom_fmin, zoom_fmax)
+    names, xvalues = get_modes_in_range(zoom_fmin, zoom_fmax, mode_files)
     yvalues = compute_mode_heights(xvalues, zoom_x, [zoom_y_yspec, zoom_y_dspecm, zoom_y_specnm])
     annotate_modes(
         inset_ax,
@@ -130,6 +131,7 @@ def plot_ex1_comparison(
     zoom_regions=None,
     specnm_preferred_col=21,
     show=True,
+    mode_files=None,
 ):
     colors = get_series_colors()
     dataset = comparison.ex1_dataset(fmin=fmin, fmax=fmax, specnm_preferred_col=specnm_preferred_col)
@@ -184,6 +186,7 @@ def plot_ex1_comparison(
                 lwidth2=lwidth2,
                 connector_targets=cfg["connectors"],
                 mode_label_dy=cfg["dy"],
+                mode_files=mode_files,
                 alternate_labels=cfg["alternate"],
             )
 

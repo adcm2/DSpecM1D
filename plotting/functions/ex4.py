@@ -1,9 +1,10 @@
 #%%
+from helpers.plot_paths import build_output_path, project_file_path
 from helpers.ex4_workflow import output_to_screen_code_diff_ex4, plot_ex4
 
 # User-editable configuration
-WAVEFORM_FILE = "../outputs/ex4.out"
-TRAVEL_TIME_FILE = "../outputs/travel_times.txt"
+WAVEFORM_FILE = build_output_path("ex4.out")
+TRAVEL_TIME_FILE = project_file_path("plotting", "outputs", "travel_times.txt")
 
 
 def main():

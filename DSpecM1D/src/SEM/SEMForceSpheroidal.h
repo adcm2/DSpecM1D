@@ -22,8 +22,7 @@ SEM::calculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   if (maxn > idxl)
     maxn = idxl;
   auto wigdmat =
-      GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Single, GSHTrans::ColumnMajor>(idxl, idxl,
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Single>(idxl, idxl,
                                                                 maxn, theta_s);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     auto dl = wigdmat[N];
@@ -41,11 +40,11 @@ SEM::calculateForce(SourceInfo::EarthquakeCMT &cmt, int idxl) {
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
         vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
-          Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
+          Interpolation::LagrangeBasis(vec_nodes);
 
       for (int idxq = 0; idxq < nq; ++idxq) {
-        auto w_val = pleg(idxq, rad_source) / rad_source;
-        auto w_deriv = pleg.Derivative(idxq, rad_source);
+        auto w_val = pleg.Evaluate(idxq, rad_source) / rad_source;
+        auto w_deriv = pleg.Evaluate<1>(idxq, rad_source);
         auto idx_u = this->ltgS(0, idx, idxq);
         auto idx_v = this->ltgS(1, idx, idxq);
 
@@ -98,11 +97,11 @@ SEM::calculateForceAll(SourceInfo::EarthquakeCMT &cmt, int idxl,
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
         vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
-          Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
+          Interpolation::LagrangeBasis(vec_nodes);
 
       for (int idxq = 0; idxq < nq; ++idxq) {
-        auto w_val = pleg(idxq, rad_source) / rad_source;
-        auto w_deriv = pleg.Derivative(idxq, rad_source);
+        auto w_val = pleg.Evaluate(idxq, rad_source) / rad_source;
+        auto w_deriv = pleg.Evaluate<1>(idxq, rad_source);
         auto idx_u = cowling ? this->ltgSC(0, idx, idxq)
                              : this->ltgS(0, idx, idxq);
         auto idx_v = cowling ? this->ltgSC(1, idx, idxq)
@@ -134,8 +133,7 @@ SEM::calculateForceCoefficients(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   if (maxn > idxl)
     maxn = idxl;
   auto wigdmat =
-      GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Single, GSHTrans::ColumnMajor>(idxl, idxl,
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Single>(idxl, idxl,
                                                                 maxn, theta_s);
   auto ylmn = [&wigdmat](int l, int m, int N, double phi) {
     auto dl = wigdmat[N];

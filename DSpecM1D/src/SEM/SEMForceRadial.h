@@ -14,8 +14,7 @@ SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
   double rad_source = _SourceRadius(cmt);
 
   auto wigdmat2 =
-      GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Single, GSHTrans::ColumnMajor>(0, 0, 0, 0.0);
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Single>(0, 0, 0, 0.0);
   Complex y0c = wigdmat2[0][0, 0];
 
   double lprefac = 1.0;
@@ -26,11 +25,11 @@ SEM::calculateForceR(SourceInfo::EarthquakeCMT &cmt) {
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
         vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
-          Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
+          Interpolation::LagrangeBasis(vec_nodes);
 
       for (int idxq = 0; idxq < nq; ++idxq) {
-        auto w_val = pleg(idxq, rad_source) / rad_source;
-        auto w_deriv = pleg.Derivative(idxq, rad_source);
+        auto w_val = pleg.Evaluate(idxq, rad_source) / rad_source;
+        auto w_deriv = pleg.Evaluate<1>(idxq, rad_source);
         auto idx_u = this->ltgR(0, idx, idxq);
 
         Complex tmp_pm = 2.0 * cmt.MCmp() * y0c;
@@ -54,8 +53,7 @@ SEM::calculateForceRedR(SourceInfo::EarthquakeCMT &cmt) {
   double rad_source = _SourceRadius(cmt);
 
   auto wigdmat =
-      GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Single, GSHTrans::ColumnMajor>(0, 0, 0, 0.0);
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Single>(0, 0, 0, 0.0);
   Complex y0c = wigdmat[0][0, 0];
 
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
@@ -64,11 +62,11 @@ SEM::calculateForceRedR(SourceInfo::EarthquakeCMT &cmt) {
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
         vec_nodes[idxn] = m_mesh.NodeRadius(idx, idxn);
       auto pleg =
-          Interpolation::LagrangePolynomial(vec_nodes.begin(), vec_nodes.end());
+          Interpolation::LagrangeBasis(vec_nodes);
 
       for (int idxq = 0; idxq < nq; ++idxq) {
-        auto w_val = pleg(idxq, rad_source) / rad_source;
-        auto w_deriv = pleg.Derivative(idxq, rad_source);
+        auto w_val = pleg.Evaluate(idxq, rad_source) / rad_source;
+        auto w_deriv = pleg.Evaluate<1>(idxq, rad_source);
         auto idx_u = this->ltgR(0, idx, idxq);
 
         Complex tmp_pm = 2.0 * cmt.MCmp() * y0c;

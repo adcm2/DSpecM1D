@@ -1,9 +1,10 @@
 #%%
+from helpers.plot_paths import build_output_path
 from helpers.comparison_metrics import SpectraComparison
 from helpers.ex3_workflow import output_to_screen_code_diff_ex3, plot_ex3_comparison
 
 # User-editable configuration
-DATA_FILE = "../outputs/ex3_t.out"
+DATA_FILE = build_output_path("ex3_t.out")
 LOW_INDEX = 400
 UP_INDEX = 1301
 

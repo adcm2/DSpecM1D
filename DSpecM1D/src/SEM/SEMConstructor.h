@@ -50,13 +50,13 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
   // derivative values of Lagrange polynomials at GLL nodes
   auto q = m_mesh.GLL();
   auto pleg =
-      Interpolation::LagrangePolynomial(q.Points().begin(), q.Points().end());
+      Interpolation::LagrangeBasis(q.Points());
   {
     for (int idxk = 0; idxk < q.N(); ++idxk) {
       std::vector<double> vec_tmp(q.N(), 0.0), vec_tmp1(q.N(), 0.0);
       for (int idxi = 0; idxi < q.N(); ++idxi) {
-        vec_tmp[idxi] = pleg.Derivative(idxi, q.X(idxk));
-        vec_tmp1[idxi] = pleg(idxi, q.X(idxk));
+        vec_tmp[idxi] = pleg.template Evaluate<1>(idxi, q.X(idxk));
+        vec_tmp1[idxi] = pleg.Evaluate(idxi, q.X(idxk));
       }
       vec_lag_deriv.push_back(vec_tmp);
       vec_delta.push_back(vec_tmp1);

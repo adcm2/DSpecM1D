@@ -6,7 +6,7 @@
 #include <cmath>
 #include <Eigen/Core>
 #include <GSHTrans/Core>
-#include <Interpolation/Lagrange>
+#include <Interpolation/Lagrange.hpp>
 #include "SourceInfo.h"
 #include <DSpecM1D/EarthMesh>
 #include "InputParser.h"
@@ -18,8 +18,7 @@ private:
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
   using WignerType =
-      GSHTrans::Wigner<double, GSHTrans::Ortho, GSHTrans::All, GSHTrans::All,
-                       GSHTrans::Multiple, GSHTrans::ColumnMajor>;
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Multiple>;
   WignerType m_wigner;
   std::vector<double> m_thetaR, m_phiR;
   int m_numReceivers;

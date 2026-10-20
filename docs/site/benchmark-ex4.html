@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Setup, outputs and comparison scope for the DSpecM1D ex4 paper workflow.">
+  <title>EX4 Benchmark | DSpecM1D</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/benchmark-figures.css">
+</head>
+<body>
+  <nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
+  <main>
+    <div class="page">
+      <div class="page-header">
+        <p><a href="paper-reproduction.html">Paper workflows</a> / <code>ex4</code></p>
+        <h1>EX4 · Acceleration record section</h1>
+        <p class="lede">Writes a multi-receiver time series as a record-section table, then plots the vertical and north components with reference travel-time markers.</p>
+      </div>
+      <figure class="benchmark-figure">
+        <a href="assets/benchmarks/ggag211fig5.jpeg"><img src="assets/benchmarks/ggag211fig5.jpeg" alt="Published Figure 5: vertical and northward record sections with reference arrival-time lines." loading="lazy"></a>
+        <figcaption>Original Figure 5 from Myhill and Al-Attar (2026), <em>Geophysical Journal International</em> 246(2), ggag211. Reused unchanged under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="https://doi.org/10.1093/gji/ggag211">Published article</a>.</figcaption>
+      </figure>
+      <section class="page-section"><h2>Configuration</h2><p>Uses <code>data/params/ex4.txt</code>, a 0.1–50 mHz band, a 0.2-second sampling interval and an acceleration output. The source-controlled arrival-time table is <code>plotting/outputs/travel_times.txt</code>.</p></section>
+      <section class="page-section"><h2>Comparison inputs</h2><p>The plot overlays the repository travel-time picks. This is not a waveform comparison against a second solver.</p></section>
+      <section class="page-section"><h2>Executable and outputs</h2><pre><code>cmake -S . -B build/release -DDSPECM1D_BUILD_BENCHMARKS=ON
+cmake --build build/release --target ex4 --parallel 2
+OMP_NUM_THREADS=2 ./build/release/bin/ex4</code></pre><p>The executable writes <code>ex4.out</code> to <code>build/release/output/</code>. It contains one row per time sample with three components per receiver; a fresh build generates it when the executable runs.</p></section>
+      <section class="page-section"><h2>Plot command</h2><p>Run from the repository root after producing the waveform output:</p><pre><code>DSPECM1D_BUILD_DIR=build/release python3 plotting/functions/ex4.py</code></pre></section>
+      <section class="page-section"><h2>Scope and limits</h2><p>This is published Figure 5, the 91-receiver record-section case. The paper uses frequencies up to 500 mHz, degree 7500 and a one-hour record. The current ex4 input instead uses 50 mHz, degree 750 and a 120-minute record, so its output is not a reproduction of the published figure.</p></section>
+      <section class="page-section"><p><a href="benchmark-ex3.html">← Previous</a> · <a href="paper-reproduction.html">All paper workflows</a> · <a href="benchmark-ex5.html">Next →</a></p></section>
+    </div>
+  </main>
+<script src="assets/site.js" defer></script></body>
+</html>

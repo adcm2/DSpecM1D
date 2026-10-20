@@ -3,36 +3,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Smoke and integration checks for DSpecM1D, covering generate_seismogram, ex1 build verification, and the guarded t1 runtime smoke workflow.">
+  <meta name="description" content="Smoke and integration checks for DSpecM1D, covering meaningful CLI and C++ tutorial output, an installed-package consumer, and the guarded t1 runtime workflow.">
   <title>Smoke Checks | DSpecM1D</title>
   <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-  <nav>
-    <div class="shell">
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="installation.html">Installation</a></li>
-        <li><a href="parameter-files.html">Parameter Files</a></li>
-        <li><a href="paper-reproduction.html">Paper Reproduction</a></li>
-        <li><a href="library-testing.html">Library Testing</a></li>
-        <li><a href="release-notes.html">Release Notes</a></li>
-        <li><a href="love-numbers.html">Love Numbers</a></li>
-        <li><a href="api/index.html">API Reference</a></li>
-      </ul>
-    </div>
-  </nav>
+  <nav aria-label="Main navigation"><div class="shell"><ul><li><a class="brand" href="index.html">DSpecM1D</a></li>
+<li class="nav-group">Get started <a href="installation.html">Install and build</a><a href="first-seismogram.html">First seismogram</a></li>
+<li class="nav-group">Examples <a href="library-example.html">C++ library</a><a href="paper-reproduction.html">Paper workflows</a><a href="love-numbers.html">Love numbers</a></li>
+<li class="nav-group">Reference <a href="parameter-files.html">Parameter files</a><a href="api/index.html">API reference</a></li>
+<li class="nav-group">Development <a href="library-testing.html">Testing</a><a href="release-notes.html">Release notes</a></li>
+<li><a class="github-link" href="https://github.com/adcm2/DSpecM1D">GitHub</a></li>
+</ul></div></nav>
   <main>
     <div class="page">
       <div class="page-header">
         <h1>Smoke And Integration Checks</h1>
-        <p class="lede">These checks give a quick end-to-end signal that the build tree is sane before you spend time on heavier validation.</p>
+        <p class="lede">These checks exercise the main first-run paths with bounded thread counts and a fixed parameter file.</p>
       </div>
       <section class="page-section">
         <h2>Covered Checks</h2>
         <ul class="check-list">
-          <li><code>smoke_generate_seismogram</code>: runs the public CLI on a small bundled parameter file and verifies that a non-empty time-series output file is written.</li>
-          <li><code>smoke_build_benchmark_ex1</code>: verifies that the protected <code>ex1</code> paper example still builds.</li>
+          <li><code>smoke_generate_seismogram</code>: runs the public CLI on the bundled one-receiver example and checks four finite columns with three nonzero components.</li>
+          <li><code>smoke_tutorial_first_seismogram</code>: runs the shared C++ API tutorial on the same parameter file and applies the same output checks.</li><li><code>smoke_installed_first_seismogram</code>: installs the package, configures and runs the standalone consumer from the shared source, and compares the output with a tight numerical tolerance.</li><li><code>smoke_build_benchmark_ex1</code>: verifies that the <code>ex1</code> executable builds when benchmarks are enabled.</li>
           <li><code>smoke_tutorial_t1</code>: runs the self-contained tutorial/integration workflow.</li>
         </ul>
       </section>
@@ -47,5 +40,5 @@
       </section>
     </div>
   </main>
-</body>
+<script src="assets/site.js" defer></script></body>
 </html>
