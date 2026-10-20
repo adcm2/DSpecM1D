@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "notes": "All inputs are physical units; source.latitude and receiver latitude are geocentric degrees. The general moment tensor has six nonzero components and off-axis source/receiver points; this intentionally exercises spheroidal/toroidal coupling and ZNE rotation. The first pass is attenuation-off; attenuation-on rows are retained for post-3C comparison. Degrees are run individually before their sum.",
+  "defaults": {
+    "degrees": [0, 1, 2, 3, 4],
+    "frequencies_mHz": [0.5, 1.5],
+    "duration_min": 30.0,
+    "time_step_s": 60.0,
+    "source": {
+      "depth_km": 100.0,
+      "latitude": 10.0,
+      "longitude": 20.0,
+      "moment_tensor_Nm": {"rr": 1.0e15, "rt": 2.0e14, "rp": -3.0e14, "tt": -5.0e14, "tp": 4.0e14, "pp": -5.0e14}
+    },
+    "solver": {
+      "dspec": {"nq": 3, "maxstep": 0.2, "relative_error": 1.0e-3, "nskip": 2},
+      "yspec": {"tolerance": 1.0e-3, "start_decay": 11.0}
+    }
+  },
+  "cases": [
+    {"id": "solid-full-off", "model": "homogeneous.deck", "ocean": false, "receiver_depth_km": 10.0, "receiver": [45.0, 90.0], "gravity": "full", "attenuation": false},
+    {"id": "solid-cowling-off", "model": "homogeneous.deck", "ocean": false, "receiver_depth_km": 10.0, "receiver": [45.0, 90.0], "gravity": "cowling", "attenuation": false},
+    {"id": "solid-full-on", "model": "homogeneous.deck", "ocean": false, "receiver_depth_km": 10.0, "receiver": [45.0, 90.0], "gravity": "full", "attenuation": true},
+    {"id": "ocean-seafloor-full-off", "model": "homogeneous_ocean.deck", "ocean": true, "receiver_depth_km": 3.0, "receiver": [45.0, 90.0], "gravity": "full", "attenuation": false},
+    {"id": "ocean-seafloor-cowling-off", "model": "homogeneous_ocean.deck", "ocean": true, "receiver_depth_km": 3.0, "receiver": [45.0, 90.0], "gravity": "cowling", "attenuation": false},
+    {"id": "ocean-seafloor-full-on", "model": "homogeneous_ocean.deck", "ocean": true, "receiver_depth_km": 3.0, "receiver": [45.0, 90.0], "gravity": "full", "attenuation": true}
+  ]
+}
