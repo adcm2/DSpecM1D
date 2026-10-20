@@ -1,0 +1,202 @@
+{
+  "updated": "2026-10-20",
+  "case": "Figure 4 / ex3 China acceleration comparison",
+  "run_scope": "full published-style band",
+  "quantity": "acceleration",
+  "unit": "m/s^2",
+  "time_metrics": {
+    "full_output": {
+      "Z": {
+        "reference_peak": 4.3707704939908766e-07,
+        "unit": "m/s^2",
+        "mean_absolute_difference": 1.5536417812993192e-10,
+        "mean_difference_percent_of_reference_peak": 0.0355461762047523,
+        "maximum_absolute_difference": 4.3454774838386e-09,
+        "maximum_difference_percent_of_reference_peak": 0.9942131461290291,
+        "relative_l2": 0.013951330176450472
+      },
+      "N": {
+        "reference_peak": 4.3878940375625725e-07,
+        "unit": "m/s^2",
+        "mean_absolute_difference": 1.3432821332481835e-10,
+        "mean_difference_percent_of_reference_peak": 0.030613367637162957,
+        "maximum_absolute_difference": 3.092962383564637e-09,
+        "maximum_difference_percent_of_reference_peak": 0.7048853862666985,
+        "relative_l2": 0.011469370739606032
+      },
+      "E": {
+        "reference_peak": 1.5159878727394113e-06,
+        "unit": "m/s^2",
+        "mean_absolute_difference": 5.926711036682727e-10,
+        "mean_difference_percent_of_reference_peak": 0.039094712716751995,
+        "maximum_absolute_difference": 1.3549434776948618e-08,
+        "maximum_difference_percent_of_reference_peak": 0.8937693381718549,
+        "relative_l2": 0.015055234096382809
+      }
+    },
+    "published_display_window": {
+      "Z": {
+        "reference_peak": 4.3707704939908766e-07,
+        "unit": "m/s^2",
+        "mean_absolute_difference": 5.099285429492175e-10,
+        "mean_difference_percent_of_reference_peak": 0.11666788353455969,
+        "maximum_absolute_difference": 4.3454774838386e-09,
+        "maximum_difference_percent_of_reference_peak": 0.9942131461290291,
+        "relative_l2": 0.00924063042227503
+      },
+      "N": {
+        "reference_peak": 4.3878940375625725e-07,
+        "unit": "m/s^2",
+        "mean_absolute_difference": 4.1031330548196644e-10,
+        "mean_difference_percent_of_reference_peak": 0.09351030402500125,
+        "maximum_absolute_difference": 3.092962383564637e-09,
+        "maximum_difference_percent_of_reference_peak": 0.7048853862666985,
+        "relative_l2": 0.00705378875009531
+      },
+      "E": {
+        "reference_peak": 1.5159878727394113e-06,
+        "unit": "m/s^2",
+        "mean_absolute_difference": 1.724501453396448e-09,
+        "mean_difference_percent_of_reference_peak": 0.1137543040024621,
+        "maximum_absolute_difference": 1.3549434776948618e-08,
+        "maximum_difference_percent_of_reference_peak": 0.8937693381718549,
+        "relative_l2": 0.009582572928272384
+      }
+    }
+  },
+  "raw_spectrum_metrics": {
+    "Z": {
+      "quantity": "raw complex spectrum amplitude",
+      "unit": "SI output unit / Hz",
+      "frequency_band_mHz": [
+        0.1,
+        51.0
+      ],
+      "frequency_bins": 1668,
+      "mean_absolute_amplitude_difference": 1.9779803910363403e-08,
+      "mean_amplitude_difference_percent_of_reference_peak": 0.07074852155619772,
+      "maximum_absolute_amplitude_difference": 1.0107588554435023e-07,
+      "maximum_amplitude_difference_percent_of_reference_peak": 0.36152883515187767,
+      "complex_relative_l2_diagnostic": 0.008895852609782751
+    }
+  },
+  "legacy_processed_spectrum_metrics": {
+    "quantity": "legacy processed Z spectrum amplitude",
+    "unit": "adopted common pipeline arbitrary scale; SI proportional",
+    "filter_mHz": [
+      0.1,
+      0.2,
+      50.0,
+      50.5
+    ],
+    "pre_window_fraction": 0.05,
+    "final_window_fraction": 0.5,
+    "mean_absolute_amplitude_difference": 5.072591255084876e-07,
+    "mean_amplitude_difference_percent_of_YSpecpp_peak": 0.8593432670093903,
+    "maximum_absolute_amplitude_difference": 2.9920690077676478e-06,
+    "maximum_amplitude_difference_percent_of_YSpecpp_peak": 5.068838049340471,
+    "frequency_bins": 1668,
+    "processing_note": "Adopted legacy processing; the paper does not specify these window parameters."
+  },
+  "settings": {
+    "paper_figure": 4,
+    "source_parameter_file": "data/params/ex3.txt",
+    "model_file": "data/models/prem.200",
+    "quantity": "acceleration",
+    "gravity": "full",
+    "attenuation": true,
+    "degree_min": 0,
+    "degree_max": 750,
+    "frequency_min_mHz": 0.1,
+    "frequency_max_mHz": 51.0,
+    "pilot_frequency_band_mHz": [
+      50.0,
+      51.0
+    ],
+    "duration_min": 240,
+    "time_step_s": 1.0,
+    "filter_mHz": [
+      0.1,
+      0.2,
+      50.0,
+      50.5
+    ],
+    "source_depth_km": 33.0,
+    "source_geocentric_latitude_deg": 25.39,
+    "source_longitude_deg": 101.4,
+    "moment_tensor_Nm": {
+      "rr": -6e+16,
+      "rt": -1.85e+17,
+      "rp": 1.2e+16,
+      "tt": -6.29e+17,
+      "tp": -4.73e+17,
+      "pp": 6.89e+17
+    },
+    "receiver_depth_km": 3.0,
+    "receivers_geocentric": [
+      [
+        51.68,
+        103.64
+      ]
+    ],
+    "dspec": {
+      "nq": 5,
+      "relative_error": 1e-05,
+      "mesh": "single",
+      "maxstep_earth_radii": 0.004
+    },
+    "yspec": {
+      "tolerance": 1e-05,
+      "start_decay": 11
+    },
+    "display_time_window_s": [
+      400,
+      1300
+    ],
+    "time_filter_period_window_s": [
+      20,
+      5000
+    ],
+    "run_scope": "full published-style band",
+    "ocean": true,
+    "receiver_description": "seafloor receiver at 3 km depth",
+    "model_description": "attenuating, dispersive TI PREM with ocean"
+  },
+  "provenance": {
+    "dspecm1d_source_commit": "797ccd2dbba1b93f78c5b0d967fdc3c56bc1b0ea",
+    "yspecpp_commit": "84be5a6cbe442324c164e5193a66b0911fca5860",
+    "yspecpp_tree_sha256": "5e77d93a8b2dbe469813ff3d190a664752158d7c66008a5b4c61a20ced38979e",
+    "criteria_sha256": "bc76d81b4072aa45db56aa38db7d98d8a50ca600d247a31c3471dca83e517197",
+    "case_table_sha256": "600147da91f624fc0a1feeaea1ab9fdbb174091f73e88e48526e9e3964437ad4",
+    "source_parameter_sha256": "0f46f5f194350b97b0f73c288a14904ba4024b2e1df319f45a060b913bb19a63",
+    "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+    "harness_source_sha256": {
+      "run_paper_suite.py": "6a73a8057cc0f44463a46f90146baa3e7c1626f8d802bbc8d1ce0f224f3b9a65",
+      "run_paper2.py": "5b5e915505666b46c09279187280a2a1040008702a0beffe04000731b6fa5aac",
+      "dspec_adapter.cpp": "bdd9394a67325cd5954e8ee7e08fde5be22d795c97ddff7d6c89b7f49510aa41",
+      "yspecpp_adapter.cpp": "930a30829456b7d724f659a21e86ee851da50960e31f844c70137df5cde81f8f",
+      "CMakeLists.txt": "cf881b335da4ef3913d78926a834ffdb0b282708d72d48e12f3936a2955f4228",
+      "paper-suite-cases.json": "600147da91f624fc0a1feeaea1ab9fdbb174091f73e88e48526e9e3964437ad4"
+    },
+    "adapter_binary_sha256": {
+      "dspec_adapter": "49960d9cff902d1a8251c34b0593f5cdd86534a9c75897bea7233d68b3288f6a",
+      "yspecpp_adapter": "24c81b3042699dddff990fc633d0369e9c5b146137e432f93d7c86e59ee950c8"
+    },
+    "dependency_shas": {
+      "numericconcepts-src": "e03a2889d43a03660d0879f46dda1406d90c9517",
+      "interpolation-src": "d5a1711ca6a89fc8ad8148fe13212398fe569bc0",
+      "fftwpp-src": "cb152c0e85f3822493c2d9e85a56307ac7b4f1c0",
+      "gaussquad-src": "7d4786d192f68077cd99a34dcdf1379ed1eeac9a",
+      "gshtrans-src": "8dd116df8df4222fe9b10a40c7213d34f2a274fb"
+    },
+    "runtime_environment": {
+      "OMP_NUM_THREADS": "2",
+      "OMP_DYNAMIC": "FALSE"
+    },
+    "interpolation_caveat": "Continuous model representations differ; comparison is not an exact-model identity test.",
+    "independent_review": "PASS",
+    "independent_review_sha256": "0fdac6e7ded9c9809ca7bce38a18ef8529acd4d55e9c3d99b082fb6aefd51059"
+  },
+  "diagnostic_note": "The source summary native_inverse_checks entries use field names ending in _m by inherited convention. For this acceleration case those diagnostic values are in m/s^2; the saved run record was not altered.",
+  "comparison_scope": "New DSpecM1D–YSpecpp output; original publisher figures remain unchanged. No universal acceptance gate is asserted."
+}

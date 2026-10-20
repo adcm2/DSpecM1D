@@ -46,7 +46,7 @@ cmake --build build/dev --parallel 2
 
 For test options, configured targets, and the current CTest inventory, see [the testing guide](https://adcm2.github.io/SpecRelab/dspecm1d/library-testing.html) and run `ctest --test-dir build/dev -N`.
 
-For an optional, separately built and pinned YSpecpp numerical comparison, see the [benchmark guide](benchmarks/yspecpp/README.md).
+For an optional, separately built and pinned YSpecpp numerical comparison, see the [benchmark guide](https://github.com/adcm2/DSpecM1D/blob/master/benchmarks/yspecpp/README.md).
 
 ## Platform and dependencies
 

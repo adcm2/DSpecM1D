@@ -1,5 +1,44 @@
 # Optional YSpecpp benchmark
 
+## Published-style Phase 3 suite
+
+`run_paper_suite.py --case fig1|fig3|fig4` runs the new matched-input
+comparisons; `run_fig5_record.py` runs the high-frequency, 91-receiver record
+section. Each comparison records its own settings, source/model hashes,
+adapter logs, binaries, and harness source snapshots under the ignored
+`build/phase3/paper-suite-20261020/` directory. `--pilot` selects a bounded
+top-frequency diagnostic and is never labeled as a paper result. Figure 1's
+raw Z spectrum is primary; its ex1-style pre-window/filter/final-window
+spectrum is a separately reported secondary product. Figures 3 and 4 report
+acceleration in SI units, with full-window and 400–1300 s metrics. Figure 5
+adopts acceleration from ex4 because the paper does not state the plotted
+quantity; it reports record-section products without a cross-solver score.
+Figure 2 is the separately completed `run_paper2.py` comparison. The outputs
+are new published-style comparisons, not a pixel-for-pixel reproduction of
+the paper's historical solver figures; current DSpecM1D and YSpecpp use
+different continuous PREM interpolation representations.
+
+The reviewed case matrix is tracked at
+`cases/paper-suite-protocol.json`; this is the default for the Figure 1, 3, 4,
+and 5 runners, so a clean checkout does not depend on ignored build data.
+Figure 5 remains blocked: DSpecM1D refuses the required degree 7500 because
+its current Wigner recursion is only safe through degree 1827. A separate,
+explicitly non-paper three-receiver pilot capped at degree 1827 exited with
+signal 11 before producing result files, so no supported-degree runtime
+estimate is claimed. Both failure records are preserved under the ignored
+suite output; no production code or angular guard was changed.
+
+Figure 6's internal convergence sweep uses `run_convergence_benchmark.py`
+(`--pilot` for the bounded cost check, `--full` for the sequential order/mesh
+sweep). Figure 7's isolated degree-2 tidal-resolution study uses
+`run_tidal_benchmark.py`; it preserves the old ex6 example and reports the
+normalized response without claiming an absolute forcing amplitude. Full
+Figure 1–4 comparisons are complete, Figure 5 is blocked as described above,
+Figure 6 has a bounded high-frequency pilot while its multi-hour convergence
+sweep awaits an execution preference, and Figure 7 has completed isolated
+degree-2 tidal runs. The suite and Figure 5 runners refuse to overwrite
+nonempty run directories; choose a new output root for a repeat measurement.
+
 ## Paper Figure 2 comparison
 
 `run_paper2.py` writes an isolated comparison under

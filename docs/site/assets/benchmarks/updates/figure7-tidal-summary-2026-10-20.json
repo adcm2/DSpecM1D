@@ -1,0 +1,67 @@
+{
+  "updated": "2026-10-20",
+  "case": "Figure 7 degree-2 tidal resolution and stability diagnostic",
+  "status": "completed; independent saved-evidence review passed",
+  "review_status": "PASS",
+  "run_count": 12,
+  "scope": "DSpecM1D-only resolution/stability study; no YSpecpp comparison and no scalar accuracy gate",
+  "settings": {
+    "degree": 2,
+    "quadrature_points": 5,
+    "gravity": "full self-gravity",
+    "attenuation": false,
+    "ocean": false,
+    "external_potential": "cbar_20*(r/a)^2*Y_20",
+    "dimensionless_cbar20": 1.0,
+    "force_sign": 1,
+    "periods_h": [
+      12.0,
+      48.0,
+      168.0,
+      1680.0
+    ],
+    "mesh_width_caps_as_fraction_of_planet_radius": {
+      "coarse": 0.01,
+      "medium": 0.001,
+      "fine": 0.0001
+    },
+    "mesh_elements": {
+      "coarse": 107,
+      "medium": 1005,
+      "fine": 10005
+    },
+    "discrete_maximum_BV_period_h": 9.224066141991033,
+    "period_to_BV_period_ratios_by_period": {
+      "12": 1.3009447043416436,
+      "48": 5.203778817366574,
+      "168": 18.21322586078301,
+      "1680": 182.1322586078301
+    },
+    "amplitude_interpretation": "normalized response shapes only; paper does not specify c20 amplitude or sign",
+    "interface_sampling": "one-sided endpoint rows at material interfaces are retained"
+  },
+  "solve_diagnostics": {
+    "maximum_normwise_backward_error_inf_all_12_cases": 4.7805873556106963e-20,
+    "enforced_backward_error_limit": 1e-12,
+    "maximum_relative_l2_rhs_residual_descriptive_only": 2.296678455042002e-07,
+    "residual_caveat": "The relative-L2 residual is a solve diagnostic, not a solution-accuracy certificate."
+  },
+  "provenance": {
+    "model_sha256": "77b94bedad33ccf7769a83103c264fc8b921115869eb7a1afefd15c7b49ae820",
+    "criteria_sha256": "bc76d81b4072aa45db56aa38db7d98d8a50ca600d247a31c3471dca83e517197",
+    "paper_text_sha256": "8d05c8b2cbbc477b235720c4a0456ebf24736f5cd35dcfa0dc174e21e364d7e7",
+    "adapter_binary_sha256": "81c47716a08541367678e9648e881ed41a586591e4e67f75ee7876ec10e58bb5",
+    "adapter_source_sha256_independently_reviewed": "4605794858d9a4d84e361f7554bb37f18c0c651292717b8d2227d7a34f207408",
+    "solver_runner_sha256": "3655a2b37454fad158f8c7a2f560bfdfdfea80daf778a74a39bba2380dd7d6f1",
+    "plot_runner_sha256": "36de0abbf06f2eeba719ea35152b17c0969f5abe0e8fb1bfb14b896e209d7d7f",
+    "summary_json_sha256": "f79c8040fadd01f35553c66fb38d2af6ff7673966f37b8ef3b6d9a733413cd7d",
+    "plot_render_record_sha256": "8edb1a276de8a454164b3dfc7588f9cfcc7011e0f36fe2e41046192a2048405a",
+    "plot_sha256": {
+      "fig7-radial-response.png": "9443183bbd91cc85eef5b0ae89b84e144cc253ceaf42cd78ea6aa9e75ea3c4ac",
+      "fig7-n2-profile.png": "7c8454e8735c52408831971a608665c5048f025e4426aa95deec0073b774b976"
+    },
+    "runtime_omp_threads": 2,
+    "runtime_jobs": 1
+  },
+  "independent_review_scope": "saved evidence only; no solver reruns or source edits"
+}

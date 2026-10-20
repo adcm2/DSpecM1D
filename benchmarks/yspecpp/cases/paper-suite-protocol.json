@@ -1,0 +1,112 @@
+{
+  "review": "Read-only paper benchmark case inventory and predeclared acceptance plan",
+  "verdict": "PLAN_FROZEN_BEFORE_NEW_SUITE_RUNS",
+  "source_basis": {
+    "paper_text": "/tmp/ggag211-vor.txt",
+    "paper_date_as_stated_in_vor": {
+      "accepted": "2026-06-02",
+      "advance_access_publication": "2026-06-03",
+      "journal": "Geophysical Journal International 246, ggag211"
+    },
+    "published_figure_assets": "docs/site/assets/benchmarks/ggag211fig1.jpeg through ggag211fig7.jpeg",
+    "current_case_pages": "docs/site/benchmark-ex1.html through docs/site/benchmark-ex7.html",
+    "source_parameter_hashes": {
+      "ex1": "c27f35f929ffc775cb0f4e7ab7ed02e50bdb37daf6d59bfeca1282f73614a0c6",
+      "ex2": "f04742b5948025a5556b6dde5c405bd5c6102b987c04ca710a1cd9555844c98b",
+      "ex3": "0f46f5f194350b97b0f73c288a14904ba4024b2e1df319f45a060b913bb19a63",
+      "ex4": "91a2bac6c776ae92cea0bdd3c6b2f0f5083643ef6ce641aaf773353bab76cf28",
+      "ex5": "66058e6708c2cb6b2db851a3c2e43cb140089cf188ed389104165e62d07c2fa3",
+      "ex6": "705cec478ec920662aa513d2d7e393efb4208189a89c9f987ffa52535c724e46",
+      "ex7": "58e1f26e469ee40117df25d47d6e59d0acfe46262578fd0708d6af6f7dd524fe"
+    }
+  },
+  "global_comparison_contract": {
+    "paired_solver_cases": [
+      "ex1/Fig1",
+      "ex2/Fig2",
+      "ex7/Fig3",
+      "ex3/Fig4"
+    ],
+    "non_pairwise_validation_cases": [
+      "ex4/Fig5 record section",
+      "ex5/Fig6 convergence",
+      "ex6/Fig7 fluid undertones"
+    ],
+    "observable": "Match the physical observable and units between solvers; derive output quantity from paper/source workflow and record it. Preserve raw spectra and native traces separately.",
+    "geometry": "Define one shared physical coordinate convention per run. Repository/DSpecM1D latitude inputs are geocentric; convert only at the YSpecpp input boundary. Preserve local spherical moment tensor components. Record the coordinate-convention ambiguity where the paper gives site coordinates without saying geographic/geocentric.",
+    "model": "Use the paper case's stated PREM/ocean/attenuation variant and record the exact model hash. Disclose DSpecM1D velocity-first versus YSpecpp modulus-spline interpolation and attenuation/reference-period/damping differences; do not treat these as fitted corrections.",
+    "source": "Use the same source depth, coordinates, spherical moment tensor and step/forcing convention for a paired case. Figure 2's paper description specifies a Heaviside step moment and its half-cosine band taper; do not add Gaussian or other source-time convolution unless a figure-specific source explicitly requires it.",
+    "filter": "Apply the figure's half-cosine taper once and identically; retain raw unfiltered physical spectra. No resampling, shifting, sign flips, empirical scaling, or post-hoc fitting.",
+    "grid": "Before comparing, require matching FFT length, dt, df, damped complex frequencies, bins, receiver coordinates, and time samples. Verify each native trace against an independent inverse transform. Report non-finite values. For zero reference channels use absolute-error checks, never relative ratios.",
+    "comparison_metric": "Use the paper's Eq. (4): pointwise absolute difference divided by the comparison trace's maximum absolute amplitude, and report per-channel mean and maximum separately. For spectra, use the analogous peak-normalized metric over exactly matched bins and label it spectral rather than time-domain error.",
+    "paper_numbers": "Use published values as context tied to the named comparator and exact figure; YSpecpp is not automatically byte-equivalent to historical YSpec. Apply the previously approved <1% per-channel mean gate for Fig. 2. Where paper text states a mean bound (e.g. Fig. 3), report it explicitly against the pinned YSpecpp comparator and do not silently generalize it to a pointwise limit. For Fig. 1 and Fig. 4 report published mean/max context without universal pass/fail gates; Figs. 5\u20137 use arrival-time, convergence, or resolution/stability checks. Do not impose a universal 1e-9 or post-hoc widen thresholds.",
+    "runtime_preflight": "Before the costly high-degree/many-receiver cases, record available CPU/memory, OMP/job count, receiver/degrees/bin counts, mesh profile, and a bounded pilot wall time. Run at most two aggregate jobs; report measured wall time and peak memory when available. Runtime is descriptive, not a pass/fail comparison across different machines or solver roles."
+  },
+  "case_inventory": [
+    {
+      "case": "ex1/Fig1",
+      "kind": "spectral agreement",
+      "paper_setup": "Bolivia 1994 source, depth 647.1 km at (13.82 S, 67.25 W), receiver (80 N, 0 E); non-dispersive/non-attenuating TI PREM with ocean; 100 h, lmax 100; raw vertical displacement spectrum displayed over positive 0.1\u20135 mHz.",
+      "paper_result": "DSpecM1D-YSpec mean relative spectral misfit 0.007%, maximum 0.28%; specnm mean 0.01%, max 0.43%.",
+      "predeclared_check": "Compare DSpecM1D against pinned YSpecpp on matched raw vertical displacement spectra over the published plotted band; report peak-normalized spectral mean/max and overlay. Treat published YSpec figures as context, not a guaranteed YSpecpp gate.",
+      "current_input_drift": "data/params/ex1.txt requests 6000 min and a 0.1\u20137 mHz band; the original figure workflow may optionally apply a companion time-domain taper at 0.1,0.2 and 4.9,5.0 mHz, but the Figure 1 spectrum itself is not described as filtered. Keep raw spectral comparison primary and label any companion filtered result separately."
+    },
+    {
+      "case": "ex2/Fig2",
+      "kind": "three-component displacement agreement",
+      "paper_setup": "Bolivia source; non-dispersive/non-attenuating TI PREM with ocean; 5 h at 1 s; lmax 300; solve 1.5\u201321 mHz; half-cosine corners (1.9,2.0) and (20.0,20.1) mHz; receiver (80 N,0 E), seafloor depth convention; step moment.",
+      "paper_result": "Mean relative difference is stated below 1% for each component. Caption reports global pointwise maximum 0.4% for YSpec and 3.6% for specnm; the 0.4% is not a component-mean maximum.",
+      "predeclared_check": "Retain the previously approved <1% per-component mean gate, normalized by the YSpecpp channel peak over inclusive 0\u201318000 s; separately report pointwise maximum against the 0.4% historical YSpec context.",
+      "current_input_drift": "data/params/ex2.txt uses 500 min, 1.5\u201325 mHz, lmax 350 and receiver depth 3.0001 km. The prior accepted paper2 runner intentionally generated a separate published-style 5 h, 1.5\u201321 mHz, lmax 300 run; preserve both historical input and new output provenance."
+    },
+    {
+      "case": "ex7/Fig3",
+      "kind": "attenuating/dispersive four-code comparison",
+      "paper_setup": "China source from the case setup and TLY receiver (paper-rounded 51.68 N,103.64 E; executable case values 51.6807,103.6438); attenuating/dispersive TI PREM without ocean; acceleration; 240 min at 1 s; up to 51 mHz, lmax 750; taper (0.1,0.2) and (50.0,50.5) mHz; 0 km receiver depth in the no-ocean model.",
+      "paper_result": "Text says all four-code average differences are below 1%; no exact threshold for current YSpecpp was established.",
+      "predeclared_check": "Report per-component Eq. (4) means and maxima against pinned YSpecpp on full time window and matched spectra. Use the paper-stated <1% average difference as a contextual mean target, while clearly naming YSpecpp version and attenuation/interpolation differences; do not impose a pointwise gate.",
+      "current_input_drift": "data/params/ex7.txt uses 0.1\u201355 mHz and upper taper 49\u201350 mHz; current page should state 240 min at 1 s, 0 km receiver depth, and paper settings 51 mHz and 50\u201350.5 mHz."
+    },
+    {
+      "case": "ex3/Fig4",
+      "kind": "attenuating/dispersive ocean-model comparison",
+      "paper_setup": "China source from the case setup and TLY receiver (paper-rounded 51.68 N,103.64 E; executable case values 51.6807,103.6438); attenuating/dispersive TI PREM with ocean; acceleration; 240 min at 1 s; max frequency 51 mHz, lmax 750; taper (0.1,0.2)/(50.0,50.5) mHz; Figure 4 mesh cap 0.004a; the text describes the filtered seismograms as 20\u20135000 s and the surface-wave plotting interval as about 400\u20131300 s.",
+      "paper_result": "Caption reports maximum pointwise difference 1.5% for YSpec and 9.6% for specnm. Text describes DSpecM1D-YSpec mean difference around 0.1% and DSpecM1D-specnm around 1%; the paper attributes larger differences plausibly to ocean plus attenuation implementation and says they are not significant.",
+      "predeclared_check": "Report per-component Eq. (4) means/maxima on both the full output and surface-wave interval 400\u20131300 s, plus frequency and time filters and solver attenuation/reference-period details. Preserve the paper-reported YSpec mean (~0.1%), YSpec maximum (1.5%), and specnm context (~1% mean, 9.6% maximum); do not turn those into a universal YSpecpp gate.",
+      "current_input_drift": "data/params/ex3.txt uses 0.1\u201355 mHz and an upper taper 49\u201350 mHz rather than paper's 51 mHz and 50\u201350.5 mHz. The page/configuration must identify 240 min, 1 s, 3 km seafloor receiver and 0.004a cap as adopted benchmark settings."
+    },
+    {
+      "case": "ex4/Fig5",
+      "kind": "high-frequency multi-receiver record section / arrival-time check",
+      "paper_setup": "Bolivia moment tensor/depth moved to (0 N,0 E); 91 equatorial receivers; vertical and north components; 0.1\u2013500 mHz; lmax 7500; 1 h; dt 0.2 s; half-cosine corners (0.1,5.0)/(450.0,500.0) mHz; plotted phase markers from TauP. The article does not name the plotted physical quantity; use acceleration as the adopted legacy ex4 convention and label it an assumption rather than a paper-explicit statement.",
+      "paper_result": "No cross-solver numerical error bound is stated for this figure. Check record geometry, finite outputs, expected phase ordering/arrival markers, and physical units; runtime is descriptive.",
+      "predeclared_check": "Before full run, capture a bounded runtime/memory pilot and freeze receiver spacing, Nyquist/filter behavior, acceleration-unit convention, model/attenuation selection, and arrival-marker source. Check record geometry, finite outputs, expected phase ordering/arrival markers and physical units. Do not claim a YSpecpp agreement score unless an independent matching reference is actually produced.",
+      "current_input_drift": "data/params/ex4.txt instead uses 0.1\u201350 mHz, lmax 750, 120 min, dt 0.2 s, and acceleration; paper requires 0.1\u2013500 mHz, lmax 7500, and 1 h. The acceleration convention is adopted from the repository input because the paper caption/text does not explicitly name quantity."
+    },
+    {
+      "case": "ex5/Fig6",
+      "kind": "internal spatial convergence, not cross-solver agreement",
+      "paper_setup": "Ocean-less PREM; Bolivia source and TLY receiver; displacement; 500 min; solve positive frequencies 0.1\u201350 mHz to include the full captioned half-cosine corners (0.1,0.15)/(45,50) mHz. Section 3.3 says filter to 0.2\u201350 mHz, whereas the Fig. 6 caption extends the lower taper to 0.1 mHz; preserve and disclose this text/caption difference rather than silently truncating the taper.; lmax 750; compare 4-, 5-, and 6-point SEM orders against a finest reference about 14 elements per minimum wavelength.",
+      "paper_result": "Paper reports about 0.1% mean relative error at roughly 3, 2, and 1 elements per minimum wavelength for 4-, 5-, and 6-point SEM, respectively; higher order converges faster.",
+      "predeclared_check": "Use the finest mesh as an explicitly declared numerical reference; report error versus element size for each NQ at approximately 0.5, 1, 2, 3, 7, and 14 elements per minimum wavelength, and include the finest feasible control. Test the paper's approximate 0.1% mean relative error near 3, 2, and 1 elements per minimum wavelength for NQ4, NQ5, and NQ6, respectively. This is an internal convergence measure, not YSpecpp agreement.",
+      "current_input_drift": "data/params/ex5.txt requests 240 min and acceleration; current executable is fixed to NQ6 while the plotting workflow expects NQ4/NQ5/NQ6. The paper workflow needs a new matched 500-min displacement sweep; do not use the legacy 50-step sweep as its replacement."
+    },
+    {
+      "case": "ex6/Fig7",
+      "kind": "low-frequency fluid undertone / resolution stability study, not accuracy score",
+      "paper_setup": "Degree-2 tidal forcing with radial potential proportional to r^l; PREM fluid outer core; max element sizes 0.01a, 0.001a, 0.0001a; forcing periods 12, 48, 168, and 1680 h (the rounded paper ratios 1.3, 5.2, 18.2, 182.2 relative to max Brunt\u2013V\u00e4is\u00e4l\u00e4 period ~9.25 h); show N-squared profile.",
+      "paper_result": "At long periods the outer-core response increases; coarse mesh responses are visibly unphysical in some panels and the fine mesh resolves the selected response. No scalar accuracy bound or YSpecpp comparison is stated.",
+      "predeclared_check": "Use an isolated degree-2 tidal-forcing adapter implementing the paper's r^l potential, and independently review its new RHS before making scientific claims. Verify period values, N-squared profile and mesh values. Compare radial responses across resolutions and describe coarse-versus-fine behavior without a fabricated accuracy score or YSpecpp gate; leave the old ex6 degree-3 setup and production solver untouched.",
+      "current_input_drift": "data/params/ex6.txt is an old Bolivia point-source parameter file; the current figure workflow is a custom low-level tidal-force SEM calculation. Preserve that distinction and record the actual forcing deck and mesh controls."
+    }
+  ],
+  "publication_wording_limit": "Do not describe every repository ex1\u2013ex7 workflow as a direct YSpecpp agreement benchmark: Figs 5\u20137 respectively test traveltime/record-section behavior, DSpecM1D mesh convergence, and fluid undertone resolution. Do not present historical YSpec/MINEOS/specnm arrays as newly generated YSpecpp outputs.",
+  "web_date_note": "Any new validation note should state the actual benchmark validation date, 2026-10-20, and avoid adding an unrelated article acceptance/publication-date claim.",
+  "review_limits": [
+    "No new solver runs or source/document edits were performed in this review phase.",
+    "This plan freezes criteria and known case/input drift before the suite run; it is not acceptance of new numerical results.",
+    "No universal cross-solver tolerance is asserted for cases where the paper does not state one.",
+    "Figure 5 acceleration is an adopted legacy input convention; the paper does not explicitly identify the plotted quantity.",
+    "Figure 7 new tidal-force right-hand side requires a separate independent mathematical review before any result is claimed."
+  ]
+}

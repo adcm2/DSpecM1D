@@ -12,14 +12,18 @@
 #include <string>
 
 int main(int argc, char **argv) {
-  if (argc != 6 && argc != 7) {
-    std::cerr << "usage: dspec_adapter INPUT_PARAMS OUTPUT_PREFIX NQ NSKIP MAXSTEP [paper2]\n";
+  if (argc < 6 || argc > 8) {
+    std::cerr << "usage: dspec_adapter INPUT_PARAMS OUTPUT_PREFIX NQ NSKIP MAXSTEP [paper2|paper_suite [dynamic|single]]\n";
     return 2;
   }
   try {
     const auto started = std::chrono::steady_clock::now();
     const bool paper2 = argc == 7 && std::string(argv[6]) == "paper2";
-    if (argc == 7 && !paper2) {
+    const bool paperSuite = argc >= 7 && std::string(argv[6]) == "paper_suite";
+    const std::string suiteMesh = paperSuite && argc == 8 ? argv[7] : "dynamic";
+    if ((argc == 7 && !paper2 && !paperSuite) ||
+        (argc == 8 && (!paperSuite ||
+                       (suiteMesh != "dynamic" && suiteMesh != "single")))) {
       throw std::invalid_argument("unknown optional adapter mode");
     }
     InputParametersNew params(argv[1], std::stoi(argv[3]), std::stoi(argv[4]),
@@ -27,9 +31,16 @@ int main(int argc, char **argv) {
     SPARSESPEC::SparseFSpec solver;
     const bool forceCowling = params.inputParameters().gravitation() == 1;
     Eigen::MatrixXcd raw;
-    if (paper2) {
+    if (paper2 || (paperSuite && suiteMesh == "dynamic")) {
       // The paper comparison uses the frequency-chunked dynamic multi-SEM API.
       raw = solver.spectra(params);
+    } else if (paperSuite) {
+      // Figure-specific fixed mesh cap, currently used by published Fig. 4.
+      Full1D::SEM sem(params);
+      SPARSESPEC::SpectraRunContext request(
+          params.freqFull(), params.cmt(), params.inputParameters(),
+          params.tref(), params.nskip());
+      raw = solver.spectra(request, sem, forceCowling);
     } else {
       Full1D::SEM sem(params);
       SPARSESPEC::SpectraRunContext request(
@@ -40,7 +51,7 @@ int main(int argc, char **argv) {
     const auto &grid = params.freqFull();
     const auto timeNorm = params.earthModel().TimeNorm();
     const auto unit = params.normFactor();
-    const Eigen::MatrixXd times = paper2
+    const Eigen::MatrixXd times = (paper2 || paperSuite)
         ? processfunctions::filtfreq2time(raw * unit, grid, true)
         : (processfunctions::freq2time(raw, grid) * unit).eval();
 
@@ -49,6 +60,24 @@ int main(int argc, char **argv) {
     std::ofstream meta(std::string(argv[2]) + ".meta.json");
     if (!spectra || !series || !meta) {
       throw std::runtime_error("could not open adapter output");
+    }
+    const int receiverCount = params.inputParameters().num_receivers();
+    std::ofstream allSpectra;
+    std::ofstream allSeries;
+    if (receiverCount > 1) {
+      allSpectra.open(std::string(argv[2]) + ".all_receivers.spectra.csv");
+      allSeries.open(std::string(argv[2]) + ".all_receivers.timeseries.csv");
+      if (!allSpectra || !allSeries) {
+        throw std::runtime_error("could not open all-receiver adapter output");
+      }
+      allSpectra << "frequency_bin,frequency_hz,omega_real_rad_s,omega_imag_rad_s,receiver_index,component,real,imag\n"
+                 << std::setprecision(17);
+      allSeries << "time_s" << std::setprecision(17);
+      for (int receiver = 0; receiver < receiverCount; ++receiver) {
+        for (const char *component : {"Z", "N", "E"})
+          allSeries << ",r" << receiver << '_' << component << "_SI";
+      }
+      allSeries << '\n';
     }
     spectra << "frequency_bin,frequency_hz,omega_real_rad_s,omega_imag_rad_s,component,real,imag\n"
             << std::setprecision(17);
@@ -64,6 +93,16 @@ int main(int argc, char **argv) {
                 << component << ',' << value.real() << ',' << value.imag()
                 << '\n';
       }
+      if (receiverCount > 1) {
+        for (int receiver = 0; receiver < receiverCount; ++receiver) {
+          for (int component = 0; component < 3; ++component) {
+            const auto value = raw(3 * receiver + component, index) * unit * timeNorm;
+            allSpectra << index << ',' << fHz << ',' << realOmega << ','
+                       << imagOmega << ',' << receiver << ',' << component << ','
+                       << value.real() << ',' << value.imag() << '\n';
+          }
+        }
+      }
     }
     series << "time_s,Z_SI,N_SI,E_SI\n" << std::setprecision(17);
     const auto outputSamples = std::min<int>(
@@ -76,6 +115,14 @@ int main(int argc, char **argv) {
         series << ',' << times(component, index);
       }
       series << '\n';
+      if (receiverCount > 1) {
+        allSeries << index * grid.dt() * timeNorm;
+        for (int receiver = 0; receiver < receiverCount; ++receiver) {
+          for (int component = 0; component < 3; ++component)
+            allSeries << ',' << times(3 * receiver + component, index);
+        }
+        allSeries << '\n';
+      }
     }
     const auto elapsed =
         std::chrono::duration<double>(std::chrono::steady_clock::now() - started)
@@ -94,18 +141,20 @@ int main(int argc, char **argv) {
          << "  \"degree_min\": " << params.inputParameters().lmin() << ",\n"
          << "  \"degree_max\": " << params.inputParameters().lmax() << ",\n"
          << "  \"mesh_strategy\": \""
-         << (paper2 ? "dynamic frequency-chunked multi-SEM" :
-                      "single SEM") << "\",\n"
+         << ((paper2 || (paperSuite && suiteMesh == "dynamic"))
+                 ? "dynamic frequency-chunked multi-SEM"
+                 : paperSuite ? "single SEM, paper suite" : "single SEM")
+         << "\",\n"
          << "  \"nq\": " << params.nq() << ",\n"
          << "  \"maxstep\": ";
-    if (paper2)
+    if (paper2 || (paperSuite && suiteMesh == "dynamic"))
       meta << "null,\n  \"maxstep_source\": \"derived per frequency chunk\",\n"
            << "  \"unused_constructor_maxstep_argument\": "
            << params.maxstep() << ",\n";
     else
       meta << params.maxstep() << ",\n";
     meta << "  \"nskip\": ";
-    if (paper2)
+    if (paper2 || (paperSuite && suiteMesh == "dynamic"))
       meta << "null,\n  \"nskip_source\": \"derived from frequency grid\",\n"
            << "  \"unused_constructor_nskip_argument\": "
            << params.nskip() << ",\n";
@@ -138,7 +187,7 @@ int main(int argc, char **argv) {
          << unit * timeNorm << ",\n"
          << "  \"spectra_filtered\": false,\n"
          << "  \"native_time_series_filtered\": "
-         << (paper2 ? "true" : "false") << ",\n"
+         << ((paper2 || paperSuite) ? "true" : "false") << ",\n"
          << "  \"filter_mHz\": [" << params.inputParameters().f11() << ", "
          << params.inputParameters().f12() << ", "
          << params.inputParameters().f21() << ", "
