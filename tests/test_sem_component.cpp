@@ -15,7 +15,9 @@
 namespace {
 
 InputParametersNew
-makeTinySemParams(double receiverDepth = 0.0) {
+makeTinySemParams(double receiverDepth = 0.0,
+                  const std::filesystem::path &earthModelPath =
+                      DSpecMTest::modelPath()) {
   DSpecMTest::TempDir temp;
   DSpecMTest::ParameterOptions options;
   options.type = 4;
@@ -35,7 +37,7 @@ makeTinySemParams(double receiverDepth = 0.0) {
 
   const auto path = DSpecMTest::writeFile(
       temp.path() / "tiny_sem_params.txt",
-      DSpecMTest::makeParameterText(DSpecMTest::modelPath().string(), options));
+      DSpecMTest::makeParameterText(earthModelPath.string(), options));
 
   return InputParametersNew(path.string(), 4, 2, 0.2, 1.0, 0.05, 0.0, 1);
 }
@@ -542,6 +544,55 @@ TEST(SEMComponentTests, ExactOceanBottomReceiverUsesSolidSide) {
                          std::sqrt(l * (l + 1.0)) -
                      fluidFieldAtReceiver),
             1.0);
+}
+
+TEST(SEMComponentTests, SurfaceOceanCapsToroidalRangeAboveSolidSphere) {
+  DSpecMTest::TempDir temp;
+  const auto oceanPath = DSpecMTest::writeFile(
+      temp.path() / "homogeneous_ocean.deck",
+      "benchmark homogeneous mantle with a 3 km ocean\n"
+      "0 1.0 1\n"
+      "4 0 0\n"
+      "0.0 5515.0 8000.0 4500.0 300.0 150.0\n"
+      "6368000.0 5515.0 8000.0 4500.0 300.0 150.0\n"
+      "6368000.0 1025.0 1500.0 0.0 1000.0 0.0\n"
+      "6371000.0 1025.0 1500.0 0.0 1000.0 0.0\n");
+  auto paramsNew = makeTinySemParams(3.0, oceanPath);
+  Full1D::SEM sem(paramsNew);
+  const auto &model = paramsNew.earthModel();
+  auto &params = paramsNew.inputParameters();
+
+  int firstFluid = sem.mesh().NE();
+  for (int e = 0; e < sem.mesh().NE(); ++e) {
+    if (model.IsFluid(sem.mesh().LayerNumber(e))) {
+      firstFluid = e;
+      break;
+    }
+  }
+  ASSERT_GT(firstFluid, 0);
+  ASSERT_LT(firstFluid, sem.mesh().NE());
+  for (int e = firstFluid; e < sem.mesh().NE(); ++e)
+    ASSERT_TRUE(model.IsFluid(sem.mesh().LayerNumber(e)));
+  EXPECT_EQ(sem.el(), 0);
+  EXPECT_EQ(sem.eu(), firstFluid);
+
+  const auto selected = sem.receiverElements(params, true);
+  ASSERT_FALSE(selected.empty());
+  for (const int e : selected) {
+    EXPECT_LT(e, firstFluid);
+    EXPECT_FALSE(model.IsFluid(sem.mesh().LayerNumber(e)));
+  }
+  EXPECT_NEAR(sem.mesh().EUR(selected.back()),
+              sem.mesh().ELR(firstFluid), 1e-10);
+
+  const auto toroidalReceiver = sem.rvThetaT(params, 2, 0);
+  EXPECT_EQ(toroidalReceiver.rows(), sem.ltgT(sem.eu() - 1,
+                                               sem.mesh().NN() - 1) + 1);
+  EXPECT_TRUE(toroidalReceiver.allFinite());
+  EXPECT_GT(toroidalReceiver.norm(), 0.0);
+  const auto toroidalStiffness = sem.hTk(2);
+  EXPECT_GT(toroidalStiffness.rows(), 0);
+  EXPECT_GT(toroidalStiffness.norm(), 0.0);
 }
 
 TEST(SEMComponentTests, FluidAndOutOfMeshReceiversFailBeforeAssembly) {
