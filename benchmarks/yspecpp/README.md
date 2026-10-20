@@ -38,3 +38,31 @@ angular frequencies, damping, and time grids are checked separately.
 The homogeneous fixtures avoid the known difference between YSpecpp's modulus
 spline and DSpecM1D's velocity spline. This compact comparison does not claim
 paper-scale validation or establish fluid-source support.
+
+### Reproducing paper comparisons
+
+Replay one saved case without rerunning either solver:
+
+```sh
+python3 benchmarks/yspecpp/run_paper.py --saved-run /path/to/old-run --case fig1 --output /path/to/replay
+```
+
+Omit `--case` to replay Figures 1–4 into `OUTPUT/fig1` through `OUTPUT/fig4`.
+For a new full run, give one explicit case and all source/dependency paths:
+
+```sh
+python3 benchmarks/yspecpp/run_paper.py \
+  --case fig1 \
+  --dspec-source /path/to/DSpecM1D \
+  --yspec-source /path/to/YSpecpp \
+  --dependency-root /path/to/dependencies \
+  --output /path/to/new-run
+```
+
+`--pilot` is available only for new runs. Each case writes `summary.json`,
+`provenance.json`, raw and processed spectrum plots, and comparison plots; a
+display-window plot is included when the case defines one. Raw spectra and
+native traces are saved under `results/`. New summaries use the consolidated
+runner's format. Existing web artifacts retain their original run derivation;
+the corrected Figure 1 secondary spectrum is a separately derived product from
+saved raw spectra, with its own input hashes and derivation record.

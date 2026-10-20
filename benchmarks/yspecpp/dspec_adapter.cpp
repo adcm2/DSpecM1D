@@ -12,12 +12,18 @@
 #include <string>
 
 int main(int argc, char **argv) {
-  if (argc != 6) {
-    std::cerr << "usage: dspec_adapter INPUT_PARAMS OUTPUT_PREFIX NQ NSKIP MAXSTEP\n";
+  if (argc < 6 || argc > 7) {
+    std::cerr << "usage: dspec_adapter INPUT_PARAMS OUTPUT_PREFIX NQ NSKIP MAXSTEP [paper-single|paper-dynamic]\n";
     return 2;
   }
   try {
     const auto started = std::chrono::steady_clock::now();
+    const std::string mode = argc == 7 ? argv[6] : "";
+    const bool paperDynamic = mode == "paper-dynamic";
+    const bool paperSingle = mode == "paper-single";
+    const bool paperMode = paperDynamic || paperSingle;
+    if (argc == 7 && !paperMode)
+      throw std::invalid_argument("unknown optional adapter mode");
     InputParametersNew params(argv[1], std::stoi(argv[3]), std::stoi(argv[4]),
                               std::stod(argv[5]));
     if (params.inputParameters().num_receivers() != 1) {
@@ -25,15 +31,22 @@ int main(int argc, char **argv) {
     }
     SPARSESPEC::SparseFSpec solver;
     const bool forceCowling = params.inputParameters().gravitation() == 1;
-    Full1D::SEM sem(params);
-    SPARSESPEC::SpectraRunContext request(
-        params.freqFull(), params.cmt(), params.inputParameters(),
-        params.tref(), params.nskip());
-    const Eigen::MatrixXcd raw = solver.spectra(request, sem, forceCowling);
+    Eigen::MatrixXcd raw;
+    if (paperDynamic) {
+      raw = solver.spectra(params);
+    } else {
+      Full1D::SEM sem(params);
+      SPARSESPEC::SpectraRunContext request(
+          params.freqFull(), params.cmt(), params.inputParameters(),
+          params.tref(), params.nskip());
+      raw = solver.spectra(request, sem, forceCowling);
+    }
     const auto &grid = params.freqFull();
     const auto timeNorm = params.earthModel().TimeNorm();
     const auto unit = params.normFactor();
-    const Eigen::MatrixXd times = (processfunctions::freq2time(raw, grid) * unit).eval();
+    const Eigen::MatrixXd times = paperMode
+        ? processfunctions::filtfreq2time(raw * unit, grid, true)
+        : (processfunctions::freq2time(raw, grid) * unit).eval();
 
     std::ofstream spectra(std::string(argv[2]) + ".spectra.csv");
     std::ofstream series(std::string(argv[2]) + ".timeseries.csv");
@@ -84,11 +97,21 @@ int main(int argc, char **argv) {
          << "  \"mode_type\": " << params.inputParameters().type() << ",\n"
          << "  \"degree_min\": " << params.inputParameters().lmin() << ",\n"
          << "  \"degree_max\": " << params.inputParameters().lmax() << ",\n"
-         << "  \"mesh_strategy\": \"single SEM\",\n"
+         << "  \"mesh_strategy\": \""
+         << (paperDynamic ? "dynamic frequency-chunked multi-SEM" :
+             paperSingle ? "single SEM, paper mode" : "single SEM") << "\",\n"
          << "  \"nq\": " << params.nq() << ",\n"
-         << "  \"maxstep\": " << params.maxstep() << ",\n"
-         << "  \"nskip\": " << params.nskip() << ",\n"
-         << "  \"relative_error\": "
+         << "  \"maxstep\": ";
+    if (paperDynamic)
+      meta << "null,\n  \"maxstep_source\": \"derived per frequency chunk\",\n";
+    else
+      meta << params.maxstep() << ",\n";
+    meta << "  \"nskip\": ";
+    if (paperDynamic)
+      meta << "null,\n  \"nskip_source\": \"derived from frequency grid\",\n";
+    else
+      meta << params.nskip() << ",\n";
+    meta << "  \"relative_error\": "
          << params.inputParameters().relative_error() << ",\n"
          << "  \"potential_and_tilt_corrections\": false,\n"
          << "  \"source_time_convention\": \"step moment; no extra filter\",\n"
@@ -113,7 +136,8 @@ int main(int argc, char **argv) {
          << "  \"spectrum_unit_factor_si_per_hz\": "
          << unit * timeNorm << ",\n"
          << "  \"spectra_filtered\": false,\n"
-         << "  \"native_time_series_filtered\": false,\n"
+         << "  \"native_time_series_filtered\": "
+         << (paperMode ? "true" : "false") << ",\n"
          << "  \"filter_mHz\": [" << params.inputParameters().f11() << ", "
          << params.inputParameters().f12() << ", "
          << params.inputParameters().f21() << ", "

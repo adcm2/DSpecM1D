@@ -1,0 +1,118 @@
+{
+  "updated": "2026-10-20",
+  "case": "Published-style Figure 2 Bolivia event; new DSpecM1D\u2013YSpecpp full-band comparison",
+  "run_scope": "full",
+  "protocol_sha256": "98b02cd336820edb37eb2ccfe8122c15ccdc9e821c7d639ebe13922f9068d631",
+  "settings": {
+    "source_depth_km": 647.1,
+    "source_geocentric_latitude_deg": -13.82,
+    "source_longitude_deg": -67.25,
+    "receiver_geocentric_latitude_deg": 80.0,
+    "receiver_longitude_deg": 0.0,
+    "receiver_depth_km": 3.0,
+    "duration_min": 300.0,
+    "time_step_s": 1.0,
+    "degree_min": 0,
+    "degree_max": 300,
+    "frequency_min_mHz": 1.5,
+    "frequency_max_mHz": 21.0,
+    "filter_mHz": [
+      1.9,
+      2.0,
+      20.0,
+      20.1
+    ],
+    "attenuation": false,
+    "gravity": "full",
+    "quantity": "displacement",
+    "dspec_sem_points": 5,
+    "dspec_relative_error": 1e-05,
+    "source_time_convention": "Heaviside step moment; no extra source-time convolution",
+    "model": "PREM TI with ocean; no attenuation"
+  },
+  "metrics": {
+    "Z": {
+      "reference_peak_m": 0.0021107980457975425,
+      "mean_absolute_difference_m": 1.9710254448198875e-07,
+      "mean_absolute_difference_percent_of_reference_peak": 0.009337821061299859,
+      "max_absolute_difference_m": 1.7100786278225508e-06,
+      "peak_difference_percent_of_reference_peak": 0.08101573863151915,
+      "relative_l2": 0.0006573372394042
+    },
+    "N": {
+      "reference_peak_m": 0.0007920146987522501,
+      "mean_absolute_difference_m": 6.794725114070033e-08,
+      "mean_absolute_difference_percent_of_reference_peak": 0.008579039157700644,
+      "max_absolute_difference_m": 5.866904716452296e-07,
+      "peak_difference_percent_of_reference_peak": 0.07407570497990872,
+      "relative_l2": 0.0006063250264614564
+    },
+    "E": {
+      "reference_peak_m": 0.0017730125031345083,
+      "mean_absolute_difference_m": 1.351612673053732e-07,
+      "mean_absolute_difference_percent_of_reference_peak": 0.007623255169741988,
+      "max_absolute_difference_m": 1.2939646620368584e-06,
+      "peak_difference_percent_of_reference_peak": 0.07298113576465246,
+      "relative_l2": 0.000612317006404771
+    }
+  },
+  "maximum_channel_mean_percent": 0.009337821061299859,
+  "maximum_pointwise_difference_percent_of_each_YSpecpp_peak": 0.08101573863151915,
+  "full_band_mean_misfit_gate": {
+    "applicable": true,
+    "limit_percent_exclusive": 1.0,
+    "maximum_channel_mean_percent": 0.009337821061299859,
+    "passed": true
+  },
+  "provenance": {
+    "dspecm1d_source_commit": "3597c6f131c1f31fc4273cfbc8a9bb828136cbb8",
+    "dspecm1d_tracked_source_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "paper_inputs_sha256": {
+      "moment_tensor_parameter_file": "f04742b5948025a5556b6dde5c405bd5c6102b987c04ca710a1cd9555844c98b",
+      "PREM_model": "35071296c7fccf52730c3cdc476eb0ac5b2d42550c77dec484bc33dcbbac32f8"
+    },
+    "yspecpp_commit": "84be5a6cbe442324c164e5193a66b0911fca5860",
+    "yspecpp_tree_sha256": "5e77d93a8b2dbe469813ff3d190a664752158d7c66008a5b4c61a20ced38979e",
+    "yspecpp_archive_sha256": "6d79288770cd6b73f8679e532d8810ddc6bbc79e8fe2a06cba04e8d0ae4183c3",
+    "dependency_commits": {
+      "numericconcepts-src": "e03a2889d43a03660d0879f46dda1406d90c9517",
+      "interpolation-src": "d5a1711ca6a89fc8ad8148fe13212398fe569bc0",
+      "fftwpp-src": "cb152c0e85f3822493c2d9e85a56307ac7b4f1c0",
+      "gaussquad-src": "7d4786d192f68077cd99a34dcdf1379ed1eeac9a",
+      "gshtrans-src": "8dd116df8df4222fe9b10a40c7213d34f2a274fb"
+    },
+    "runtime_environment": {
+      "OMP_NUM_THREADS": "2",
+      "OMP_DYNAMIC": "FALSE",
+      "OMP_MAX_ACTIVE_LEVELS": "1"
+    },
+    "frequency_grid": {
+      "expected_samples": 32768,
+      "expected_frequency_spacing_hz": 3.0517578125e-05,
+      "damping_e_folds": 5
+    },
+    "filter": {
+      "corners_mHz": [
+        1.9,
+        2.0,
+        20.0,
+        20.1
+      ],
+      "application": "one direct half-cosine taper to raw displacement spectra before inverse transform",
+      "spectra_saved": "raw, unfiltered physical displacement per Hz",
+      "native_timeseries_saved": "filtered physical displacement in m",
+      "shared_transform": "NumPy irfft with physical df and damping undo"
+    },
+    "model_interpolation_note": "DSpecM1D interpolates velocities before constructing moduli; YSpecpp splines elastic moduli. The two continuous interpolants are not identical.",
+    "raw_run_provenance_sha256": "d083131e8fba3323563e679f5a15375db48960413e694538d0fea1f039ce5897",
+    "benchmark_harness_file_sha256": {
+      "run_paper2.py": "5b5e915505666b46c09279187280a2a1040008702a0beffe04000731b6fa5aac",
+      "dspec_adapter.cpp": "e3d87e68db6bc9d836fe5145e3093f40c9038f3c8c89475931dd434148be0d02",
+      "yspecpp_adapter.cpp": "930a30829456b7d724f659a21e86ee851da50960e31f844c70137df5cde81f8f",
+      "CMakeLists.txt": "05bd8f8fcbfd2178cbe3c79ea5e8a50dad72704754a3044ca3edcf87061d87f3",
+      "README.md": "16aed134365d622e63b11946f73d84ace75276b7cfa90c7b6ae6abaeaa9247a6",
+      "paper2-protocol.json": "98b02cd336820edb37eb2ccfe8122c15ccdc9e821c7d639ebe13922f9068d631"
+    }
+  },
+  "comparison_scope": "new comparison output; no fit to the published figure"
+}
