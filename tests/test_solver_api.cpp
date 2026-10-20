@@ -18,22 +18,25 @@
 namespace {
 
 InputParametersNew
-makeTinyPreferredParams() {
+makeTinyPreferredParams(int modeType = 1, double receiverDepth = 0.0,
+                        double tOutMinutes = 1.0, double fmin = 0.1,
+                        double fmax = 0.2) {
   DSpecMTest::TempDir temp;
   DSpecMTest::ParameterOptions options;
-  options.type = 1;
+  options.type = modeType;
   options.lmax = 2;
-  options.f1 = 0.1;
-  options.f2 = 0.2;
-  options.f11 = 0.1;
-  options.f12 = 0.12;
-  options.f21 = 0.18;
-  options.f22 = 0.2;
-  options.tOutMinutes = 1.0;
+  options.f1 = fmin;
+  options.f2 = fmax;
+  options.f11 = fmin;
+  options.f12 = fmin;
+  options.f21 = fmax;
+  options.f22 = fmax;
+  options.tOutMinutes = tOutMinutes;
   options.timeStepSec = 10.0;
   options.numReceivers = 1;
   options.receivers = {{45.0, 90.0}};
   options.relativeError = 1e-3;
+  options.receiverDepth = receiverDepth;
 
   const auto path = DSpecMTest::writeFile(
       temp.path() / "tiny_params.txt",
@@ -106,6 +109,61 @@ InputParametersNew makeMultiCowlingSolveParams(double fmin, double fmax,
 }
 
 }   // namespace
+
+
+TEST(PreferredSolverApiTests, ExactOceanBottomAllModeSingleAndMultiSolvesAreFinite) {
+  auto paramsNew = makeTinyPreferredParams(4, 3.0, 5.0, 5.0, 40.0);
+  const auto &freq = paramsNew.freqFull();
+  ASSERT_LT(freq.i1() + 1, freq.i2());
+  paramsNew.setCowlingFrequencyMhz(
+      freq.f(freq.i1() + 1) * 1000.0 / freq.timeNorm());
+  Full1D::SEM sem(paramsNew);
+  SPARSESPEC::SparseFSpec solver;
+  const auto single = solver.spectra(paramsNew, sem);
+  ASSERT_EQ(single.rows(), 3 * paramsNew.inputParameters().num_receivers());
+  EXPECT_EQ(single.cols(), paramsNew.freqFull().w().size());
+  EXPECT_TRUE(single.allFinite());
+
+  auto multiParams = makeTinyPreferredParams(4, 3.0, 5.0, 5.0, 40.0);
+  const auto &multiFreq = multiParams.freqFull();
+  ASSERT_LT(multiFreq.i1() + 1, multiFreq.i2());
+  multiParams.setCowlingFrequencyMhz(
+      multiFreq.f(multiFreq.i1() + 1) * 1000.0 / multiFreq.timeNorm());
+  SPARSESPEC::SparseFSpec multiSolver;
+  const auto multi = multiSolver.spectra(multiParams);
+  ASSERT_EQ(multi.rows(), 3 * multiParams.inputParameters().num_receivers());
+  EXPECT_EQ(multi.cols(), multiParams.freqFull().w().size());
+  EXPECT_TRUE(multi.allFinite());
+}
+
+
+TEST(PreferredSolverApiTests, FluidOnlyToroidalReceiverFailsBeforeSolverLoops) {
+  auto singleParams = makeTinyPreferredParams(2, 2.999);
+  Full1D::SEM sem(singleParams);
+  SPARSESPEC::SparseFSpec solver;
+  EXPECT_THROW(solver.spectra(singleParams, sem), std::invalid_argument);
+
+  auto multiParams = makeTinyPreferredParams(2, 2.999);
+  SPARSESPEC::SparseFSpec multiSolver;
+  EXPECT_THROW(multiSolver.spectra(multiParams), std::invalid_argument);
+}
+
+TEST(PreferredSolverApiTests, FluidOnlyRadialAndSpheroidalReceiversRemainUsable) {
+  for (int mode : {1, 3}) {
+    auto paramsNew = makeTinyPreferredParams(mode, 2.999);
+    Full1D::SEM sem(paramsNew);
+    SPARSESPEC::SparseFSpec solver;
+    const auto single = solver.spectra(paramsNew, sem);
+    EXPECT_TRUE(single.allFinite());
+    EXPECT_GT(single.norm(), 0.0);
+  }
+  auto multiParams = makeTinyPreferredParams(3, 2.999);
+  SPARSESPEC::SparseFSpec multiSolver;
+  const auto multi = multiSolver.spectra(multiParams);
+  EXPECT_TRUE(multi.allFinite());
+  EXPECT_GT(multi.norm(), 0.0);
+}
+
 
 TEST(PreferredSolverApiTests, SpectraRunContextExposesWorkflowObjects) {
   auto paramsNew = makeTinyPreferredParams();

@@ -99,7 +99,7 @@ SEM::calculateForceAllT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
 Eigen::MatrixXcd
 SEM::calculateForceCoefficientsT(SourceInfo::EarthquakeCMT &cmt, int idxl) {
   int nq = m_mesh.NN();
-  totlen = this->ltgT(m_mesh.NE() - 1, nq - 1) + 1;
+  totlen = this->ltgT(m_eu - 1, nq - 1) + 1;
   Eigen::MatrixXcd vec_lforce = Eigen::MatrixXcd::Zero(2 * idxl + 1, 2);
 
   double theta_s = (90.0 - cmt.Latitude()) * EIGEN_PI / (180.0);

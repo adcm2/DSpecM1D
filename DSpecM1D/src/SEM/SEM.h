@@ -1,6 +1,7 @@
 #ifndef DSPECM1D_SEM_H
 #define DSPECM1D_SEM_H
 
+#include <algorithm>
 #include <iostream>
 #include <iomanip>
 #include <cmath>
@@ -96,7 +97,7 @@ public:
   auto eu() const { return m_eu; };
 
   /// Returns the element indices containing all receivers.
-  auto receiverElements(InputParameters &) const;
+  auto receiverElements(InputParameters &, bool toroidal = false) const;
   /// Returns the source element index.
   auto sourceElement(SourceInfo::EarthquakeCMT &) const;
 

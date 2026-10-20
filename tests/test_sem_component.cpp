@@ -15,7 +15,7 @@
 namespace {
 
 InputParametersNew
-makeTinySemParams() {
+makeTinySemParams(double receiverDepth = 0.0) {
   DSpecMTest::TempDir temp;
   DSpecMTest::ParameterOptions options;
   options.type = 4;
@@ -31,6 +31,7 @@ makeTinySemParams() {
   options.numReceivers = 1;
   options.receivers = {{45.0, 90.0}};
   options.relativeError = 1e-3;
+  options.receiverDepth = receiverDepth;
 
   const auto path = DSpecMTest::writeFile(
       temp.path() / "tiny_sem_params.txt",
@@ -390,6 +391,173 @@ TEST(SEMComponentTests, ReceiverAndSourceElementsStayWithinMeshBounds) {
   EXPECT_LE(receiverElems.front(), receiverElems.back());
 }
 
+
+TEST(SEMComponentTests, ExactOceanBottomReceiverUsesSolidSide) {
+  auto paramsNew = makeTinySemParams(3.0);
+  Full1D::SEM sem(paramsNew);
+  auto &params = paramsNew.inputParameters();
+  const double radius = sem.mesh().PR() - 1000.0 * params.receiver_depth() /
+                                             paramsNew.earthModel().LengthNorm();
+
+  std::vector<int> expectedSolid;
+  std::vector<int> expectedFluid;
+  bool foundSolid = false;
+  bool foundFluid = false;
+  for (int e = 0; e < sem.mesh().NE(); ++e) {
+    if (sem.mesh().ELR(e) <= radius && sem.mesh().EUR(e) >= radius) {
+      const bool fluid = paramsNew.earthModel().IsFluid(
+          sem.mesh().LayerNumber(e));
+      foundFluid = foundFluid || fluid;
+      foundSolid = foundSolid || !fluid;
+      if (fluid)
+        expectedFluid.push_back(e);
+      else
+        expectedSolid.push_back(e);
+    }
+  }
+  ASSERT_TRUE(foundSolid);
+  ASSERT_TRUE(foundFluid);
+  ASSERT_EQ(expectedFluid.size(), 1);
+  const auto selected = sem.receiverElements(params);
+  EXPECT_EQ(selected, expectedSolid);
+  ASSERT_EQ(selected.size(), 1);
+
+  const int solidElement = expectedSolid.front();
+  const int fluidElement = expectedFluid.front();
+  const auto interpolateElementField = [&](int element, double intercept,
+                                           double slope) {
+    std::vector<double> elementNodes(sem.mesh().NN());
+    for (int n = 0; n < sem.mesh().NN(); ++n)
+      elementNodes[n] = sem.mesh().NodeRadius(element, n);
+    const auto elementBasis = Interpolation::LagrangeBasis(elementNodes);
+    double result = 0.0;
+    for (int n = 0; n < sem.mesh().NN(); ++n)
+      result += elementBasis.Evaluate(n, radius) *
+                (intercept + slope * elementNodes[n]);
+    return result;
+  };
+  const double solidFieldAtReceiver =
+      interpolateElementField(solidElement, 4.0, 2.0);
+  const double fluidFieldAtReceiver =
+      interpolateElementField(fluidElement, 80.0, -3.0);
+  ASSERT_GT(std::abs(solidFieldAtReceiver - fluidFieldAtReceiver), 1.0);
+
+  const int l = 2;
+  const auto receiver = sem.rvBaseFull(params, l);
+  const auto receiverCowling = sem.rvBaseFull(params, l, true);
+  const int low = sem.ltgS(0, selected.front(), 0);
+  const int cowlingLow = sem.ltgSC(0, selected.front(), 0);
+  ASSERT_EQ(receiverCowling.cols(),
+            sem.ltgSC(1, selected.back(), sem.mesh().NN() - 1) - cowlingLow + 1);
+  ASSERT_EQ(receiver.cols(),
+            sem.ltgS(1, selected.back(), sem.mesh().NN() - 1) - low + 1);
+  for (int n = 0; n < sem.mesh().NN(); ++n) {
+    const int fullV = sem.ltgS(1, selected.front(), n) - low;
+    const int cowlingV = sem.ltgSC(1, selected.front(), n) - cowlingLow;
+    for (int row = 1; row < 3; ++row)
+      EXPECT_EQ(receiver(row, fullV), receiverCowling(row, cowlingV));
+  }
+  // The surface radial value is reproduced from an independently evaluated
+  // solid-element Lagrange interpolant for a manufactured affine field.
+  std::vector<double> nodes(sem.mesh().NN());
+  for (int n = 0; n < sem.mesh().NN(); ++n)
+    nodes[n] = sem.mesh().NodeRadius(selected.front(), n);
+  auto solidBasis = Interpolation::LagrangeBasis(nodes);
+  Eigen::VectorXcd manufacturedSolid = Eigen::VectorXcd::Zero(receiver.cols());
+  for (int n = 0; n < sem.mesh().NN(); ++n) {
+    const int col = sem.ltgS(0, selected.front(), n) - low;
+    manufacturedSolid(col) = 4.0 + 2.0 * nodes[n];
+  }
+  const auto radialValue = receiver.row(0).dot(manufacturedSolid);
+  double independentSolidValue = 0.0;
+  for (int n = 0; n < sem.mesh().NN(); ++n)
+    independentSolidValue += solidBasis.Evaluate(n, radius) *
+                             (4.0 + 2.0 * nodes[n]);
+  EXPECT_NEAR(radialValue.real(), independentSolidValue, 1e-12);
+  EXPECT_GT(std::abs(radialValue.real() - fluidFieldAtReceiver), 1.0);
+  EXPECT_NEAR(radialValue.imag(), 0.0, 1e-12);
+
+  const auto toroidal = sem.rvThetaT(params, l, 0);
+  EXPECT_EQ(toroidal.rows(), sem.ltgT(sem.eu() - 1,
+                                       sem.mesh().NN() - 1) + 1);
+  const auto baseToroidal = sem.rvBaseFullT(params, l);
+  EXPECT_EQ(baseToroidal.cols(), sem.ltgT(selected.back(), sem.mesh().NN() - 1) -
+                                     sem.ltgT(selected.front(), 0) + 1);
+  EXPECT_GT(baseToroidal.cwiseAbs().maxCoeff(), 0.0);
+
+  // The toroidal receiver vectors must interpolate the discontinuous solid
+  // field at the interface, not the distinct fluid-side field.
+  Eigen::VectorXcd toroidalSolidField = Eigen::VectorXcd::Zero(toroidal.rows());
+  for (int e = sem.el(); e < sem.eu(); ++e) {
+    for (int n = 0; n < sem.mesh().NN(); ++n)
+      toroidalSolidField(sem.ltgT(e, n)) =
+          4.0 + 2.0 * sem.mesh().NodeRadius(e, n);
+  }
+  const auto baseThetaT = sem.rvBaseThetaT(params, l, 0);
+  const auto basePhiT = sem.rvBasePhiT(params, l, 0);
+  const auto baseThetaValue = (baseThetaT * toroidalSolidField)(0, 0);
+  const auto basePhiValue = (basePhiT * toroidalSolidField)(0, 0);
+  EXPECT_NEAR(baseThetaValue.real(), 0.5 * solidFieldAtReceiver, 1e-12);
+  EXPECT_NEAR(basePhiValue.real(), 0.5 * solidFieldAtReceiver, 1e-12);
+  EXPECT_GT(std::abs(2.0 * baseThetaValue.real() -
+                     fluidFieldAtReceiver), 1.0);
+
+  const auto phiT = sem.rvPhiT(params, l, 0);
+  const double theta = (90.0 - params.receivers()[0].first) * EIGEN_PI / 180.0;
+  const double phi = params.receivers()[0].second * EIGEN_PI / 180.0;
+  auto wigd = GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All,
+                               GSHTrans::Single>(l, l, 1, theta);
+  const std::complex<double> imaginary(0.0, 1.0);
+  double maxThetaFluidDifference = 0.0;
+  for (int m = -l; m <= l; ++m) {
+    const auto phase = std::exp(std::complex<double>(0.0, m * phi));
+    const auto ylm = wigd[-1][l, m] * phase;
+    const auto ylp = wigd[1][l, m] * phase;
+    const auto thetaActual =
+        (toroidal.col(m + l).transpose() * toroidalSolidField)(0, 0);
+    const auto phiActual =
+        (phiT.col(m + l).transpose() * toroidalSolidField)(0, 0);
+    const auto thetaExpected =
+        -imaginary * (ylp + ylm) * solidFieldAtReceiver / 2.0;
+    const auto phiExpected = (ylp - ylm) * solidFieldAtReceiver / 2.0;
+    EXPECT_NEAR(std::abs(thetaActual - thetaExpected), 0.0, 1e-12);
+    EXPECT_NEAR(std::abs(phiActual - phiExpected), 0.0, 1e-12);
+    maxThetaFluidDifference = std::max(
+        maxThetaFluidDifference,
+        std::abs(thetaExpected -
+                 (-imaginary * (ylp + ylm) * fluidFieldAtReceiver / 2.0)));
+  }
+  EXPECT_GT(maxThetaFluidDifference, 1.0);
+
+  Eigen::VectorXcd localSolidField = Eigen::VectorXcd::Zero(baseToroidal.cols());
+  const int localLow = sem.ltgT(solidElement, 0);
+  for (int n = 0; n < sem.mesh().NN(); ++n)
+    localSolidField(sem.ltgT(solidElement, n) - localLow) =
+        4.0 + 2.0 * sem.mesh().NodeRadius(solidElement, n);
+  const auto fullToroidalValue = baseToroidal.block(1, 0, 1, baseToroidal.cols()) *
+                                 localSolidField;
+  EXPECT_NEAR(fullToroidalValue(0, 0).real(),
+              std::sqrt(l * (l + 1.0)) / 2.0 * solidFieldAtReceiver, 1e-12);
+  EXPECT_GT(std::abs(fullToroidalValue(0, 0).real() * 2.0 /
+                         std::sqrt(l * (l + 1.0)) -
+                     fluidFieldAtReceiver),
+            1.0);
+}
+
+TEST(SEMComponentTests, FluidAndOutOfMeshReceiversFailBeforeAssembly) {
+  auto waterParams = makeTinySemParams(2.999);
+  Full1D::SEM sem(waterParams);
+  EXPECT_NO_THROW(sem.receiverElements(waterParams.inputParameters()));
+  EXPECT_THROW(sem.receiverElements(waterParams.inputParameters(), true),
+               std::invalid_argument);
+  EXPECT_NO_THROW(sem.rvBaseFull(waterParams.inputParameters(), 2));
+
+  auto outsideParams = makeTinySemParams(7000.0);
+  Full1D::SEM outsideSem(outsideParams);
+  EXPECT_THROW(outsideSem.receiverElements(outsideParams.inputParameters()),
+               std::out_of_range);
+}
+
 TEST(SEMComponentTests, SystemMatricesExposeConsistentShapes) {
   auto paramsNew = makeTinySemParams();
   Full1D::SEM sem(paramsNew);
@@ -430,7 +598,7 @@ TEST(SEMComponentTests, ReceiverVectorsHaveExpectedDimensions) {
   const auto radial = sem.rvZR(params, 0);
   const auto reducedRadial = sem.rvRedZR(params);
   const auto baseFull = sem.rvBaseFull(params, idxl);
-  const auto baseFullT = sem.rvBaseFullT(params, idxl);
+  EXPECT_THROW(sem.rvBaseFullT(params, idxl), std::invalid_argument);
 
   const auto fullRadialRows = sem.ltgR(1, sem.mesh().NE() - 1, sem.mesh().NN() - 1) + 1;
   const auto reducedRadialRows =
@@ -439,9 +607,6 @@ TEST(SEMComponentTests, ReceiverVectorsHaveExpectedDimensions) {
   const auto baseFullCols =
       sem.ltgS(1, receiverElems.back(), sem.mesh().NN() - 1) -
       sem.ltgS(0, receiverElems.front(), 0) + 1;
-  const auto baseFullTCols =
-      sem.ltgT(receiverElems.back(), sem.mesh().NN() - 1) -
-      sem.ltgT(receiverElems.front(), 0) + 1;
 
   ASSERT_EQ(radial.rows(), fullRadialRows);
   ASSERT_EQ(radial.cols(), 1);
@@ -449,13 +614,10 @@ TEST(SEMComponentTests, ReceiverVectorsHaveExpectedDimensions) {
   ASSERT_EQ(reducedRadial.cols(), 1);
   ASSERT_EQ(baseFull.rows(), 3 * params.num_receivers());
   ASSERT_EQ(baseFull.cols(), baseFullCols);
-  ASSERT_EQ(baseFullT.rows(), 3 * params.num_receivers());
-  ASSERT_EQ(baseFullT.cols(), baseFullTCols);
 
   EXPECT_GT(radial.cwiseAbs().maxCoeff(), 0.0);
   EXPECT_GT(reducedRadial.cwiseAbs().maxCoeff(), 0.0);
   EXPECT_GT(baseFull.cwiseAbs().maxCoeff(), 0.0);
-  EXPECT_GT(baseFullT.cwiseAbs().maxCoeff(), 0.0);
 }
 
 TEST(SEMComponentTests, CowlingForcesAndReceiversReusePhysicalUVEntries) {
