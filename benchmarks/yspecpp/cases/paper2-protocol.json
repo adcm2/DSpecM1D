@@ -1,0 +1,27 @@
+{
+  "status": "TRACKED_FIGURE2_PROTOCOL",
+  "paper": "https://doi.org/10.1093/gji/ggag211",
+  "figure": 2,
+  "duration_s": 18000,
+  "dt_s": 1,
+  "degree_range": [0, 300],
+  "solve_band_mHz": [1.5, 21.0],
+  "filter_corners_mHz": [1.9, 2.0, 20.0, 20.1],
+  "nq": 5,
+  "relative_error": 1e-5,
+  "gravity": "full",
+  "attenuation": false,
+  "source": "Heaviside step moment; no extra source-time convolution",
+  "coordinates": "shared geocentric latitude, longitude; inverse mapping for YSpecpp geographic inputs",
+  "receiver_depth_km": 3.0,
+  "comparison": "new DSpecM1D vs YSpecpp; published-style benchmark, not equality to historical plot",
+  "criteria": {
+    "paper_mean_misfit_percent_upper_exclusive": 1.0,
+    "normalization": "max absolute YSpecpp trace per component on inclusive 0..18000 s",
+    "published_pointwise_max_percent_context_only": 0.4
+  },
+  "preserved_inputs_sha256": {
+    "data/params/ex2.txt": "f04742b5948025a5556b6dde5c405bd5c6102b987c04ca710a1cd9555844c98b",
+    "data/models/prem.200.noatten.txt": "35071296c7fccf52730c3cdc476eb0ac5b2d42550c77dec484bc33dcbbac32f8"
+  }
+}

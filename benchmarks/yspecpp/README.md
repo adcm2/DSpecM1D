@@ -1,5 +1,24 @@
 # Optional YSpecpp benchmark
 
+## Paper Figure 2 comparison
+
+`run_paper2.py` writes an isolated comparison under
+`build/phase3/paper2-20261020/`. Its default is a narrow-band diagnostic pilot
+with degrees 0–300 and the paper's five-hour grid, nq=5, and 1e-5 DSpecM1D
+accuracy. Run with `--full` only to calculate the published 1.5–21 mHz band.
+The outputs include raw physical spectra, shared-filter SI traces, per-channel
+misfit metrics, provenance, and an overlay/residual plot. The DSpecM1D and
+YSpecpp PREM interpolants differ because they interpolate different material
+quantities; this comparison records that model difference.
+
+The runner reads the tracked `cases/paper2-protocol.json`, records the current
+DSpecM1D revision in provenance, and does not require the ignored historical
+protocol file under `build/`. It still needs an external immutable YSpecpp
+checkout and a verified dependency cache; pass `--yspec-source` and
+`--dependency-root` when their default locations are unavailable. Use
+`--protocol` to select an alternate protocol; if that file pins `source_commit`,
+the runner also enforces that exact DSpecM1D revision.
+
 This standalone benchmark builds DSpecM1D and YSpecpp in separate CMake
 processes and build trees. It does not add YSpecpp to DSpecM1D's public build.
 Use the harness runner with explicit paths to the DSpecM1D checkout and

@@ -25,12 +25,29 @@ int main(int argc, char **argv) {
     const auto model = YSpec::Model::ReadDeck(input.model);
     const auto &scales = model.GetScales();
     const auto timeScale = scales.Time();
+    const auto quantityName = settings.quantity == YSpec::Quantity::Displacement
+        ? "displacement"
+        : settings.quantity == YSpec::Quantity::Velocity ? "velocity"
+                                                          : "acceleration";
+    const auto unit = settings.quantity == YSpec::Quantity::Displacement
+        ? scales.Length()
+        : settings.quantity == YSpec::Quantity::Velocity
+              ? scales.Velocity()
+              : scales.Acceleration();
     const auto grid = YSpec::FrequencyGrid(
         settings.fMin / 1000.0 * timeScale,
         settings.fMax / 1000.0 * timeScale,
         settings.timeStep / timeScale,
         settings.length * 60.0 / timeScale);
     const auto raw = YSpec::ComputeSpectra(model, settings, grid);
+    const auto filterFrequency = [timeScale](double mHz) {
+      return mHz / 1000.0 * timeScale;
+    };
+    const YSpec::CosineFilter filter{
+        filterFrequency(settings.filter[0]),
+        filterFrequency(settings.filter[1]),
+        filterFrequency(settings.filter[2]),
+        filterFrequency(settings.filter[3])};
     const auto geometry = YSpec::Geometry(settings.receivers.at(0),
                                           settings.source);
     const auto c = std::cos(geometry.rotation);
@@ -58,7 +75,7 @@ int main(int argc, char **argv) {
       const auto omega = grid.Omega(index) / timeScale;
       for (std::size_t component = 0; component < 3; ++component) {
         const auto value = spectraZne[component * grid.Count() + index] *
-                           scales.Velocity() * timeScale;
+                           unit * timeScale;
         const auto bin = static_cast<long long>(grid.First() + index);
         spectra << bin << ',' << fHz << ',' << omega.real() << ','
                 << omega.imag() << ','
@@ -67,17 +84,16 @@ int main(int argc, char **argv) {
       }
     }
 
-    const auto seriesNd = YSpec::InverseTransform(
-        grid, YSpec::CosineFilter{}, raw, 3);
+    const auto seriesNd = YSpec::InverseTransform(grid, filter, raw, 3);
     const auto samples = std::min<std::size_t>(
         grid.Samples(), static_cast<std::size_t>(
                             settings.length * 60.0 / settings.timeStep + 1e-9) +
                             1);
-    series << "time_s,Z_mps,N_mps,E_mps\n" << std::setprecision(17);
+    series << "time_s,Z_SI,N_SI,E_SI\n" << std::setprecision(17);
     for (std::size_t index = 0; index < samples; ++index) {
-      const auto z = seriesNd[index] * scales.Velocity();
-      const auto theta = seriesNd[grid.Samples() + index] * scales.Velocity();
-      const auto phi = seriesNd[2 * grid.Samples() + index] * scales.Velocity();
+      const auto z = seriesNd[index] * unit;
+      const auto theta = seriesNd[grid.Samples() + index] * unit;
+      const auto phi = seriesNd[2 * grid.Samples() + index] * unit;
       series << index * grid.TimeStep() * timeScale << ',' << z << ',' << -theta * c + phi * s
              << ',' << theta * s + phi * c << '\n';
     }
@@ -87,7 +103,7 @@ int main(int argc, char **argv) {
             .count();
     meta << std::setprecision(17)
          << "{\n  \"solver\": \"YSpecpp\",\n"
-         << "  \"observable\": \"velocity (ZNE)\",\n"
+         << "  \"observable\": \"" << quantityName << " (ZNE)\",\n"
          << "  \"attenuation\": " << (settings.attenuation ? "true" : "false")
          << ",\n"
          << "  \"gravity_selector\": \""
@@ -115,9 +131,14 @@ int main(int argc, char **argv) {
          << "  \"frequency_spacing_hz\": " << grid.Spacing() / timeScale << ",\n"
          << "  \"sample_interval_s\": " << grid.TimeStep() * timeScale
          << ",\n"
-         << "  \"time_series_unit_factor\": " << scales.Velocity() << ",\n"
-         << "  \"spectrum_unit_factor_to_mps_per_hz\": "
-         << scales.Velocity() * timeScale << ",\n"
+         << "  \"time_series_unit_factor\": " << unit << ",\n"
+         << "  \"spectrum_unit_factor_si_per_hz\": "
+         << unit * timeScale << ",\n"
+         << "  \"spectra_filtered\": false,\n"
+         << "  \"native_time_series_filtered\": true,\n"
+         << "  \"filter_mHz\": [" << settings.filter[0] << ", "
+         << settings.filter[1] << ", " << settings.filter[2] << ", "
+         << settings.filter[3] << "],\n"
          << "  \"runtime_s\": " << elapsed << "\n}\n";
     return 0;
   } catch (const std::exception &error) {
