@@ -361,6 +361,10 @@ def main() -> None:
     parser.add_argument("--full", action="store_true",
                         help="run the published 1.5–21 mHz band")
     args = parser.parse_args()
+    default_root = args.dspec_source / "build/phase3/paper2-20261020"
+    outdir = (args.output or default_root / ("full" if args.full else "pilot")).resolve()
+    if outdir.exists() and any(outdir.iterdir()):
+        raise SystemExit(f"output directory must be empty: {outdir}")
     os.environ["OMP_NUM_THREADS"] = "2"
     os.environ["OMP_DYNAMIC"] = "FALSE"
     os.environ["OMP_MAX_ACTIVE_LEVELS"] = "1"
@@ -379,8 +383,6 @@ def main() -> None:
         # The degree cap, 5 h FFT, nq=5, and 1e-5 accuracy remain at paper scale.
         settings["frequency_min_mHz"] = 11.15
         settings["frequency_max_mHz"] = 11.35
-    default_root = args.dspec_source / "build/phase3/paper2-20261020"
-    outdir = (args.output or default_root / ("full" if args.full else "pilot")).resolve()
     protocol_path = args.protocol.resolve()
     protocol = json.loads(protocol_path.read_text())
     source_head = subprocess.check_output(

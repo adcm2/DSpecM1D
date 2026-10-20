@@ -43,9 +43,9 @@
         </figure>
         <div class="table-wrap"><table>
           <thead><tr><th scope="col">Product</th><th scope="col">Mean difference</th><th scope="col">Maximum difference</th></tr></thead>
-          <tbody><tr><th scope="row">Adopted windowed spectrum amplitude</th><td>0.00303%</td><td>0.0624%</td></tr></tbody>
+          <tbody><tr><th scope="row">Adopted windowed spectrum amplitude</th><td>0.00251%</td><td>0.0625%</td></tr></tbody>
         </table></div>
-        <p>Both values are normalized by the YSpecpp band peak. The postprocessing manifest and hashes of both raw spectrum inputs are included in the Figure 1 JSON record.</p>
+        <p>Both values are normalized by the YSpecpp band peak. The corrected processing removes the damping envelope once, before filtering; the previous secondary result applied a second damping compensation after filtering. The raw spectra are unchanged, and the derivation record and input hashes are included in the Figure 1 JSON.</p>
         <h3>Filtered finite-time traces</h3>
         <p>This companion product compares filtered displacement time traces over the 100-hour run. The shared half-cosine corners are 0.1, 0.2, 4.9 and 5.0 mHz. Its metrics describe time-domain traces and are separate from the raw spectrum-amplitude metrics above.</p>
         <figure class="benchmark-figure">

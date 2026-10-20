@@ -342,6 +342,10 @@ def main() -> None:
                         default="coarse")
     parser.add_argument("--configure-only", action="store_true")
     args = parser.parse_args()
+    outdir = args.output or args.dspec_source / "build/phase3/benchmark-results"
+    outdir = outdir.resolve()
+    if outdir.exists() and any(outdir.iterdir()):
+        raise SystemExit(f"output directory must be empty: {outdir}")
     if not 1 <= args.jobs <= 2:
         parser.error("--jobs must be 1 or 2")
     os.environ["OMP_NUM_THREADS"] = "2"
@@ -355,8 +359,6 @@ def main() -> None:
     if yspec_tree_hash != YSPEC_FILETREE_SHA256 or yspec_file_count != 76:
         raise SystemExit("YSpecpp snapshot does not match the pinned source archive")
 
-    outdir = args.output or args.dspec_source / "build/phase3/benchmark-results"
-    outdir = outdir.resolve()
     inputs = outdir / "inputs"
     models = inputs / "data/models"
     params_dir = inputs / "data/params"

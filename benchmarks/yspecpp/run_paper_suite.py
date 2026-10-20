@@ -225,7 +225,7 @@ def legacy_processed_amplitude_spectrum(spectra: dict, meta: dict,
     pre_spectrum = np.fft.rfft(raw_time * hann_ends(0.05), n=nfft)
     filtered_time = np.fft.irfft(
         pre_spectrum * common.half_cosine(frequency, filter_corners), n=nfft
-    ) * nfft * df * np.exp(epsilon * time)
+    ) * nfft * df
     final_spectrum = np.fft.rfft(filtered_time * hann_ends(window_fraction), n=nfft)
     return frequency, np.abs(final_spectrum)
 
