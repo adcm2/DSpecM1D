@@ -46,6 +46,8 @@ cmake --build build/dev --parallel 2
 
 For test options, configured targets, and the current CTest inventory, see [the testing guide](https://adcm2.github.io/SpecRelab/dspecm1d/library-testing.html) and run `ctest --test-dir build/dev -N`.
 
+For an optional, separately built and pinned YSpecpp numerical comparison, see the [benchmark guide](https://github.com/adcm2/DSpecM1D/blob/master/benchmarks/yspecpp/README.md).
+
 ## Platform and dependencies
 
 Linux is the primary documented platform. macOS is best-effort with a C++23 compiler, CMake, FFTW, and a matching OpenMP runtime such as `libomp`; check that CMake finds OpenMP. Windows has not been verified. NetCDF and LAPACK are not required. BLAS is not a required direct project dependency with the pinned GSHTrans configuration.

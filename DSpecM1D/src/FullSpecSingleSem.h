@@ -32,12 +32,14 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
   auto &params = request.params();
   const int nskip = request.nskip();
 
+  if (params.attenuation())
+    validateAttenuationReferencePeriod(request.tref());
+
   auto vecW = myff.w();
   SpecConstants sc(myff.ep(), request.tref());
   auto myi = sc.myi;
   auto ieps = sc.ieps;
   auto w0 = sc.w0;
-  auto twodivpi = sc.twodivpi;
 
   MatrixC vecRaw = MatrixC::Zero(3 * params.num_receivers(), vecW.size());
   SparseLUType solver, solver1;
@@ -54,12 +56,15 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
   bool inc_sph = flags.inc_sph;
   lmin = std::max(lmin, 1);
 
+  // Validate every receiver before entering any OpenMP region.
+  const auto receiverElems = sem.receiverElements(params, inc_tor);
+
   auto numRec = params.num_receivers();
   auto idxSource = sem.sourceElement(cmt);
 
   // radials
   if (inc_rad) {
-    auto recElems = sem.receiverElements(params);
+    const auto &recElems = receiverElems;
     auto lowidx = sem.ltgR(0, recElems[0], 0);
     auto upidx = sem.ltgR(1, recElems.back(), NQ - 1);
     int lenidx = upidx - lowidx + 1;
@@ -81,7 +86,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
         Complex w = vecW[idx] + ieps;
         SparseMatrixC wR = -w * w * inR + keR;
         if (params.attenuation())
-          wR += attenFactor(vecW[idx], w0, twodivpi, myi) * keRAtten;
+          wR += attenFactor(w, w0) * keRAtten;
         wR.makeCompressed();
         solver.compute(wR);
         MatrixC vecX = solver.solve(fR);
@@ -100,11 +105,11 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
 
   // toroidals
   if (inc_tor) {
-    auto recElems = sem.receiverElements(params);
+    const auto &recElems = receiverElems;
     auto lowidx = sem.ltgT(recElems[0], 0);
     auto upidx = sem.ltgT(recElems.back(), NQ - 1) + 1;
     int lenidx = upidx - lowidx;
-    auto lentor = sem.ltgT(sem.mesh().NE() - 1, NQ - 1) + 1;
+    auto lentor = sem.ltgT(sem.eu() - 1, NQ - 1) + 1;
 #pragma omp parallel default(shared) private(solver1)
     {
 #pragma omp for schedule(dynamic)
@@ -130,7 +135,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
               hTor.block(ridx, ridx, len_ms, len_ms) -
               w * w * pTor.block(ridx, ridx, len_ms, len_ms);
           if (params.attenuation())
-            matWTorRed += attenFactor(vecW[idx], w0, twodivpi, myi) *
+            matWTorRed += attenFactor(w, w0) *
                           hTorAtten.block(ridx, ridx, len_ms, len_ms);
           matWTorRed.makeCompressed();
           auto fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
@@ -151,7 +156,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
 
   // spheroidals
   if (inc_sph) {
-    auto recElems = sem.receiverElements(params);
+    const auto &recElems = receiverElems;
     int cowlingFirstIndex = forceCowling ? myff.i1() : myff.i2();
     const double cutoffMhz = params.cowlingFrequencyMhz();
     if (!forceCowling && cutoffMhz > 0.0) {
@@ -210,7 +215,7 @@ SparseFSpec::spectra(const SpectraRunContext &request, Full1D::SEM &sem,
                                    w * w *
                                        pS.block(idxRs, idxRs, len_ms, len_ms);
             if (params.attenuation())
-              matSph += attenFactor(vecW[idx], w0, twodivpi, myi) *
+              matSph += attenFactor(w, w0) *
                         hSa.block(idxRs, idxRs, len_ms, len_ms);
             matSph.makeCompressed();
             auto fRed = fBase.block(idxRs, 0, len_ms, fBase.cols());

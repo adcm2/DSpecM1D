@@ -75,12 +75,14 @@ SEM::rvFullT(InputParameters &param, int idxl) {
 Eigen::MatrixXcd
 SEM::rvBaseZ(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
+  auto receiver_elems = this->receiverElements(param);
   std::size_t flen = this->ltgS(2, m_mesh.NE() - 1, m_mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
     if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
-        (!evaluated)) {
+        (std::find(receiver_elems.begin(), receiver_elems.end(), idx) !=
+         receiver_elems.end()) && (!evaluated)) {
       evaluated = true;
       std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
@@ -117,6 +119,7 @@ SEM::rvValZ(InputParameters &param, int idxl, int idxr) {
 Eigen::MatrixXcd
 SEM::rvBaseTheta(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
+  auto receiver_elems = this->receiverElements(param);
   auto k =
       std::sqrt(static_cast<double>(idxl) * (static_cast<double>(idxl) + 1.0));
   std::size_t flen = this->ltgS(2, m_mesh.NE() - 1, m_mesh.NN() - 1) + 1;
@@ -124,7 +127,8 @@ SEM::rvBaseTheta(InputParameters &param, int idxl, int idxr) {
   bool evaluated = false;
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
     if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
-        (!evaluated)) {
+        (std::find(receiver_elems.begin(), receiver_elems.end(), idx) !=
+         receiver_elems.end()) && (!evaluated)) {
       evaluated = true;
       std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
@@ -164,12 +168,14 @@ SEM::rvValTheta(InputParameters &param, int idxl, int idxr) {
 Eigen::MatrixXcd
 SEM::rvBaseThetaT(InputParameters &param, int idxl, int idxr) {
   double rad_r = _ReceiverRadius(param);
-  std::size_t flen = this->ltgT(m_mesh.NE() - 1, m_mesh.NN() - 1) + 1;
+  auto receiver_elems = this->receiverElements(param, true);
+  std::size_t flen = this->ltgT(m_eu - 1, m_mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(1, flen);
   bool evaluated = false;
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
     if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
-        (!evaluated)) {
+        (std::find(receiver_elems.begin(), receiver_elems.end(), idx) !=
+         receiver_elems.end()) && (!evaluated)) {
       evaluated = true;
       std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
@@ -261,6 +267,7 @@ SEM::rvThetaT(InputParameters &param, int idxl, int idxr) {
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
   double rad_r = _ReceiverRadius(param);
+  auto receiver_elems = this->receiverElements(param, true);
   std::size_t flen = this->ltgT(m_eu - 1, m_mesh.NN() - 1) + 1;
   std::size_t fcols = 2 * idxl + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, fcols);
@@ -276,7 +283,8 @@ SEM::rvThetaT(InputParameters &param, int idxl, int idxr) {
   bool evaluated = false;
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
     if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
-        (!evaluated)) {
+        (std::find(receiver_elems.begin(), receiver_elems.end(), idx) !=
+         receiver_elems.end()) && (!evaluated)) {
       evaluated = true;
       std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
@@ -303,6 +311,7 @@ SEM::rvPhiT(InputParameters &param, int idxl, int idxr) {
   double theta_r = (90.0 - rec.first) * EIGEN_PI / 180.0;
   double phi_r = rec.second * EIGEN_PI / 180.0;
   double rad_r = _ReceiverRadius(param);
+  auto receiver_elems = this->receiverElements(param, true);
   std::size_t flen = this->ltgT(m_eu - 1, m_mesh.NN() - 1) + 1;
   std::size_t fcols = 2 * idxl + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, fcols);
@@ -317,7 +326,8 @@ SEM::rvPhiT(InputParameters &param, int idxl, int idxr) {
   bool evaluated = false;
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
     if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
-        (!evaluated)) {
+        (std::find(receiver_elems.begin(), receiver_elems.end(), idx) !=
+         receiver_elems.end()) && (!evaluated)) {
       evaluated = true;
       std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
@@ -342,6 +352,7 @@ Eigen::MatrixXcd
 SEM::rvZR(InputParameters &param, int idxr) {
   auto rec = param.receivers()[idxr];
   double rad_r = _ReceiverRadius(param);
+  auto receiver_elems = this->receiverElements(param);
   std::size_t flen = this->ltgR(1, m_mesh.NE() - 1, m_mesh.NN() - 1) + 1;
   Eigen::MatrixXcd vec_receiver = Eigen::MatrixXcd::Zero(flen, 1);
   using namespace GSHTrans;
@@ -351,7 +362,8 @@ SEM::rvZR(InputParameters &param, int idxr) {
   bool evaluated = false;
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
     if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
-        (!evaluated)) {
+        (std::find(receiver_elems.begin(), receiver_elems.end(), idx) !=
+         receiver_elems.end()) && (!evaluated)) {
       evaluated = true;
       std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
@@ -382,7 +394,8 @@ SEM::rvRedZR(InputParameters &param) {
   bool evaluated = false;
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
     if ((m_mesh.ELR(idx) <= rad_r) && (m_mesh.EUR(idx) >= rad_r) &&
-        (!evaluated)) {
+        (std::find(rec_elems.begin(), rec_elems.end(), idx) !=
+         rec_elems.end()) && (!evaluated)) {
       evaluated = true;
       std::vector<double> vec_nodes(m_mesh.NN(), 0.0);
       for (int idxn = 0; idxn < m_mesh.NN(); ++idxn)
@@ -435,7 +448,7 @@ SEM::rvBaseFull(InputParameters &param, int idxl, bool cowling) {
 
 Eigen::MatrixXcd
 SEM::rvBaseFullT(InputParameters &param, int idxl) {
-  auto rec_elems = this->receiverElements(param);
+  auto rec_elems = this->receiverElements(param, true);
   auto lowidx = this->ltgT(rec_elems[0], 0);
   auto upidx = this->ltgT(rec_elems.back(), m_nq - 1);
   int lenidx = upidx - lowidx + 1;

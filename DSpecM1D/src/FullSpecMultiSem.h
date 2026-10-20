@@ -25,12 +25,14 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
       Eigen::SparseLU<SparseMatrixC, Eigen::COLAMDOrdering<int>>;
   Timer timer1;
 
+  if (params.attenuation())
+    validateAttenuationReferencePeriod(inp_model.TREF());
+
   auto vecW = myff.w();
   SpecConstants sc(myff.ep(), inp_model.TREF());
   auto myi = sc.myi;
   auto ieps = sc.ieps;
   auto w0 = sc.w0;
-  auto twodivpi = sc.twodivpi;
   auto twopid = sc.twopid;
 
   auto numRec = params.num_receivers();
@@ -109,12 +111,20 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   bool inc_sph = flags.inc_sph;
   lmin = std::max(lmin, 1);
 
+  // Validate each chunk's receiver support before entering any OpenMP region.
+  std::vector<std::vector<int>> receiverElementsByChunk;
+  receiverElementsByChunk.reserve(sems.size());
+  for (const auto &sem : sems) {
+    auto receiverElems = sem.receiverElements(params, inc_tor);
+    receiverElementsByChunk.push_back(std::move(receiverElems));
+  }
+
   // radials
   if (inc_rad) {
     timer1.start();
     for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
       Full1D::SEM &sem = sems[idxChunk];
-      auto recElems = sem.receiverElements(params);
+      const auto &recElems = receiverElementsByChunk[idxChunk];
       auto lowidx = sem.ltgR(0, recElems[0], 0);
       auto upidx = sem.ltgR(1, recElems.back(), NQ - 1);
       int lenidx = upidx - lowidx + 1;
@@ -135,7 +145,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           Complex w = wval + ieps;
           SparseMatrixC wR = -w * w * inR + keR;
           if (params.attenuation())
-            wR += attenFactor(wval, w0, twodivpi, myi) * keRAtten;
+            wR += attenFactor(w, w0) * keRAtten;
           wR.makeCompressed();
           solver.compute(wR);
           MatrixC vecX = solver.solve(fR);
@@ -165,13 +175,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
         for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
           Full1D::SEM &sem = sems[idxChunk];
           auto idxSource = sem.sourceElement(cmt);
-          auto recElems = sem.receiverElements(params);
-          for (auto idxelem : recElems) {
-            if (idxelem < sem.el() || idxelem >= sem.eu()) {
-              throw std::runtime_error(
-                  "Receiver element out of SEM range in toroidal mode loop.");
-            }
-          }
+          const auto &recElems = receiverElementsByChunk[idxChunk];
           // std::cout << "Debug 0\n";
           auto lowidx = sem.ltgT(recElems[0], 0);
           // std::cout << "Debug 1\n";
@@ -209,7 +213,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             SparseMatrixC mat = hTor.block(ridx, ridx, len_ms, len_ms) -
                                 w * w * pTor.block(ridx, ridx, len_ms, len_ms);
             if (params.attenuation())
-              mat += attenFactor(wval, w0, twodivpi, myi) *
+              mat += attenFactor(w, w0) *
                      hTorAtten.block(ridx, ridx, len_ms, len_ms);
             mat.makeCompressed();
             auto fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
@@ -242,7 +246,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
         for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
           Full1D::SEM &sem = sems[idxChunk];
           auto idxSource = sem.sourceElement(cmt);
-          auto recElems = sem.receiverElements(params);
+          const auto &recElems = receiverElementsByChunk[idxChunk];
           MatrixC fVals = sem.calculateForceRedCoefficients(cmt, idxl, 0.0);
           MatrixC redC = rvVals * fVals;
           const int lenChunk = static_cast<int>(idxChunks[idxChunk].size());
@@ -309,7 +313,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
               SparseMatrixC wS = hS.block(ridx, ridx, len_ms, len_ms) -
                                  w * w * pS.block(ridx, ridx, len_ms, len_ms);
               if (params.attenuation())
-                wS += attenFactor(wval, w0, twodivpi, myi) *
+                wS += attenFactor(w, w0) *
                       hSa.block(ridx, ridx, len_ms, len_ms);
               wS.makeCompressed();
               MatrixC fRed = fBase.block(ridx, 0, len_ms, fBase.cols());

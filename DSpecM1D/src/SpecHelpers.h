@@ -3,6 +3,7 @@
 
 #include <complex>
 #include <cmath>
+#include <stdexcept>
 
 namespace SPARSESPEC {
 
@@ -40,6 +41,34 @@ resolveModeFlags(int mtype, int lmin, int lmax) {
 inline std::complex<double>
 attenFactor(double w, double w0, double twodivpi, std::complex<double> myi) {
   return myi + twodivpi * std::log(w / w0);
+}
+
+/// Validates a reference period only for attenuation-enabled solve paths.
+inline void
+validateAttenuationReferencePeriod(double tref) {
+  if (!std::isfinite(tref) || tref <= 0.0)
+    throw std::invalid_argument(
+        "Attenuation requires a finite positive reference period.");
+  const double w0 = 2.0 * std::acos(-1.0) / tref;
+  if (!std::isfinite(w0) || w0 <= 0.0)
+    throw std::invalid_argument(
+        "Attenuation reference period produces an invalid reference frequency.");
+}
+
+/// Returns c(z)=(2/pi)Log(i*z/w0) on the principal branch, for the
+/// lower-half-plane solver frequency z=omega-i*epsilon. The existing
+/// material correction remains first-order in 1/Q.
+inline std::complex<double>
+attenFactor(std::complex<double> z, double w0) {
+  if (!std::isfinite(z.real()) || !std::isfinite(z.imag()) ||
+      z == std::complex<double>{})
+    throw std::invalid_argument(
+        "Complex attenuation frequency must be finite and nonzero.");
+  if (!std::isfinite(w0) || w0 <= 0.0)
+    throw std::invalid_argument(
+        "Attenuation reference frequency must be finite and positive.");
+  const std::complex<double> imaginary{0.0, 1.0};
+  return (2.0 / std::acos(-1.0)) * std::log(imaginary * z / w0);
 }
 
 /// Returns the output-type multiplier applied to the final spectrum.

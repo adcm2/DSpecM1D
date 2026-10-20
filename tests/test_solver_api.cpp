@@ -18,30 +18,187 @@
 namespace {
 
 InputParametersNew
-makeTinyPreferredParams() {
+makeTinyPreferredParams(int modeType = 1, double receiverDepth = 0.0,
+                        double tOutMinutes = 1.0, double fmin = 0.1,
+                        double fmax = 0.2, bool attenuation = false,
+                        const std::filesystem::path &earthModelPath =
+                            DSpecMTest::modelPath()) {
   DSpecMTest::TempDir temp;
   DSpecMTest::ParameterOptions options;
-  options.type = 1;
+  options.type = modeType;
+  options.attenuation = attenuation;
   options.lmax = 2;
-  options.f1 = 0.1;
-  options.f2 = 0.2;
-  options.f11 = 0.1;
-  options.f12 = 0.12;
-  options.f21 = 0.18;
-  options.f22 = 0.2;
-  options.tOutMinutes = 1.0;
+  options.f1 = fmin;
+  options.f2 = fmax;
+  options.f11 = fmin;
+  options.f12 = fmin;
+  options.f21 = fmax;
+  options.f22 = fmax;
+  options.tOutMinutes = tOutMinutes;
   options.timeStepSec = 10.0;
   options.numReceivers = 1;
   options.receivers = {{45.0, 90.0}};
   options.relativeError = 1e-3;
+  options.receiverDepth = receiverDepth;
 
   const auto path = DSpecMTest::writeFile(
       temp.path() / "tiny_params.txt",
-      DSpecMTest::makeParameterText(DSpecMTest::modelPath().string(), options));
+      DSpecMTest::makeParameterText(earthModelPath.string(), options));
 
   InputParametersNew paramsNew(path.string(), 3, 2, 0.2, 1.0, 0.05, 0.0, 1);
   return paramsNew;
 }
+
+InputParametersNew makeAttenuationOracleParams(int modeType) {
+  DSpecMTest::TempDir temp;
+  DSpecMTest::ParameterOptions options;
+  options.type = modeType;
+  options.attenuation = true;
+  options.lmin = modeType == 1 ? 0 : 2;
+  options.lmax = modeType == 1 ? 1 : 2;
+  options.f1 = 5.0;
+  options.f2 = 8.0;
+  options.f11 = 5.0;
+  options.f12 = 5.0;
+  options.f21 = 8.0;
+  options.f22 = 8.0;
+  options.tOutMinutes = 1.0;
+  options.timeStepSec = 5.0;
+  options.numReceivers = 1;
+  options.receivers = {{45.0, 90.0}};
+  options.relativeError = 1.0;
+  const auto model = DSpecMTest::repoRoot() / "data" / "models" /
+                     "prem.200.no.txt";
+  const auto path = DSpecMTest::writeFile(
+      temp.path() / "attenuation_oracle_params.txt",
+      DSpecMTest::makeParameterText(model.string(), options));
+  return InputParametersNew(path.string(), 3, 2, 0.05, 1.0, 0.05, 0.0, 1);
+}
+
+std::complex<double> independentComplexAttenuation(double omega,
+                                                  double epsilon, double w0) {
+  const double pi = std::acos(-1.0);
+  return {(2.0 / pi) * std::log(omega / w0) +
+              (1.0 / pi) * std::log1p((epsilon / omega) * (epsilon / omega)),
+          1.0 - (2.0 / pi) * std::atan(epsilon / omega)};
+}
+
+void expectScaledBackwardResidual(const Eigen::SparseMatrix<std::complex<double>> &matrix,
+                                  const Eigen::MatrixXcd &rhs,
+                                  const Eigen::MatrixXcd &solution) {
+  const double scale = matrix.norm() * solution.norm() + rhs.norm();
+  ASSERT_GT(scale, 0.0);
+  EXPECT_LE((matrix * solution - rhs).norm() / scale, 1e-12);
+}
+
+Eigen::VectorXcd directOneFrequencyAttenuationOracle(
+    InputParametersNew &paramsNew, Full1D::SEM &sem, int frequencyIndex,
+    bool useCowling, bool complexFrequencyAttenuation = true) {
+  using Complex = std::complex<double>;
+  using SparseC = Eigen::SparseMatrix<Complex>;
+  using Solver = Eigen::SparseLU<SparseC, Eigen::COLAMDOrdering<int>>;
+  auto &freq = paramsNew.freqFull();
+  auto &params = paramsNew.inputParameters();
+  auto &cmt = paramsNew.cmt();
+  const Complex z{freq.w()[frequencyIndex], -freq.ep()};
+  const double w0 = 2.0 * std::acos(-1.0) / paramsNew.tref();
+  const Complex coefficient = complexFrequencyAttenuation
+                                  ? independentComplexAttenuation(
+                                        z.real(), -z.imag(), w0)
+                                  : Complex{(2.0 / std::acos(-1.0)) *
+                                                std::log(z.real() / w0),
+                                            1.0};
+  const Complex output = SPARSESPEC::outputFactor(
+      params.output_type(), z, Complex{0.0, 1.0});
+  Eigen::VectorXcd raw = Eigen::VectorXcd::Zero(3 * params.num_receivers());
+  const auto flags = SPARSESPEC::resolveModeFlags(
+      params.type(), params.lmin(), params.lmax());
+  const auto recElems = sem.receiverElements(params, flags.inc_tor);
+  const int nq = sem.mesh().NN();
+
+  if (flags.inc_rad) {
+    SparseC stiffness = sem.hR().cast<Complex>();
+    SparseC mass = sem.pR().cast<Complex>();
+    SparseC attenuated = sem.hRa().cast<Complex>();
+    SparseC matrix = stiffness - z * z * mass + coefficient * attenuated;
+    Solver solver;
+    solver.compute(matrix);
+    const Eigen::MatrixXcd rhs = sem.calculateForceR(cmt);
+    const Eigen::MatrixXcd solution = solver.solve(rhs);
+    if (solver.info() != Eigen::Success)
+      throw std::runtime_error("Radial attenuation oracle solve failed.");
+    expectScaledBackwardResidual(matrix, rhs, solution);
+    const auto receiver = sem.rvZR(params, 0);
+    raw(0) = receiver.col(0).dot(solution.col(0));
+  }
+
+  if (flags.inc_tor) {
+    for (int l = std::max(1, params.lmin()); l <= params.lmax(); ++l) {
+      SparseC stiffness = sem.hTk(l).cast<Complex>();
+      SparseC mass = sem.pTk(l).cast<Complex>();
+      SparseC attenuated = sem.hTa(l).cast<Complex>();
+      SparseC matrix = stiffness - z * z * mass + coefficient * attenuated;
+      Solver solver;
+      solver.compute(matrix);
+      const Eigen::MatrixXcd rhs = sem.calculateForceAllT(cmt, l);
+      const Eigen::MatrixXcd solution = solver.solve(rhs);
+      if (solver.info() != Eigen::Success)
+        throw std::runtime_error("Toroidal attenuation oracle solve failed.");
+      expectScaledBackwardResidual(matrix, rhs, solution);
+      const auto receiver = sem.rvBaseFullT(params, l);
+      const int low = sem.ltgT(recElems.front(), 0);
+      const int high = sem.ltgT(recElems.back(), nq - 1);
+      const auto sourceAngular = sem.calculateForceCoefficientsT(cmt, l);
+      ParamInfo angular(params, params.lmax());
+      const auto receiverAngular = angular.rvFullTor(l);
+      const Eigen::VectorXcd result =
+          (receiverAngular * sourceAngular)
+              .cwiseProduct(receiver * solution.block(low, 0, high - low + 1,
+                                                       2))
+              .rowwise()
+              .sum();
+      raw += result;
+    }
+  }
+
+  if (flags.inc_sph) {
+    for (int l = std::max(1, params.lmin()); l <= params.lmax(); ++l) {
+      SparseC stiffness =
+          (useCowling ? sem.hSC(l) : sem.hS(l)).cast<Complex>();
+      SparseC mass = (useCowling ? sem.pSC(l) : sem.pS(l)).cast<Complex>();
+      SparseC attenuated =
+          (useCowling ? sem.hSCa(l) : sem.hSa(l)).cast<Complex>();
+      SparseC matrix = stiffness - z * z * mass + coefficient * attenuated;
+      Solver solver;
+      solver.compute(matrix);
+      const Eigen::MatrixXcd rhs =
+          sem.calculateForceAll(cmt, l, useCowling);
+      const Eigen::MatrixXcd solution = solver.solve(rhs);
+      if (solver.info() != Eigen::Success)
+        throw std::runtime_error("Spheroidal attenuation oracle solve failed.");
+      expectScaledBackwardResidual(matrix, rhs, solution);
+      const auto receiver = sem.rvBaseFull(params, l, useCowling);
+      const int low = useCowling ? sem.ltgSC(0, recElems.front(), 0)
+                                 : sem.ltgS(0, recElems.front(), 0);
+      const int high = useCowling
+                           ? sem.ltgSC(1, recElems.back(), nq - 1)
+                           : sem.ltgS(1, recElems.back(), nq - 1);
+      const auto sourceAngular = sem.calculateForceCoefficients(cmt, l);
+      ParamInfo angular(params, params.lmax());
+      const auto receiverAngular = angular.rvFullSph(l);
+      const Eigen::VectorXcd result =
+          (receiverAngular * sourceAngular)
+              .cwiseProduct(receiver * solution.block(low, 0, high - low + 1,
+                                                       4))
+              .rowwise()
+              .sum();
+      raw += result;
+    }
+  }
+
+  return output * raw;
+}
+
 
 InputParametersNew
 makeCowlingSolveParams(bool attenuation = false, int lmin = 1, int lmax = 2,
@@ -106,6 +263,150 @@ InputParametersNew makeMultiCowlingSolveParams(double fmin, double fmax,
 }
 
 }   // namespace
+
+
+TEST(PreferredSolverApiTests, InvalidAttenuationReferenceFailsBeforeSolverAndOffWorks) {
+  const auto noAttenuationModel = DSpecMTest::repoRoot() / "data" / "models" /
+                                 "prem.200.noatten.txt";
+  auto invalidParams =
+      makeTinyPreferredParams(4, 3.0, 1.0, 5.0, 40.0, true,
+                              noAttenuationModel);
+  ASSERT_EQ(invalidParams.inputParameters().attenuation(), 1);
+  Full1D::SEM invalidSem(invalidParams);
+  SPARSESPEC::SparseFSpec solver;
+  SPARSESPEC::SpectraRunContext invalidRequest(
+      invalidParams.freqFull(), invalidParams.cmt(),
+      invalidParams.inputParameters(), invalidParams.tref(), 1);
+  EXPECT_THROW(solver.spectra(invalidRequest, invalidSem),
+               std::invalid_argument);
+  EXPECT_THROW(solver.spectra(invalidParams), std::invalid_argument);
+
+  auto offParams = makeTinyPreferredParams(4, 3.0, 1.0, 5.0, 40.0, false,
+                                           noAttenuationModel);
+  ASSERT_EQ(offParams.inputParameters().attenuation(), 0);
+  Full1D::SEM offSem(offParams);
+  const auto single = solver.spectra(offParams, offSem);
+  const auto multi = solver.spectra(offParams);
+  EXPECT_TRUE(single.allFinite());
+  EXPECT_TRUE(multi.allFinite());
+  EXPECT_GT(single.norm(), 0.0);
+  EXPECT_GT(multi.norm(), 0.0);
+}
+
+TEST(PreferredSolverApiTests, ComplexAttenuationAssemblyMatchesDirectMatrixOracle) {
+  SPARSESPEC::SparseFSpec solver;
+  for (const int mode : {1, 2, 3}) {
+    for (const bool useCowling : (mode == 3 ? std::vector<bool>{false, true}
+                                             : std::vector<bool>{false})) {
+      auto paramsNew = makeAttenuationOracleParams(mode);
+      auto &freq = paramsNew.freqFull();
+      auto &params = paramsNew.inputParameters();
+      ASSERT_LT(freq.i1(), freq.i2());
+      const int idx = freq.i1();
+      if (mode == 3) {
+        const double firstMhz = freq.f(freq.i1()) * 1000.0 / freq.timeNorm();
+        const double lastMhz =
+            freq.f(freq.i2() - 1) * 1000.0 / freq.timeNorm();
+        paramsNew.setCowlingFrequencyMhz(useCowling ? firstMhz - 1.0
+                                                    : lastMhz + 1.0);
+      }
+
+      Full1D::SEM singleSem(paramsNew);
+      SPARSESPEC::SpectraRunContext request(
+          freq, paramsNew.cmt(), params, paramsNew.tref(), 1);
+      const auto single = solver.spectra(request, singleSem, useCowling);
+      const auto singleExpected = directOneFrequencyAttenuationOracle(
+          paramsNew, singleSem, idx, useCowling);
+      const auto singleLegacy = directOneFrequencyAttenuationOracle(
+          paramsNew, singleSem, idx, useCowling, false);
+      ASSERT_TRUE(singleExpected.allFinite());
+      ASSERT_GT(singleExpected.norm(), 0.0);
+      EXPECT_GT((singleExpected - singleLegacy).norm(),
+                2e-9 * singleExpected.norm())
+          << "single attenuation contrast mode=" << mode
+          << " cowling=" << useCowling;
+      EXPECT_LE((single.col(idx) - singleExpected).norm(),
+                2e-9 * singleExpected.norm())
+          << "single mode=" << mode << " cowling=" << useCowling;
+
+      // The one-chunk 5–8 mHz fixture and relativeError=1.0 put MultiSEM at
+      // its explicit 0.05 maxstep cap, so this is the matching independent mesh.
+      constexpr double multiStep = 0.05;
+      Full1D::SEM multiSem(paramsNew.earthModel(), multiStep, paramsNew.nq(),
+                           params.lmax());
+      const auto multi = solver.spectra(paramsNew);
+      const auto multiExpected = directOneFrequencyAttenuationOracle(
+          paramsNew, multiSem, idx, useCowling);
+      const auto multiLegacy = directOneFrequencyAttenuationOracle(
+          paramsNew, multiSem, idx, useCowling, false);
+      ASSERT_TRUE(multiExpected.allFinite());
+      ASSERT_GT(multiExpected.norm(), 0.0);
+      EXPECT_GT((multiExpected - multiLegacy).norm(),
+                2e-9 * multiExpected.norm())
+          << "multi attenuation contrast mode=" << mode
+          << " cowling=" << useCowling;
+      EXPECT_LE((multi.col(idx) - multiExpected).norm(),
+                2e-9 * multiExpected.norm())
+          << "multi mode=" << mode << " cowling=" << useCowling
+          << " maxstep=" << multiStep;
+    }
+  }
+}
+
+
+TEST(PreferredSolverApiTests, ExactOceanBottomAllModeSingleAndMultiSolvesAreFinite) {
+  auto paramsNew = makeTinyPreferredParams(4, 3.0, 5.0, 5.0, 40.0);
+  const auto &freq = paramsNew.freqFull();
+  ASSERT_LT(freq.i1() + 1, freq.i2());
+  paramsNew.setCowlingFrequencyMhz(
+      freq.f(freq.i1() + 1) * 1000.0 / freq.timeNorm());
+  Full1D::SEM sem(paramsNew);
+  SPARSESPEC::SparseFSpec solver;
+  const auto single = solver.spectra(paramsNew, sem);
+  ASSERT_EQ(single.rows(), 3 * paramsNew.inputParameters().num_receivers());
+  EXPECT_EQ(single.cols(), paramsNew.freqFull().w().size());
+  EXPECT_TRUE(single.allFinite());
+
+  auto multiParams = makeTinyPreferredParams(4, 3.0, 5.0, 5.0, 40.0);
+  const auto &multiFreq = multiParams.freqFull();
+  ASSERT_LT(multiFreq.i1() + 1, multiFreq.i2());
+  multiParams.setCowlingFrequencyMhz(
+      multiFreq.f(multiFreq.i1() + 1) * 1000.0 / multiFreq.timeNorm());
+  SPARSESPEC::SparseFSpec multiSolver;
+  const auto multi = multiSolver.spectra(multiParams);
+  ASSERT_EQ(multi.rows(), 3 * multiParams.inputParameters().num_receivers());
+  EXPECT_EQ(multi.cols(), multiParams.freqFull().w().size());
+  EXPECT_TRUE(multi.allFinite());
+}
+
+
+TEST(PreferredSolverApiTests, FluidOnlyToroidalReceiverFailsBeforeSolverLoops) {
+  auto singleParams = makeTinyPreferredParams(2, 2.999);
+  Full1D::SEM sem(singleParams);
+  SPARSESPEC::SparseFSpec solver;
+  EXPECT_THROW(solver.spectra(singleParams, sem), std::invalid_argument);
+
+  auto multiParams = makeTinyPreferredParams(2, 2.999);
+  SPARSESPEC::SparseFSpec multiSolver;
+  EXPECT_THROW(multiSolver.spectra(multiParams), std::invalid_argument);
+}
+
+TEST(PreferredSolverApiTests, FluidOnlyRadialAndSpheroidalReceiversRemainUsable) {
+  for (int mode : {1, 3}) {
+    auto paramsNew = makeTinyPreferredParams(mode, 2.999);
+    Full1D::SEM sem(paramsNew);
+    SPARSESPEC::SparseFSpec solver;
+    const auto single = solver.spectra(paramsNew, sem);
+    EXPECT_TRUE(single.allFinite());
+    EXPECT_GT(single.norm(), 0.0);
+  }
+  auto multiParams = makeTinyPreferredParams(3, 2.999);
+  SPARSESPEC::SparseFSpec multiSolver;
+  const auto multi = multiSolver.spectra(multiParams);
+  EXPECT_TRUE(multi.allFinite());
+  EXPECT_GT(multi.norm(), 0.0);
+}
+
 
 TEST(PreferredSolverApiTests, SpectraRunContextExposesWorkflowObjects) {
   auto paramsNew = makeTinyPreferredParams();

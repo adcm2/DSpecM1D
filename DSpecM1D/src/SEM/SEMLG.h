@@ -84,14 +84,40 @@ SEM::sourceElement(SourceInfo::EarthquakeCMT &cmt) const {
 };
 
 auto
-SEM::receiverElements(InputParameters &param) const {
-  std::vector<int> receiver_elems;
+SEM::receiverElements(InputParameters &param, bool toroidal) const {
+  if (param.num_receivers() == 0)
+    throw std::invalid_argument("At least one receiver is required.");
+  std::vector<int> containing_elems;
   double rad_receiver =
       m_mesh.PR() - 1000.0 * param.receiver_depth() / m_lengthNorm;
 
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {
     if ((m_mesh.ELR(idx) <= rad_receiver) && (m_mesh.EUR(idx) >= rad_receiver)) {
+      containing_elems.push_back(idx);
+    }
+  }
+
+  if (containing_elems.empty())
+    throw std::out_of_range("Receiver lies outside the SEM radial mesh.");
+
+  // At a fluid-solid interface the receiver belongs to the physical rock
+  // side. Preserve the established element selection at ordinary boundaries.
+  bool has_solid = false;
+  bool has_fluid = false;
+  for (int idx : containing_elems) {
+    has_fluid = has_fluid || m_vecFluid[idx] != 0;
+    has_solid = has_solid || m_vecFluid[idx] == 0;
+  }
+  std::vector<int> receiver_elems;
+  for (int idx : containing_elems) {
+    if (!(has_solid && has_fluid) || m_vecFluid[idx] == 0)
       receiver_elems.push_back(idx);
+  }
+  if (toroidal) {
+    for (int idx : receiver_elems) {
+      if (idx < m_el || idx >= m_eu)
+        throw std::invalid_argument(
+            "Toroidal receiver lies outside the solid SEM range.");
     }
   }
   return receiver_elems;

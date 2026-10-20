@@ -32,6 +32,7 @@ struct ParameterOptions {
   double f12 = 0.2;
   double f21 = 0.8;
   double f22 = 1.0;
+  double receiverDepth = 0.0;
   int numReceivers = 2;
   std::vector<std::pair<double, double>> receivers{{45.0, 90.0},
                                                    {-10.0, 120.0}};
@@ -78,7 +79,7 @@ makeParameterText(const std::string &earthModelPath,
       << "4.0\n"
       << "5.0\n"
       << "6.0\n"
-      << "0.0\n"
+      << options.receiverDepth << "\n"
       << options.numReceivers << "\n";
 
   for (const auto &[lat, lon] : options.receivers) {

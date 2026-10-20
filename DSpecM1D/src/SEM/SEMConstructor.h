@@ -109,14 +109,21 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
           else
             break;
         }
-        // m_el: first solid element above the outer core (mantle base)
-        m_el = top_of_deepest_fluid + 1;
-        // m_eu: next fluid element above m_el (e.g. ocean), or NE if none
-        m_eu = m_mesh.NE();
-        for (int idx = m_el; idx < m_mesh.NE(); ++idx) {
-          if (m_vecFluid[idx] == 1) {
-            m_eu = idx;
-            break;
+        if (top_of_deepest_fluid == m_mesh.NE() - 1) {
+          // A surface-reaching fluid region (for example, an ocean over an
+          // otherwise solid sphere) caps the solid toroidal interval below it.
+          m_el = 0;
+          m_eu = first_fluid_from_bottom;
+        } else {
+          // m_el: first solid element above the outer core (mantle base)
+          m_el = top_of_deepest_fluid + 1;
+          // m_eu: next fluid element above m_el (e.g. ocean), or NE if none
+          m_eu = m_mesh.NE();
+          for (int idx = m_el; idx < m_mesh.NE(); ++idx) {
+            if (m_vecFluid[idx] == 1) {
+              m_eu = idx;
+              break;
+            }
           }
         }
       }
