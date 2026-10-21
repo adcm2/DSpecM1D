@@ -1,0 +1,157 @@
+{
+  "updated": "2026-10-20",
+  "case": "Figure 1 Bolivia vertical displacement comparison",
+  "run_scope": "full published-style band",
+  "primary_product": {
+    "quantity": "raw complex spectrum amplitude",
+    "frequency_band_mHz": [
+      0.1,
+      5.0
+    ],
+    "matched_frequency_bins": 2569,
+    "unit": "m/Hz",
+    "filtering": "unfiltered raw complex-frequency spectra; compare amplitude over matched positive-frequency bins",
+    "metrics": {
+      "quantity": "raw complex spectrum amplitude",
+      "unit": "SI output unit / Hz",
+      "frequency_band_mHz": [
+        0.1,
+        5.0
+      ],
+      "frequency_bins": 2569,
+      "mean_absolute_amplitude_difference": 8.122234005487415e-05,
+      "mean_amplitude_difference_percent_of_reference_peak": 0.00199308078392373,
+      "maximum_absolute_amplitude_difference": 0.0015615435732461158,
+      "maximum_amplitude_difference_percent_of_reference_peak": 0.03831805987113595,
+      "complex_relative_l2_diagnostic": 0.0006895430085901565
+    }
+  },
+  "companion_finite_time_product": {
+    "quantity": "filtered displacement time traces",
+    "window_s": [
+      0,
+      360000
+    ],
+    "filter_mHz": [
+      0.1,
+      0.2,
+      4.9,
+      5.0
+    ],
+    "metrics": {
+      "Z": {
+        "reference_peak": 0.0012911907007006741,
+        "unit": "m",
+        "mean_absolute_difference": 5.800670337351634e-07,
+        "mean_difference_percent_of_reference_peak": 0.044924969907263565,
+        "maximum_absolute_difference": 5.042493877879867e-06,
+        "maximum_difference_percent_of_reference_peak": 0.39053052931248033,
+        "relative_l2": 0.002861740664670437
+      },
+      "N": {
+        "reference_peak": 0.0005153907158116519,
+        "unit": "m",
+        "mean_absolute_difference": 2.273788401117765e-07,
+        "mean_difference_percent_of_reference_peak": 0.04411776020328458,
+        "maximum_absolute_difference": 1.892947005212504e-06,
+        "maximum_difference_percent_of_reference_peak": 0.3672838774814632,
+        "relative_l2": 0.002967072522725962
+      },
+      "E": {
+        "reference_peak": 0.0009954221579891469,
+        "unit": "m",
+        "mean_absolute_difference": 4.5526550355359317e-07,
+        "mean_difference_percent_of_reference_peak": 0.045735922181326105,
+        "maximum_absolute_difference": 3.971262261937068e-06,
+        "maximum_difference_percent_of_reference_peak": 0.3989525680199262,
+        "relative_l2": 0.002883139171860679
+      }
+    },
+    "note": "Time-trace metrics are separate from the raw spectrum amplitude metrics."
+  },
+  "settings": {
+    "model": "PREM TI with ocean; no attenuation; full gravity",
+    "quantity": "displacement",
+    "source_depth_km": 647.1,
+    "source_geocentric_latitude_deg": -13.82,
+    "source_longitude_deg": -67.25,
+    "receiver_depth_km": 3.0,
+    "receiver_geocentric_latitude_deg": 80.0,
+    "receiver_longitude_deg": 0.0,
+    "degree_range": [
+      0,
+      100
+    ],
+    "spectrum_band_mHz": [
+      0.1,
+      5.0
+    ],
+    "duration_min": 6000,
+    "time_step_s": 1.0,
+    "source_time": "Heaviside step moment; no extra source filter",
+    "dspecm1d": {
+      "nq": 5,
+      "relative_error": 1e-05,
+      "mesh": "dynamic"
+    },
+    "yspecpp": {
+      "tolerance": 1e-05,
+      "start_decay": 11
+    }
+  },
+  "provenance": {
+    "dspecm1d_commit_at_run": "797ccd2dbba1b93f78c5b0d967fdc3c56bc1b0ea",
+    "parameter_file_sha256": "c27f35f929ffc775cb0f4e7ab7ed02e50bdb37daf6d59bfeca1282f73614a0c6",
+    "model_sha256": "35071296c7fccf52730c3cdc476eb0ac5b2d42550c77dec484bc33dcbbac32f8",
+    "case_table_sha256": "b8c9441dd72eb4b2b5d2bdc2d8d26eef74664c4fcb570acd6b99e51c6620de07",
+    "criteria_sha256": "bc76d81b4072aa45db56aa38db7d98d8a50ca600d247a31c3471dca83e517197",
+    "yspecpp_commit": "84be5a6cbe442324c164e5193a66b0911fca5860",
+    "yspecpp_tree_sha256": "5e77d93a8b2dbe469813ff3d190a664752158d7c66008a5b4c61a20ced38979e",
+    "dependency_commits": {
+      "numericconcepts-src": "e03a2889d43a03660d0879f46dda1406d90c9517",
+      "interpolation-src": "d5a1711ca6a89fc8ad8148fe13212398fe569bc0",
+      "fftwpp-src": "cb152c0e85f3822493c2d9e85a56307ac7b4f1c0",
+      "gaussquad-src": "7d4786d192f68077cd99a34dcdf1379ed1eeac9a",
+      "gshtrans-src": "8dd116df8df4222fe9b10a40c7213d34f2a274fb"
+    },
+    "adapter_binary_sha256": {
+      "dspec_adapter": "0155726be01f90e6cce3044b3ca09f627e353b863d6d9f238527101d1b62f081",
+      "yspecpp_adapter": "24c81b3042699dddff990fc633d0369e9c5b146137e432f93d7c86e59ee950c8"
+    },
+    "runtime_environment": {
+      "OMP_NUM_THREADS": "2",
+      "OMP_DYNAMIC": "FALSE"
+    },
+    "raw_run_provenance_sha256": "3c9f56928c5abd627bc1de5509ba050cd545f25ac4eb7aa71990bf498751d2cf"
+  },
+  "paper_context": {
+    "published_DSpecM1D_YSpec_spectral_misfit_mean_percent": 0.007,
+    "published_DSpecM1D_YSpec_spectral_misfit_max_percent": 0.28,
+    "published_SpecNM_spectral_misfit_mean_percent": 0.01,
+    "published_SpecNM_spectral_misfit_max_percent": 0.43,
+    "interpretation": "Historical paper values are context tied to their named comparators and processing; they are not a universal gate for this new YSpecpp run."
+  },
+  "adopted_processed_spectrum_product": {
+    "quantity": "legacy processed vertical displacement spectrum amplitude",
+    "unit": "common SI-proportional scale",
+    "filter_mHz": [
+      0.1,
+      0.2,
+      4.9,
+      5
+    ],
+    "pre_window_fraction": 0.05,
+    "final_window_fraction": 0.5,
+    "frequency_bins": 2569,
+    "mean_absolute_amplitude_difference": 0.000258060017131183,
+    "mean_difference_percent_of_YSpecpp_band_peak": 0.002509373989008574,
+    "maximum_absolute_amplitude_difference": 0.006431163110738325,
+    "maximum_difference_percent_of_YSpecpp_band_peak": 0.06253658977692186,
+    "raw_input_sha256": {
+      "dspec.spectra.csv": "7cdd54582f92752b1237e005130e7a5c488ed64e187a2363db8027a1aec5dece",
+      "yspecpp.spectra.csv": "cb6ae1f964f21893311f0020ebe5da882f427d77f5e69721ec8a3846f4f46129"
+    },
+    "postprocessor_source_sha256": "085a4027b06b580c11fcb1b265c88bb4ebe24f51873c0ef6926bb4c39cdc18ad",
+    "derivation_record": "build/phase3/pr20-reduction-20261020/fig1-secondary-corrected/derivation.json"
+  }
+}
