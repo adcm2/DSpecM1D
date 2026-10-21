@@ -9,6 +9,10 @@ set(GSHTRANS_FFTWPP_TAG cb152c0e85f3822493c2d9e85a56307ac7b4f1c0
     CACHE STRING "Pinned FFTWpp revision for DSpecM1D" FORCE)
 set(GSHTRANS_INTERPOLATION_TAG d5a1711ca6a89fc8ad8148fe13212398fe569bc0
     CACHE STRING "Pinned Interpolation revision for DSpecM1D" FORCE)
+set(DSPECM1D_PLANETMODEL_TAG 35be4ee54b3d84df1483e647878c5446a886c90b
+    CACHE STRING "Pinned planetmodel revision for DSpecM1D" FORCE)
+set(PLANETMODEL_WITH_NETCDF OFF CACHE BOOL
+    "Deck-only planetmodel integration for DSpecM1D" FORCE)
 
 FetchContent_Declare(
     Eigen3
@@ -36,11 +40,16 @@ FetchContent_Declare(
     Interpolation
     GIT_REPOSITORY https://github.com/da380/Interpolation.git
     GIT_TAG d5a1711ca6a89fc8ad8148fe13212398fe569bc0)
+FetchContent_Declare(
+    planetmodel
+    GIT_REPOSITORY https://github.com/da380/planetmodel.git
+    GIT_TAG ${DSPECM1D_PLANETMODEL_TAG}
+    SOURCE_SUBDIR cpp)
 
 function(dspecm1d_fetch_dependencies)
   get_property(_dspecm1d_subdirs_before DIRECTORY PROPERTY SUBDIRECTORIES)
   FetchContent_MakeAvailable(
-      Eigen3 NumericConcepts FFTWpp GaussQuad GSHTRANS Interpolation)
+      Eigen3 NumericConcepts FFTWpp GaussQuad GSHTRANS Interpolation planetmodel)
   get_property(_dspecm1d_subdirs_after DIRECTORY PROPERTY SUBDIRECTORIES)
 
   # Exclude only dependency directories added by this call. Content that was

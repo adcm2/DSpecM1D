@@ -178,7 +178,8 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
         double ewidth2 = 0.5 * (segment_urad - segment_lrad);
         double crad2 = 0.5 * (segment_urad + segment_lrad);
         for (int idxi = 0; idxi < NQ; ++idxi) {
-          double cradi = ewidth2 * q.X(idxi) + crad2;
+          double cradi = std::lerp(segment_lrad, segment_urad,
+                                   0.5 * (q.X(idxi) + 1.0));
           tmp += q.W(idxi) * density(cradi) * cradi * cradi * ewidth2;
         }
         segment_lrad = segment_urad;

@@ -1,72 +1,68 @@
 #ifndef DSPECM1D_MODEL_INFO_MODEL_INPUT_H
 #define DSPECM1D_MODEL_INFO_MODEL_INPUT_H
 
-#include <algorithm>
-#include <cassert>
 #include <cmath>
-#include <fstream>
-#include <iostream>
+#include <format>
 #include <limits>
 #include <memory>
-#include <ranges>
-#include <span>
 #include <stdexcept>
 #include <string>
+#include <utility>
 #include <vector>
 
-#include <Interpolation/CubicSpline.hpp>
+#include <planetmodel/deck.hpp>
 
 namespace EarthModels {
-
-template <typename T>
-class SharedVectorView : public std::ranges::view_interface<SharedVectorView<T>> {
-public:
-  SharedVectorView() = default;
-  explicit SharedVectorView(const std::vector<T> &values)
-      : values_{std::make_shared<std::vector<T>>(values)} {}
-
-  auto begin() const { return values_->cbegin(); }
-  auto end() const { return values_->cend(); }
-  std::size_t size() const { return values_->size(); }
-  const T &operator[](std::size_t index) const { return (*values_)[index]; }
-
-private:
-  std::shared_ptr<std::vector<T>> values_;
-};
 
 template <typename FLOAT = double>
 class EarthConstants {
 public:
   using value_type = FLOAT;
-
   FLOAT LengthNorm() const { return m_lengthNorm; }
   FLOAT MassNorm() const { return m_massNorm; }
   FLOAT TimeNorm() const { return m_timeNorm; }
+  FLOAT DensityNorm() const { return m_massNorm / std::pow(m_lengthNorm, 3.0); }
+  FLOAT InertiaNorm() const { return m_massNorm * std::pow(m_lengthNorm, 2.0); }
+  FLOAT VelocityNorm() const { return m_lengthNorm / m_timeNorm; }
+  FLOAT AccelerationNorm() const { return m_lengthNorm / std::pow(m_timeNorm, 2.0); }
+  FLOAT ForceNorm() const { return m_massNorm * m_lengthNorm / std::pow(m_timeNorm, 2.0); }
+  FLOAT StressNorm() const { return m_massNorm / (m_lengthNorm * std::pow(m_timeNorm, 2.0)); }
+  FLOAT GravitationalConstant() const {
+    return std::pow(m_lengthNorm, 3.0) / (m_massNorm * std::pow(m_timeNorm, 2.0));
+  }
+private:
+  const FLOAT m_lengthNorm = 6.371e6;
+  const FLOAT m_massNorm = 5.972e24;
+  const FLOAT m_timeNorm = 3600.0;
+};
 
-  FLOAT DensityNorm() const { return m_densityNorm; }
-  FLOAT InertiaNorm() const { return m_inertiaNorm; }
-  FLOAT VelocityNorm() const { return m_velocityNorm; }
-  FLOAT AccelerationNorm() const { return m_accelerationNorm; }
-  FLOAT ForceNorm() const { return m_forceNorm; }
-  FLOAT StressNorm() const { return m_stressNorm; }
-  FLOAT GravitationalConstant() const { return m_gravitationalConstant; }
+/** Owned, unit-aware view of one planetmodel natural-spline deck field. */
+class ModelField {
+public:
+  ModelField() = default;
+  ModelField(planetmodel::RadialFunction field, double lowerRadius, double upperRadius)
+      : field_(std::make_shared<planetmodel::RadialFunction>(std::move(field))),
+        lowerRadius_(lowerRadius), upperRadius_(upperRadius) {}
+
+  double operator()(double radius) const { return Evaluate(radius); }
+  double Evaluate(double radius) const { return evaluate(radius, 0); }
+  template <int Derivative>
+  double Evaluate(double radius) const {
+    static_assert(Derivative == 0 || Derivative == 1);
+    return evaluate(radius, Derivative);
+  }
 
 private:
-  const FLOAT m_lengthNorm = 6.371 * std::pow(10.0, 6.0);
-  const FLOAT m_massNorm = 5.972 * std::pow(10.0, 24.0);
-  const FLOAT m_timeNorm = 3600.0;
+  double evaluate(double radius, int derivative) const {
+    if (!(radius >= lowerRadius_ && radius <= upperRadius_)) {
+      throw std::out_of_range(std::format(
+          "Normalized radius {} is outside model layer [{}, {}]", radius, lowerRadius_, upperRadius_));
+    }
+    return derivative == 0 ? field_->Value(radius) : field_->Derivative(radius);
+  }
 
-  const FLOAT m_densityNorm = m_massNorm / std::pow(m_lengthNorm, 3.0);
-  const FLOAT m_inertiaNorm = m_massNorm * std::pow(m_lengthNorm, 2.0);
-  const FLOAT m_velocityNorm = m_lengthNorm / m_timeNorm;
-  const FLOAT m_accelerationNorm =
-      m_lengthNorm / std::pow(m_timeNorm, 2.0);
-  const FLOAT m_forceNorm =
-      m_massNorm * m_lengthNorm / std::pow(m_timeNorm, 2.0);
-  const FLOAT m_stressNorm =
-      m_massNorm / (std::pow(m_timeNorm, 2.0) * m_lengthNorm);
-  const FLOAT m_gravitationalConstant =
-      std::pow(m_lengthNorm, 3.0) / (m_massNorm * std::pow(m_timeNorm, 2.0));
+  std::shared_ptr<const planetmodel::RadialFunction> field_;
+  double lowerRadius_ = 0.0, upperRadius_ = 0.0;
 };
 
 template <typename FLOAT = double, typename INTEGRAL = int>
@@ -75,15 +71,13 @@ public:
   using size_type = INTEGRAL;
   using value_type = FLOAT;
   using myvector = std::vector<FLOAT>;
-  using InterpView = SharedVectorView<double>;
-  using InterpA = Interpolation::CubicSpline<InterpView, InterpView>;
+  // Compatibility name: interpolation is now owned by planetmodel::RadialFunction.
+  using InterpA = ModelField;
 
   ModelInput() = default;
   explicit ModelInput(const std::string &pathToFile);
-
   template <template <typename> class ParameterModel>
-  ModelInput(const std::string &pathToFile,
-             const ParameterModel<FLOAT> &modelConstants);
+  ModelInput(const std::string &pathToFile, const ParameterModel<FLOAT> &modelConstants);
 
   FLOAT LengthNorm() const { return m_lengthNorm; }
   FLOAT MassNorm() const { return m_massNorm; }
@@ -95,40 +89,21 @@ public:
   FLOAT ForceNorm() const { return m_forceNorm; }
   FLOAT StressNorm() const { return m_stressNorm; }
   FLOAT GravitationalConstant() const { return m_gravitationalConstant; }
-  auto TREF() const { return m_tref; }
+  FLOAT TREF() const { return m_tref; }
 
   int NumberOfLayers() const { return m_numLayers; }
-  int LayerLowerIndex(int i) const { return m_layerIndices[i][0]; }
-  int LayerUpperIndex(int i) const { return m_layerIndices[i][1]; }
-  int LayerIndexDifference(int i) const {
-    return m_layerIndices[i][1] - m_layerIndices[i][0];
-  }
+  int LayerLowerIndex(int i) const { return m_layerIndices.at(i).first; }
+  int LayerUpperIndex(int i) const { return m_layerIndices.at(i).second; }
+  int LayerIndexDifference(int i) const { return LayerUpperIndex(i) - LayerLowerIndex(i); }
   auto LayerRadii() const { return m_layeredRadii; }
-  auto LayerRadii(int i) const { return m_layeredRadii[i]; }
-  auto LayerRadiiNumber(int i) const { return m_layeredRadii[i].size(); }
+  auto LayerRadii(int i) const { return m_layeredRadii.at(i); }
+  auto LayerRadiiNumber(int i) const { return m_layeredRadii.at(i).size(); }
 
-  FLOAT LowerRadius(INTEGRAL i) const {
-    if (i < 0) {
-      throw std::invalid_argument("Negative layer index");
-    } else if (i > m_numLayers - 1) {
-      throw std::invalid_argument("Layer index greater than number of layers");
-    }
-    return m_layerBounds[i];
-  }
-
-  FLOAT UpperRadius(INTEGRAL i) const {
-    if (i < 0) {
-      throw std::invalid_argument("Negative layer index");
-    } else if (i > m_numLayers - 1) {
-      throw std::invalid_argument("Layer index greater than number of layers");
-    }
-    return m_layerBounds[i + 1];
-  }
-
-  FLOAT OuterRadius() const { return m_layerBounds[m_numLayers]; }
-
+  FLOAT LowerRadius(INTEGRAL i) const { return m_layerBounds.at(validLayer(i)); }
+  FLOAT UpperRadius(INTEGRAL i) const { return m_layerBounds.at(validLayer(i) + 1); }
+  FLOAT OuterRadius() const { return m_layerBounds.back(); }
   bool IsIsotropic() const { return m_isIsotropic; }
-  bool IsSolid(INTEGRAL i) const { return m_isSolid[i]; }
+  bool IsSolid(INTEGRAL i) const { return m_isSolid.at(validLayer(i)); }
   bool IsFluid(INTEGRAL i) const { return !IsSolid(i); }
 
   InterpA Density(INTEGRAL i) const { return checkedLayer(m_density, i); }
@@ -141,285 +116,203 @@ public:
   InterpA Eta(INTEGRAL i) const { return checkedLayer(m_eta, i); }
 
   auto VS(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) { return std::sqrt(Mu(i)(x) / Density(i)(x)); };
-    return fn;
+    auto mu = Mu(i);
+    auto rho = Density(i);
+    return [mu = std::move(mu), rho = std::move(rho)](FLOAT x) { return std::sqrt(mu(x) / rho(x)); };
   }
-
   auto VP(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) {
-      return std::sqrt((Kappa(i)(x) + 4.0 / 3.0 * Mu(i)(x)) / Density(i)(x));
+    auto kappa = Kappa(i);
+    auto mu = Mu(i);
+    auto rho = Density(i);
+    return [kappa = std::move(kappa), mu = std::move(mu), rho = std::move(rho)](FLOAT x) {
+      return std::sqrt((kappa(x) + 4.0 / 3.0 * mu(x)) / rho(x));
     };
-    return fn;
   }
-
   auto A(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) {
-      return Density(i)(x) * VPH(i)(x) * VPH(i)(x);
-    };
-    return fn;
+    auto rho = Density(i);
+    auto vph = VPH(i);
+    return [rho = std::move(rho), vph = std::move(vph)](FLOAT x) { return rho(x) * vph(x) * vph(x); };
   }
-
   auto C(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) {
-      return Density(i)(x) * VPV(i)(x) * VPV(i)(x);
-    };
-    return fn;
+    auto rho = Density(i);
+    auto vpv = VPV(i);
+    return [rho = std::move(rho), vpv = std::move(vpv)](FLOAT x) { return rho(x) * vpv(x) * vpv(x); };
   }
-
   auto N(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) {
-      return Density(i)(x) * VSH(i)(x) * VSH(i)(x);
-    };
-    return fn;
+    auto rho = Density(i);
+    auto vsh = VSH(i);
+    return [rho = std::move(rho), vsh = std::move(vsh)](FLOAT x) { return rho(x) * vsh(x) * vsh(x); };
   }
-
   auto L(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) {
-      return Density(i)(x) * VSV(i)(x) * VSV(i)(x);
-    };
-    return fn;
+    auto rho = Density(i);
+    auto vsv = VSV(i);
+    return [rho = std::move(rho), vsv = std::move(vsv)](FLOAT x) { return rho(x) * vsv(x) * vsv(x); };
   }
-
   auto F(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) { return Eta(i)(x) * (A(i)(x) - 2 * L(i)(x)); };
-    return fn;
+    auto eta = Eta(i);
+    auto a = A(i);
+    auto l = L(i);
+    return [eta = std::move(eta), a = std::move(a), l = std::move(l)](FLOAT x) {
+      return eta(x) * (a(x) - 2 * l(x));
+    };
   }
-
   auto Kappa(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) {
-      return (C(i)(x) + 4.0 * (A(i)(x) - N(i)(x) + F(i)(x))) / 9.0;
+    auto c = C(i);
+    auto a = A(i);
+    auto n = N(i);
+    auto f = F(i);
+    return [c = std::move(c), a = std::move(a), n = std::move(n), f = std::move(f)](FLOAT x) {
+      return (c(x) + 4.0 * (a(x) - n(x) + f(x))) / 9.0;
     };
-    return fn;
   }
-
   auto Mu(INTEGRAL i) const {
-    auto fn = [i, this](FLOAT x) {
-      return (C(i)(x) + A(i)(x) + 6.0 * L(i)(x) + 5.0 * N(i)(x) -
-              2.0 * F(i)(x)) /
-             15.0;
+    auto c = C(i);
+    auto a = A(i);
+    auto l = L(i);
+    auto n = N(i);
+    auto f = F(i);
+    return [c = std::move(c), a = std::move(a), l = std::move(l), n = std::move(n), f = std::move(f)](FLOAT x) {
+      return (c(x) + a(x) + 6.0 * l(x) + 5.0 * n(x) - 2.0 * f(x)) / 15.0;
     };
-    return fn;
   }
 
 private:
-  using VecDouble = std::vector<double>;
-  using LayeredValues = std::vector<VecDouble>;
-
-  template <typename LayerContainer>
-  auto checkedLayer(const LayerContainer &values, INTEGRAL i) const {
-    if (i < 0) {
-      throw std::invalid_argument("Negative layer index");
-    } else if (i > m_numLayers - 1) {
-      throw std::invalid_argument("Layer index greater than number of layers");
-    }
-    return values[i];
-  }
-
   template <template <typename> class ParameterModel>
   void initializeNorms(const ParameterModel<FLOAT> &modelConstants) {
     m_lengthNorm = modelConstants.LengthNorm();
     m_massNorm = modelConstants.MassNorm();
     m_timeNorm = modelConstants.TimeNorm();
-    m_densityNorm = modelConstants.MassNorm() /
-                    std::pow(modelConstants.LengthNorm(), 3.0);
-    m_velocityNorm = modelConstants.LengthNorm() / modelConstants.TimeNorm();
-    m_accelerationNorm =
-        modelConstants.LengthNorm() / std::pow(modelConstants.TimeNorm(), 2.0);
-    m_forceNorm = modelConstants.MassNorm() * modelConstants.LengthNorm() /
-                  std::pow(modelConstants.TimeNorm(), 2.0);
-    m_stressNorm =
-        modelConstants.MassNorm() /
-        (modelConstants.LengthNorm() * std::pow(modelConstants.TimeNorm(), 2.0));
-    m_inertiaNorm =
-        modelConstants.MassNorm() * std::pow(modelConstants.LengthNorm(), 2.0);
-    m_gravitationalConstant =
-        std::pow(modelConstants.LengthNorm(), 3.0) /
-        (modelConstants.MassNorm() * std::pow(modelConstants.TimeNorm(), 2.0));
+    m_densityNorm = m_massNorm / std::pow(m_lengthNorm, 3.0);
+    m_velocityNorm = m_lengthNorm / m_timeNorm;
+    m_accelerationNorm = m_lengthNorm / std::pow(m_timeNorm, 2.0);
+    m_forceNorm = m_massNorm * m_lengthNorm / std::pow(m_timeNorm, 2.0);
+    m_stressNorm = m_massNorm / (m_lengthNorm * std::pow(m_timeNorm, 2.0));
+    m_inertiaNorm = m_massNorm * std::pow(m_lengthNorm, 2.0);
+    m_gravitationalConstant = std::pow(m_lengthNorm, 3.0) / (m_massNorm * std::pow(m_timeNorm, 2.0));
   }
-
-  void loadModel(const std::string &pathToFile,
-                 bool respectIfanisColumns,
-                 bool printModelKind);
+  int validLayer(INTEGRAL i) const {
+    if (i < 0 || i >= m_numLayers) throw std::invalid_argument("Invalid layer index");
+    return static_cast<int>(i);
+  }
+  template <typename T> T checkedLayer(const std::vector<T> &values, INTEGRAL i) const {
+    return values.at(validLayer(i));
+  }
+  void loadModel(const std::string &pathToFile);
 
   std::string m_modelTitle;
-  int m_ifanis = 0;
-  int m_ifdeck = 0;
-  int m_numNodes = 0;
-  int m_nic = 0;
-  int m_noc = 0;
   int m_numLayers = 0;
-  double m_tref = 0.0;
-
-  FLOAT m_lengthNorm = 0.0;
-  FLOAT m_massNorm = 0.0;
-  FLOAT m_timeNorm = 0.0;
-  FLOAT m_densityNorm = 0.0;
-  FLOAT m_inertiaNorm = 0.0;
-  FLOAT m_velocityNorm = 0.0;
-  FLOAT m_accelerationNorm = 0.0;
-  FLOAT m_forceNorm = 0.0;
-  FLOAT m_stressNorm = 0.0;
+  FLOAT m_tref = 0.0;
+  FLOAT m_lengthNorm = 0.0, m_massNorm = 0.0, m_timeNorm = 0.0;
+  FLOAT m_densityNorm = 0.0, m_inertiaNorm = 0.0, m_velocityNorm = 0.0;
+  FLOAT m_accelerationNorm = 0.0, m_forceNorm = 0.0, m_stressNorm = 0.0;
   FLOAT m_gravitationalConstant = 0.0;
-
   bool m_isIsotropic = true;
-  std::vector<bool> m_isSolid = std::vector<bool>(1, true);
-  std::vector<std::vector<int>> m_layerIndices;
-
-  VecDouble m_layerBounds;
-  LayeredValues m_layeredRadii = LayeredValues(1, VecDouble());
-  LayeredValues m_layeredRho = LayeredValues(1, VecDouble());
-  LayeredValues m_layeredVpv = LayeredValues(1, VecDouble());
-  LayeredValues m_layeredVsv = LayeredValues(1, VecDouble());
-  LayeredValues m_layeredQkappa = LayeredValues(1, VecDouble());
-  LayeredValues m_layeredQmu = LayeredValues(1, VecDouble());
-  LayeredValues m_layeredVph = LayeredValues(1, VecDouble());
-  LayeredValues m_layeredVsh = LayeredValues(1, VecDouble());
-  LayeredValues m_layeredEta = LayeredValues(1, VecDouble());
-
-  std::vector<InterpA> m_density;
-  std::vector<InterpA> m_vpv;
-  std::vector<InterpA> m_vsv;
-  std::vector<InterpA> m_qkappa;
-  std::vector<InterpA> m_qmu;
-  std::vector<InterpA> m_vph;
-  std::vector<InterpA> m_vsh;
-  std::vector<InterpA> m_eta;
+  std::vector<bool> m_isSolid;
+  std::vector<std::pair<int, int>> m_layerIndices;
+  std::vector<FLOAT> m_layerBounds;
+  std::vector<std::vector<FLOAT>> m_layeredRadii;
+  std::vector<InterpA> m_density, m_vpv, m_vsv, m_qkappa, m_qmu, m_vph, m_vsh, m_eta;
 };
 
 template <typename FLOAT, typename INTEGRAL>
 ModelInput<FLOAT, INTEGRAL>::ModelInput(const std::string &pathToFile) {
   initializeNorms(EarthConstants<FLOAT>());
-  loadModel(pathToFile, false, false);
+  loadModel(pathToFile);
 }
 
 template <typename FLOAT, typename INTEGRAL>
 template <template <typename> class ParameterModel>
-ModelInput<FLOAT, INTEGRAL>::ModelInput(
-    const std::string &pathToFile, const ParameterModel<FLOAT> &modelConstants) {
+ModelInput<FLOAT, INTEGRAL>::ModelInput(const std::string &pathToFile,
+                                         const ParameterModel<FLOAT> &modelConstants) {
   initializeNorms(modelConstants);
-  loadModel(pathToFile, true, false);
+  loadModel(pathToFile);
 }
 
 template <typename FLOAT, typename INTEGRAL>
-void
-ModelInput<FLOAT, INTEGRAL>::loadModel(const std::string &pathToFile,
-                                       bool respectIfanisColumns,
-                                       bool printModelKind) {
-  std::fstream modelFile(pathToFile, std::ios::in);
-  if (!modelFile.is_open()) {
-    throw std::runtime_error("Could not open Earth model file: " + pathToFile);
+void ModelInput<FLOAT, INTEGRAL>::loadModel(const std::string &pathToFile) {
+  const auto deck = planetmodel::ReadDeck(pathToFile, planetmodel::MINEOS());
+  const auto header = planetmodel::ReadMineosHeader(deck.Header(), pathToFile);
+  m_modelTitle = header.name;
+  m_tref = header.tref / m_timeNorm;
+  m_isIsotropic = header.ifanis == 0;
+  const auto rawRadii = deck.Radius();
+  const auto ranges = deck.Layers();
+  const auto boundaries = deck.Boundaries();
+  m_numLayers = static_cast<int>(ranges.size());
+  m_layerBounds.reserve(boundaries.size());
+  for (double radius : boundaries) m_layerBounds.push_back(radius / m_lengthNorm);
+  m_layeredRadii.resize(ranges.size());
+  m_layerIndices.resize(ranges.size());
+  m_isSolid.resize(ranges.size());
+
+  const auto& rho = deck.Column("rho");
+  const auto isotropic = deck.HasColumn("vp");
+  const auto& vpv = deck.Column(isotropic ? "vp" : "vpv");
+  const auto& vsv = deck.Column(isotropic ? "vs" : "vsv");
+  const auto& qk = deck.Column("qkappa");
+  const auto& qm = deck.Column("qmu");
+  if ((header.ifanis == 0) != isotropic) {
+    throw std::invalid_argument(std::format(
+        "{}: ifanis={} is inconsistent with the {}-column MINEOS rows",
+        pathToFile, header.ifanis, isotropic ? "isotropic" : "TI"));
   }
-
-  std::getline(modelFile, m_modelTitle);
-
-  modelFile >> m_ifanis >> m_tref >> m_ifdeck;
-  modelFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-  m_tref *= 1.0 / m_timeNorm;
-
-  modelFile >> m_numNodes >> m_nic >> m_noc;
-  modelFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-
-  if (printModelKind) {
-    if (m_ifanis) {
-      std::cout << "Anisotropic model loaded from file: " << pathToFile << "\n";
-    } else {
-      std::cout << "Isotropic model loaded from file: " << pathToFile << "\n";
-    }
-  }
-
-  int layerNumber = 0;
-  int outerIndex = 0;
-  int innerIndex = 0;
-
-  while (outerIndex < m_numNodes) {
-    double radius = 0.0;
-    double rho = 0.0;
-    double vpv = 0.0;
-    double vsv = 0.0;
-    double qkappa = 0.0;
-    double qshear = 0.0;
-    double vph = 0.0;
-    double vsh = 0.0;
-    double eta = 0.0;
-
-    if (!respectIfanisColumns || m_ifanis) {
-      modelFile >> radius >> rho >> vpv >> vsv >> qkappa >> qshear >> vph >>
-          vsh >> eta;
-    } else {
-      modelFile >> radius >> rho >> vpv >> vsv >> qkappa >> qshear;
-      vph = vpv;
-      vsh = vsv;
-      eta = 1.0;
-    }
-
-    const double normalizedRadius = radius / m_lengthNorm;
-    if (innerIndex > 0 &&
-        normalizedRadius == m_layeredRadii[layerNumber][innerIndex - 1]) {
-      m_layeredRadii.push_back({normalizedRadius});
-      m_layeredRho.push_back({rho / m_densityNorm});
-      m_layeredVpv.push_back({vpv / m_velocityNorm});
-      m_layeredVsv.push_back({vsv / m_velocityNorm});
-      m_layeredQkappa.push_back({qkappa});
-      m_layeredQmu.push_back({qshear});
-      m_layeredVph.push_back({vph / m_velocityNorm});
-      m_layeredVsh.push_back({vsh / m_velocityNorm});
-      m_layeredEta.push_back({eta});
-
-      if (m_isIsotropic && vpv != vsv) {
-        m_isIsotropic = false;
-      }
-
-      m_isSolid.push_back(!(vsv == 0.0 && vsh == 0.0));
-      innerIndex = 0;
-      ++layerNumber;
-    } else {
-      m_layeredRadii[layerNumber].push_back(normalizedRadius);
-      m_layeredRho[layerNumber].push_back(rho / m_densityNorm);
-      m_layeredVpv[layerNumber].push_back(vpv / m_velocityNorm);
-      m_layeredVsv[layerNumber].push_back(vsv / m_velocityNorm);
-      m_layeredQkappa[layerNumber].push_back(qkappa);
-      m_layeredQmu[layerNumber].push_back(qshear);
-      m_layeredVph[layerNumber].push_back(vph / m_velocityNorm);
-      m_layeredVsh[layerNumber].push_back(vsh / m_velocityNorm);
-      m_layeredEta[layerNumber].push_back(eta);
-
-      if (outerIndex == 0 && vsv == 0.0 && vsh == 0.0) {
-        m_isSolid[layerNumber] = false;
+  for (std::size_t row = 0; row < rawRadii.size(); ++row) {
+    for (const auto [name, value] : {std::pair{"qkappa", qk[row]}, std::pair{"qmu", qm[row]}}) {
+      if (!std::isfinite(value) || value < 0.0) {
+        throw std::invalid_argument(std::format("{}: row {} has invalid {}={}; expected finite Q >= 0",
+                                                pathToFile, row + 1, name, value));
       }
     }
-
-    modelFile.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    ++innerIndex;
-    ++outerIndex;
   }
 
-  m_numLayers = static_cast<int>(m_layeredRadii.size());
-  m_layerBounds.reserve(m_numLayers + 1);
-  m_layerBounds.push_back(0.0);
-
-  m_layerIndices =
-      std::vector<std::vector<int>>(m_numLayers, std::vector<int>(2, 0));
-  m_layerIndices[0][0] = 0;
-
-  for (int idx = 0; idx < m_numLayers; ++idx) {
-    m_layerBounds.push_back(m_layeredRadii[idx].back());
-    if (idx != 0) {
-      m_layerIndices[idx][0] = m_layerIndices[idx - 1][1] + 1;
+  int start = 0;
+  for (std::size_t layer = 0; layer < ranges.size(); ++layer) {
+    const auto [begin, end] = ranges[layer];
+    auto &radii = m_layeredRadii[layer];
+    radii.reserve(end - begin);
+    for (auto row = begin; row < end; ++row) radii.push_back(rawRadii[row] / m_lengthNorm);
+    m_layerIndices[layer] = {start, start + static_cast<int>(end - begin) - 1};
+    start += static_cast<int>(end - begin);
+    m_isSolid[layer] = false;
+    for (auto row = begin; row < end; ++row) {
+      if (vsv[row] != 0.0 || (!isotropic && deck.Column("vsh")[row] != 0.0)) m_isSolid[layer] = true;
     }
-    m_layerIndices[idx][1] =
-        m_layerIndices[idx][0] + static_cast<int>(m_layeredRadii[idx].size()) - 1;
-  }
 
-  for (int idx = 0; idx < m_numLayers; ++idx) {
-    const InterpView radii{m_layeredRadii[idx]};
-    m_density.emplace_back(radii, InterpView{m_layeredRho[idx]});
-    m_vpv.emplace_back(radii, InterpView{m_layeredVpv[idx]});
-    m_vsv.emplace_back(radii, InterpView{m_layeredVsv[idx]});
-    m_qkappa.emplace_back(radii, InterpView{m_layeredQkappa[idx]});
-    m_qmu.emplace_back(radii, InterpView{m_layeredQmu[idx]});
-    m_vph.emplace_back(radii, InterpView{m_layeredVph[idx]});
-    m_vsh.emplace_back(radii, InterpView{m_layeredVsh[idx]});
-    m_eta.emplace_back(radii, InterpView{m_layeredEta[idx]});
+    const auto lo = rawRadii[begin], hi = rawRadii[end - 1];
+    const auto make = [&](const char* name, double scale) {
+      const auto& source = deck.Column(name);
+      std::vector<double> knots, values;
+      knots.reserve(end - begin);
+      values.reserve(end - begin);
+      // Normalize before spline construction to preserve legacy floating-point evaluation.
+      for (auto row = begin; row < end; ++row) {
+        knots.push_back(rawRadii[row] / m_lengthNorm);
+        values.push_back(source[row] / scale);
+      }
+      auto field = planetmodel::ThroughKnots(
+          std::move(knots), std::move(values), planetmodel::KnotKind::Natural, 0.0);
+      return InterpA(std::move(field), lo / m_lengthNorm, hi / m_lengthNorm);
+    };
+    m_density.push_back(make("rho", m_densityNorm));
+    m_vpv.push_back(make(isotropic ? "vp" : "vpv", m_velocityNorm));
+    m_vsv.push_back(make(isotropic ? "vs" : "vsv", m_velocityNorm));
+    m_qkappa.push_back(make("qkappa", 1.0));
+    m_qmu.push_back(make("qmu", 1.0));
+    m_vph.push_back(make(isotropic ? "vp" : "vph", m_velocityNorm));
+    m_vsh.push_back(make(isotropic ? "vs" : "vsh", m_velocityNorm));
+    if (isotropic) {
+      std::vector<double> knots;
+      knots.reserve(end - begin);
+      for (auto row = begin; row < end; ++row)
+        knots.push_back(rawRadii[row] / m_lengthNorm);
+      std::vector<double> ones(end - begin, 1.0);
+      auto unitEta = planetmodel::ThroughKnots(
+          std::move(knots),
+          std::move(ones), planetmodel::KnotKind::Natural, 0.0);
+      m_eta.emplace_back(std::move(unitEta), lo / m_lengthNorm, hi / m_lengthNorm);
+    } else {
+      m_eta.push_back(make("eta", 1.0));
+    }
   }
 }
 

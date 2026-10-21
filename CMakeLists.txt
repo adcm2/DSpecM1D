@@ -43,6 +43,7 @@ target_link_libraries(DSpecM1D INTERFACE
     FFTWpp
     GaussQuad
     Interpolation
+    planetmodel::planetmodel
     GSHTrans
     OpenMP::OpenMP_CXX
 )
