@@ -2,8 +2,26 @@
 #include <cmath>
 #include <tuple>
 #include <utility>
+#include <array>
 #include <DSpecM1D/src/InputParametersNew.h>
 #include "test_utils.h"
+
+template <typename T> class SmallModelNorm {
+public:
+  T LengthNorm() const { return 2.0; }
+  T MassNorm() const { return 8.0; }
+  T TimeNorm() const { return 4.0; }
+};
+
+static std::string isotropicRepeatedRadiusDeck(double qmu = 0.0) {
+  std::ostringstream out;
+  out << "isotropic repeated radius\n0 0 0\n4 0 0\n"
+      << "0 2 10 0 100 0\n"
+      << "2 4 12 0 100 0\n"
+      << "2 6 14 3 100 " << qmu << "\n"
+      << "4 8 16 4 100 " << qmu << "\n";
+  return out.str();
+}
 
 TEST(InputParametersNewTests, ResolvesAbsoluteModelPathAndBuildsContext) {
   DSpecMTest::TempDir temp;
@@ -110,4 +128,60 @@ TEST(InputParametersNewTests, ModelInterpolantsSurviveOwnerCopyAndMove) {
     EXPECT_DOUBLE_EQ(spline.Evaluate(radius), referenceValue);
     EXPECT_DOUBLE_EQ(spline.Evaluate<1>(radius), referenceDerivative);
   }
+}
+
+TEST(InputParametersNewTests, PlanetmodelFacadePreservesIsotropicEndpointsAndOwnership) {
+  DSpecMTest::TempDir temp;
+  const auto path = DSpecMTest::writeFile(temp.path() / "iso.deck",
+                                          isotropicRepeatedRadiusDeck());
+  using Model = EarthModels::ModelInput<double>;
+  const auto [density, retainedVs, lower, upper, interface] = [&] {
+    Model model(path.string(), SmallModelNorm<double>{});
+    EXPECT_EQ(model.NumberOfLayers(), 2);
+    EXPECT_TRUE(model.IsIsotropic());
+    EXPECT_FALSE(model.IsSolid(0));
+    EXPECT_TRUE(model.IsSolid(1));
+    EXPECT_DOUBLE_EQ(model.LowerRadius(1), 1.0);
+    EXPECT_DOUBLE_EQ(model.UpperRadius(0), 1.0);
+    EXPECT_DOUBLE_EQ(model.OuterRadius(), 2.0);
+    const auto rho = model.Density(1);
+    const auto vs = model.VS(1);
+    const double lo = model.LowerRadius(1);
+    const double hi = model.UpperRadius(1);
+    const double boundary = model.UpperRadius(0);
+    EXPECT_DOUBLE_EQ(model.VPH(1)(lo), model.VPV(1)(lo));
+    EXPECT_DOUBLE_EQ(model.VSH(1)(lo), model.VSV(1)(lo));
+    EXPECT_DOUBLE_EQ(model.Eta(1)(lo), 1.0);
+    EXPECT_DOUBLE_EQ(model.Density(0)(boundary), 4.0);
+    EXPECT_DOUBLE_EQ(model.Density(1)(boundary), 6.0);
+    EXPECT_THROW(rho(std::nextafter(lo, -INFINITY)), std::out_of_range);
+    EXPECT_THROW(rho(std::nextafter(hi, INFINITY)), std::out_of_range);
+    EXPECT_DOUBLE_EQ(rho(lo), 6.0);
+    EXPECT_DOUBLE_EQ(rho(hi), 8.0);
+    Model copied = model;
+    Model moved = std::move(copied);
+    return std::tuple{rho, vs, lo, hi, boundary};
+  }();
+  EXPECT_DOUBLE_EQ(density(lower), 6.0);
+  EXPECT_DOUBLE_EQ(density(upper), 8.0);
+  EXPECT_TRUE(std::isfinite(retainedVs(interface)));
+}
+
+TEST(InputParametersNewTests, PlanetmodelFacadeRejectsInvalidQAndHeaderShape) {
+  DSpecMTest::TempDir temp;
+  for (const auto [label, qmu] :
+       std::array<std::pair<const char*, const char*>, 3>{{
+           {"negative", "-1"}, {"nan", "nan"}, {"infinite", "inf"}}}) {
+    const auto path = DSpecMTest::writeFile(
+        temp.path() / (std::string(label) + ".deck"),
+        isotropicRepeatedRadiusDeck(std::stod(qmu)));
+    EXPECT_THROW((EarthModels::ModelInput<double>(path.string())),
+                 std::invalid_argument);
+  }
+  const auto mismatch = DSpecMTest::writeFile(
+      temp.path() / "mismatch.deck", "bad header\n1 0 0\n4 0 0\n"
+                                     "0 2 10 0 100 0\n2 4 12 0 100 0\n"
+                                     "2 6 14 0 100 0\n4 8 16 0 100 0\n");
+  EXPECT_THROW((EarthModels::ModelInput<double>(mismatch.string())),
+               std::invalid_argument);
 }

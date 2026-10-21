@@ -10,7 +10,9 @@
 #include <gtest/gtest.h>
 
 #include <DSpecM1D/EarthMesh>
+#include <DSpecM1D/ModelInput>
 #include <DSpecM1D/src/model_info/MeshModel.h>
+#include "test_utils.h"
 
 namespace {
 
@@ -179,4 +181,18 @@ TEST(MeshModelGravityTests, DuplicatedInterfacePreservesEnclosedMass) {
       4.0 * kPi * kGravitationalConstant * enclosedMassIntegral;
   EXPECT_NEAR(meshModel.Gravity(1, mesh.NN() - 1), surfaceExpected,
               gravityTolerance(surfaceExpected));
+}
+
+TEST(MeshModelGravityTests, PremGllGravityQueriesStayInsideStrictFieldLayers) {
+  EarthModels::ModelInput<double> model(
+      DSpecMTest::repoRoot().append("data/models/prem.200").string(),
+      EarthModels::EarthConstants<double>{});
+  EarthMesh::RadialMesh mesh(model, 5, model.OuterRadius(), 0.05, false);
+  MeshModel sampled(mesh, model);
+  EXPECT_DOUBLE_EQ(sampled.Gravity(0, 0), 0.0);
+  for (int element = 0; element < mesh.NE(); ++element) {
+    for (int node = 0; node < mesh.NN(); ++node) {
+      EXPECT_TRUE(std::isfinite(sampled.Gravity(element, node)));
+    }
+  }
 }

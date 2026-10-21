@@ -20,6 +20,6 @@ if(NOT TARGET DSpecM1D::DSpecM1D)
   set_target_properties(DSpecM1D::DSpecM1D PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES "${DSPECM1D_INCLUDE_DIR}"
     INTERFACE_COMPILE_FEATURES "cxx_std_23"
-    INTERFACE_LINK_LIBRARIES "Eigen3::Eigen;NumericConcepts;FFTWpp;GaussQuad;Interpolation;GSHTrans;OpenMP::OpenMP_CXX"
+    INTERFACE_LINK_LIBRARIES "Eigen3::Eigen;NumericConcepts;FFTWpp;GaussQuad;Interpolation;planetmodel::planetmodel;GSHTrans;OpenMP::OpenMP_CXX"
   )
 endif()
