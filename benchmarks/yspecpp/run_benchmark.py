@@ -6,10 +6,12 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+from html import escape
 import json
 import math
 import os
 from pathlib import Path
+import shlex
 import shutil
 import subprocess
 import sys
@@ -464,6 +466,129 @@ def make_attenuation_plot(outdir: Path) -> None:
     plt.close(fig)
 
 
+def render_report(summary: dict, command: str) -> str:
+    """Render a standalone report from the exact resolved benchmark output."""
+    esc = lambda value: escape(str(value), quote=True)
+    report_only = command.startswith("REPORT-ONLY:")
+    display_command = command.removeprefix("REPORT-ONLY:").strip()
+
+    def relative_metric(value: object, peak: float) -> str:
+        if peak == 0.0:
+            return "undefined (zero reference)"
+        return "not applicable" if value is None else format(float(value), ".4g")
+
+    def shown(value: object) -> str:
+        return "not applicable" if value is None else format(float(value), ".4g")
+    provenance = summary["provenance"]
+    defaults = summary["defaults"]
+    source = defaults["source"]
+    moment = ", ".join(f"{key}={value:g} N m"
+                        for key, value in source["moment_tensor_Nm"].items())
+    case_ids = [case["id"] for case in summary["cases"]]
+    models = sorted({case["model"] for case in summary["cases"]})
+    model_decks = summary.get("model_decks", {})
+    model_section = [
+        "<h2>Model inputs</h2><p>Deck columns: radius (m), rho (kg/m³), vpv/vsv/vph/vsh (m/s), Qkappa/Qmu (dimensionless), eta (dimensionless). Optional anisotropy columns may be absent for isotropic rows.</p>"
+    ]
+    for model in models:
+        deck = model_decks.get(model)
+        if isinstance(deck, str):
+            model_section.append(
+                f"<details><summary>{esc(model)}</summary><pre>{esc(deck)}</pre></details>"
+            )
+        else:
+            model_section.append(
+                f"<p><code>{esc(model)}</code>: deck text not captured in this archive.</p>"
+            )
+    lines = [
+        "<!doctype html><html><head><meta charset=\"utf-8\"><title>DSpecM1D and YSpecpp benchmark</title>",
+        "<style>*{box-sizing:border-box}body{font:16px system-ui;width:100%;max-width:1150px;margin:2rem auto;padding:0 1rem;line-height:1.5;overflow-wrap:anywhere}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:.35rem .55rem;text-align:left;overflow-wrap:anywhere}.case-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.3rem 1rem}.case-meta div{min-width:0}.case-meta dt{font-weight:650}.case-meta dd{margin:0}.results-scroll{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #bbb}.results{table-layout:fixed;font-size:.94rem}.results th,.results td{padding:.3rem}.case-results{margin:1.5rem 0}details pre{max-width:100%;white-space:pre-wrap;overflow-wrap:anywhere}img{max-width:100%;height:auto}code{overflow-wrap:anywhere}@media(max-width:760px){.results{min-width:760px}}</style></head><body>",
+        "<h1>DSpecM1D and YSpecpp compact benchmark</h1>",
+        ("<p><strong>Report-only replay:</strong> this HTML was rendered from archived JSON and plots; no solver ran to create this report. Provenance below identifies the original benchmark.</p>" if report_only else ""),
+        f"<p>Run profile: <strong>{esc(provenance['refinement'])}</strong>; concurrent jobs {esc(provenance['jobs'])}; OpenMP threads {esc(provenance['runtime_environment']['OMP_NUM_THREADS'])}. All values below come from this run's resolved <code>summary.json</code>.</p>",
+        f"<h2>Physical setup and solver settings</h2><p>This report covers {len(case_ids)} selected homogeneous fixture(s): {esc(case_ids)}. The available set exercises solid/ocean models, full/Cowling gravity, attenuation off/on, and ocean seafloor receivers. Fixtures intentionally avoid the known difference between YSpecpp's modulus spline and DSpecM1D's velocity spline. Source is the configured six-component moment tensor at the shared source depth/location; each receiver is specified in geocentric coordinates and converted to geographic latitude at the YSpecpp input boundary. Output is ZNE velocity in m/s; spectra are velocity per Hz.</p>",
+        f"<p>Source: depth {esc(source['depth_km'])} km; geocentric latitude {esc(source['latitude'])}°, longitude {esc(source['longitude'])}°; tensor (N m): {esc(moment)}. Degrees {esc(defaults['degrees'])}; frequency band {esc(defaults['frequencies_mHz'])} mHz; duration {esc(defaults['duration_min'])} min; time step {esc(defaults['time_step_s'])} s. DSpecM1D uses nq={esc(defaults['solver']['dspec']['nq'])}, max step={esc(defaults['solver']['dspec']['maxstep'])}, relative error={esc(defaults['solver']['dspec'].get('relative_error'))}, nskip={esc(defaults['solver']['dspec']['nskip'])}; YSpecpp uses tolerance={esc(defaults['solver']['yspec']['tolerance'])}, start_decay={esc(defaults['solver']['yspec']['start_decay'])}.</p>",
+        "".join(model_section),
+        f"<p>Each fixture is run at degrees {esc(defaults['degrees'])} individually and as their sum. The comparison uses matched raw complex spectra and native unfiltered time traces. Frequency bins, complex angular frequencies, damping, and time grids are checked separately. Every native time series is also checked against an independent direct inverse-DFT calculation using the saved spectrum, physical damping correction, and sample interval.</p>",
+        "<h2>Measured comparisons</h2><p>Relative L2 is the norm of (DSpecM1D − YSpecpp) divided by the YSpecpp norm. Peak-scaled maximum is the maximum absolute difference divided by the YSpecpp component peak. Numeric results are displayed to four significant figures; gates use full precision, and full values remain in <code>summary.json</code>. Limits for the fine measured profile are 5e−6 for solid full-gravity fixtures, and 1e−5 for ocean full-gravity and Cowling fixtures; the same limits cover attenuation-off cases and their attenuation-on full-gravity regressions. Coarse and medium profiles are diagnostic and are not acceptance measurements. When the reference peak is zero, normalized metrics are shown as undefined and the absolute error remains visible with its physical units. Such a channel passes only when its maximum absolute error is exactly zero; even a subnormal nonzero difference fails. This report displays measurements and limits; cross-code agreement is not a scientific accuracy claim.</p>",
+        "<p>Trace plots overlay native Z/N/E velocity traces and show DSpecM1D-minus-YSpecpp residuals in m/s. Spectrum plots show pointwise complex-spectrum magnitude difference divided by the YSpecpp component peak. When present, the attenuation plot shows on/off amplitude ratios by solver and component.</p>",
+    ]
+    for case in summary["cases"]:
+        case_id = case["id"]
+        spectra = {(row["component"], row.get("degree", "all")): row
+                   for row in summary["degree_spectra"] + summary["spectra"]
+                   if row["case"] == case_id and "relative_l2" in row}
+        traces = {(row["component"], row.get("degree", "all")): row
+                  for row in summary["degree_time_series"] + summary["time_series"]
+                  if row["case"] == case_id}
+        grid = summary["run_metadata"][case_id]["dspec"]
+        receiver = f"{case['receiver'][0]}°, {case['receiver'][1]}°; {case['receiver_depth_km']} km"
+        lines.append(
+            f"<section class=\"case-results\"><h3>{esc(case_id)} — {esc(case['model'])}</h3>"
+            "<dl class=\"case-meta\">"
+            f"<div><dt>Receiver (geocentric latitude, longitude; depth)</dt><dd>{esc(receiver)}</dd></div>"
+            f"<div><dt>Gravity</dt><dd>{esc(case['gravity'])}</dd></div>"
+            f"<div><dt>Attenuation</dt><dd>{'on' if case['attenuation'] else 'off'}</dd></div>"
+            f"<div><dt>FFT / output samples</dt><dd>{esc(grid['samples'])} / {esc(grid['output_samples'])}</dd></div>"
+            f"<div><dt>Frequency spacing</dt><dd>{esc(shown(grid['frequency_spacing_hz']))} Hz</dd></div>"
+            f"<div><dt>Damping epsilon</dt><dd>{esc(shown(grid['damping_epsilon_rad_s']))} rad/s</dd></div>"
+            "</dl><div class=\"results-scroll\" role=\"region\" tabindex=\"0\" "
+            f"aria-label=\"{esc(case_id)} comparison results; horizontally scrollable table\">"
+            "<table class=\"results\"><thead><tr><th>Component / degree</th>"
+            "<th>Spectrum relative L2</th><th>Spectrum max / peak</th>"
+            "<th>Spectrum max absolute (m/s/Hz)</th><th>Time relative L2</th>"
+            "<th>Time max / peak</th><th>Time max absolute (m/s)</th><th>Fine gate</th></tr></thead><tbody>"
+        )
+        for key in sorted(spectra, key=lambda item: (str(item[1]), item[0])):
+            component = ("Z", "N", "E")[key[0]]
+            spec, trace = spectra[key], traces[(component, key[1])]
+            degree = "sum" if key[1] == "all" else f"l={key[1]}"
+            limit = (1e-5 if case["ocean"] or case["gravity"] == "cowling"
+                     else 5e-6)
+            component_checks = (
+                (spec["yspec_peak"], spec["max_abs_difference"],
+                 spec["relative_l2"], spec["difference_over_peak"]),
+                (trace["reference_peak"], trace["max_abs_difference"],
+                 trace["relative_l2"], trace["max_difference_over_reference_peak"]),
+            )
+            passed = all(
+                maximum == 0.0 if peak == 0.0 else
+                l2 is not None and peak_scaled is not None
+                and l2 <= limit and peak_scaled <= limit
+                for peak, maximum, l2, peak_scaled in component_checks
+            )
+            gate = ("not measured" if provenance["refinement"] != "fine" else
+                    "PASS" if passed else "FAIL")
+            lines.append("<tr><td>" + "</td><td>".join(map(esc, (
+                f"{degree}, {component}",
+                relative_metric(spec["relative_l2"], spec["yspec_peak"]),
+                relative_metric(spec["difference_over_peak"], spec["yspec_peak"]),
+                shown(spec["max_abs_difference"]),
+                relative_metric(trace["relative_l2"], trace["reference_peak"]),
+                relative_metric(trace["max_difference_over_reference_peak"],
+                                trace["reference_peak"]),
+                shown(trace["max_abs_difference"]),
+                f"{gate} (limit {limit:g})",
+            ))) + "</td></tr>")
+        lines.append("</tbody></table></div></section>")
+    lines += ["<h2>Reproduction and provenance</h2>",
+        f"<p>Command: <code>{esc(display_command)}</code>. YSpecpp commit {esc(provenance['yspecpp_commit'])}; file tree SHA-256 {esc(provenance['yspecpp_filetree_sha256'])}; archive SHA-256 {esc(provenance['yspecpp_source_archive_sha256'])}. DSpecM1D HEAD {esc(provenance['dspec_source_head'])}; its tracked-code diff SHA-256 is {esc(provenance['dspec_tracked_source_diff_sha256'])}. The case specification SHA-256 is {esc(provenance['case_spec_sha256'])}; fixture identities are in <a href=\"provenance.json\">provenance.json</a>.</p>",
+        f"<p>Dependency revisions: <code>{esc(provenance['dependency_shas'])}</code>. YSpecpp's separate planetmodel pin: <code>{esc(provenance['planetmodel_sha'])}</code>. The runner checks these identities before solving.</p>",
+        "<p>Limits: compact homogeneous fixtures only; no paper-scale runs, fluid-source support, convergence campaign, or scientific accuracy claim. The solver projects and spline choices remain those of their independently pinned projects.</p><h2>Plots</h2><ul>"]
+    for case in summary["cases"]:
+        case_id = case["id"]
+        for suffix, label in (("traces", "time traces and residuals"),
+                              ("spectrum-error", "pointwise spectrum error")):
+            name = f"{case_id}-{suffix}.png"
+            lines.append(f"<li><a href=\"{esc(name)}\">{esc(case_id)} {label}</a></li><figure><img src=\"{esc(name)}\" alt=\"{esc(case_id)} {label}\"></figure>")
+    available = {case["id"] for case in summary["cases"]}
+    if {"solid-full-off", "solid-full-on", "ocean-seafloor-full-off",
+            "ocean-seafloor-full-on"}.issubset(available):
+        lines.append("<li><a href=\"attenuation-before-after.png\">attenuation response</a></li><figure><img src=\"attenuation-before-after.png\" alt=\"Attenuation response ratios\"></figure>")
+    lines += ["</ul><p>Machine-readable results: <a href=\"summary.json\">summary.json</a>, <a href=\"summary.csv\">summary.csv</a>, and <a href=\"provenance.json\">provenance.json</a>.</p></body></html>\n"]
+    return "".join(lines)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dspec-source", type=Path, required=True)
@@ -561,6 +686,9 @@ def main() -> None:
         "dspec_source_head": subprocess.check_output(
             ["git", "-C", str(args.dspec_source), "rev-parse", "HEAD"], text=True
         ).strip(),
+        "command": shlex.join(
+            ["python3", str(Path(__file__).resolve()), *sys.argv[1:]]
+        ),
         "yspecpp_commit": YSPEC_COMMIT,
         "yspecpp_filetree_sha256": yspec_tree_hash,
         "yspecpp_file_count": yspec_file_count,
@@ -691,6 +819,10 @@ def main() -> None:
     if {"solid-full-off", "solid-full-on", "ocean-seafloor-full-off",
             "ocean-seafloor-full-on"}.issubset(available):
         make_attenuation_plot(outdir)
+    command = provenance["command"]
+    (outdir / "report.html").write_text(
+        render_report(json.loads((outdir / "summary.json").read_text()), command)
+    )
     print(f"Results: {outdir}")
 
 
