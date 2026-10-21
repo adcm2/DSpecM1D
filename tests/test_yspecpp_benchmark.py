@@ -1,4 +1,5 @@
 import os
+import copy
 from pathlib import Path
 import subprocess
 import sys
@@ -64,11 +65,13 @@ class OutputDirectoryGuardTests(unittest.TestCase):
                  "reference_peak": 0.0, "max_abs_difference": 7.4e-310},
             ],
         }
+        original = copy.deepcopy(summary)
         report = benchmark.render_report(summary, "python3 runner.py --refinement fine")
+        self.assertEqual(summary, original)
         self.assertIn("5e−6", report)
         self.assertIn("2e-06", report)
         self.assertIn("5e-06", report)
-        self.assertIn("64/31", report)
+        self.assertIn("64 / 31", report)
         self.assertIn("&lt;commit&gt;", report)
         self.assertNotIn("<commit>", report)
         self.assertIn("attenuation off", report)
@@ -80,7 +83,25 @@ class OutputDirectoryGuardTests(unittest.TestCase):
         self.assertIn("7.4e-310", report)
         self.assertIn("PASS (limit 5e-06)", report)
         self.assertIn("FAIL (limit 5e-06)", report)
+        boundary_summary = copy.deepcopy(summary)
+        boundary_summary["spectra"][0]["relative_l2"] = 5.0001e-6
+        boundary_before = copy.deepcopy(boundary_summary)
+        boundary_report = benchmark.render_report(
+            boundary_summary, "python3 runner.py --refinement fine"
+        )
+        self.assertEqual(boundary_summary, boundary_before)
+        z_row = next(row for row in boundary_report.split("<tr>") if "sum, Z" in row)
+        self.assertIn("<td>5e-06</td>", z_row)
+        self.assertIn("<td>FAIL (limit 5e-06)</td></tr>", z_row)
+        self.assertIn("class=\"results-scroll\" role=\"region\" tabindex=\"0\"", report)
+        self.assertIn("aria-label=\"solid-full-off comparison results; horizontally scrollable table\"", report)
+        self.assertIn("<th>Fine gate</th></tr>", report)
+        self.assertEqual(report.count("<th>"), 8)
+        self.assertIn("<dt>Receiver (geocentric latitude, longitude; depth)</dt>", report)
+        self.assertIn("<dt>Damping epsilon</dt>", report)
         self.assertIn("subnormal nonzero difference fails", report)
+        self.assertIn("Numeric results are displayed to four significant figures; gates use full precision", report)
+        self.assertIn("full values remain in <code>summary.json</code>", report)
         self.assertIn("radius (m), rho (kg/m³)", report)
         self.assertIn("model &lt;solid&gt; &amp; deck", report)
         self.assertNotIn("model <solid> & deck", report)

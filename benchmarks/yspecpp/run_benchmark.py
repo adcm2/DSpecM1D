@@ -475,7 +475,10 @@ def render_report(summary: dict, command: str) -> str:
     def relative_metric(value: object, peak: float) -> str:
         if peak == 0.0:
             return "undefined (zero reference)"
-        return "not applicable" if value is None else str(value)
+        return "not applicable" if value is None else format(float(value), ".4g")
+
+    def shown(value: object) -> str:
+        return "not applicable" if value is None else format(float(value), ".4g")
     provenance = summary["provenance"]
     defaults = summary["defaults"]
     source = defaults["source"]
@@ -499,7 +502,7 @@ def render_report(summary: dict, command: str) -> str:
             )
     lines = [
         "<!doctype html><html><head><meta charset=\"utf-8\"><title>DSpecM1D and YSpecpp benchmark</title>",
-        "<style>body{font:16px system-ui;max-width:1150px;margin:2rem auto;padding:0 1rem;line-height:1.5}table{border-collapse:collapse}th,td{border:1px solid #bbb;padding:.35rem .55rem;text-align:left}img{max-width:100%;height:auto}code{overflow-wrap:anywhere}</style></head><body>",
+        "<style>*{box-sizing:border-box}body{font:16px system-ui;width:100%;max-width:1150px;margin:2rem auto;padding:0 1rem;line-height:1.5;overflow-wrap:anywhere}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:.35rem .55rem;text-align:left;overflow-wrap:anywhere}.case-meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.3rem 1rem}.case-meta div{min-width:0}.case-meta dt{font-weight:650}.case-meta dd{margin:0}.results-scroll{width:100%;max-width:100%;overflow-x:auto;overscroll-behavior-x:contain;border:1px solid #bbb}.results{table-layout:fixed;font-size:.94rem}.results th,.results td{padding:.3rem}.case-results{margin:1.5rem 0}details pre{max-width:100%;white-space:pre-wrap;overflow-wrap:anywhere}img{max-width:100%;height:auto}code{overflow-wrap:anywhere}@media(max-width:760px){.results{min-width:760px}}</style></head><body>",
         "<h1>DSpecM1D and YSpecpp compact benchmark</h1>",
         ("<p><strong>Report-only replay:</strong> this HTML was rendered from archived JSON and plots; no solver ran to create this report. Provenance below identifies the original benchmark.</p>" if report_only else ""),
         f"<p>Run profile: <strong>{esc(provenance['refinement'])}</strong>; concurrent jobs {esc(provenance['jobs'])}; OpenMP threads {esc(provenance['runtime_environment']['OMP_NUM_THREADS'])}. All values below come from this run's resolved <code>summary.json</code>.</p>",
@@ -507,9 +510,8 @@ def render_report(summary: dict, command: str) -> str:
         f"<p>Source: depth {esc(source['depth_km'])} km; geocentric latitude {esc(source['latitude'])}°, longitude {esc(source['longitude'])}°; tensor (N m): {esc(moment)}. Degrees {esc(defaults['degrees'])}; frequency band {esc(defaults['frequencies_mHz'])} mHz; duration {esc(defaults['duration_min'])} min; time step {esc(defaults['time_step_s'])} s. DSpecM1D uses nq={esc(defaults['solver']['dspec']['nq'])}, max step={esc(defaults['solver']['dspec']['maxstep'])}, relative error={esc(defaults['solver']['dspec'].get('relative_error'))}, nskip={esc(defaults['solver']['dspec']['nskip'])}; YSpecpp uses tolerance={esc(defaults['solver']['yspec']['tolerance'])}, start_decay={esc(defaults['solver']['yspec']['start_decay'])}.</p>",
         "".join(model_section),
         f"<p>Each fixture is run at degrees {esc(defaults['degrees'])} individually and as their sum. The comparison uses matched raw complex spectra and native unfiltered time traces. Frequency bins, complex angular frequencies, damping, and time grids are checked separately. Every native time series is also checked against an independent direct inverse-DFT calculation using the saved spectrum, physical damping correction, and sample interval.</p>",
-        "<h2>Measured comparisons</h2><p>Relative L2 is the norm of (DSpecM1D − YSpecpp) divided by the YSpecpp norm. Peak-scaled maximum is the maximum absolute difference divided by the YSpecpp component peak. Limits for the fine measured profile are 5e−6 for solid full-gravity fixtures, and 1e−5 for ocean full-gravity and Cowling fixtures; the same limits cover attenuation-off cases and their attenuation-on full-gravity regressions. Coarse and medium profiles are diagnostic and are not acceptance measurements. When the reference peak is zero, normalized metrics are shown as undefined and the absolute error remains visible with its physical units. Such a channel passes only when its maximum absolute error is exactly zero; even a subnormal nonzero difference fails. This report displays measurements and limits; cross-code agreement is not a scientific accuracy claim.</p>",
+        "<h2>Measured comparisons</h2><p>Relative L2 is the norm of (DSpecM1D − YSpecpp) divided by the YSpecpp norm. Peak-scaled maximum is the maximum absolute difference divided by the YSpecpp component peak. Numeric results are displayed to four significant figures; gates use full precision, and full values remain in <code>summary.json</code>. Limits for the fine measured profile are 5e−6 for solid full-gravity fixtures, and 1e−5 for ocean full-gravity and Cowling fixtures; the same limits cover attenuation-off cases and their attenuation-on full-gravity regressions. Coarse and medium profiles are diagnostic and are not acceptance measurements. When the reference peak is zero, normalized metrics are shown as undefined and the absolute error remains visible with its physical units. Such a channel passes only when its maximum absolute error is exactly zero; even a subnormal nonzero difference fails. This report displays measurements and limits; cross-code agreement is not a scientific accuracy claim.</p>",
         "<p>Trace plots overlay native Z/N/E velocity traces and show DSpecM1D-minus-YSpecpp residuals in m/s. Spectrum plots show pointwise complex-spectrum magnitude difference divided by the YSpecpp component peak. When present, the attenuation plot shows on/off amplitude ratios by solver and component.</p>",
-        "<table><thead><tr><th>Case/model</th><th>Receiver (geocentric lat, lon; depth km)</th><th>Gravity</th><th>Attenuation</th><th>Component/degree</th><th>FFT/output samples</th><th>df (Hz)</th><th>Damping epsilon (rad/s)</th><th>Spectrum relative L2</th><th>Spectrum max / peak</th><th>Spectrum max absolute (m/s/Hz)</th><th>Time relative L2</th><th>Time max / peak</th><th>Time max absolute (m/s)</th><th>Fine gate</th></tr></thead><tbody>",
     ]
     for case in summary["cases"]:
         case_id = case["id"]
@@ -520,6 +522,23 @@ def render_report(summary: dict, command: str) -> str:
                   for row in summary["degree_time_series"] + summary["time_series"]
                   if row["case"] == case_id}
         grid = summary["run_metadata"][case_id]["dspec"]
+        receiver = f"{case['receiver'][0]}°, {case['receiver'][1]}°; {case['receiver_depth_km']} km"
+        lines.append(
+            f"<section class=\"case-results\"><h3>{esc(case_id)} — {esc(case['model'])}</h3>"
+            "<dl class=\"case-meta\">"
+            f"<div><dt>Receiver (geocentric latitude, longitude; depth)</dt><dd>{esc(receiver)}</dd></div>"
+            f"<div><dt>Gravity</dt><dd>{esc(case['gravity'])}</dd></div>"
+            f"<div><dt>Attenuation</dt><dd>{'on' if case['attenuation'] else 'off'}</dd></div>"
+            f"<div><dt>FFT / output samples</dt><dd>{esc(grid['samples'])} / {esc(grid['output_samples'])}</dd></div>"
+            f"<div><dt>Frequency spacing</dt><dd>{esc(shown(grid['frequency_spacing_hz']))} Hz</dd></div>"
+            f"<div><dt>Damping epsilon</dt><dd>{esc(shown(grid['damping_epsilon_rad_s']))} rad/s</dd></div>"
+            "</dl><div class=\"results-scroll\" role=\"region\" tabindex=\"0\" "
+            f"aria-label=\"{esc(case_id)} comparison results; horizontally scrollable table\">"
+            "<table class=\"results\"><thead><tr><th>Component / degree</th>"
+            "<th>Spectrum relative L2</th><th>Spectrum max / peak</th>"
+            "<th>Spectrum max absolute (m/s/Hz)</th><th>Time relative L2</th>"
+            "<th>Time max / peak</th><th>Time max absolute (m/s)</th><th>Fine gate</th></tr></thead><tbody>"
+        )
         for key in sorted(spectra, key=lambda item: (str(item[1]), item[0])):
             component = ("Z", "N", "E")[key[0]]
             spec, trace = spectra[key], traces[(component, key[1])]
@@ -541,22 +560,18 @@ def render_report(summary: dict, command: str) -> str:
             gate = ("not measured" if provenance["refinement"] != "fine" else
                     "PASS" if passed else "FAIL")
             lines.append("<tr><td>" + "</td><td>".join(map(esc, (
-                f"{case_id} / {case['model']}",
-                f"{case['receiver'][0]}°, {case['receiver'][1]}°; {case['receiver_depth_km']}",
-                case["gravity"],
-                "on" if case["attenuation"] else "off", f"{degree}, {component}",
-                f"{grid['samples']}/{grid['output_samples']}",
-                grid["frequency_spacing_hz"], grid["damping_epsilon_rad_s"],
+                f"{degree}, {component}",
                 relative_metric(spec["relative_l2"], spec["yspec_peak"]),
                 relative_metric(spec["difference_over_peak"], spec["yspec_peak"]),
-                spec["max_abs_difference"],
+                shown(spec["max_abs_difference"]),
                 relative_metric(trace["relative_l2"], trace["reference_peak"]),
                 relative_metric(trace["max_difference_over_reference_peak"],
                                 trace["reference_peak"]),
-                trace["max_abs_difference"],
+                shown(trace["max_abs_difference"]),
                 f"{gate} (limit {limit:g})",
             ))) + "</td></tr>")
-    lines += ["</tbody></table><h2>Reproduction and provenance</h2>",
+        lines.append("</tbody></table></div></section>")
+    lines += ["<h2>Reproduction and provenance</h2>",
         f"<p>Command: <code>{esc(display_command)}</code>. YSpecpp commit {esc(provenance['yspecpp_commit'])}; file tree SHA-256 {esc(provenance['yspecpp_filetree_sha256'])}; archive SHA-256 {esc(provenance['yspecpp_source_archive_sha256'])}. DSpecM1D HEAD {esc(provenance['dspec_source_head'])}; its tracked-code diff SHA-256 is {esc(provenance['dspec_tracked_source_diff_sha256'])}. The case specification SHA-256 is {esc(provenance['case_spec_sha256'])}; fixture identities are in <a href=\"provenance.json\">provenance.json</a>.</p>",
         f"<p>Dependency revisions: <code>{esc(provenance['dependency_shas'])}</code>. YSpecpp's separate planetmodel pin: <code>{esc(provenance['planetmodel_sha'])}</code>. The runner checks these identities before solving.</p>",
         "<p>Limits: compact homogeneous fixtures only; no paper-scale runs, fluid-source support, convergence campaign, or scientific accuracy claim. The solver projects and spline choices remain those of their independently pinned projects.</p><h2>Plots</h2><ul>"]
