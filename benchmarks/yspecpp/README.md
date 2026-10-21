@@ -39,6 +39,12 @@ The homogeneous fixtures avoid the known difference between YSpecpp's modulus
 spline and DSpecM1D's velocity spline. This compact comparison does not claim
 paper-scale validation or establish fluid-source support.
 
+Each benchmark run also writes `report.html` beside the JSON, CSV, and plots.
+It summarizes the resolved physical and solver setup, measured degree and
+summed comparisons, inverse-transform checks, measured limits, and source
+identities. Use the command above as the single benchmark entry point; the
+report records the resolved command and selected refinement.
+
 ### Reproducing paper comparisons
 
 Replay one saved case without rerunning either solver:
@@ -59,9 +65,11 @@ python3 benchmarks/yspecpp/run_paper.py \
   --output /path/to/new-run
 ```
 
-`--pilot` is available only for new runs. Each case writes `summary.json`,
-`provenance.json`, raw and processed spectrum plots, and comparison plots; a
-display-window plot is included when the case defines one. Raw spectra and
+`--pilot` is available only for new runs. Each case writes `report.html`,
+`summary.json`, `provenance.json`, raw and processed spectrum plots, and
+comparison plots; a display-window plot is included when the case defines one.
+The report labels saved-data replay and links parent provenance and raw-spectrum
+hashes. Raw spectra and
 native traces are saved under `results/`. New summaries use the consolidated
 runner's format. Existing web artifacts retain their original run derivation;
 the corrected Figure 1 secondary spectrum is a separately derived product from
