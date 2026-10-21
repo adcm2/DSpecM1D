@@ -34,6 +34,7 @@ class OutputDirectoryGuardTests(unittest.TestCase):
             "cases": [{"id": "solid-full-off", "model": "homogeneous.deck",
                        "receiver_depth_km": 10, "receiver": [45, 90],
                        "ocean": False, "gravity": "full", "attenuation": False}],
+            "model_decks": {"homogeneous.deck": "model <solid> & deck\n0 1 1\n"},
             "run_metadata": {"solid-full-off": {"dspec": {
                 "samples": 64, "output_samples": 31,
                 "frequency_spacing_hz": 0.00026,
@@ -80,6 +81,13 @@ class OutputDirectoryGuardTests(unittest.TestCase):
         self.assertIn("PASS (limit 5e-06)", report)
         self.assertIn("FAIL (limit 5e-06)", report)
         self.assertIn("subnormal nonzero difference fails", report)
+        self.assertIn("radius (m), rho (kg/m³)", report)
+        self.assertIn("model &lt;solid&gt; &amp; deck", report)
+        self.assertNotIn("model <solid> & deck", report)
+        legacy = dict(summary, model_decks={})
+        self.assertIn("deck text not captured in this archive", benchmark.render_report(
+            legacy, "python3 runner.py --refinement fine"
+        ))
 
     def test_populated_run_directory_stops_before_subprocesses_or_writes(self):
         with tempfile.TemporaryDirectory() as temp:

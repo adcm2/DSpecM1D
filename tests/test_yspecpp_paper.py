@@ -59,6 +59,11 @@ class PaperTransformTests(unittest.TestCase):
         provenance = {"mode": "saved-run reprocessing", "parent": {
             "raw_spectra_sha256": {"dspec": "abc", "yspecpp": "def"},
             "provenance_sha256": "ghi",
+        }, "parent_provenance": {
+            "dspec_source_head": "legacy-dspec-revision",
+            "dspec_tracked_source_diff_sha256": "legacy-diff-hash",
+            "yspecpp_commit": "legacy-yspec-revision",
+            "moment_tensor_input_sha256": "legacy-source-hash",
         }}
         report = paper.render_report(case, summary, provenance)
         self.assertIn("Run type: saved-run reprocessing", report)
@@ -69,8 +74,24 @@ class PaperTransformTests(unittest.TestCase):
         self.assertIn("derived per frequency chunk", report)
         self.assertIn("tolerance 1e-05", report)
         self.assertIn("exactly one", report)
+        self.assertIn("5% Hann taper at both time-series ends", report)
+        self.assertIn("50% Hann taper at both ends", report)
+        chain = report[report.index("The secondary processed-spectrum chain is separate"):
+                       report.index("Time-series errors compare")]
+        stages = ("unfiltered raw spectrum", "physical inverse and normalization",
+                  "5% Hann taper", "FFT → half-cosine frequency filter",
+                  "50% Hann taper", "final FFT magnitude")
+        self.assertEqual(sorted(map(chain.index, stages)),
+                         list(map(chain.index, stages)))
+        self.assertIn("legacy-dspec-revision", report)
+        self.assertIn("legacy-diff-hash", report)
+        self.assertIn("legacy-yspec-revision", report)
+        self.assertIn("legacy-source-hash", report)
         self.assertIn("saved-run /path/to/saved-run", report)
         self.assertIn("raw_spectrum.png", report)
+        no_versions = paper.render_report(case, summary, {"mode": "saved-run reprocessing"})
+        self.assertIn("DSpecM1D recorded original HEAD: <code>not recorded</code>", no_versions)
+        self.assertIn("YSpecpp revision recorded for this run: <code>not recorded</code>", no_versions)
 
     def test_processed_fig1_spectrum_undoes_damping_once(self):
         nfft, dt, epsilon = 128, 0.25, 0.017

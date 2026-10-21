@@ -794,8 +794,17 @@ def render_report(case: dict, summary: dict, provenance: dict) -> str:
     """Render a portable report from this run's resolved inputs and metrics."""
     run_mode = provenance.get("mode", "saved-run reprocessing")
     source = provenance.get("parent", {})
+    parent_provenance = provenance.get("parent_provenance", {})
     def h(value: object) -> str:
         return escape(str(value), quote=True)
+
+    def recorded(keys: tuple[str, ...]) -> str:
+        for record in (provenance, parent_provenance):
+            for key in keys:
+                value = record.get(key)
+                if value:
+                    return str(value)
+        return "not recorded"
 
     mt = ", ".join(f"{key}={value:g} N m" for key, value in case["moment_tensor_Nm"].items())
     receivers = "; ".join(
@@ -809,6 +818,12 @@ def render_report(case: dict, summary: dict, provenance: dict) -> str:
                     ds.get("maxstep_source", "derived by the dynamic mesh"))
     display_window = case.get("display_time_window_s")
     display_text = (f"{display_window} s" if display_window else "none")
+    source_parameter_hash = recorded(("source_parameter_sha256", "moment_tensor_input_sha256"))
+    dspec_revision = recorded(("DSpecM1D_HEAD", "DSpecM1D_HEAD_at_run", "dspec_source_head"))
+    dspec_diff_hash = recorded((
+        "DSpecM1D_tracked_code_diff_sha256", "dspec_tracked_source_diff_sha256"
+    ))
+    yspec_revision = recorded(("YSpecpp_commit", "yspecpp_commit"))
     lines = ["<!doctype html><html><head><meta charset=\"utf-8\"><title>Figure ",
              h(case["paper_figure"]), " comparison</title><style>body{font:16px system-ui;max-width:1100px;margin:2rem auto;padding:0 1rem;line-height:1.5}table{border-collapse:collapse}th,td{border:1px solid #bbb;padding:.35rem .55rem;text-align:left}img{max-width:100%;height:auto}code{overflow-wrap:anywhere}</style></head><body>",
              f"<h1>Figure {h(case['paper_figure'])} comparison ({h(case['case'])})</h1>",
@@ -822,7 +837,8 @@ def render_report(case: dict, summary: dict, provenance: dict) -> str:
              f"<li>DSpecM1D actual metadata: mesh {h(ds.get('mesh_strategy', case['dspec'].get('mesh')))}, nq {h(ds.get('nq', case['dspec'].get('nq')))}, relative tolerance {h(ds.get('relative_error', case['dspec'].get('relative_error')))}, max step {h(maxstep_text)}.</li>",
              f"<li>YSpecpp actual metadata: tolerance {h(ys.get('solver_tolerance', case['yspec'].get('tolerance')))}, start decay {h(ys.get('solver_start_decay', case['yspec'].get('start_decay')))}. Shared sampling grid: {h(ds.get('output_samples'))} output samples, FFT length {h(ds.get('samples'))}, df={h(ds.get('frequency_spacing_hz'))} Hz, damping epsilon={h(ds.get('damping_epsilon_rad_s'))} rad/s, dt={h(ds.get('sample_interval_s'))} s.</li>",
              "<li>Adapters use matched configured band, quantity, gravity/attenuation mode, time grid, and filter. YSpecpp input latitude is converted to geographic latitude at its input boundary.</li></ul>",
-             "<h2>Processing and comparison</h2><p>Raw spectra are retained before filtering. Time traces are reconstructed by applying the four-corner half-cosine filter, inverse real FFT, <code>nfft × df</code> normalization, then exactly one <code>exp(+epsilon t)</code> damping correction. The processed Z spectrum applies a 5% start Hann, the filter, inverse FFT and normalization, then a 50% end Hann before the final FFT.</p>",
+             "<h2>Processing and comparison</h2><p>The native filtered-time comparison starts from each solver's unfiltered raw spectrum, applies the four-corner half-cosine frequency filter, inverse real FFT, <code>nfft × df</code> normalization, then exactly one <code>exp(+epsilon t)</code> damping correction.</p>",
+             "<p>The secondary processed-spectrum chain is separate: unfiltered raw spectrum → physical inverse and normalization → one damping correction → 5% Hann taper at both time-series ends → FFT → half-cosine frequency filter → inverse FFT and <code>nfft × df</code> normalization → 50% Hann taper at both ends → final FFT magnitude. The same `hann_ends` routine applies each taper at both ends.</p>",
              f"<p>Time-series errors compare YSpecpp with DSpecM1D in {UNITS[case['quantity']]}; metrics are mean and maximum absolute difference normalized by the YSpecpp channel peak, plus relative L2. Windows: full output and display window {h(display_text)}.</p>",
              f"<p>Raw spectrum compares Z amplitudes over {h(summary['raw_spectrum_metrics']['Z']['frequency_band_mHz'])} mHz ({h(summary['raw_spectrum_metrics']['Z']['frequency_bins'])} bins). The JSON records its reference peak; processed-spectrum metrics use the same band and YSpecpp processed Z peak. Grid and inverse-transform checks are in <code>summary.json</code>. The Figure 2 full-band gate, when applicable, requires each channel's mean time-domain difference to be strictly below 1% of its YSpecpp peak.</p>",
              "<table><thead><tr><th>Comparison</th><th>Frequency window (mHz)</th><th>Bins</th><th>Mean difference / YSpecpp peak (%)</th><th>Maximum difference / peak (%)</th></tr></thead><tbody>",
@@ -840,9 +856,10 @@ def render_report(case: dict, summary: dict, provenance: dict) -> str:
                 values["relative_l2"],
             ))) + "</td></tr>")
     lines += ["</tbody></table><h2>Provenance and limits</h2><ul>",
-        f"<li>Source-parameter SHA-256: <code>{h(provenance.get('source_parameter_sha256', provenance.get('parent_provenance', {}).get('source_parameter_sha256', source.get('source_parameter_sha256', 'see parent provenance'))))}</code>.</li>",
+        f"<li>Source-parameter SHA-256: <code>{h(source_parameter_hash)}</code>.</li>",
         f"<li>Saved spectra SHA-256: <code>{h(source.get('raw_spectra_sha256', 'not a replay'))}</code>; parent provenance SHA-256: <code>{h(source.get('provenance_sha256', 'not applicable'))}</code>.</li>",
-        f"<li>DSpecM1D revision: <code>{h(provenance.get('DSpecM1D_HEAD', provenance.get('parent_provenance', {}).get('DSpecM1D_HEAD', 'recorded in parent provenance')))}</code>; YSpecpp revision: <code>{h(provenance.get('YSpecpp_commit', provenance.get('parent_provenance', {}).get('YSpecpp_commit', YSPEC_COMMIT)))}</code>.</li>",
+        f"<li>DSpecM1D recorded original HEAD: <code>{h(dspec_revision)}</code>; YSpecpp revision recorded for this run: <code>{h(yspec_revision)}</code>.</li>",
+        f"<li>DSpecM1D tracked-code diff SHA-256 recorded for this run: <code>{h(dspec_diff_hash)}</code>. The HEAD identifies the recorded revision; it does not assert a clean worktree. Model and source-parameter hashes above identify the recorded inputs.</li>",
         "<li>This paired comparison measures agreement between these solver configurations and saved inputs. It does not establish scientific accuracy, convergence, or support outside this case and its recorded frequency/time windows.</li>",
         "</ul><h2>Reproduction</h2><p>Fresh full solve:</p><pre><code>",
         h(f"python3 benchmarks/yspecpp/run_paper.py --case {case['case']} --dspec-source /path/to/DSpecM1D --yspec-source /path/to/YSpecpp --dependency-root /path/to/dependencies --output /path/to/empty-output"),

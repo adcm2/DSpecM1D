@@ -482,6 +482,21 @@ def render_report(summary: dict, command: str) -> str:
     moment = ", ".join(f"{key}={value:g} N m"
                         for key, value in source["moment_tensor_Nm"].items())
     case_ids = [case["id"] for case in summary["cases"]]
+    models = sorted({case["model"] for case in summary["cases"]})
+    model_decks = summary.get("model_decks", {})
+    model_section = [
+        "<h2>Model inputs</h2><p>Deck columns: radius (m), rho (kg/m³), vpv/vsv/vph/vsh (m/s), Qkappa/Qmu (dimensionless), eta (dimensionless). Optional anisotropy columns may be absent for isotropic rows.</p>"
+    ]
+    for model in models:
+        deck = model_decks.get(model)
+        if isinstance(deck, str):
+            model_section.append(
+                f"<details><summary>{esc(model)}</summary><pre>{esc(deck)}</pre></details>"
+            )
+        else:
+            model_section.append(
+                f"<p><code>{esc(model)}</code>: deck text not captured in this archive.</p>"
+            )
     lines = [
         "<!doctype html><html><head><meta charset=\"utf-8\"><title>DSpecM1D and YSpecpp benchmark</title>",
         "<style>body{font:16px system-ui;max-width:1150px;margin:2rem auto;padding:0 1rem;line-height:1.5}table{border-collapse:collapse}th,td{border:1px solid #bbb;padding:.35rem .55rem;text-align:left}img{max-width:100%;height:auto}code{overflow-wrap:anywhere}</style></head><body>",
@@ -490,6 +505,7 @@ def render_report(summary: dict, command: str) -> str:
         f"<p>Run profile: <strong>{esc(provenance['refinement'])}</strong>; concurrent jobs {esc(provenance['jobs'])}; OpenMP threads {esc(provenance['runtime_environment']['OMP_NUM_THREADS'])}. All values below come from this run's resolved <code>summary.json</code>.</p>",
         f"<h2>Physical setup and solver settings</h2><p>This report covers {len(case_ids)} selected homogeneous fixture(s): {esc(case_ids)}. The available set exercises solid/ocean models, full/Cowling gravity, attenuation off/on, and ocean seafloor receivers. Fixtures intentionally avoid the known difference between YSpecpp's modulus spline and DSpecM1D's velocity spline. Source is the configured six-component moment tensor at the shared source depth/location; each receiver is specified in geocentric coordinates and converted to geographic latitude at the YSpecpp input boundary. Output is ZNE velocity in m/s; spectra are velocity per Hz.</p>",
         f"<p>Source: depth {esc(source['depth_km'])} km; geocentric latitude {esc(source['latitude'])}°, longitude {esc(source['longitude'])}°; tensor (N m): {esc(moment)}. Degrees {esc(defaults['degrees'])}; frequency band {esc(defaults['frequencies_mHz'])} mHz; duration {esc(defaults['duration_min'])} min; time step {esc(defaults['time_step_s'])} s. DSpecM1D uses nq={esc(defaults['solver']['dspec']['nq'])}, max step={esc(defaults['solver']['dspec']['maxstep'])}, relative error={esc(defaults['solver']['dspec'].get('relative_error'))}, nskip={esc(defaults['solver']['dspec']['nskip'])}; YSpecpp uses tolerance={esc(defaults['solver']['yspec']['tolerance'])}, start_decay={esc(defaults['solver']['yspec']['start_decay'])}.</p>",
+        "".join(model_section),
         f"<p>Each fixture is run at degrees {esc(defaults['degrees'])} individually and as their sum. The comparison uses matched raw complex spectra and native unfiltered time traces. Frequency bins, complex angular frequencies, damping, and time grids are checked separately. Every native time series is also checked against an independent direct inverse-DFT calculation using the saved spectrum, physical damping correction, and sample interval.</p>",
         "<h2>Measured comparisons</h2><p>Relative L2 is the norm of (DSpecM1D − YSpecpp) divided by the YSpecpp norm. Peak-scaled maximum is the maximum absolute difference divided by the YSpecpp component peak. Limits for the fine measured profile are 5e−6 for solid full-gravity fixtures, and 1e−5 for ocean full-gravity and Cowling fixtures; the same limits cover attenuation-off cases and their attenuation-on full-gravity regressions. Coarse and medium profiles are diagnostic and are not acceptance measurements. When the reference peak is zero, normalized metrics are shown as undefined and the absolute error remains visible with its physical units. Such a channel passes only when its maximum absolute error is exactly zero; even a subnormal nonzero difference fails. This report displays measurements and limits; cross-code agreement is not a scientific accuracy claim.</p>",
         "<p>Trace plots overlay native Z/N/E velocity traces and show DSpecM1D-minus-YSpecpp residuals in m/s. Spectrum plots show pointwise complex-spectrum magnitude difference divided by the YSpecpp component peak. When present, the attenuation plot shows on/off amplitude ratios by solver and component.</p>",
