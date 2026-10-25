@@ -70,6 +70,21 @@ convention and `sourcePointKernels` contains `P_X` in objective/Pa. Use the
 point term only when the perturbation is nonzero at the source radius; it uses
 the same single output factor as the returned spectrum.
 
+## Sensitivity kernels
+
+The opt-in elastic, full-gravity kernel APIs differentiate a real measurement
+of the SI time-windowed displacement spectrum about a 1D reference model.
+The [1D installed example](tutorials/sensitivity_kernels/README.md) covers
+solid moduli, fluid bulk modulus and density. The
+[3D installed example](tutorials/sensitivity_kernels_3d/README.md) produces
+spatial A/C/F/L/N kernels, sections and maps, with replayable data and plots.
+Geometry and density remain fixed for 3D elastic perturbations.
+
+Volume and source-contact contributions are separate. The
+[matched YSpecpp benchmark](benchmarks/yspecpp/kernels/3d/README.md) compares
+volume kernels away from the source and documents the independent source-local
+checks. These bounded examples do not establish mesh or angular convergence.
+
 ## License
 
 GNU General Public License v3.0; see [LICENSE](LICENSE).

@@ -77,3 +77,10 @@ observable; weaker rows use scaled absolute error and do not automatically
 pass. The source-node diagnostic gates waveforms and objectives. Density,
 attenuation, 3D structure, density validation, and broad convergence are
 outside scope.
+
+## Bounded 3D kernel benchmark
+
+The separate Phase D 3D fixture, baseline-only command, output guard,
+dependency overrides, report, provenance, and YSpec source-contact limits are
+documented in [3d/README.md](3d/README.md). Its operational configuration is
+`3d/fixture.json`; the reviewed planning protocol remains in `3d/protocol.json`.

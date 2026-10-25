@@ -120,6 +120,15 @@ inline void requireConstructedSEM(const Full1D::SEM &sem) {
   if (sem.mesh().NE() == 0 || sem.mesh().NN() < 2)
     throw std::invalid_argument("SEM must be constructed before sensitivity operations.");
 }
+inline void requireMatchingTimeScale(const Full1D::SEM &sem,
+                                     const SpectraSolver::FreqFull &frequency) {
+  const double timeScale=sem.timeScaleSeconds();
+  if(!(std::isfinite(timeScale)&&timeScale>0.0))
+    throw std::invalid_argument("SEM time scale must be positive and finite.");
+  const double relativeError=std::abs(frequency.timeNorm()-timeScale)/std::abs(timeScale);
+  if(!(std::isfinite(relativeError)&&relativeError<1e-12))
+    throw std::invalid_argument("FreqFull and SEM must use the same model time scale.");
+}
 } // namespace sensitivity_detail
 
 /** Full-mesh fields for a compact multi-column source and its Hermitian adjoint. */
@@ -202,6 +211,26 @@ public:
     Eigen::MatrixXcd fields = solver.solve(compactRhs);
     if (solver.info() != Eigen::Success || !fields.allFinite())
       throw std::runtime_error("Forward SEM solve failed or returned non-finite fields.");
+    return fields;
+  }
+
+  /** Solve explicit Hermitian-adjoint right-hand sides for one degree. */
+  static Eigen::MatrixXcd solveAdjointFrequency(
+      const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+      Complex z, const Eigen::MatrixXcd &rightHandSides) {
+    if (rightHandSides.rows() == 0 || rightHandSides.cols() == 0 ||
+        !rightHandSides.allFinite())
+      throw std::invalid_argument("Adjoint right-hand sides must be nonempty and finite.");
+    SparseComplex h = systemMatrix(sem, family, degree, z);
+    if (h.rows() != rightHandSides.rows())
+      throw std::invalid_argument("Adjoint right-hand sides do not match the selected SEM operator.");
+    Solver solver;
+    solver.compute(h);
+    if (solver.info() != Eigen::Success)
+      throw std::runtime_error("Adjoint SEM factorization failed.");
+    Eigen::MatrixXcd fields = solver.solveAdjoint(rightHandSides);
+    if (solver.info() != Eigen::Success || !fields.allFinite())
+      throw std::runtime_error("Hermitian-adjoint SEM solve failed or returned non-finite fields.");
     return fields;
   }
 
