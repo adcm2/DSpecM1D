@@ -2,6 +2,7 @@
 #define EARTHMESH_RADIAL_MESH_H
 
 #include <vector>
+#include <limits>
 
 #include <DSpecM1D/ModelConcepts>
 #include <GaussQuad/All>

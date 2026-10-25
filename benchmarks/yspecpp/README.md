@@ -74,3 +74,11 @@ native traces are saved under `results/`. New summaries use the consolidated
 runner's format. Existing web artifacts retain their original run derivation;
 the corrected Figure 1 secondary spectrum is a separately derived product from
 saved raw spectra, with its own input hashes and derivation record.
+
+For the focused matched full-gravity elastic modulus-kernel comparison, see
+[`kernels/README.md`](kernels/README.md). It documents the bounded homogeneous
+fixture, scalar/window mapping, units, gates, and exact reproduction command.
+
+For optional toroidal and spheroidal modal-frequency kernel benchmarks against
+the independent DT references (not CI), see
+[`mode_kernels/README.md`](mode_kernels/README.md).

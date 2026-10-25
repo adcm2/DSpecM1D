@@ -1,6 +1,8 @@
 #ifndef EARTHMESH_RADIALMESHDECLARATION_H
 #define EARTHMESH_RADIALMESHDECLARATION_H
 
+#include <limits>
+
 namespace EarthMesh {
 class RadialMesh {
  public:
@@ -17,7 +19,13 @@ class RadialMesh {
       requires ModelInfoConcepts::BasicSphericalDensityModel<sphericalmodel,
                                                              int, double>
    RadialMesh(const sphericalmodel &, int, const double, const double,
-              bool = true);
+              bool = true,
+              double = std::numeric_limits<double>::quiet_NaN());
+
+   // Add an internal computational node without changing material layers.
+   // Near-boundary radii within the source matching tolerance use that node.
+   void splitAtRadius(double);
+   double SourceCutRadius() const { return _source_cut_radius; }
 
    // return functions of nodes
    auto NE() const { return _vec_nodes.size(); };   // #elements
@@ -83,6 +91,7 @@ class RadialMesh {
    bool _has_fluid = false;
    int _planetary_element;
    std::vector<int> _vec_fs_boundary;
+   double _source_cut_radius = std::numeric_limits<double>::quiet_NaN();
 };
 };   // namespace EarthMesh
 #endif   // EARTHMESH_RADIALMESHDEFINITION_H

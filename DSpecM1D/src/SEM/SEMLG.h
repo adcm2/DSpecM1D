@@ -71,7 +71,12 @@ SEM::ltgT(int idx_e, int idx_n) const {
 
 auto
 SEM::sourceElement(SourceInfo::EarthquakeCMT &cmt) const {
-  double rad_source = m_mesh.PR() - 1000.0 * cmt.Depth() / m_lengthNorm;
+  if (sourceAligned() && !sourceMatches(cmt))
+    throw std::invalid_argument(
+        "Source depth differs from the radius used to align this SEM.");
+  const double rad_source = sourceAligned()
+      ? m_sourceRadius
+      : m_mesh.PR() - 1000.0 * cmt.Depth() / m_lengthNorm;
 
   int idxout = m_mesh.NE() - 1;
   for (int idx = 0; idx < m_mesh.NE(); ++idx) {

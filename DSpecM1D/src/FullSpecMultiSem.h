@@ -2,6 +2,7 @@
 #define DSPECM1D_FULL_SPEC_MULTI_SEM_H
 
 #include "FullSpec.h"
+#include "EquilibratedSparseLU.h"
 
 namespace SPARSESPEC {
 
@@ -21,8 +22,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
   using SparseMatrixC = Eigen::SparseMatrix<Complex>;
-  using SparseLUType =
-      Eigen::SparseLU<SparseMatrixC, Eigen::COLAMDOrdering<int>>;
+  using SparseLUType = EquilibratedSparseLU<Complex>;
   Timer timer1;
 
   if (params.attenuation())
@@ -96,7 +96,7 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   // build one SEM per chunk
   std::vector<Full1D::SEM> sems;
   for (int idx = 0; idx < numChunks; ++idx)
-    sems.emplace_back(inp_model, maxSteps[idx], NQ, params.lmax());
+    sems.emplace_back(inp_model, maxSteps[idx], NQ, params.lmax(), cmt);
 
   timer1.start();
   SparseLUType solver, solver1;
@@ -134,7 +134,6 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
       keR.makeCompressed();
       inR.makeCompressed();
       keRAtten.makeCompressed();
-      MatrixC fR = sem.calculateForceRedR(cmt);
       MatrixC vecRedZ = sem.rvRedZR(params);
 #pragma omp parallel default(shared) private(solver)
       {
@@ -143,18 +142,24 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           double wval = freqChunks[idxChunk][idx];
           int idxw = idxChunks[idxChunk][idx];
           Complex w = wval + ieps;
+          const Complex sourceAttenuation = params.attenuation()
+                                                ? attenFactor(w, w0)
+                                                : Complex(0.0, 0.0);
+          auto source = sem.sourceTreatedRadial(cmt, w, sourceAttenuation);
           SparseMatrixC wR = -w * w * inR + keR;
           if (params.attenuation())
             wR += attenFactor(w, w0) * keRAtten;
           wR.makeCompressed();
           solver.compute(wR);
-          MatrixC vecX = solver.solve(fR);
+          MatrixC vecX = solver.solve(source.force);
           auto tmp = vecX.block(lowidx, 0, lenidx, 1);
           auto resval = (vecRedZ.transpose() * tmp).sum();
+          MatrixC liftOutput = sem.sourceLiftReceiverRadial(
+              params, source.lift, source.sourceElement);
           for (int idxr = 0; idxr < numRec; ++idxr) {
 #pragma omp critical(torvecadd)
             {
-              vecRaw(3 * idxr, idxw) += resval;
+              vecRaw(3 * idxr, idxw) += resval + liftOutput(3 * idxr, 0);
             }
           }
         }
@@ -196,7 +201,6 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           MatrixC fVals = sem.calculateForceRedCoefficientsT(cmt, idxl, 0.0);
           // std::cout << "Debug 5\n";
           MatrixC redC = rvVals * fVals;
-          MatrixC fBase = sem.calculateForceAllT(cmt, idxl);
           // std::cout << "Debug 6\n";
           MatrixC rvBase = sem.rvBaseFullT(params, idxl);
           // std::cout << "Debug 7\n";
@@ -208,6 +212,11 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           for (int idx = (int) lenChunk - 1; idx > -1; --idx) {
             auto wval = freqChunks[idxChunk][idx];
             Complex w = wval + ieps;
+            const Complex sourceAttenuation = params.attenuation()
+                                                  ? attenFactor(w, w0)
+                                                  : Complex(0.0, 0.0);
+            auto source = sem.sourceTreatedToroidal(
+                cmt, idxl, w, sourceAttenuation);
             std::size_t ridx = ridxtor[idx];
             std::size_t len_ms = lentor - ridx;
             SparseMatrixC mat = hTor.block(ridx, ridx, len_ms, len_ms) -
@@ -216,12 +225,16 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
               mat += attenFactor(w, w0) *
                      hTorAtten.block(ridx, ridx, len_ms, len_ms);
             mat.makeCompressed();
-            auto fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
+            auto fRed = source.force.block(ridx, 0, len_ms,
+                                           source.force.cols());
             factorizeOrCompute(solver1, mat, (int) lenChunk - idx - 1, nskip);
             MatrixC vecSol = solver1.solve(fRed);
             auto lidx = lowidx - ridx;
+            MatrixC receiverLift = sem.sourceLiftReceiverToroidal(
+                params, idxl, source.lift, source.sourceElement);
             vecRawL.col(idx) +=
-                redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 2))
+                redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 2) +
+                                  receiverLift)
                     .rowwise()
                     .sum();
           }
@@ -296,7 +309,6 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
             pS.makeCompressed();
             hS.makeCompressed();
             hSa.makeCompressed();
-            MatrixC fBase = sem.calculateForceAll(cmt, idxl, useCowling);
             MatrixC rvBase = sem.rvBaseFull(params, idxl, useCowling);
 
             std::vector<double> regionW(freqChunks[idxChunk].begin() + regionBegin,
@@ -310,18 +322,27 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
               const std::size_t ridx = ridxsph[localRegionIdx];
               const std::size_t len_ms = lensph - ridx;
               const Complex w = wval + ieps;
+              const Complex sourceAttenuation = params.attenuation()
+                                                    ? attenFactor(w, w0)
+                                                    : Complex(0.0, 0.0);
+              auto source = sem.sourceTreatedSpheroidal(
+                  cmt, idxl, w, sourceAttenuation, useCowling);
               SparseMatrixC wS = hS.block(ridx, ridx, len_ms, len_ms) -
                                  w * w * pS.block(ridx, ridx, len_ms, len_ms);
               if (params.attenuation())
                 wS += attenFactor(w, w0) *
                       hSa.block(ridx, ridx, len_ms, len_ms);
               wS.makeCompressed();
-              MatrixC fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
+              MatrixC fRed = source.force.block(ridx, 0, len_ms,
+                                                source.force.cols());
               factorizeOrCompute(regionSolver, wS, regionEnd - idx - 1, nskip);
               MatrixC vecSol = regionSolver.solve(fRed);
               const auto lidx = lowidx - ridx;
+              MatrixC receiverLift = sem.sourceLiftReceiver(
+                  params, idxl, source.lift, source.sourceElement, useCowling);
               vecRawL.col(idx) +=
-                  redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 4))
+                  redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 4) +
+                                    receiverLift)
                       .rowwise()
                       .sum();
             }

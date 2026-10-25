@@ -5,6 +5,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
+#include <limits>
 #include <Eigen/Core>
 #include <GSHTrans/Core>
 #include <Interpolation/Lagrange.hpp>
@@ -63,6 +64,7 @@ private:
   double frequencynorm = std::sqrt(pi_db * bigg_nd * densitynorm);
   double normint;
   double m_frequencyNorm, m_lengthNorm, m_momentNorm;
+  double m_sourceRadius = std::numeric_limits<double>::quiet_NaN();
 
   // base sparse matrices
   SMAT m_matInertia0, m_matKe0, m_matKe0Atten, m_matInTBase;
@@ -79,11 +81,32 @@ private:
       m_vecInSCBase;
 
 public:
+  struct SourceTreatmentSpheroidal {
+    Eigen::MatrixXcd force;
+    // Global nodal values of the lift; the interface trace is the upper side.
+    Eigen::MatrixXcd lift;
+    int sourceElement = -1;
+  };
+  struct SourceTreatmentRadial {
+    Eigen::MatrixXcd force, lift;
+    int sourceElement = -1;
+  };
+  struct SourceTreatmentToroidal {
+    Eigen::MatrixXcd force, lift;
+    int sourceElement = -1;
+  };
+
   SEM() {};
   /// Constructs the SEM directly from the preferred workflow aggregate.
   explicit SEM(const InputParametersNew &);
   /// Legacy low-level constructor retained for compatibility.
-  template <class model1d> SEM(const model1d &, double, int, int);
+  template <class model1d>
+  SEM(const model1d &, double, int, int,
+      double sourceRadius = std::numeric_limits<double>::quiet_NaN());
+  /// Low-level source-aware constructor for forward and kernel workflows.
+  template <class model1d>
+  SEM(const model1d &, double, int, int,
+      const SourceInfo::EarthquakeCMT &);
 
   /// Local-to-global map for spheroidal unknowns.
   auto ltgS(int, int, int) const;
@@ -95,6 +118,9 @@ public:
   auto ltgR(int, int, int) const;
   auto el() const { return m_el; };
   auto eu() const { return m_eu; };
+  auto maxDegree() const { return m_lmax; };
+  /// Reports the fluid/solid classification used when assembling this element.
+  bool elementIsFluid(int element) const { return m_vecFluid.at(element) != 0; };
 
   /// Returns the element indices containing all receivers.
   auto receiverElements(InputParameters &, bool toroidal = false) const;
@@ -103,13 +129,53 @@ public:
 
   /// Returns the SEM radial mesh.
   const EarthMesh::RadialMesh &mesh() const { return m_mesh; };
+  /// True only when the computational mesh was cut at a source radius.
+  bool sourceAligned() const { return std::isfinite(m_sourceRadius); }
+  /// Source radius used to build the mesh, or NaN for the legacy constructor.
+  double sourceRadius() const { return m_sourceRadius; }
+  bool sourceMatches(const SourceInfo::EarthquakeCMT &cmt) const {
+    const double radius = _SourceRadius(cmt);
+    return sourceAligned() &&
+           std::abs(radius - m_sourceRadius) <=
+               8.0 * std::numeric_limits<double>::epsilon() *
+                   std::max({1.0, std::abs(radius), std::abs(m_sourceRadius)});
+  }
   /// Returns the mesh-interpolated material model.
   const MeshModel &meshModel() const { return m_meshModel; };
+  /// Returns the SI length represented by one model-radius unit.
+  double lengthScaleMetres() const { return m_lengthNorm; };
+  /// Returns the SI pressure represented by one model-stress unit.
+  double pressureScalePascals() const {
+    return m_momentNorm / (m_lengthNorm * m_lengthNorm * m_lengthNorm);
+  };
+  /// Returns the SI time represented by one model-time unit.
+  double timeScaleSeconds() const { return 1.0 / m_frequencyNorm; };
+  /// Returns the gravity coefficient used by the assembled SEM in model units.
+  double gravityCoefficient() const { return bigg_db; };
 
   // spheroidal force vectors
   Eigen::MatrixXcd calculateForce(SourceInfo::EarthquakeCMT &, int);
   Eigen::MatrixXcd calculateForceAll(SourceInfo::EarthquakeCMT &, int,
                                      bool cowling = false);
+  SourceTreatmentSpheroidal sourceTreatedSpheroidal(
+      SourceInfo::EarthquakeCMT &, int, std::complex<double>,
+      std::complex<double> attenuationFactor = {}, bool cowling = false);
+  SourceTreatmentRadial sourceTreatedRadial(SourceInfo::EarthquakeCMT &,
+                                             std::complex<double>,
+                                             std::complex<double> attenuationFactor = {});
+  SourceTreatmentToroidal sourceTreatedToroidal(SourceInfo::EarthquakeCMT &,
+                                                 int, std::complex<double>,
+                                                 std::complex<double> attenuationFactor = {});
+  Eigen::MatrixXcd sourceLiftReceiver(InputParameters &, int,
+                                      const Eigen::MatrixXcd &lift,
+                                      int sourceElement,
+                                      bool cowling = false);
+  Eigen::MatrixXcd sourceLiftReceiverRadial(InputParameters &,
+                                            const Eigen::MatrixXcd &lift,
+                                            int sourceElement);
+  Eigen::MatrixXcd sourceLiftReceiverToroidal(InputParameters &, int,
+                                              const Eigen::MatrixXcd &lift,
+                                              int sourceElement);
   Eigen::MatrixXcd calculateForceCoefficients(SourceInfo::EarthquakeCMT &, int);
   Eigen::MatrixXcd calculateForceRedCoefficients(SourceInfo::EarthquakeCMT &,
                                                  int, double);
@@ -173,5 +239,6 @@ public:
 #include "SEMForceToroidal.h"
 #include "SEMForceRadial.h"
 #include "SEMReceivers.h"
+#include "SEMSourceTreatment.h"
 
 #endif   // DSPECM1D_SEM_H

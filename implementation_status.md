@@ -567,3 +567,20 @@ Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Co
   checkpoint commit/push and PR metadata update; CI must pass, then stop.
 - Validation, benchmark-file untracking, fresh Luna-high/Sol-high review and
   the explicitly authorized normal commit/push are pending. Do not merge.
+
+## 2026-10-25 — 1D material kernels and source treatment
+
+- Added fixed-mesh forward/Hermitian-adjoint access and SI windowed-displacement
+  kernels for solid A/C/F/L/N, fluid bulk modulus and density, including the
+  nonlocal background-gravity derivative. Source-aligned meshes and local jump
+  lifts now serve forward spectra and kernels, with modulus source-point terms.
+  Prepared SEMs used for spectra must use a source-aware constructor.
+- Added an installed-library example and optional matched YSpecpp and DT modal
+  benchmark runners, with concise definitions/results in their READMEs. Raw
+  numerical evidence and reports remain local under build/.
+- Independent Luna High and short Sol reviews passed. The last full C++ run
+  passed 163 enabled tests (two existing diagnostics disabled); publication
+  checks passed 13 Python tests and verified 29 reviewed source identities.
+  Saved 24 October modal evidence passes 19 toroidal and 47 spheroidal gates.
+- Multiple-earthquake support, 3D/Q kernels, native ModelInput retirement, the
+  high-degree repair and expensive convergence sweep are outside this PR.
