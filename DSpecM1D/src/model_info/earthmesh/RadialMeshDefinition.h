@@ -1,6 +1,10 @@
 #ifndef EARTHMESH_RADIALMESHDEFINITION_H
 #define EARTHMESH_RADIALMESHDEFINITION_H
 
+#include <cmath>
+#include <algorithm>
+#include <stdexcept>
+
 namespace EarthMesh {
 
 RadialMesh::RadialMesh(const double planetradius, const double ballrad,
@@ -78,7 +82,7 @@ template <class sphericalmodel>
                                                           double>
 RadialMesh::RadialMesh(const sphericalmodel &mymodel, int NQ,
                        const double ballrad, const double rel_max_el,
-                       bool incball)
+                       bool incball, double source_radius)
     : planet_radius(mymodel.OuterRadius()),
       _q{GaussQuad::GaussLobattoLegendreQuadrature1D<double>(NQ)} {
    double max_element_size = rel_max_el * mymodel.OuterRadius();
@@ -170,6 +174,40 @@ RadialMesh::RadialMesh(const sphericalmodel &mymodel, int NQ,
          ++idx_global;
       }
    }
+   if (std::isfinite(source_radius))
+      splitAtRadius(source_radius);
 };
+
+inline void RadialMesh::splitAtRadius(double radius) {
+   for (int e = 0; e < static_cast<int>(_vec_nodes.size()); ++e) {
+      const double lo = ELR(e), hi = EUR(e);
+      const double tolerance = 8.0 * std::numeric_limits<double>::epsilon() *
+         std::max({1.0, std::abs(radius), std::abs(lo), std::abs(hi)});
+      if (std::abs(radius - lo) <= tolerance) {
+         _source_cut_radius = lo;
+         return;
+      }
+      if (std::abs(radius - hi) <= tolerance) {
+         _source_cut_radius = hi;
+         return;
+      }
+      if (radius > lo && radius < hi) {
+         auto lower = nodegenerateF(_q.Points(), lo, radius);
+         auto upper = nodegenerateF(_q.Points(), radius, hi);
+         const int layer = _vec_layers[e];
+         const bool solid = _vec_issolid[e];
+         _vec_nodes[e] = std::move(lower);
+         _vec_nodes.insert(_vec_nodes.begin() + e + 1, std::move(upper));
+         _vec_layers.insert(_vec_layers.begin() + e + 1, layer);
+         _vec_issolid.insert(_vec_issolid.begin() + e + 1, solid);
+         for (auto &boundary : _vec_fs_boundary)
+            if (boundary >= e) ++boundary;
+         if (e <= _planetary_element) ++_planetary_element;
+         _source_cut_radius = radius;
+         return;
+      }
+   }
+   throw std::out_of_range("Source radius is outside the radial mesh.");
+}
 };   // namespace EarthMesh
 #endif   // EARTHMESH_RADIALMESHDEFINITION_H

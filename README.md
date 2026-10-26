@@ -52,6 +52,39 @@ For an optional, separately built and pinned YSpecpp numerical comparison, see t
 
 Linux is the primary documented platform. macOS is best-effort with a C++23 compiler, CMake, FFTW, and a matching OpenMP runtime such as `libomp`; check that CMake finds OpenMP. Windows has not been verified. NetCDF and LAPACK are not required. BLAS is not a required direct project dependency with the pinned GSHTrans configuration.
 
+## Source-aligned SEMs
+
+Forward spectra and fixed-mesh kernel evaluation require an SEM whose
+computational mesh is cut at the same solid source depth. Prefer
+`Full1D::SEM(paramsNew)` for the workflow aggregate, or use the explicit
+source-aware constructor `Full1D::SEM(model, maxstep, nq, lmax, cmt)`. The
+legacy four-argument constructor remains available for raw matrix and
+operator work; it does not prepare a source and spectrum/kernel entry points
+reject it until a source-aware overload is used. The source split is
+computational and does not add a physical layer.
+
+For a modulus perturbation, the derivative is
+`δJ = ∫ K_X(r) δX(r) dr + P_X δX(r_source)`. In
+`WindowedSensitivityResult`, `kernels` contains volume integrands in the dr
+convention and `sourcePointKernels` contains `P_X` in objective/Pa. Use the
+point term only when the perturbation is nonzero at the source radius; it uses
+the same single output factor as the returned spectrum.
+
+## Sensitivity kernels
+
+The opt-in elastic, full-gravity kernel APIs differentiate a real measurement
+of the SI time-windowed displacement spectrum about a 1D reference model.
+The [1D installed example](tutorials/sensitivity_kernels/README.md) covers
+solid moduli, fluid bulk modulus and density. The
+[3D installed example](tutorials/sensitivity_kernels_3d/README.md) produces
+spatial A/C/F/L/N kernels, sections and maps, with replayable data and plots.
+Geometry and density remain fixed for 3D elastic perturbations.
+
+Volume and source-contact contributions are separate. The
+[matched YSpecpp benchmark](benchmarks/yspecpp/kernels/3d/README.md) compares
+volume kernels away from the source and documents the independent source-local
+checks. These bounded examples do not establish mesh or angular convergence.
+
 ## License
 
 GNU General Public License v3.0; see [LICENSE](LICENSE).

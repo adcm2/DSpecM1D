@@ -1,0 +1,276 @@
+{
+  "schema": "dspec-3d-phase-d-preflight-v1",
+  "status": "PRE-RUN PROTOCOL; execution blocked until C review passes",
+  "repositories": {
+    "dspecm1d": {
+      "path": "/home/adcm2/Documents/Research/Projects/DSpecM1D",
+      "head_at_preflight": "3b001074291bac027bcbc363a4f0b7985729e6cb",
+      "dirty_state_at_preflight": [
+        "DSpecM1D/src/SensitivityKernels.h",
+        "implementation_status.md",
+        "tests/test_sensitivity_kernels.cpp",
+        "DSpecM1D/Windowed3DFields",
+        "DSpecM1D/src/Windowed3DFields.h",
+        "validation/phase0/"
+      ],
+      "rule": "Re-capture HEAD, dirty paths, and hashes after C review; preserve all existing state."
+    },
+    "yspecpp": {
+      "path": "/home/adcm2/Documents/Research/Projects/YSpecpp",
+      "head": "280eab0200495391539c0f97e62f978083c307bc",
+      "dirty": false
+    },
+    "yspec_dependency_pins": {
+      "NumericConcepts": "e03a2889d43a03660d0879f46dda1406d90c9517",
+      "Interpolation": "d5a1711ca6a89fc8ad8148fe13212398fe569bc0",
+      "FFTWpp": "cb152c0e85f3822493c2d9e85a56307ac7b4f1c0",
+      "GaussQuad": "7d4786d192f68077cd99a34dcdf1379ed1eeac9a",
+      "GSHTrans": "8dd116df8df4222fe9b10a40c7213d34f2a274fb",
+      "planetmodel": "fa6e230fde25152d40f27d9839de44c4f3182a24"
+    }
+  },
+  "model": {
+    "kind": "homogeneous elastic solid sphere with existing radial shell partitions",
+    "deck": "/home/adcm2/Documents/Research/Projects/DSpecM1D/benchmarks/yspecpp/kernels/homogeneous_shell.deck",
+    "radius_m": 6371000.0,
+    "layers_m": [
+      0.0,
+      2000000.0,
+      4000000.0,
+      6346000.0,
+      6371000.0
+    ],
+    "rho_kg_m3": 5515.0,
+    "vp_m_s": 8000.0,
+    "vs_m_s": 4500.0,
+    "baseline_ti_moduli_pa": {
+      "A": 352960000000.0,
+      "C": 352960000000.0,
+      "F": 129602500000.0,
+      "L": 111678750000.0,
+      "N": 111678750000.0
+    },
+    "gravity": "full",
+    "attenuation": false,
+    "density_and_geometry_perturbed": false,
+    "retained_degrees": [
+      0,
+      3
+    ],
+    "solver_frequency_bins": [
+      1,
+      2,
+      3
+    ],
+    "note": "Confirm deck material values and layer indexing from resolved metadata in both adapters before any D execution; values above are derived from the stated rho/vp/vs and isotropic identities, not a saved run.",
+    "radial_breaks_m": [
+      4200000.0,
+      6200000.0,
+      6311000.0,
+      6321000.0,
+      6331000.0
+    ],
+    "deck_rule": "Create one generated, hash-recorded common deck from the existing homogeneous_shell.deck by inserting identical-material radial partitions at the listed radii. Use the same generated deck for both solvers and the independent oracle; preserve the source deck unchanged.",
+    "radial_mesh_resolution": "DSpec: use the existing fine harness settings maxstep_fraction=0.05 and nq=8; partition every regular/source-local envelope boundary so the smooth profile is sampled inside finite elements. YSpec: use the existing regular maxElement=250 km and source-local maxElement=1 km kernel sampling settings. Before any sensitivity run, record actual DSpec element/node radii and verify every support interval has interior quadrature nodes on each side of the source. This is a static metadata gate, not a convergence sweep; if a support interval is not resolved, revise the protocol before execution.",
+    "baseline_solver_settings": {
+      "DSpecM1D": {
+        "maxstep_fraction": 0.05,
+        "gll_points_per_element": 8,
+        "tolerance": "No iterative tolerance is exposed by this benchmark adapter; record the resolved linear solver/backend and normalized residual per solved block. If the reviewed API exposes one, freeze its exact value before baseline."
+      },
+      "YSpecpp": {
+        "radial_ode_tolerance": 1e-09,
+        "start_decay_efolds": 11.0,
+        "step_factor": 0.25
+      },
+      "perturbed_models": "Use exactly the same solver settings as the matched baseline for every sign and h."
+    }
+  },
+  "event": {
+    "source": {
+      "geocentric_latitude_deg": 10.0,
+      "east_longitude_deg": 20.0,
+      "depth_m": 50000.0,
+      "radius_m": 6321000.0,
+      "moment_tensor_Nm_rr_rt_rp_tt_tp_pp": [
+        1e+19,
+        2e+18,
+        -3e+18,
+        -5e+18,
+        4e+18,
+        -5e+18
+      ],
+      "force": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "receiver": {
+      "geocentric_latitude_deg": 45.0,
+      "east_longitude_deg": 90.0,
+      "depth_m": 3000.0,
+      "radius_m": 6368000.0
+    },
+    "coordinate_matching": "DSpec source/receiver latitudes are geocentric. YSpecpp takes geographic latitudes; map latitude by geographic=atan(tan(geocentric)/0.993277), retain longitude and depth. Verify round-trip geocentric coordinates in both metadata files."
+  },
+  "spectrum_and_objective": {
+    "nt": 128,
+    "dt_s": 20.0,
+    "duration_s": 1800.0,
+    "df_hz": 0.000390625,
+    "reported_spectrum_bins_zero_based": [
+      1,
+      2,
+      3
+    ],
+    "measurement_components": [
+      "J_Z (Z-only scalar objective)",
+      "J_N (N-only scalar objective)"
+    ],
+    "window": "Hann on samples 0..90 inclusive; zero on samples 91..127",
+    "q_and_units": "Use the shared B/C reviewed observation map. Physical raw displacement-spectrum map is L0*T0*fz*U_raw in m*s. The q map carries the window, SI length/time factors, FFT weights, and DC/Nyquist treatment exactly once. Do not multiply by T0 again.",
+    "q_shape": "3 components (Z,N,E) by 65 nonnegative-frequency bins; two separate scalar objectives, never a combined Z+N objective.",
+    "q_by_objective": {
+      "J_Z": {
+        "component_order": [
+          "Z",
+          "N",
+          "E"
+        ],
+        "nonzero_entries": {
+          "Z": {
+            "1": [
+              0.7,
+              0.2
+            ],
+            "2": [
+              -0.25,
+              0.45
+            ]
+          },
+          "N": {},
+          "E": {}
+        },
+        "all_other_components_bins_zero": true
+      },
+      "J_N": {
+        "component_order": [
+          "Z",
+          "N",
+          "E"
+        ],
+        "nonzero_entries": {
+          "Z": {},
+          "N": {
+            "1": [
+              0.7,
+              0.2
+            ],
+            "2": [
+              -0.25,
+              0.45
+            ]
+          },
+          "E": {}
+        },
+        "all_other_components_bins_zero": true
+      }
+    },
+    "baseline_scale_formula": "For each scalar objective separately, after matched baseline only: S = ||q||_F * ||P U0||_F, where q is its explicit 3x65 complex weight matrix above and P U0 is the full baseline physical windowed measurement spectrum after the reviewed SI map, including frequency-bin/FFT weights exactly once. Freeze numeric S before any +/-h objective.",
+    "objective_reference": "Jref=S for that same scalar objective; require S>0. Save baseline J0 as the scalar q-contracted objective, but do not use its magnitude to define Jref.",
+    "source_shell_units": "Return angular contact density K_Omega in objective/Pa and integrate K_Omega*deltaX dOmega; do not multiply by source_radius^2. If a surface density is emitted, label K_Omega/source_radius^2 with units objective/(Pa m^2). Volume kernels have units objective/(Pa m^3).",
+    "spectrum_grid_rule": "Every adapter and the independent oracle stores raw spectra on the full 65-bin nonnegative-frequency grid. The solver has active bins 1,2,3 and raw values are explicitly zero outside those bins. Apply P and P* on the full nt=128 grid, not only bins 1-3; retain full-grid windowed/SI-mapped spectra and full-grid q/adjoint weights because time-window multiplication couples frequencies.",
+    "objective_units": "The existing q entries are dimensionless; with the reviewed SI map, J, S, Jref and dJ/dh are in m*s (the scalar objective unit). Keep the L0*T0*fz map once and do not multiply by T0 again.",
+    "epsilon_s_inv": 0.002777777777777778,
+    "complex_frequency_rule": "For all 65 bins k=0..64, z_k=2*pi*k*df_hz - i*epsilon with df_hz=1/(128*20 s)=0.000390625 Hz and epsilon=5/1800 s^-1=1/360 s^-1. Record resolved SI omega/z arrays from both adapters and require equality within 5e-11 relative.",
+    "component_fft_convention": "Component order is Z=up, N=north, E=east. Store a real-series RFFT on bins k=0..64 (DC 0, Nyquist 64, positive frequencies 1..63); raw modal solver values are retained only at active bins 1,2,3 and explicitly zero at all other bins. The matching real inverse RFFT uses the backward positive-exponent convention and unnormalised inverse, followed by df*exp(+epsilon*t), the Hann window, and the SI displacement map exactly once; q and its Hermitian adjoint use matching DC/Nyquist weights. Apply and retain P and P* across the full nt=128 grid so time-window frequency coupling is preserved.",
+    "physical_G_gate": "Record physical G from each resolved model/solver and require DSpec, YSpecpp, and the independent oracle to use the same value within 1e-12 relative before baseline comparison. Abort if the equality gate fails; do not silently substitute a different gravity constant."
+  },
+  "predeclared_directions": {
+    "angular_field": "chi(theta,phi)=Re(Y_2,1)+0.5*Re(Y_3,2), using normalized complex scalar harmonics with DSpec/GSH Condon-Shortley convention; Y_lm uses geocentric colatitude and east longitude.",
+    "regular_volume": {
+      "radial_support_m": [
+        4200000.0,
+        6200000.0
+      ],
+      "radial_envelope": "sin(pi*(r-4.2e6)/2.0e6)^2 on the closed support, zero outside; hence exactly zero at source radius 6.321e6 m.",
+      "material_change": "For each independent X in A,C,F,L,N, one run direction at a time: deltaX/X0 = h*w(r)*chi(theta,phi); density fixed.",
+      "purpose": "YSpecpp volume comparison and independent Cartesian-TI harmonic-block Born check; no shell/contact term is expected for this support."
+    },
+    "source_local": {
+      "support": "[6311000, 6331000] m, wholly within the homogeneous layer [4000000, 6346000] m and centred on source radius 6321000 m; apply identical radii in DSpec, YSpec sample points, and Cartesian oracle quadrature.",
+      "radial_envelope": "d=10000 m; w(r)=cos(pi*(r-rs)/(2*d))^2 for |r-rs|<=d, zero otherwise. This gives w(rs)=1, continuous first derivative, and zero at both support boundaries.",
+      "directions": [
+        "C",
+        "F",
+        "L"
+      ],
+      "material_change": "deltaX/X0 = h*w(r)*chi(theta,phi), one modulus at a time; rebuild exact projected finite-band j_r(h), j_h(h), explicit source-force rows, -H_e(h)g(h), and direct R_e g(h) for each plus/minus model.",
+      "receiver_rule": "Keep the minimum comparison receiver away from source radius and source angle. Add the receiver-in-lift-element-away-from-trace case only if C review requires it. Exact source-radius one-sided receiver traces are outside D minimum and need explicit two-trace evidence.",
+      "finite_h_projection_equations": {
+        "scalar_radial_C": "For retained scalar basis Y_alpha, M_C(alpha,beta;h)=integral(conj(Y_alpha)*C_s(Omega;h)*Y_beta,dOmega). Solve M_C(h) j_r(h)=C_s0*j_r0; baseline scalar radial coefficient norm is 1.",
+        "tangential_L": "For B_(lm,S)=grad_1 Y_lm and B_(lm,T)=-rhat cross grad_1 Y_lm, M_L(alpha a,beta b;h)=integral(conj(B_alpha,a) dot L_s(Omega;h) B_beta,b,dOmega). Solve M_L(h) j_h(h)=L_s0*G*j_h0, where G is diagonal lambda_l=l(l+1), repeated for both S/T and excluding l=0 tangential rows. The projected equation must preserve the fixed vector RHS exactly at every h.",
+        "finite_h_load_and_lift": "At each actual plus/minus h, reproject the actual F_s(Omega;h)*j_r(h) over all target modes into explicit source-force rows. The lift g(h) is element-local cardinal data only on the owning upper source element. Compute H_e(h)g(h) with that local element operator and scatter only its test rows; never apply global H(h) to an embedded g, which leaks through a shared source DOF into the lower neighbor. Evaluate direct f_z*R_e*g(h) only on that owning patch under the declared trace. Retain exact -H_e(h)g(h). Never substitute linearized delta-g, linearized force, or fixed baseline jump for this rebuild."
+      }
+    },
+    "cross_family": "Require nonzero S/T cross-family blocks for both lateral L and N directions and report each block norm, plus nonzero off-diagonal (l,m) coupling for each. If either is dark for the frozen event/objective and lmax=3, stop and revise the protocol before any perturbed run."
+  },
+  "quadrature": {
+    "angular_rule": "Gauss-Legendre in cos(theta), 8 points; uniform east-longitude trapezoid, 24 points. Shared point list and weights in DSpec volume integration, YSpec ComputeSampledKernels, and independent Cartesian-TI block assembly. Product bandwidth is bounded by retained lmax=3 and perturbation lmax=3; confirm convergence/exactness of the chosen rule analytically in the implementation review.",
+    "radial_rule": "Use DSpec SEM GLL element nodes and physical dr weights for DSpec integration. Evaluate the same smooth radial envelopes and mapped points in the independent oracle. YSpec sampled values are queried on the corresponding shared physical radii and angular points; record interpolation/mapping differences.",
+    "oracle": "Independent harmonic-block SEM Born oracle: H0 is block diagonal from actual baseline SEM blocks. Assemble DeltaH from direct Cartesian TI rank-4 contraction and independently evaluated Y, Y_theta, Y_phi, Y_thetatheta, Y_thetaphi, Y_phiphi derivatives. Do not call production spin-strain or kernel helpers. Re-solve full-gravity H0 +/- h*DeltaH. For source-local cases rebuild exact finite-band jump projection; construct g on the owning upper source element only; compute local H_e(h)g(h) and scatter its local rows, and evaluate direct R_e only on that patch/trace. Never use a global H(h)*embedded-g operation."
+  },
+  "finite_difference": {
+    "steps_h": [
+      0.08,
+      0.04,
+      0.02,
+      0.01,
+      0.005,
+      0.0025
+    ],
+    "estimate": "D(h)=(J(+h)-J(-h))/(2h), with all objective, model, projected source, and receiver-lift calculations evaluated from each actual +/-h model.",
+    "plateau_rule_frozen_before_perturbed_runs": "From six fixed h values, form five adjacent fourth-order estimates R_i=(4*D(h[i+1])-D(h[i]))/3. A relative plateau candidate is a consecutive triple of R values for which every |R_i|>1e-6*S and max_pairwise_abs_difference/max_i_abs(R_i)<=1e-6. Select the finest (highest-index) passing triple; its median is D_plateau. Selection uses only R and S, never Kpred. Triples with any |R_i|<=1e-6*S are weak and receive scaled-absolute spread/S diagnostics only; they can never be a relative plateau or relative Born PASS.",
+    "signal_scale_S": "For each scalar objective, S=||q||_F*||P U0||_F from the matched baseline as defined above; require S>0 and freeze before any +/-h objective.",
+    "objective_scale_Jref": "Jref=S for the same scalar objective.",
+    "relative_signal_floor": "After baseline, Kpred may preclassify a direction as weak before spending FD solves when abs(Kpred)<=1e-6*S. A relative Born comparison is eligible only when abs(Kpred)>1e-6*S and the independently selected D_plateau also has abs(D_plateau)>1e-6*S. Otherwise report scaled-absolute diagnostics only, with no relative PASS.",
+    "plateau_reference_selection": "First select the finest passing informative Richardson triple using only the preceding R/S rule. Only after D_plateau is frozen compare Kpred to it."
+  },
+  "gates": {
+    "matched_baseline_spectrum_relative_l2_per_component": 1e-05,
+    "integrated_3d_kernel_vs_cartesian_born": 1e-06,
+    "yspecpp_regular_volume_kernel_vs_dspec": 0.001,
+    "spectrum_metric": "For each Z/N/E component on bins 1,2,3, first require both baseline component norms >1e-6*S. If informative, complex L2 relative error is ||U_D,c-U_Y,c||_2/max(||U_D,c||_2,||U_Y,c||_2) and must be <=1e-5; also save per-bin complex errors. Below the component floor report ||U_D,c-U_Y,c||_2/S only and make no relative component PASS. J_Z and J_N remain separate objectives.",
+    "born_metric": "For relative Born PASS, require abs(Kpred)>1e-6*S before FD, a passing informative Richardson triple with abs(D_plateau)>1e-6*S, and EJ=abs(Kpred-D_plateau)/max(abs(Kpred),abs(D_plateau),1e-14*Jref)<=1e-6. Weak cases receive scaled-absolute diagnostics only and cannot PASS relatively.",
+    "kernel_metric": "Before comparisons, for each objective and modulus X freeze Kscale_X=S/(abs(X0)*Vsupport), where Vsupport=sum(shared physical dV_i) over the regular [4200,6200] km support. For each source-vanishing regular profile, define DeltaX_i=X0*w(r_i)*chi(theta_i,phi_i), dV_i=r_i^2*dr_i*dOmega_i, W=sum_i dV_i*DeltaX_i^2. Compute Kweighted_X=sqrt(sum_i dV_i*DeltaX_i^2*K_X(i)^2/W), and RMSdiff=sqrt(sum_i dV_i*DeltaX_i^2*(K_D(i)-K_Y(i))^2/W). Relative profile PASS at Eprofile=RMSdiff/max(Kweighted_D,Kweighted_Y)<=1e-3 only if both Kweighted_D and Kweighted_Y exceed 1e-6*Kscale_X; otherwise report RMSdiff/Kscale_X only, with no relative PASS. Separately integrate I_D=sum_i dV_i*K_D(i)*DeltaX_i and I_Y analogously. On directions prequalified by abs(I_D)>1e-6*S and abs(I_Y)>1e-6*S, require EJ=abs(I_D-I_Y)/max(abs(I_D),abs(I_Y),1e-14*Jref)<=1e-3; otherwise report abs(I_D-I_Y)/S only and make no relative pass. K and Kscale_X have units objective/(Pa*m^3), DeltaX has Pa, I and S/Jref have objective units m*s.",
+    "fail_closed": true,
+    "output_guard": "Before creating output, reject if the destination exists and is nonempty. Preserve failed artifacts and report gates as FAIL; never overwrite prior evidence.",
+    "baseline_component_signal_floor": "For each baseline component c in Z,N,E, relative spectrum comparison is eligible only when both baseline component norms exceed 1e-6*S. Below that floor, report ||U_D,c-U_Y,c||_2/S only and make no relative component PASS."
+  },
+  "resources": {
+    "max_jobs": 1,
+    "omp_threads": 1,
+    "blas_threads": 2,
+    "no_degree_convergence_sweep": true,
+    "no_mesh_convergence_sweep": true,
+    "no_build_or_simulation_until_C_passes_Luna_and_Sol": true,
+    "harmonic_block_assembly": "Exploit radial SEM connectivity and sparse/banded harmonic coupling for H0 and DeltaH. Before allocating/assembling, estimate and record total DOFs, structural nonzeros, and peak memory for sparse matrices and factorization from actual baseline block dimensions and the l<=3 perturbation coupling graph. No dense global H, DeltaH, or global factorization is allowed.",
+    "preflight_memory_cap_bytes": 1073741824,
+    "memory_guard": "Fail closed before allocation if estimated peak memory exceeds 1 GiB or if the sparse/banded estimate is unavailable; no unplanned dense global matrix/factorization.",
+    "preflight_estimate_fields": [
+      "total_dofs",
+      "structural_nonzeros_H0",
+      "structural_nonzeros_DeltaH",
+      "estimated_sparse_matrix_bytes",
+      "estimated_factorization_bytes",
+      "estimated_peak_bytes"
+    ]
+  },
+  "known_limits": [
+    "YSpecpp sampled 3D volume kernels omit source-concentrated shell/contact terms; use source-vanishing support for YSpec comparisons.",
+    "Existing YSpec sampled kernels support fixed-density elastic A,C,F,L,N perturbations; no public projected 3D source-shell contact output exists at the pinned commit.",
+    "After C passes, check resolved SEM source-element bounds/layer index and confirm the declared radial supports are quadrature-resolved from saved mesh metadata; DSpec API names and exact C review criteria are also post-gate checks.",
+    "The six-step FD plateau is relative only for three successive Richardson estimates each above 1e-6*S; weak estimates are absolute diagnostics and never relative passes."
+  ]
+}

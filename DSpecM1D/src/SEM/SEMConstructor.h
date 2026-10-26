@@ -8,11 +8,19 @@ namespace Full1D {
 
 inline SEM::SEM(const InputParametersNew &paramsNew)
     : SEM(paramsNew.earthModel(), paramsNew.maxstep(), paramsNew.nq(),
-          paramsNew.inputParameters().lmax()) {}
+          paramsNew.inputParameters().lmax(), paramsNew.cmt()) {}
 
 template <class model1d>
-SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
-    : m_mesh(inp_model, NQ, 1.0, maxstep, false),
+SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax,
+         const SourceInfo::EarthquakeCMT &cmt)
+    : SEM(inp_model, maxstep, NQ, lmax,
+          inp_model.OuterRadius() - 1000.0 * cmt.Depth() /
+                                        inp_model.LengthNorm()) {}
+
+template <class model1d>
+SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax,
+         double sourceRadius)
+    : m_mesh(inp_model, NQ, 1.0, maxstep, false, sourceRadius),
       m_frequencyNorm{1.0 / inp_model.TimeNorm()}, m_lmax{lmax},
       _k2{lmax * (lmax + 1)},
       normint{1.0 / (inp_model.TimeNorm() * frequencynorm) *
@@ -23,7 +31,16 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
       m_momentNorm{
           inp_model.MassNorm() *
           std::pow(inp_model.LengthNorm() / inp_model.TimeNorm(), 2.0)},
+      m_sourceRadius{sourceRadius},
       m_nq{NQ} {
+
+  if (std::isfinite(sourceRadius))
+    m_sourceRadius = m_mesh.SourceCutRadius();
+  if (std::isinf(sourceRadius) ||
+      (sourceAligned() &&
+       (!(m_sourceRadius > 0.0) || !(m_sourceRadius < m_mesh.PR()))))
+    throw std::invalid_argument(
+        "Source-aware SEM requires a source strictly inside the planet.");
 
   // std::cout << "Radius etc of planet: " << inp_model.OuterRadius() << " m"
   //           << std::endl;
@@ -80,6 +97,21 @@ SEM::SEM(const model1d &inp_model, double maxstep, int NQ, int lmax)
       }
       if (idxe > 0 && (std::abs(m_vecFluid[idxe] - m_vecFluid[idxe - 1]) == 1))
         m_vecDof[idxe - 1] = true;
+    }
+
+    if (sourceAligned()) {
+      int sourceElement = -1;
+      for (int e = 0; e < m_mesh.NE(); ++e)
+        if (m_mesh.ELR(e) <= m_sourceRadius &&
+            m_mesh.EUR(e) > m_sourceRadius) {
+          sourceElement = e;
+          break;
+        }
+      if (sourceElement < 0 && m_sourceRadius == m_mesh.OR())
+        sourceElement = static_cast<int>(m_mesh.NE()) - 1;
+      if (sourceElement < 0 || m_vecFluid[sourceElement])
+        throw std::invalid_argument(
+            "Source-aware SEM supports solid sources strictly inside the mesh; source lies in a fluid or unsupported region.");
     }
 
     // find m_el and m_eu — toroidal DOF range

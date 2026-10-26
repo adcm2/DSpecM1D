@@ -56,3 +56,7 @@ dspecm1d_add_test_exe(dspecm1d_sem_component_tests
 dspecm1d_add_test_exe(dspecm1d_mesh_model_gravity_tests
   test_mesh_model_gravity.cpp
 )
+
+dspecm1d_add_test_exe(dspecm1d_sensitivity_kernel_tests
+  test_sensitivity_kernels.cpp
+)

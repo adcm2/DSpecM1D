@@ -43,6 +43,7 @@ public:
 
   // gravity
   auto Gravity(int idxe, int idxn) const { return _vec_gravity[idxe][idxn]; };
+  const std::vector<double> &DensityKnots(int idxe) const { return _density_knots.at(idxe); };
 
 private:
   using VECTOR = std::vector<double>;
@@ -72,6 +73,7 @@ private:
   VVECTOR _vec_C_atten;
   VVECTOR _vec_F_atten;
   VVECTOR _vec_gravity;
+  std::vector<std::vector<double>> _density_knots;
   VVECTOR _vec_pslow;
   VVECTOR _vec_sslow;
 };
@@ -154,6 +156,7 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
   }
 
   _vec_gravity = VVECTOR(NE, VECTOR(NQ, 0.0));
+  _density_knots.resize(NE);
   auto bigg_db =
       6.67230 * std::pow(10.0, -11.0) / inp_model.GravitationalConstant();
   auto pi_db = 3.14159265358979323846;
@@ -165,6 +168,9 @@ MeshModel::MeshModel(EarthMesh::RadialMesh &mesh, model1d &inp_model) {
     if constexpr (requires { inp_model.LayerRadii(laynum); }) {
       density_knots = inp_model.LayerRadii(laynum);
     }
+    for (double knot : density_knots)
+      if (knot > mesh.ELR(idxe) && knot < mesh.EUR(idxe))
+        _density_knots[idxe].push_back(knot);
     if (idxe != 0) {
       _vec_gravity[idxe][0] = _vec_gravity[idxe - 1][NQ - 1];
     }

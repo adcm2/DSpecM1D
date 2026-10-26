@@ -567,3 +567,112 @@ Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Co
   checkpoint commit/push and PR metadata update; CI must pass, then stop.
 - Validation, benchmark-file untracking, fresh Luna-high/Sol-high review and
   the explicitly authorized normal commit/push are pending. Do not merge.
+
+## 2026-10-25 — 1D material kernels and source treatment
+
+- Added fixed-mesh forward/Hermitian-adjoint access and SI windowed-displacement
+  kernels for solid A/C/F/L/N, fluid bulk modulus and density, including the
+  nonlocal background-gravity derivative. Source-aligned meshes and local jump
+  lifts now serve forward spectra and kernels, with modulus source-point terms.
+  Prepared SEMs used for spectra must use a source-aware constructor.
+- Added an installed-library example and optional matched YSpecpp and DT modal
+  benchmark runners, with concise definitions/results in their READMEs. Raw
+  numerical evidence and reports remain local under build/.
+- Independent Luna High and short Sol reviews passed. The last full C++ run
+  passed 163 enabled tests (two existing diagnostics disabled); publication
+  checks passed 13 Python tests and verified 29 reviewed source identities.
+  Saved 24 October modal evidence passes 19 toroidal and 47 spheroidal gates.
+- At the 1D checkpoint, 3D kernels were deferred; the closeout below adds them.
+  Multiple earthquakes, Q kernels, ModelInput retirement, the high-degree repair
+  and expensive convergence sweep remain deferred.
+
+## 2026-10-25 — Kernel PR #26 closeout
+
+- The 1D material-kernel summary above remains valid within the expanded scope. Prepared spectra require source-aware SEM construction; source lifts and modulus contact terms are included.
+- The original source-local Z/A finite-difference failure remains at
+  `build/sensitivity-source-treatment-20261024/results/`: 1.742e-5 for
+  DSpecM1D and 2.885e-6 for YSpecpp against the 1e-6 gate. The reviewed
+  replacement fixture passes at 5.21e-8 and 7.16e-9; the other nine rows peak
+  at 6.86e-9. Gates were unchanged.
+- Matched elastic source-kernel checks pass all ten cross-kernel comparisons
+  (worst 6.61e-7). Saved 0T2 toroidal and 0S2 spheroidal modal evidence passes
+  19 and 47 gates. Evidence/settings remain under
+  `build/sensitivity-source-treatment-20261024/`,
+  `build/mode-frequency-kernels-20261024/`, and
+  `benchmarks/yspecpp/mode_kernels/`.
+- 3D-A derived fixed-density elastic kernels and audited lift/contact conventions.
+  3D-B added opt-in angular field and strain reconstruction. 3D-C added streamed
+  point, weighted-volume and source-shell C/F/L kernels. 3D-D added the matched
+  DSpecM1D/YSpecpp benchmark and independent Cartesian TI harmonic-block oracle.
+- 3D APIs use a fixed-density/geometry, elastic full-gravity reference. Phase D
+  evidence is bounded to l≤3; this is not an API degree limit. There are no 3D
+  density or Q kernels and no mesh/band convergence claim.
+  Point and volume weights remain explicit; source contact is reported separately.
+- DSpecM1D/YSpecpp spectrum/profile/integral discrepancies peak at
+  9.05e-11/1.24e-9/4.68e-9; the independent spectral bridge is below 3.91e-11.
+  Ten regular and eighteen source-local Born checks pass. All sixteen informative
+  FD comparisons meet 1e-6; worst direct errors are 9.60e-8 regular and
+  2.16e-7 source-local. Largest selected Richardson plateau spread is 6.19e-7.
+- The reviewed Phase C/D sensitivity executable passes 30/30. The initial SciPy
+  keyword failure remains in `build/3d-kernels/phase-d/full-01/`; the accepted
+  rerun, provenance, full-precision results, plots and report are in
+  `build/3d-kernels/phase-d/full-02/`. Phase B/C protocols and reviews remain
+  under `build/3d-kernels-20261025/`.
+- Phase 0 audit/provenance remains under `validation/phase0/2026-10-19/`;
+  earlier Phase 1–4 and website evidence remains in ignored `build/` trees and
+  merged PR history. Saved scientific artifacts and failure records were retained.
+- Branch `feature/radial-sensitivity-kernels-k1` and PR #26 remain open.
+  Final regression and installed-package checks accompany publication; the
+  new installed tutorial provides the reproducible downstream build route.
+
+## 2026-10-25 — Kernel examples and timing
+
+- Closed out the reviewed 3D APIs and added an installed consumer with signed
+  maps, exact-plane sections, globe cutaways, angular-mean profiles and a
+  separate source-local volume/contact plot. Saved data reproduce every plot;
+  reports expose configuration, units, processing, metrics and provenance.
+- Fresh Release validation passes 176 enabled C++ checks (two existing
+  diagnostics disabled), 18 Python checks and an installed-header consumer.
+  Installed kernel headers match the reviewed source byte-for-byte.
+- Matched volume-only timings use Release/O3, one thread and common sample
+  grids. At lmax=3, five-repeat median API times are 0.716/0.0248 s for
+  DSpec/YSpec; for two objectives they are 1.54/0.0336 s. DSpec uses two scalar
+  calls while YSpec batches them. At lmax=12 (75,712 points), three-repeat
+  medians are 60.4/0.246 s. Measured ranges and cold/setup timings are reported.
+- All five-modulus comparisons pass: largest weighted profile/integral
+  discrepancies are 1.24e-9/4.68e-9 at lmax=3 and 2.32e-9/1.66e-8 at lmax=12.
+  This is bounded homogeneous-model evidence, not convergence or a universal
+  speed ranking. Library-specific planetmodel pins differ; raw launcher RSS
+  is retained only as a diagnostic, without a solver-memory comparison.
+- Results, plots and report replays remain under build/kernel-examples-phase12/;
+  reproduction commands and the compact timing table are in the 3D benchmark
+  README. Independent Luna High reviews and the final Sol High review pass. Separate-earthquake support remains deferred; no merge is included.
+
+## 2026-10-25 — Source–receiver Earth-slice redesign
+
+- Added the optional YSpec timing-grid argument and a metadata-validated runner
+  for matched full great-circle planes; original timing defaults and kernel math
+  are unchanged. Saved 14,823-point DSpecM1D/YSpecpp fields are under `build/`.
+- The runner records hashes/configuration, per-radius and regional raw differences,
+  exact source-shell and point comparisons, and a 500 km receiver-neighborhood
+  summary. Source-shell contact remains separate from plotted volume kernels.
+- Added matched circular and oblique 3D panels for A/C/F/L/N, shared solver
+  scales, independent signed D−Y scales, readable source/receiver annotations,
+  and an explicit “outside unvalidated” scope in the disk captions.
+- Added provenance-driven `report.html` with experiment metadata, all-five-modulus
+  comparison table, and linked PNG/SVG/PDF figures plus source/point/kernel files.
+  The bounded receiver-alignment assessment is retained with this final run report;
+  the README documents fresh generation and solver-free replay.
+- The full-plane A/L/N fields remain close overall; C/F are strongly discrepant
+  near the receiver-radius samples outside the checked shell. At exact source
+  radius, C/F relative L2 are 7.21e-11/1.81e-10. A separate bounded zero-contrast
+  receiver-radius split reduces local errors to 2–3e-10, supporting mesh alignment
+  without isolating traction-jump smoothing or justifying a production repair.
+- Python syntax, HTML parsing/gallery links, and `git diff --check` pass. Final
+  solver-free replay is `build/kernels-plot-redesign/plane-run-07/`; independent
+  visual review passed. Earlier failed attempts and the untracked Phase 0 audit
+  material remain preserved; no commit or push was made.
+
+## 2026-10-26 — Commit reviewed Earth-slice tooling
+
+- Package the existing plotting runner, instructions and optional YSpec sampling argument; numerical solver code is unchanged. Five focused Python checks, runner syntax and whitespace checks pass. Receiver-region limitations remain documented; matched-measurement development is paused.

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <algorithm>
 #include <array>
+#include <cmath>
 #include <set>
 #include <vector>
 #include <DSpecM1D/ModelInput>
@@ -544,6 +545,237 @@ TEST(SEMComponentTests, ExactOceanBottomReceiverUsesSolidSide) {
                          std::sqrt(l * (l + 1.0)) -
                      fluidFieldAtReceiver),
             1.0);
+}
+
+TEST(SEMComponentTests, SourceCutInsideSolidBoundaryElementPreservesTopology) {
+  prem_norm<double> norm;
+  auto model = EarthModels::ModelInput(DSpecMTest::modelPath().string(), norm);
+  EarthMesh::RadialMesh mesh(model, 4, 1.0, 0.2, false);
+  ASSERT_FALSE(mesh.FS_Boundaries().empty());
+  const int boundaryElement = mesh.FS_Boundaries().front();
+  ASSERT_TRUE(mesh.IsSolid(boundaryElement));
+  ASSERT_LT(boundaryElement + 1, mesh.NE());
+  ASSERT_FALSE(mesh.IsSolid(boundaryElement + 1));
+  const double interfaceRadius = mesh.EUR(boundaryElement);
+  const double oneUlpBelowInterface =
+      std::nextafter(interfaceRadius, 0.0);
+  EXPECT_THROW(Full1D::SEM(model, 0.2, 4, 2, oneUlpBelowInterface),
+               std::invalid_argument);
+  const int originalElements = mesh.NE();
+  const double sourceRadius =
+      0.5 * (mesh.ELR(boundaryElement) + mesh.EUR(boundaryElement));
+  const int layer = mesh.LayerNumber(boundaryElement);
+
+  mesh.splitAtRadius(sourceRadius);
+
+  EXPECT_EQ(mesh.NE(), originalElements + 1);
+  ASSERT_EQ(mesh.FS_Boundaries().front(), boundaryElement + 1);
+  EXPECT_EQ(mesh.LayerNumber(boundaryElement), layer);
+  EXPECT_EQ(mesh.LayerNumber(boundaryElement + 1), layer);
+  EXPECT_TRUE(mesh.IsSolid(boundaryElement));
+  EXPECT_TRUE(mesh.IsSolid(boundaryElement + 1));
+  EXPECT_DOUBLE_EQ(mesh.EUR(boundaryElement), sourceRadius);
+  EXPECT_DOUBLE_EQ(mesh.ELR(boundaryElement + 1), sourceRadius);
+
+  DSpecMTest::TempDir temp;
+  const auto solidPath = DSpecMTest::writeFile(
+      temp.path() / "homogeneous_solid.deck",
+      "homogeneous solid\n"
+      "0 1.0 1\n"
+      "2 0 0\n"
+      "0.0 5515.0 8000.0 4500.0 300.0 150.0\n"
+      "6371000.0 5515.0 8000.0 4500.0 300.0 150.0\n");
+  auto solidModel = EarthModels::ModelInput(solidPath.string(), norm);
+  EarthMesh::RadialMesh alignedMesh(solidModel, 4, 1.0, 0.2, false);
+  const int cutElement = 3;
+  ASSERT_LT(cutElement + 1, alignedMesh.NE());
+  const double exactNode = alignedMesh.EUR(cutElement);
+  const double oneUlpBelow = std::nextafter(exactNode, 0.0);
+  const int elementsBefore = alignedMesh.NE();
+  alignedMesh.splitAtRadius(oneUlpBelow);
+  EXPECT_EQ(alignedMesh.NE(), elementsBefore);
+  EXPECT_DOUBLE_EQ(alignedMesh.SourceCutRadius(), exactNode);
+
+  Full1D::SEM nearNodeSem(solidModel, 0.2, 4, 2, oneUlpBelow);
+  EXPECT_EQ(nearNodeSem.mesh().NE(), elementsBefore);
+  EXPECT_DOUBLE_EQ(nearNodeSem.sourceRadius(), exactNode);
+  const double depthKm = (solidModel.OuterRadius() - exactNode) *
+                         solidModel.LengthNorm() / 1000.0;
+  SourceInfo::EarthquakeCMT nearSource(0.0, 0.0, depthKm,
+                                       1.0, 0.0, 0.0, 1.0, 0.0, 1.0);
+  EXPECT_EQ(nearNodeSem.sourceElement(nearSource), cutElement + 1);
+}
+
+TEST(SEMComponentTests, SpheroidalSourceLiftMatchesAssembledOperatorAwayFromTrace) {
+  auto paramsNew = makeTinySemParams();
+  Full1D::SEM sem(paramsNew);
+  auto &cmt = paramsNew.cmt();
+  ASSERT_TRUE(sem.sourceMatches(cmt));
+  SourceInfo::EarthquakeCMT nearCut(
+      cmt.Latitude(), cmt.Longitude(), cmt.Depth() + 1e-11,
+      cmt.Mrr(), cmt.Mrt(), cmt.Mrp(), cmt.Mtt(), cmt.Mtp(), cmt.Mpp());
+  ASSERT_TRUE(sem.sourceMatches(nearCut));
+  EXPECT_EQ(sem.sourceElement(nearCut), sem.sourceElement(cmt));
+  constexpr int degree = 2;
+  const std::complex<double> z{0.37, 0.015};
+  const auto treatment =
+      sem.sourceTreatedSpheroidal(cmt, degree, z, {}, false);
+  const int element = treatment.sourceElement;
+  const double radius = sem.sourceRadius();
+  const double lambda = degree * (degree + 1.0);
+  const double kd2 = std::sqrt(lambda / 2.0);
+  const std::complex<double> expectedU =
+      1.0 / (radius * radius * sem.meshModel().C(element, 0));
+  const std::complex<double> expectedV =
+      kd2 / (lambda * radius * radius * sem.meshModel().L(element, 0));
+  EXPECT_NEAR(std::abs(treatment.lift(sem.ltgS(0, element, 0), 0) -
+                       expectedU),
+              0.0, 1e-14 * std::abs(expectedU));
+  EXPECT_NEAR(std::abs(treatment.lift(sem.ltgS(1, element, 0), 2) -
+                       expectedV),
+              0.0, 1e-14 * std::abs(expectedV));
+
+  Eigen::MatrixXcd original = sem.calculateForceAll(cmt, degree, false);
+  original.col(0).setZero();
+  original.col(2).setZero();
+  const Eigen::MatrixXcd qOperator =
+      sem.hS(degree).cast<std::complex<double>>() -
+      z * z * sem.pS(degree).cast<std::complex<double>>();
+  const auto assembledAction = qOperator * treatment.lift;
+  const int uSource = sem.ltgS(0, element, 0);
+  const int vSource = sem.ltgS(1, element, 0);
+  const int phiSource = sem.ltgS(2, element, 0);
+  std::set<int> sharedTraceRows{uSource, vSource, phiSource};
+  if (element > 0)
+    for (int field = 0; field < 3; ++field)
+      for (int node = 0; node < sem.mesh().NN(); ++node)
+        sharedTraceRows.insert(sem.ltgS(field, element - 1, node));
+
+  for (const int column : {0, 2}) {
+    Eigen::VectorXcd qj = Eigen::VectorXcd::Zero(treatment.force.rows());
+    if (column == 0) {
+      const double j = expectedU.real();
+      qj[uSource] = 2.0 * radius * sem.meshModel().F(element, 0) * j;
+      qj[vSource] = -lambda * radius * sem.meshModel().F(element, 0) * j;
+    } else {
+      const double j = expectedV.real();
+      qj[uSource] = lambda * radius * sem.meshModel().L(element, 0) * j;
+      qj[vSource] = -lambda * radius * sem.meshModel().L(element, 0) * j;
+    }
+    const Eigen::VectorXcd localAction =
+        original.col(column) - qj - treatment.force.col(column);
+    double error = 0.0, scale = 0.0;
+    for (Eigen::Index row = 0; row < localAction.size(); ++row) {
+      if (sharedTraceRows.count(static_cast<int>(row)) != 0) continue;
+      error += std::norm(localAction[row] - assembledAction(row, column));
+      scale += std::norm(assembledAction(row, column));
+    }
+    EXPECT_LE(std::sqrt(error) / std::max(std::sqrt(scale), 1e-30), 2e-12);
+  }
+}
+
+TEST(SEMComponentTests, SpheroidalLocalWeakFormScattersToProductionOperator) {
+  DSpecMTest::TempDir temp;
+  const auto solidPath = DSpecMTest::writeFile(
+      temp.path() / "homogeneous_solid.deck",
+      "homogeneous solid\n"
+      "0 1.0 1\n"
+      "2 0 0\n"
+      "0.0 5515.0 8000.0 4500.0 300.0 150.0\n"
+      "6371000.0 5515.0 8000.0 4500.0 300.0 150.0\n");
+  auto paramsNew = makeTinySemParams(0.0, solidPath);
+  Full1D::SEM sem(paramsNew);
+  constexpr int degree = 2;
+  const std::complex<double> z{0.37, 0.015};
+  const int nq = sem.mesh().NN(), dofs = sem.hS(degree).rows();
+  Eigen::MatrixXcd scattered = Eigen::MatrixXcd::Zero(dofs, dofs);
+  for (int e = 0; e < sem.mesh().NE(); ++e) {
+    ASSERT_FALSE(sem.elementIsFluid(e));
+    const auto local = Full1D::source_treatment_detail::spheroidalElementOperator(
+        sem, e, degree, z, {}, false);
+    for (int a = 0; a < 3; ++a)
+      for (int i = 0; i < nq; ++i)
+        for (int b = 0; b < 3; ++b)
+          for (int j = 0; j < nq; ++j)
+            scattered(sem.ltgS(a, e, i), sem.ltgS(b, e, j)) +=
+                local(a * nq + i, b * nq + j);
+  }
+  const int surfacePhi = sem.ltgS(2, sem.mesh().NE() - 1, nq - 1);
+  scattered(surfacePhi, surfacePhi) += sem.mesh().OR() * (degree + 1.0) /
+      (4.0 * static_cast<double>(EIGEN_PI) * sem.gravityCoefficient());
+  const Eigen::MatrixXcd production =
+      sem.hS(degree).cast<std::complex<double>>() -
+      z * z * sem.pS(degree).cast<std::complex<double>>();
+  const double operatorScale = std::max(production.norm(), 1e-30);
+  std::array<std::vector<int>, 3> fieldIndices;
+  for (int field = 0; field < 3; ++field) {
+    for (int e = 0; e < sem.mesh().NE(); ++e)
+      for (int i = 0; i < nq; ++i)
+        fieldIndices[field].push_back(sem.ltgS(field, e, i));
+    auto &indices = fieldIndices[field];
+    std::sort(indices.begin(), indices.end());
+    indices.erase(std::unique(indices.begin(), indices.end()), indices.end());
+  }
+  for (int rowField = 0; rowField < 3; ++rowField)
+    for (int colField = 0; colField < 3; ++colField) {
+      const auto &rows = fieldIndices[rowField];
+      const auto &cols = fieldIndices[colField];
+      Eigen::MatrixXcd blockError(rows.size(), cols.size());
+      Eigen::MatrixXcd blockScale(rows.size(), cols.size());
+      for (std::size_t i = 0; i < rows.size(); ++i)
+        for (std::size_t j = 0; j < cols.size(); ++j) {
+          blockError(i, j) = scattered(rows[i], cols[j]) - production(rows[i], cols[j]);
+          blockScale(i, j) = production(rows[i], cols[j]);
+        }
+      const double scale = std::max(blockScale.norm(), operatorScale * 1e-14);
+      EXPECT_LE(blockError.norm(), 2e-12 * scale)
+          << "field block " << rowField << ',' << colField;
+    }
+
+  const int radialDofs = sem.hR().rows();
+  Eigen::MatrixXcd radialScattered = Eigen::MatrixXcd::Zero(radialDofs, radialDofs);
+  for (int e = 0; e < sem.mesh().NE(); ++e) {
+    const auto local = Full1D::source_treatment_detail::radialElementOperator(
+        sem, e, z);
+    for (int a = 0; a < 2; ++a)
+      for (int i = 0; i < nq; ++i)
+        for (int b = 0; b < 2; ++b)
+          for (int j = 0; j < nq; ++j)
+            radialScattered(sem.ltgR(a, e, i), sem.ltgR(b, e, j)) +=
+                local(a * nq + i, b * nq + j);
+  }
+  const int surfacePhiR = sem.ltgR(1, sem.mesh().NE() - 1, nq - 1);
+  radialScattered(surfacePhiR, surfacePhiR) += sem.mesh().OR() /
+      (4.0 * static_cast<double>(EIGEN_PI) * sem.gravityCoefficient());
+  const Eigen::MatrixXcd radialProduction = sem.hR().cast<std::complex<double>>() -
+      z * z * sem.pR().cast<std::complex<double>>();
+  ASSERT_EQ(radialScattered.rows(), radialProduction.rows());
+  EXPECT_LE((radialScattered - radialProduction).norm(),
+            2e-12 * radialProduction.norm()) << "radial full scatter";
+
+  const Eigen::MatrixXcd toroidalProduction =
+      sem.hTk(degree).cast<std::complex<double>>() -
+      z * z * sem.pTk(degree).cast<std::complex<double>>();
+  Eigen::MatrixXcd toroidalScattered = Eigen::MatrixXcd::Zero(
+      toroidalProduction.rows(), toroidalProduction.cols());
+  for (int e = sem.el(); e < sem.eu(); ++e) {
+    const auto local = Full1D::source_treatment_detail::toroidalElementOperator(
+        sem, e, degree, z);
+    for (int i = 0; i < nq; ++i)
+      for (int j = 0; j < nq; ++j)
+        toroidalScattered(sem.ltgT(e, i), sem.ltgT(e, j)) += local(i, j);
+  }
+  EXPECT_LE((toroidalScattered - toroidalProduction).norm(),
+            2e-12 * toroidalProduction.norm()) << "toroidal full scatter";
+}
+
+TEST(SEMComponentTests, SpheroidalSourceLiftRemainsFiniteAtDegreeThreeHundred) {
+  auto paramsNew = makeTinySemParams();
+  auto &cmt = paramsNew.cmt();
+  Full1D::SEM sem(paramsNew.earthModel(), paramsNew.maxstep(), 4, 300, cmt);
+  const auto treatment = sem.sourceTreatedSpheroidal(cmt, 300, {0.31, 0.01});
+  EXPECT_TRUE(treatment.force.allFinite());
+  EXPECT_TRUE(treatment.lift.allFinite());
 }
 
 TEST(SEMComponentTests, SurfaceOceanCapsToroidalRangeAboveSolidSphere) {

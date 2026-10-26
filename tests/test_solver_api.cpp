@@ -123,13 +123,16 @@ Eigen::VectorXcd directOneFrequencyAttenuationOracle(
     SparseC matrix = stiffness - z * z * mass + coefficient * attenuated;
     Solver solver;
     solver.compute(matrix);
-    const Eigen::MatrixXcd rhs = sem.calculateForceR(cmt);
+    const auto source = sem.sourceTreatedRadial(cmt, z, coefficient);
+    const Eigen::MatrixXcd rhs = source.force;
     const Eigen::MatrixXcd solution = solver.solve(rhs);
     if (solver.info() != Eigen::Success)
       throw std::runtime_error("Radial attenuation oracle solve failed.");
     expectScaledBackwardResidual(matrix, rhs, solution);
     const auto receiver = sem.rvZR(params, 0);
-    raw(0) = receiver.col(0).dot(solution.col(0));
+    raw(0) = receiver.col(0).dot(solution.col(0)) +
+             sem.sourceLiftReceiverRadial(params, source.lift,
+                                           source.sourceElement)(0, 0);
   }
 
   if (flags.inc_tor) {
@@ -140,7 +143,8 @@ Eigen::VectorXcd directOneFrequencyAttenuationOracle(
       SparseC matrix = stiffness - z * z * mass + coefficient * attenuated;
       Solver solver;
       solver.compute(matrix);
-      const Eigen::MatrixXcd rhs = sem.calculateForceAllT(cmt, l);
+      const auto source = sem.sourceTreatedToroidal(cmt, l, z, coefficient);
+      const Eigen::MatrixXcd rhs = source.force;
       const Eigen::MatrixXcd solution = solver.solve(rhs);
       if (solver.info() != Eigen::Success)
         throw std::runtime_error("Toroidal attenuation oracle solve failed.");
@@ -154,7 +158,9 @@ Eigen::VectorXcd directOneFrequencyAttenuationOracle(
       const Eigen::VectorXcd result =
           (receiverAngular * sourceAngular)
               .cwiseProduct(receiver * solution.block(low, 0, high - low + 1,
-                                                       2))
+                                                       2) +
+                            sem.sourceLiftReceiverToroidal(
+                                params, l, source.lift, source.sourceElement))
               .rowwise()
               .sum();
       raw += result;
@@ -171,8 +177,9 @@ Eigen::VectorXcd directOneFrequencyAttenuationOracle(
       SparseC matrix = stiffness - z * z * mass + coefficient * attenuated;
       Solver solver;
       solver.compute(matrix);
-      const Eigen::MatrixXcd rhs =
-          sem.calculateForceAll(cmt, l, useCowling);
+      const auto source = sem.sourceTreatedSpheroidal(cmt, l, z, coefficient,
+                                                       useCowling);
+      const Eigen::MatrixXcd rhs = source.force;
       const Eigen::MatrixXcd solution = solver.solve(rhs);
       if (solver.info() != Eigen::Success)
         throw std::runtime_error("Spheroidal attenuation oracle solve failed.");
@@ -189,7 +196,10 @@ Eigen::VectorXcd directOneFrequencyAttenuationOracle(
       const Eigen::VectorXcd result =
           (receiverAngular * sourceAngular)
               .cwiseProduct(receiver * solution.block(low, 0, high - low + 1,
-                                                       4))
+                                                       4) +
+                            sem.sourceLiftReceiver(params, l, source.lift,
+                                                   source.sourceElement,
+                                                   useCowling))
               .rowwise()
               .sum();
       raw += result;
@@ -333,7 +343,7 @@ TEST(PreferredSolverApiTests, ComplexAttenuationAssemblyMatchesDirectMatrixOracl
       // its explicit 0.05 maxstep cap, so this is the matching independent mesh.
       constexpr double multiStep = 0.05;
       Full1D::SEM multiSem(paramsNew.earthModel(), multiStep, paramsNew.nq(),
-                           params.lmax());
+                           params.lmax(), paramsNew.cmt());
       const auto multi = solver.spectra(paramsNew);
       const auto multiExpected = directOneFrequencyAttenuationOracle(
           paramsNew, multiSem, idx, useCowling);
@@ -429,7 +439,8 @@ TEST(PreferredSolverApiTests, SemConstructorFromInputParametersNewUsesSettings) 
 
   Full1D::SEM sem(paramsNew);
   Full1D::SEM directSem(paramsNew.earthModel(), paramsNew.maxstep(),
-                        paramsNew.nq(), paramsNew.inputParameters().lmax());
+                        paramsNew.nq(), paramsNew.inputParameters().lmax(),
+                        paramsNew.cmt());
 
   EXPECT_EQ(sem.mesh().NN(), paramsNew.nq());
   EXPECT_EQ(sem.mesh().NE(), directSem.mesh().NE());
@@ -1101,7 +1112,7 @@ TEST(PreferredSolverApiTests, MultiSemCowlingCutoffUsesChunkRegions) {
     auto &freq = paramsNew.freqFull();
     auto &params = paramsNew.inputParameters();
     Full1D::SEM singleSem(paramsNew.earthModel(), 0.05, paramsNew.nq(),
-                          params.lmax());
+                          params.lmax(), paramsNew.cmt());
     SPARSESPEC::SpectraRunContext request(freq, paramsNew.cmt(), params,
                                           paramsNew.tref(), 1);
     const auto frequencyMhz = [&](int idx) {
@@ -1154,7 +1165,7 @@ TEST(PreferredSolverApiTests, MultiSemCowlingCutoffUsesChunkRegions) {
   auto &freq = paramsNew.freqFull();
   auto &params = paramsNew.inputParameters();
   Full1D::SEM singleSem(paramsNew.earthModel(), 0.05, paramsNew.nq(),
-                        params.lmax());
+                        params.lmax(), paramsNew.cmt());
   SPARSESPEC::SpectraRunContext request(freq, paramsNew.cmt(), params,
                                         paramsNew.tref(), 1);
   const auto frequencyMhz = [&](int idx) {
@@ -1191,7 +1202,7 @@ TEST(PreferredSolverApiTests, MultiSemChunkAccumulationMatchesSingleSemAcrossDeg
     auto &freq = paramsNew.freqFull();
     auto &params = paramsNew.inputParameters();
     Full1D::SEM singleSem(paramsNew.earthModel(), 0.05, paramsNew.nq(),
-                         params.lmax());
+                         params.lmax(), paramsNew.cmt());
     const int derivedNskip = std::max(1, (freq.i2() - freq.i1()) / 20);
     SPARSESPEC::SpectraRunContext request(freq, paramsNew.cmt(), params,
                                         paramsNew.tref(), derivedNskip);

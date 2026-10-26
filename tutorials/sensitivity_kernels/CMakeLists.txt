@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.24)
+project(DSpecM1DSensitivityKernelsExample LANGUAGES CXX)
+find_package(DSpecM1D CONFIG REQUIRED)
+add_executable(sensitivity_kernels_consumer ../sensitivity_kernels.cpp)
+target_link_libraries(sensitivity_kernels_consumer PRIVATE DSpecM1D::DSpecM1D)
