@@ -116,9 +116,9 @@ long peakRssBytes() {
 }
 
 int main(int argc, char **argv) try {
-  if (argc != 7)
+  if (argc != 7 && argc != 8)
     throw std::runtime_error(
-        "usage: yspec_kernel_timing MODEL SAMPLES OUTPUT LMAX MEASUREMENTS REPEATS");
+        "usage: yspec_kernel_timing MODEL SAMPLES OUTPUT LMAX MEASUREMENTS REPEATS [ANGLES_PER_RADIUS]");
   const auto processStart = std::chrono::steady_clock::now();
   const fs::path modelPath = fs::absolute(argv[1]);
   const fs::path samplesPath = fs::absolute(argv[2]);
@@ -148,7 +148,11 @@ int main(int argc, char **argv) try {
   const Receiver receiver{{geographicLatitude(45.0), 90.0}, 3000.0, {}};
   const std::size_t nTheta = std::max(8, 2 * lmax + 2);
   const std::size_t nPhi = std::max(24, 4 * lmax + 4);
-  const auto shared = readSamples(samplesPath, nTheta * nPhi);
+  const std::size_t anglesPerRadius = argc == 8
+      ? static_cast<std::size_t>(std::stoul(argv[7])) : nTheta * nPhi;
+  if (anglesPerRadius < 3 || anglesPerRadius > 10000)
+    throw std::runtime_error("angles per radius must be in 3..10000");
+  const auto shared = readSamples(samplesPath, anglesPerRadius);
   KernelSampling sampling;
   for (double radius : shared.radii) {
     const int layer = model.LayerIndex(radius / model.GetScales().Length(), Side::Above);

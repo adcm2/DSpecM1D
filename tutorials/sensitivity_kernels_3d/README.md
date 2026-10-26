@@ -32,3 +32,49 @@ python3 tutorials/sensitivity_kernels_3d/run.py \
   --yspec-meta /path/to/run_01_yspecpp/meta.json \
   --output /path/to/fresh-comparison
 ```
+
+## Matched Earth slices
+
+`earth_slices.py` queries the existing DSpecM1D and YSpecpp timing adapters on
+one shared source–receiver great-circle plane. The angular grid covers the full
+circle and includes the exact receiver direction; radial samples run from
+100 km to the surface and include the exact source and receiver radii. It writes
+matched circular cross-sections and oblique 3D cut-plane views for A/C/F/L/N,
+with shared DSpecM1D/YSpecpp limits and a separate signed difference scale.
+The source and receiver markers use the radii recorded in the source run.
+
+The fixture is a homogeneous sphere, so its cut-plane has no internal interface
+contrast. The innermost 100 km is left blank because it is not sampled. These
+plots show the computed low-frequency `J_Z` objective kernel; they do not imply
+a ray path or a banana–doughnut sensitivity pattern. Previous matched-volume
+checks establish DSpecM1D/YSpecpp agreement only over 4,200–6,200 km, where the
+validated perturbation vanishes at both ends. Values queried elsewhere are
+shown with their raw differences and are explicitly unvalidated; they are not
+source-shell contact evidence. The run metadata reports differences by radius
+and source distance. The runner checks the saved model hash and the adapters'
+resolved source, receiver, moment tensor, physics, frequency grid, objective,
+and time window before it accepts their arrays.
+
+With the DSpec and YSpec timing executables built as described above and in the
+[3D benchmark README](../../benchmarks/yspecpp/kernels/3d/README.md), generate
+and replay the matched slices with:
+
+```sh
+python3 tutorials/sensitivity_kernels_3d/earth_slices.py \
+  --source-run build/kernel-examples-phase12/comparison-illustration-12-02/source_run.json \
+  --dspec-exe /path/to/dspec_3d_kernel_timing \
+  --yspec-exe /path/to/yspec_kernel_timing \
+  --output build/kernels-plot-redesign/run-01
+
+python3 tutorials/sensitivity_kernels_3d/earth_slices.py \
+  --replay build/kernels-plot-redesign/run-01 \
+  --output build/kernels-plot-redesign/replay-01
+```
+
+The replay command uses saved point coordinates and kernel arrays; it does not
+run either solver. `report.html` is the primary review page; it includes linked
+PNG, SVG, and PDF figures, provenance, and the all-five-modulus comparison
+summary. Numeric inputs, adapter metadata, and SHA-256 hashes are retained in
+each fresh output directory. The generated
+`report.html` identifies the source/model/window and links every figure export,
+input array, kernel array, and full-plane/shell/near-receiver comparison table.

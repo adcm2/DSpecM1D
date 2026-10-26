@@ -647,3 +647,32 @@ Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Co
 - Results, plots and report replays remain under build/kernel-examples-phase12/;
   reproduction commands and the compact timing table are in the 3D benchmark
   README. Independent Luna High reviews and the final Sol High review pass. Separate-earthquake support remains deferred; no merge is included.
+
+## 2026-10-25 — Source–receiver Earth-slice redesign
+
+- Added the optional YSpec timing-grid argument and a metadata-validated runner
+  for matched full great-circle planes; original timing defaults and kernel math
+  are unchanged. Saved 14,823-point DSpecM1D/YSpecpp fields are under `build/`.
+- The runner records hashes/configuration, per-radius and regional raw differences,
+  exact source-shell and point comparisons, and a 500 km receiver-neighborhood
+  summary. Source-shell contact remains separate from plotted volume kernels.
+- Added matched circular and oblique 3D panels for A/C/F/L/N, shared solver
+  scales, independent signed D−Y scales, readable source/receiver annotations,
+  and an explicit “outside unvalidated” scope in the disk captions.
+- Added provenance-driven `report.html` with experiment metadata, all-five-modulus
+  comparison table, and linked PNG/SVG/PDF figures plus source/point/kernel files.
+  The bounded receiver-alignment assessment is retained with this final run report;
+  the README documents fresh generation and solver-free replay.
+- The full-plane A/L/N fields remain close overall; C/F are strongly discrepant
+  near the receiver-radius samples outside the checked shell. At exact source
+  radius, C/F relative L2 are 7.21e-11/1.81e-10. A separate bounded zero-contrast
+  receiver-radius split reduces local errors to 2–3e-10, supporting mesh alignment
+  without isolating traction-jump smoothing or justifying a production repair.
+- Python syntax, HTML parsing/gallery links, and `git diff --check` pass. Final
+  solver-free replay is `build/kernels-plot-redesign/plane-run-07/`; independent
+  visual review passed. Earlier failed attempts and the untracked Phase 0 audit
+  material remain preserved; no commit or push was made.
+
+## 2026-10-26 — Commit reviewed Earth-slice tooling
+
+- Package the existing plotting runner, instructions and optional YSpec sampling argument; numerical solver code is unchanged. Five focused Python checks, runner syntax and whitespace checks pass. Receiver-region limitations remain documented; matched-measurement development is paused.
