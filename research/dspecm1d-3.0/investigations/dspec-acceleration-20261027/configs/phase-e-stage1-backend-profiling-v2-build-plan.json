@@ -1,0 +1,34 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage1-backend-profiling-v2-build-control",
+  "thread_cap": 8,
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "jobs": [
+    {
+      "id": "phase-e-stage1-backend-profiling-v2-build",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/configs/phase-e-stage1-backend-profiling-v2-build.json",
+        "{JOB_DIR}/build-result.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/configs/phase-e-stage1-backend-profiling-v2-build.json",
+        "/opt/gcc-13.2.0/bin/g++"
+      ],
+      "outputs": [
+        "build-result.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 32
+    }
+  ]
+}

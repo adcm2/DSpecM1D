@@ -1,0 +1,41 @@
+{
+  "purpose": "Instrumentation-only cold setup timing and rough plan payload estimates; coefficients and numerical algorithms copied from v1.",
+  "source_sha256": "d3660720e0f7c50b024377b02243dd2468aefd45e1ada9fbab0ba6258ed889ed",
+  "algorithm_header_sha256": "959bfe4eb73b3b23620409a1570973c5adea5b97097a6fa87910439b79384830",
+  "benchmark_script_sha256": "3cef19b3fa54b8e707068f1d4ec4b740cb9ab3edc0414b700ec27b676206a406",
+  "binary_sha256": "2f3ac004c1d10bfcf788a1c575576b26288ac72882669a7bf59c54161ad9553a",
+  "setup_stages": [
+    "compact_basis_prepare_seconds",
+    "global_frame_basis_prepare_seconds",
+    "gaunt_plan_prepare_seconds",
+    "fft_grid_plan_prepare_seconds"
+  ],
+  "payload_fields": [
+    "compact_basis_payload_bytes",
+    "global_frame_basis_payload_bytes",
+    "gaunt_plan_payload_bytes",
+    "fft_grid_plan_payload_bytes_rough",
+    "total_plan_payload_bytes_rough"
+  ],
+  "memory_note": "Payload byte counts estimate explicit matrix/vector/map entries only; allocator and Eigen metadata are omitted.",
+  "status": "compiled; no numerical execution pending parent release",
+  "benchmark": {
+    "cases": [
+      "l3-f3",
+      "l3-f48",
+      "l6-f3",
+      "l6-f48",
+      "l12-f3",
+      "l12-f48"
+    ],
+    "repetitions_per_case": 3,
+    "threads": {
+      "OMP_NUM_THREADS": 1,
+      "OPENBLAS_NUM_THREADS": 1,
+      "MKL_NUM_THREADS": 1
+    },
+    "packets": "../packets/l{3,6,12}-f{3,48}/solver_packet.bin",
+    "output": "../isolated-repetitions-v2/",
+    "summary": "../isolated-repetitions-v2/summary-by-case-v2.json"
+  }
+}

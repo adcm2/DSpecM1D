@@ -1,0 +1,397 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-post-analysis-control",
+  "thread_cap": 4,
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "jobs": [
+    {
+      "id": "wait-for-global-terminal",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/python3",
+        "-c",
+        "import json,time,sys,pathlib\nstate=pathlib.Path(sys.argv[1])/'state.json';output=pathlib.Path(sys.argv[2]);deadline=time.monotonic()+28800\nwhile time.monotonic()<deadline:\n if state.exists():\n  data=json.loads(state.read_text())\n  if data['status'] in ('completed','failed','resource_limit','timed_out'):\n   assert all(j.get('cleanup',{}).get('verified_gone') is True for j in data['jobs'])\n   with output.open('x') as stream:json.dump({'dependency_status':data['status'],'dependency_task':str(state.parent),'meaning':'Terminal dependency only; no scientific acceptance inferred.'},stream,indent=2)\n   sys.exit(0)\n time.sleep(15)\nraise TimeoutError('global queue did not reach verified terminal state within 8 hours')\n",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "{JOB_DIR}/dependency.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/configs/post-analysis-plan.json"
+      ],
+      "outputs": [
+        "dependency.json"
+      ],
+      "timeout_seconds": 28900,
+      "memory_gib": 2
+    },
+    {
+      "id": "paired-v4-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-paired-v4-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "final-symbolic-l128",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-post-analysis-control/continuation/accel-post-analysis-01",
+        "--candidate-job",
+        "paired-v4-l128",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 1200,
+      "memory_gib": 8
+    },
+    {
+      "id": "paired-v5-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-05/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-05/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-paired-v5-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "final-symbolic-l128",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-post-analysis-control/continuation/accel-post-analysis-01",
+        "--candidate-job",
+        "paired-v5-l128",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 1200,
+      "memory_gib": 8
+    },
+    {
+      "id": "paired-v4-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-paired-v4-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "final-symbolic-l384",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-post-analysis-control/continuation/accel-post-analysis-01",
+        "--candidate-job",
+        "paired-v4-l384",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 1200,
+      "memory_gib": 8
+    },
+    {
+      "id": "paired-v5-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-05/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-05/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-paired-v5-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "final-symbolic-l384",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-post-analysis-control/continuation/accel-post-analysis-01",
+        "--candidate-job",
+        "paired-v5-l384",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 1200,
+      "memory_gib": 8
+    },
+    {
+      "id": "aggregate-and-resolution",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1",
+      "command": [
+        "/usr/bin/python3",
+        "-c",
+        "import json,pathlib,subprocess,sys,hashlib\nsys.path.insert(0,sys.argv[1]);import check_phase_a_summary as summary\noutput=pathlib.Path(sys.argv[2]);output.mkdir()\nroots=json.loads(sys.argv[3]);results={}\nfor name,root in roots.items():\n value=summary.summarize(pathlib.Path(root))\n with (output/(name+'.json')).open('x') as stream:json.dump(value,stream,indent=2,allow_nan=False)\n results[name]={'status':value['status'],'state_sha256':value['state_sha256'],'job_count':len(value['jobs'])}\n\nimport check_pair\nrepeat_root=pathlib.Path(sys.argv[7]);repeats={}\nfor degree in (128,384):\n for version in ('v4','v5'):\n  name=f'paired-{version}-l{degree}';receipt=check_pair.verified_job(repeat_root,name);job=receipt[0];folder=repeat_root/name\n  repeats[name]={'process_wall_s':job['elapsed_seconds'],'peak_threads':job.get('peak_observed_threads'),'peak_rss_gib_userspace':job.get('peak_observed_rss_gib_userspace'),'result':check_pair.load(folder/'data/result.json'),'profile':check_pair.profile(folder/job['log']),'verified_artifact_sha256':receipt[1]}\n  after=check_pair.verified_job(repeat_root,name)\n  assert receipt[0:2]==after[0:2],name\nwith (output/'paired_repeats.json').open('x') as stream:json.dump(repeats,stream,indent=2,allow_nan=False)\n\nresolution=output/'resolution.json'\ncommand=[sys.executable,str(pathlib.Path(sys.argv[1])/'check_global_resolution.py'),'--l128-root',sys.argv[4],'--l128-job','global-generated-w1-l128','--l384-root',sys.argv[4],'--l384-job','global-generated-w1-l384','--layout-root',sys.argv[5],'--theta128-job','reference-l128','--theta384-job','reference-l384','--output',str(resolution)]\nrun=subprocess.run(command,check=False)\nold=pathlib.Path(sys.argv[6]);data={'queue_statuses':results,'resolution_returncode':run.returncode,'resolution_status':json.loads(resolution.read_text())['status'] if resolution.exists() else 'missing','prior_yspec_summary':{'path':str(old),'sha256':hashlib.sha256(old.read_bytes()).hexdigest()},'claim_limits':['Bookkeeping completion is not scientific acceptance.','Original-global 2e-13 gate remains failed; internal thread/storage parity is diagnostic.','No figures or 179-side global volume generated in this phase.','Resolution comparison uses approximate angular interpolation, not a convergence certificate.']}\nwith (output/'summary.json').open('x') as stream:json.dump(data,stream,indent=2,allow_nan=False)\n",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools",
+        "{JOB_DIR}/analysis",
+        "{\"native_v5\": \"/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01\", \"global_v8\": \"/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01\", \"serial_global_preserved\": \"/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-benchmark-control/continuation/accel-global-benchmark-02\"}",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-benchmark-control/continuation/accel-global-benchmark-02",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/accel-layout-run-01",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/analysis/profile06-final-v1/component-profile-summary.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-post-analysis-control/continuation/accel-post-analysis-01"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_phase_a_summary.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_global_resolution.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_global_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_global_threads.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_global_cache.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/post-analysis-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "analysis/native_v5.json",
+        "analysis/global_v8.json",
+        "analysis/serial_global_preserved.json",
+        "analysis/resolution.json",
+        "analysis/summary.json",
+        "analysis/paired_repeats.json"
+      ],
+      "timeout_seconds": 2400,
+      "memory_gib": 8
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "utc": "2026-10-27T10:20:51.498616+00:00",
+  "pid": 2120868,
+  "session": 2120868,
+  "nohup": true,
+  "analysis_cpu": 1,
+  "analysis_numerical_threads": 1,
+  "main_thread_cap": 50,
+  "max_wait_seconds": 43200,
+  "command": [
+    "/usr/bin/nohup",
+    "/usr/bin/taskset",
+    "-c",
+    "1",
+    "/usr/bin/python3",
+    "-u",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v10/tools-v7/finalize_profile.py",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-06",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/analysis/profile06-final-v1",
+    "--max-wait-seconds",
+    "43200"
+  ],
+  "tool_sha256": {
+    "collect_component_profile.py": "894a9185530c34ff67c2863673884eb5d82b55ebbde6237e92f7531359a1d13b",
+    "finalize_profile.py": "0e347c21adb38034b9f697da1794db6c9cf44d7e43f7dff242196551f24ca195",
+    "test_component_profile.py": "ddb2d02b3f99d853f93bbb7aa1af25051ab80580f0b152235ded1722b6363a64"
+  },
+  "main_plan_sha256": "1ecfc12aef8c146515082844564f652392e49fb57d868fc91e961e0f5c22c834",
+  "current_saved_commands_verified": 23,
+  "output": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/analysis/profile06-final-v1",
+  "log": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/analysis/profile06-final-v1.nohup.log",
+  "source_queue_modified": false
+}

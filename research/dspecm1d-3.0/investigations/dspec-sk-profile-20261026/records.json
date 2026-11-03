@@ -1,0 +1,6610 @@
+[
+  {
+    "solver": "dspec",
+    "degree": 3,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.121796154,
+    "wall_seconds": 0.20999209100045846,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 3,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 10752,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.020148352,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.121796154
+      ],
+      "first_workload_api_s": 0.121796154,
+      "first_model_to_arrays_s": 0.141944506,
+      "calculation_s": 0.141944506,
+      "end_to_end_s": 0.184906297,
+      "peak_rss_bytes": 18898944,
+      "objective_scale_S": {
+        "J_Z": 0.0005827907727363519
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "0b7d4d1e9924facc50296071878af0ceacbc2712feaa6b5abbcf8953d2acde36",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r0-dspec",
+      "3",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r0-dspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 3,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.034679152,
+    "wall_seconds": 0.15584856200075592,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 3,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 10752,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.022409392,
+      "warmup_batch_s": 0.034679152,
+      "api_s": [
+        0.0261238
+      ],
+      "first_workload_api_s": 0.034679152,
+      "first_model_to_arrays_s": 0.057088544,
+      "calculation_s": 0.048533192,
+      "end_to_end_s": 0.133339777,
+      "peak_rss_bytes": 23617536,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 192,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "2f620d6a092a1e2676c29215501fd2795d14cbceb54d4593e9324cc4574bc6cf",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r0-yspec",
+      "3",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r0-yspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 3,
+    "measurements": 1,
+    "repeat": 1,
+    "variant": "",
+    "api_seconds": 0.023511053,
+    "wall_seconds": 0.13050914500126964,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 3,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 10752,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.019533486,
+      "warmup_batch_s": 0.023511053,
+      "api_s": [
+        0.023030396
+      ],
+      "first_workload_api_s": 0.023511053,
+      "first_model_to_arrays_s": 0.043044539,
+      "calculation_s": 0.042563882,
+      "end_to_end_s": 0.108900196,
+      "peak_rss_bytes": 23658496,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 192,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "2f620d6a092a1e2676c29215501fd2795d14cbceb54d4593e9324cc4574bc6cf",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r1-yspec",
+      "3",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r1-yspec"
+  },
+  {
+    "solver": "dspec",
+    "degree": 3,
+    "measurements": 1,
+    "repeat": 1,
+    "variant": "",
+    "api_seconds": 0.122845578,
+    "wall_seconds": 0.20921825200093735,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 3,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 10752,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.019517405,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.122845578
+      ],
+      "first_workload_api_s": 0.122845578,
+      "first_model_to_arrays_s": 0.142362983,
+      "calculation_s": 0.142362983,
+      "end_to_end_s": 0.185404573,
+      "peak_rss_bytes": 23658496,
+      "objective_scale_S": {
+        "J_Z": 0.0005827907727363519
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "0b7d4d1e9924facc50296071878af0ceacbc2712feaa6b5abbcf8953d2acde36",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r1-dspec",
+      "3",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r1-dspec"
+  },
+  {
+    "solver": "dspec",
+    "degree": 3,
+    "measurements": 1,
+    "repeat": 2,
+    "variant": "",
+    "api_seconds": 0.122446058,
+    "wall_seconds": 0.2107843710000452,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 3,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 10752,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.021924939,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.122446058
+      ],
+      "first_workload_api_s": 0.122446058,
+      "first_model_to_arrays_s": 0.144370997,
+      "calculation_s": 0.144370997,
+      "end_to_end_s": 0.187585017,
+      "peak_rss_bytes": 23920640,
+      "objective_scale_S": {
+        "J_Z": 0.0005827907727363519
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "0b7d4d1e9924facc50296071878af0ceacbc2712feaa6b5abbcf8953d2acde36",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r2-dspec",
+      "3",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r2-dspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 3,
+    "measurements": 1,
+    "repeat": 2,
+    "variant": "",
+    "api_seconds": 0.024165025,
+    "wall_seconds": 0.12893211399932625,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 3,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 10752,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.018086012,
+      "warmup_batch_s": 0.024165025,
+      "api_s": [
+        0.023265804
+      ],
+      "first_workload_api_s": 0.024165025,
+      "first_model_to_arrays_s": 0.042251037,
+      "calculation_s": 0.041351816,
+      "end_to_end_s": 0.107192572,
+      "peak_rss_bytes": 23920640,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 192,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "2f620d6a092a1e2676c29215501fd2795d14cbceb54d4593e9324cc4574bc6cf",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r2-yspec",
+      "3",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r2-yspec"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 3,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.147144917,
+    "wall_seconds": 0.24554927999997744,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 3,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 10752,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.02208868,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.147144917
+      ],
+      "first_workload_api_s": 0.147144917,
+      "first_model_to_arrays_s": 0.16923359699999999,
+      "calculation_s": 0.16923359699999999,
+      "end_to_end_s": 0.222285807,
+      "peak_rss_bytes": 23920640,
+      "objective_scale_S": {
+        "J_Z": 0.0005827907727363519
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.147143,
+          "calls": 1
+        },
+        "solve_modes": {
+          "seconds": 0.0299041,
+          "calls": 3
+        },
+        "prepare_workspace": {
+          "seconds": 0.0299098,
+          "calls": 3
+        },
+        "sample_fields": {
+          "seconds": 0.115388,
+          "calls": 3
+        },
+        "pole_synthesis": {
+          "seconds": 0.109079,
+          "calls": 6
+        },
+        "geometry_grouping": {
+          "seconds": 0.00663542,
+          "calls": 6
+        },
+        "angular_tables": {
+          "seconds": 0.000547271,
+          "calls": 21
+        },
+        "interpolation": {
+          "seconds": 0.00410142,
+          "calls": 22650
+        },
+        "point_accumulation": {
+          "seconds": 0.09632,
+          "calls": 22308
+        },
+        "system_matrix": {
+          "seconds": 0.00393154,
+          "calls": 42
+        },
+        "factorization": {
+          "seconds": 0.0192662,
+          "calls": 42
+        },
+        "forward_solve": {
+          "seconds": 0.00144018,
+          "calls": 21
+        },
+        "adjoint_solve": {
+          "seconds": 0.00305555,
+          "calls": 39
+        },
+        "point_contraction": {
+          "seconds": 0.000612852,
+          "calls": 3
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "0b7d4d1e9924facc50296071878af0ceacbc2712feaa6b5abbcf8953d2acde36",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r0-dspec_timed",
+      "3",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r0-dspec_timed"
+  },
+  {
+    "solver": "yspec_timed",
+    "degree": 3,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.028462439,
+    "wall_seconds": 0.14765748999889183,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 3,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 10752,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.019466011,
+      "warmup_batch_s": 0.028462439,
+      "api_s": [
+        0.027817901
+      ],
+      "first_workload_api_s": 0.028462439,
+      "first_model_to_arrays_s": 0.04792845,
+      "calculation_s": 0.047283912,
+      "end_to_end_s": 0.126158046,
+      "peak_rss_bytes": 24051712,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 192,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.0562622,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.0301766,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "sample_fields": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "pole_synthesis": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "geometry_grouping": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "angular_tables": {
+          "seconds": 0.0011812,
+          "calls": 18
+        },
+        "interpolation": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_accumulation": {
+          "seconds": 0.0217725,
+          "calls": 18
+        },
+        "system_matrix": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "factorization": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "forward_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "adjoint_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_contraction": {
+          "seconds": 0.00132172,
+          "calls": 2
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "2f620d6a092a1e2676c29215501fd2795d14cbceb54d4593e9324cc4574bc6cf",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/yspec_instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r0-yspec_timed",
+      "3",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m1-r0-yspec_timed"
+  },
+  {
+    "solver": "dspec",
+    "degree": 3,
+    "measurements": 2,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.287837543,
+    "wall_seconds": 0.4706186950006668,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 3,
+      "measurements": 2,
+      "repeats": 1,
+      "sample_count": 10752,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.022859236,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.144402207,
+        0.143435336
+      ],
+      "first_workload_api_s": 0.144402207,
+      "first_model_to_arrays_s": 0.167261443,
+      "calculation_s": 0.310696779,
+      "end_to_end_s": 0.415862682,
+      "peak_rss_bytes": 24051712,
+      "objective_scale_S": {
+        "J_Z": 0.0005827907727363519,
+        "J_N": 0.0005827907727363519
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "fcaab22c773267138d8701a79e47addc7b16ea0d43a3516ccfe195bfd5459a38",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r0-dspec",
+      "3",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r0-dspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 3,
+    "measurements": 2,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.029228014,
+    "wall_seconds": 0.20206417000008514,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 3,
+      "measurements": 2,
+      "repeats": 1,
+      "point_count": 10752,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.017509404,
+      "warmup_batch_s": 0.029228014,
+      "api_s": [
+        0.028393853
+      ],
+      "first_workload_api_s": 0.029228014,
+      "first_model_to_arrays_s": 0.046737418,
+      "calculation_s": 0.045903257,
+      "end_to_end_s": 0.157893163,
+      "peak_rss_bytes": 33488896,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 192,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "ec984bc7d58cee0cca79e1ff9176a502e6b98b03da9fe2ea2f7089cc2451902e",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r0-yspec",
+      "3",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r0-yspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 3,
+    "measurements": 2,
+    "repeat": 1,
+    "variant": "",
+    "api_seconds": 0.035647839,
+    "wall_seconds": 0.23123399100040842,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 3,
+      "measurements": 2,
+      "repeats": 1,
+      "point_count": 10752,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.020507207,
+      "warmup_batch_s": 0.035647839,
+      "api_s": [
+        0.034438913
+      ],
+      "first_workload_api_s": 0.035647839,
+      "first_model_to_arrays_s": 0.056155046,
+      "calculation_s": 0.05494612,
+      "end_to_end_s": 0.190030452,
+      "peak_rss_bytes": 33488896,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 192,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "ec984bc7d58cee0cca79e1ff9176a502e6b98b03da9fe2ea2f7089cc2451902e",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r1-yspec",
+      "3",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r1-yspec"
+  },
+  {
+    "solver": "dspec",
+    "degree": 3,
+    "measurements": 2,
+    "repeat": 1,
+    "variant": "",
+    "api_seconds": 0.24287201,
+    "wall_seconds": 0.39722968400019454,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 3,
+      "measurements": 2,
+      "repeats": 1,
+      "sample_count": 10752,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.020847991,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.122494245,
+        0.120377765
+      ],
+      "first_workload_api_s": 0.122494245,
+      "first_model_to_arrays_s": 0.143342236,
+      "calculation_s": 0.263720001,
+      "end_to_end_s": 0.350580363,
+      "peak_rss_bytes": 33488896,
+      "objective_scale_S": {
+        "J_Z": 0.0005827907727363519,
+        "J_N": 0.0005827907727363519
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "fcaab22c773267138d8701a79e47addc7b16ea0d43a3516ccfe195bfd5459a38",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r1-dspec",
+      "3",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r1-dspec"
+  },
+  {
+    "solver": "dspec",
+    "degree": 3,
+    "measurements": 2,
+    "repeat": 2,
+    "variant": "",
+    "api_seconds": 0.24349226699999998,
+    "wall_seconds": 0.39770070699887583,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 3,
+      "measurements": 2,
+      "repeats": 1,
+      "sample_count": 10752,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.020723501,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.122817327,
+        0.12067494
+      ],
+      "first_workload_api_s": 0.122817327,
+      "first_model_to_arrays_s": 0.143540828,
+      "calculation_s": 0.26421576799999996,
+      "end_to_end_s": 0.351180481,
+      "peak_rss_bytes": 33488896,
+      "objective_scale_S": {
+        "J_Z": 0.0005827907727363519,
+        "J_N": 0.0005827907727363519
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "fcaab22c773267138d8701a79e47addc7b16ea0d43a3516ccfe195bfd5459a38",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r2-dspec",
+      "3",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r2-dspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 3,
+    "measurements": 2,
+    "repeat": 2,
+    "variant": "",
+    "api_seconds": 0.035733322,
+    "wall_seconds": 0.23489995500131045,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 3,
+      "measurements": 2,
+      "repeats": 1,
+      "point_count": 10752,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.020957578,
+      "warmup_batch_s": 0.035733322,
+      "api_s": [
+        0.03406415
+      ],
+      "first_workload_api_s": 0.035733322,
+      "first_model_to_arrays_s": 0.0566909,
+      "calculation_s": 0.055021728000000006,
+      "end_to_end_s": 0.194661351,
+      "peak_rss_bytes": 33488896,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 192,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "ec984bc7d58cee0cca79e1ff9176a502e6b98b03da9fe2ea2f7089cc2451902e",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r2-yspec",
+      "3",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r2-yspec"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 3,
+    "measurements": 2,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.250271069,
+    "wall_seconds": 0.40465642799972557,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 3,
+      "measurements": 2,
+      "repeats": 1,
+      "sample_count": 10752,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.02081865,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.126426703,
+        0.123844366
+      ],
+      "first_workload_api_s": 0.126426703,
+      "first_model_to_arrays_s": 0.147245353,
+      "calculation_s": 0.271089719,
+      "end_to_end_s": 0.357782709,
+      "peak_rss_bytes": 33488896,
+      "objective_scale_S": {
+        "J_Z": 0.0005827907727363519,
+        "J_N": 0.0005827907727363519
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.250269,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.0506425,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0.0506487,
+          "calls": 6
+        },
+        "sample_fields": {
+          "seconds": 0.197366,
+          "calls": 6
+        },
+        "pole_synthesis": {
+          "seconds": 0.187235,
+          "calls": 12
+        },
+        "geometry_grouping": {
+          "seconds": 0.0113756,
+          "calls": 12
+        },
+        "angular_tables": {
+          "seconds": 0.000903396,
+          "calls": 42
+        },
+        "interpolation": {
+          "seconds": 0.00693376,
+          "calls": 45300
+        },
+        "point_accumulation": {
+          "seconds": 0.165505,
+          "calls": 44616
+        },
+        "system_matrix": {
+          "seconds": 0.00676576,
+          "calls": 84
+        },
+        "factorization": {
+          "seconds": 0.0321865,
+          "calls": 84
+        },
+        "forward_solve": {
+          "seconds": 0.00252094,
+          "calls": 42
+        },
+        "adjoint_solve": {
+          "seconds": 0.0054428,
+          "calls": 78
+        },
+        "point_contraction": {
+          "seconds": 0.000988763,
+          "calls": 6
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "fcaab22c773267138d8701a79e47addc7b16ea0d43a3516ccfe195bfd5459a38",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r0-dspec_timed",
+      "3",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r0-dspec_timed"
+  },
+  {
+    "solver": "yspec_timed",
+    "degree": 3,
+    "measurements": 2,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.029919681,
+    "wall_seconds": 0.20123950999914086,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 3,
+      "measurements": 2,
+      "repeats": 1,
+      "point_count": 10752,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.017074785,
+      "warmup_batch_s": 0.029919681,
+      "api_s": [
+        0.028575603
+      ],
+      "first_workload_api_s": 0.029919681,
+      "first_model_to_arrays_s": 0.046994466,
+      "calculation_s": 0.045650388,
+      "end_to_end_s": 0.159285326,
+      "peak_rss_bytes": 33488896,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            3
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 192,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.0584163,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.0252436,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "sample_fields": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "pole_synthesis": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "geometry_grouping": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "angular_tables": {
+          "seconds": 0.000964363,
+          "calls": 18
+        },
+        "interpolation": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_accumulation": {
+          "seconds": 0.0270722,
+          "calls": 18
+        },
+        "system_matrix": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "factorization": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "forward_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "adjoint_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_contraction": {
+          "seconds": 0.00233738,
+          "calls": 2
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "ec984bc7d58cee0cca79e1ff9176a502e6b98b03da9fe2ea2f7089cc2451902e",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/yspec_instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r0-yspec_timed",
+      "3",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l3-m2-r0-yspec_timed"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 3.470241174,
+    "wall_seconds": 4.149182060000385,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.146949729,
+      "warmup_batch_s": 0,
+      "api_s": [
+        3.470241174
+      ],
+      "first_workload_api_s": 3.470241174,
+      "first_model_to_arrays_s": 3.617190903,
+      "calculation_s": 3.617190903,
+      "end_to_end_s": 3.990842745,
+      "peak_rss_bytes": 70991872,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "845fe3b8428a3b0e1fa6b69ec387e3ede14e8bc16edb263acd2b1fd87b615095",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.256301408,
+    "wall_seconds": 1.1845146719988406,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.150807219,
+      "warmup_batch_s": 0.256301408,
+      "api_s": [
+        0.252212474
+      ],
+      "first_workload_api_s": 0.256301408,
+      "first_model_to_arrays_s": 0.407108627,
+      "calculation_s": 0.403019693,
+      "end_to_end_s": 1.024534495,
+      "peak_rss_bytes": 62980096,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "a4cb4d165a763c3459f44645f7b537a398a5f3a2532a6959a37de6a39ae2b855",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 1,
+    "variant": "",
+    "api_seconds": 0.209254979,
+    "wall_seconds": 0.9974511879991041,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.130845217,
+      "warmup_batch_s": 0.209254979,
+      "api_s": [
+        0.207207357
+      ],
+      "first_workload_api_s": 0.209254979,
+      "first_model_to_arrays_s": 0.340100196,
+      "calculation_s": 0.338052574,
+      "end_to_end_s": 0.845519906,
+      "peak_rss_bytes": 62980096,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "a4cb4d165a763c3459f44645f7b537a398a5f3a2532a6959a37de6a39ae2b855",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r1-yspec",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r1-yspec"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 1,
+    "variant": "",
+    "api_seconds": 2.877157369,
+    "wall_seconds": 3.474729543000649,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.130032757,
+      "warmup_batch_s": 0,
+      "api_s": [
+        2.877157369
+      ],
+      "first_workload_api_s": 2.877157369,
+      "first_model_to_arrays_s": 3.007190126,
+      "calculation_s": 3.007190126,
+      "end_to_end_s": 3.315238177,
+      "peak_rss_bytes": 71290880,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "845fe3b8428a3b0e1fa6b69ec387e3ede14e8bc16edb263acd2b1fd87b615095",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r1-dspec",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r1-dspec"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 2,
+    "variant": "",
+    "api_seconds": 3.393052176,
+    "wall_seconds": 4.029938900999696,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.16269535,
+      "warmup_batch_s": 0,
+      "api_s": [
+        3.393052176
+      ],
+      "first_workload_api_s": 3.393052176,
+      "first_model_to_arrays_s": 3.5557475259999998,
+      "calculation_s": 3.5557475259999998,
+      "end_to_end_s": 3.86895297,
+      "peak_rss_bytes": 85925888,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "845fe3b8428a3b0e1fa6b69ec387e3ede14e8bc16edb263acd2b1fd87b615095",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r2-dspec",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r2-dspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 2,
+    "variant": "",
+    "api_seconds": 0.213945193,
+    "wall_seconds": 1.0203646320005646,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.130795065,
+      "warmup_batch_s": 0.213945193,
+      "api_s": [
+        0.207592293
+      ],
+      "first_workload_api_s": 0.213945193,
+      "first_model_to_arrays_s": 0.34474025799999997,
+      "calculation_s": 0.33838735799999997,
+      "end_to_end_s": 0.852123609,
+      "peak_rss_bytes": 85925888,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "a4cb4d165a763c3459f44645f7b537a398a5f3a2532a6959a37de6a39ae2b855",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r2-yspec",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r2-yspec"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 3.277227588,
+    "wall_seconds": 3.933064277000085,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.162097196,
+      "warmup_batch_s": 0,
+      "api_s": [
+        3.277227588
+      ],
+      "first_workload_api_s": 3.277227588,
+      "first_model_to_arrays_s": 3.439324784,
+      "calculation_s": 3.439324784,
+      "end_to_end_s": 3.750277797,
+      "peak_rss_bytes": 85925888,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 3.27723,
+          "calls": 1
+        },
+        "solve_modes": {
+          "seconds": 0.125413,
+          "calls": 3
+        },
+        "prepare_workspace": {
+          "seconds": 0.125415,
+          "calls": 3
+        },
+        "sample_fields": {
+          "seconds": 3.13749,
+          "calls": 3
+        },
+        "pole_synthesis": {
+          "seconds": 3.08086,
+          "calls": 6
+        },
+        "geometry_grouping": {
+          "seconds": 0.0645067,
+          "calls": 6
+        },
+        "angular_tables": {
+          "seconds": 0.008692,
+          "calls": 117
+        },
+        "interpolation": {
+          "seconds": 0.109946,
+          "calls": 635274
+        },
+        "point_accumulation": {
+          "seconds": 2.85713,
+          "calls": 634932
+        },
+        "system_matrix": {
+          "seconds": 0.0148923,
+          "calls": 150
+        },
+        "factorization": {
+          "seconds": 0.0695959,
+          "calls": 150
+        },
+        "forward_solve": {
+          "seconds": 0.00566058,
+          "calls": 75
+        },
+        "adjoint_solve": {
+          "seconds": 0.0244427,
+          "calls": 147
+        },
+        "point_contraction": {
+          "seconds": 0.00548539,
+          "calls": 3
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "845fe3b8428a3b0e1fa6b69ec387e3ede14e8bc16edb263acd2b1fd87b615095",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed"
+  },
+  {
+    "solver": "yspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.259625073,
+    "wall_seconds": 1.1270353330000944,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.156337987,
+      "warmup_batch_s": 0.259625073,
+      "api_s": [
+        0.238894692
+      ],
+      "first_workload_api_s": 0.259625073,
+      "first_model_to_arrays_s": 0.41596306,
+      "calculation_s": 0.39523267900000003,
+      "end_to_end_s": 0.956092168,
+      "peak_rss_bytes": 86040576,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.498381,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.177989,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "sample_fields": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "pole_synthesis": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "geometry_grouping": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "angular_tables": {
+          "seconds": 0.0254805,
+          "calls": 132
+        },
+        "interpolation": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_accumulation": {
+          "seconds": 0.276422,
+          "calls": 132
+        },
+        "system_matrix": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "factorization": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "forward_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "adjoint_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_contraction": {
+          "seconds": 0.010027,
+          "calls": 2
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "a4cb4d165a763c3459f44645f7b537a398a5f3a2532a6959a37de6a39ae2b855",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/yspec_instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec_timed",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec_timed"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 2,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 7.053218789,
+    "wall_seconds": 8.289954533000127,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 2,
+      "repeats": 1,
+      "sample_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.167798128,
+      "warmup_batch_s": 0,
+      "api_s": [
+        3.560638027,
+        3.492580762
+      ],
+      "first_workload_api_s": 3.560638027,
+      "first_model_to_arrays_s": 3.728436155,
+      "calculation_s": 7.221016917,
+      "end_to_end_s": 7.963964216,
+      "peak_rss_bytes": 86040576,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837,
+        "J_N": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "c1cada1739016a404edccc4a78a31294712609f3129c1fe09ba60a59ebf33220",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r0-dspec",
+      "12",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r0-dspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 2,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.323483494,
+    "wall_seconds": 1.8317317290002393,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 2,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.166461524,
+      "warmup_batch_s": 0.323483494,
+      "api_s": [
+        0.32230142
+      ],
+      "first_workload_api_s": 0.323483494,
+      "first_model_to_arrays_s": 0.489945018,
+      "calculation_s": 0.488762944,
+      "end_to_end_s": 1.471325074,
+      "peak_rss_bytes": 119746560,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "1cbdb5d06dbfd0c6a83583448550590e079b3669c2649178c19d0b7d62dd06bd",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r0-yspec",
+      "12",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r0-yspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 2,
+    "repeat": 1,
+    "variant": "",
+    "api_seconds": 0.266335436,
+    "wall_seconds": 1.6143516239990277,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 2,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.130117184,
+      "warmup_batch_s": 0.266335436,
+      "api_s": [
+        0.265315316
+      ],
+      "first_workload_api_s": 0.266335436,
+      "first_model_to_arrays_s": 0.39645262,
+      "calculation_s": 0.3954325,
+      "end_to_end_s": 1.259621249,
+      "peak_rss_bytes": 119746560,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "1cbdb5d06dbfd0c6a83583448550590e079b3669c2649178c19d0b7d62dd06bd",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r1-yspec",
+      "12",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r1-yspec"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 2,
+    "repeat": 1,
+    "variant": "",
+    "api_seconds": 6.046641612,
+    "wall_seconds": 7.28767921600047,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 2,
+      "repeats": 1,
+      "sample_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.131010671,
+      "warmup_batch_s": 0,
+      "api_s": [
+        2.866267668,
+        3.180373944
+      ],
+      "first_workload_api_s": 2.866267668,
+      "first_model_to_arrays_s": 2.9972783389999997,
+      "calculation_s": 6.1776522830000005,
+      "end_to_end_s": 6.923565919,
+      "peak_rss_bytes": 119746560,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837,
+        "J_N": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "c1cada1739016a404edccc4a78a31294712609f3129c1fe09ba60a59ebf33220",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r1-dspec",
+      "12",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r1-dspec"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 2,
+    "repeat": 2,
+    "variant": "",
+    "api_seconds": 6.339380792,
+    "wall_seconds": 7.485596259999511,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 2,
+      "repeats": 1,
+      "sample_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.162529722,
+      "warmup_batch_s": 0,
+      "api_s": [
+        3.347894879,
+        2.991485913
+      ],
+      "first_workload_api_s": 3.347894879,
+      "first_model_to_arrays_s": 3.510424601,
+      "calculation_s": 6.501910514,
+      "end_to_end_s": 7.118600795,
+      "peak_rss_bytes": 119963648,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837,
+        "J_N": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "c1cada1739016a404edccc4a78a31294712609f3129c1fe09ba60a59ebf33220",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r2-dspec",
+      "12",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r2-dspec"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 2,
+    "repeat": 2,
+    "variant": "",
+    "api_seconds": 0.265425472,
+    "wall_seconds": 1.6081681300001947,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 2,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.128333002,
+      "warmup_batch_s": 0.265425472,
+      "api_s": [
+        0.262161372
+      ],
+      "first_workload_api_s": 0.265425472,
+      "first_model_to_arrays_s": 0.39375847399999997,
+      "calculation_s": 0.390494374,
+      "end_to_end_s": 1.252817056,
+      "peak_rss_bytes": 119996416,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "1cbdb5d06dbfd0c6a83583448550590e079b3669c2649178c19d0b7d62dd06bd",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r2-yspec",
+      "12",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r2-yspec"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 12,
+    "measurements": 2,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 5.9454730399999995,
+    "wall_seconds": 7.07763005599918,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 2,
+      "repeats": 1,
+      "sample_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.148704755,
+      "warmup_batch_s": 0,
+      "api_s": [
+        2.998476161,
+        2.946996879
+      ],
+      "first_workload_api_s": 2.998476161,
+      "first_model_to_arrays_s": 3.147180916,
+      "calculation_s": 6.094177794999999,
+      "end_to_end_s": 6.709239026,
+      "peak_rss_bytes": 119996416,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837,
+        "J_N": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 5.94547,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.217135,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0.217138,
+          "calls": 6
+        },
+        "sample_fields": {
+          "seconds": 5.70273,
+          "calls": 6
+        },
+        "pole_synthesis": {
+          "seconds": 5.59068,
+          "calls": 12
+        },
+        "geometry_grouping": {
+          "seconds": 0.115859,
+          "calls": 12
+        },
+        "angular_tables": {
+          "seconds": 0.0155592,
+          "calls": 234
+        },
+        "interpolation": {
+          "seconds": 0.199409,
+          "calls": 1270548
+        },
+        "point_accumulation": {
+          "seconds": 5.1862,
+          "calls": 1269864
+        },
+        "system_matrix": {
+          "seconds": 0.0260879,
+          "calls": 300
+        },
+        "factorization": {
+          "seconds": 0.119677,
+          "calls": 300
+        },
+        "forward_solve": {
+          "seconds": 0.00998312,
+          "calls": 150
+        },
+        "adjoint_solve": {
+          "seconds": 0.0426519,
+          "calls": 294
+        },
+        "point_contraction": {
+          "seconds": 0.0110822,
+          "calls": 6
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "c1cada1739016a404edccc4a78a31294712609f3129c1fe09ba60a59ebf33220",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r0-dspec_timed",
+      "12",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r0-dspec_timed"
+  },
+  {
+    "solver": "yspec_timed",
+    "degree": 12,
+    "measurements": 2,
+    "repeat": 0,
+    "variant": "",
+    "api_seconds": 0.266701425,
+    "wall_seconds": 1.6245897839999088,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 2,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.130968374,
+      "warmup_batch_s": 0.266701425,
+      "api_s": [
+        0.272020087
+      ],
+      "first_workload_api_s": 0.266701425,
+      "first_model_to_arrays_s": 0.397669799,
+      "calculation_s": 0.402988461,
+      "end_to_end_s": 1.27212343,
+      "peak_rss_bytes": 120033280,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            },
+            {
+              "name": "J_N",
+              "component": "N",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.53845,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.149535,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "sample_fields": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "pole_synthesis": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "geometry_grouping": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "angular_tables": {
+          "seconds": 0.0216469,
+          "calls": 132
+        },
+        "interpolation": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_accumulation": {
+          "seconds": 0.334572,
+          "calls": 132
+        },
+        "system_matrix": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "factorization": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "forward_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "adjoint_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_contraction": {
+          "seconds": 0.0181056,
+          "calls": 2
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "1cbdb5d06dbfd0c6a83583448550590e079b3669c2649178c19d0b7d62dd06bd",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/yspec_instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r0-yspec_timed",
+      "12",
+      "2",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m2-r0-yspec_timed"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-one_radius",
+    "api_seconds": 0.207342693,
+    "wall_seconds": 0.22126867200131528,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 1352,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.002510865,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.207342693
+      ],
+      "first_workload_api_s": 0.207342693,
+      "first_model_to_arrays_s": 0.209853558,
+      "calculation_s": 0.209853558,
+      "end_to_end_s": 0.216135996,
+      "peak_rss_bytes": 129253376,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "071e50773304deb9932ba0e1d212d4025730d78f2e3790953cba43140064a600",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/one_radius.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-one_radius",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-one_radius"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-one_radius",
+    "api_seconds": 0.081792842,
+    "wall_seconds": 0.16894564499853004,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 1352,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.000941397,
+      "warmup_batch_s": 0.081792842,
+      "api_s": [
+        0.076784798
+      ],
+      "first_workload_api_s": 0.081792842,
+      "first_model_to_arrays_s": 0.082734239,
+      "calculation_s": 0.077726195,
+      "end_to_end_s": 0.164283516,
+      "peak_rss_bytes": 129646592,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 1
+      }
+    },
+    "profile": [],
+    "csv_sha256": "d9e8cabd9f556c3f3c873b98b8e9cfb4662cb2731cb2555a3b27d36634324ac5",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/one_radius.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec-one_radius",
+      "12",
+      "1",
+      "1",
+      "1352"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec-one_radius"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-one_radius",
+    "api_seconds": 0.20228385,
+    "wall_seconds": 0.21672600700003386,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 1352,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.003011384,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.20228385
+      ],
+      "first_workload_api_s": 0.20228385,
+      "first_model_to_arrays_s": 0.205295234,
+      "calculation_s": 0.205295234,
+      "end_to_end_s": 0.211598497,
+      "peak_rss_bytes": 129646592,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.202283,
+          "calls": 1
+        },
+        "solve_modes": {
+          "seconds": 0.13115,
+          "calls": 3
+        },
+        "prepare_workspace": {
+          "seconds": 0.131156,
+          "calls": 3
+        },
+        "sample_fields": {
+          "seconds": 0.0703666,
+          "calls": 3
+        },
+        "pole_synthesis": {
+          "seconds": 0.0663631,
+          "calls": 6
+        },
+        "geometry_grouping": {
+          "seconds": 0.00169411,
+          "calls": 6
+        },
+        "angular_tables": {
+          "seconds": 0.00836022,
+          "calls": 117
+        },
+        "interpolation": {
+          "seconds": 0.00194366,
+          "calls": 11904
+        },
+        "point_accumulation": {
+          "seconds": 0.0533759,
+          "calls": 11892
+        },
+        "system_matrix": {
+          "seconds": 0.0150828,
+          "calls": 150
+        },
+        "factorization": {
+          "seconds": 0.0738726,
+          "calls": 150
+        },
+        "forward_solve": {
+          "seconds": 0.00573406,
+          "calls": 75
+        },
+        "adjoint_solve": {
+          "seconds": 0.0247988,
+          "calls": 147
+        },
+        "point_contraction": {
+          "seconds": 5.1304e-05,
+          "calls": 3
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "071e50773304deb9932ba0e1d212d4025730d78f2e3790953cba43140064a600",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/one_radius.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-one_radius",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-one_radius"
+  },
+  {
+    "solver": "yspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-one_radius",
+    "api_seconds": 0.076628402,
+    "wall_seconds": 0.16350570199938375,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 1352,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.000928999,
+      "warmup_batch_s": 0.076628402,
+      "api_s": [
+        0.076587821
+      ],
+      "first_workload_api_s": 0.076628402,
+      "first_model_to_arrays_s": 0.077557401,
+      "calculation_s": 0.07751682,
+      "end_to_end_s": 0.158959205,
+      "peak_rss_bytes": 129646592,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 1
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.153214,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.112805,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "sample_fields": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "pole_synthesis": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "geometry_grouping": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "angular_tables": {
+          "seconds": 0.0343985,
+          "calls": 132
+        },
+        "interpolation": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_accumulation": {
+          "seconds": 0.00427795,
+          "calls": 132
+        },
+        "system_matrix": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "factorization": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "forward_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "adjoint_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_contraction": {
+          "seconds": 0.000139057,
+          "calls": 2
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "d9e8cabd9f556c3f3c873b98b8e9cfb4662cb2731cb2555a3b27d36634324ac5",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/yspec_instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/one_radius.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec_timed-one_radius",
+      "12",
+      "1",
+      "1",
+      "1352"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec_timed-one_radius"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-one_angle",
+    "api_seconds": 0.128038242,
+    "wall_seconds": 0.13348628799940343,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 56,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.002349582,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.128038242
+      ],
+      "first_workload_api_s": 0.128038242,
+      "first_model_to_arrays_s": 0.13038782399999999,
+      "calculation_s": 0.13038782399999999,
+      "end_to_end_s": 0.130777789,
+      "peak_rss_bytes": 129777664,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "f9d7933595064dcddbdc55c6c5a4295191405bbf10bf949036596bfa210f147c",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/one_angle.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-one_angle",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-one_angle"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-one_angle",
+    "api_seconds": 0.162656838,
+    "wall_seconds": 0.16822353799943812,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 56,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.002288467,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.162656838
+      ],
+      "first_workload_api_s": 0.162656838,
+      "first_model_to_arrays_s": 0.164945305,
+      "calculation_s": 0.164945305,
+      "end_to_end_s": 0.165426061,
+      "peak_rss_bytes": 96759808,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.162656,
+          "calls": 1
+        },
+        "solve_modes": {
+          "seconds": 0.14672,
+          "calls": 3
+        },
+        "prepare_workspace": {
+          "seconds": 0.146722,
+          "calls": 3
+        },
+        "sample_fields": {
+          "seconds": 0.0151862,
+          "calls": 3
+        },
+        "pole_synthesis": {
+          "seconds": 0.0115033,
+          "calls": 6
+        },
+        "geometry_grouping": {
+          "seconds": 9.8673e-05,
+          "calls": 6
+        },
+        "angular_tables": {
+          "seconds": 2.8603e-05,
+          "calls": 6
+        },
+        "interpolation": {
+          "seconds": 0.00625671,
+          "calls": 32490
+        },
+        "point_accumulation": {
+          "seconds": 0.00317161,
+          "calls": 32148
+        },
+        "system_matrix": {
+          "seconds": 0.0174088,
+          "calls": 150
+        },
+        "factorization": {
+          "seconds": 0.0826482,
+          "calls": 150
+        },
+        "forward_solve": {
+          "seconds": 0.00627813,
+          "calls": 75
+        },
+        "adjoint_solve": {
+          "seconds": 0.027075,
+          "calls": 147
+        },
+        "point_contraction": {
+          "seconds": 7.753e-06,
+          "calls": 3
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "f9d7933595064dcddbdc55c6c5a4295191405bbf10bf949036596bfa210f147c",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/one_angle.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-one_angle",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-one_angle"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-one_point",
+    "api_seconds": 0.161663202,
+    "wall_seconds": 0.16712957799973083,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 1,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.002477965,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.161663202
+      ],
+      "first_workload_api_s": 0.161663202,
+      "first_model_to_arrays_s": 0.164141167,
+      "calculation_s": 0.164141167,
+      "end_to_end_s": 0.164319745,
+      "peak_rss_bytes": 97808384,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "47c9d9ee3de57cae6705b8eff004cead5ef7572c980da9f33c3a716a9dfcc458",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/one_point.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-one_point",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-one_point"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-one_point",
+    "api_seconds": 0.150370889,
+    "wall_seconds": 0.15595488000144542,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 1,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.002329688,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.150370889
+      ],
+      "first_workload_api_s": 0.150370889,
+      "first_model_to_arrays_s": 0.152700577,
+      "calculation_s": 0.152700577,
+      "end_to_end_s": 0.152984723,
+      "peak_rss_bytes": 97808384,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.15037,
+          "calls": 1
+        },
+        "solve_modes": {
+          "seconds": 0.145629,
+          "calls": 3
+        },
+        "prepare_workspace": {
+          "seconds": 0.145631,
+          "calls": 3
+        },
+        "sample_fields": {
+          "seconds": 0.00396913,
+          "calls": 3
+        },
+        "pole_synthesis": {
+          "seconds": 0.000547709,
+          "calls": 6
+        },
+        "geometry_grouping": {
+          "seconds": 2.324e-05,
+          "calls": 6
+        },
+        "angular_tables": {
+          "seconds": 2.9971e-05,
+          "calls": 6
+        },
+        "interpolation": {
+          "seconds": 0.000290281,
+          "calls": 1140
+        },
+        "point_accumulation": {
+          "seconds": 0.000130221,
+          "calls": 1128
+        },
+        "system_matrix": {
+          "seconds": 0.0167706,
+          "calls": 150
+        },
+        "factorization": {
+          "seconds": 0.0827209,
+          "calls": 150
+        },
+        "forward_solve": {
+          "seconds": 0.00616433,
+          "calls": 75
+        },
+        "adjoint_solve": {
+          "seconds": 0.0269302,
+          "calls": 147
+        },
+        "point_contraction": {
+          "seconds": 6.82e-07,
+          "calls": 3
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "47c9d9ee3de57cae6705b8eff004cead5ef7572c980da9f33c3a716a9dfcc458",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/one_point.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-one_point",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-one_point"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-three_angles",
+    "api_seconds": 0.167415842,
+    "wall_seconds": 0.17401084800076205,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 168,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.002405192,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.167415842
+      ],
+      "first_workload_api_s": 0.167415842,
+      "first_model_to_arrays_s": 0.169821034,
+      "calculation_s": 0.169821034,
+      "end_to_end_s": 0.170912432,
+      "peak_rss_bytes": 97939456,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "d7ec4fe521e60bdbf26cce1500729c06601dd8c6e31b045f5e3451cd7f32a894",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/three_angles.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-three_angles",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-three_angles"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-three_angles",
+    "api_seconds": 0.078132649,
+    "wall_seconds": 0.15981733999979042,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 168,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.000266716,
+      "warmup_batch_s": 0.078132649,
+      "api_s": [
+        0.078072098
+      ],
+      "first_workload_api_s": 0.078132649,
+      "first_model_to_arrays_s": 0.078399365,
+      "calculation_s": 0.078338814,
+      "end_to_end_s": 0.157303456,
+      "peak_rss_bytes": 97939456,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 3,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [],
+    "csv_sha256": "e634542bed18f188d654ac9e0b409276f2d1553ed0524d92f560e402e1485312",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/three_angles.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec-three_angles",
+      "12",
+      "1",
+      "1",
+      "3"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec-three_angles"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-three_angles",
+    "api_seconds": 0.135447112,
+    "wall_seconds": 0.14189102800082765,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 168,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.002400026,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.135447112
+      ],
+      "first_workload_api_s": 0.135447112,
+      "first_model_to_arrays_s": 0.137847138,
+      "calculation_s": 0.137847138,
+      "end_to_end_s": 0.138675173,
+      "peak_rss_bytes": 97939456,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.135446,
+          "calls": 1
+        },
+        "solve_modes": {
+          "seconds": 0.118538,
+          "calls": 3
+        },
+        "prepare_workspace": {
+          "seconds": 0.118539,
+          "calls": 3
+        },
+        "sample_fields": {
+          "seconds": 0.0161869,
+          "calls": 3
+        },
+        "pole_synthesis": {
+          "seconds": 0.0132735,
+          "calls": 6
+        },
+        "geometry_grouping": {
+          "seconds": 0.000166603,
+          "calls": 6
+        },
+        "angular_tables": {
+          "seconds": 3.9877e-05,
+          "calls": 6
+        },
+        "interpolation": {
+          "seconds": 0.00491993,
+          "calls": 32490
+        },
+        "point_accumulation": {
+          "seconds": 0.00658251,
+          "calls": 32148
+        },
+        "system_matrix": {
+          "seconds": 0.0139691,
+          "calls": 150
+        },
+        "factorization": {
+          "seconds": 0.0673529,
+          "calls": 150
+        },
+        "forward_solve": {
+          "seconds": 0.00505207,
+          "calls": 75
+        },
+        "adjoint_solve": {
+          "seconds": 0.0214782,
+          "calls": 147
+        },
+        "point_contraction": {
+          "seconds": 6.631e-06,
+          "calls": 3
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "d7ec4fe521e60bdbf26cce1500729c06601dd8c6e31b045f5e3451cd7f32a894",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/three_angles.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-three_angles",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-three_angles"
+  },
+  {
+    "solver": "yspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-three_angles",
+    "api_seconds": 0.093954633,
+    "wall_seconds": 0.19264282699987234,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 168,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.000268413,
+      "warmup_batch_s": 0.093954633,
+      "api_s": [
+        0.094907384
+      ],
+      "first_workload_api_s": 0.093954633,
+      "first_model_to_arrays_s": 0.09422304599999999,
+      "calculation_s": 0.09517579699999999,
+      "end_to_end_s": 0.190154765,
+      "peak_rss_bytes": 97939456,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 3,
+        "radial_node_count": 56
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.18886,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.18767,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "sample_fields": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "pole_synthesis": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "geometry_grouping": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "angular_tables": {
+          "seconds": 9.9579e-05,
+          "calls": 6
+        },
+        "interpolation": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_accumulation": {
+          "seconds": 0.000625805,
+          "calls": 6
+        },
+        "system_matrix": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "factorization": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "forward_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "adjoint_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_contraction": {
+          "seconds": 2.9063e-05,
+          "calls": 2
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "e634542bed18f188d654ac9e0b409276f2d1553ed0524d92f560e402e1485312",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/yspec_instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/three_angles.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec_timed-three_angles",
+      "12",
+      "1",
+      "1",
+      "3"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec_timed-three_angles"
+  },
+  {
+    "solver": "dspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-three_points",
+    "api_seconds": 0.145011728,
+    "wall_seconds": 0.14992031699875952,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 3,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.002313405,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.145011728
+      ],
+      "first_workload_api_s": 0.145011728,
+      "first_model_to_arrays_s": 0.147325133,
+      "calculation_s": 0.147325133,
+      "end_to_end_s": 0.147500842,
+      "peak_rss_bytes": 97939456,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [],
+    "csv_sha256": "b2754c594f989cdc67319aad7a10732cf2278144f6341d664c18784b8cc44f5b",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/three_points.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-three_points",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec-three_points"
+  },
+  {
+    "solver": "yspec",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-three_points",
+    "api_seconds": 0.075187751,
+    "wall_seconds": 0.15182025700050872,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 3,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.000157449,
+      "warmup_batch_s": 0.075187751,
+      "api_s": [
+        0.074234648
+      ],
+      "first_workload_api_s": 0.075187751,
+      "first_model_to_arrays_s": 0.0753452,
+      "calculation_s": 0.074392097,
+      "end_to_end_s": 0.149713669,
+      "peak_rss_bytes": 98070528,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 3,
+        "radial_node_count": 1
+      }
+    },
+    "profile": [],
+    "csv_sha256": "a83f841c6fa8c8b68b31da5f572bb503a11e0825c90ee4c812473813804b2203",
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/three_points.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec-three_points",
+      "12",
+      "1",
+      "1",
+      "3"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec-three_points"
+  },
+  {
+    "solver": "dspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-three_points",
+    "api_seconds": 0.118378245,
+    "wall_seconds": 0.12232130300071731,
+    "metrics": {
+      "solver": "DSpecM1D",
+      "api": "Windowed3DKernelEngine::evaluate",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "sample_count": 3,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.001718876,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.118378245
+      ],
+      "first_workload_api_s": 0.118378245,
+      "first_model_to_arrays_s": 0.120097121,
+      "calculation_s": 0.120097121,
+      "end_to_end_s": 0.120249905,
+      "peak_rss_bytes": 98201600,
+      "objective_scale_S": {
+        "J_Z": 0.0012146850728957837
+      },
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.672299999999999e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.118378,
+          "calls": 1
+        },
+        "solve_modes": {
+          "seconds": 0.114656,
+          "calls": 3
+        },
+        "prepare_workspace": {
+          "seconds": 0.114658,
+          "calls": 3
+        },
+        "sample_fields": {
+          "seconds": 0.00312519,
+          "calls": 3
+        },
+        "pole_synthesis": {
+          "seconds": 0.000495527,
+          "calls": 6
+        },
+        "geometry_grouping": {
+          "seconds": 2.6646e-05,
+          "calls": 6
+        },
+        "angular_tables": {
+          "seconds": 4.0525e-05,
+          "calls": 6
+        },
+        "interpolation": {
+          "seconds": 0.000207922,
+          "calls": 1140
+        },
+        "point_accumulation": {
+          "seconds": 0.000167628,
+          "calls": 1128
+        },
+        "system_matrix": {
+          "seconds": 0.0134705,
+          "calls": 150
+        },
+        "factorization": {
+          "seconds": 0.065029,
+          "calls": 150
+        },
+        "forward_solve": {
+          "seconds": 0.00486832,
+          "calls": 75
+        },
+        "adjoint_solve": {
+          "seconds": 0.0210738,
+          "calls": 147
+        },
+        "point_contraction": {
+          "seconds": 6.76e-07,
+          "calls": 3
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "b2754c594f989cdc67319aad7a10732cf2278144f6341d664c18784b8cc44f5b",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/three_points.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-three_points",
+      "12",
+      "1",
+      "1"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-dspec_timed-three_points"
+  },
+  {
+    "solver": "yspec_timed",
+    "degree": 12,
+    "measurements": 1,
+    "repeat": 0,
+    "variant": "-three_points",
+    "api_seconds": 0.069302806,
+    "wall_seconds": 0.14443470900005195,
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 3,
+      "warmup_batches": 1,
+      "warmup_api_calls": 1,
+      "setup_s": 0.000172482,
+      "warmup_batch_s": 0.069302806,
+      "api_s": [
+        0.072562469
+      ],
+      "first_workload_api_s": 0.069302806,
+      "first_model_to_arrays_s": 0.069475288,
+      "calculation_s": 0.072734951,
+      "end_to_end_s": 0.142202078,
+      "peak_rss_bytes": 98201600,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_bins_zero_based": [
+            1,
+            2,
+            3
+          ],
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 3,
+        "radial_node_count": 1
+      }
+    },
+    "profile": [
+      {
+        "api": {
+          "seconds": 0.141864,
+          "calls": 2
+        },
+        "solve_modes": {
+          "seconds": 0.141662,
+          "calls": 6
+        },
+        "prepare_workspace": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "sample_fields": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "pole_synthesis": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "geometry_grouping": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "angular_tables": {
+          "seconds": 0.000119109,
+          "calls": 6
+        },
+        "interpolation": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_accumulation": {
+          "seconds": 1.4582e-05,
+          "calls": 6
+        },
+        "system_matrix": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "factorization": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "forward_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "adjoint_solve": {
+          "seconds": 0,
+          "calls": 0
+        },
+        "point_contraction": {
+          "seconds": 5.943e-06,
+          "calls": 2
+        },
+        "measurement_map": {
+          "seconds": 0,
+          "calls": 0
+        }
+      }
+    ],
+    "csv_sha256": "a83f841c6fa8c8b68b31da5f572bb503a11e0825c90ee4c812473813804b2203",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/yspec_instrumented",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/three_points.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec_timed-three_points",
+      "12",
+      "1",
+      "1",
+      "3"
+    ],
+    "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/runs/l12-m1-r0-yspec_timed-three_points"
+  }
+]

@@ -1,0 +1,294 @@
+DSpecM1D Stage2 pinned remote thread-safety planning audit
+2026-10-31 — Sol6.1-high planner, read-only source inspection.
+DRAFT SUPPORTING EVIDENCE; no Stage2 implementation/execution release.
+
+Conclusion
+The inspected pinned non-mutating SEM/source/receiver/model/interpolation call
+paths admit concurrent independent frequency tasks sharing a fully constructed,
+stable SEM/source/parameters/model, subject to the ownership requirements below.
+No lazy shared mutable cursor, global recursion table or shared numerical scratch
+was found on these inspected paths. This is a source audit, not a dynamic race
+proof or permission to share SamplingPlanCache/workspace mutable objects.
+
+Provenance
+Read on Tunya through existing ssh_transport.py; every remote operation read
+files only. Source bytes were hashed remotely before transfer and inspected
+locally. Temporary source copies are audit material under /tmp, not edited code.
+Parent supplied preflight: all12 original-v9 tracked dependency/source trees
+match successful build hashes; DSpecHEADa778b13b22dca9709e1f96604b62925707654e5d
+with5existing tracked dirty files plus validation/phase0; YSpecHEAD
+280eab0200495391539c0f97e62f978083c307bc clean. Original shared library SHA256
+f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f.
+The formal Luna preflight receipt path/hash is pending publication. Final Stage2
+plan must bind that receipt and accepted Stage1 source manifest to the hashes
+below, rather than treating parent text as the completed receipt binding.
+
+Findings and thread ownership
+1. SEM private state holds mesh/material/base matrices assembled before tasks.
+   SEMMatrices.h hS/hSa/pS/hSC/hSCa/pSC/hTk/hTa/pTk construct return-value sparse
+   matrices from those stored matrices; even hS coeffRef modifies its local tmp,
+   not shared base state. No mutation/lazy state in these getters.
+2. SEMLG sourceElement/receiverElements and ltg methods use locals, const mesh
+   and existing fluid/offset vectors. sourceMatches uses local scalar radius.
+   Receiver selection returns a fresh vector. Preserve the same shared SEM
+   address across passes because response keys bind &sem.
+3. SEMSourceTreatment local element operators allocate local matrices, read
+   mesh/material/scales and build force/lift results locally. Radial construction
+   now runs concurrently across frequencies; its Wigner<double> is local.
+   Spheroidal/toroidal reduced source coefficients create local result matrices
+   and read const SourceInfo moment getters. No source object mutation found.
+4. rvZR,rvBaseFull,rvBaseFullT allocate local node/receiver arrays and local
+   LagrangeBasis. Non-const method signatures alone do not indicate writes:
+   inspected definitions only read shared state and mutate returned/local data.
+   SourceInfo const getters and moment conversions use scalar values or locals.
+   Legacy InputParameters is from InputParser.h, not InputParametersNew.h;
+   receivers() returns const reference and scalar getters are const.
+5. RadialMesh getters use const vector reads. GLL() exposes a mutable reference,
+   but frequency task paths inspect mesh through const SEM::mesh() and do not
+   call GLL()/splitAtRadius(). Constructor-time mesh mutation stays before joins.
+6. YSpec Layer::operator()(double) const selects a segment with upper_bound on
+   const r_, then evaluates stored cubics into local Properties/Material. Segment
+   has no mutable last-interval cursor/cache. Gravity uses local accumulators and
+   const massBelow_/coefficients_. Model operator()(layer,r) delegates to this.
+   Parsing and construction occur serially; no workers modify layers/scales.
+7. Interpolation LagrangeBasis computes owned weights in construction, const
+   Value/Slope/Evaluate read those weights and borrowed immutable nodes, with
+   local denominators/sums. No static scratch or mutable lookup index. Lagrange
+   interpolant similarly has const evaluation and local nearest-node scans.
+8. GSH Wigner<double>: WignerRecursionReal<double> is double, so FillBlock takes
+   if constexpr same_as<Work,Real>, directly calling ComputeBlock into this owned
+   table's destination. The alternate float-widening branch has thread_local
+   scratch; it is not instantiated for the double physical path and would still
+   not be shared among threads. PreComputeTables allocates two per-call vectors,
+   not global/lazy tables. Constructor owns offset_/data_ vectors; ComputeBlock
+   writes only the passed view and uses local recursion values/read-only tables.
+9. Wigner::ComputeAll queries OpenMP::InParallel and its omp parallel-for has
+   if(!nested). Under the8frequency outer team it executes a serialized inner
+   region, creates no additional active team, and each task owns its table.
+   Outside an active outer region OMP_NUM_THREADS1 keeps the library serial.
+   WignerMatrices uses the same guard and a vector scratch allocated per inner
+   region worker, never global. ExceptionCapture is object-local with mutex plus
+   atomic failed flag, rethrows after the inner region. Do not reuse its
+   completion-order first exception as the outer scheduler's lowest-bin policy.
+10. Existing BatchResponseCache entries/counters/limits/accessors are locked;
+   miss computation is local outside lock; stable shared cache reused across
+   passes. Own cache lifetime until both joins; no clear/move. Existing factors
+   and selected backend are thread_local. Numeric factor/RHS/cache-entry counts
+   must match Stage1; symbolic reuse history may change with worker assignment.
+11. SamplingPlanCache and nested basis/Wigner shared_ptr payloads MUST remain
+   independently owned by each persistent frequency-worker/section plan. No
+   shallow plan copies or concurrent shared mutation. Workspaces own mutable
+   PoleCoefficientCache; construct/destroy in one task. No shared field vectors,
+   diagnostics maxima or result +=; parent reduces indexed contributions in k
+   order. auditprofile stays disabled; mathprofile capture/merge is worker-local.
+
+Limitations/release conditions
+This audit examined the actual remote source bytes listed below, including
+complete relevant files; function-span hashes support reproducible close reads.
+It does not establish safety for alternate full-global-field routes, mutated
+source/model, shared plans, other solver backends, or arbitrary library builds.
+The linked BLAS implementation must remain the original hash-bound dependency
+with pool1; immutable matrices and task-local output buffers are required.
+FFTW/measurement helpers remain serial after full forward-pass join. Planner
+performed no builds, numerical calculations or race-detector runs. Accepted
+Stage1 added profiling must be rechecked for shared mutable accumulators before
+Stage2 release. The outer scheduler tests and native1/8scientific gates remain
+required. No Stage3 changes justified by this audit.
+
+Remote file SHA256 manifest (full path followed by raw-byte hash)
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/SEM/SEM.h
+  335563549a095d1b5d775a9b71a9cde166408b12245588d221ec838c32a67bdd
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/SEM/SEMMatrices.h
+  810c3059ec2321734b28e4d5bf071d913bb52ad1b5afc2581243cded2b043fd7
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/SEM/SEMLG.h
+  38309f5f4dca2590b60e388e457559367055daa252a0be33feef95ef8641eb85
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/SEM/SEMSourceTreatment.h
+  3a08520eddf71bdafbc26f9b3950af56780c0457f1555488d0e423394318cb0e
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/SEM/SEMReceivers.h
+  368dbe786ecc3feb00010d2a001ff3c180a9398bce29bcd6a2b27e8ba8559de2
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/SEM/SEMForceSpheroidal.h
+  b292e22c16fac18417e758cbdcca20e2249ca213d428453f6cf4e979a61c13a7
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/SEM/SEMForceToroidal.h
+  778c2b9eff52f1fcc7ed09afb69096111e6319825d251e94e70e06a3223fa191
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/SourceInfo.h
+  fe63df6c9fe36601a1bb193c96496e0104b09040e0ed045fd09bb749eebe3c6f
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/InputParser.h
+  8dc5465136596e4e85369f0117c524472470c9e79504611cb04565744f694f3e
+
+/space/adcm2/research/projects/DSpecM1D/DSpecM1D/src/model_info/earthmesh/RadialMeshDeclaration.h
+  7441a29045b52a82e1bf4a8c43fd0b294a5fc2dbfd78cee386fcda166cce042b
+
+/space/adcm2/research/projects/YSpecpp/YSpec/Model.hpp
+  1f8ee4e353175bf650d7728b9550644228b3b3b4e727467e3defccf9ec1e4ece
+
+/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans/GSHTrans/Wigner.hpp
+  1fd2197a9f37ee463b49ecf0c615300cf98ca53612362ec1c3787ad8397b62c4
+
+/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans/GSHTrans/WignerMatrices.hpp
+  2e2e18b295538fc8d815c9992cc2b0703e5f4767dff2e1b82227f0a84b904603
+
+/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans/GSHTrans/OpenMP.hpp
+  1944ee633a96961abe0b253f1b4e490ba030a27bdcfe4f64c727a3b655925536
+
+/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans/GSHTrans/Utility.hpp
+  ec27ce9c9cb727d3e7585bffa942dd4e3ecdf6c54dcdfbb57ed7be725b0ab0b8
+
+/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include/Interpolation/Lagrange.hpp
+  4411ccdf7b5b04dae992c215c09d7006c90807f0c89918fa167cc0844cc42c98
+
+/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include/Interpolation/Samples.hpp
+  4295e44138e427a8dc1b3b2bdcb5b43f1f6929e65964745a695175c1add1dc16
+
+
+Function/source-span SHA256 manifest
+Hashes cover exact UTF-8 text of inclusive listed lines, including line endings.
+
+GSHTrans/Wigner.hpp:80-84 WignerRecursionReal alias
+  e0f12f8d5f270b8ba1a35477bb60ab825714cabea19433e87fe96b238dd2a50d
+
+GSHTrans/Wigner.hpp:317-334 PreComputeTables
+  4cc90c8e88aef67f7fb9ebda5ae40cdc71f8948b759682ad79778e681d84a89f
+
+GSHTrans/Wigner.hpp:632-651 FillBlock
+  863229b4ce0040be7c0fd3955746311ba0bcfcb0f8567bf2ddf74be385d113c1
+
+GSHTrans/Wigner.hpp:691-710 Wigner constructor
+  9d75eb151e7ed760c331882e3718e5c166afd66dbc6503851534a4f9bfc759f7
+
+GSHTrans/Wigner.hpp:921-966 Wigner ComputeAll
+  e65431e25ff8016ebcf5291288665ea4c9a9f49f7d4c0db6f058c5f000ca3a8b
+
+GSHTrans/WignerMatrices.hpp:312-379 WignerMatrices ComputeAll
+  2f926c01e880a481d0b444a85d0a8b44b6b29f59c28cb1bd72977910e864650e
+
+GSHTrans/OpenMP.hpp:77-84 InParallel
+  6d6dccd269b72a27f26ea7172a2d98e28d40013faa986df8ecaf1651061fc0af
+
+YSpec/Model.hpp:148-172 Layer material evaluation span
+  017e7f666c42bcc0c3d9877fd8b84a91bd397bffc5b10b063d61015a48d79604
+
+YSpec/Model.hpp:190-195 Layer Segment
+  4533c6280c09731c5da1d3cb6fb7b0e1a2cfee31c6e60f38a7daaa50c69b45bb
+
+SEM/SEMMatrices.h:8-86 SEM sparse matrix getter group
+  69cb562dce5a7986dc328d1a431669c89439924dd59c2f78c621764df7ce6976
+
+SEM/SEMLG.h:73-124 SEM source/receiver selection span
+  5349062423442d74c3d4587bf952c4866505c2edd349e19ed241b597979e02f4
+
+SEM/SEMSourceTreatment.h:148-296 SEM source treatment group
+  bdb9bafa7fdae0bc1a3fb34a6cb3aa610b6095172c7f25aee4960a0526ec3a9b
+
+SEM/SEMReceivers.h:352-380 rvZR
+  20d6bb8f4665687863eece1bc985ed60dcdf0ceb0eafb2606f00031257f3d091
+
+SEM/SEMReceivers.h:414-447 rvBaseFull
+  1b1df3d1502ed793973b14f83fb506347bba0f52883f5a202999288d77a7cc74
+
+SEM/SEMReceivers.h:449-477 rvBaseFullT
+  bd60e09981c2aac159c412e707203269d0d52478358ff4199803f101ada1b5b4
+
+SourceInfo.h:225-249 canonical moment getter group
+  57b4370c8931479080e0d72bfedeeaa8e4f979f1a6ca07bb983f3712a91fcc48
+
+Interpolation/Lagrange.hpp:66-160 LagrangeBasis evaluation/weights group
+  54df27eec1c1e44828c37d0bf65b5172bf86bb574555ef7dc835d39223644594
+
+Stage1 provisional profiler carryover audit,2026-10-31
+investigations/dspec-acceleration-20261027/candidates/stages12-stage1-profile-v1/profile.hpp
+  ece6b2df5b8ed5b7d97de732ff619bb09d9482c35b99fccf756d5be3a9991724
+investigations/dspec-acceleration-20261027/candidates/stages12-stage1-profile-v1/doc_driver.cpp
+  465e2203e39e55820ac17555737a6e07ebe7f90ba696c38356387c0dc2f10256
+Read-only findings: Scope::stop is idempotent, checks depth==index+1,
+subtracts child elapsed from exclusive, and decrements the TLS stack. Early stop
+must occur only after all children close. Snapshot/difference inspect TLS maps;
+open scopes are absent until stopped, so diagnostic snapshots must bracket a
+closed child, not assume they snapshot open umbrella duration. WorkerCapture
+preserves/restores the parent active flag/stack/maps, including the OpenMP master,
+and requires zero local scope depth on destruction. Use fresh WorkerData per pass
+because its destructor swaps output maps; no concurrent merge/snapshot by parent.
+No new shared mutable profile state was found in the header.
+Current driver diagnostic/global aggregates are safe only because its outer
+frequency loop is serial. Stage2 must privatize per-bin diagnosticTotals snapshot,
+profileSnapshotOverheadSeconds, tensorReferenceError/tensorValidationSeconds and
+avoid worker writes to phaseSnapshots. Parent merges after join. Current emitter
+recognizes only parallel_worker.*; explicit frequency_worker.* domain recognition
+is essential to wall closure. Its diagnostic subtraction must remain within
+worker-entry subpartitions, never subtract summed workers from master wall.
+The frequency-route kernel wall must INCLUDE overlapping diagnostics; retain
+legacy degree-route subtraction semantics explicitly, add new timing metadata,
+and keep unchanged scientific output/diagnostic placement/cache warming.
+These hashes identify this inspected provisional working version, not final
+accepted Stage1 build inputs; bind accepted manifest/receipt after finalization.
+No Stage1 code changes were made by planner; main Stage2 draft section5a records
+these ownership and timing requirements. No dynamic/build/numerical validation
+performed by planner. Stage2 remains unreleased.
+
+Final Stage2 evidence-binding supplement,2026-10-31
+Formalpreflight receipts/stages12-stage1-v1-preflight.json is now published,
+SHA2568476c5508cacd433cff9c936e80e13d6b88701f75b195a874777e9bdc5c1be74.
+Its12tracked source/dependency tree hashes match original successful v9 receipt.
+The above inspected remote paths are within these pinned tree roots, including
+DSpecSEM/source/mesh, YSpecModel, GSH and Interpolation. This binds inspected raw
+file/function hashes to formal unchanged-dependency evidence. No rerun needed.
+Accepted Stage1 source is extracted receipts/stages12-stage1-v1-frozen-inputs/
+candidate; all20files verified now against original staged manifestSHA
+4beba8e2931b128bf3a593812b45f177e89a0244a285e894e132a4340587e5fd and
+archiveSHA52fccc457361e1fc8b1e865f05738f93a04e933f2725ac24169f59770de3ad63.
+profile.hpp/doc_driver.cpp hashes match the inspected provisional hashes above.
+Do not copy mutable candidate's later unbuilt optional byte-counter guard/log.
+P1receipt packet and all collected bytes verified against packet.json. P1profile
+SHAf84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81;
+accounting/parity/frozen gates pass. Planner final plan is
+plans/stages12-stage2-plan-final.txt; explicit gate requires parent to confirm
+Stage1N2/N3/finalaggregate/cleanup before implementation. Earlier pending receipt
+notes are superseded by this supplement; no Stage1 completion claim beyond the
+verified packet, and no Stage2 execution has occurred.
+
+Pinned Eigen first-use cache audit,2026-10-31
+Result: no actual unsafe shared write on the selected Stage2 worker path found;
+no source change, warm-up pass or additional initialization is required by this
+audit. Read actual pinned Tunya headers, not inferred historical Eigen behavior.
+GeneralBlockPanelKernel.h:71–109 has CacheSizes constructor and function-local
+static CacheSizes m_cacheSizes inside manage_caching_sizes. Under gnu++23/GCC13.2
+with no -fno-threadsafe-statics (verified Stage2 build config), first construction
+is C++ thread-safe local-static initialization. queryCacheSizes uses local CPUID
+arrays/scalars and output references; no hidden shared cache write found there.
+After construction, GetAction only copies member values into caller-local
+outputs. SetAction does mutate those members, but no selected driver/workspace/
+synthesis worker path calls setCpuCacheSizes or SetAction. No concurrent cache
+setter exists in this audited route.
+Parallelizer.h:22–48 has static int m_maxThreads=-1 (constant initialization).
+The actual driver calls Eigen::setNbThreads(1) once on parent before outer tasks;
+workers do not call that setter. initParallel() itself only calls GetAction on
+thread-count/cache-size helpers. Eigen/Core:65–67 defines EIGEN_HAS_OPENMP only
+when EIGEN_DONT_PARALLELIZE is absent. Stage2 physical build variants both set
+-DEIGEN_DONT_PARALLELIZE, so parallelize_gemm takes the direct serial func call
+atParallelizer.h:107–115; no inner Eigen parallel team or shared parallel-session
+state is used. Each outer frequency task still owns its matrices/output.
+Other isolated unused physical/global drivers contain parent setup setters,
+but are not reachable from this doc_driver task path; no scope expansion needed.
+This adds source evidence only; planner ran no build/calculation/race detector.
+Exact pinned Eigen file SHA256 (same preflight-pinned dependency tree):
+/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3/Eigen/src/Core/products/GeneralBlockPanelKernel.h
+  b1824739dc829bdd5c87d4e2035794230f5ea8e3007977e378399e19562b98f3
+/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3/Eigen/src/Core/products/Parallelizer.h
+  2c54b4e297c0cb187ee47aec319eead343a6fcfdb3f414d42758bfd68ff4938d
+/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3/Eigen/Core
+  b8ae5f77a30d48bcaf622a56f7047baa8b2fb790f5db7361aa1d57f424fa3c1e
+/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3/Eigen/src/Core/util/Memory.h
+  e25565aa6ae3e612c26b92cfe731a5df90d7edfa667be5b987c2801c70b2c95c
+GeneralBlockPanelKernel.h:71-109 spanSHA256 ea646b0e3dfa71502ea025d371ac086381c866556d7118b8b46c28628e918680
+Parallelizer.h:22-75 spanSHA256 adfcc8525a226e87d81dac13860fc21b470a515846690ebcab6f6736e6c1abb9
+Parallelizer.h:99-115 spanSHA256 740cc9a4cb674d397c6321f9fe7541668ebf87923c55253688da73e9e53a7fe6
+Core:65-71 spanSHA256 e516d2fd7d4ec52d60021382714256e2ca6e67c05d4b76fe16721b3841123891
+Memory.h:954-1139 spanSHA256 0e05d0ea2b858334565edfbc2fe789c9177a2f79c0b3e81494c7c50216dce29e

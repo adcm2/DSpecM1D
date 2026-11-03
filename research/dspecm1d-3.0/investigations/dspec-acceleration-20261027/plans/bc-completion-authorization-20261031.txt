@@ -1,0 +1,17 @@
+# Additive authorization: B, C, and complete-pipeline validation
+
+Date: 2026-10-31. This plan supplements and supersedes the earlier B-only stop boundary because the user explicitly authorized continuation while away. The original Phase B execution plan remains unchanged as historical phase-specific scope.
+
+## Sequence and review gates
+
+1. Complete isolated Phase B using `phase-b-fixed-mesh-v1` and receive Sol's independent source review before any build/numerical launch; then one bounded results review before proceeding to C.
+2. Build a fresh isolated Phase C candidate from the reviewed/accepted B source. Implement direct measurement-direction adjoint forcing, prove equivalence to the rank-basis/QR route, two-pass worker-bounded recomputation, and exact zero-kernel-bin skipping only for 7, 8, and 41. Preserve full35 forward waveform/spectrum. Sol reviews source before C run and results before complete-pipeline validation.
+3. Run complete-pipeline validation from a fresh candidate/output path, matching the accepted case, native/profile boundaries, 8 total frequency workers, inner threading 1. Include full35 summed kernels/complex fields as required; FD, time-shift, gravity and raw unmasked side/source/receiver controls. Compare against accepted isolated references and disclose mesh/truncation selection and limits.
+
+## Scientific and execution constraints
+
+All original Phase B fixed meshes, common physical one-sided locations, dual-safe truncation, omitted-domain validation, frozen-versus-own weights, and 35-bin waveform controls remain required. If lower-mesh accuracy is inconclusive, Phase C and complete-pipeline validation use the accepted NQ10 untruncated fallback; do not promote an unvalidated mesh or truncation.
+
+All builds and numerical work run on Tunya detached with `nohup`, through existing staging/supervisor/checkers and unchanged SSH transport. Preflight current resource use before each launch. Numerical job cap20, build cap8, aggregate<=50 threads, memory limits no higher than existing (build32GiB/solve16GiB), eight total frequency workers, inner Eigen/library teams one. No nested oversubscription. Record user-space watchdog enforcement accurately.
+
+Each phase uses fresh candidate/stage/output directories. Preserve every existing file, dirty source, failed attempt, receipt and evidence. Append every code change promptly to that candidate and campaign `implementation_status.md`. No local numerical substitute, production integration, YSpec rerun, figures, global volumes/maps, source/receiver discrepancy work, commits, pushes or deletes. Stop before production promotion.

@@ -1,0 +1,147 @@
+{
+  "finished_unix": 1793133600.510525,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0-3",
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-sanitizer-controls-v1/tools/check_parallel_sanitizer_controls.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/parallel-solves-sanitizer-controls/continuation/parallel-solves-sanitizer-controls-01/runtime-controls/audit",
+        "/space/adcm2/research/builds/kernel-parallel-solves-tsan-20261027-01/parallel-tsan/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "command_sha256": "361884967d9b22127d0874a3a48817d0ca5a62dd1d95f33ae9c4cba1d1bf65ae",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-sanitizer-controls-v1",
+      "elapsed_seconds": 11.596732813020935,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2846189,
+          16683936
+        ],
+        [
+          2846190,
+          16683939
+        ],
+        [
+          2846191,
+          16683940
+        ],
+        [
+          2846195,
+          16683996
+        ],
+        [
+          2846201,
+          16684017
+        ],
+        [
+          2846214,
+          16684044
+        ],
+        [
+          2846307,
+          16685038
+        ]
+      ],
+      "finished_unix": 1793133600.507685,
+      "id": "runtime-controls",
+      "inputs_sha256_after": {
+        "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+        "/space/adcm2/research/builds/kernel-parallel-solves-tsan-20261027-01/parallel-tsan/physical-driver": "ff251daf025c9c86d87d6c6cd9bcb25d21f1f011c71b76f9efcde63ca469b761",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-sanitizer-controls-v1/tools/check_parallel_sanitizer_controls.py": "bd1427ff59a4e08c1cad6bb2168a61bdc1c9413f3642bc5ebaf6925ddfb20035",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+        "/space/adcm2/research/builds/kernel-parallel-solves-tsan-20261027-01/parallel-tsan/physical-driver": "ff251daf025c9c86d87d6c6cd9bcb25d21f1f011c71b76f9efcde63ca469b761",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-sanitizer-controls-v1/tools/check_parallel_sanitizer_controls.py": "bd1427ff59a4e08c1cad6bb2168a61bdc1c9413f3642bc5ebaf6925ddfb20035",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "audit/controls.json",
+        "audit/probe.cpp",
+        "audit/probe.bin",
+        "audit/compile.log",
+        "audit/minimal-openmp.stdout",
+        "audit/minimal-openmp.stderr",
+        "audit/serial-solver-parallel-setup.stdout",
+        "audit/serial-solver-parallel-setup.stderr",
+        "audit/serial-all.stdout",
+        "audit/serial-all.stderr",
+        "audit/parallel-solver-serial-setup.stdout",
+        "audit/parallel-solver-serial-setup.stderr"
+      ],
+      "outputs_sha256": {
+        "audit/compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "audit/controls.json": "3365c9441583469a32431f0f218d36089eea48e5f7c1089eaac413533434f54b",
+        "audit/minimal-openmp.stderr": "007f0fa23d7e6b1709daadc5b852789a596bba5b364f5b0b74356dd1bdc3bdc9",
+        "audit/minimal-openmp.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "audit/parallel-solver-serial-setup.stderr": "475b82a07c4aa4aefad938569bdffcd4c8ffbc134449046c87cc658d90c8e55f",
+        "audit/parallel-solver-serial-setup.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "audit/probe.bin": "216ace92a183847ca78444f2b51b699a7e60cb8e7c82c52dd4fe08b27563e80d",
+        "audit/probe.cpp": "405dde12e1b0ab8ea8e678c695bcca1f203e3bcc46252977bae5f90e91c28660",
+        "audit/serial-all.stderr": "2aaa51e9d526a9d854eb960f974b30b2c5dcd771760d750dbcc68210fe0dd0f1",
+        "audit/serial-all.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "audit/serial-solver-parallel-setup.stderr": "1a44dcf1c0b36f13ae78e1b667c683ba381d399074bcfc9f257fd94627f46153",
+        "audit/serial-solver-parallel-setup.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "peak_observed_rss_gib_userspace": 0.1435,
+      "peak_observed_threads": 6,
+      "returncode": 0,
+      "started_unix": 1793133588.8667874,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.983861,
+      "updated_unix": 1793133599.369829,
+      "user_cpu_seconds_children": 10.382869,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.1421,
+        "elapsed_seconds": 10.48,
+        "owned_processes": [
+          {
+            "pid": 2846189,
+            "starttime_ticks": 16683936,
+            "threads": 1
+          },
+          {
+            "pid": 2846214,
+            "starttime_ticks": 16684044,
+            "threads": 1
+          },
+          {
+            "pid": 2846187,
+            "starttime_ticks": 16683926,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.1435,
+        "peak_observed_threads": 6,
+        "thread_cap": 10,
+        "thread_count_including_supervisor": 3
+      }
+    }
+  ],
+  "plan_sha256": "0a0a745ac8320583d887370a55aa927fbcc8a49124de007019e4a188bbd5dd50",
+  "schema": 1,
+  "started_unix": 1793133588.8378546,
+  "status": "completed",
+  "task_id": "parallel-solves-sanitizer-controls-01",
+  "thread_cap": 10
+}

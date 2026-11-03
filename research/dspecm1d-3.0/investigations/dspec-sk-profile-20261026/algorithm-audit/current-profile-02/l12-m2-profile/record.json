@@ -1,0 +1,221 @@
+{
+  "degree": 12,
+  "measurements": 2,
+  "kind": "profile",
+  "cpu": 0,
+  "command": [
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/profile-current",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/current-profile-02/l12-m2-profile/data",
+    "12",
+    "2",
+    "1"
+  ],
+  "metrics": {
+    "solver": "DSpecM1D",
+    "api": "Windowed3DKernelEngine::evaluate",
+    "lmax": 12,
+    "measurements": 2,
+    "repeats": 1,
+    "sample_count": 75712,
+    "warmup_batches": 0,
+    "warmup_api_calls": 0,
+    "setup_s": 0.157838806,
+    "warmup_batch_s": 0,
+    "api_s": [
+      0.737273987,
+      0.737902472
+    ],
+    "first_workload_api_s": 0.737273987,
+    "first_model_to_arrays_s": 0.895112793,
+    "calculation_s": 1.633015265,
+    "end_to_end_s": 2.406364772,
+    "peak_rss_bytes": 50692096,
+    "objective_scale_S": {
+      "J_Z": 0.0012146850728957839,
+      "J_N": 0.0012146850728957839
+    },
+    "config": {
+      "frequency_grid": {
+        "nt": 128,
+        "dt_s": 20,
+        "df_hz": 0.000390625,
+        "epsilon_s_inv": 0.002777777777777778,
+        "solver_bins_zero_based": [
+          1,
+          2,
+          3
+        ],
+        "band_hz": [
+          0.0001,
+          0.0008
+        ],
+        "degrees_inclusive": [
+          0,
+          12
+        ]
+      },
+      "physics": {
+        "gravity": "full",
+        "attenuation": false,
+        "physical_G": 6.672299999999999e-11
+      },
+      "source": {
+        "geocentric_latitude_deg": 10,
+        "longitude_deg": 20,
+        "depth_m": 50000,
+        "moment_tensor_Nm": [
+          1e+19,
+          2e+18,
+          -3e+18,
+          -5e+18,
+          4e+18,
+          -5e+18
+        ]
+      },
+      "receiver": {
+        "geocentric_latitude_deg": 45,
+        "longitude_deg": 90,
+        "depth_m": 3000
+      },
+      "window": {
+        "type": "Hann",
+        "first_sample": 0,
+        "last_sample": 90,
+        "nt": 128
+      },
+      "objective": {
+        "names": [
+          {
+            "name": "J_Z",
+            "component": "Z",
+            "q_nonzero": {
+              "bin_1": [
+                0.7,
+                0.2
+              ],
+              "bin_2": [
+                -0.25,
+                0.45
+              ]
+            }
+          },
+          {
+            "name": "J_N",
+            "component": "N",
+            "q_nonzero": {
+              "bin_1": [
+                0.7,
+                0.2
+              ],
+              "bin_2": [
+                -0.25,
+                0.45
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "profile": [
+    {
+      "timers": {
+        "adjoint_basis_substitution": {
+          "seconds": 0.0101023,
+          "calls": 144
+        },
+        "adjoint_global_substitution": {
+          "seconds": 0.0419955,
+          "calls": 144
+        },
+        "adjoint_substitution": {
+          "seconds": 0.000200608,
+          "calls": 6
+        },
+        "angular_coefficient_build": {
+          "seconds": 0.0751291,
+          "calls": 3942
+        },
+        "compact_copy": {
+          "seconds": 0.0145005,
+          "calls": 120
+        },
+        "degree_sums_phases": {
+          "seconds": 0.543124,
+          "calls": 13404
+        },
+        "factorization": {
+          "seconds": 0.147546,
+          "calls": 300
+        },
+        "final_kernel_contraction": {
+          "seconds": 0.00528553,
+          "calls": 114
+        },
+        "forward_substitution": {
+          "seconds": 0.0122936,
+          "calls": 150
+        },
+        "measurement_adjoint": {
+          "seconds": 0.00066876,
+          "calls": 2
+        },
+        "pole_geometry_grouping": {
+          "seconds": 0.156427,
+          "calls": 240
+        },
+        "pole_synthesis": {
+          "seconds": 1.14286,
+          "calls": 240
+        },
+        "prepare_workspace": {
+          "seconds": 0.275555,
+          "calls": 6
+        },
+        "radial_coefficients_build": {
+          "seconds": 0.0125948,
+          "calls": 684
+        },
+        "radial_sampling_and_point_validation": {
+          "seconds": 0.0261887,
+          "calls": 120
+        },
+        "rotate_add_scratch": {
+          "seconds": 0.029108,
+          "calls": 4458
+        },
+        "sample_compact_total": {
+          "seconds": 1.18905,
+          "calls": 120
+        },
+        "sample_full_total": {
+          "seconds": 1.17445,
+          "calls": 120
+        },
+        "system_matrix": {
+          "seconds": 0.0347772,
+          "calls": 300
+        },
+        "wigner_build": {
+          "seconds": 0.290041,
+          "calls": 3978
+        }
+      },
+      "counters": {
+        "angular_coefficient_hit": 516,
+        "angular_coefficient_miss": 3942,
+        "geometry_hit": 903144,
+        "geometry_miss": 5412,
+        "radial_coefficients_hit": 12720,
+        "radial_coefficients_miss": 684,
+        "strain_component_macs": 256212792,
+        "wigner_hit": 480,
+        "wigner_miss": 3978
+      }
+    }
+  ],
+  "csv_sha256": "3b1e755352eda278bd4f6982cdb1df069236d27b40c197048b256c62af9af1ca",
+  "wall_s": 2.8087020320017473
+}

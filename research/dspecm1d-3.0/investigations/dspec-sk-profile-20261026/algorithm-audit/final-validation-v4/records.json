@@ -1,0 +1,4463 @@
+[
+  {
+    "name": "l3-f1-a192-direct-o1-batch0-c0-physical-tensor-real",
+    "degree": 3,
+    "bins": 1,
+    "angles": 192,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 0,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l3-f1-a192-direct-o1-batch0-c0-physical-tensor-real/reference",
+        "3",
+        "1",
+        "1",
+        "tensor-real",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l3-f1-a192-direct-o1-batch0-c0-physical-tensor-real/candidate",
+        "3",
+        "1",
+        "1",
+        "tensor-real",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 6.388151690395254e-16,
+              "max_scaled_pointwise": 3.3597180995427926e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 3.776051835591214e-14,
+              "max_scaled_pointwise": 2.462013647268689e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.848499089208499e-14,
+              "max_scaled_pointwise": 3.0770028835971764e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.9448442982728823e-14,
+              "max_scaled_pointwise": 2.329327455453468e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 6.460525417007084e-16,
+              "max_scaled_pointwise": 3.9799422738173873e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 3,
+      "frequency_bins": 1,
+      "objectives": 1,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 10752,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 2.46400483064907e-16,
+      "max_kernel_pointwise_scaled_error": 2.6166730028251787e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.018922269
+      ],
+      "reference_s": [
+        0.019354962
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000639608,
+          "modal_solve_and_basis": 0.008591744,
+          "packed_sampling": 0.008933971,
+          "final_kernel_contraction": 0.000128385,
+          "source_contact": 1.759e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 3,
+      "frequency_bins": 1,
+      "objectives": 1,
+      "sample_count": 10752,
+      "setup_s": 0.010106366,
+      "api_s": [
+        0.026668264
+      ]
+    }
+  },
+  {
+    "name": "l3-f3-a192-direct-o2-batch1-c1-physical-tensor-real",
+    "degree": 3,
+    "bins": 3,
+    "angles": 192,
+    "radial": "direct",
+    "objectives": 2,
+    "batch": 1,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l3-f3-a192-direct-o2-batch1-c1-physical-tensor-real/reference",
+        "3",
+        "3",
+        "2",
+        "tensor-real",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l3-f3-a192-direct-o2-batch1-c1-physical-tensor-real/candidate",
+        "3",
+        "3",
+        "2",
+        "tensor-real",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 8.867998793291047e-16,
+              "max_scaled_pointwise": 7.264647395061558e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 4.7107234268625497e-14,
+              "max_scaled_pointwise": 2.739026679509851e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 3.99587898938052e-14,
+              "max_scaled_pointwise": 3.107611823520956e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 2.6284936836687132e-14,
+              "max_scaled_pointwise": 1.2814124898022518e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 9.375556634658235e-16,
+              "max_scaled_pointwise": 7.473693825188474e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 8.078053610392229e-13,
+              "max_scaled_pointwise": 1.0428316536076697e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_F": {
+              "relative_L2": 1.3819400931933485e-15,
+              "max_scaled_pointwise": 1.7578203089664713e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 5.594767813559214e-12,
+              "max_scaled_pointwise": 9.14156167899263e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": false
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 5.520700365677956e-16,
+              "max_scaled_pointwise": 8.481168361650572e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.9818365164741365e-14,
+              "max_scaled_pointwise": 2.283267528776026e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.1242927953779481e-14,
+              "max_scaled_pointwise": 2.1695319484090892e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 3.362516430957702e-14,
+              "max_scaled_pointwise": 4.070990655724802e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 4.637532923094845e-16,
+              "max_scaled_pointwise": 9.719002718514178e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 2.102958763048835e-13,
+              "max_scaled_pointwise": 2.093729836229965e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_F": {
+              "relative_L2": 1.9925831210663028e-16,
+              "max_scaled_pointwise": 1.0589501692762284e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 5.521286883834672e-12,
+              "max_scaled_pointwise": 1.5812910220855328e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    "candidate_metrics": {
+      "degree": 3,
+      "frequency_bins": 3,
+      "objectives": 2,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 10752,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 1.0239982510634542e-14,
+      "max_kernel_pointwise_scaled_error": 1.0101805713787216e-12,
+      "max_contact_relative_error": 1.5812910220855328e-11,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.049521803,
+        0.034256306
+      ],
+      "reference_s": [
+        0.053153198,
+        0.060927096
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000633832,
+          "modal_solve_and_basis": 0.02209695,
+          "packed_sampling": 0.024906532,
+          "final_kernel_contraction": 0.000360632,
+          "source_contact": 0.000888547
+        },
+        {
+          "measurement_adjoint": 7.7869e-05,
+          "modal_solve_and_basis": 0.004806808,
+          "packed_sampling": 0.027228313,
+          "final_kernel_contraction": 0.00090148,
+          "source_contact": 0.000878007
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": true,
+      "batch_cache_entries": 21,
+      "batch_cache_bytes": 1833792,
+      "batch_cache_hits": 21,
+      "batch_cache_misses": 21,
+      "batch_max_basis_reconstruction_relative": 3.908783736443958e-16,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 3,
+      "frequency_bins": 3,
+      "objectives": 2,
+      "sample_count": 10752,
+      "setup_s": 0.008746388,
+      "api_s": [
+        0.079791075,
+        0.066152726
+      ]
+    }
+  },
+  {
+    "name": "l3-f3-a192-direct-o3-batch1-c1-physical-tensor-real",
+    "degree": 3,
+    "bins": 3,
+    "angles": 192,
+    "radial": "direct",
+    "objectives": 3,
+    "batch": 1,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l3-f3-a192-direct-o3-batch1-c1-physical-tensor-real/reference",
+        "3",
+        "3",
+        "3",
+        "tensor-real",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l3-f3-a192-direct-o3-batch1-c1-physical-tensor-real/candidate",
+        "3",
+        "3",
+        "3",
+        "tensor-real",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 8.867998793291047e-16,
+              "max_scaled_pointwise": 7.264647395061558e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 4.7107234268625497e-14,
+              "max_scaled_pointwise": 2.739026679509851e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 3.99587898938052e-14,
+              "max_scaled_pointwise": 3.107611823520956e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 2.6284936836687132e-14,
+              "max_scaled_pointwise": 1.2814124898022518e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 9.375556634658235e-16,
+              "max_scaled_pointwise": 7.473693825188474e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 8.078053610392229e-13,
+              "max_scaled_pointwise": 1.0428316536076697e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_F": {
+              "relative_L2": 1.3819400931933485e-15,
+              "max_scaled_pointwise": 1.7578203089664713e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 5.594767813559214e-12,
+              "max_scaled_pointwise": 9.14156167899263e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": false
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 5.520700365677956e-16,
+              "max_scaled_pointwise": 8.481168361650572e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.9818365164741365e-14,
+              "max_scaled_pointwise": 2.283267528776026e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.1242927953779481e-14,
+              "max_scaled_pointwise": 2.1695319484090892e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 3.362516430957702e-14,
+              "max_scaled_pointwise": 4.070990655724802e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 4.637532923094845e-16,
+              "max_scaled_pointwise": 9.719002718514178e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 2.102958763048835e-13,
+              "max_scaled_pointwise": 2.093729836229965e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_F": {
+              "relative_L2": 1.9925831210663028e-16,
+              "max_scaled_pointwise": 1.0589501692762284e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 5.521286883834672e-12,
+              "max_scaled_pointwise": 1.5812910220855328e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": false
+        },
+        {
+          "objective": 2,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 4.471411278962094e-16,
+              "max_scaled_pointwise": 3.897879957680265e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 2.2373554574590375e-14,
+              "max_scaled_pointwise": 2.364973760802949e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.0586534475654326e-14,
+              "max_scaled_pointwise": 1.3383452663083732e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.5491123173702402e-14,
+              "max_scaled_pointwise": 8.165538638062643e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 7.208462755183504e-16,
+              "max_scaled_pointwise": 6.301757587223377e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 1.9159115100528526e-13,
+              "max_scaled_pointwise": 2.851873844331277e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 5.044751971563267e-16,
+              "max_scaled_pointwise": 8.486482922832665e-16,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 1.952514293880323e-13,
+              "max_scaled_pointwise": 7.830074711626771e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": false
+    },
+    "candidate_metrics": {
+      "degree": 3,
+      "frequency_bins": 3,
+      "objectives": 3,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 10752,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 1.0239982510634542e-14,
+      "max_kernel_pointwise_scaled_error": 1.0101805713787216e-12,
+      "max_contact_relative_error": 1.5812910220855328e-11,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.046833298,
+        0.030612266,
+        0.029957569
+      ],
+      "reference_s": [
+        0.058501052,
+        0.054924488,
+        0.056383018
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000534597,
+          "modal_solve_and_basis": 0.020820007,
+          "packed_sampling": 0.023690702,
+          "final_kernel_contraction": 0.000340221,
+          "source_contact": 0.000859618
+        },
+        {
+          "measurement_adjoint": 0.00011828,
+          "modal_solve_and_basis": 0.004650293,
+          "packed_sampling": 0.024068941,
+          "final_kernel_contraction": 0.00037202199999999996,
+          "source_contact": 0.000944779
+        },
+        {
+          "measurement_adjoint": 0.000100781,
+          "modal_solve_and_basis": 0.004315505000000001,
+          "packed_sampling": 0.023640153999999997,
+          "final_kernel_contraction": 0.000405657,
+          "source_contact": 0.00099277
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": true,
+      "batch_cache_entries": 21,
+      "batch_cache_bytes": 1833792,
+      "batch_cache_hits": 42,
+      "batch_cache_misses": 21,
+      "batch_max_basis_reconstruction_relative": 3.908783736443958e-16,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 3,
+      "frequency_bins": 3,
+      "objectives": 3,
+      "sample_count": 10752,
+      "setup_s": 0.008049582,
+      "api_s": [
+        0.06898624,
+        0.065187494,
+        0.068320983
+      ]
+    }
+  },
+  {
+    "name": "l6-f3-a1352-direct-o1-batch0-c1-physical-tensor-real",
+    "degree": 6,
+    "bins": 3,
+    "angles": 1352,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l6-a1352.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l6-f3-a1352-direct-o1-batch0-c1-physical-tensor-real/reference",
+        "6",
+        "3",
+        "1",
+        "tensor-real",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l6-a1352.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l6-f3-a1352-direct-o1-batch0-c1-physical-tensor-real/candidate",
+        "6",
+        "3",
+        "1",
+        "tensor-real",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 5.454092428867054e-16,
+              "max_scaled_pointwise": 1.7332033249349106e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 3.8869920076288944e-14,
+              "max_scaled_pointwise": 4.916818489444897e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 5.335968137126664e-14,
+              "max_scaled_pointwise": 2.9777830382225087e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.0094768168832674e-14,
+              "max_scaled_pointwise": 1.0751315646584458e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 5.46839263222391e-16,
+              "max_scaled_pointwise": 1.631625615968309e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 6,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 4.3045748601586653e-16,
+      "max_kernel_pointwise_scaled_error": 3.056159842686569e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.26291485
+      ],
+      "reference_s": [
+        0.453931965
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000671048,
+          "modal_solve_and_basis": 0.046823806,
+          "packed_sampling": 0.204117455,
+          "final_kernel_contraction": 0.003162277,
+          "source_contact": 0.00357216
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 6,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "sample_count": 75712,
+      "setup_s": 0.089792772,
+      "api_s": [
+        0.474343727
+      ]
+    }
+  },
+  {
+    "name": "l12-f3-a1352-direct-o1-batch0-c1-physical-tensor-real",
+    "degree": 12,
+    "bins": 3,
+    "angles": 1352,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a1352-direct-o1-batch0-c1-physical-tensor-real/reference",
+        "12",
+        "3",
+        "1",
+        "tensor-real",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a1352-direct-o1-batch0-c1-physical-tensor-real/candidate",
+        "12",
+        "3",
+        "1",
+        "tensor-real",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.179875998889406e-16,
+              "max_scaled_pointwise": 4.655115478074802e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.599828270510189e-14,
+              "max_scaled_pointwise": 5.743963939553616e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 7.839118563963453e-14,
+              "max_scaled_pointwise": 2.9717709694270796e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 8.685110586447656e-15,
+              "max_scaled_pointwise": 4.704021985214686e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.308478409360078e-16,
+              "max_scaled_pointwise": 2.791990271534141e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 4.90534869644456e-16,
+      "max_kernel_pointwise_scaled_error": 2.203288986049036e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.376441371
+      ],
+      "reference_s": [
+        0.781540919
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000702999,
+          "modal_solve_and_basis": 0.110276298,
+          "packed_sampling": 0.25230783300000004,
+          "final_kernel_contraction": 0.003338917,
+          "source_contact": 0.005070404
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "sample_count": 75712,
+      "setup_s": 0.060864012,
+      "api_s": [
+        0.863138818
+      ]
+    }
+  },
+  {
+    "name": "l12-f12-a192-direct-o1-batch0-c1-physical-tensor-real",
+    "degree": 12,
+    "bins": 12,
+    "angles": 192,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f12-a192-direct-o1-batch0-c1-physical-tensor-real/reference",
+        "12",
+        "12",
+        "1",
+        "tensor-real",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f12-a192-direct-o1-batch0-c1-physical-tensor-real/candidate",
+        "12",
+        "12",
+        "1",
+        "tensor-real",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.072259038982168e-16,
+              "max_scaled_pointwise": 3.6973358390918015e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.203817483590837e-14,
+              "max_scaled_pointwise": 9.13808988750214e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 8.560955223535938e-14,
+              "max_scaled_pointwise": 3.729476938415365e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 9.894520246767268e-15,
+              "max_scaled_pointwise": 5.620960300889755e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 7.914000903729369e-16,
+              "max_scaled_pointwise": 3.02039902646512e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 12,
+      "objectives": 1,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 10752,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 5.47451760112367e-16,
+      "max_kernel_pointwise_scaled_error": 4.2431493810648156e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.608700558
+      ],
+      "reference_s": [
+        0.745192919
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000732659,
+          "modal_solve_and_basis": 0.40457976,
+          "packed_sampling": 0.18783298299999998,
+          "final_kernel_contraction": 0.001534272,
+          "source_contact": 0.012100835
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 12,
+      "objectives": 1,
+      "sample_count": 10752,
+      "setup_s": 0.010232667,
+      "api_s": [
+        0.964741098
+      ]
+    }
+  },
+  {
+    "name": "l12-f48-a192-direct-o1-batch0-c1-physical-tensor-real",
+    "degree": 12,
+    "bins": 48,
+    "angles": 192,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f48-a192-direct-o1-batch0-c1-physical-tensor-real/reference",
+        "12",
+        "48",
+        "1",
+        "tensor-real",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f48-a192-direct-o1-batch0-c1-physical-tensor-real/candidate",
+        "12",
+        "48",
+        "1",
+        "tensor-real",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.072248613064362e-16,
+              "max_scaled_pointwise": 3.69733193130154e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.204084770119218e-14,
+              "max_scaled_pointwise": 9.141919165875617e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 8.560938020404368e-14,
+              "max_scaled_pointwise": 3.729200691791669e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 9.894399545133545e-15,
+              "max_scaled_pointwise": 5.652589895990586e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 7.914055576150675e-16,
+              "max_scaled_pointwise": 3.020397270099584e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 48,
+      "objectives": 1,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 10752,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 5.474557608499768e-16,
+      "max_kernel_pointwise_scaled_error": 4.244927455078134e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        2.62352344
+      ],
+      "reference_s": [
+        2.672018577
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000650536,
+          "modal_solve_and_basis": 1.7418340970000001,
+          "packed_sampling": 0.815902471,
+          "final_kernel_contraction": 0.006174982999999999,
+          "source_contact": 0.05217782099999999
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 48,
+      "objectives": 1,
+      "sample_count": 10752,
+      "setup_s": 0.010895554,
+      "api_s": [
+        3.843284073
+      ]
+    }
+  },
+  {
+    "name": "l12-f3-a1352-direct-o2-batch1-c1-physical-tensor-real",
+    "degree": 12,
+    "bins": 3,
+    "angles": 1352,
+    "radial": "direct",
+    "objectives": 2,
+    "batch": 1,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a1352-direct-o2-batch1-c1-physical-tensor-real/reference",
+        "12",
+        "3",
+        "2",
+        "tensor-real",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a1352-direct-o2-batch1-c1-physical-tensor-real/candidate",
+        "12",
+        "3",
+        "2",
+        "tensor-real",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.80920690491098e-16,
+              "max_scaled_pointwise": 5.168179280765816e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.649428614436556e-14,
+              "max_scaled_pointwise": 6.062336074769438e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 8.126554031589729e-14,
+              "max_scaled_pointwise": 3.149903439816717e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 8.685110586447656e-15,
+              "max_scaled_pointwise": 4.704021985214686e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.815244333873998e-16,
+              "max_scaled_pointwise": 2.8980152185544254e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 8.814323610546332e-13,
+              "max_scaled_pointwise": 1.1447954064365841e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_F": {
+              "relative_L2": 1.2986880522517835e-15,
+              "max_scaled_pointwise": 5.368363040041939e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 2.3678824313446013e-12,
+              "max_scaled_pointwise": 2.5883687643479573e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": false
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 8.782772023971013e-16,
+              "max_scaled_pointwise": 6.029824512461164e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.320566142158373e-14,
+              "max_scaled_pointwise": 9.034566999551426e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.722660500983715e-14,
+              "max_scaled_pointwise": 6.4712766486271394e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 6.409140383225062e-14,
+              "max_scaled_pointwise": 5.972452263524012e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 6.920372933338259e-16,
+              "max_scaled_pointwise": 2.9839134499861404e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 1.751286559291838e-12,
+              "max_scaled_pointwise": 5.7619615835152124e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_F": {
+              "relative_L2": 2.8166542719527677e-15,
+              "max_scaled_pointwise": 8.438355976036874e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 6.930273015727428e-12,
+              "max_scaled_pointwise": 1.2737754431632663e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": false
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 2,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.214082704156831e-15,
+      "max_kernel_pointwise_scaled_error": 9.380579040716818e-13,
+      "max_contact_relative_error": 4.343665196180234e-11,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.363073063,
+        0.27543421
+      ],
+      "reference_s": [
+        0.786930765,
+        0.75781259
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000663105,
+          "modal_solve_and_basis": 0.08633565,
+          "packed_sampling": 0.26295286,
+          "final_kernel_contraction": 0.0032043220000000003,
+          "source_contact": 0.005438226
+        },
+        {
+          "measurement_adjoint": 0.000120016,
+          "modal_solve_and_basis": 0.022564537000000003,
+          "packed_sampling": 0.24248243200000003,
+          "final_kernel_contraction": 0.0032393660000000005,
+          "source_contact": 0.005755093
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": true,
+      "batch_cache_entries": 75,
+      "batch_cache_bytes": 7006560,
+      "batch_cache_hits": 75,
+      "batch_cache_misses": 75,
+      "batch_max_basis_reconstruction_relative": 3.947223938879997e-16,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 2,
+      "sample_count": 75712,
+      "setup_s": 0.0517015,
+      "api_s": [
+        0.849260644,
+        0.862706368
+      ]
+    }
+  },
+  {
+    "name": "l12-f3-a24-direct-o1-batch0-c1-physical-openblas",
+    "degree": 12,
+    "bins": 3,
+    "angles": 24,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "openblas",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-direct-o1-batch0-c1-physical-openblas/reference",
+        "12",
+        "3",
+        "1",
+        "openblas",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-direct-o1-batch0-c1-physical-openblas/candidate",
+        "12",
+        "3",
+        "1",
+        "openblas",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 8.693127752920321e-16,
+              "max_scaled_pointwise": 2.751367007547107e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.0038289633669102e-13,
+              "max_scaled_pointwise": 5.136024294917812e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.3964090002599085e-13,
+              "max_scaled_pointwise": 9.18399942802608e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.6724511978138994e-14,
+              "max_scaled_pointwise": 1.4676539367048587e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 7.615561207830842e-16,
+              "max_scaled_pointwise": 1.2587225528656713e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "openblas",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 1344,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 7.680502308330286e-16,
+      "max_kernel_pointwise_scaled_error": 7.420072859301042e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.13039929
+      ],
+      "reference_s": [
+        0.126282876
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000665037,
+          "modal_solve_and_basis": 0.109998023,
+          "packed_sampling": 0.016419391,
+          "final_kernel_contraction": 5.1185e-05,
+          "source_contact": 0.002867019
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "sample_count": 1344,
+      "setup_s": 0.003368394,
+      "api_s": [
+        0.184350912
+      ]
+    }
+  },
+  {
+    "name": "l12-f3-a24-direct-o1-batch0-c1-physical-scalar",
+    "degree": 12,
+    "bins": 3,
+    "angles": 24,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "scalar",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-direct-o1-batch0-c1-physical-scalar/reference",
+        "12",
+        "3",
+        "1",
+        "scalar",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-direct-o1-batch0-c1-physical-scalar/candidate",
+        "12",
+        "3",
+        "1",
+        "scalar",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 8.647817539440561e-16,
+              "max_scaled_pointwise": 3.8095850873729173e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.0020660360794172e-13,
+              "max_scaled_pointwise": 5.137836476380284e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.392289037426564e-13,
+              "max_scaled_pointwise": 9.193539121748618e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.6734195814043e-14,
+              "max_scaled_pointwise": 1.4745443307738955e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.413859654116086e-16,
+              "max_scaled_pointwise": 1.2779110327453403e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "scalar",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 1344,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 5.362890086381934e-16,
+      "max_kernel_pointwise_scaled_error": 2.119091968366145e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.122167341
+      ],
+      "reference_s": [
+        0.117991865
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000633175,
+          "modal_solve_and_basis": 0.10339069199999999,
+          "packed_sampling": 0.014899377000000002,
+          "final_kernel_contraction": 4.834e-05,
+          "source_contact": 0.0028008580000000003
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "sample_count": 1344,
+      "setup_s": 0.003361242,
+      "api_s": [
+        0.175139309
+      ]
+    }
+  },
+  {
+    "name": "l12-f3-a24-direct-o1-batch0-c1-physical-eigen",
+    "degree": 12,
+    "bins": 3,
+    "angles": 24,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "eigen",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-direct-o1-batch0-c1-physical-eigen/reference",
+        "12",
+        "3",
+        "1",
+        "eigen",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-direct-o1-batch0-c1-physical-eigen/candidate",
+        "12",
+        "3",
+        "1",
+        "eigen",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 8.693127752920321e-16,
+              "max_scaled_pointwise": 2.751367007547107e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.0038289633669102e-13,
+              "max_scaled_pointwise": 5.136024294917812e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.3964090002599085e-13,
+              "max_scaled_pointwise": 9.18399942802608e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.6724511978138994e-14,
+              "max_scaled_pointwise": 1.4676539367048587e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 7.615561207830842e-16,
+              "max_scaled_pointwise": 1.2587225528656713e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "eigen",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 1344,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 7.680502308330286e-16,
+      "max_kernel_pointwise_scaled_error": 7.420072859301042e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.1230915
+      ],
+      "reference_s": [
+        0.122278467
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000637096,
+          "modal_solve_and_basis": 0.103814199,
+          "packed_sampling": 0.015540830999999998,
+          "final_kernel_contraction": 4.576e-05,
+          "source_contact": 0.002690492
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "sample_count": 1344,
+      "setup_s": 0.003098451,
+      "api_s": [
+        0.174539654
+      ]
+    }
+  },
+  {
+    "name": "l3-f1-a192-native-o1-batch0-c1-physical-tensor-real",
+    "degree": 3,
+    "bins": 1,
+    "angles": 192,
+    "radial": "native",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l3-f1-a192-native-o1-batch0-c1-physical-tensor-real/reference",
+        "3",
+        "1",
+        "1",
+        "tensor-real",
+        "native"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l3-f1-a192-native-o1-batch0-c1-physical-tensor-real/candidate",
+        "3",
+        "1",
+        "1",
+        "tensor-real",
+        "native",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.232958006460576e-16,
+              "max_scaled_pointwise": 2.6098692172532017e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.626558661140674e-13,
+              "max_scaled_pointwise": 5.2418703016635125e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.971251458517688e-13,
+              "max_scaled_pointwise": 3.636943195670179e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.2894200177641886e-13,
+              "max_scaled_pointwise": 3.6873441150120725e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.896449505910693e-16,
+              "max_scaled_pointwise": 2.614187476803183e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 3,
+      "frequency_bins": 1,
+      "objectives": 1,
+      "backend": "tensor-real",
+      "radial_mode": "native",
+      "solver_backend": "equilibrated",
+      "sample_count": 41280,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 2.333863810630113e-16,
+      "max_kernel_pointwise_scaled_error": 1.938651341929709e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.04997008
+      ],
+      "reference_s": [
+        0.043142653
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000637021,
+          "modal_solve_and_basis": 0.00808555,
+          "packed_sampling": 0.037541379,
+          "final_kernel_contraction": 0.000539368,
+          "source_contact": 0.00060356
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 3,
+      "frequency_bins": 1,
+      "objectives": 1,
+      "sample_count": 41280,
+      "setup_s": 0.010094258,
+      "api_s": [
+        0.051236321
+      ]
+    }
+  },
+  {
+    "name": "l12-f3-a24-native-o1-batch0-c1-physical-tensor-real",
+    "degree": 12,
+    "bins": 3,
+    "angles": 24,
+    "radial": "native",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-native-o1-batch0-c1-physical-tensor-real/reference",
+        "12",
+        "3",
+        "1",
+        "tensor-real",
+        "native"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-native-o1-batch0-c1-physical-tensor-real/candidate",
+        "12",
+        "3",
+        "1",
+        "tensor-real",
+        "native",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 6.464224385443298e-16,
+              "max_scaled_pointwise": 1.6765897916368846e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.591436897128925e-12,
+              "max_scaled_pointwise": 3.9013063553203705e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": false
+            },
+            "kernel_F": {
+              "relative_L2": 1.6883464468811784e-12,
+              "max_scaled_pointwise": 3.415590670104242e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": false
+            },
+            "kernel_L": {
+              "relative_L2": 5.872281490918044e-13,
+              "max_scaled_pointwise": 7.222155849527613e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 6.787816080003456e-16,
+              "max_scaled_pointwise": 9.20101962918687e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor-real",
+      "radial_mode": "native",
+      "solver_backend": "equilibrated",
+      "sample_count": 5160,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.122175712603924e-16,
+      "max_kernel_pointwise_scaled_error": 3.424649011985096e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.221049915
+      ],
+      "reference_s": [
+        0.163058931
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000622082,
+          "modal_solve_and_basis": 0.10767122400000001,
+          "packed_sampling": 0.10815322699999999,
+          "final_kernel_contraction": 0.000173672,
+          "source_contact": 0.003029083
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "sample_count": 5160,
+      "setup_s": 0.003201263,
+      "api_s": [
+        0.210955609
+      ]
+    }
+  },
+  {
+    "name": "l12-f3-a24-native-o1-batch0-c1-reference-tensor-real",
+    "degree": 12,
+    "bins": 3,
+    "angles": 24,
+    "radial": "native",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "reference",
+    "backend": "tensor-real",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-native-o1-batch0-c1-reference-tensor-real/reference",
+        "12",
+        "3",
+        "1",
+        "tensor-real",
+        "native"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-native-o1-batch0-c1-reference-tensor-real/candidate",
+        "12",
+        "3",
+        "1",
+        "tensor-real",
+        "native",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 6.464224385443298e-16,
+              "max_scaled_pointwise": 1.6765897916368846e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 2.6895534047132936e-12,
+              "max_scaled_pointwise": 4.8199874689284975e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": false
+            },
+            "kernel_F": {
+              "relative_L2": 2.3393778790486295e-12,
+              "max_scaled_pointwise": 4.5084976070170505e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": false
+            },
+            "kernel_L": {
+              "relative_L2": 1.96253036878032e-12,
+              "max_scaled_pointwise": 8.370621422343872e-11,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": false
+            },
+            "kernel_N": {
+              "relative_L2": 6.787816080003456e-16,
+              "max_scaled_pointwise": 9.20101962918687e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": false
+        }
+      ],
+      "passed": false
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor-real",
+      "radial_mode": "native",
+      "solver_backend": "equilibrated",
+      "sample_count": 5160,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 5.594391934366777e-16,
+      "max_kernel_pointwise_scaled_error": 1.650011274362859e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.216364601
+      ],
+      "reference_s": [
+        0.162747202
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000637833,
+          "modal_solve_and_basis": 0.10423057899999999,
+          "packed_sampling": 0.10686790199999999,
+          "final_kernel_contraction": 0.000179132,
+          "source_contact": 0.0030442119999999997
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "sample_count": 5160,
+      "setup_s": 0.00315198,
+      "api_s": [
+        0.211781298
+      ]
+    }
+  },
+  {
+    "name": "l12-f3-a24-direct-o1-batch0-c1-physical-tensor",
+    "degree": 12,
+    "bins": 3,
+    "angles": 24,
+    "radial": "direct",
+    "objectives": 1,
+    "batch": 0,
+    "contacts": 1,
+    "derivative": "physical",
+    "backend": "tensor",
+    "commands": [
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/frozen-reference-v2",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-direct-o1-batch0-c1-physical-tensor/reference",
+        "12",
+        "3",
+        "1",
+        "tensor",
+        "direct"
+      ],
+      [
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v4",
+        "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a24.csv",
+        "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/final-validation-v4/l12-f3-a24-direct-o1-batch0-c1-physical-tensor/candidate",
+        "12",
+        "3",
+        "1",
+        "tensor",
+        "direct",
+        "equilibrated"
+      ]
+    ],
+    "candidate_sha256": "015003eea1c9d61d01a06c06a5fd3ede7c217fc390d61667ee7a11afbd40a977",
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.307502713912e-16,
+              "max_scaled_pointwise": 2.1164361596516206e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.0047841698564717e-13,
+              "max_scaled_pointwise": 5.136930385649049e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.396674436408887e-13,
+              "max_scaled_pointwise": 9.166282853969938e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.6724803774910254e-14,
+              "max_scaled_pointwise": 1.4883251189119693e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.435940172786985e-16,
+              "max_scaled_pointwise": 1.2232994501493856e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "candidate_metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 1344,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 9.090804188414036e-16,
+      "max_kernel_pointwise_scaled_error": 2.853874176654247e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.130795881
+      ],
+      "reference_s": [
+        0.123196175
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000650556,
+          "modal_solve_and_basis": 0.10672472200000001,
+          "packed_sampling": 0.020190764,
+          "final_kernel_contraction": 5.7332e-05,
+          "source_contact": 0.0028163100000000003
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "reference_metrics": {
+      "reference": "accepted production Phase1",
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "sample_count": 1344,
+      "setup_s": 0.003067605,
+      "api_s": [
+        0.182660416
+      ]
+    }
+  }
+]

@@ -1,0 +1,414 @@
+DSpecM1D 2.0                                                                                        SK algorithm audit
+
+
+Sensitivity-kernel algorithm audit
+Profiling, implemented alternatives and numerical boundaries
+Finding. The remaining cost is principally an angular-synthesis and data-reuse problem. It is not
+explained by interpolation or by the final six strain products. The implemented tensor prototype
+reuses angular plans and evaluates many radii with matrix products. The unchanged production
+implementation and YSpec are compared below. The matched model has full gravity, no attenuation,
+NN=8 SEM interpolation, a 50 km-deep source at 10◦ /20◦ , and a 3 km-deep receiver at 45◦ /90◦ . All
+new implementations are isolated diagnostic prototypes; production adoption is a separate decision.
+
+1. Matched end-to-end comparison
+
+                  L    Bins    Objectives      Phase 1 (s)     Prototype (s)      YSpec (s)       Gain
+                   3      3               1          0.059               0.033          0.030    1.80×
+                   6      3               1          0.409               0.155          0.157    2.64×
+                  12      3               1          0.730               0.240          0.266    3.05×
+                  12      3               2          1.403               0.316          0.312    4.43×
+                  12     12               1          2.687               0.804          1.090    3.34×
+                  12     48               1         11.177               3.188          6.487    3.51×
+
+Each entry is the median of three fresh processes, alternating solver order, with one numerical thread.
+The volume grid contains 56 element/radius traces and 192 angles at L = 3, or 1,352 angles at L = 6, 12:
+respectively 10,752 or 75,712 points. API times exclude model/SEM setup and writing output, but
+include first-use plans and measurement processing. The machine is an Intel Core Ultra 5 235U; native
+headline runs share one fixed allowed CPU. Both codebases use portable GCC O3/Release without
+fast-math. Two DSpec objective calls are summed; YSpec handles both in one batch.1
+The three-bin benchmark solves through 1.171875 mHz; 12 and 48 bins extend to 4.6875 and 18.75
+mHz. The original nominal 0.1–0.8 mHz measurement band is not the maximum solved raw frequency.
+Extended cases are fixed-discretization performance/equivalence probes; they establish no high-frequency
+or angular convergence. YSpec requires at least two bins, so the one-bin case is DSpec-only.
+Practical result. The degree-12 three-bin prototype improves the accepted DSpec calculation by 3.05
+times for one objective and 4.43 times for two. Its measured times are 0.240/0.316 s versus YSpec’s
+0.266/0.312 s. The smaller-degree case remains slower than YSpec. These are measured single-thread
+prototypes, not changes to the production default.
+
+2. Why “two solves and multiplications” was incomplete
+
+The adjoint formulation needs a forward field and an adjoint field for each independent objective. In
+this implementation, obtaining either field means solving one radial system for each degree, family and
+frequency. At L = 12, one frequency has 12 spheroidal, 12 toroidal and one radial systems. Three bins
+therefore require 75 distinct dynamic matrices. The accepted Phase 1 route factors each matrix twice,
+giving 150 factorizations; the prototype shares one factorization between forward and Hermitian-adjoint
+substitutions. A changing frequency changes the matrix and requires new numerical factors.
+There are 75,712 spatial points and six strain slots per field, so one field/frequency has 454,272 complex
+strain outputs. Reconstructing those outputs also requires summing degree/order coefficients. The
+profiled calculation performs about 128 million complex strain multiply-accumulates, across two
+fields and three bins. The final pointwise products are cheap; the earlier explanation conflated that
+cheap final work with the harmonic reconstruction.
+  1
+    The prototype’s radial response and forward angular caches are enabled for the two-objective, volume-only case. Source
+contacts are excluded from every timing in this table. Contacts are independently checked with the cache disabled. Timing
+identities, commands, ranges, sampled process memory and output arrays are saved in final-timings-v6/.
+
+
+
+
+26 October 2026                                                                                                         1
+DSpecM1D 2.0                                                                            SK algorithm audit
+
+
+           Accepted Phase 1, L = 12, 3 bins, 1 objective                Seconds    Calls/misses
+           Degree sums and order phases                                   0.2683          6,702
+           Wigner table construction                                      0.1455          1,989
+           Geometry grouping                                              0.0760            120
+           Factorization                                                  0.0779            150
+           Angular coefficient table construction                         0.0377          1,971
+           Global weighted-adjoint substitution                           0.0230             72
+           System matrix formation                                        0.0185            150
+           Rotation/addition scratch                                      0.0146          2,229
+           Radial coefficient preparation                                 0.0062            342
+           Final kernel products                                          0.0026             57
+
+These are instrumented scopes and some overlap: do not sum them into a total. The native accepted
+API took 0.7004 s; instrumentation took 0.7423 s. Output arrays were byte-identical. Table construction
+was repeatedly missing the cache because a 4,096-point block split the shared angular set differently on
+successive radial traces. This is an avoidable algorithm/layout defect, rather than an inherent cost of
+adjoints.
+
+3. What YSpec actually does differently
+
+Inspection of SampledKernels.cpp confirms that YSpec prepares strain coefficients for all sampled
+radial nodes, with degree contiguous and the real/imaginary degree dot products explicit. It groups 64
+angular places in a block, constructs source/receiver Legendre tables for that block, and reuses them
+over all radial nodes. Geometry is prepared before the frequency loop. The inspected version rebuilds
+those block Legendre tables at each frequency; it does not already implement every cross-frequency
+reuse proposed here.
+YSpec constructs a basis of measurement directions and shares its radial responses and field products
+across objectives. It contracts in the source frame, applying the relative source/receiver spin rotation to
+the adjoint. Its radial boundary-value solver and DSpec’s assembled SEM solve are different methods,
+so equal physics and output samples do not imply equal linear algebra or degrees of freedom. The
+informative weighted-profile/integral comparison at the existing 10−3 tolerance passes for the established
+small and large benchmark objectives. It does not certify whole-planet receiver-region strain accuracy.
+
+  Work                          Accepted DSpec Phase 1              Implemented audit alternative
+  Angular addressing            Spatial chunks can fragment one  Exact trace × angle plan, preserv-
+                                angle set                        ing output order
+  Angular synthesis             Contiguous degree dots per radialReal or complex matrix products
+                                trace                            over 16 radii
+  Angular plans                 Chunk-keyed reuse often misses   Persistent frame/grid/spin/degree
+                                                                 tables
+   Radial factors               Separate forward/adjoint factor- Shared equilibrated factorization
+                                ization
+   Multiple objectives          Repeated scalar evaluations      Cached source and minimal re-
+                                                                 ceiver responses
+   Output radii                 General element-side radii       General or native GLL traces, sep-
+                                                                 arately tested
+   Frequency order              Synthesize both fields for every Exact same-frequency coefficient
+                                bin                              covariance
+
+4. Implemented direct routes and their costs
+
+The prototypes are real executable routes consuming the SEM solutions. They include packed scalar,
+Eigen and one-thread OpenBLAS synthesis; complex tensor products; real degree-wise tensor products
+
+26 October 2026                                                                                          2
+DSpecM1D 2.0                                                                                            SK algorithm audit
+
+
+followed by each order phase; shared factors; minimal supplemental receiver basis construction (weighted
+global reconstruction is used only in response-cache mode); repeated-objective response reuse; direct
+arbitrary-radius interpolation; native differentiation; and an optional nodal strain-numerator bridge.
+Diagnostic packet export is disabled during timings.
+The final tensor plan stores the exact point-address map, transformed angles, spin rotations, Wigner
+values and real/complex synthesis bases. Its key distinguishes frame, grid ordering, degree and coefficient
+labels. It persists across frequency and objective loops, rather than across mutable model updates. A
+complete permuted tensor grid is accepted and restored to input order; duplicate or ragged angle sets
+are rejected by this explicit route. Packed sampling remains available for arbitrary point clouds.2
+Only the six strain slots are retained on tensor volume points; full field records are still used for a small
+representative set and receiver displacement suffix. Fluid coefficient synthesis uses divergence, and
+forbidden l < |s| spin slots vanish. Both completed fields are still rotated for the direct point-kernel
+route. A separate relative-spin helper is not an independently integrated direct backend; relative angular
+factors are included in the spectral product representation. The measured baseline rotation cost is much
+smaller than degree summation and table construction.
+
+
+                  Native accepted-engine block/cache control                              Median API (s)
+                  4,096-point blocks, 32 MiB payload budget                                           0.7139
+                  1,352-point blocks, 32 MiB                                                          0.5497
+                  2,704-point blocks, 32 MiB                                                          0.5343
+                  One 75,712-point block, 32 MiB                                                      0.5792
+                  4,096-point blocks, 128 MiB                                                         0.6451
+
+All five controls produced byte-identical outputs, each in three processes. The result shows that
+matching chunk boundaries to semantic angular structure helps; merely enlarging caches or materializing
+everything is less effective. These controls are separate from the final isolated comparison and should
+not be combined as multiplicative speedups.
+
+
+                      Actual L12/F3/full-grid route           Median (s)       Frozen volume gates
+                      v4 real                                        0.313     pass
+                      v5 real                                        0.289     pass
+                      v5 complex                                     0.231     pass
+                      packed scalar                                  0.457     pass
+                      packed eigen                                   0.529     pass
+                      packed openblas                                0.513     pass
+                      minimal basis                                  0.275     pass
+                      rstrain bridge                                 0.337     pass
+                      strict native build                            0.275     fail
+
+The complex tensor layout is faster here than the real-degree split, despite its higher nominal arithmetic
+count. Small packed Eigen/OpenBLAS calls lose to the packed scalar route; matrix-matrix work over
+many radii pays. The nodal r-strain bridge loses on this grid. Strict native-architecture compilation
+(without fast-math, FMA contraction disabled) fails the processed-spectrum (1.42 × 10−12 ) and objective
+(6.46 × 10−12 ) gates and is rejected. The final headline table therefore uses portable O3 and the complex
+tensor layout.
+The v6 forward angular cache adds actual reuse across objectives: it retains the volume forward strains
+and receiver displacement by exact grid/frequency identity. Hits skip source tensor synthesis and
+receiver suffix sampling; workspace preparation and representative coefficient gathering still run. The
+separate radial response cache saves repeated solves. At L12/F3 the forward field payload is 21.8 MB.
+  2
+   The first tensor prototype rebuilt its main angular tables every call despite caching representative coefficient extraction.
+Review caught this; its v4 binary and evidence remain saved, and v5 adds actual reuse.
+
+
+26 October 2026                                                                                                              3
+DSpecM1D 2.0                                                                            SK algorithm audit
+
+
+Zero-budget fallback and contact-bearing reuse with radial response caching disabled both pass frozen
+gates. This scheduling/cache prototype is distinct from a general multi-objective API.
+
+5. Native SEM output and interpolation
+
+There is no mathematical requirement to request arbitrary output radii. Native one-sided GLL traces are
+a natural kernel representation. At a node, values are a gather and derivatives follow from De = Dref /Je .
+Distinct element sides must remain distinct even when their radii coincide; source-lift ownership and
+fluid/solid traces must not be averaged.
+For arbitrary radii, storing a derivative polynomial does not make evaluating it at a new coordinate free.
+The interpolation weights can be prepared once per exact element/radius and applied to all relevant
+solution columns. More importantly, radial coefficient preparation is only about 6 ms of the profiled 742
+ms. Removing it alone cannot explain or close the main performance gap.
+The implemented bridge forms the six nodal rε numerators from U, V, W and their derivatives. For
+element degree p, each numerator has degree at most p, so interpolating it and then dividing by r > 0 is
+algebraically exact. Interpolating raw nodal strain directly would lose its 1/r dependence. Forming
+all nodal numerators can cost more than direct evaluation for sparse output radii; it is an optional
+representation with a density-dependent crossover.
+Numerical boundary. Native L = 3 passed the new frozen comparison, but the L = 12 all-element
+GLL output exceeded the unchanged 10−12 relative-L2 kernel gate: about 2.69 × 10−12 with Dref/J,
+and 1.69 × 10−12 with cached physical-coordinate nodal derivatives. The scaled pointwise gate passed.
+This is a small discrepancy, but the branch is not accepted under the current contract. The physical
+derivative control reduced it without establishing a complete cause. General-radius preservation passes;
+replacing the default output grid is deferred until this discrepancy is resolved.
+A further dense-output representation is theoretically possible: r2 K has degree at most 2p inside an
+element, so accumulate its polynomial before sampling many radii. It requires at least 2p + 1 suitable
+values or coefficient products, not merely p + 1 native kernel values. The present grid has roughly eight
+traces per element versus 2p + 1 = 15 at NN=8, so this is not a promising first implementation for the
+measured workload. It remains relevant to much denser requested radial output.
+
+6. Frequency-first contraction: the algorithmic change
+
+Let fk and ak be compact source- and receiver-frame strain coefficient vectors at one radial trace and
+frequency k, and hF (x), hA (x) their angle-dependent basis vectors. The exact rearrangement is
+                                                       X
+                                                  C=        ak fkT ,
+                                                        k
+                                    X                          T
+                                         ak (x)fk (x) = hA (x) ChF (x).
+                                     k
+
+Every same-frequency l, l′ , m, m′ pair is retained. Multiplying separately frequency-summed fields would
+introduce cross-frequency terms and be wrong. Summing kernels per degree would discard cross-degree
+terms and also be wrong. The actual measurement adjoint P ∗ q remains a full-frequency operation
+including the Hann window, damping and SI factors.
+At L = 12, the local source and receiver widths are approximately qF = 59 and qA = 37, including l = 0.
+Direct synthesis costs O(F P (qF + qA )); covariance formation/evaluation costs O(F qF qA + P qF qA ) per
+pair and radius. The arithmetic frequency crossover is around 23 bins. This explains why the three-bin
+case favors direct synthesis and why the 48-bin case is worth implementing. Actual constants and the
+quality of the direct matrix implementation matter.
+The standalone consumer uses actual solver-derived local coefficients, including spheroidal/toroidal
+sums, normalized radial l = 0, and exact source/receiver frame information. All nine L = 3, 6, 12 and
+F = 3, 12, 48 cases were evaluated over three complete radial traces, with 192 or 1,352 angles
+each. It reconstructs all six strain slots and checks the resulting modulus products against direct
+pointwise synthesis. Maximum kernel relative L2 is 3.42 × 10−15 ; maximum scaled pointwise difference
+
+26 October 2026                                                                                          4
+DSpecM1D 2.0                                                                                          SK algorithm audit
+
+
+is 2.46 × 10−13 . These are volume equivalence checks, not contact or whole-engine timing acceptance.
+
+
+         L     F    Direct (ms)      Covariance (ms)        Recouple/FFT (ms)          Plan (ms)      SVD (ms)
+         3     3            0.42                   0.67                        0.29          5.15            1.70
+         3    48            6.56                   0.77                        0.81          4.96            1.75
+         6     3            4.00                  11.81                        1.78        121.15           23.41
+         6    48           66.31                  14.41                        5.60        149.94           30.07
+        12     3            9.60                  50.72                       19.69       1067.08          100.53
+        12    48          119.74                  52.96                       51.05        962.89          106.33
+
+Entries are medians of three independent processes on exactly three traces. Direct means per-frequency
+coefficient synthesis; covariance includes formation and angular evaluation. Recouple/FFT includes
+common-frame coefficient rotation/covariance recoupling, scalar kernel assembly and inverse-FFT
+synthesis. The full combined validator plan is shown separately. At L12/F48 its compact angular
+basis costs about 66 ms, global frame/QR about 822 ms, Gaunt construction about 66 ms, and grid
+addressing 0.1 ms. Covariance needs the compact basis, not the global/QR/Gaunt stages; a cold
+covariance request must be charged that appropriate compact setup. FFTW plan creation is inside the
+FFT projection/synthesis timers. Radial solves, measurement processing, coefficient export/parsing and
+contacts are outside these columns. No three-trace result is extrapolated into a measured full-volume
+API time. A separate v5 real-tensor run on the matching three traces takes about 20 ms sampling at
+F3 and 245 ms at F48, but it includes coefficient extraction and receiver work. The consumer’s direct
+primitive is not the final optimized complex tensor backend, so its covariance speedup must not be
+advertised as an end-to-end gain over that backend.
+
+7. Low rank, common-frame harmonics and FFT
+
+Each complex covariance has rank at most min(F, qA , qF ) and is generally neither Hermitian nor positive
+semidefinite. The implemented thin SVD verifies candidate ranks against actual output L2 and pointwise
+gates instead of choosing a singular-value cutoff. Observed ranks at 48 bins are 2–4 (L = 3), 5–7 (L = 6),
+and 11–13 (L = 12). Lower factor storage does not guarantee lower total cost: SVD and verification
+lose to the direct covariance route on the measured workloads.
+Products of degree-L fields have scalar harmonic bandlimit 2L. A common-frame representation therefore
+needs at most (2L + 1)2 = 625 coefficients at L = 12; the source-frame azimuthal restriction can reduce
+that to 515. Both compact pole frames cannot simultaneously retain their small order sets after rotation
+to a common frame. The prototype performs verified coefficient-frame conversion, quadrature-defined
+Gaunt recoupling through 2L, and global longitude FFT synthesis. This avoids guessing phase or
+normalization conventions.3
+The 26 × 52 global angle grid resolves degree-24 kernel output. Gaunt and FFT coefficient comparisons
+have maximum relative L2 1.94 × 10−14 and scaled pointwise 2.06 × 10−12 ; FFT and direct harmonic
+synthesis agree below 1.51 × 10−13 scaled pointwise. Sparse points use covariance/direct evaluation;
+FFT requires a suitable complete tensor grid.
+The full recoupling plan uses numerical frame conversion and quadrature Gaunt construction, and costs
+about 0.96 s at L = 12. An analytic Wigner rotation/Gaunt implementation or saved validated plan
+could reduce that cost; no speedup for such an implementation has been measured. The present warm
+48-bin recoupling/FFT path is comparable to covariance at L = 12. Its rough explicit payload is 154.7
+MB at L12: 12.3 MB compact bases, 66.7 MB global/frame data, 75.5 MB Gaunt data, and 0.14 MB
+grid addressing, excluding allocator overhead. It is a viable exact representation, not the current default
+recommendation.
+   3
+     Primary harmonic product/Gaunt identities: NIST DLMF 34.3. The pinned GSHTrans convention is orthonormal. A prior
+normalization assumption and two Eigen temporary-expression lifetime bugs were found and fixed; failed outputs remain in the
+evidence log.
+
+
+
+
+26 October 2026                                                                                                           5
+DSpecM1D 2.0                                                                                       SK algorithm audit
+
+
+8. Radial solver alternatives: implemented and rejected
+
+The SEM operator has narrow bandwidth in physical indexing (ordinary spheroidal half-bandwidth at
+most about 23 for NN=8). Implemented alternatives include equilibrated pivoted general-band LU,
+NaturalOrdering SparseLU with verified symbolic-pattern reuse, and element-interior static conden-
+sation with full interior recovery. Forward and Hermitian-adjoint substitutions use the same factors.
+Condensation uses actual LTG/interface identity, pivoted local blocks and Schur solves. It checks local
+invertibility; global solvability alone does not guarantee that eliminated blocks are safe.4
+The full PREM L = 12, bins 1–48 run contains 4,800 backend records. Original-system residuals
+are small (forward around 5 × 10−17 , adjoint around 2 × 10−20 ), but this does not establish output
+equivalence. The changed elimination orders fail the frozen field/contact gates:
+
+            Backend                  Failed field groups      Failed contacts     Max contact relative L2
+            Band LU                                    252                 106                  5.38 × 10−9
+            NaturalOrdering                            246                 106                  6.78 × 10−9
+            Static condensation                        258                 104                 8.36 × 10−10
+
+Counts are from one bridge setting, 336 field and 240 contact groups each; both bridge settings retain
+the same disposition. Small residuals and overall solution-vector norms do not bound derivative-
+sensitive field/contact cancellations. None of these factor replacements is accepted. The shared existing
+equilibrated solver passes the expanded frozen field/contact comparison and is the supported optimization
+candidate.
+
+9. Acceptance, memory and provenance
+
+The final v6 headline outputs pass all 18 independent process/configuration comparisons against the
+unchanged production evaluator: returned raw/processed spectra, objectives and all six stored modulus
+channels, at exact matched coordinates. Repeated outputs are deterministic. Maximum kernel relative
+L2 is 8.12 × 10−14 and scaled pointwise 9.04 × 10−12 . Expanded tests separately establish 336 public
+field and 240 source-contact comparisons per bridge setting against the saved production arrays. An
+additional complete permuted PREM tensor product agrees with the standard field reconstruction in
+solid strains/fluid divergence below 1.13 × 10−15 ; it is not the source of those historical contact arrays.
+Fresh v5 optimized tensor Born checks pass the independent Cartesian regular and source-local vol-
+ume/contact/total gates, with the existing factorization and radial-response cache disabled. The v6
+forward angular cache is checked separately against frozen full outputs; it was not used in that Born
+adapter run. The final forward-cache tests pass all eight frozen comparisons at default and zero budgets,
+covering two/three objectives, complex/real layouts and contacts on/off under their stated solver settings.
+The response-cache contacts-on and native L12 failures remain explicitly rejected; all gates were retained.
+All thresholds are unchanged: 10−12 field norms except 10−9 adjoint strain; 10−12 kernel L2 and
+10−10 scaled pointwise with the existing 1%-of-peak floor; 10−12 contacts; informative YSpec weighted
+profiles/integrals 10−3 . Tiny physical SI kernels are compared against their actual norms, with no
+unit-sized denominator that could hide errors.
+The plan’s 32 MiB and response cache’s 512 MiB limits are retained-payload admission budgets. They
+omit map/key/allocator overhead, temporary matrices, deep-copy return values and outputs. Capacity or
+response-span failures in the current diagnostic response cache throw; there is no automatic direct-solve
+recovery. Its exact frequency/RHS keys are valid for an immutable live SEM object, and it must not
+survive operator mutation. The batch option is explicit opt-in: enabling contacts does not automatically
+bypass it. Contacts-on batch results fail some frozen checks, while tested volume-only results pass.
+For degree 12, one/two objectives, maximum sampled process high-water memory is Phase 1: 44.5/45.0
+MiB; prototype: 83.9/124.2 MiB; YSpec: 17.9/27.7 MiB. These values are polled after executable
+entry every 10 ms and include setup, outputs and, in the prototype driver, its subsequent same-engine
+  4
+      Band packing and conjugate-transpose solve contracts follow the primary Netlib ZGBTRF and ZGBTRS sources.
+
+
+26 October 2026                                                                                                     6
+DSpecM1D 2.0                                                                             SK algorithm audit
+
+
+reference calculation. They are process-level diagnostics, not isolated API allocator peaks or aggregate
+limits. The runtime advantage has a clear memory cost. The tensor coefficient multiplication is tiled,
+but full volume strain/output arrays and plan maps are still materialized; production integration should
+bound those intermediates more tightly.
+Protected production files and existing Phase 0 evidence are verified against the pre-audit manifest.
+YSpec remains clean, both repository HEADs are unchanged, and no commit or push was made.
+Compiler concurrency was limited to two jobs; numerical calculations used one thread. This is bounded
+runtime control and sampled process diagnostics, not kernel aggregate-memory accounting. The existing
+177-test Phase 1 regression evidence remains distinct from the fresh prototype field/kernel/Born checks;
+the full production suite was not rerun for isolated prototypes. Spectral v2 is the reproducible current-
+API source/binary. The older v1 snapshot contains an incompatible Wigner template alias and is
+superseded; its historical timings are not used here. Fresh v2 solver-packet oracles and ranks pass after
+the API correction.
+
+10. Disposition and concrete adoption sequence
+
+   1. Promote semantic angular planning and tiled direct synthesis first. Keep the existing
+      equilibrated factorization and arbitrary-radius API. Integrate one shared factor per matrix, exact
+      receiver basis handling, persistent grid/frame plans and the measured best real/complex matrix
+      layout. Preserve the packed fallback and strict contact path. Repeat the existing production
+      regression gates on the integrated change.
+
+   2. Integrate objective reuse with separate contact rules. Preserve each full P ∗ action. Forward
+      angular-field reuse has passed contact-bearing checks with the original weighted solves. The batch
+      response cache saves repeated radial solves, but must gain an explicit contact-safe route and robust
+      bounded-cache fallback before becoming a general API default.
+
+   3. Offer exact frequency covariance for sufficiently many bins. Integrate the proven covariance
+      algorithm behind a measured direct/covariance dispatch; measure the complete solver-to-output
+      path and tile coefficient history by radial blocks. The standalone warm advantage is established; a
+      full-grid end-to-end gain is not yet measured.
+
+   4. Retain native SEM output as a deliberate feature. Resolve the strict L = 12 native-node
+      discrepancy before making it the default. Retain optional arbitrary-radius resampling and side
+      provenance. Do not spend the main performance effort on interpolation alone.
+
+No approximate degree decoupling, cross-frequency product, unverified rank truncation, Hermitian-
+positive-definite solver, raw-strain interpolation, or negative-order real-field symmetry is a valid shortcut
+here. GPU and multi-thread designs need a separately authorized hardware/resource comparison; this
+audit supplies the single-thread algorithmic baseline. Strict-IEEE architecture-specific compiler tuning
+is a useful secondary control, rather than a substitute for the demonstrated data reuse. No fast-math
+flags were used.
+Coverage boundary. Promising mathematical families were derived and runnable prototypes were
+exercised before disposition. This is not a claim that every possible implementation or hardware backend
+has been exhausted. Receiver-region physical limitations, mesh/degree convergence, general attenua-
+tion/measurement combinations and large receiver ensembles require their own validation. Production
+numerical code remains the accepted Phase 1 version; the audit delivers concrete implementations,
+preserved failures and a measured integration order.
+
+
+
+
+26 October 2026                                                                                            7
+

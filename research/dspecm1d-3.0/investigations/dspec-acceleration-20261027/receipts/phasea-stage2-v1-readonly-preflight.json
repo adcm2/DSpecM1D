@@ -1,0 +1,100 @@
+{
+  "schema": 1,
+  "collected_utc": "2026-10-31 13:48 UTC",
+  "scope": "Read-only Phase A preflight and accepted Stage2 candidate freeze only; no implementation, build, or numerical launch.",
+  "transport": {
+    "helper": "investigations/tunya-profile-20261027/ssh_transport.py",
+    "ssh_config": "/tmp/ccdsm-tunya-20261027/ssh_config",
+    "strict_host_key_checking": true,
+    "known_hosts": [
+      "/home/adcm2/.ssh/known_hosts",
+      "/home/adcm2/.step/ssh/known_hosts"
+    ],
+    "route": [
+      "ssh-west.esc.cam.ac.uk",
+      "tunya via ProxyJump ssh-west"
+    ],
+    "local_ssh_state_modified": false
+  },
+  "accepted_stage2_source_freeze": {
+    "path": "receipts/phasea-stage2-v1-frozen-inputs/candidate",
+    "receipt": "receipts/phasea-stage2-v1-frozen-inputs/source-freeze.json",
+    "candidate_files": 22,
+    "candidate_content_tree_sha256": "a293210ff2f5e7593763986fc589e087d4638965328fbb67a739c45d306f4f52",
+    "freeze_receipt_sha256": "85ff9537fe7b1e09c8ed34f7d9952a2e0620b78b872ee56138a731d22139c957",
+    "source_bundle_manifest_sha256": "cd24d88044c777cf17b9e8117d0a2fc430391527f371d74c4eb77b9e0fba208f",
+    "source_bundle_archive_sha256": "073ce34bae3ad2c3d84eff834df5e2e268a164af1818a8f6dc3b840ead307d9f",
+    "remote_staged_candidate_matches": true
+  },
+  "stage2_build_identity": {
+    "build_root": "/space/adcm2/research/builds/stages12-stage2-v1",
+    "native_binary_sha256": "bce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab",
+    "profile_binary_sha256": "50414d5639fe5432c6d7aeb9f86fa93987bda31c2f9cfea21452c79aa372c99f",
+    "remote_binary_hashes_match_build_validation": true
+  },
+  "source_dependency_snapshot": {
+    "DSpecM1D_head": "a778b13b22dca9709e1f96604b62925707654e5d",
+    "DSpecM1D_dirty_state_matches_prior_stage2_preflight": true,
+    "DSpecM1D_status": [
+      "DSpecM1D/src/SensitivityKernels.h",
+      "DSpecM1D/src/Windowed3DFields.h",
+      "DSpecM1D/src/Windowed3DKernels.h",
+      "implementation_status.md",
+      "tests/test_sensitivity_kernels.cpp",
+      "validation/phase0/"
+    ],
+    "dirty_source_file_sha256": {
+      "DSpecM1D/src/SensitivityKernels.h": "c67dea113088037a518e3deff16b20aefea3e523a056aa4ec2b7685af28d1cbb",
+      "DSpecM1D/src/Windowed3DFields.h": "bf577ae209e225ca3f6525b53f6d3fff14e23a34aab98374bbc450bfb170e010",
+      "DSpecM1D/src/Windowed3DKernels.h": "4513aa125f2ad0e73432ef28b2a318a601b7b30069269d873936d7e3df8becaa"
+    },
+    "CCDSM_head": "ecad6ec62e3b20eaa5d17fbe9fc89e7a4d2d980f",
+    "CCDSM_dirty_files_preserved": true,
+    "YSpecpp_head": "280eab0200495391539c0f97e62f978083c307bc",
+    "YSpecpp_clean": true,
+    "YSpec_documentation_library_sha256": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+    "historical_DSpecM1D_dependency_tree_digest": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+    "note": "Full current hashes for all 12 source/dependency roots now match both the Stage2 build-time and post-build tree digests using the exact build_campaign.py tree_hash implementation; the dirty worktree status and HEAD also match the prior preflight."
+  },
+  "resource_check": {
+    "matching_campaign_or_driver_processes": 0,
+    "requested_cpus_16_23_available": true,
+    "observed_cpu_affinity": "0-127",
+    "loadavg_1m_5m_15m": [
+      0.6826,
+      2.2383,
+      4.7749
+    ],
+    "aggregate_thread_limit_for_future_jobs": 50,
+    "recheck_immediately_before_each_launch": true
+  },
+  "phase_boundary": "Waiting for Sol final execution-ready plan and parent release. No candidate Stage A implementation work started.",
+  "build_dependency_tree_comparison": {
+    "algorithm": "Exact tree_hash implementation from investigations/tunya-profile-20261027/tools/build_campaign.py",
+    "historical_record": "receipts/stages12-stage2-v1-build-completed/doc-native/command.json tracked_input_sha256 and tracked_input_sha256_after",
+    "current_matches_prebuild_and_postbuild": true,
+    "paths": {
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-build/candidates/stages12-stage2-frequency-v1": "c9e8364c45c2b7b3591090d205a54364df2f0b544faeff8888b833a18c39dd5e",
+      "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf",
+      "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+      "/space/adcm2/research/projects/YSpecpp/src": "26f29edb53e94fda4859f3bb962b49b33cd3c8da8e1d3433a3037a6c7608e692",
+      "/space/adcm2/research/projects/YSpecpp/YSpec": "eb023ebfd0953a9b60d5be3b4d7c652ff320f573755b4cbd4913ca3118615853",
+      "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f"
+    }
+  },
+  "response_packet_inventory": {
+    "scope": "accepted Stage2 v3 receipt tree and source bundle; read-only filename/data-file inventory",
+    "generated_stage2_response_spool_found": false,
+    "active_bin_complex_radial_response_packet_found": false,
+    "existing_stage2_bin_files": "Final along.bin/across.bin scientific outputs only; these are not degree/family/source-adjoint radial response arrays.",
+    "other_radial_named_artifacts": "radial_nodes.csv/kernel_radial_nodes.csv are sampling-node metadata from other campaigns, not Stage2 complex response packets.",
+    "source_only": "The frozen source contains global/pole_response_spool.hpp writer code, but no generated spool artifact was found in accepted Stage2 receipts.",
+    "conclusion": "Do not reuse an assumed existing radial-response packet; Phase A must generate the single bounded 3-bin packet from the accepted path after release."
+  }
+}

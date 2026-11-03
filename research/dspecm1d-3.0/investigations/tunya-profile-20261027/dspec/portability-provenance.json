@@ -1,0 +1,46 @@
+{
+  "date": "2026-10-27",
+  "purpose": "Portability-only source copies for Tunya; replace five laptop-absolute DSpec includes with include-root-relative DSpecM1D/src/... paths.",
+  "absolute_include_audit": "PASS; no absolute include directives in either portable copy.",
+  "build_science_remote_activity": "none",
+  "versions": {
+    "v4": {
+      "source_root": "investigations/dspec-sk-profile-20261026/physical-profile/dspec/source-v4-frozen",
+      "source_manifest": "investigations/dspec-sk-profile-20261026/physical-profile/dspec/source-v4-frozen.sha256",
+      "source_manifest_sha256": "294a9d4e01b4aa1da53924c15dec5ba3b8b23ecea7eeb46e6dd096de68af19e1",
+      "source_manifest_verified_before_copy": true,
+      "portable_root": "investigations/tunya-profile-20261027/dspec/source-v4-tunya",
+      "portable_manifest": "investigations/tunya-profile-20261027/dspec/source-v4-tunya.sha256",
+      "portable_manifest_sha256": "b56ed7352c645fa3e513dfea535f43076c844777d7e3dcf7eaf285f68dba84e7",
+      "diff": "investigations/tunya-profile-20261027/dspec/source-v4-portability.diff",
+      "diff_sha256": "f84fbc064205ff1c8a3de052ffa42563233bd3ee2e72f515bdfb87f9b2db63ea",
+      "changed_files": [
+        "engine_headers/SensitivityKernels.h"
+      ],
+      "include_replacements": 5,
+      "old_sensitivity_header_sha256": "4373909394796c4c3d3126c5643d6d189084e5c23d1af69709f6ed681e96c55a",
+      "new_sensitivity_header_sha256": "7183aaa4481f88d2a608b9569ec623b238425b2cbd3618312fe4db075880de2c",
+      "windowed_fields_header_sha256_unchanged": true,
+      "file_count": 12
+    },
+    "v6": {
+      "source_root": "investigations/tunya-profile-20261027/dspec/source-v6-frozen",
+      "source_manifest": "investigations/tunya-profile-20261027/dspec/source-v6-frozen.sha256",
+      "source_manifest_sha256": "f356076fad36d19640199f04fc4b1815d6f91c51c8384b2d9d7910e78425663e",
+      "source_manifest_verified_before_copy": true,
+      "portable_root": "investigations/tunya-profile-20261027/dspec/source-v6-tunya",
+      "portable_manifest": "investigations/tunya-profile-20261027/dspec/source-v6-tunya.sha256",
+      "portable_manifest_sha256": "f463f424a11aa9cb0690c5d99a09dec0642d5fe076c12b652b38372c87c3f360",
+      "diff": "investigations/tunya-profile-20261027/dspec/source-v6-portability.diff",
+      "diff_sha256": "52bb4442d547dafc8006d34a035b5f64b4a3fdb113fd297da219b7d1ae604481",
+      "changed_files": [
+        "engine_headers/SensitivityKernels.h"
+      ],
+      "include_replacements": 5,
+      "old_sensitivity_header_sha256": "4373909394796c4c3d3126c5643d6d189084e5c23d1af69709f6ed681e96c55a",
+      "new_sensitivity_header_sha256": "7183aaa4481f88d2a608b9569ec623b238425b2cbd3618312fe4db075880de2c",
+      "windowed_fields_header_sha256_unchanged": true,
+      "file_count": 12
+    }
+  }
+}

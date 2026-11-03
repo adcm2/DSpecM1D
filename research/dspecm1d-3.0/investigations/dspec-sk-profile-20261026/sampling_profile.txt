@@ -1,0 +1,39 @@
+Functions sorted by metric: Exclusive Total CPU Time
+
+Excl. Total   Incl. Total    Name
+CPU           CPU
+ sec.      %   sec.      %
+0.101 100.00  0.101 100.00   <Total>
+0.067  66.34  0.083  82.18   SPARSESPEC::Windowed3DFieldEngine::synthesizePoleFrame(Full1D::SEM const&, std::vector<SPARSESPEC::windowed3d_detail::PoleSynthesisBlock3D, std::allocator<SPARSESPEC::windowed3d_detail::PoleSynthesisBlock3D> > const&, SPARSESPEC::windowed3d_detail::PoleFrame3D const&, std::vector<SPARSESPEC::Field3DPoint, std::allocator<SPARSESPEC::Field3DPoint> > const&, std::vector<double, std::allocator<double> > const&, std::vector<int, std::allocator<int> > const&, double, std::vector<SPARSESPEC::Field3DSample, std::allocator<SPARSESPEC::Field3DSample> >&)
+0.011  10.89  0.011  10.89   <static>@0x77ace (<libm.so.6>)
+0.005   4.95  0.009   8.91   <static>@0x60321 (<libc.so.6>)
+0.003   2.97  0.003   2.97   <static>@0x5890c (<libc.so.6>)
+0.002   1.98  0.002   1.98   Interpolation::LagrangeBasis<std::ranges::ref_view<std::vector<double, std::allocator<double> > > >::LagrangeBasis(std::ranges::ref_view<std::vector<double, std::allocator<double> > >)
+0.002   1.98  0.002   1.98   SPARSESPEC::Windowed3DFieldEngine::sampleModalBlocks(Full1D::SEM&, InputParameters&, std::complex<double>, std::vector<SPARSESPEC::OwnedModalFrequencyBlock3D, std::allocator<SPARSESPEC::OwnedModalFrequencyBlock3D> > const&, std::vector<SPARSESPEC::Field3DPoint, std::allocator<SPARSESPEC::Field3DPoint> > const&, bool) [clone .isra.0]
+0.002   1.98  0.013  12.87   cexp
+0.001   0.99  0.001   0.99   <static>@0x188341 (<libc.so.6>)
+0.001   0.99  0.003   2.97   Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> SPARSESPEC::Windowed3DFieldEngine::interpolateOne<SPARSESPEC::Windowed3DFieldEngine::interpolate(Full1D::SEM const&, SPARSESPEC::SensitivitySolveFamily, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const&, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const&, double, int, int, int)::{lambda(int)#1}>(Full1D::SEM const&, SPARSESPEC::SensitivitySolveFamily, double, int, SPARSESPEC::Windowed3DFieldEngine::interpolate(Full1D::SEM const&, SPARSESPEC::SensitivitySolveFamily, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const&, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const&, double, int, int, int)::{lambda(int)#1})
+0.001   0.99  0.001   0.99   Eigen::SparseLU<Eigen::SparseMatrix<std::complex<double>, 0, int>, Eigen::COLAMDOrdering<int> >::factorize(Eigen::SparseMatrix<std::complex<double>, 0, int> const&)
+0.001   0.99  0.001   0.99   SPARSESPEC::EquilibratedSparseLU<std::complex<double> >::solveAdjoint(Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const&)
+0.001   0.99  0.001   0.99   std::istream::sentry::sentry(std::istream&, bool)
+0.001   0.99  0.012  11.88   std::ostream& std::ostream::_M_insert<double>(double)
+0.001   0.99  0.011  10.89   std::ostreambuf_iterator<char, std::char_traits<char> > std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::_M_insert_float<double>(std::ostreambuf_iterator<char, std::char_traits<char> >, std::ios_base&, char, char, double) const
+0.001   0.99  0.001   0.99   void Eigen::internal::assign_sparse_to_sparse<Eigen::SparseMatrix<std::complex<double>, 0, int>, Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<std::complex<double>, std::complex<double> >, Eigen::CwiseUnaryOp<Eigen::internal::scalar_cast_op<double, std::complex<double> >, Eigen::SparseMatrix<double, 0, int> const> const, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<std::complex<double>, std::complex<double> >, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<std::complex<double> >, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const> const, Eigen::CwiseUnaryOp<Eigen::internal::scalar_cast_op<double, std::complex<double> >, Eigen::SparseMatrix<double, 0, int> const> const> const> >(Eigen::SparseMatrix<std::complex<double>, 0, int>&, Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<std::complex<double>, std::complex<double> >, Eigen::CwiseUnaryOp<Eigen::internal::scalar_cast_op<double, std::complex<double> >, Eigen::SparseMatrix<double, 0, int> const> const, Eigen::CwiseBinaryOp<Eigen::internal::scalar_product_op<std::complex<double>, std::complex<double> >, Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<std::complex<double> >, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const> const, Eigen::CwiseUnaryOp<Eigen::internal::scalar_cast_op<double, std::complex<double> >, Eigen::SparseMatrix<double, 0, int> const> const> const> const&)
+0.001   0.99  0.001   0.99   writev
+0.      0.    0.009   8.91   <static>@0x10d1c1 (<libstdc++.so.6.0.33>)
+0.      0.    0.101 100.00   <static>@0x2a145 (<libc.so.6>)
+0.      0.    0.009   8.91   <static>@0x66e6b (<libc.so.6>)
+0.      0.    0.002   1.98   SPARSESPEC::FixedMeshAdjointSolver::solveAdjointFrequencyWithSupplementalBasis(Full1D::SEM const&, SPARSESPEC::SensitivitySolveFamily, int, std::complex<double>, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const&, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const&, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1>&, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1>&)
+0.      0.    0.001   0.99   SPARSESPEC::FixedMeshAdjointSolver::solveForwardFrequency(Full1D::SEM const&, SPARSESPEC::SensitivitySolveFamily, int, std::complex<double>, Eigen::Matrix<std::complex<double>, -1, -1, 0, -1, -1> const&)
+0.      0.    0.001   0.99   SPARSESPEC::FixedMeshAdjointSolver::systemMatrix(Full1D::SEM const&, SPARSESPEC::SensitivitySolveFamily, int, std::complex<double>)
+0.      0.    0.003   2.97   SPARSESPEC::Windowed3DFieldEngine::solveFrequencyModes(Full1D::SEM&, SourceInfo::EarthquakeCMT&, InputParameters&, std::complex<double>, Eigen::Matrix<std::complex<double>, -1, 1, 0, -1, 1> const&, std::function<void (SPARSESPEC::ModalFrequencyBlock3D const&)> const&, std::vector<SPARSESPEC::windowed3d_detail::PoleModalFrequencyBlock3D, std::allocator<SPARSESPEC::windowed3d_detail::PoleModalFrequencyBlock3D> >*, SPARSESPEC::windowed3d_detail::PoleFrame3D*)
+0.      0.    0.003   2.97   SPARSESPEC::Windowed3DFrequencyWorkspace::prepare(Full1D::SEM&, SourceInfo::EarthquakeCMT&, InputParameters&, std::complex<double>, Eigen::Matrix<std::complex<double>, -1, 1, 0, -1, 1> const&)
+0.      0.    0.085  84.16   SPARSESPEC::Windowed3DFrequencyWorkspace::samplePoleFrames(std::vector<SPARSESPEC::Field3DPoint, std::allocator<SPARSESPEC::Field3DPoint> > const&, bool) const
+0.      0.    0.101 100.00   __libc_start_main
+0.      0.    0.101 100.00   main
+0.      0.    0.001   0.99   readPoints(std::filesystem::__cxx11::path const&)
+0.      0.    0.001   0.99   std::__basic_file<char>::xsputn_2(char const*, long, char const*, long)
+0.      0.    0.001   0.99   std::basic_filebuf<char, std::char_traits<char> >::xsputn(char const*, long)
+0.      0.    0.001   0.99   std::basic_istream<char, std::char_traits<char> >& std::getline<char, std::char_traits<char>, std::allocator<char> >(std::basic_istream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >&, char)
+0.      0.    0.009   8.91   vsnprintf
+

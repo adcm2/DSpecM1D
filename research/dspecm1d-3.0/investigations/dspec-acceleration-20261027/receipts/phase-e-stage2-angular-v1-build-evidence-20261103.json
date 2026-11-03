@@ -1,0 +1,432 @@
+{
+  "build_launch_receipt": {
+    "build_allowlist_manifest_sha256": "b64eed6033f431f03f24d253bae0c7bde84cf05e84390e28956c2398b08fcc8a",
+    "build_archive_sha256": "b844db2feb496390703d4f59e64bdbbcb558eb8bf5c175cd6928bce5c237afd2",
+    "remote_launch_receipt": {
+      "archive_sha256": "b844db2feb496390703d4f59e64bdbbcb558eb8bf5c175cd6928bce5c237afd2",
+      "build_json_sha256": "25130f8b45566010b71327dfd7b1b893ea43b58cca715302ce06d0dc3bbd83dd",
+      "build_root": "/space/adcm2/research/builds/phase-e-stage2-angular-v1",
+      "control_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-angular-v1-build-control",
+      "filesystem": "Filesystem          1B-blocks         Used      Available Use% Mounted on\nstorage        19857536450560 957049733120 18900486717440   5% /space\n",
+      "free": "               total        used        free      shared  buff/cache   available\nMem:     1623113519104 590962638848 788135780352    22548480 253605789696 1032150880256\nSwap:    20000530432           0 20000530432\n",
+      "log": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-angular-v1-build-control/continuation/phase-e-stage2-angular-v1-build.nohup.log",
+      "manifest_sha256": "b64eed6033f431f03f24d253bae0c7bde84cf05e84390e28956c2398b08fcc8a",
+      "member_count": 23,
+      "memory_gib": 32,
+      "pid": 797352,
+      "pinned_dso_sha256": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+      "pinned_profile_header_sha256": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+      "plan_sha256": "b252914d8f1387ebb4b353ec1cbee87f6006f2439ced3d4235b64cbb77df78bc",
+      "stage_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1",
+      "task_id": "phase-e-stage2-angular-v1-build",
+      "thread_cap": 8
+    },
+    "source_build_review_sha256": "22f02e95833efb63895abb27809f08bbf3a35e8f933f99c639295668fb303395"
+  },
+  "build_result": {
+    "build_model": "one direct compiler invocation per variant; sequential variants",
+    "build_root": "/space/adcm2/research/builds/phase-e-stage2-angular-v1",
+    "environment_thread_limits": "all=1",
+    "finished_unix": 1793705176.368989,
+    "schema": 2,
+    "started_unix": 1793705019.929512,
+    "status": "completed",
+    "updated_unix": 1793705176.368856,
+    "variants": [
+      {
+        "binary_sha256": "45b834873ef6efd53dee81c7508ea79ea9a27a69d612ea44793cd5a01a9962bc",
+        "command_sha256": "2da5059dd09904db9e1d87a629c0eb6e7c36d754e338e93c6ddc2bf7cdcd96e0",
+        "id": "dspec-timer-disabled",
+        "returncode": 0
+      },
+      {
+        "binary_sha256": "0502c44b27afdcc04d87899fb02d1e32a2a81f113b8211a0bb5d37f8b6128e28",
+        "command_sha256": "723324f4bf54700a2bf7c524757dde497e8906491f10dd25e71c468bbcd4ed51",
+        "id": "dspec-timer-enabled",
+        "returncode": 0
+      }
+    ]
+  },
+  "build_state": {
+    "finished_unix": 1793705176.5843217,
+    "jobs": [
+      {
+        "cleanup": {
+          "proc_inspection_errors": [],
+          "reaped_pids": [],
+          "remaining": [],
+          "signal_log": [],
+          "unknown": [],
+          "verified_gone": true
+        },
+        "command": [
+          "/usr/bin/python3",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/configs/phase-e-stage2-angular-v1-build.json",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-angular-v1-build-control/continuation/phase-e-stage2-angular-v1-build/phase-e-stage2-angular-v1-build/build-result.json"
+        ],
+        "command_sha256": "e6d6f3e8193be580f5f4dc6f14fe00679ce92e8ceebdad0cd935c1e3397c1072",
+        "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1",
+        "elapsed_seconds": 156.70961275300942,
+        "failure_reasons": [],
+        "final_owned_processes": [
+          [
+            797356,
+            73827033
+          ],
+          [
+            797358,
+            73827036
+          ],
+          [
+            797359,
+            73827049
+          ],
+          [
+            797360,
+            73827049
+          ],
+          [
+            798433,
+            73834684
+          ],
+          [
+            798515,
+            73834723
+          ],
+          [
+            798516,
+            73834723
+          ],
+          [
+            798561,
+            73834762
+          ],
+          [
+            798562,
+            73834762
+          ],
+          [
+            799473,
+            73842611
+          ],
+          [
+            799480,
+            73842653
+          ],
+          [
+            799481,
+            73842654
+          ]
+        ],
+        "finished_unix": 1793705176.582027,
+        "id": "phase-e-stage2-angular-v1-build",
+        "inputs_sha256_after": {
+          "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/configs/phase-e-stage2-angular-v1-build.json": "25130f8b45566010b71327dfd7b1b893ea43b58cca715302ce06d0dc3bbd83dd",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+          "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+        },
+        "inputs_sha256_before": {
+          "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/configs/phase-e-stage2-angular-v1-build.json": "25130f8b45566010b71327dfd7b1b893ea43b58cca715302ce06d0dc3bbd83dd",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+          "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+        },
+        "inputs_unchanged": true,
+        "log": "job.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "outputs": [
+          "build-result.json"
+        ],
+        "outputs_sha256": {
+          "build-result.json": "203711a4607961db83e8e45f49cbb136e47cbced24577a32cf7d1a48e4ab2d5c"
+        },
+        "peak_observed_rss_gib_userspace": 2.369,
+        "peak_observed_threads": 6,
+        "returncode": 0,
+        "started_unix": 1793705019.8516304,
+        "status": "completed",
+        "system_cpu_seconds_children": 1.426761,
+        "updated_unix": 1793705175.6901312,
+        "user_cpu_seconds_children": 154.888753,
+        "watchdog": {
+          "aggregate_rss_gib_userspace": 0.0543,
+          "elapsed_seconds": 155.84,
+          "owned_processes": [
+            {
+              "pid": 798561,
+              "starttime_ticks": 73834762,
+              "threads": 1
+            },
+            {
+              "pid": 797358,
+              "starttime_ticks": 73827036,
+              "threads": 1
+            },
+            {
+              "pid": 797356,
+              "starttime_ticks": 73827033,
+              "threads": 1
+            },
+            {
+              "pid": 797352,
+              "starttime_ticks": 73827025,
+              "threads": 1
+            }
+          ],
+          "peak_observed_rss_gib_userspace": 2.369,
+          "peak_observed_threads": 6,
+          "thread_cap": 8,
+          "thread_count_including_supervisor": 4
+        }
+      }
+    ],
+    "plan_sha256": "b252914d8f1387ebb4b353ec1cbee87f6006f2439ced3d4235b64cbb77df78bc",
+    "schema": 1,
+    "started_unix": 1793705019.8305936,
+    "status": "completed",
+    "task_id": "phase-e-stage2-angular-v1-build",
+    "thread_cap": 8
+  },
+  "command_maps": {
+    "dspec-timer-disabled": {
+      "argv": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/candidates/phase-e-stage2-angular-v1/dspec",
+        "-O3",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DNDEBUG",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-DGSHTRANS_HAVE_INTERPOLATION",
+        "-DDSFAST_DISABLE_PROFILE",
+        "-I/space/adcm2/research/projects/DSpecM1D",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "-DYSPEC_PHASE_E_PROFILE_DISABLED",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/candidates/phase-e-stage2-angular-v1/dspec/phase_d_driver.cpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "-DMATHPROFILE_DISABLED",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so",
+        "-Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled",
+        "-o",
+        "/space/adcm2/research/builds/phase-e-stage2-angular-v1/dspec-timer-disabled/phase-d-driver",
+        "-lfftw3",
+        "-lfftw3f",
+        "-lfftw3l",
+        "-llapack",
+        "-lblas"
+      ],
+      "binary_sha256": "45b834873ef6efd53dee81c7508ea79ea9a27a69d612ea44793cd5a01a9962bc",
+      "command_sha256": "2da5059dd09904db9e1d87a629c0eb6e7c36d754e338e93c6ddc2bf7cdcd96e0",
+      "external_dependency_map": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf"
+      },
+      "returncode": 0,
+      "shared_external_dependencies_identical_to_final_radial": 12,
+      "tracked_input_count": 13,
+      "tracked_input_sha256_after": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/candidates/phase-e-stage2-angular-v1/dspec": "47ae15fdc1e7629004da8b5ac049624ee31f1641b623daf16ec76a49f5eb0896",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf"
+      },
+      "tracked_input_sha256_before": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/candidates/phase-e-stage2-angular-v1/dspec": "47ae15fdc1e7629004da8b5ac049624ee31f1641b623daf16ec76a49f5eb0896",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf"
+      }
+    },
+    "dspec-timer-enabled": {
+      "argv": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/candidates/phase-e-stage2-angular-v1/dspec",
+        "-O3",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DNDEBUG",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-DGSHTRANS_HAVE_INTERPOLATION",
+        "-DDSFAST_DISABLE_PROFILE",
+        "-I/space/adcm2/research/projects/DSpecM1D",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "-DYSPEC_PHASE_E_PROFILE_DISABLED",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/candidates/phase-e-stage2-angular-v1/dspec/phase_d_driver.cpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so",
+        "-Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled",
+        "-o",
+        "/space/adcm2/research/builds/phase-e-stage2-angular-v1/dspec-timer-enabled/phase-d-driver",
+        "-lfftw3",
+        "-lfftw3f",
+        "-lfftw3l",
+        "-llapack",
+        "-lblas"
+      ],
+      "binary_sha256": "0502c44b27afdcc04d87899fb02d1e32a2a81f113b8211a0bb5d37f8b6128e28",
+      "command_sha256": "723324f4bf54700a2bf7c524757dde497e8906491f10dd25e71c468bbcd4ed51",
+      "external_dependency_map": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf"
+      },
+      "returncode": 0,
+      "shared_external_dependencies_identical_to_final_radial": 12,
+      "tracked_input_count": 13,
+      "tracked_input_sha256_after": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/candidates/phase-e-stage2-angular-v1/dspec": "47ae15fdc1e7629004da8b5ac049624ee31f1641b623daf16ec76a49f5eb0896",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf"
+      },
+      "tracked_input_sha256_before": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1/candidates/phase-e-stage2-angular-v1/dspec": "47ae15fdc1e7629004da8b5ac049624ee31f1641b623daf16ec76a49f5eb0896",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf"
+      }
+    }
+  },
+  "preflight_receipt": {
+    "local_allowlist_sha256": "b64eed6033f431f03f24d253bae0c7bde84cf05e84390e28956c2398b08fcc8a",
+    "local_archive_sha256": "b844db2feb496390703d4f59e64bdbbcb558eb8bf5c175cd6928bce5c237afd2",
+    "remote": {
+      "active_campaign_processes": [],
+      "dependencies_present": true,
+      "filesystem": "Filesystem          1B-blocks         Used      Available Use% Mounted on\nstorage        19857536450560 957047242752 18900489207808   5% /space\n",
+      "free": "               total        used        free      shared  buff/cache   available\nMem:     1623113519104 590959329280 788140183552    22544384 253604651008 1032154189824\nSwap:    20000530432           0 20000530432\n",
+      "hostname": "earth-tunya.esc.private.cam.ac.uk",
+      "pinned_hashes": {
+        "disabled_yspec_dso": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "private_profile_header": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8"
+      },
+      "roots_absent": {
+        "/space/adcm2/research/builds/phase-e-stage2-angular-v1": false,
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-angular-v1": false,
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-angular-v1-build-control": false
+      }
+    }
+  },
+  "retrieval_manifest": {
+    "build-job.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build-result.json": {
+      "bytes": 880,
+      "sha256": "203711a4607961db83e8e45f49cbb136e47cbced24577a32cf7d1a48e4ab2d5c"
+    },
+    "build-state.json": {
+      "bytes": 5403,
+      "sha256": "d92b306e2c318f0ed2971c05a295fb810c21db202110b6cdc92cac270b7f90bf"
+    },
+    "build_campaign.json": {
+      "bytes": 880,
+      "sha256": "203711a4607961db83e8e45f49cbb136e47cbced24577a32cf7d1a48e4ab2d5c"
+    },
+    "disabled_command.json": {
+      "bytes": 10123,
+      "sha256": "8bcbec9f0a21da5dca19b624c5b2bd9c90b464ec9b32006b19324de98311b88d"
+    },
+    "disabled_stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "disabled_stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "enabled_command.json": {
+      "bytes": 10066,
+      "sha256": "7d5f78f29a3459d2b0462cd5bacb47936ae3fcac3906f614cb14e03fda80efc2"
+    },
+    "enabled_stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "enabled_stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "schema": 1,
+  "source_build_review": "reviews/phase-e-stage2-angular-source-build-independent-review-20261103.txt",
+  "source_build_review_sha256": "22f02e95833efb63895abb27809f08bbf3a35e8f933f99c639295668fb303395",
+  "status": "pass"
+}

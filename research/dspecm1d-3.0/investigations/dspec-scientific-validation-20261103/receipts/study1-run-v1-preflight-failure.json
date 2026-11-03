@@ -1,0 +1,12 @@
+{
+  "archive_sha256": "bfa53dea0b8af5aa3d05b524dd3d329bae1861672843e6651b0803f673bdac9c",
+  "error": "guard compared actual missing producer-stage command inputs with every archive member; run jobs reference only the fixed-probe CSV and remote tight-case file. No remote stages, controls, or tasks were created.",
+  "manifest_sha256": "cccc34d827dbb70e21e20657535c75191120ac22d1f3d72f04140604d25b2fe2",
+  "operation": "study1 producer preflight",
+  "operator_sha256": "c4bd84c4beff1676af447cf28f523d594971b2019385af30cd15827938a92e2d",
+  "remote_mutation": "none; read-only preflight only",
+  "remote_script_sha256": "312f3b225c12843baf62ffae04ca6bdd5e592b722d81af950170925ac14654cd",
+  "status": "failed_read_only_preflight",
+  "stderr_excerpt": "AssertionError: missing input set differs; observed missing inputs were repeated references to data/study1-fixed-probes-v2.csv and data/kernels-small-yspec-tight-v1-remote.json. The remote check reached the plan-input guard after build/dependency and fresh-root checks.",
+  "time_utc": "2026-11-03"
+}

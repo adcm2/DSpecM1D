@@ -1,0 +1,13 @@
+Study 2 run/checker focused reporting addendum — 2026-11-03
+Reviewer: Sol6.1 high /root/radial_review
+Disposition: PASS for updated checker; supersedes only checker hash in prior2d9b797048e17637b6e448e6a7e00d3e11c328e8f32158a580ec83ff1f97223d gate.
+Current exact SHA-256:
+tools/check_study2.py edd246ebb90f90d00d3930b90bcf056d6fe8552e5cc80ea92b2fdc5f6db1933d
+configs/study2-run-v1-plan.json 40de29bb4c0c64e689602c002ce7141770c970d0c58ef7584cec42f3376c9446
+configs/study2-terminal-check-v1-plan.json c35e98454d1c53f86ecbe42fbfd45d8ee26645184a8b647d62f7fa2127793358
+tools/check_study1_helpers.py 610271198745973b654f2154395bde7aac7b034ca39cd47b0238837d3a982c17
+reference-manifest.json a46002b387e20a34f9a61ca5960ef6d9419a0c5500699a7d99c05a81ac7f4a66
+
+Focused inspected changes add raw per-job fixed-probe rows, matched DSpec/YSpec own-weight comparisons for existing L100/150/300 outputs, solid-material-interface groups and FAR-SOLID-INTERIOR cohort: material solid, both location classes bulk, at least100km from source and receiver, excluding source shell. Existing reference/input path closure is not extended: all additions use already-declared saved outputs. Exact terminal252-input closure remains sufficient. No source/job/threshold changed; Python compile/import passes.
+
+Pre-result interpretation: use0.1% only as observed-change flag for waveform/measurement norm and this predefined far-solid-bulk cohort. It is not an acceptance gate on undefined contacts or proof that all quantities converge. Source-shell/interface values, fluid structural zeros, exact contact and sparse sampled extrema remain separate. L200-to-L300 changes above that flag must be reported as not stabilized within the tested ladder; do not claim global H1/L2 or full angular-bandwidth convergence. AFTER STUDY2 independent raw-results review remains mandatory.

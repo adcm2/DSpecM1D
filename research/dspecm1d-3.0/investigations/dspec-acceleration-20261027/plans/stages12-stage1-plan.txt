@@ -1,0 +1,306 @@
+DSpecM1D acceleration: Stage 1 implementation and execution plan
+Prepared 2026-10-31 by the requested Sol 6.1 high planner.
+This document authorizes no work beyond the user's existing Stage 1 approval.
+Only Luna-high agents implement, build, execute and analyse this stage. The
+planner has performed read-only inspection and written this planning file only.
+
+1. Objective, fixed case and stop boundary
+
+Measure the complete existing documentation-wedges-v9 physical pipeline without
+changing its mathematics, output, cache policy, solve scheduling or sampling.
+No acceleration is implemented here. Do not start Stage 2 from this plan: the
+user has approved its general objective, but a separate Sol-high Stage 2 plan
+must first use the Stage 1 evidence. Report after Stage 2 before any Stage 3
+overhead/copy/construction optimisation. No production edits, commits or pushes.
+
+Authoritative current inputs read by the planner:
+  NEXT_SESSION_PRIORITIES_2026-10-28.txt; implementation_status.md;
+  configs/documentation-wedges-v9-build.json and -build-plan.json;
+  configs/documentation-wedges-run-v5-plan.json;
+  analyses/documentation-wedges-acceptance.json;
+  candidates/documentation-wedges-v9/{doc_driver.cpp,profile.hpp,
+    profile_equilibrated_sparse_lu.hpp,fast_engine.hpp,stage-to-math-map.json,
+    engine_headers/{Windowed3DFields.h,SensitivityKernels.h,profile.hpp},
+    solvers/{batch_response_cache.hpp,solver_backends.hpp}};
+  tools/{stage_reviewed_build.py,stage_phase_b_run.py,check_doc_wedges.py};
+  ../tunya-profile-20261027/tools-v4/supervise_campaign.py.
+The old stage-to-math-map.json describes physical_driver.cpp as well as hooks;
+it is NOT a valid claim that doc_driver.cpp already profiles those driver stages.
+
+Exact production measurement case: same immutable prem.200/kernels-small.json,
+attenuated full-gravity PREM, T velocity traveltime, 1000–1200 s with 40 s taper,
+2–10 mHz and [2,4,8,10] mHz taper, L200, nq10, refinement0.025, epsilon0,
+35 frequencies/bins7–41, 293 native one-sided samples, 135 along/19 across,
+2048 FFT samples, 2 s sample spacing, 4096 s FFT period. Preserve native element
+identity, canonical radius keys, receiver up/north/east adapter, source lifts,
+dispersive material/cache keys, fixed-vp/rho/effective-Q ln(vs) contraction,
+native-side-major output, and all existing tensor/packed controls.
+No constant-radius maps or full global-volume physical benchmark. Small existing
+L3 angular audit is permitted solely as the bounded finite-difference control.
+
+Frozen reference is remote documentation-wedges-control/continuation/
+documentation-wedges-run-05, particularly dspec-l200 and yspec-l200; verify its
+completion receipts/input/output hashes before use. Its accepted elapsed times
+51.883172808 s DSpec versus5.641430309 s YSpec are historical native timings.
+DSpec forward_s10.6913727 includes forward AND unit-adjoint response capture;
+kernel_s40.659227846 includes matrix/cache/reconstruction/synthesis/contraction;
+tensor_validation_s0.514160926 is additional. Do not rename forward_s pure forward.
+Do not rerun YSpec: reuse verified frozen YSpec data and timings with their date.
+
+2. Exclusive file scope and preservation
+
+Use A=the campaign directory containing this plans/ directory. First hash/freeze
+the complete v9 candidate and the relevant inputs/configs/tools without mutation.
+Create a new candidate A/candidates/stages12-stage1-profile-v1 by exact copy of
+v9, including dependency manifest and case files; no edits to v9 or its receipts.
+Only these copied runtime files may change, and only to add timing/counters:
+  doc_driver.cpp
+  profile.hpp
+  profile_equilibrated_sparse_lu.hpp
+  engine_headers/Windowed3DFields.h
+  engine_headers/SensitivityKernels.h
+  solvers/batch_response_cache.hpp
+No planned modification to fast_engine.hpp (GEMM hooks already exist),
+solvers/solver_backends.hpp (default route already uses profiled equilibration),
+engine_headers/profile.hpp (legacy auditprofile stays disabled), or external
+DSpec/YSpec/GSH/SEM dependencies. If actual chosen solver dispatch differs from
+the inspected default, stop and report the instrumentation gap before expanding
+scope. New files allowed: copied candidate's stage-to-math-map.json and
+implementation_status.md; configs/stages12-stage1-v1-{build.json,build-plan.json,
+controls-plan.json,measure-plan.json}; tools/check_stages12_stage1.py and, if
+needed, tools/test_check_stages12_stage1.py (these names are staged by the
+existing phase-B operator). All analyses, reviews, receipts and input archives
+must use a new stages12-stage1-v1 prefix and exclusive creation.
+Append the campaign implementation_status.md and copied candidate's log after
+each approved code change; give exact files, reason and outstanding validation.
+Do not modify generic staging/supervisor/check_doc_wedges/check_pair tools.
+Additive plan/config/checker/receipt files only outside the copied candidate.
+
+3. Timing model: wall time and worker sums are different quantities
+
+Use steady_clock and existing mathprofile nested Scope inclusive/exclusive
+nanoseconds. Its thread_local maps and WorkerCapture already save/restore master
+state and merge worker durations under parallel_worker.*. Keep auditprofile
+disabled with DSFAST_DISABLE_PROFILE in EVERY variant: its global maps are not
+safe for worker recording and its inclusive seconds do not establish exclusivity.
+Native build retains MATHPROFILE_DISABLED. Profile build removes only that flag.
+Do not enable FTZ, change -O3/GCC/BLAS, alter symbolic reuse or caching, add a
+frequency parallel region, change schedules, or change arithmetic expressions.
+
+Add a driver pipeline scope covering setup through existing output completion;
+its lifecycle must end before Root serialization, while original result.json
+timing semantics remain intact. The profile-enabled path may take cumulative
+Entry/counter snapshots only after all workers joined and phase scopes closed.
+Difference adjacent snapshots for setup/initial/measurement/kernel/output groups;
+retain raw cumulative MATHPROFILE output too. Account snapshot/report overhead in
+its own wall bucket; never clear maps beneath a live scope or Root. Profile-only
+snapshot code compiles out of native mode. Keep a fixed-size35 per-frequency
+coarse wall array if helpful; write it once after the scientific output. No
+per-point clocks, per-element logs or per-frequency profile JSON serialization.
+Exclude diagnostic tensor validation from kernel production groups using an
+explicit diagnostic parent scope and snapshots/deltas around that closed scope,
+including its nested timer deltas. Its scopes must not contaminate production
+radial/synthesis totals. Preserve validation's effect on subsequent cache state.
+
+Important parallel accounting rule: exclusive wall partition comprises serial
+master scopes plus a named parallel-degree-region wall bucket. Time that bucket
+around the current OpenMP launch through join; separately time ordered result
+collection/profile merge. Sum of worker assembly/factor/solve exclusive durations
+is elapsed worker time, not exclusive wall time or CPU time. These quantities
+overlap the parallel-region wall bucket and MUST NOT be added to wall totals or
+divided by8 and relabelled wall time. Existing master modal exclusive time
+otherwise silently contains the parallel block. With1worker the same operations
+are serial and may be reported as serial wall components. The truthful8worker
+report exposes this irreducible mixed parallel wall block and its worker-side
+breakdown; it must not invent disjoint per-operation wall contributions for
+simultaneously running different worker operations.
+
+Every table row has: phase, scope_name, execution_domain(master_wall or
+worker_elapsed_sum), inclusive_s, exclusive_s, calls, logical_component,
+diagnostic(boolean), and parent/overlap description. Include run/binary/source/
+input hashes, compiler flags, worker count, selected backend, machine affinity,
+environment, profiler variant, elapsed_s and external process wall/resource
+receipt. Raw output and aggregate tables retain all names and counters; unknown
+names remain visible under unclassified rather than being discarded. No sum of
+inclusive rows is a total. Materially overlapping reported scopes have explicit
+labels. Native speed comparisons use native elapsed/process times only.
+
+4. Required instrumentation, preserving operation order and allocation behaviour
+
+Driver: separately bracket input/deck/grid/source setup; SEM constructor (mesh,
+static matrices/model setup, label honestly as combined unless existing hooks
+already split it); parameter-file I/O and InputParameters construction; native
+side/gravity audit; section sampling/receiver construction; result/cache/plan
+initialisation; initial35 frequency workspace+receiver sampling and raw component
+scatter; measurement FFT/window/adjoint construction; trace/spectrum/components/
+nodes I/O; kernel adjoint-spectrum setup; per-frequency weights/workspace;
+per-section points construction; tensor sampling; existing diagnostic validation;
+the existing nested point loop; progress output; output array/angle/result I/O;
+integral audit, if selected; cleanup/control remainder. Parameter-file write may
+use a narrower I/O child within setup. Keep temporary lifetimes and destructors
+in their existing positions. Never hoist points/material values to optimise.
+
+Point-loop timing must be outside the existing batch loops, never one clock per
+sample. The current expression fuses model evaluation, kernelVs and +=values.
+Report this as material-evaluation + weak-form contraction + frequency
+accumulation, a combined exclusive wall bucket, with the sample/fluid counts.
+Do not fabricate independent accumulation time or change arithmetic to obtain
+it. That grouping still accounts for frequency accumulation truthfully and
+identifies exactly what a later phase might need to split.
+
+Windowed3DFields: retain existing tensor semantic grid/key/cache, cold angular
+geometry/Wigner, real/complex basis construction/lookup/fill, record capture,
+packing, actual GEMM, scatter/l0, receiver unit projection and radial interpolation
+hooks. Add only missing batch scopes around source treatment/lift, receiver basis
+assembly (QR already hooked), modal response copy/capture, packed-to-compact
+copy, workspace synthesis-vector construction and ordered parallel result merge.
+Use existing vector/return statements with timing wrappers that preserve types,
+evaluation and object lifetimes. Count copies/bytes from existing matrix extents;
+do not probe full matrix contents just to profile. Cache mutex/lookup+signature
+work may be one explicit bucket: do not add clocks inside every map operation.
+
+SensitivityKernels/profile_equilibrated_sparse_lu: existing dynamic_H_assembly,
+factorization dispatch, equilibration, symbolic analysis, numerical factorization,
+forward substitution, weighted HH and unit-basis HH hooks are usable. Add an
+inner pure Eigen solve scope plus separate RHS/result scaling/validation scopes
+inside existing solve/solveAdjoint wrappers so substitution is not mislabeled
+as scaling-free. Leave existing expression evaluation and checks unchanged.
+Count forward/unit/weighted RHS widths and distinguish unit-response capture
+from weighted projection in workspace construction. Existing radial l0 bypass
+reassembles/solves and must remain visible, even on the kernel cache-hit pass.
+
+BatchResponseCache: retain getOrCompute inclusive and hit/miss counters; add
+scopes for locked hit signature/lookup/return-copy work, miss response admission/
+signatures/copies, and separate weighted reconstruction when that branch runs.
+Do not extend lock lifetimes or add unlocked cache reads. Existing miss callback
+children account for actual solver work; report cache exclusive as bookkeeping,
+never the inclusive getOrCompute as cache-only cost. Label copied response
+matrices as real copies; do not replace them with references/moves to optimise.
+
+Reconcile non-worker exclusive scopes with pipeline wall, keeping named
+unclassified remainder and profiler snapshot/serialization plus post-result
+destruction external-wall gap. Accept abs(partition_sum-profile_pipeline_wall)
+<=max(0.01 s,0.001*profile_pipeline_wall); report actual residual. Profiler
+serialization/destruction can be outside pipeline by design and therefore must
+not be forced into result.json elapsed_s using a silent timing redefinition.
+Fail on negative/nonfinite timings, underflow, missing MATHPROFILE record, missing
+required groups, wrong domain tags, or worker entries counted into wall sum.
+
+5. Implement/review/build sequence and controls
+
+Luna implementer first produces diff, hashes and updated logs. Review exact file
+scope and physics/order/lifetime preservation before build release; use a separate
+Luna reviewer where the parent arranges one. Planner does not execute. Before
+remote release, ensure checker tests reject inclusive-sum double counting,
+worker-wall mixing, diagnostic contamination and modified baseline hashes; use
+small synthetic records, not implementation-mirroring numerical tests.
+
+Build two new variants from the SAME copied source with existing GCC13.2 -O3,
+-DNDEBUG -std=gnu++23 -fopenmp -DEIGEN_DONT_PARALLELIZE and DSFAST_DISABLE_PROFILE:
+  doc-native: MATHPROFILE_DISABLED retained;
+  doc-profile: MATHPROFILE_DISABLED omitted.
+Reuse hashed libyspec-doc.so and dependency/include sources exactly as v9 config.
+Do not rebuild YSpec. Both build jobs sequential, each timeout2400s/memory32GiB.
+
+Run a gated controls plan before any L200 timing plan:
+  C1 native L3,nq8,refinement0.05,workers1,audit,epsilon0.
+  C2 native same workers8; require exact scientific file parity to C1 AND frozen
+     run05 L3 reference (all originally compared files including components).
+  C3 profile same workers8; require exact scientific parity to C2, valid profile
+     accounting/schema and unchanged tensor/packed <=1e-11.
+  C4 native dspec-forward L3,nq8,refinement0.05,workers8,audit,epsilon+1e-5.
+  C5 native same epsilon-1e-5.
+  C6 finite difference via unchanged check_doc_wedges.py fd using C2,C4,C5,
+     same smooth5300–5800km ln(vs) bump/support and limit2e-4. Report measured
+     result beside historical6.440263106e-9; do not silently replace the latter.
+Every control numerical job timeout600s,memory8GiB; checker timeout120s,4GiB.
+No separate YSpec pilot needed: unchanged native/profile output is compared to
+frozen exact physical-case DSpec output before claiming preserved comparison.
+
+6. Bounded exact-case measurement campaign
+
+One sequential queue, four exact-case jobs, no concurrent benchmark:
+  N1 native8, P1 profile8, N2 native8, N3 native8.
+Every job dspec same case200 10 0.025 8 sections 0, timeout600s,memory16GiB.
+This provides one instrumented breakdown and native min/median/max.
+Before P1 proceeds past its check, N1 must match the frozen L200 scientific
+files exactly. All four must match one another and frozen v9 in complete unmasked
+trace, spectra, components, nodes, both raw kernel arrays and angular tables;
+exclude parameters.txt path spelling, timing fields/result metadata from byte
+identity, but assert scientific metadata and scalar diagnostics numerically
+identical. Check every result preserves35 bins,293 sides,135/19 angles,attenuation,
+gravity<1e-10,time-shift identity<1e-10,tensor/packed<=1e-11, correct units/layout.
+The existing every-native-side probes in first2bins cover cold/warm sampling;
+keep their full arrays/threshold and expose diagnostic profile separately.
+Record native median and individual profile wall, overhead=(P1/Nmedian-1), not
+a gain, with the native range as noise context. >10% overhead is a limitation,
+not permission to
+optimise; retain all runs and seek a later instrumentation adjustment if needed.
+Do not extrapolate serial/parallel equivalence atL200 from a speed ratio: Stage1
+keeps frozen validated ordering; low-degree exact parity is the direct1/8 control.
+
+At most2build variants,5control numerical jobs and4L200 numerical jobs, plus
+bounded checker jobs. No automatic retries, parameter sweeps or new physical
+cases. Halt on first failed prerequisite, resource/input-hash/cleanup failure,
+numerical mismatch, missing time accounting or timeout; retain failed job and
+return the concrete failure. Correct instrumentation only in a new immutable
+v2 candidate/plan after review; never reuse a partially populated output path.
+
+7. Tunya staging, resources and receipts
+
+Before rebuilding, record production repository HEAD/status and source/dependency
+fingerprints against original v9 build receipts/manifests: remote repositories
+may have evolved since27October. Preserve dirty state without reset/checkout.
+Hash-bound original v9 binary and shared library remain references. If dependencies
+drift, stage the original pinned inputs separately or stop/report discrepancy;
+never silently compare changed scientific dependencies.
+
+All builds/calculations on Tunya, detached with nohup through existing hashed
+tools/stage_reviewed_build.py and tools/stage_phase_b_run.py, build_receipt and
+tools-v4 supervisor; the planner launches nothing. Use fresh stages/input archives,
+build roots, campaign roots and task IDs stages12-stage1-v1-*. The operator
+supports exclusive x/xb creation; preserve that protection. New checker names
+must start check so existing stage_phase_b_run.py includes them. Validate builds'
+command.json successful return, tracked_inputs_unchanged and binary hash explicitly:
+its operator currently auto-recognises physical-driver, not new doc-driver names.
+Bind external build-plan/task hashes and every frozen comparison file as inputs.
+
+Use exactly8solveworkers initially; frequencies sequential; inner Eigen and
+OpenBLAS/MKL/BLIS/FFTW-related library pools1. Runtime DSPEC_SYMBOLIC_REUSE=1,
+OMP_DYNAMIC=FALSE, OMP_WAIT_POLICY=PASSIVE, OMP_NUM_THREADS=1, OMP_THREAD_LIMIT=8;
+explicit num_threads(8) remains the existing degree region. Preserve accepted
+CPU affinity16–23 if available; if unavailable record preflight and do not
+silently choose unmatched affinity. Check other live campaigns first: total
+owned campaigns/launchers/watchdogs <=50threads. Build cap8; controls/measurement
+cap20, sequential campaigns only, reserve margin for transport/supervisor. If
+other work leaves insufficient headroom, defer launch. Keep same strict SSH
+host checking and trusted known-host files; no authentication/config edits are
+required by this plan. Parent's separately reviewed temporary transport setup
+may be used without modifying user-owned authentication material.
+
+Receipt evidence: launch PID/start identity, plan/source/dependency/binary/input
+hashes, job completion/status, output hashes, environment, affinity, external
+elapsed/process wall, observed aggregate threads/RSS and verified process cleanup.
+Resource enforcement is USER_SPACE_SESSION_WATCHDOG, not kernel aggregate
+accounting; its100ms polling may miss shorter process bursts. Do not claim its
+observations establish kernel-level aggregate enforcement. No deletion/overwrite.
+
+8. Stage1 deliverables and transition
+
+Deliver analyses/stages12-stage1-v1-{components.json,components.csv,validation.json,
+summary.txt} with native/profile full-pipeline timings; initial forward+unit
+capture decomposition; kernel decomposition; exclusive serial wall partition;
+parallel-region wall and separate assembly/factor/substitution/unit-adjoint
+worker sums; diagnostics; setup/model/mesh, cache/copies, radial, angular basis,
+GEMM/synthesis, fused material/contraction/accumulation, I/O, leftovers; overhead,
+RSS/cache bytes and counter invariants. Include raw profiles, per-run results,
+hash/receipt manifest, changed-line/diff summary, completed review and status logs.
+If no finer partition can be obtained without changing math, identify the exact
+combined bucket honestly; no invented disaggregation. Preserve51.883s/5.641s as
+the historical comparator and state current native repeat results independently.
+
+Conclude with measured bottlenecks and the evidence a separate Stage2 Sol-high
+whole-frequency plan needs. No Stage2 implementation, scheduling rewrite,
+retained-field optimisation, fused contractions or integration is authorised by
+this Stage1 document. Parent returns/reviews Stage1 evidence, obtains the separate
+Stage2 plan, and respects the user's report-before-Stage3 boundary.

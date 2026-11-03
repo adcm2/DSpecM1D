@@ -1,0 +1,91 @@
+C2 bounded source/build review — Sol,2026-10-31
+PASS after focused corrections; exact numerical run/checker plan pending.
+No reviewer implementation edit, compilation or numerical solve.
+
+Reviewed fresh phase-c2-preweighted-v1 driver, copied direct-RHS capture hook,
+common reconstruction reuse and native/profile build config/plan. Core contract
+is correct: unit direction H^H, actual adjoint=conj(P)*unit, complex contraction
+actual=P*C_unit, final ordered real reduction after own full35waveform/measurement.
+Static support uses MakeTaper/TaperValue and is asserted against actual P;
+frequency weight2df is not mistaken for the taper. All35forward spectra remain.
+Normal route stores requested complex products only (L20025,268,320B), not
+solved-field history, and no response cache is consulted. Combined-pass timing
+has explicit combined_forward_unit_adjoint_reconstruction_contraction names,
+separate measurement/adjoint-spectrum and weighted reduction, no pureforward claim.
+
+Actual corrections verified before build release:
+- Modal visitor callback now includes both fluid/lift bools (compile blocker).
+- Payload guard permits only reviewed L200293×154 cells/25,268,320B and original
+  L3/NQ8/.05/157×91 cells/8,000,720B. New C2 FD can run the actual combined path.
+- Linearity proof captures actual assembled direct receiver RHS at its boundary
+  using a narrow thread-local RAII hook, only around paired validation solves.
+  It compares matching family/degree matrices; ordinary jobs retain no RHS history.
+- Forward and adjoint modal norms are separate; complex field/product gates
+  use pooled section/role metrics, with fluid subgroup ratios diagnostic only.
+- Stored first-pass C_unit is compared against validation recomputation, and
+  complex actual products against P*C_unit, linking deferred weighting/storage.
+- Existing paired9/25/40 actual-weight workspaces emit corrected A1 packet
+  comparisons, avoiding new solves solely for packet diagnostics. Mapper first
+  honors any aligned ELR/EUR q0/q9 side, with fallback only for noncoincident
+  artificial boundaries, never physical source/material breaks.
+
+Build release: correct fresh actual /space/adcm2/research/builds/phase-c2-
+preweighted-v1-build-v1, staged candidate includes/source, pinned GCC13.2/library,
+native/profile variants, existing receipt wrapper,cap8/32GiB. Detached Tunya
+build released after owner resource preflight; no numerical launch release yet.
+Keep B replay source edits outside the fingerprinted C2 candidate during build.
+
+Nonblocking reporting detail: legacy scalar tensorReferenceError must be derived
+from fused C2 CSV metrics rather than left at its initial0; aggregate after join
+to avoid a data race. If already frozen, use authoritative CSV maxima and label
+the unused legacy scalar, without a rebuild solely for metadata. Normal timing
+must keep all RHS/field/product oracle controls disabled and disclose actual work.
+
+B replay may use a narrow explicit branch in a separate isolated candidate:
+frozen accepted weights,3bins9/25/40,original four mesh selections based on full
+retained grid bin41,original rank-basis/direct-restriction policy. No35-bin
+forward/measurement pass. Emit diagnostic-only artifacts/metadata, not zero-
+filled uncomputed spectra/full35kernels or a frozen trace mislabeled newly
+computed. Qualified unchanged NQ6finer receipt reuse is allowed by saved plan.
+Separate B replay source/run review remains pending. Final stop before production,
+physical discrepancy work,YSpec rerun,new figures,delete,commit or push.
+
+Numerical-plan review addendum: L3 combined C2 FD control scope is released:
+same pinned binary, L3/NQ8/.05,157x91 requested cells,35 bins,own measured P,
+existing frozen baseline/+/- comparisons and 2e-4 FD gate. Runtime metadata must
+confirm C2=true and payload8,000,720B; legacy scalar reconstruction maximum is
+unused and actual CSV maxima govern. Staging preflight failures are preserved;
+no numerics launched in those failures. Exact dependency paths must equal
+campaign_root/continuation/actual_launcher_TASK/numerical_job_ID/data, with no
+extra old task directory. Owner's matching path-only retry is pre-approved.
+
+L200 numerical/checker release awaits two focused corrections: historical F8a
+need not invent frequency-grid/mesh-elements files absent from its receipt;
+retain saved native nodes/angles plus exact metadata for historical geometry.
+Enforce C2-versus-two-pass geometry, waveform/trace/spectrum and measurement
+parity, rather than only recording reference hashes. Complete35 kernel gates,
+6 weighted-linearity rows,70 reconstruction rows,exact zero skipping and native/
+profile parity were reviewed as correctly scoped. No implementation rebuild is
+needed for those checker-only changes; stage and hash-bind the revised checker.
+
+L200 corrected-plan gate: phase-c2-preweighted-v1-l200-controls-v2-plan.json,
+launcher TASK phase-c2-l200-controls-run-v2, separately staged reviewed checker.
+Sequential produced input paths verified against actual TASK/job IDs. Revised
+checker enforces exact historical nodes/angles, per-channel waveform parity and
+measurement_rate_norm parity, plus unchanged full35 kernel gates. Two final
+deterministic checker corrections pre-approved: iterate `for _,path in dirs`
+(not tuple/path division), and require the window column exactly. Queue release
+is effective once these two changes are applied and the staged checker hash is
+bound. Same native/profile binaries,8 total workers,inner1,cap20/16GiB. L3 retry
+launched; no additional science implementation changes or approvals required.
+
+Fresh reference-native timing plan review PASS after C2 core results acceptance:
+phase-c2-preweighted-v1-reference-match-v1-plan.json uses exact saved F8a native
+command (25args),cwd,input set and binary; only output argument changes. TASK
+phase-c2-accepted-reference-native-v1 and job paths match. Full35 science/native
+8workers/inner1,cap20/16GiB; no YSpec run. Checker verifies saved/C2/current
+receipt hashes,exact geometry,forward/measurement channels and summed kernels.
+Accepted reference retains unconditional packed-v-tensor diagnostic work; old
+worker-summed diagnostic time.52008s is not a wall-time correction. Report
+observed driver and supervisor timing boundaries separately, disclose asymmetric
+oracle work, and describe a single fresh pair rather than a repeated distribution.

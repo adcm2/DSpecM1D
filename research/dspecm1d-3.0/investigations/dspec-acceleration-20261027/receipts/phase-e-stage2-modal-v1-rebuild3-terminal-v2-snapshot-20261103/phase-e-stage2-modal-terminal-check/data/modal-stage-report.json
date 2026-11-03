@@ -1,0 +1,216 @@
+{
+  "L3_fd_relative_error": 6.440261900046464e-09,
+  "L3_operator_oracle": {
+    "max_rel_or_backward_error": 6.98228366922879e-17,
+    "physical_exact_zero_counts": {
+      "adjoint": 35,
+      "basis_adjoint": 35,
+      "forward": 0
+    },
+    "physical_reference_norm2_by_family": {
+      "0": {
+        "adjoint": 0.0,
+        "basis_adjoint": 0.0,
+        "forward": 4.672855562868988e-27
+      },
+      "1": {
+        "adjoint": 0.02905994025622331,
+        "basis_adjoint": 67.41132146280435,
+        "forward": 9411.382601852423
+      },
+      "2": {
+        "adjoint": 0.018048328409126308,
+        "basis_adjoint": 6.477076615046121,
+        "forward": 9470.910358109362
+      }
+    },
+    "rows": 245,
+    "unique_keys": 245
+  },
+  "L3_table_and_radial_proofs": {
+    "angular_rows": 35,
+    "radial_bins": 35,
+    "scalar_rows": 35
+  },
+  "all_bin_parity_vs_final_angular": {
+    "across.bin": 0.0,
+    "along.bin": 0.0,
+    "components": {
+      "east_im": 0.0,
+      "east_re": 0.0,
+      "north_im": 0.0,
+      "north_re": 0.0,
+      "up_im": 0.0,
+      "up_re": 0.0
+    },
+    "spectrum": {
+      "imag_m": 0.0,
+      "real_m": 0.0
+    },
+    "trace": {
+      "adjoint_source": 0.0,
+      "rate_m_s2": 0.0,
+      "velocity_m_s": 0.0
+    }
+  },
+  "matched_timing": {
+    "cached_union": {
+      "driver_elapsed_s": [
+        6.140654477,
+        5.880600242,
+        5.034904411
+      ],
+      "max_s": 6.140654477,
+      "median_s": 5.880600242,
+      "min_s": 5.034904411
+    },
+    "elapsed_reduction_fraction": 0.0136098408629394,
+    "legacy": {
+      "driver_elapsed_s": [
+        6.000283845,
+        5.554908534,
+        5.961738555
+      ],
+      "max_s": 6.000283845,
+      "median_s": 5.961738555,
+      "min_s": 5.554908534
+    },
+    "profiles": {
+      "cached_union": {
+        "cold_cache_build": {
+          "calls": 1,
+          "diagnostic": false,
+          "exclusive_s": 0.147317305,
+          "execution_domain": "master_wall",
+          "inclusive_s": 0.147317305,
+          "logical_component": "unclassified",
+          "parent_overlap_description": "exclusive time is partitioned; inclusive time overlaps children and is not additive",
+          "phase": "combined_forward_unit_adjoint_reconstruction_contraction",
+          "scope_name": "modal_component_cache_cold_build"
+        },
+        "factorization": {
+          "calls": 14035,
+          "diagnostic": false,
+          "exclusive_s": 0.004002133000000001,
+          "execution_domain": "worker_elapsed_sum",
+          "inclusive_s": 11.192259194,
+          "logical_component": "modal_solver",
+          "parent_overlap_description": "frequency worker elapsed sum overlaps frequency-pass wall and is excluded from master wall partition",
+          "phase": "combined_forward_unit_adjoint_reconstruction_contraction",
+          "scope_name": "frequency_worker.solver_factorization_dispatch"
+        },
+        "modal_assembly": {
+          "calls": 14035,
+          "diagnostic": false,
+          "exclusive_s": 2.482717812,
+          "execution_domain": "worker_elapsed_sum",
+          "inclusive_s": 2.482717812,
+          "logical_component": "modal_solver",
+          "parent_overlap_description": "frequency worker elapsed sum overlaps frequency-pass wall and is excluded from master wall partition",
+          "phase": "combined_forward_unit_adjoint_reconstruction_contraction",
+          "scope_name": "frequency_worker.dynamic_H_assembly"
+        },
+        "wall_partition": {
+          "master_exclusive_partition_s": 4.397697303,
+          "profile_pipeline_wall_s": 4.397697303,
+          "residual_s": 0,
+          "tolerance_s": 0.01,
+          "worker_elapsed_excluded": true
+        }
+      },
+      "legacy": {
+        "cold_cache_build": null,
+        "factorization": {
+          "calls": 14035,
+          "diagnostic": false,
+          "exclusive_s": 0.004434616000000001,
+          "execution_domain": "worker_elapsed_sum",
+          "inclusive_s": 13.917443784000001,
+          "logical_component": "modal_solver",
+          "parent_overlap_description": "frequency worker elapsed sum overlaps frequency-pass wall and is excluded from master wall partition",
+          "phase": "combined_forward_unit_adjoint_reconstruction_contraction",
+          "scope_name": "frequency_worker.solver_factorization_dispatch"
+        },
+        "modal_assembly": {
+          "calls": 14035,
+          "diagnostic": false,
+          "exclusive_s": 7.148316645,
+          "execution_domain": "worker_elapsed_sum",
+          "inclusive_s": 7.148316645,
+          "logical_component": "modal_solver",
+          "parent_overlap_description": "frequency worker elapsed sum overlaps frequency-pass wall and is excluded from master wall partition",
+          "phase": "combined_forward_unit_adjoint_reconstruction_contraction",
+          "scope_name": "frequency_worker.dynamic_H_assembly"
+        },
+        "wall_partition": {
+          "master_exclusive_partition_s": 6.161383689,
+          "profile_pipeline_wall_s": 6.161383689,
+          "residual_s": 0,
+          "tolerance_s": 0.01,
+          "worker_elapsed_excluded": true
+        }
+      }
+    },
+    "yspec_elapsed_s": [
+      6.284758158,
+      5.321027779,
+      5.362523831
+    ],
+    "yspec_median_s": 5.362523831
+  },
+  "nq10_accuracy_anchor": {
+    "selected_mesh": {
+      "frequency_bins": 35,
+      "h": 0.02035382429229197,
+      "legacy_relative_error_input": 1e-05,
+      "mesh_scale": 0.9,
+      "native_sides": 208,
+      "nq": 6,
+      "requested_accuracy_met": true,
+      "requested_relative_accuracy": 0.001
+    },
+    "sha256": "013273941560685863015e48aeef42daeada129b3174ff47217637f21e605a95",
+    "solid_accuracy": {
+      "max_solid_complex_field_relative_l2": 0.00021952474713321954,
+      "max_solid_full35_kernel_relative_l2": 0.0001450918716573929
+    }
+  },
+  "operator_oracle": {
+    "max_rel_or_backward_error": 8.930578439992973e-17,
+    "physical_exact_zero_counts": {
+      "adjoint": 35,
+      "basis_adjoint": 14035,
+      "forward": 0
+    },
+    "physical_reference_norm2_by_family": {
+      "0": {
+        "adjoint": 0.0,
+        "basis_adjoint": 0.0,
+        "forward": 3.663186791434198e-27
+      },
+      "1": {
+        "adjoint": 2.8826396467612803,
+        "basis_adjoint": 0.0,
+        "forward": 1841687.8676820497
+      },
+      "2": {
+        "adjoint": 0.05298351625481771,
+        "basis_adjoint": 0.0,
+        "forward": 9697.962984660018
+      }
+    },
+    "rows": 14035,
+    "unique_keys": 14035
+  },
+  "resource_caps": {
+    "rss_gib": 16,
+    "threads": 20
+  },
+  "stage": "Phase E Stage 2 modal operator assembly",
+  "status": "pass",
+  "table_and_radial_proofs": {
+    "angular_rows": 70,
+    "radial_bins": 35,
+    "scalar_rows": 70
+  }
+}

@@ -1,0 +1,7 @@
+/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fields_validation.cpp: In function ‘int main(int, char**)’:
+/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fields_validation.cpp:31:69: warning: narrowing conversion of ‘(3.14159265358979323851e+0l - ((long double)((double)thetaS)))’ from ‘long double’ to ‘double’ [-Wnarrowing]
+   31 |     std::vector<std::array<double,2>> angles{{thetaS,phiS},{EIGEN_PI-thetaS,phiS+EIGEN_PI},{0.,.3},{EIGEN_PI,1.2},{EIGEN_PI/3,65.*EIGEN_PI/180.},{.73,1.17},{std::nextafter(.73,1.),1.17}};
+      |                                                                     ^
+/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fields_validation.cpp:31:81: warning: narrowing conversion of ‘(((long double)((double)phiS)) + 3.14159265358979323851e+0l)’ from ‘long double’ to ‘double’ [-Wnarrowing]
+   31 |     std::vector<std::array<double,2>> angles{{thetaS,phiS},{EIGEN_PI-thetaS,phiS+EIGEN_PI},{0.,.3},{EIGEN_PI,1.2},{EIGEN_PI/3,65.*EIGEN_PI/180.},{.73,1.17},{std::nextafter(.73,1.),1.17}};
+      |                                                                                 ^

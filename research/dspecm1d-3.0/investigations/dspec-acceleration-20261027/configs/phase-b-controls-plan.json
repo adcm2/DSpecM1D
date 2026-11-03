@@ -1,0 +1,207 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control",
+  "thread_cap": 40,
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "MPLBACKEND": "Agg"
+  },
+  "jobs": [
+    {
+      "id": "prepare",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2/tools/check_phase_b.py",
+        "prepare",
+        "{JOB_DIR}/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2/tools/check_phase_b.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l3/data/kernel_domain.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l3/data/angular_grid.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l1536/data/kernel_probe_angles.csv"
+      ],
+      "outputs": [
+        "data/control-l3.csv",
+        "data/control-l1536.csv",
+        "data/section-l384.csv",
+        "data/section-l1536.csv",
+        "data/geometry.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    },
+    {
+      "id": "control-section-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_THREAD_LIMIT=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_DYNAMIC=FALSE",
+        "/usr/bin/taskset",
+        "-c",
+        "16-39",
+        "/space/adcm2/research/builds/kernel-figures-20261027-replay-02/figure-native/physical-driver",
+        "section",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l3/data/pole_response_spool.bin",
+        "{JOB_DIR}/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/prepare/data/control-l3.csv",
+        "12",
+        "3"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-figures-20261027-replay-02/figure-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l3/data/pole_response_spool.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/prepare/data/control-l3.csv"
+      ],
+      "outputs": [
+        "data/section.bin",
+        "data/section.json",
+        "data/section_angles.csv",
+        "data/section_radial_sides.csv"
+      ],
+      "timeout_seconds": 3600,
+      "memory_gib": 32
+    },
+    {
+      "id": "check-section-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2/tools/check_phase_b.py",
+        "compare",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/control-section-l3/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l3/data",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2/tools/check_phase_b.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l3/data/kernel.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l3/data/kernel_domain.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 180,
+      "memory_gib": 6
+    },
+    {
+      "id": "control-section-l1536",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_THREAD_LIMIT=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_DYNAMIC=FALSE",
+        "/usr/bin/taskset",
+        "-c",
+        "16-39",
+        "/space/adcm2/research/builds/kernel-figures-20261027-replay-02/figure-native/physical-driver",
+        "section",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l1536/data/pole_response_spool.bin",
+        "{JOB_DIR}/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/prepare/data/control-l1536.csv",
+        "12",
+        "1536"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-figures-20261027-replay-02/figure-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l1536/data/pole_response_spool.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/prepare/data/control-l1536.csv"
+      ],
+      "outputs": [
+        "data/section.bin",
+        "data/section.json",
+        "data/section_angles.csv",
+        "data/section_radial_sides.csv"
+      ],
+      "timeout_seconds": 3600,
+      "memory_gib": 32
+    },
+    {
+      "id": "check-section-l1536",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2/tools/check_phase_b.py",
+        "compare",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/control-section-l1536/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l1536/data",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2/tools/check_phase_b.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l1536/data/kernel_probe.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-native-final-control/continuation/accel-native-final-run-01/final-v5-l1536/data/kernel_probe.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 180,
+      "memory_gib": 6
+    },
+    {
+      "id": "control-slices-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-figures-20261027-replay-02/figure-native/physical-driver",
+        "slices",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data/pole_response_spool.bin",
+        "{JOB_DIR}/data",
+        "59,100",
+        "32",
+        "384"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-figures-20261027-replay-02/figure-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data/pole_response_spool.bin"
+      ],
+      "outputs": [
+        "data/slices.bin",
+        "data/slices.bin.json"
+      ],
+      "timeout_seconds": 3600,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-slices-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2/tools/check_phase_b.py",
+        "compare-slices",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/control-slices-l384/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-controls-v2/tools/check_phase_b.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data/kernel.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data/kernel.bin.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 180,
+      "memory_gib": 6
+    }
+  ]
+}

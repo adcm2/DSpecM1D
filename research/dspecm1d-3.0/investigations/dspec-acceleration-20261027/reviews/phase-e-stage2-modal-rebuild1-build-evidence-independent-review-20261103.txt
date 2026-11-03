@@ -1,0 +1,14 @@
+PHASE E STAGE 2 MODAL — REBUILD 1 BUILD EVIDENCE REVIEW
+Date: 2026-11-03
+Disposition: BUILD EVIDENCE PASS. Run/checker and scientific/performance acceptance remain separate pending gates.
+
+Evidence receipt SHA-256: 8d592f2e20a2f482c37cb5c12b99d963252a231b1de6d11e8ebd4fee713cc79d
+Plan SHA-256: d08cc3b43336387125399c67a03c1253a51053edb89b78876c61b7404a9ec2e5
+Task: phase-e-stage2-modal-v1-rebuild1-build
+
+Independent checks against the finalized angular disabled/enabled compiler command records confirm each modal compiler argv is identical after normalizing only candidate/stage/build root tokens. All 12 shared external dependency path/hash pairs are byte-identical for both variants, including pinned Stage1 YSpec DSO and private header. All 13 tracked input entries are unchanged before/after each compile. The sole new candidate input tree is consistently 50d813a069b35d4ddb32bc7f01ce7840efdb91561ab308176c086af2d963e956 in both variants; the preceding independent minimal archive review binds the exact 20 candidate source/case members to reviewed current bytes. Both compilers return zero with empty stdout/stderr; observed executable hashes equal compiler receipt hashes.
+
+Disabled executable SHA-256: bb7ab3c305436e1792a31fccfb053391a33c120e1e7cd15647598aa8c0fc8914
+Enabled executable SHA-256: 51ffd767ee7536132a8efd3a588c9f2f174cee08b9c09a17d9eb9594270b839d
+
+Supervisor status completed, return code zero, no failure reasons, inputs stable and cleanup verified gone with no remaining owned processes. Elapsed 160.55292652198114 s; observed peak 5 threads / 2.4711 GiB within build 8-thread / 32-GiB limits. Resource evidence is user-space watchdog observation, not kernel aggregate accounting. The original compile failure and read-only retrieval script failure remain preserved. No numerical or performance result follows from this build gate.

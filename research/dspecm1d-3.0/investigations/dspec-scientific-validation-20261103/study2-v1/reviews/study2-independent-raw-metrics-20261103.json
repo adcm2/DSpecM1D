@@ -1,0 +1,1184 @@
+{
+  "source_state_sha256": "9cd09f3e4bd0979a39a240cfa8d2a1a2bf631750ab50a8869a55db49cdfad704",
+  "manifest_sha256": "9b1b5ecf01e1ad60c5745a16a27a3d32c28139a2e0f722716393fe54019be292",
+  "manifest_file_count": 198,
+  "norm_semantics": "unweighted discrete vector norms, not3Dvolume/H1 norms; relative changes use named reference norm",
+  "comparisons": {
+    "h_base_to075": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 168,
+          "reference_norm": 2.5264174214978314e-14,
+          "candidate_norm": 2.526417508071889e-14,
+          "error_norm": 1.528227613790058e-20,
+          "relative_change": 6.048990957654262e-07,
+          "max_absolute_change": 1.0295193250628631e-20
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 8.719058928056918e-15,
+          "candidate_norm": 8.719056469862182e-15,
+          "error_norm": 1.4191611004186588e-20,
+          "relative_change": 1.6276539843674681e-06,
+          "max_absolute_change": 1.0295193250628631e-20
+        },
+        "source_shell": {
+          "count": 28,
+          "reference_norm": 1.5466982883257077e-14,
+          "candidate_norm": 1.5466983871995684e-14,
+          "error_norm": 4.475608460492541e-21,
+          "relative_change": 2.89365320584751e-07,
+          "max_absolute_change": 2.127698546834906e-21
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 6.4486170027504085e-15,
+          "candidate_norm": 6.448617448914613e-15,
+          "error_norm": 1.3200955720161794e-21,
+          "relative_change": 2.047098736757267e-07,
+          "max_absolute_change": 7.817451102134001e-22
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 2.738776151675245e-15,
+          "candidate_norm": 2.738777033460917e-15,
+          "error_norm": 1.5254519910417186e-21,
+          "relative_change": 5.569830853495038e-07,
+          "max_absolute_change": 7.6665561049513695e-22
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1150522581873054e-06,
+          "candidate_norm": 2.115053107693232e-06,
+          "error_norm": 1.6743417872963556e-12,
+          "relative_change": 7.916314033447768e-07,
+          "max_absolute_change": 2.148514919755767e-13
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.79515999401654e-08,
+          "candidate_norm": 9.795164403291595e-08,
+          "error_norm": 8.322179922268913e-14,
+          "relative_change": 8.496216424593974e-07,
+          "max_absolute_change": 1.0111375925362095e-14
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 51975318.89826976,
+          "candidate_norm": 51975319.616552256,
+          "error_norm": 45.296790916506666,
+          "relative_change": 8.715057815261348e-07,
+          "max_absolute_change": 8.139108791016042
+        }
+      },
+      "measurement_norm_relative_change": -3.2830959791496386e-08
+    },
+    "h075_to05625": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 168,
+          "reference_norm": 2.526417508071889e-14,
+          "candidate_norm": 2.5264174873257852e-14,
+          "error_norm": 1.6663274642083715e-20,
+          "relative_change": 6.595613982583897e-07,
+          "max_absolute_change": 1.1068016720290633e-20
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 8.719056469862182e-15,
+          "candidate_norm": 8.71905604076553e-15,
+          "error_norm": 1.65840105890284e-20,
+          "relative_change": 1.9020418833565068e-06,
+          "max_absolute_change": 1.1068016720290633e-20
+        },
+        "source_shell": {
+          "count": 28,
+          "reference_norm": 1.5466983871995684e-14,
+          "candidate_norm": 1.5466983943613516e-14,
+          "error_norm": 1.1480671485596116e-21,
+          "relative_change": 7.422695711465031e-08,
+          "max_absolute_change": 4.670780685887728e-22
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 6.448617448914613e-15,
+          "candidate_norm": 6.4486171588295016e-15,
+          "error_norm": 3.839753890333746e-22,
+          "relative_change": 5.954383122819647e-08,
+          "max_absolute_change": 3.2351234001401094e-22
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 2.738777033460917e-15,
+          "candidate_norm": 2.7387776114868753e-15,
+          "error_norm": 7.776588089959251e-22,
+          "relative_change": 2.8394381853466146e-07,
+          "max_absolute_change": 4.530767231101335e-22
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.115053107693232e-06,
+          "candidate_norm": 2.115053101162401e-06,
+          "error_norm": 8.192250579602355e-13,
+          "relative_change": 3.87330727053808e-07,
+          "max_absolute_change": 1.1470607209977894e-13
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.795164403291595e-08,
+          "candidate_norm": 9.795164383449039e-08,
+          "error_norm": 3.913266225479507e-14,
+          "relative_change": 3.9951000967012677e-07,
+          "max_absolute_change": 5.182469636244656e-15
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 51975319.616552256,
+          "candidate_norm": 51975322.73641628,
+          "error_norm": 9.133296332754773,
+          "relative_change": 1.7572371656654804e-07,
+          "max_absolute_change": 1.6482801847159863
+        }
+      },
+      "measurement_norm_relative_change": -1.2003941195652457e-07
+    },
+    "nq6_to8": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 168,
+          "reference_norm": 2.5264174214978314e-14,
+          "candidate_norm": 2.5264209242460612e-14,
+          "error_norm": 1.7735008170349745e-18,
+          "relative_change": 7.019824997816564e-05,
+          "max_absolute_change": 8.85653268138214e-19
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 8.719058928056918e-15,
+          "candidate_norm": 8.719410318435848e-15,
+          "error_norm": 6.485691783412803e-19,
+          "relative_change": 7.438522708617785e-05,
+          "max_absolute_change": 4.930744759174696e-19
+        },
+        "source_shell": {
+          "count": 28,
+          "reference_norm": 1.5466982883257077e-14,
+          "candidate_norm": 1.5466993610586577e-14,
+          "error_norm": 1.2841838949207842e-18,
+          "relative_change": 8.302743363806952e-05,
+          "max_absolute_change": 8.85653268138214e-19
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 6.4486170027504085e-15,
+          "candidate_norm": 6.448617369203284e-15,
+          "error_norm": 1.892877301076992e-21,
+          "relative_change": 2.935322876625575e-07,
+          "max_absolute_change": 1.196174532321444e-21
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 2.738776151675245e-15,
+          "candidate_norm": 2.739126154571132e-15,
+          "error_norm": 7.515901648752829e-19,
+          "relative_change": 0.00027442555479225745,
+          "max_absolute_change": 6.54289790280675e-19
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1150522581873054e-06,
+          "candidate_norm": 2.1150534522867118e-06,
+          "error_norm": 3.188372665511352e-12,
+          "relative_change": 1.5074675593329927e-06,
+          "max_absolute_change": 4.3239345493558225e-13
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.79515999401654e-08,
+          "candidate_norm": 9.795166213392157e-08,
+          "error_norm": 1.570654257240316e-13,
+          "relative_change": 1.6035003595650954e-06,
+          "max_absolute_change": 1.9927289498771228e-14
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 51975318.89826976,
+          "candidate_norm": 51975324.55250951,
+          "error_norm": 71.85756830422605,
+          "relative_change": 1.3825325140355833e-06,
+          "max_absolute_change": 12.69907813007012
+        }
+      },
+      "measurement_norm_relative_change": -2.2344609642200503e-07
+    },
+    "nq8_to10": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 168,
+          "reference_norm": 2.5264209242460612e-14,
+          "candidate_norm": 2.5264208376845396e-14,
+          "error_norm": 1.1892138412731745e-20,
+          "relative_change": 4.7071088980473896e-07,
+          "max_absolute_change": 4.605524666614668e-21
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 8.719410318435848e-15,
+          "candidate_norm": 8.719412177269826e-15,
+          "error_norm": 7.515498476605415e-21,
+          "relative_change": 8.61927378358953e-07,
+          "max_absolute_change": 3.685407817744796e-21
+        },
+        "source_shell": {
+          "count": 28,
+          "reference_norm": 1.5466993610586577e-14,
+          "candidate_norm": 1.5466992882944223e-14,
+          "error_norm": 7.741269137427223e-21,
+          "relative_change": 5.005025108517931e-07,
+          "max_absolute_change": 4.605524666614668e-21
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 6.448617369203284e-15,
+          "candidate_norm": 6.448617054107705e-15,
+          "error_norm": 9.112413305605533e-22,
+          "relative_change": 1.4130801664747176e-07,
+          "max_absolute_change": 5.105466621744811e-22
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 2.739126154571132e-15,
+          "candidate_norm": 2.739127234043482e-15,
+          "error_norm": 2.76159953293112e-21,
+          "relative_change": 1.0082045795234673e-06,
+          "max_absolute_change": 1.933294618058608e-21
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1150534522867118e-06,
+          "candidate_norm": 2.115052906854018e-06,
+          "error_norm": 1.211143581861208e-12,
+          "relative_change": 5.726302475012004e-07,
+          "max_absolute_change": 1.5881152236553383e-13
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.795166213392157e-08,
+          "candidate_norm": 9.795163396768089e-08,
+          "error_norm": 5.986971543256364e-14,
+          "relative_change": 6.112169424007171e-07,
+          "max_absolute_change": 7.415949378811258e-15
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 51975324.55250951,
+          "candidate_norm": 51975323.74091815,
+          "error_norm": 32.55562464851583,
+          "relative_change": 6.26366933324786e-07,
+          "max_absolute_change": 5.7471931532491
+        }
+      },
+      "measurement_norm_relative_change": 3.597467632021701e-08
+    },
+    "D100_to150": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 168,
+          "reference_norm": 1.171544844238542e-14,
+          "candidate_norm": 1.2747969725696682e-14,
+          "error_norm": 1.1887237781297846e-14,
+          "relative_change": 1.014663488107797,
+          "max_absolute_change": 5.035455039839207e-15
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 3.7273152648521005e-15,
+          "candidate_norm": 4.6072829670839446e-15,
+          "error_norm": 2.6178302848197707e-15,
+          "relative_change": 0.7023366951289123,
+          "max_absolute_change": 1.1427412571219379e-15
+        },
+        "source_shell": {
+          "count": 28,
+          "reference_norm": 6.526710988406976e-15,
+          "candidate_norm": 7.30297040372221e-15,
+          "error_norm": 7.463115371262483e-15,
+          "relative_change": 1.1434726287894146,
+          "max_absolute_change": 5.035455039839207e-15
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 2.2819369389278267e-15,
+          "candidate_norm": 3.2856198838891915e-15,
+          "error_norm": 2.5149283899384526e-15,
+          "relative_change": 1.102102493296812,
+          "max_absolute_change": 1.8408610274060797e-15
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 7.252522398173878e-15,
+          "candidate_norm": 4.126222393136237e-15,
+          "error_norm": 3.2214434176082876e-15,
+          "relative_change": 0.44418248448559344,
+          "max_absolute_change": 1.913610968299402e-15
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1146644776031396e-06,
+          "candidate_norm": 2.1155559135412902e-06,
+          "error_norm": 4.860559047883669e-08,
+          "relative_change": 0.02298501298604522,
+          "max_absolute_change": 9.562002568484464e-09
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.795312047171094e-08,
+          "candidate_norm": 9.799848924725153e-08,
+          "error_norm": 2.0226511066402074e-09,
+          "relative_change": 0.020649174798105113,
+          "max_absolute_change": 3.7319966678673884e-10
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 52158876.59468518,
+          "candidate_norm": 52422485.54083909,
+          "error_norm": 285265.6117822305,
+          "relative_change": 0.005469167098804005,
+          "max_absolute_change": 47273.60176821612
+        }
+      },
+      "measurement_norm_relative_change": -0.010243259909907364
+    },
+    "D150_to200": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 168,
+          "reference_norm": 1.2747969725696682e-14,
+          "candidate_norm": 2.5264174214978314e-14,
+          "error_norm": 1.8083388502795394e-14,
+          "relative_change": 1.418530863494589,
+          "max_absolute_change": 6.642089545920955e-15
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 4.6072829670839446e-15,
+          "candidate_norm": 8.719058928056918e-15,
+          "error_norm": 7.450433526819958e-15,
+          "relative_change": 1.6170991840632505,
+          "max_absolute_change": 4.249833309283968e-15
+        },
+        "source_shell": {
+          "count": 28,
+          "reference_norm": 7.30297040372221e-15,
+          "candidate_norm": 1.5466982883257077e-14,
+          "error_norm": 1.1537654711473543e-14,
+          "relative_change": 1.5798577939728444,
+          "max_absolute_change": 6.642089545920955e-15
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 3.2856198838891915e-15,
+          "candidate_norm": 6.4486170027504085e-15,
+          "error_norm": 3.6674589078474684e-15,
+          "relative_change": 1.1162152158350995,
+          "max_absolute_change": 3.047224649941006e-15
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 4.126222393136237e-15,
+          "candidate_norm": 2.738776151675245e-15,
+          "error_norm": 6.074561131512067e-15,
+          "relative_change": 1.472184616519166,
+          "max_absolute_change": 3.7448146537355555e-15
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1155559135412902e-06,
+          "candidate_norm": 2.1150522581873054e-06,
+          "error_norm": 1.0083801736324639e-07,
+          "relative_change": 0.0476650211501386,
+          "max_absolute_change": 2.0102260374450615e-08
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.799848924725153e-08,
+          "candidate_norm": 9.79515999401654e-08,
+          "error_norm": 4.0437649101519215e-09,
+          "relative_change": 0.04126354335881084,
+          "max_absolute_change": 7.639239863754935e-10
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 52422485.54083909,
+          "candidate_norm": 51975318.89826976,
+          "error_norm": 494399.05836479255,
+          "relative_change": 0.009431049544181514,
+          "max_absolute_change": 80725.21448899992
+        }
+      },
+      "measurement_norm_relative_change": 0.017627854223512714
+    },
+    "D200_to300": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 168,
+          "reference_norm": 2.5264174214978314e-14,
+          "candidate_norm": 6.420982488119664e-14,
+          "error_norm": 4.5805097573395996e-14,
+          "relative_change": 1.8130455079841727,
+          "max_absolute_change": 1.6016015953942238e-14
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 8.719058928056918e-15,
+          "candidate_norm": 2.000765496941202e-14,
+          "error_norm": 1.446479334023832e-14,
+          "relative_change": 1.6589856152585798,
+          "max_absolute_change": 8.88546925598423e-15
+        },
+        "source_shell": {
+          "count": 28,
+          "reference_norm": 1.5466982883257077e-14,
+          "candidate_norm": 4.1120134282944976e-14,
+          "error_norm": 2.993295356006754e-14,
+          "relative_change": 1.9352807063923112,
+          "max_absolute_change": 1.6016015953942238e-14
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 6.4486170027504085e-15,
+          "candidate_norm": 1.5251053168080022e-14,
+          "error_norm": 9.467467412368353e-15,
+          "relative_change": 1.4681392007511642,
+          "max_absolute_change": 9.045800077101211e-15
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 2.738776151675245e-15,
+          "candidate_norm": 2.6769141558216517e-14,
+          "error_norm": 2.431995137109119e-14,
+          "relative_change": 8.879860939425534,
+          "max_absolute_change": 1.5633757935753278e-14
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1150522581873054e-06,
+          "candidate_norm": 2.1151914825981085e-06,
+          "error_norm": 8.804887702312843e-08,
+          "relative_change": 0.041629646115028035,
+          "max_absolute_change": 1.7597877238742864e-08
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.79515999401654e-08,
+          "candidate_norm": 9.7981267864908e-08,
+          "error_norm": 3.484417077633337e-09,
+          "relative_change": 0.035572844953648784,
+          "max_absolute_change": 6.627414950432796e-10
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 51975318.89826976,
+          "candidate_norm": 52346265.6553501,
+          "error_norm": 412956.39684725297,
+          "relative_change": 0.007945240271743675,
+          "max_absolute_change": 67150.68809098192
+        }
+      },
+      "measurement_norm_relative_change": -0.01439443583860892
+    },
+    "Y100_to150": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 140,
+          "reference_norm": 9.729016538352796e-15,
+          "candidate_norm": 1.044877195823097e-14,
+          "error_norm": 9.252468610241173e-15,
+          "relative_change": 0.9510178725431269,
+          "max_absolute_change": 4.9634479252569275e-15
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 3.727312871621476e-15,
+          "candidate_norm": 4.607304839577497e-15,
+          "error_norm": 2.617838964149832e-15,
+          "relative_change": 0.7023394746604692,
+          "max_absolute_change": 1.1427496656306536e-15
+        },
+        "source_shell": {
+          "count": 0,
+          "reference_norm": 0.0,
+          "candidate_norm": 0.0,
+          "error_norm": 0.0,
+          "relative_change": 0,
+          "max_absolute_change": 0
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 2.2819370526637737e-15,
+          "candidate_norm": 3.2856193109766923e-15,
+          "error_norm": 2.514927676226793e-15,
+          "relative_change": 1.1021021256002843,
+          "max_absolute_change": 1.84086047779336e-15
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 7.252522389275562e-15,
+          "candidate_norm": 4.12617987969145e-15,
+          "error_norm": 3.221484998474085e-15,
+          "relative_change": 0.44418821832770267,
+          "max_absolute_change": 1.9136642555814966e-15
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.114665631515967e-06,
+          "candidate_norm": 2.1155570674763242e-06,
+          "error_norm": 4.860559040630894e-08,
+          "relative_change": 0.02298500040948055,
+          "max_absolute_change": 9.562002559257688e-09
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.79531700906933e-08,
+          "candidate_norm": 9.799853885972515e-08,
+          "error_norm": 2.022651102862915e-09,
+          "relative_change": 0.020649164299533892,
+          "max_absolute_change": 3.7319966636705035e-10
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 52158869.30022463,
+          "candidate_norm": 52422478.13376776,
+          "error_norm": 285265.55573526723,
+          "relative_change": 0.005469166789128205,
+          "max_absolute_change": 47273.57165761478
+        }
+      },
+      "measurement_norm_relative_change": -0.010243257218917579
+    },
+    "Y150_to200": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 140,
+          "reference_norm": 1.044877195823097e-14,
+          "candidate_norm": 1.9976286126134672e-14,
+          "error_norm": 1.392472159797824e-14,
+          "relative_change": 1.3326658533311282,
+          "max_absolute_change": 6.446931664242002e-15
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 4.607304839577497e-15,
+          "candidate_norm": 8.719409170744172e-15,
+          "error_norm": 7.450726807356135e-15,
+          "relative_change": 1.6171551626784453,
+          "max_absolute_change": 4.249830767511865e-15
+        },
+        "source_shell": {
+          "count": 0,
+          "reference_norm": 0.0,
+          "candidate_norm": 0.0,
+          "error_norm": 0.0,
+          "relative_change": 0,
+          "max_absolute_change": 0
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 3.2856193109766923e-15,
+          "candidate_norm": 6.448615367493655e-15,
+          "error_norm": 3.66745789371136e-15,
+          "relative_change": 1.1162151018101854,
+          "max_absolute_change": 3.0472238346123778e-15
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 4.12617987969145e-15,
+          "candidate_norm": 2.7391195803219904e-15,
+          "error_norm": 6.0750231277599964e-15,
+          "relative_change": 1.4723117520058961,
+          "max_absolute_change": 3.74541083937769e-15
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1155570674763242e-06,
+          "candidate_norm": 2.1150534111402097e-06,
+          "error_norm": 1.0083801742266035e-07,
+          "relative_change": 0.04766499517923728,
+          "max_absolute_change": 2.0102260388752098e-08
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.799853885972515e-08,
+          "candidate_norm": 9.795164953202122e-08,
+          "error_norm": 4.043764910996737e-09,
+          "relative_change": 0.04126352247746236,
+          "max_absolute_change": 7.639239867745317e-10
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 52422478.13376776,
+          "candidate_norm": 51975311.77560735,
+          "error_norm": 494398.92473046645,
+          "relative_change": 0.009431048327568496,
+          "max_absolute_change": 80725.16797800921
+        }
+      },
+      "measurement_norm_relative_change": 0.017627845815557347
+    },
+    "Y200_to300": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 140,
+          "reference_norm": 1.9976286126134672e-14,
+          "candidate_norm": 4.9321620676204566e-14,
+          "error_norm": 3.4680912416242075e-14,
+          "relative_change": 1.7361041085044113,
+          "max_absolute_change": 1.5649127538742916e-14
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 8.719409170744172e-15,
+          "candidate_norm": 2.0007668893163764e-14,
+          "error_norm": 1.4464555667307448e-14,
+          "relative_change": 1.6588917189297296,
+          "max_absolute_change": 8.885075165685346e-15
+        },
+        "source_shell": {
+          "count": 0,
+          "reference_norm": 0.0,
+          "candidate_norm": 0.0,
+          "error_norm": 0.0,
+          "relative_change": 0,
+          "max_absolute_change": 0
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 6.448615367493655e-15,
+          "candidate_norm": 1.5251050632892343e-14,
+          "error_norm": 9.467465513469158e-15,
+          "relative_change": 1.4681392785795537,
+          "max_absolute_change": 9.045798179607301e-15
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 2.7391195803219904e-15,
+          "candidate_norm": 2.678065872802895e-14,
+          "error_norm": 2.4331167744076376e-14,
+          "relative_change": 8.882842472038474,
+          "max_absolute_change": 1.5649127538742916e-14
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1150534111402097e-06,
+          "candidate_norm": 2.115192636877892e-06,
+          "error_norm": 8.804889075999562e-08,
+          "relative_change": 0.04162962991678263,
+          "max_absolute_change": 1.759788000023865e-08
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.795164953202122e-08,
+          "candidate_norm": 9.79813174929484e-08,
+          "error_norm": 3.484417597526417e-09,
+          "relative_change": 0.03557283225115399,
+          "max_absolute_change": 6.627415960418566e-10
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 51975311.77560735,
+          "candidate_norm": 52346258.33665871,
+          "error_norm": 412956.34242396796,
+          "relative_change": 0.007945240313455386,
+          "max_absolute_change": 67150.65498522855
+        }
+      },
+      "measurement_norm_relative_change": -0.014394430593086075
+    },
+    "DY100": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 140,
+          "reference_norm": 9.729017210386596e-15,
+          "candidate_norm": 9.729016538352796e-15,
+          "error_norm": 1.6254555025916057e-20,
+          "relative_change": 1.670729393772977e-06,
+          "max_absolute_change": 1.0440137732938598e-20
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 3.7273152648521005e-15,
+          "candidate_norm": 3.727312871621476e-15,
+          "error_norm": 1.588995884150603e-20,
+          "relative_change": 4.2631110363390585e-06,
+          "max_absolute_change": 1.0440137732938598e-20
+        },
+        "source_shell": {
+          "count": 0,
+          "reference_norm": 0.0,
+          "candidate_norm": 0.0,
+          "error_norm": 0.0,
+          "relative_change": 0,
+          "max_absolute_change": 0
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 2.2819369389278267e-15,
+          "candidate_norm": 2.2819370526637737e-15,
+          "error_norm": 5.883454382179836e-22,
+          "relative_change": 2.578272116907924e-07,
+          "max_absolute_change": 3.2075544336845987e-22
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 7.252522398173878e-15,
+          "candidate_norm": 7.252522389275562e-15,
+          "error_norm": 1.1165794466450963e-21,
+          "relative_change": 1.5395739376499426e-07,
+          "max_absolute_change": 6.5965887275992805e-22
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1146644776031396e-06,
+          "candidate_norm": 2.114665631515967e-06,
+          "error_norm": 2.45240148487355e-12,
+          "relative_change": 1.159711864859629e-06,
+          "max_absolute_change": 3.1083620637020326e-13
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.795312047171094e-08,
+          "candidate_norm": 9.79531700906933e-08,
+          "error_norm": 9.732399723632829e-14,
+          "relative_change": 9.93577302771438e-07,
+          "max_absolute_change": 1.2992643552775625e-14
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 52158876.59468518,
+          "candidate_norm": 52158869.30022463,
+          "error_norm": 48.40428814513581,
+          "relative_change": 9.280163091179009e-07,
+          "max_absolute_change": 9.130943439668044
+        }
+      },
+      "measurement_norm_relative_change": 2.597191940783949e-07
+    },
+    "DY150": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 140,
+          "reference_norm": 1.0448796840289155e-14,
+          "candidate_norm": 1.044877195823097e-14,
+          "error_norm": 1.5058179615422067e-19,
+          "relative_change": 1.4411400513942191e-05,
+          "max_absolute_change": 6.915550616330453e-20
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 4.6072829670839446e-15,
+          "candidate_norm": 4.607304839577497e-15,
+          "error_norm": 1.1000162611241946e-19,
+          "relative_change": 2.3875595855151486e-05,
+          "max_absolute_change": 6.915550616330453e-20
+        },
+        "source_shell": {
+          "count": 0,
+          "reference_norm": 0.0,
+          "candidate_norm": 0.0,
+          "error_norm": 0.0,
+          "relative_change": 0,
+          "max_absolute_change": 0
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 3.2856198838891915e-15,
+          "candidate_norm": 3.2856193109766923e-15,
+          "error_norm": 1.1398602903985445e-21,
+          "relative_change": 3.469239688948104e-07,
+          "max_absolute_change": 7.01474615197518e-22
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 4.126222393136237e-15,
+          "candidate_norm": 4.12617987969145e-15,
+          "error_norm": 6.302892104015683e-20,
+          "relative_change": 1.527521181238371e-05,
+          "max_absolute_change": 5.3946940967556614e-20
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1155559135412902e-06,
+          "candidate_norm": 2.1155570674763242e-06,
+          "error_norm": 2.4522604355539144e-12,
+          "relative_change": 1.1591565223388516e-06,
+          "max_absolute_change": 3.108100905180246e-13
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.799848924725153e-08,
+          "candidate_norm": 9.799853885972515e-08,
+          "error_norm": 9.731653035239068e-14,
+          "relative_change": 9.93041128489846e-07,
+          "max_absolute_change": 1.299119446469133e-14
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 52422485.54083909,
+          "candidate_norm": 52422478.13376776,
+          "error_norm": 48.903841500369005,
+          "relative_change": 9.32879107044077e-07,
+          "max_absolute_change": 9.229071274166927
+        }
+      },
+      "measurement_norm_relative_change": 2.624380343516164e-07
+    },
+    "DY200": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 140,
+          "reference_norm": 1.997625939093222e-14,
+          "candidate_norm": 1.9976286126134672e-14,
+          "error_norm": 1.2273167006593786e-18,
+          "relative_change": 6.143876471770746e-05,
+          "max_absolute_change": 6.501325831022528e-19
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 8.719058928056918e-15,
+          "candidate_norm": 8.719409170744172e-15,
+          "error_norm": 6.5420083492799485e-19,
+          "relative_change": 7.503112896999155e-05,
+          "max_absolute_change": 4.954716179347202e-19
+        },
+        "source_shell": {
+          "count": 0,
+          "reference_norm": 0.0,
+          "candidate_norm": 0.0,
+          "error_norm": 0.0,
+          "relative_change": 0,
+          "max_absolute_change": 0
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 6.4486170027504085e-15,
+          "candidate_norm": 6.448615367493655e-15,
+          "error_norm": 2.4285383349489872e-21,
+          "relative_change": 3.7659832083579903e-07,
+          "max_absolute_change": 1.5168032434598468e-21
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 2.738776151675245e-15,
+          "candidate_norm": 2.7391195803219904e-15,
+          "error_norm": 7.455162523628981e-19,
+          "relative_change": 0.0002722078078220753,
+          "max_absolute_change": 6.501325831022528e-19
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1150522581873054e-06,
+          "candidate_norm": 2.1150534111402097e-06,
+          "error_norm": 2.45220726339142e-12,
+          "relative_change": 1.159407411282155e-06,
+          "max_absolute_change": 3.1080885837625394e-13
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.79515999401654e-08,
+          "candidate_norm": 9.795164953202122e-08,
+          "error_norm": 9.731230240956679e-14,
+          "relative_change": 9.934733324316384e-07,
+          "max_absolute_change": 1.2990934696891764e-14
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 51975318.89826976,
+          "candidate_norm": 51975311.77560735,
+          "error_norm": 48.05309356979928,
+          "relative_change": 9.245367722293851e-07,
+          "max_absolute_change": 9.063656980870292
+        }
+      },
+      "measurement_norm_relative_change": 2.541757235874439e-07
+    },
+    "DY300": {
+      "kernel_subsets": {
+        "all_common": {
+          "count": 140,
+          "reference_norm": 4.931567872215197e-14,
+          "candidate_norm": 4.9321620676204566e-14,
+          "error_norm": 2.349848844014355e-17,
+          "relative_change": 0.00047649123055845384,
+          "max_absolute_change": 1.6019735572742067e-17
+        },
+        "far_solid_bulk_100km": {
+          "count": 89,
+          "reference_norm": 2.000765496941202e-14,
+          "candidate_norm": 2.0007668893163764e-14,
+          "error_norm": 9.171141980877639e-19,
+          "relative_change": 4.58381654166798e-05,
+          "max_absolute_change": 6.958251824522899e-19
+        },
+        "source_shell": {
+          "count": 0,
+          "reference_norm": 0.0,
+          "candidate_norm": 0.0,
+          "error_norm": 0.0,
+          "relative_change": 0,
+          "max_absolute_change": 0
+        },
+        "solid_interface": {
+          "count": 13,
+          "reference_norm": 1.5251053168080022e-14,
+          "candidate_norm": 1.5251050632892343e-14,
+          "error_norm": 8.021498712890649e-21,
+          "relative_change": 5.259635924474642e-07,
+          "max_absolute_change": 6.538063407817439e-21
+        },
+        "near_solid_bulk_25km": {
+          "count": 7,
+          "reference_norm": 2.6769141558216517e-14,
+          "candidate_norm": 2.678065872802895e-14,
+          "error_norm": 1.7935843128087557e-17,
+          "relative_change": 0.0006700193612515127,
+          "max_absolute_change": 1.6019735572742067e-17
+        }
+      },
+      "waveform": {
+        "velocity_m_s": {
+          "count": 1201,
+          "reference_norm": 2.1151914825981085e-06,
+          "candidate_norm": 2.115192636877892e-06,
+          "error_norm": 2.4523924257507625e-12,
+          "relative_change": 1.1594186370013496e-06,
+          "max_absolute_change": 3.10859754600821e-13
+        },
+        "rate_m_s2": {
+          "count": 1201,
+          "reference_norm": 9.7981267864908e-08,
+          "candidate_norm": 9.79813174929484e-08,
+          "error_norm": 9.731869020380324e-14,
+          "relative_change": 9.932377108855309e-07,
+          "max_absolute_change": 1.2992311345461095e-14
+        },
+        "adjoint_source": {
+          "count": 1201,
+          "reference_norm": 52346265.6553501,
+          "candidate_norm": 52346258.33665871,
+          "error_norm": 48.7748818442769,
+          "relative_change": 9.317738569053363e-07,
+          "max_absolute_change": 9.202004106482491
+        }
+      },
+      "measurement_norm_relative_change": 2.594978568728626e-07
+    }
+  },
+  "native_sparse_extrema": {
+    "l200-dspec-nq8": {
+      "along": {
+        "min": -5.123802113232737e-15,
+        "max": 2.3396877103398424e-15,
+        "max_absolute": 5.123802113232737e-15,
+        "count": 18904,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.1756213678415869e-16,
+        "max": 7.024792518624926e-17,
+        "max_absolute": 2.1756213678415869e-16,
+        "count": 2780,
+        "nonfinite_count": 0
+      }
+    },
+    "l200-dspec-h05625": {
+      "along": {
+        "min": -5.123802238531607e-15,
+        "max": 2.339684927957295e-15,
+        "max_absolute": 5.123802238531607e-15,
+        "count": 21828,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.175859609409403e-16,
+        "max": 7.024784551288678e-17,
+        "max_absolute": 2.175859609409403e-16,
+        "count": 3210,
+        "nonfinite_count": 0
+      }
+    },
+    "l300-dspec": {
+      "along": {
+        "min": -1.6164826730336968e-14,
+        "max": 1.785764919607466e-14,
+        "max_absolute": 1.785764919607466e-14,
+        "count": 14144,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.1916922769354906e-16,
+        "max": 2.011316999057829e-16,
+        "max_absolute": 2.1916922769354906e-16,
+        "count": 2080,
+        "nonfinite_count": 0
+      }
+    },
+    "l150-dspec": {
+      "along": {
+        "min": -3.815635344769472e-15,
+        "max": 2.2398846555521647e-15,
+        "max_absolute": 3.815635344769472e-15,
+        "count": 14144,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.2011040305592699e-16,
+        "max": 7.355479822909236e-17,
+        "max_absolute": 2.2011040305592699e-16,
+        "count": 2080,
+        "nonfinite_count": 0
+      }
+    },
+    "l200-dspec-sparse-bridge": {
+      "along": {
+        "min": -5.123802934903919e-15,
+        "max": 2.339685154875772e-15,
+        "max_absolute": 5.123802934903919e-15,
+        "count": 14144,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.174267965056461e-16,
+        "max": 7.024769292676668e-17,
+        "max_absolute": 2.174267965056461e-16,
+        "count": 2080,
+        "nonfinite_count": 0
+      }
+    },
+    "l200-dspec-h075": {
+      "along": {
+        "min": -5.123802737224763e-15,
+        "max": 2.339684732397111e-15,
+        "max_absolute": 5.123802737224763e-15,
+        "count": 17612,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.1742684909980244e-16,
+        "max": 7.024783456613279e-17,
+        "max_absolute": 2.1742684909980244e-16,
+        "count": 2590,
+        "nonfinite_count": 0
+      }
+    },
+    "l200-dspec-nq10": {
+      "along": {
+        "min": -5.123802235809772e-15,
+        "max": 2.3396879684953874e-15,
+        "max_absolute": 5.123802235809772e-15,
+        "count": 23596,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.175894718877178e-16,
+        "max": 7.024781150122206e-17,
+        "max_absolute": 2.175894718877178e-16,
+        "count": 3470,
+        "nonfinite_count": 0
+      }
+    },
+    "l300-yspec-tight": {
+      "along": {
+        "min": -1.5572580198530254e-14,
+        "max": 1.7857618320655507e-14,
+        "max_absolute": 1.7857618320655507e-14,
+        "count": 14144,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.1916919668287792e-16,
+        "max": 2.0113135015901679e-16,
+        "max_absolute": 2.1916919668287792e-16,
+        "count": 2080,
+        "nonfinite_count": 0
+      }
+    },
+    "l100-yspec-tight": {
+      "along": {
+        "min": -4.084938458568784e-15,
+        "max": 1.6088886957330305e-15,
+        "max_absolute": 4.084938458568784e-15,
+        "count": 14144,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.1055058379541197e-16,
+        "max": 1.5535746922745696e-16,
+        "max_absolute": 2.1055058379541197e-16,
+        "count": 2080,
+        "nonfinite_count": 0
+      }
+    },
+    "l150-yspec-tight": {
+      "along": {
+        "min": -3.81563268374587e-15,
+        "max": 2.1166404313299965e-15,
+        "max_absolute": 3.81563268374587e-15,
+        "count": 14144,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.2011038573633287e-16,
+        "max": 7.355423639631189e-17,
+        "max_absolute": 2.2011038573633287e-16,
+        "count": 2080,
+        "nonfinite_count": 0
+      }
+    },
+    "l100-dspec": {
+      "along": {
+        "min": -4.084937854817858e-15,
+        "max": 1.6088889675532065e-15,
+        "max_absolute": 4.084937854817858e-15,
+        "count": 14144,
+        "nonfinite_count": 0
+      },
+      "across": {
+        "min": -2.1055065499187796e-16,
+        "max": 1.5968333055531445e-16,
+        "max_absolute": 2.1055065499187796e-16,
+        "count": 2080,
+        "nonfinite_count": 0
+      }
+    }
+  },
+  "resource_peaks": {
+    "threads": 9,
+    "rss_gib_userspace": 1.82
+  }
+}

@@ -1,0 +1,32 @@
+STUDY1 — INDEPENDENT SOURCE / INPUT GEOMETRY / BUILD CONFIG REVIEW
+Date: 2026-11-03
+Disposition: SOURCE / BUILD CONFIG PASS. Release ONLY the reviewed isolated build after minimal-payload/fresh-root/hash guards. Exact physical queue/checker review remains before numerical launch. Actual saved Study1 science review gates Study2.
+
+Scope/source
+Fresh45-file seed is bound to final reviewed modal candidate. Independent seed comparison finds only phase_d_driver.cpp and implementation_status.md changed among seeded files; generator is a new isolated input-preparation tool. Core SEM, accepted solver, radial/angular algorithms, model/scales/source/receiver laws are unchanged. Optional fixed probes use the active phase_d_driver.cpp C2 path, preserving sections/audit/native inventories. Placeholder CLI handling remains compatible with existing inputs. No H1/Riesz solver, physical regularization, source/receiver averaging, performance work or production edit.
+
+Probe reader and physical semantics
+Seven-column shared CSV declares stableid/SIradius/Earth-fixed geocentricangles/physical-model-layer/materialside/radialtrace. Inner/outer resolve the actual per-mesh upper/lower endpoint, including both solid traces at the artificial source split. Interior fallback at ordinary artificial mesh edges is explicitly recorded as resolved trace; source/material breaks require explicit sides. Full-token finite numeric checks and duplicate key checks apply. SI/normalized radius and layer/material mapping match underlying API. Field3DPoint member names checked against actual declaration. Cartesian chord/hypot distances preserve near-coincident precision; source-shell traces are labelled independently of angular coincidence and distinguished from contact terms. FluidlnVs rows are structural zeros, not active-parameter accuracy proof. Receiver functional remains fixed solid-side; alternate fluid samples are diagnostic probes only.
+
+Sampling/math
+DSpec fixed samples reuse the existing per-bin unit-adjoint workspace, retaining bounded complex unit products and selected-bin9/25 raw forward/unit-dual strains. Same ordered reduction multiplies product by P=weight*force; weighted dual strain uses conj(P), consistently with existing C2 convention. No new solve is added. Additional retained payload is capped32MiB;168-point grid requires158592B for products/selected fields. YSpec uses public KernelSampling with SI KernelNode radius/model layer and geocentric KernelPlace coordinates. Exact artificial source-shell side requests are honestly marked not_exposed because that API does not expose the requested trace; no fabricated zeros or YSpec field claim. Own weight/force/P use the exact shared MakeAdjointSpectrum helper; the real-valued weight is explicitly promoted to Complex for export. This supports only an asymmetric DS-fields/YS-weights counterfactual, not shared YSpec unit-field proof. Contact terms remain separate/excluded and clearly labelled; neither near-contact derivative completeness nor global H1/L2 integrability is claimed.
+
+Geometry/input preparation
+Initial unrun grid had a geographic/geocentric mismatch; old v1 inputs are preserved. Corrected v2 uses pinned Sphere::Colatitude(.993277tan(latitude)) and hash-bound frozen PathFrame endpoints, validates source coordinates/distance60deg/initialgeocentricazimuth30deg, and applies pinned SampledKernels PathFrame::At. Independent generator rerun into temporary files reproduces v2CSV and receipt byte-for-byte from actual frozen mesh/along-angle receipts.168unique probes/14angles,28 receiver material-side rows and28 source-shell trace rows verified. Physical source/receiver endpoints coincide with actual frozen C++ geometry. Baseline element IDs are receipt metadata only; each run resolves its mesh elements.
+
+Build/staging
+Config/plan differ from final modal rebuild3 only in fresh candidate/stage/build/control/task/config paths. Compiler flags, accepted DSO/private headers and12 external dependency paths unchanged.8threads/32GiB build cap. operations/build_stage.py independently read: recursive candidate-local active quoted-include closure pluscase2/config2/current sealed review only; no cache/history glob. Exclusive archives/extraction, fresh roots, all12 frozen dependency hashes +3 existing tool hashes, quiet-process preflight, detached identity-aware supervisor, inner-thread1 env, real JSON newlines and preserved failure receipts. AST plus all3 generated remote bodies independently compiled locally without execution. Actual generated script compiles before remote mkdir/SCP. Parent read-only external preflight does not replace hash/quiet checks at stage/launch. Only exact reviewed minimal archive may transfer; manifest/current bytes must receive focused check before staging.
+
+Remaining gates
+No numerical correctness, singularity diagnosis or convergence result follows from this source/build gate. Exact10-supported-job queue + immutable standalone checker must bind actual probe-v2 files, selected legacy modal/known radial-angular routes, own baseline weights, fixed FEspaces/scales/grid/source/receiver for two-step FULL-FORWARD FD, and true3D quadrature. Independent operator/tangent route and same-law YSpec FD remain explicitly deferred. Unknown/undefined/source-contact/unexposed samples must remain visible, with raw extrema/nonfinite counts and fixed-point versus native-nearest distance distinctions. Actual saved evidence, not source existence, decides Study1 and gates Study2.
+
+Sealed SHA-256
+03e9acbe5f8c285dfa92da3deddf386c183a29239de91126b77142b865bf2970  candidate/dspec/phase_d_driver.cpp
+af4ef6f25a879ad9620cd954e056a120b61188a9a90ccb37562d8ee41aa9de5e  candidate/dspec/tools/generate_study1_fixed_probes.py
+015cafa05d9548cea461b9d7745ad182f18678f7d2d066e2a7725ca469fec293  data/study1-fixed-probes-v2.csv
+3606009a293240d14bc90660ee8cd3d8b87983badb2b23eb21b881ddc7a4323f  data/study1-fixed-probes-v2.json
+b5372290f075a451dfecf97f9edeef25441b82870f8c3354dc9eec001417fda8  configs/study1-build-v1.json
+31eb960a56cb3cadb1f11e90e864848b8d1f99c2ed90e85c4ac3c6c2a9fc9ef2  configs/study1-build-v1-plan.json
+6d86f30da2649753dfcc345199f73e57e0e15843cecd7e5d925aaf61421c6446  operations/build_stage.py
+faef08ef01291596fcb4466200494cd8aa5e5c9b2df58c5e396c58776b3d4c18  plan.md
+05ab11ec3db66cbd949a63ae811635325c1ca16a6178e2601fb13a83799b032e  seed-manifest.json

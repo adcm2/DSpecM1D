@@ -1,0 +1,126 @@
+Phase A execution plan — Sol6.1-high,2026-10-31
+Approved by user: isolated Phase A on Tunya ONLY. No Phase B/integration release.
+Luna-high implements/builds/executes; Sol-high plans/reviews; parent releases
+after contract/source review. Planner has inspected sources/evidence only.
+
+1. Exact immutable seed and sources
+A=campaign root. Seed ONLY candidate members of stages12-stage2-v1-build-inputs.
+tar.gz, NOT mutable candidates/stages12-stage2-frequency-v1/status. Verified:
+  archiveSHA80239a29810d610b5b4263eb0dc068aea0f8cdc20e202dcf3beb015ae0dca361
+  manifest stages12-stage2-v1-build-inputs.json
+  SHA06a56b7eeb70d682bb58493f6b85ab4e72f55a898b26605b361e78dddbefa58a
+  exact22candidate files/extracted treeSHA
+  c9e8364c45c2b7b3591090d205a54364df2f0b544faeff8888b833a18c39dd5e
+The latter matches successful native command.json tracked source tree. Extract
+exclusively to new receipts/phase-a-v1-frozen-seed/candidate and verify each22file
+hash plus tree hash; make new candidates/phase-a-reconstruction-v1 from it.
+Accepted native/profile binaries bce00e2a... /50414d56... remain references;
+full bindings in receipts/stages12-stage2-v1-build-completed/build-validation.json.
+Do not merge unbuilt changes. Recheck all dependency trees/HEAD/dirty status
+against successful build; no reset/checkout. Preserve all evidence and failures.
+
+Pinned formula/control source hashes (remote reads match local inspected bytes):
+  YSpec src/SampledKernels.cpp
+  13436b8421f9441ad96073e18cd19c3981e2c64a48bdf22ae8f19bc091fad06e
+  DS src/FullSpecSingleSem.h
+  18c788560cac444fc09c63ac4a85250178dc6a46bea8278c964f1855f5daab17
+  DS src/FullSpecMultiSem.h
+  186d4b254e03344ce17aab99ae0202f0eeb2d30bc9c3dabec4623073f5618b69
+  DS src/StartElement.h
+  c7c25c62a3b8aaaedfd23faa1debed198c31ca64a9b435af54cf511938aa0240
+Literal selected YSpec strain/table/evaluation formula copies stay isolated and
+attributed; no production YSpec edit or ODE numerical rerun.
+
+2. Scope and prebuild contract gate
+Read plans/phase-a-reconstruction-contract.txt as normative mathematical gate.
+Case unchanged:L200,NQ10,refinement.025,attenuated full-gravity PREM,Tvelocity
+traveltime1000–1200s,40staper,2–10mHz with[2,4,8,10]filter,35bins7–41,dt2s,
+2048FFT/4096speriod,damping5/2400s^-1,293sides/135along/19across. No NQ5/6,
+new mesh/truncation adoption,zero-bin skips,direct-adjoint replacement,cache-policy
+change or production refactor. Existing lowdegreeL3/NQ8/.05 FD is a validation
+fixture exception only, not a new production mesh experiment.
+
+Allowed new candidate files: phase_a_driver.cpp,phase_a_contract.hpp,
+phase_a_reconstruction.hpp,phase_a_standard_forward.hpp,phase_a_contract_test.cpp,
+pinned_yspec_strain.hpp and read-only formula provenance. Copied engine_headers/
+Windowed3DFields.h may receive ONLY a diagnostic export/access hook to already
+computed radial modes/derivatives, with unchanged arithmetic/lifetimes; prefer
+an isolated read-only inspector over broad API rewrites. No changes to copied
+SensitivityKernels/SEM/solver/cache maths. profile.hpp only additive phase/domain
+reporting if necessary. Candidate/campaign implementation_status.md updated
+after every change. Add fresh configs/checker/review/receipt files under phase-a-v1
+prefix; no generic staging/supervisor rewrite. New check scripts must match
+existing check*.py staging pattern.
+
+First Luna deliverable is source diff + completed contract checklist, not a build.
+Sol-high checks export location,formula/scales/duality/fluid/lift,raw-byte equality,
+ownership and true-forward counters. Parent releases builds only after this.
+
+3. Fixed bounded build/job inventory, with sequential gates
+Three sequential builds: native physical driver,profile physical driver from SAME
+source (MATHPROFILE_DISABLED difference only),tiny contract-test executable.
+Original GCC13.2 -O3 gnu++23/EIGEN_DONT_PARALLELIZE,auditprofile disabled;
+Eigen-internal backend2,no CBLAS switch. Native/profile builds2400s/32GiB;
+tiny test300s/4GiB. No numerical baseline recompilation or YSpec rebuild.
+
+Run build-receipt/hash and candidate-scope gates, then tiny contract test first
+(60s/2GiB). Exactly FIVE numerical job processes, each gated before next:
+  A1 radial-packet: unchanged NQ10 full-system maths at bins9,25,40,all0..200
+     degrees/native sides,accepted frozen waveform/adjoint weights. Export raw
+     radial modes plus old DS reference fields from SAME workspace. No replay
+     re-solve. Sequential per-bin packets,8frequency workers maximum,inner1.
+     Record exact padded dimensions (radial payload~135689472bytes for all3bins,
+     before reference fields/metadata),check overflow/actual size; no35bin cache.
+  A2 reconstruction-replay: old and new consume identical hash-bound radial bytes,
+     immutable prebuilt geometry/angular tables,both roles/all sides/both sections.
+     No radial solves. Gate complex fields<=1e-11 and unchanged kernelVs products;
+     retain channels/max-location/fluid projections and nonzero-adjoint checks.
+  A3 lowdegree-FD-kernel: existing L3,NQ8,.05 audit using common reconstruction;
+     reuse qualified same-input frozen forward+/-trace receipts, run existing
+     FD check2e-4,gravity/time identity1e-10. No new +/-jobs in this inventory.
+     Export old/new scalar integral and field parity; never reuse different
+     perturbation/model/temporal inputs. If reuse qualification fails, halt.
+  A4 kernel-true-forward:35bins,L200,NQ10,.025,8freqworkers/inner1. Explicit
+     forwardOnly=true,poleOnly route; no unit-HH,weighted-HH,receiver QR/projection.
+     Compare source/lift/receiver spectra to accepted forward+unit-capture output.
+  A5 standard-forward-batch: SAME fixed mesh/exact documentation z/model/forcing/
+     receiver conventions. Two explicitly declared sequential submodes in ONE
+     job: standard algorithm UNTRUNCATED,then existing standard TRUNCATED policy
+     as control-only. Each35bins,8freqworkers/inner1,no simultaneous queues.
+     Untruncated vs A4 complex receiver-field relativeL2<=existing1e-11; compare
+     temporal/scalar diagnostics. Truncated-policy deviations/cut indices and
+     timings are reported, not silently adopted or called kernel-adjoint proof.
+     Keep source-aware cutoff/cadence provenance; do not force old policy into
+     the reconstruction prototype. Mismatched grid/scale halts, not remapping.
+All five numerical jobs600s/16GiB except A3 retains8GiB. Checkers120s/4GiB.
+No extra L200 repetitions/sweeps/speedup claim. A5's two35bin submodes are the
+declared workload; numerical submodes total6 but process job count remains5.
+Any new numerical submode/job,failed gate requiring math changes,or unavailable
+frozen FD fixture returns to parent before execution; preserve failed trials.
+
+4. Timing, resources, receipts and stop
+Separate setup/geometry,forward assembly/factor/substitution,spatial adjoint,
+measurement/adjoint-source FFT integration,radial strain prep,angular synthesis,
+contraction,reduction,I/O,diagnostics and total; shared factors not double-counted.
+Raw exclusive wall and summed worker elapsed occupy different domains. Native
+and profiled times labeled separately; no overlapping worker diagnostics removed
+from wall. A5 standard/control policy timing is exploratory,not evidence that
+normal DSpec is slower. Old9.4s captured unit adjoints; YSpec5.641430309s remains
+historical aggregate context with incomparable internal phase boundaries.
+
+Tunya ONLY,all builds/calcs detached nohup with existing hash-bound operators,
+fresh exclusive paths/task IDs. Exactly8total frequency workers maximum,inner
+solves/Eigen/library pools1,CPUs16–23 if available,numeric cap20/build cap8,
+aggregate<=50threads after preflight. Explicit per-command /usr/bin/env
+OMP_THREAD_LIMIT=8 OMP_NUM_THREADS=1 OMP_DYNAMIC=FALSE (supervisor resets thread
+vars),libraries1; helper tests needing4threads use same cap8 override. No nested
+parallelism. Existing memory limits above; no silent enlargement. Watchdog is
+USER_SPACE_SESSION_WATCHDOG,not kernel aggregate enforcement. Strict SSH host
+checking/auth state unchanged. No deletion,production edits,commit or push.
+
+Save launch/build/input/source/binary/output hashes,completed job and cleanup
+receipts; validation.json with all field/FD/counter gates; native/profile costs,
+scope map,packet schema,raw fields/channel/location errors and brief PhaseAreport.
+Sol-high reviews completed evidence; report to user and STOP before Phase B or
+integration. This plan does not authorize broader scientific conclusions or
+resolution/truncation/cache/direct-adjoint changes.

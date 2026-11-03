@@ -1,0 +1,123 @@
+{
+  "build_root": "/space/adcm2/research/builds/phase-e-stage2-radial-v1",
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "variants": [
+    {
+      "id": "dspec-timer-disabled",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec",
+      "output_name": "phase-d-driver",
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec",
+        "-O3",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DNDEBUG",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-DGSHTRANS_HAVE_INTERPOLATION",
+        "-DDSFAST_DISABLE_PROFILE",
+        "-I/space/adcm2/research/projects/DSpecM1D",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "-DYSPEC_PHASE_E_PROFILE_DISABLED",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec/phase_d_driver.cpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "-DMATHPROFILE_DISABLED",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so",
+        "-Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled",
+        "-o",
+        "{OUTPUT}",
+        "-lfftw3",
+        "-lfftw3f",
+        "-lfftw3l",
+        "-llapack",
+        "-lblas"
+      ],
+      "sources": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp"
+      ],
+      "dependencies": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so"
+      ]
+    },
+    {
+      "id": "dspec-timer-enabled",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec",
+      "output_name": "phase-d-driver",
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec",
+        "-O3",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DNDEBUG",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-DGSHTRANS_HAVE_INTERPOLATION",
+        "-DDSFAST_DISABLE_PROFILE",
+        "-I/space/adcm2/research/projects/DSpecM1D",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "-DYSPEC_PHASE_E_PROFILE_DISABLED",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec/phase_d_driver.cpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so",
+        "-Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled",
+        "-o",
+        "{OUTPUT}",
+        "-lfftw3",
+        "-lfftw3f",
+        "-lfftw3l",
+        "-llapack",
+        "-lblas"
+      ],
+      "sources": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp"
+      ],
+      "dependencies": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1/candidates/phase-e-stage2-radial-v1/dspec",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so"
+      ]
+    }
+  ]
+}

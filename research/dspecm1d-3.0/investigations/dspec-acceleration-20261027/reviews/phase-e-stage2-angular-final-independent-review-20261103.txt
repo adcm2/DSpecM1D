@@ -1,0 +1,135 @@
+Phase E Stage 2 angular substage — Sol 6.1 high independent final review
+2026-11-03
+
+TERMINAL SCIENTIFIC EVIDENCE, MATCHED PERFORMANCE, AND FINAL REPORT: PASS.
+Authorized angular reconstruction substage is complete. Stop before subsequent
+modal/other optimization, production integration, or discrepancy investigation.
+
+FINAL SEALS
+analyses/phase-e-stage2-angular-matched-report-20261103.md
+6b64d2c4b19dd0b70bf7073561065a49d9883f5a13b619b44cf0251ab1f257f0
+analyses/phase-e-stage2-angular-report-20261103.json (actual terminal output)
+ab867a3caf8da0a4b63eb65c9d000f3981d3818a7ac2513881e608d71c938468
+Compact raw archive
+7b4e6faeb4e7cf3d8eed40366c994b3ea304607b653c84cecc1132ae8e93f674
+Canonical manifest format-correction bound sidecar
+9b4528fb1f5566ecdfdec944dd7676d04b6115c0e4c13905896d95bdd5982c72
+
+PROVENANCE AND LIFECYCLE
+Independently checked all107 unique regular compact-archive members against
+the manifest. Every collected producer output matches its supervisor hash;
+all242 declared output hashes match the finalized producer state. Original
+manifest SHA36f8746494e1b2d68ece6001b6987be8435e8d479f79cbe3e45ce35e1bfe7234
+has a literal backslash-n suffix; its bytes remain preserved. Canonical JSON
+and bound sidecar decode to identical manifest content; no evidence data changed.
+
+Actual build commands exactly match source/build seals. Both variants rc0;
+all13 tracked before/after paths stable and all12 shared external dependency
+hashes match the final validated radial build. Disabled binary
+45b834873ef6efd53dee81c7508ea79ea9a27a69d612ea44793cd5a01a9962bc;
+enabled0502c44b27afdcc04d87899fb02d1e32a2a81f113b8211a0bb5d37f8b6128e28.
+Only isolated angular driver/header code changed; current batched radial,
+SEM/source/normalization, solver and production sources remain preserved.
+
+Producer plan aaacd4c78b480e7c904026b3f1322e9e05433e6c7c1c93e337e104202e4a4889:
+all13 numerical invocations plus FDchecker completedrc0, inputs unchanged,
+failure-free and cleanup verified. Their timestamps are sequential. Final state
+and immutable snapshot are byte-identical, SHA
+bb59d4079196a56c9343461d51b4f8d0b638a4c09bc997f3632a7c24c93f5c5c.
+Standalone checker plan04063825729c0d49a19689bdf77e5e9da70fe835e7400130ead477efb8dc1685
+ran after producer completion, reads that external immutable snapshot, and
+itself completedrc0 with unchanged input maps and verified cleanup. Its output
+hash matches the sealed checker report above. No live-current-state argv cycle,
+scientific rerun, or hidden failed numerical invocation is present. Pre-build
+orchestration failures were preserved before extraction/build execution.
+
+CORRECTNESS AND ACCURACY
+Case remains L200/NQ6, scale.9,h=.02035382429229197,208one-sided output sides,
+135+19angles,35bins7..41, FULL radial/gravity solves,8totalworkers/inner1.
+Both matched timing controls use the VALIDATED BATCHED RADIAL route. Baseline
+is the complete legacy16x32 complex angular algorithm; new route64x32 real
+degree sums, shared spin0 row blocks, reused coefficient packing, and exact
+reserved-l0-frame specialization. No threshold pruning or conjugate degree sum.
+
+Independent all35 same-workspace angular proof:70rows=35bins x2sections, with
+positive finite forward/adjoint/product reference norms EVERY row, including
+7/8/41. Maximum relative-L2 errors forward8.37763334621399e-16,
+adjoint7.167896773374763e-16,complexproduct1.0855003062927142e-15 <1e-11.
+Independent old scalar proof also70rows with all reference norms positive;
+maxima forward3.1333866519405655e-16,adjoint2.569694192554953e-16,
+product4.1457046604895304e-16. These are same-workspace numerical proofs, not
+cross-backend scientific equivalence.
+
+All35 radial packet proofs remain exact0 for all8 recorded categories,
+21715400 total records. Per bin620440 records partition387432forward,
+233008adjoint,44800fluid,575640solid, matching the radial baseline inventory.
+Native interfaces/source lift, frame/spin/family conventions and fluid
+projection remain in the shared preserved path. No extra physical fluid
+accuracy claim is inferred from whole-section error norms.
+
+All-bin full-pipeline difference to actual final validated radial reference:
+along2.2315738952312634e-15,across1.4679506907054781e-15; trace/spectrum/
+components exactly0 difference, exact physical grids. All timed/profile routes
+also pass complete frozen-reference and matched-pair output gates.
+
+Actual new-helper L3/NQ8/h=.05/157sides/91angles/oneworker control:35one-section
+angular proof rows with positive norms, maxima forward1.5282501947439154e-16,
+adjoint1.393502527312831e-16,product2.7529671216565314e-16. Independent scalar
+maxima<=3.2961e-16. Its35radial proof bins are exact0,236600records. Frozen L3
+kernel-array difference3.1859459282028515e-16; other physical channels exact0.
+Independently hash-matched consumed frozen base/plus/minus traces/results and
+recomputed serial central FD=-106.02358956682345 versus new integrated kernel
+-106.02359024964314: relative6.440261900046464e-9 <2e-4. Gravity1.9984e-15 and
+time-shift identity.9999999999999994 pass. This uses the actual new route,
+not an NQ8 fallback.
+
+Unchanged SEM/source/dependencies plus tight all35 field/output equivalence
+support inheriting the existing NQ10 solid budget: field2.1952474713321954e-4,
+full35kernel1.450918716573929e-4 <1e-3. Prior PhaseD final-report anchor
+013273941560685863015e48aeef42daeada129b3174ff47217637f21e605a95 links the
+existing numerical evidence; it is not a newly measured convergence result.
+
+MATCHED TIMINGS AND PROFILE INTERPRETATION
+Fresh three native driver observations:
+legacy7.608922249,7.601138393,7.581567730s; median7.601138393s.
+real4.899015515,4.927772044,4.967048291s; median4.927772044s.
+Reduction2.673366349s =35.170604859% of baseline elapsed; speed ratio1.54251015.
+Both controls use current batched radial, so this isolates the angular substage.
+No historical single observation is used as a matched baseline.
+Fresh YSpec driver4.358693065,4.312707284,4.308166653s; median4.312707284s.
+New D/Y driver ratio1.142616857. The backends perform different arithmetic.
+Supervisor medians7.894199750/5.304443197/Y4.555655s are a separate domain,
+including job overhead; they are not the driver observations.
+
+One profile per D route: angular scope21.746719850->4.662851660worker-s;
+legacy complex GEMM19.222517141worker-s/147840products, versus new real GEMM
+3.626096367worker-s/27552PAIR scopes enclosing55104real products. Coefficient
+packing1.699598032->.219113381worker-s; scatter.094675903->.357326292worker-s
+with post-sum phase work. Moving phase work changes fine-scope attribution;
+the total angular and native-pipeline comparisons are the meaningful outcomes.
+Modal preparation24.37174437worker-s is72.6% of the new33.57019794worker-s total;
+this is a profile observation, not a released next optimization.
+
+All raw profile rows have finite valid inclusive/exclusive times. Both profiles
+show35workspace/root calls,32radial calls,35forward/32adjoint/3exact skips and
+exclusive route markers. Real packing1312calls, material32batches; legacy
+complex147840calls. Worker/root closure is0 within rounding for totals
+50.649994228/33.570197940worker-s. Master wall closure is0 at
+7.588711623/4.932966110s. Profile driver7.589173351/4.933332736s is separate
+from native medians. Worker sums overlap wall; one profile per route cannot
+isolate instrumentation overhead or repeated subcomponent variability.
+
+MEMORY AND RESOURCE BOUNDARIES
+Recorded conservative angular working budgets: real23663080B,
+legacy17940200B,L3real5177576B, all below32MiB/worker. These are derived
+simultaneous-cache/scratch bounds, not measured allocations or full process RSS;
+diagnostic old/new sample retention and modal state have separate job accounting.
+Build peak6threads/2.369GiB within8/32GiB. Numerical peak9threads/2.1825GiB
+within20/16GiB; standalone checker2threads/.0405GiB within4/8GiB.8totalworkers,
+inner1, sequential work and aggregate50thread ceiling preserved. User-space
+watchdog is not kernel aggregate thread/memory accounting.
+
+Final Markdown is materially accurate and bounded: correct fresh-baseline
+denominator, driver/supervisor/worker distinction, real-pair call accounting,
+roundoff-level parity, actual L3 FD and inherited0.1% budget. No remaining
+scientific/provenance/report blocker. Stop at this completed angular substage.

@@ -1,0 +1,80 @@
+{
+  "finished_unix": 1793089069.3636646,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/receiver-gate/receiver-gate"
+      ],
+      "command_sha256": "e13e4fca19e78a8a750f71470efeda9f3a6798afb3f9ef8c4cede0d1d974f8ec",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "elapsed_seconds": 3.3868400729988934,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          1991963,
+          12231645
+        ]
+      ],
+      "finished_unix": 1793089069.3616548,
+      "id": "receiver-gate",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/receiver-gate/receiver-gate": "d3b7762e1d2b463f7632ddce4c847022132171bbb9b78edbd81b8969c8035ef7",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/receiver-gate/receiver-gate": "d3b7762e1d2b463f7632ddce4c847022132171bbb9b78edbd81b8969c8035ef7",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "04725ac7f8b347c85bfca527593aced212edec2e12e582bdc1c7b9935d6e0720",
+      "outputs": [],
+      "outputs_sha256": {},
+      "peak_observed_rss_gib_userspace": 0.1168,
+      "peak_observed_threads": 2,
+      "returncode": 1,
+      "started_unix": 1793089065.969614,
+      "status": "failed",
+      "system_cpu_seconds_children": 0.5952259999999999,
+      "updated_unix": 1793089068.1088533,
+      "user_cpu_seconds_children": 2.572657,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.1168,
+        "elapsed_seconds": 2.13,
+        "owned_processes": [
+          {
+            "pid": 1991963,
+            "starttime_ticks": 12231645,
+            "threads": 1
+          },
+          {
+            "pid": 1985242,
+            "starttime_ticks": 12196618,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.1168,
+        "peak_observed_threads": 2,
+        "thread_cap": 50,
+        "thread_count_including_supervisor": 2
+      }
+    }
+  ],
+  "plan_sha256": "e9a0e8eb947895c435c87697f9bcafca159b789b8b4614286bae4bb8080b9d7a",
+  "schema": 1,
+  "started_unix": 1793089065.9457095,
+  "status": "failed",
+  "task_id": "profile-01",
+  "thread_cap": 50
+}

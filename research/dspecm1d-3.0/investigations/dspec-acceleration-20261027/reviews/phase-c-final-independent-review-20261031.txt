@@ -1,0 +1,79 @@
+Phase C two-pass core results review — Sol,2026-10-31
+PASS for the isolated core algorithm and complete native-grid observables.
+Packet-backed one-sided diagnostic remediation remains pending/superseded;
+do not promote the candidate or interpret mis-mapped field ratios physically.
+The user's resumed authorization permits the bounded C2 follow-up below.
+
+Evidence read
+- receipts/phase-c-l200-checker-v3/phase-c-l200-checker-v3/data/phase-c-pipeline-check.json
+  SHA f785d9eac0db96ef621e3a88b54bbdc75dd87676a14345c8a962c42ea88c2727.
+- Checker-only terminal state at receipts/phase-c-l200-checker-v3/state.json
+  SHA5dcd75a2a0a8d6ba596480993112b01146dede1d266397c5f34fa52b5bc53edf:
+  rc0,unchanged inputs,verified cleanup. Failed original checker is preserved.
+- receipts/phase-c-l200-numerical-summary-20261031.json: all4L200 numerical jobs
+  completedrc0,unchanged inputs/cleanup. Original task state165f526e...8d4ca19
+  is failed solely because its later checker failed, not its numerical work.
+- receipts/phase-c-l3-fd-02.summary.json and
+  receipts/phase-c-full35-kernel-comparison-20261031.json.
+Reviewer read sources/plans and preserved artifacts only; no implementation,
+compiler execution or new numerical solve was performed by reviewer.
+
+Core validation
+Direct receiver RHS/solutions use the accepted Hermitian-dual convention.
+Validation reports42000assembled direct RHS columns; RHS-equivalence quantized
+counter absent/zero and solution-equivalence counter5 at1e-12 scaling. Optional
+zero counter absence was correctly qualified by the validated code/flags and
+positive solve coverage, without accepting positive forbidden work.
+Phase A degree-inner reconstruction is actually exercised in the full pipeline,
+not merely cited as a harness.70bin/section rows retain separate forward and
+adjoint aggregate gates, complex pre-real-projection products and fluid groups.
+Reported maxima are1.014e-15forward,8.57e-16adjoint,1.39e-15complex product.
+Fluid-only adjoint diagnostic reaches2.30e-2 despite pooled gate passage;
+no universal per-subset roundoff or physical SI-strain claim follows.
+
+Validation outputs exactly match oracle-off outputs. Skip on/off full kernels,
+waveforms,spectra,grid files match byte-for-byte except intentional skip flags.
+Native/profile skip-on outputs also match byte-for-byte. All35forward bins
+remain;32kernel workspace preparations and exact zero skips7,8,41 are verified.
+No positive QR/unit-basis/cache work occurs on the oracle-off direct route;
+cache_bytes=0. Accepted A4 full35forward components match exactly.
+Time-shift=.9999999999999997; gravity max error2.88658e-15.
+
+The SAME direct/common route computes the new L3/NQ8/.05/91-angle derivative
+control: integrated kernel-106.02359024964261, frozen-trace FD
+-106.02358956682345, relative6.4402569408e-9<existing2e-4. Baseline trace,
+spectrum/components match; FFT2048/4096s is distinct from1201saved samples.
+
+Full35frequency-summed native-side lnVs kernels are compared to accepted F8a
+on identical293sides and135/19angles. Along/across relativeL2 are
+6.5074859826e-13/1.1671055987e-13; source/receiver/bulk groups<=9.164e-13.
+Maximum absolute differences2.5470e-26/1.7593e-28. Fluid Vs kernels stay zero.
+This is numerical/discrete equivalence, not continuous mesh accuracy proof.
+
+Known packet-side comparison limitation, requiring correction
+commonSideElement selected the inner containing element at a coincident
+artificial boundary for reference localNode0. It must prefer matching candidate
+ELR/EUR for EVERY aligned reference endpoint, then use same-material containment
+only when an artificial old endpoint is not a candidate boundary; source/material
+breaks never use cross-break fallback. Native C reconstruction/kernel arrays
+already carry explicit correct element sides, so core proofs above are valid.
+Packet A1 grouped differences are not accepted physical discrepancy evidence.
+B common-side accuracy tables are similarly superseded where affected; count
+affected saved rows, then correct bounded3-bin same4mesh diagnostics as needed.
+Preserve original35-bin waveform and timing evidence. No masking or cause study.
+
+Timing/resource interpretation
+Native two-pass elapsed22.500408599s; profile skip-on22.357002873s, with
+1.637/1.6383GiB observed RSS and9observed threads. Validation with oracles uses
+31.79s/3.0435GiB. Compared with historical accepted16.8176s native median,
+two-pass is slower; memory reduction alone is not acceleration. Additional
+factorizations are explicit. A fresh matched reference remains needed for any
+final speed claim. All jobs remain Tunya detached,8workers/inner1,cap20numeric,
+cap8build,16/32GiB,<=50aggregate policy; user-space watchdog is not kernel
+aggregate enforcement. Failed attempts/source/build receipts remain preserved.
+
+Current C is retained as an independent oracle. Proceed only to the narrowly
+authorized fresh C2 preweighted complex-contraction candidate with its own
+linearity/weighting proof and diagnostic repairs, then final pipeline review.
+No production integration,discrepancy work,YSpec rerun,new figures,delete,
+commit or push is authorized.

@@ -1,0 +1,81 @@
+{
+  "scope": "Diagnostic SEM solver prototypes and bounded objective-response cache",
+  "disposition": {
+    "accepted_factor_backend": "Existing equilibrated COLAMD EquilibratedSparseLU only",
+    "not_accepted": [
+      "equilibrated general-complex band LU",
+      "NaturalOrdering SparseLU",
+      "element-interior static condensation"
+    ],
+    "batch_response_cache": "Explicit opt-in prototype; volume-only smoke passed, contact-safe promotion not established"
+  },
+  "implementation": [
+    "solver_backends.hpp",
+    "sem_cases.hpp",
+    "sem_solver_benchmark.cpp",
+    "batch_response_cache.hpp",
+    "batch_response_cache_smoke.cpp"
+  ],
+  "implementation_status": "implementation_status.md",
+  "actual_sem_solver_evidence": [
+    {
+      "model": "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/prem.200.noatten.txt",
+      "case": "LMAX=12, raw bins 1..48, actual source-treated force and receiver-weighted adjoint RHS",
+      "stdout": "prem-l12-b48.stdout.log",
+      "stderr": "prem-l12-b48.stderr.log",
+      "records": 4800,
+      "backend_failures": 0,
+      "max_forward_residual_condensation": 4.7161752522144174e-17,
+      "max_adjoint_residual_condensation": 1.9206777679251644e-20,
+      "max_forward_full_vector_relerr_condensation": 1.458579971934642e-11,
+      "max_adjoint_full_vector_relerr_condensation": 6.346029571855201e-12,
+      "max_forward_residual_band": 4.96670523666483e-17,
+      "max_adjoint_residual_band": 2.1044845582787482e-20,
+      "max_forward_full_vector_relerr_band": 1.5978653443857466e-11,
+      "max_adjoint_full_vector_relerr_band": 9.505952411477662e-12,
+      "timing_status": "Preliminary one-process timings; not headline evidence"
+    },
+    {
+      "model": "/home/adcm2/Documents/Research/Projects/DSpecM1D/benchmarks/yspecpp/cases/homogeneous_ocean.deck",
+      "case": "LMAX=3, raw bin 1, fluid/seafloor interfaces",
+      "stdout": "smoke-ocean-l3-b1.stdout.log",
+      "stderr": "smoke-ocean-l3-b1.stderr.log"
+    },
+    {
+      "model": "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/prem.200.noatten.txt",
+      "case": "LMAX=3, raw bin 1, PREM fluid/source interfaces",
+      "stdout": "smoke-prem-l3-b1.stdout.log",
+      "stderr": "smoke-prem-l3-b1.stderr.log"
+    },
+    {
+      "model": "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/prem.200.noatten.txt",
+      "case": "LMAX=3, raw bins 1..3, actual symbolic numeric-refactor reuse",
+      "stdout": "smoke-prem-l3-b3-reuse.stdout.log",
+      "stderr": "smoke-prem-l3-b3-reuse.stderr.log",
+      "records": 84,
+      "backend_failures": 0,
+      "natural_and_condensation_reused_bins": [2, 3]
+    }
+  ],
+  "actual_batch_cache_evidence": {
+    "fast_driver_result": "../fast/smoke/tensor-real-l3-f1/result.json",
+    "case": "same-engine LMAX=3, one-bin, three-objective, contact accumulation disabled",
+    "entries": 7,
+    "misses": 7,
+    "hits": 14,
+    "max_basis_reconstruction_relative": 3.5040595835940671e-16,
+    "field_relative_error": 0,
+    "kernel_l2_relative_error": 1.1348868183677009e-14,
+    "kernel_pointwise_scaled_error": 4.6726732223994463e-13,
+    "objective_relative_error": 0,
+    "contact_gate": "Not exercised for this batch case; direct contact path remains enabled by default"
+  },
+  "frozen_production_factor_gates": {
+    "source": "../fields_vs_frozen.json",
+    "equilibrated_colamd": "Pass: all 336 field and 240 contact groups per bridge",
+    "band_lu": "Fail: 252 field and 106 contact groups; max scaled forward error 1.35e-8, contact L2 5.38e-9",
+    "natural_ordering": "Fail: 246 field and 106 contact groups; max field error 9.21e-9, contact 6.78e-9",
+    "static_condensation": "Fail: 258 field and 104 contact groups; max adjoint-strain error 1.17e-8, contact 8.36e-10",
+    "promotion": "No alternative factor backend is accepted despite small original-system residuals"
+  }
+}

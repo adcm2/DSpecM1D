@@ -1,0 +1,31 @@
+Phase A fixed binary mapping — parent/Sol-high clarification,2026-10-31
+
+This fixes a reporting/queue ambiguity in phase-a-execution-plan.txt without
+adding any numerical job,submode,build variant or mathematical change:
+  A1 radial packet: PROFILE physical binary, with mathprofile enabled.
+  A2 old/new reconstruction replay: NATIVE physical binary, profiler disabled;
+     manual coarse phase clocks are permitted and labeled as such.
+  A3 lowdegree FD kernel: NATIVE physical binary, profiler disabled.
+  A4 kernel true-forward35bins: PROFILE physical binary.
+  A5 standard-forward batch: PROFILE physical binary for BOTH explicitly planned
+     sequential35bin submodes (untruncated matched control,standard truncation).
+Tiny contract test remains the third build and its own pre-numerical gate.
+
+A4/A5 use the SAME profiled build/source/settings so actual mathprofile
+call/RHS/scope evidence can establish forward-only/no-unit-HH/no-weighted-HH/
+no-receiver-QR execution. Require positive expected forward work and active
+profiler provenance; omitted zero-count keys alone from a disabled profiler
+are not evidence. Keep source review of forwardOnly branch and empty RHS paths.
+Do not add a new optional native audit-sink/counter framework solely to obtain
+a native timing label. Existing counters/timers and narrow new-adapter probes
+are sufficient; no additional solver/header interface expansion is approved.
+
+A4/A5 times are INSTRUMENTED EXPLORATORY timings, not native times. No paired
+native run is included, so do not estimate profiler overhead,claim an accepted
+production speedup,or compare them as a fair speed ratio to native historical
+YSpec. A1 timing is diagnostic context only. A2/A3 native designation refers to
+MATHPROFILE_DISABLED; any manual phase clock overhead remains unquantified.
+
+Keep fixed total: five numerical processes,six declared numerical submodes
+because A5 contains two; native/profile physical builds plus tiny contract test.
+All prior source-contract/math/resource/gate/stop boundaries remain in force.

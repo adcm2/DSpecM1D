@@ -1,0 +1,61 @@
+Phase A final independent review — Sol6.1-high,2026-10-31
+PASS for the final report/evidence interpretation at:
+ MD ffc1889ed3f034d7aba4ddcaa705ed8be90f78446a2b71083e2ae4252a4c7d18
+ JSON7ae3ef27224ed87153a959ff560c1ca17d1e59bbe05ffeec08181eed4c010403
+ reports/phase-a-reconstruction-20261031/phase-a-reconstruction-20261031-report.*
+
+Read-only review only. No implementation edits, compiler/test execution, build,
+new numerical calculation or Phase B work was performed by this reviewer.
+
+Scientific acceptance and boundaries
+- Report identifies exact attenuated/full-gravity L200,NQ10,.025 case, measurement
+  window1000–1200s,35bins7–41,dt2,2048FFT samples/4096s period,5e-fold damping
+  over2400s,filter2/4/8/10mHz; packet bins9,25,40 are explicitly a subset.
+- Aggregate per(bin,section,role) complex field maxima8.505903090392443e-16
+  PACKED/common and9.118944614230606e-16 DS/common meet approved1e-11 gate.
+  ALLsolid/fluid rows participate. Separate along-fluid-adjoint ratios and
+  tagged-dual absolute residuals remain disclosed, without unsupported SI
+  interpretation or invented causes. Fluid kernelVs remains0.
+- Existing L3FD error6.440263374429668e-9 meets2e-4; scalar/common/frozen values
+  match saved summaries. Time-shift identity is correctly labeled frozen.
+- True-forward A4 has35calls/42035forward RHS/14035factors/zeroHH/zeroQR and
+  byte-identical accepted receiver components. Omitted full-modal counter was
+  qualified as an unentered branch, not silently interpreted as failed work.
+- Untruncated A5 receiverL2=3.852305455167019e-14. Truncated control deviation
+  6.583748037733575e-11 is reported, with no truncation adoption, kernel-adjoint
+  equivalence, new-radial-backend equivalence, or production-integration claim.
+
+Timing/accounting
+- A1 correctly labeled profiled. A2 is native, same-byte post-radial DS/Eigen
+  vs common replay HARNESS timing, including map/dispatch/collection. It is
+  explicitly not Stage2 production TENSOR timing or complete-pipeline speedup.
+- A4's6.738440032s is instrumented frequency-worker forward elapsed; A5's
+  5.810655743/2.534416402s submodes are instrumented standard degree-worker
+  elapsed. Different boundaries/decompositions are disclosed; no native speed
+  or instrumentation-overhead claim follows from these one-off controls.
+- Independently read local raw A5 profile files and matched report hashes:
+  untruncated e0bde585e38adf780219ed47e44bc89a3bb928b1fb97395b9499fbef382d1bd8
+  truncated c3ae6c691b686afe9235fff13df0840563ca6bfa74fadadd67dc9636825de974.
+  Master-exclusive sums close exactly to profiled submode inclusive walls
+  5.810654822/2.534415150s. Report's three region-wall/worker-umbrella sums and
+  top numerical-factor/solve/dynamic-H/scaling exclusive values match raw rows.
+  Worker elapsed sums include possible waits; they are not CPU or wall seconds.
+- Tunya/nohup,20numeric/8build/50aggregate policy,up-to8parallelworkers and
+  serial inner teams are explicit. USER_SPACE_SESSION_WATCHDOG is correctly
+  disclosed as not kernel aggregate accounting.
+
+Provenance/limits
+Previously directly checked source/build bindings, successful A4 receipt under
+hash-pinned failedv3 state, exact stopped job list/failure log, unchanged inputs,
+cleanup, all A4 outputs/log and accepted reference equality. Fresh read-only
+Tunya inspection found v4 completed state
+15d723f4e25ff1ede30b32b185abd6ec353b061ce8d361d3040236ee370a9d72
+with all3jobs completedrc0. Parent independently verified the terminal output/
+log collection; raw full A2 CSV and some packets remain explicitly remote-only,
+not misrepresented as locally collected. Failed attempts and post-build status
+append are distinguished from the immutable compiled candidate tree.
+
+No remaining report issue identified. These results establish the bounded
+Phase A controls and exploratory costs on this case, not general degree/mesh
+convergence or a production performance result. Phase A stops before Phase B;
+separate user approval is required for any next implementation phase.

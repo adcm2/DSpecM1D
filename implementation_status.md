@@ -1,5 +1,57 @@
 # Implementation Status
 
+## 2026-10-26 — Pole-centred field synthesis (accepted)
+
+- Reconstruct the opt-in 3D fields in exact source/receiver pole frames using
+  source orders up to two and receiver orders up to one, then rotate vector and
+  spin-strain components into the common global frame. Public global modal
+  blocks/sampling and source lifts remain available with their existing meaning.
+- Reuse one adjoint factorization for the original-width weighted solve followed
+  by a separate three-column unit-basis solve; frozen source contacts now match
+  bit-for-bit. This avoids the rounding changes from a combined-width solve.
+- All 118 enabled CTest checks and unchanged YSpec profile/integral gates pass;
+  the two established expensive diagnostics remain disabled. Independent Luna
+  mathematical/code review and Sol review found no formula/API blocker.
+- User-approved frozen limits are `1e-9` for adjoint strain and `1e-10` for
+  kernel pointwise scaled error; maxima are `6.89e-11` and `1.1e-11`.
+  All 336 field, 240 contact and 10 kernel comparisons pass, with both YSpec
+  degrees rechecked. Every other limit and permanent test is unchanged; kernel
+  L2 remains below `1.6e-13`. Independent Luna and Sol acceptance audits pass.
+  The original failed `1e-12` audit is retained alongside `accepted_comparison.json`.
+- At one fluid point, full-rank long-double solves of the same assembled operator
+  reduce direct/compact strain disagreement from `7.94e-11` to `2.14e-13`;
+  reference backward error is below `1.1e-23`. This supports a localized rounding
+  explanation, without proving every comparison in higher precision.
+- Three alternating single-thread first-call medians: degree 12, `6.57 -> 2.91 s`
+  (2.26x; YSpec `0.240 s`); degree 3, `0.123 -> 0.120 s` (YSpec `0.023 s`).
+  Evidence and bounded diagnostic: `build/kernel-reconstruction-pole-frames-20261026/`.
+
+## 2026-10-26 — Exact radial reuse in 3D field reconstruction
+
+- Grouped requested points by resolved SEM element and model radius after
+  existing endpoint canonicalization within each sampling call. Each modal block
+  now interpolates forward
+  and adjoint radial values once per group and reuses them across its angular
+  points; modal summation order, one-sided element identity, and per-call cache
+  lifetime are preserved.
+- Extended the existing field reconstruction regression to compare all sampled
+  field components against singleton and reversed-order sampling at a
+  `1e-12` per-component relative scale with a `1e-30` floor. Existing checks
+  continue to cover batching, fluids, source lift and one-sided source traces.
+- Built the existing Release sensitivity-kernel target with one build job;
+  all 30 tests passed with one OpenMP and BLAS thread. The grouped sampling
+  regression passed for singleton, reversed-order, and existing chunked calls.
+- YSpec's exact layer/radius registration confirmed this design. Frozen PREM
+  field exports and all six old/new kernel CSV pairs are byte-identical;
+  all six unchanged YSpec profile/integral gates pass (maximum relative errors
+  `2.32e-9` / `1.66e-8`). Three single-thread first-call repeats give median
+  before/after API times of `0.762/0.156 s` at lmax 3 and `55.2/15.6 s` at lmax 12
+  (`4.89x` / `3.54x`). These homogeneous-fixture timings establish no convergence.
+- Independent Luna High and final Sol High reviews pass. Compact evidence and
+  the raw timing-metadata caveat are in
+  `build/kernel-reconstruction-radial-reuse-20261026/`. Angular optimization
+  was deferred at that checkpoint; receiver-region limitations and physics are unchanged.
+
 ## 2026-07-29 — MeshModel gravity integration correction
 
 - Added focused analytic regression coverage for constant density, linearly
@@ -676,3 +728,58 @@ Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Co
 ## 2026-10-26 — Commit reviewed Earth-slice tooling
 
 - Package the existing plotting runner, instructions and optional YSpec sampling argument; numerical solver code is unchanged. Five focused Python checks, runner syntax and whitespace checks pass. Receiver-region limitations remain documented; matched-measurement development is paused.
+
+## 2026-10-26 — Bounded angular-table and phase reuse
+
+- Reuse one maximum-degree Wigner table across modal blocks per exact-angle
+  chunk, with at most 64 angles and a 32 MiB estimated table-storage target
+  (at least one angle; not a total-memory cap). Reuse one azimuth phase across
+  spin components. Coordinate frames, all modal orders, and physics are unchanged.
+- Extended an existing regression with 72 angular samples covering chunk
+  boundaries, shared/nextafter-close angles, poles and permutations; 30/30
+  sensitivity tests pass. Expanded PREM fields, all six old/new kernel CSV pairs,
+  and the archived 14,823-point full-plane CSV are byte-identical.
+- All six unchanged YSpec profile/integral gates pass (maximum relative errors
+  `2.32e-9` / `1.66e-8`). Three single-thread first-call repeats give median
+  pre/post API times `0.157/0.106 s` at lmax 3 and `15.1/7.03 s` at lmax 12
+  (`1.48x` / `2.15x`); YSpec gives `0.0243/0.214 s`. No convergence claim.
+- Independent Luna High and final Sol High reviews pass. Compact evidence,
+  source snapshots and timing/RSS caveats are in
+  `build/kernel-reconstruction-angular-reuse-20261026/`. Source/receiver-frame
+  synthesis and receiver treatment remain separate future work.
+
+## 2026-10-26 — Compact SK reconstruction, Phase 1 complete
+
+- Implemented degree-contiguous six-component strain coefficient rows, combining
+  spheroidal/toroidal families before angular synthesis and rotating summed
+  point strains once. Existing shared strain formulas, physical orders, radial
+  traces and public full-field sampling are retained.
+- Frequency workspaces prepare source and per-receiver synthesis blocks once,
+  then reuse exact frame/field-set/element/radius coefficient rows within a
+  32 MiB frequency-local cache, with recomputation fallback. Cross-bin sampling
+  plans reuse geometry, all five local physical order phases, Wigner tables and
+  degree-contiguous real angular coefficients under their shared 32 MiB
+  admission budget. These cache budgets are not total-memory caps.
+- The kernel route samples compact strain-only fields in 4096-point blocks,
+  computes receiver displacement once per frequency and skips displacement and
+  r-scaled strain work at integration points. The existing solve route is
+  unchanged.
+- Focused Release target builds with one job; 14/14 field/kernel tests pass
+  with one numerical thread. Coverage includes compact/full component parity,
+  forced plan-cache fallback, colocated source/receiver frames, duplicate
+  receivers with distinct weights, and repeated workspace sampling. `git diff
+  --check` passes. Independent Luna High and final Sol High reviews pass with
+  no required corrections; bounded full-sample scratch is a nonblocking note.
+- Parent validation passes 177 enabled Release tests (two existing diagnostics
+  disabled), expanded frozen field/contact and full-plane comparisons, all four
+  matched five-modulus comparisons, and fresh bounded regular/source-local Born
+  checks. Source contacts are identical; no numerical limit changed.
+- Three alternating native first-call repeats give lmax-12 one-objective median
+  API time 3.15 -> 0.639 s (4.93x); YSpec is 0.289 s. Two scalar objectives give
+  7.08 -> 1.57 s (4.52x); YSpec batches them in 0.295 s. Degree-3 speedups are
+  2.65x/2.47x. No convergence or receiver-treatment claim; no commit or push.
+
+- Final evidence, exact commands, frozen snapshots and reviews are retained in
+  the DSpecM1D 2.0 chat profiling folder `phase1/` (accepted `attempt-02/`).
+  All 362 protected tracked files and seven Phase 0 files retain their hashes.
+  Stop before Phase 2; no commit or push was made.

@@ -1,0 +1,74 @@
+Stage2 anchor checker contract repair — Sol-high planning addendum,2026-10-31
+
+Read-only evidence review confirms a checker-contract failure, not a failed
+scientific comparison. Preserved receipts/stages12-stage2-v2-measure-failed/
+raw-task/state.json SHA256
+04263e91b455e0650ce44fd95e60d4dfb0e3dc1d7a902f77b3011a6441d0b87e
+records degree8-anchor completed rc0, inputs unchanged, cleanup verified gone;
+only subsequent degree8-anchor-vs-Stage1-N1 failed. No later measurement started.
+degree8-anchor-output-comparison.json reports all9scientific artifact bytes exact
+against Stage1N1. Its result correctly says schedule_mode=degree,workers8,
+solve_workers8,frequency_workers1,elapsed52.250099309s. Existing validate_result
+incorrectly requires frequency mode unconditionally when called by parity.
+
+Approved-scope correction for Luna only: tools/check_stages12_stage2.py and its
+meaningful regression tests, fresh immutable v3 plan/staging/task definitions,
+status/receipt records. No numerical candidate/source/binary/scheduler change,
+rebuild, tolerance relaxation or supervisor/staging-tool modification.
+
+Exact checker contract: explicit expected_schedule_mode(degree|frequency),
+expected_solve_workers,expected_workers(CLI) and expected_frequency_workers
+passed through result/parity APIs and corresponding command flags. Planned
+anchor invocation expects degree/solve8/CLI8/frequency1; frequency invocations
+expect frequency/solve1/CLI1/frequency1or8 as specified. Validate actual fields
+against those expectations; do not accept whichever mode result happens to say.
+Frequency mode retains all current inner1/no-nesting, timing-including-diagnostics,
+buffer bound and scientific gates. Degree anchor requires original legacy kernel
+timing label and zero frequency-only pass/reduction/diagnostic-worker/contribution
+fields. Shared finite/gravity/time-identity/tensor-packed gates remain unchanged.
+Inspected exact accepted anchor contract:
+  kernel_timing_semantics="legacy degree kernel_s excludes tensor validation"
+  kernel_parallel_pass_wall_s=0; reduction_wall_s=0;
+  diagnostic_worker_elapsed_s=0; frequency_contribution_buffer_bytes=0.
+The nonzero serial diagnostic tensor_validation_s=0.519657124 remains valid;
+kernel_s=40.9390908 already excludes it under legacy degree semantics. Do not
+require tensor_validation_s=0 or reinterpret it as a frequency-worker duration.
+Parity still verifies original completed job receipts, every scientific byte and
+all non-timing metadata, including cache accounting; exclude only the existing
+explicit scheduler/timing metadata. Do not add scientific fields to exclusions.
+
+Regression tests: actual preserved anchor result accepts only degree8expectation;
+wrong expected mode/solve/frequency/CLI worker fields reject. Frequency1/8still
+reject degree expectation and any inner>1. Retain artifact mutation, missing
+output, metadata difference, receipt hash, profile domain/counter/diagnostic
+checks; successful degree admission must not weaken those gates.
+
+Fresh v3 measurement plan should start with the repaired explicit degree8anchor
+parity check reading the completed v2anchor through unchanged verified_job.
+That function qualifies an individual completed job with hashes/cleanup even
+when a later checker failed its containing campaign. Bind original v2plan/state/
+job log/binary/output hashes as external inputs; preserve the failed state and
+original receipts without rewriting them. Do not relabel v2campaign completed.
+Do not relax any global external-campaign completion gate. The specific reuse
+must bind v2terminal status=failed, original planSHA
+2d55f080675fe62b17864fce817977d9aa4a015647bc42c9e40e027128408540,
+and the exact terminal stateSHA above. Require its job list to contain exactly
+degree8-anchor(completed,rc0,inputs unchanged,cleanup gone,no failure reasons)
+then degree8-anchor-vs-Stage1-N1(failed,rc1,inputs unchanged,cleanup gone), with
+the saved checker log identifying the schedule-mode ValueError and no later job.
+This narrowly qualifies the successful numerical anchor; the failed check remains
+failed evidence and must be rerun successfully with the corrected checker.
+Anchor commandSHA0af6bb24054dd3cf5533683278ae2657f2562968b0bf1140e90fd80b20df28e7,
+native binarySHAbce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab,
+native command.jsonSHA8ad5163d724e58e4f042f56d14c663c52e764322c891678657e3b2df9f78b72d,
+resultSHA737a0d15c75997891ec9d201a6dc91b0cc898a0e7651c5e7c954a8740408fea1,
+and logSHA827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498
+are recorded in this immutable successful job receipt. Recheck these against the
+actual files and original successful build source/dependency/binary binding.
+After this gate passes, run the remaining7planned frequency numerical jobs in
+original bounded order, same binaries/settings/resources. Reuse v2anchor rather
+than add an unnecessary ninth physical calculation. Fresh checker tests/gates
+must pass before numerical release. No Stage3scope follows from this repair.
+
+Planner inspected source/config/receipts only, wrote this planning addendum,
+and performed no code changes, test execution or numerical jobs.

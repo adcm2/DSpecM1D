@@ -1,0 +1,26 @@
+PHASE E STAGE 2 MODAL — INDEPENDENT SOURCE / BUILD REVIEW
+Date: 2026-11-03
+Disposition: SOURCE / BUILD CONFIG PASS. Numerical / performance / final report acceptance remains pending actual Tunya evidence and the separate run/checker review.
+
+Scope reviewed
+Fresh isolated phase-e-stage2-modal-v1 candidate seeded from finalized validated angular candidate. Code delta is confined to SensitivityKernels.h, Windowed3DFields.h and phase_d_driver.cpp, with implementation-status logging. Existing batched radial and real-Legendre angular implementations remain the common baseline. No accepted SparseLU backend, SEM discretization, source/receiver lift, gravity, normalization, frequency grid or numerical tolerance change is authorized by this gate.
+
+Source findings
+The new per-case cache constructs exact SEM real K/M/A components once for each selected family/degree, retaining immutable components and active/inactive attenuation union CSC patterns/maps. Numeric H uses K assignment, z-squared M subtraction and optional dispersion A addition in the legacy order. Legacy assembly remains selectable. SEM identity is checked at workspace use, cache construction precedes the actual combined C2 frequency pass, and cold construction lies within driver/pipeline timing. Dimension-only receiver embedding obtains the same row count from the cached entry. Accepted equilibrated COLAMD factorization and true H-Hermitian solves remain per frequency/key.
+
+Earlier blockers are resolved in these sealed bytes: one current per-worker H rather than all degree matrices; attenuation state included in its key; allocated complex value/index capacity counted; old H released before replacement construction; shared cache tied to the SEM instance; cache wired into the active main frequency pass; JSON literals repaired. Shared retained cache cap is 256 MiB; numeric-H scratch cap is 32 MiB per worker. These caps describe the new component/H cache, not all existing solver memory. The class introductory comment still describes per-key worker scratch, while actual code retains one current H; this nonfunctional wording is not a build blocker.
+
+Validation hooks reviewed
+The selected cached route can compare exact H dimensions/CSC structure/coefficients against unchanged legacy assembly. Each family/degree/bin can emit physical forward, weighted adjoint and production receiver-basis solution comparisons, deterministic independent nonzero complex forward/H-Hermitian probe comparisons, raw residuals with explicit un-floored norm denominators, backward errors and Hermitian dual identities. Finite/nonnegative checks and 1e-11 dimensionless gates fail closed. Physically exact-zero solution classes require exact zero outputs/errors; positive H and independent probe reference norms are required. Maximum absolute H difference is diagnostic. Complete all-bin inventory, positive family-active coverage, raw row arithmetic and actual selected-route FD coverage must still be checked independently against run evidence. Validation-only allocations are excluded from timing jobs by explicit oracle-off configuration, which the run/checker gate must verify.
+
+Build configuration
+Both modal build configuration files are exactly equal to their accepted angular counterparts after replacing the candidate/stage/build/control root token. Compile variants, accepted external dependency paths, explicit timer-disabled Stage1 YSpec DSO/private header linkage and flags are unchanged. Build supervisor cap is 8 threads / 32 GiB. Only isolated Tunya build is released; no local C++ numerical execution. Exact minimal payload/member hashes, fresh staging roots and external input existence must be verified before launch; build receipts must bind compiled closure and compare all shared dependency hashes against finalized angular evidence. No numerical correctness or speed claim follows from this source gate.
+
+Sealed SHA-256
+be85e101ff8fbc907407c3e0490c4b138619840eac42db4b609e64d66a8c6fa1  candidates/phase-e-stage2-modal-v1/dspec/engine_headers/SensitivityKernels.h
+bf95c980c40a9ee549045040c6d8426de790c75ec2ad70e7028eb0c5d71adbcf  candidates/phase-e-stage2-modal-v1/dspec/engine_headers/Windowed3DFields.h
+21b76448939d526cba9d40c0814c383a9fe3312e806a5b78da221ce8bf7a308f  candidates/phase-e-stage2-modal-v1/dspec/phase_d_driver.cpp
+2c76621e722b457fd8dca55f79c53e6727f55230fcf33a27b137c97c8bfd5a6f  configs/phase-e-stage2-modal-v1-build.json
+615967b45ca79a8fc62e8bfc65e8888cc0cf0c22a21c2f77b89da977575e50c5  configs/phase-e-stage2-modal-v1-build-plan.json
+
+Run/checker review and actual numerical/profile/terminal evidence remain separate gates. Stop after the authorized modal optimization and matched timing report.

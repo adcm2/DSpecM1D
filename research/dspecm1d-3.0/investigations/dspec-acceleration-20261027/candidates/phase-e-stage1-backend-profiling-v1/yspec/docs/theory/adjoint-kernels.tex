@@ -1,0 +1,679 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,bm}
+\usepackage[round]{natbib}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue]{hyperref}
+
+\newcommand{\bs}{\mathbf{s}}
+\newcommand{\bh}{\mathbf{h}}
+\newcommand{\bc}{\mathbf{c}}
+\newcommand{\bT}{\mathbf{T}}
+\newcommand{\bn}{\hat{\mathbf{n}}}
+\newcommand{\br}{\hat{\mathbf{r}}}
+\newcommand{\bnu}{\hat{\bm{\nu}}}
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bM}{\mathbf{M}}
+\newcommand{\vm}{\mathbf{m}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\sd}{\mathbf{s}^\circ}
+\newcommand{\pd}{\phi^\circ}
+\newcommand{\jump}[1]{\left[#1\right]^+_-}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\sym}{\operatorname{sym}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\Lag}{\mathcal{L}}
+
+\newtheorem{lemma}{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{Adjoint kernels for a self-gravitating, hydrostatic earth model\\
+from a weak formulation}
+\author{Draft for checking}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We derive sensitivity kernels for a non-rotating, self-gravitating earth
+model in hydrostatic equilibrium, and restrict the perturbations to those that
+keep it so: in three dimensions, perturbations of the elastic tensor
+(including its anelastic dispersion) at fixed density, and of the source;
+for spherically symmetric perturbations, also the density and the radii of
+discontinuities. Laterally varying density and topography would introduce a
+deviatoric initial stress that the hydrostatic equations do not determine,
+and we show that equivalent forms of those equations then give different
+first-order sensitivities. The derivation starts from the weak form of the
+equations of motion, in which the boundary conditions are natural, and
+treats the equilibrium gravitational potential $\Phi$ as an independent
+variable constrained by Poisson's equation, so that the effect of a density
+perturbation on the equilibrium gravity is carried by a single, static
+adjoint potential $\lambda$ whose source is formed, once, from the forward
+and adjoint fields integrated over frequency. Every kernel is then local, and
+for spherically symmetric perturbations $\lambda$ reduces to a radial
+quadrature. The method is formulated in the frequency domain at complex
+frequencies, as in \citet{Adourian2024}; the adjoint problem is derived in
+continuous form and then discretised with the rules that form the synthetic
+seismograms, which for these linear operations coincides with the discrete
+adjoint.
+\end{abstract}
+
+\section{Setting and notation}
+
+The earth model occupies a ball $V$ of radius $a$, divided into regions by
+internal discontinuities $\Sigma = \Sigma_{SS}\cup\Sigma_{FS}$ (solid--solid
+and fluid--solid), with free surface $\partial V$. The unit normal $\bn$
+points from the $-$ side of a boundary to the $+$ side, and
+$\jump{f} = f_+ - f_-$; on $\partial V$ the $+$ side is outside. With this
+convention, for a tensor field $\mathbf{v}$ smooth in each region,
+\begin{equation}
+  \int_V \nabla\cdot\mathbf{v}\dd V = -\int_{\Sigma\cup\partial V}
+  \jump{\bn\cdot\mathbf{v}}\dd\Sigma, \label{eq:gauss}
+\end{equation}
+with $\mathbf{v}=0$ outside $V$. For vector fields we use the bilinear
+pairing $\langle \mathbf{a},\mathbf{b}\rangle = \int_V\mathbf{a}\cdot
+\mathbf{b}\dd V$, without complex conjugation; all forms below are bilinear,
+and the frequency-domain operators are complex symmetric rather than
+Hermitian.
+
+The equilibrium model has density $\rho$, elastic tensor $\bc$ (the
+incremental tensor of the prestressed state, with the major and minor
+symmetries) and gravitational potential $\Phi$, with
+\begin{equation}
+  \nabla^2\Phi = 4\pi G\rho \quad\text{in } \mathbb{R}^3,
+  \qquad \Phi\to0 \text{ as } |\bx|\to\infty. \label{eq:poisson-eq}
+\end{equation}
+It is in hydrostatic equilibrium: the initial stress is a pressure $p_0$
+with $\nabla p_0 = -\rho\nabla\Phi$, so that $\nabla\rho\parallel\nabla\Phi$
+in each region and the boundaries are level surfaces of $\Phi$. For a
+spherically symmetric model, $\nabla\Phi = g\br$ with $g = 4\pi G
+r^{-2}\int_0^r\rho r'^2\dd r' \ge 0$.
+
+\paragraph{Scope.} The background is spherically symmetric. A perturbation of
+$\bc$, or of its quality factors, at fixed $\rho$ leaves $\rho$, $\Phi$ and
+$p_0$ unchanged, so the perturbed model is still in hydrostatic equilibrium,
+whatever the perturbation's form; so does a spherically symmetric
+perturbation of $\rho$ or of the radius of a discontinuity. These are the
+perturbations considered: three-dimensional ones of the elastic tensor at
+fixed density, and spherically symmetric ones of every parameter. A
+laterally varying density or topography is excluded, for the reason given in
+Section~\ref{sec:lateral}. The derivation below is written for general
+perturbations of $\rho$ and $\Phi$ where that costs nothing, and specialised
+at the end.
+
+\section{The forward problem}
+
+\subsection{The hydrostatic equations}
+
+In the hydrostatic form \citep[][eq.~3.259]{DahlenTromp1998}, the initial
+pressure has been eliminated with $\nabla p_0=-\rho\nabla\Phi$, and the
+displacement $\bs$ and the perturbation $\phi$ of the gravitational
+potential satisfy, without rotation,
+\begin{align}
+  \rho\ddot\bs - \nabla\cdot\bT + \nabla(\rho\bs\cdot\nabla\Phi)
+    - \nabla\cdot(\rho\bs)\nabla\Phi + \rho\nabla\phi &= \mathbf{f},
+  \qquad \bT = \bc:\nabla\bs, \label{eq:momentum}\\
+  (4\pi G)^{-1}\nabla^2\phi + \nabla\cdot(\rho\bs) &= 0,
+  \label{eq:poisson}
+\end{align}
+the first in each region of $V$, the second in $\mathbb{R}^3$. The boundary
+conditions are $\jump{\bn\cdot\bT}=\mathbf{0}$ on $\Sigma\cup\partial V$
+(with $\bT=0$ outside), $\jump{\bs}=\mathbf{0}$ on $\Sigma_{SS}$,
+$\jump{\bn\cdot\bs}=0$ and $\bn\cdot\bT\parallel\bn$ on $\Sigma_{FS}$, and
+$\jump{\phi}=0$, $\jump{\bn\cdot\bm{\xi}}=0$ with $\bm{\xi}=(4\pi
+G)^{-1}\nabla\phi+\rho\bs$ on every boundary, with $\phi\to0$ at infinity
+\citep{LiuTromp2008}. These are the equations that YSpec solves, written in
+terms of the radial variables of Section~\ref{sec:yspec}.
+
+Integrating \eqref{eq:momentum} through a thin layer across a boundary, the
+distributional parts of $\nabla(\rho\bs\cdot\nabla\Phi)$ and
+$-\nabla\cdot(\rho\bs)\nabla\Phi$ are $\bn\jump{\rho}g\,\bn\cdot\bs$ and
+$-\jump{\rho}(\bn\cdot\bs)g\,\bn$, which cancel because $\nabla\Phi=g\bn$
+there and $\bn\cdot\bs$ is continuous. The equations therefore hold in each
+region with only the stated conditions on the boundaries.
+
+\subsection{The weak form}
+
+Let $\mathcal{U}$ be the displacements that honour the kinematic conditions
+($\bs$ continuous on $\Sigma_{SS}$, $\bn\cdot\bs$ continuous on
+$\Sigma_{FS}$) and $\mathcal{P}$ the potentials in $H^1(\mathbb{R}^3)$ that
+decay at infinity. Take $\bs'\in\mathcal{U}$, multiply \eqref{eq:momentum}
+by it, integrate over $V$, and use \eqref{eq:gauss}:
+\begin{itemize}
+\item $-\langle\bs',\nabla\cdot\bT\rangle = \int_V\nabla\bs':\bT\dd V +
+  \int\jump{\bs'\cdot\bn\cdot\bT}\dd\Sigma$, and the surface term vanishes:
+  on $\Sigma_{SS}$ both $\bs'$ and $\bn\cdot\bT$ are continuous, on
+  $\Sigma_{FS}$ the traction is $\tau\bn$ with $\tau$ and $\bn\cdot\bs'$
+  continuous, and on $\partial V$ the traction is zero.
+\item $\langle\bs',\nabla(\rho\bs\cdot\nabla\Phi)\rangle
+  -\langle\bs',\nabla\cdot(\rho\bs)\nabla\Phi\rangle
+  = \int_V\rho\,[\bs\cdot\nabla(\bs'\cdot\nabla\Phi) - (\nabla\cdot\bs')
+  (\bs\cdot\nabla\Phi)]\dd V$ plus the surface terms
+  $\int\jump{-(\bn\cdot\bs')\rho\,\bs\cdot\nabla\Phi + (\bs'\cdot\nabla\Phi)
+  \rho\,\bn\cdot\bs}\dd\Sigma$, which vanish because $\nabla\Phi=g\bn$ on
+  the boundaries.
+\end{itemize}
+Similarly, multiplying \eqref{eq:poisson} by $\phi'\in\mathcal{P}$ and
+integrating over $\mathbb{R}^3$, the surface terms vanish by the continuity
+of $\bn\cdot\bm\xi$. With
+\begin{align}
+  A_g(\bs',\bs) &= \int_V\rho\left[\bs\cdot\nabla\nabla\Phi\cdot\bs'
+    + (\bs\cdot\nabla\bs')\cdot\nabla\Phi - (\nabla\cdot\bs')(\bs\cdot
+    \nabla\Phi)\right]\dd V, \label{eq:Ag}\\
+  B\big((\bs',\phi'),(\bs,\phi)\big) &= \int_V\nabla\bs':\bc:\nabla\bs\dd V
+    + A_g(\bs',\bs) \nonumber\\
+    &\quad + \int_V\rho\,(\bs'\cdot\nabla\phi + \bs\cdot\nabla\phi')
+    \dd V + \frac{1}{4\pi G}\int_{\mathbb{R}^3}\nabla\phi'\cdot\nabla\phi
+    \dd V, \label{eq:B}
+\end{align}
+where $(\bs\cdot\nabla\bs')\cdot\nabla\Phi = s_i\,\partial_i s'_j\,
+\partial_j\Phi$, the forward problem is to find $(\bs,\phi)$ in
+$\mathcal{U}\times\mathcal{P}$ such that
+\begin{equation}
+  \langle\bs',\rho\ddot\bs\rangle + B\big((\bs',\phi'),(\bs,\phi)\big)
+  = \langle\bs',\mathbf{f}\rangle
+  \quad\text{for all } (\bs',\phi')\in\mathcal{U}\times\mathcal{P}.
+  \label{eq:weak}
+\end{equation}
+The equation with $\phi'=0$ is the weak form of \eqref{eq:momentum}; that
+with $\bs'=0$ is minus that of \eqref{eq:poisson}. All the boundary
+conditions on tractions and fluxes are natural. The gravitational form $A_g$
+is eq.~B26 of \citet{AlAttarTromp2014}, derived there for quasi-static
+loading, where the fluid is described by $\phi$ alone and $A_g$ is accordingly
+an integral over the solid with surface terms on the fluid--solid
+boundaries; with a fluid displacement, as here, those become part of the
+volume integral.
+
+\begin{lemma}\label{lem:symmetry}
+For a hydrostatic background, $A_g$, and so $B$, is symmetric.
+\end{lemma}
+\begin{proof}
+With $\mathbf{N} = \rho(\bs\otimes\bs'-\bs'\otimes\bs)$,
+\[
+  A_g(\bs',\bs)-A_g(\bs,\bs') = \int_V\left[\partial_i N_{ij}\,
+  \partial_j\Phi - (\partial_i\rho)(s_is'_j-s'_is_j)\partial_j\Phi\right]
+  \dd V.
+\]
+The second term vanishes because $\nabla\rho\parallel\nabla\Phi$. In the
+first, integrating by parts leaves $-\int N_{ij}\partial_i\partial_j\Phi$,
+which vanishes because $\mathbf{N}$ is antisymmetric, and the surface term
+$\int\jump{n_iN_{ij}\partial_j\Phi}\dd\Sigma$, which is
+$\int\jump{g\,\bn\cdot\mathbf{N}\cdot\bn}\dd\Sigma=0$.
+\end{proof}
+The symmetry gives reciprocity, and with it the identification of the
+adjoint problem with a forward one (Section~\ref{sec:adjoint}). It uses
+the hydrostatic conditions; we return to this in
+Section~\ref{sec:lateral}.
+
+\subsection{Complex frequencies}
+
+As in YSpec and \citet{Adourian2024}, the equations are transformed with
+time dependence $e^{i\omega t}$ and solved at the complex frequencies
+$\omega_\varepsilon = \omega - i\varepsilon$, $\omega$ real, with
+$\varepsilon$ chosen so that the response decays by a factor $e^{-5}$ over
+the length of the record; the time series is recovered by an inverse
+transform followed by multiplication by $e^{\varepsilon t}$. For each real
+$\omega$ the fields $(\bs_\omega,\phi_\omega)$, which we label by $\omega$
+although they are evaluated at $\omega_\varepsilon$, satisfy
+\begin{equation}
+  S_\omega\big((\bs',\phi'),(\bs_\omega,\phi_\omega)\big) :=
+  -\omega_\varepsilon^2\langle\bs',\rho\bs_\omega\rangle
+  + B_\omega\big((\bs',\phi'),(\bs_\omega,\phi_\omega)\big) =
+  \langle\bs',\mathbf{f}_\omega\rangle, \label{eq:S}
+\end{equation}
+where $B_\omega$ is $B$ with $\bc$ replaced by the complex tensor
+$\bc_\omega=\bc(\omega_\varepsilon)$, which has the same symmetries. Each
+$S_\omega$ is a complex-symmetric bilinear form. Because the time series are
+real, the fields at $-\omega$ are the complex conjugates of those at
+$\omega$, and for such Hermitian functions of frequency we write
+\begin{equation}
+  \langle\!\langle F\rangle\!\rangle = \frac{1}{2\pi}\int_{-\infty}^\infty
+  F(\omega)\dd\omega = \frac{1}{\pi}\int_0^\infty\Re F(\omega)\dd\omega.
+  \label{eq:fsum}
+\end{equation}
+
+\section{Observables and adjoint sources}\label{sec:observables}
+
+\subsection{The continuous adjoint source}
+
+Let $X(\omega) = \bnu\cdot\bs_\omega(\bx_r)$ be the spectrum of the
+component $\bnu$ at the receiver $\bx_r$. The processed synthetic is
+\begin{equation}
+  u(t) = \frac{e^{\varepsilon t}}{2\pi}\int_{-\infty}^\infty w(\omega)
+  R(\omega)X(\omega)\,e^{i\omega t}\dd\omega, \label{eq:synthetic}
+\end{equation}
+with $w$ a real taper and $R$ the instrument response at the complex
+frequency, which includes any time derivatives of the displacement. For a
+real functional $J[u]$ with Fr\'echet derivative $j(t) = \delta J/\delta
+u(t)$,
+\begin{equation}
+  \delta J = \int j(t)\,\delta u(t)\dd t
+  = \langle\!\langle A\,\delta X\rangle\!\rangle, \qquad
+  A(\omega) = w(\omega)R(\omega)\int j(t)\,e^{\varepsilon t}e^{i\omega t}
+  \dd t, \label{eq:A}
+\end{equation}
+the processed adjoint source of \citet[][eqs~37--38]{Adourian2024}: the
+factor $e^{\varepsilon t}$ reflects the undamping of the synthetic.
+
+\subsection{Cross-correlation traveltimes}
+
+For the delay $\tau$ of a phase in a window $W(t)$, measured by
+cross-correlation with a reference that is the synthetic itself
+\citep{Dahlen2000}, a delay $\delta\tau$ changes the synthetic by
+$\delta u = -\dot u\,\delta\tau$, and so
+\begin{equation}
+  \delta\tau = -\frac{\int W\dot u\,\delta u\dd t}{\int W\dot u^2\dd t},
+  \qquad j(t) = -\frac{W(t)\dot u(t)}{\int W\dot u^2\dd t},
+  \label{eq:traveltime}
+\end{equation}
+with $\dot u$ the velocity synthetic: the adjoint source of
+\citet[][eqs~82--83]{LiuTromp2008}, here at complex frequency.
+
+\section{The Lagrangian}\label{sec:adjoint}
+
+The model parameters are $\rho$, $\bc$ (through its elastic values and
+quality factors) and the source. The equilibrium potential depends on
+$\rho$ through \eqref{eq:poisson-eq}; rather than eliminate it, we treat
+$\Phi$ as an independent variable and impose \eqref{eq:poisson-eq} in weak
+form with a multiplier $\lambda$:
+\begin{equation}
+  P(\Phi,\lambda;\rho) := \frac{1}{4\pi G}\int_{\mathbb{R}^3}\nabla\lambda
+  \cdot\nabla\Phi\dd V + \int_V\rho\lambda\dd V = 0 \quad\text{for all }
+  \lambda. \label{eq:P}
+\end{equation}
+The Lagrangian is
+\begin{equation}
+  \Lag = J - \left\langle\!\!\left\langle
+  S_\omega\big((\sd_\omega,\pd_\omega),(\bs_\omega,\phi_\omega)\big)
+  - \langle\sd_\omega,\mathbf{f}_\omega\rangle\right\rangle\!\!\right\rangle
+  + P(\Phi,\lambda;\rho), \label{eq:L}
+\end{equation}
+with $(\sd_\omega,\pd_\omega)$ the multipliers for the forward problems,
+Hermitian in $\omega$ like the fields. Where the forward and equilibrium
+problems hold, $\Lag=J$ whatever the multipliers, so $\delta J =
+\partial_m\Lag\,\delta m$ once the multipliers make $\Lag$ stationary with
+respect to $\bs_\omega$, $\phi_\omega$ and $\Phi$.
+
+\paragraph{The adjoint fields.}
+Stationarity with respect to $(\bs_\omega,\phi_\omega)$ at each $\omega>0$,
+using \eqref{eq:A}, requires $\Re[A\,\bnu\cdot\delta\bs(\bx_r)] =
+\Re[S_\omega((\sd_\omega,\pd_\omega),(\delta\bs,\delta\phi))]$ for all
+complex $(\delta\bs,\delta\phi)$, and so, replacing $\delta\bs$ by
+$i\delta\bs$ for the imaginary part, and by the symmetry of $S_\omega$
+(Lemma~\ref{lem:symmetry}),
+\begin{equation}
+  S_\omega\big((\delta\bs,\delta\phi),(\sd_\omega,\pd_\omega)\big) =
+  \langle\delta\bs, A(\omega)\bnu\,\delta(\bx-\bx_r)\rangle
+  \quad\text{for all } (\delta\bs,\delta\phi). \label{eq:adjoint}
+\end{equation}
+The adjoint field at $\omega$ is the forward response, at the same complex
+frequency, to the point force $A(\omega)\bnu$ at the receiver. No time
+reversal or change of frequency is needed, and the solver is the forward
+one.
+
+\paragraph{The adjoint potential.}
+Stationarity with respect to $\Phi$ requires
+\begin{equation}
+  \frac{1}{4\pi G}\int_{\mathbb{R}^3}\nabla\lambda\cdot\nabla\psi\dd V =
+  \int_V\left(\bM:\nabla\nabla\psi + \vm\cdot\nabla\psi\right)\dd V
+  \quad\text{for all } \psi, \label{eq:lambda}
+\end{equation}
+where, from \eqref{eq:Ag}, the forward and adjoint fields enter through the
+static fields
+\begin{equation}
+  \bM = \langle\!\langle\rho\,\sym(\bs_\omega\otimes\sd_\omega)
+  \rangle\!\rangle, \qquad
+  \vm = \langle\!\langle\rho\left((\bs_\omega\cdot\nabla)\sd_\omega -
+  \bs_\omega\,\nabla\cdot\sd_\omega\right)\rangle\!\rangle.
+  \label{eq:sources}
+\end{equation}
+This is a single, static Poisson problem, solved once after the frequency
+integral; for the spherically symmetric density perturbations considered
+here only its spherical average is needed, which is a radial quadrature
+(Section~\ref{sec:lambda}).
+
+\section{The kernels}
+
+With the multipliers so chosen,
+\begin{equation}
+  \delta J = -\left\langle\!\!\left\langle\partial_mS_\omega
+  \big((\sd_\omega,\pd_\omega),(\bs_\omega,\phi_\omega)\big)\delta m
+  \right\rangle\!\!\right\rangle + \langle\!\langle\langle\sd_\omega,
+  \delta\mathbf{f}_\omega\rangle\rangle\!\rangle + \int_V\lambda\,\delta\rho
+  \dd V. \label{eq:gradient}
+\end{equation}
+
+\paragraph{Elastic tensor.}
+$\delta J = \int_V \mathbf{K}_c::\delta\bc\dd V$ with
+\begin{equation}
+  \mathbf{K}_c = -\left\langle\!\!\left\langle\frac{\partial\bc_\omega}
+  {\partial\bc}^{\!\mathsf T}\!\!:\big(\nabla\sd_\omega\otimes\nabla
+  \bs_\omega\big)\right\rangle\!\!\right\rangle,
+\end{equation}
+the chain rule through the dispersion. For transverse isotropy with a radial
+axis, in terms of the strains $\bm\epsilon=\sym\nabla\bs_\omega$ and
+$\bm\epsilon^\circ=\sym\nabla\sd_\omega$, with $h$ the horizontal
+components, the elastic energy density is
+$C\epsilon^\circ_{rr}\epsilon_{rr} + A\,\mathrm{tr}_h\bm\epsilon^\circ\,
+\mathrm{tr}_h\bm\epsilon + F(\epsilon^\circ_{rr}\mathrm{tr}_h\bm\epsilon +
+\mathrm{tr}_h\bm\epsilon^\circ\epsilon_{rr}) + 4L\,\bm\epsilon^\circ_{rh}
+\cdot\bm\epsilon_{rh} + N(2\bm\epsilon^\circ_{hh}:\bm\epsilon_{hh} -
+2\,\mathrm{tr}_h\bm\epsilon^\circ\,\mathrm{tr}_h\bm\epsilon)$, every term
+invariant under a common rotation about $\br$. The two fields may therefore
+be expressed in different horizontal frames provided one is turned into the
+other's: with spin components $a_\pm = a_\theta\mp ia_\phi$, a frame turned
+by $\gamma$ about $\br$ multiplies the components of spin weight $N$ by
+$e^{iN\gamma}$, so only the terms of $L$ and $N$ need the turn. With
+$D(\omega)$ the dispersion of YSpec, so
+that a modulus $X$ with inverse quality factor $q_X$ is $X(1+q_XD)$ at
+$\omega_\varepsilon$,
+\begin{equation}
+  K_X = -\langle\!\langle(1+q_XD)\,e_X(\bm\epsilon^\circ,\bm\epsilon)
+  \rangle\!\rangle, \qquad
+  K_{q_X} = -\langle\!\langle X D\,e_X(\bm\epsilon^\circ,\bm\epsilon)
+  \rangle\!\rangle,
+\end{equation}
+for $X\in\{A,C,F,L,N\}$ and $e_X$ its coefficient above. Nothing in the
+derivation depends on the form of the dispersion: for any rheology whose
+moduli $\bc(\omega;\mathbf{p})$ are holomorphic in the lower half of the
+complex plane, as causality requires, so that they may be evaluated at
+$\omega_\varepsilon$, the kernel for a rheological parameter $p$ is
+$K_p = -\langle\!\langle\partial_p\bc_\omega:(\nabla\sd_\omega\otimes
+\nabla\bs_\omega)\rangle\!\rangle$: for a power-law $Q$, its exponent, or for
+standard linear solids, their relaxation strengths and times. For isotropy,
+$K_\kappa = -\langle\!\langle(1+q_\kappa D)\,\nabla\cdot\sd_\omega\,
+\nabla\cdot\bs_\omega\rangle\!\rangle$ and $K_\mu = -\langle\!\langle
+(1+q_\mu D)\,2\mathbf{d}^\circ:\mathbf{d}\rangle\!\rangle$ with $\mathbf{d}$
+the deviatoric strain, as in \citet[][eqs~63--64]{LiuTromp2008}.
+Attenuation kernels come at no extra cost. At fixed density the velocity
+kernels follow from these: for isotropy, in relative perturbations,
+$K_\alpha = 2(\kappa+\tfrac43\mu)K_\kappa$ and $K_\beta = 2\mu(K_\mu -
+\tfrac43K_\kappa)$ with $K_\kappa$, $K_\mu$ the absolute kernels above
+\citep[cf.][eq.~68]{LiuTromp2008}, and similarly for the five velocities of
+transverse isotropy.
+
+\paragraph{Density, at fixed moduli.}
+For the spherically symmetric perturbations to which density is restricted,
+the angular integral of the following is needed; we write it pointwise.
+From \eqref{eq:S}, \eqref{eq:Ag}, \eqref{eq:B} and \eqref{eq:gradient},
+\begin{equation}
+\begin{aligned}
+  K_\rho = \Big\langle\!\!\Big\langle\,&\omega_\varepsilon^2\,\sd_\omega
+  \cdot\bs_\omega - \sd_\omega\cdot\nabla\phi_\omega - \bs_\omega\cdot
+  \nabla\pd_\omega \\
+  &- \bs_\omega\cdot\nabla\nabla\Phi\cdot\sd_\omega - (\bs_\omega\cdot
+  \nabla\sd_\omega)\cdot\nabla\Phi + (\nabla\cdot\sd_\omega)(\bs_\omega\cdot
+  \nabla\Phi)\Big\rangle\!\!\Big\rangle + \lambda. \label{eq:Krho}
+\end{aligned}
+\end{equation}
+Every term is local; the equilibrium gravity's dependence on the density is
+carried entirely by $\lambda$. For a spherically symmetric background the
+gravitational terms simplify to
+\begin{equation}
+  \bs\cdot\nabla\nabla\Phi\cdot\sd + (\bs\cdot\nabla\sd)\cdot\nabla\Phi
+  - (\nabla\cdot\sd)(\bs\cdot\nabla\Phi)
+  = \left(4\pi G\rho - \frac{4g}{r}\right)s_rs^\circ_r
+  + g\left(\bs_h\cdot\nabla_hs^\circ_r - s_r\nabla_h\cdot\sd_h\right),
+\end{equation}
+using $\nabla\nabla\Phi = \Phi''\br\br + (g/r)(\bI-\br\br)$ with
+$\Phi'' = 4\pi G\rho - 2g/r$, and $(\bs\cdot\nabla)\br = \bs_h/r$, with
+$\nabla_h$ the horizontal gradient. The coefficient $-4g/r$ is that of the
+radial equations.
+
+\paragraph{Density, at fixed velocities.}
+Again for spherically symmetric perturbations: each modulus is proportional
+to the density at fixed velocities, so $\rho K'_\rho = \rho K_\rho +
+\sum_X XK_X$: for isotropy $\rho K_\rho +
+\kappa K_\kappa + \mu K_\mu$ \citep[][eq.~68]{LiuTromp2008}, for transverse
+isotropy $\rho K_\rho + AK_A + CK_C + FK_F + LK_L + NK_N$. The velocity
+kernels follow as usual.
+
+\paragraph{Source.}
+For a moment tensor $\mathbf{M}_s$ at $\bx_s$, stepped in time,
+$\langle\sd_\omega,\delta\mathbf{f}_\omega\rangle = \delta\mathbf{M}_s:
+\bm\epsilon^\circ(\bx_s)/(i\omega_\varepsilon)$, giving the source kernels
+by reciprocity at no extra cost.
+
+\paragraph{At the source.}
+The strain of a point moment tensor is not locally integrable: besides its
+$R^{-3}$ near field, whose angular average vanishes, it has a part
+concentrated at the source, as $\nabla\nabla R^{-1}$ has the local part of
+Section~\ref{sec:lambda}. In the expansion in spherical harmonics this part
+is explicit. At each degree the displacement jumps across $r=r_s$, by
+$\mathbf{M}_s\cdot\br$ divided by $C$ or $L$ there, and its radial derivative
+has a part $\jump{\bs}\,\delta(r-r_s)$, so that
+\begin{equation}
+  \bm\epsilon = \bm\epsilon_{\mathrm{reg}} + \sym\big(\br\otimes\jump{\bs}\big)
+  \,\delta(r-r_s).
+\end{equation}
+The kernels of the moduli that multiply $\epsilon_{rr}$ and
+$\bm\epsilon_{rh}$, namely $C$, $F$ and $L$, and their quality factors, have
+accordingly a part concentrated on the sphere $r=r_s$; those of $A$, $N$ and
+$\rho$ do not. For spherically symmetric perturbations it is a point term
+$P_X\,\delta X(r_s)$ in $\delta J$, with
+\begin{equation}
+  P_X = -r_s^2\left\langle\!\!\left\langle(1+q_XD)\oint e_X\big(
+  \bm\epsilon^\circ, \sym(\br\otimes\jump{\bs})\big)\dd\Omega
+  \right\rangle\!\!\right\rangle,
+\end{equation}
+evaluated with the adjoint field at $r_s$, which is regular there unless the
+receiver is at the depth of the source. Finite differences that perturb the
+moduli around the source need it.
+
+\paragraph{Discretisation.}
+YSpec computes the spectra at $f_k = k\,\Delta f$ and forms the samples
+$u_n = u(n\Delta t)$ by a fast Fourier transform. Discretised with the same
+rules, $\langle\!\langle F\rangle\!\rangle$ becomes $2\Delta f\sum_k\Re
+F(\omega_k)$ and the time integral in \eqref{eq:A} a sum over the samples,
+so that $A_k = w_kR_k\sum_nj(t_n)\,e^{\varepsilon t_n}e^{2\pi if_kt_n}
+\Delta t$. For these linear operations this coincides with the derivative of
+the discrete misfit, with $\partial J/\partial u_n = j(t_n)\Delta t$, so the
+kernels predict finite differences of the computed $J$ to the accuracy of
+the solver.
+
+\section{The adjoint potential}\label{sec:lambda}
+
+\subsection{Strong form}
+
+Where $\bM$ and $\vm$ are smooth, \eqref{eq:lambda} is
+$-(4\pi G)^{-1}\nabla^2\lambda = \nabla\cdot\nabla\cdot\bM - \nabla\cdot\vm$,
+and $\lambda$ is harmonic outside $V$ and decays at infinity. The source
+contains double layers where $\bM_{nn}$ jumps (as $\rho$ does at
+discontinuities), so $\lambda$ is itself discontinuous there, with
+$\jump{\lambda} = -4\pi G\jump{\bM_{nn}}$; the weak form handles this
+without comment. For the perturbations considered here only the spherical
+average of $\lambda$ is needed, which reduces to the radial quadrature of
+Section~\ref{sec:lambda1d}; the integral representation below is given for
+comparison with \citet{Eaton2026}.
+
+\subsection{Integral representation and comparison with
+\citet{Eaton2026}}
+
+Taking $\psi = -G/|\bx-\bx_0|$ in \eqref{eq:lambda}, for which
+$\nabla^2\psi = 4\pi G\delta(\bx-\bx_0)$, gives
+$\lambda(\bx_0) = -\int_V(\bM:\nabla\nabla\psi + \vm\cdot\nabla\psi)\dd V$.
+Now $\nabla\psi = G\,\mathbf{R}/R^3$ with $\mathbf{R}=\bx-\bx_0$, and
+\begin{equation}
+  \nabla\nabla\psi = G\,\Pi + \frac{4\pi G}{3}\bI\,\delta(\bx-\bx_0),
+  \qquad \Pi = \frac{\bI}{R^3} - \frac{3\mathbf{R}\otimes\mathbf{R}}{R^5},
+\end{equation}
+the integral over $\Pi$ being a principal value; the local term is needed
+for $\nabla^2\psi = 4\pi G\delta$, since $\Pi$ is traceless. Hence
+\begin{equation}
+  \lambda(\bx_0) = -G\int_V\left[\bM:\Pi + \vm\cdot\frac{\bx-\bx_0}
+  {|\bx-\bx_0|^3}\right]\dd V - \frac{4\pi G}{3}\,\mathrm{tr}\,\bM(\bx_0).
+\end{equation}
+With $\bM\leftrightarrow\tilde{\mathbf{K}}_\rho$ and $\vm\leftrightarrow
+\tilde{\mathbf{k}}_\rho$ \citep[][eqs~23--24]{Eaton2026}, the first term is
+the non-local part of their density kernel (their eq.~29 is for relative
+perturbations, and so carries an extra factor $\rho$), so the two results
+agree, given one remark: their eq.~A4 writes $\nabla\nabla\delta\Phi =
+G\int\delta\rho\,\Pi$ without the local term, which is needed for
+$\nabla^2\delta\Phi = 4\pi G\delta\rho$. Their numerical route, which takes
+derivatives of solutions of Poisson's equation, includes it automatically.
+Here a single scalar Poisson problem replaces their nine.
+
+\subsection{One-dimensional perturbations}\label{sec:lambda1d}
+
+For $\delta\rho(r)$ the perturbation of the equilibrium potential is radial
+and explicit, $\delta\Phi' = 4\pi G\,\delta m(r)/r^2$ with $\delta m(r)
+=\int_0^r\delta\rho\,r'^2\dd r'$, and $\delta\Phi'' = 4\pi G\delta\rho -
+2\delta\Phi'/r$, so $\lambda$ need not be formed. With
+$\nabla\nabla\delta\Phi = \delta\Phi''\br\br + (\delta\Phi'/r)
+(\bI-\br\br)$ and the angular integrals
+\begin{equation}
+  \bar M_{rr}(r) = \oint\bM_{rr}\dd\Omega, \quad
+  \bar M_h(r) = \oint(\bM_{\theta\theta}+\bM_{\phi\phi})\dd\Omega, \quad
+  \bar m_r(r) = \oint\vm_r\dd\Omega,
+\end{equation}
+the gravitational part of the one-dimensional density kernel, defined by
+$\delta J = \int_0^aK^{1D}_\rho\,\delta\rho\,r^2\dd r$, is
+\begin{equation}
+  K^{1D,\Phi}_\rho(r) = -4\pi G\left[\bar M_{rr}(r) + \int_r^a
+  \left(\frac{\bar M_h - 2\bar M_{rr}}{r'} + \bar m_r\right)\dd r'\right],
+\end{equation}
+non-local only through an integral over the radii above. The local part is
+the angular integral of the bracket in \eqref{eq:Krho}. YSpec computes $g$
+from $\rho$, so finite differences in the density test this kernel
+completely, gravitational part included.
+
+\section{Why density is not perturbed laterally}\label{sec:lateral}
+
+A background in hydrostatic equilibrium cannot remain so under a laterally
+varying $\delta\rho$, or lateral topography: the initial stress acquires a
+deviatoric part that the density does not determine, and the hydrostatic
+equations no longer define the problem. One symptom: for a hydrostatic
+background
+\begin{equation}
+  \nabla(\rho\bs\cdot\nabla\Phi) - \nabla\cdot(\rho\bs)\nabla\Phi =
+  \rho\left[\nabla(\bs\cdot\nabla\Phi) - (\nabla\cdot\bs)\nabla\Phi\right]
+\end{equation}
+\citep[][eq.~B23]{AlAttarTromp2014}, the two sides differing by
+$\nabla\rho\,(\bs\cdot\nabla\Phi) - (\nabla\rho\cdot\bs)\nabla\Phi$, which
+vanishes when $\nabla\rho\parallel\nabla\Phi$. Perturbed by a laterally
+varying $\delta\rho$ and the $\delta\Phi$ it produces, with $\nabla\Phi=g\br$
+and $\nabla\rho = \rho'\br$, perturbing the left-hand form rather than the
+right-hand one changes $\delta J$ by
+\begin{equation}
+  \left\langle\!\!\left\langle\int_V\left[\rho'\,\nabla_h\delta\Phi -
+  g\,\nabla_h\delta\rho\right]\cdot\left(s_r\sd_h - s^\circ_r\bs_h\right)
+  \dd V\right\rangle\!\!\right\rangle,
+\end{equation}
+where $\rho'$ includes $\jump{\rho}\delta_\Sigma$ at every discontinuity.
+The three-dimensional density kernel therefore depends at first order on
+which of two equivalent forms of the equations is perturbed; equivalently,
+$A_g$ is symmetric only for a hydrostatic background
+(Lemma~\ref{lem:symmetry}), and $A_g(\sd,\bs)$ and $A_g(\bs,\sd)$ have
+different perturbations. \citet{LiuTromp2008}, and so \citet{Eaton2026},
+perturb the left-hand form, and also omit the surface term
+$-\int_\Sigma\jump{\rho(s^\circ_n\bs_h - s_n\sd_h)}\cdot\nabla_h\delta\Phi
+\dd\Sigma$, which perturbing it generates on every boundary across which
+$\rho$ jumps (it is the $\delta_\Sigma$ part of the expression above). None
+of this arises for the perturbations considered here: at fixed density, and
+for spherically symmetric $\delta\rho$, $\delta\Phi$ is radial and every term
+vanishes.
+
+\section{Topography on discontinuities}\label{sec:boundaries}
+
+This section is an outline, to be completed, and is restricted to changes in
+the radius of a discontinuity, the only topography that keeps the model
+hydrostatic. Moving a discontinuity changes only the domains of the
+integrals in \eqref{eq:L}. Mapping the perturbed
+domain onto the reference one and using that every field satisfies its
+equations and transmission conditions, the first variation reduces to the
+jump across the boundary of the normal--normal component of the
+energy--momentum tensor of the Lagrangian density,
+$\mathbb{E} = \ell\bI - \sum_v(\nabla v)^{\mathsf T}\cdot\partial\ell/
+\partial(\nabla v)$, summed over the fields $v$ on which $\ell$ depends
+through first derivatives, with an additional tangential term on
+$\Sigma_{FS}$, where the boundary may move relative to the slipping fluid.
+For the elastic and inertial terms, $\ell = \rho\omega^2\sd\cdot\bs -
+\nabla\sd:\bc:\nabla\bs$, and $\bn\cdot\mathbb{E}\cdot\bn = \ell +
+(\bn\cdot\bT)\cdot\partial_n\sd + (\bn\cdot\bT^\circ)\cdot\partial_n\bs$,
+which corresponds, up to their sign convention and the time domain, to the
+kernel of \citet[][eq.~60]{LiuTromp2008}. The constraint
+contributes $\jump{\rho\lambda - (4\pi G)^{-1}g\,\partial_n\lambda}$ at a
+spherical boundary, and the gravitational terms of $A_g$ involve
+$\nabla\nabla\Phi$, so that their energy--momentum tensor needs the
+second-order form. The kernel is one number per discontinuity, and finite
+differences that move a discontinuity will check it.
+
+\section{Evaluation in YSpec}\label{sec:yspec}
+
+For a spherically symmetric background, YSpec gives the forward field of
+each source and the field of a point force at each receiver at every radius
+wanted, in the frame with the source (or receiver) at the pole, as
+coefficients of generalised spherical harmonics with $|m|\le2$ (or $1$), and
+their strains as the spin components $N=-2,\dots,2$.
+\begin{itemize}
+\item One-dimensional kernels need only angular integrals of products of the
+  two fields. The adjoint field is expanded in the frame of the source, where
+  a force away from the pole excites every order but only $|m|\le2$ meet the
+  forward field: its weights are those of the force at the pole with
+  $X^N_{lm}(0)$ replaced by $X^N_{lm}(\Delta)\,e^{-im\phi_r}$. By
+  orthogonality, $\oint Y^N_{lm}Y^{-N}_{l,-m}\dd\Omega = (-1)^{N+m}$, each
+  integral is then a sum over degree and order of products of radial
+  functions, and for displacements $\oint\bs\cdot\sd\dd\Omega =
+  \sum_{lm}(-1)^m[U_mU^\circ_{-m} + \zeta^2(V_mV^\circ_{-m} +
+  W_mW^\circ_{-m})]$; there is no spatial mesh. The kernels are evaluated at
+  Gauss--Legendre nodes in elements between the discontinuities of the
+  model, the source and the receiver, and the radial integral in $K^{1D,\Phi}_\rho$ is
+  taken on the same nodes. With $\bar M_h - 2\bar M_{rr} + r\bar m_r =
+  \rho\big[\zeta^2\sum(-1)^m(V_mU^\circ_{-m} + U_mV^\circ_{-m}) -
+  4\sum(-1)^mU_mU^\circ_{-m}\big]$ summed over degree, its integrand is the
+  same combination as the gravitational term $g(\bs_h\cdot\nabla_hs^\circ_r
+  - s_r\nabla_h\cdot\sd_h) - (4g/r)s_rs^\circ_r$ of the local kernel, divided
+  by $g/\rho$.
+\item Three-dimensional kernels, for the elastic parameters, need the
+  fields at the points of a mesh. Each field is evaluated in its own frame,
+  the forward field's with the source at the pole, where it has the orders
+  $|m|\le2$ alone, and the adjoint field's with the receiver at the pole,
+  where it has $|m|\le1$: at each point a sum over degree of a few terms,
+  with $X^N_{lm}$ at the point's distances from the source and from the
+  receiver. The adjoint strain's spin components are then turned into the
+  forward field's frame by $e^{-iN\gamma}$, with $\gamma$ the angle between
+  the two frames' $\hat{\bm\theta}$ at the point, and the kernels are the
+  pointwise products integrated over frequency. No rotation of expansions,
+  and no $\lambda$, is needed. The mesh is that of a planetmodel model file:
+  nodes in each layer, both sides of each discontinuity included, and a
+  Gauss--Legendre grid at each. Its cost is that of the sums at every point,
+  of order the number of points times the number of frequencies times the
+  largest degree.
+\item Checks: finite differences of $J$ for spherically symmetric
+  perturbations of every parameter, density with gravity included; the
+  integrals of the three-dimensional elastic kernels over every sphere
+  against the one-dimensional ones; their values at single points against
+  those computed in the source's frame alone, where the adjoint field, its
+  force away from the pole, has every order; and their symmetry for an
+  explosion and a vertical component.
+\end{itemize}
+One restriction: a receiver must be where YSpec can place a source, that is,
+in a solid.
+
+\begin{thebibliography}{9}
+\bibitem[Adourian et~al.(2024)]{Adourian2024}
+Adourian, S., Dursun, M.S., Lau, H.C.P. \& Al-Attar, D., 2024. Adjoint
+sensitivity kernels for free oscillation spectra, \emph{Geophys. J. Int.},
+238, 257--271.
+\bibitem[Al-Attar \& Tromp(2014)]{AlAttarTromp2014}
+Al-Attar, D. \& Tromp, J., 2014. Sensitivity kernels for viscoelastic
+loading based on adjoint methods, \emph{Geophys. J. Int.}, 196, 34--77.
+\bibitem[Dahlen et~al.(2000)]{Dahlen2000}
+Dahlen, F.A., Hung, S.-H. \& Nolet, G., 2000. Fr\'echet kernels for
+finite-frequency traveltimes---I. Theory, \emph{Geophys. J. Int.}, 141,
+157--174.
+\bibitem[Dahlen \& Tromp(1998)]{DahlenTromp1998}
+Dahlen, F.A. \& Tromp, J., 1998. \emph{Theoretical Global Seismology},
+Princeton University Press.
+\bibitem[Eaton et~al.(2026)]{Eaton2026}
+Eaton, W., Gharti, H.N. \& Tromp, J., 2026. Sensitivity of prompt
+elasto-gravitational signals to 3-D Earth structure, \emph{Geophys. J.
+Int.}, 245, 1--25.
+\bibitem[Liu \& Tromp(2008)]{LiuTromp2008}
+Liu, Q. \& Tromp, J., 2008. Finite-frequency sensitivity kernels for global
+seismic wave propagation based upon adjoint methods, \emph{Geophys. J.
+Int.}, 174, 265--286.
+\end{thebibliography}
+
+\end{document}

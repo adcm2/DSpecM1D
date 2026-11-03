@@ -1,0 +1,45 @@
+{
+  "purpose": "Synthetic measurement-math check only; no PREM model or wavefield solve is run.",
+  "benchmark_context": {
+    "model_requested": "PREM",
+    "source": {"latitude_geocentric_deg": 10.0, "longitude_deg": 20.0, "depth_km": 50.0},
+    "receiver": {"latitude_geocentric_deg": 45.0, "longitude_deg": 75.0, "depth_km": 3.0},
+    "receiver_selection": {
+      "basis": "ObsPy TauP PREM ray predictions used only to select a candidate receiver/window placement; this is not a computed wavefield.",
+      "proposed_receiver_45N_75E_phase_times_s": {"S": 1070.836, "sS": 1093.504, "ScS": 1175.592},
+      "legacy_receiver_45N_90E_phase_times_s": {"S": 1198.804}
+    },
+    "postevent_window_s": [1000.0, 1200.0],
+    "band_mHz": [0.0, 10.0],
+    "observable": "windowed vertical-displacement energy"
+  },
+  "synthetic_probe": {
+    "frequency_constructor": {
+      "f1_mHz": 0.0,
+      "f2_mHz": 10.0,
+      "f11_mHz": 0.0,
+      "f12_mHz": 10.0,
+      "f21_mHz": 10.0,
+      "f22_mHz": 10.0,
+      "dt_s": 5.0,
+      "tout_h": 1.0,
+      "df0_mHz": 0.1,
+      "wtb": 0.0,
+      "t1_h": 0.0,
+      "t2_h": 1.0,
+      "qex": 1,
+      "time_norm_s": 1.0
+    },
+    "expected_grid": {"nt": 1024, "tfft_s": 5120.0, "df_mHz": 0.1953125, "ep_per_s": 0.001388888888888889},
+    "operator": "Production SPARSESPEC::WindowedDisplacementMap from the absolute DSpecM1D production header path.",
+    "length_scale_m": 6371000.0,
+    "band_weights": "Apply to raw solver-frequency bins before inverse transform: 1 below 8 mHz; 0.5*(1+cos(pi*(f_mHz-8)/2)) for 8<=f<10 mHz; 0 at and above 10 mHz.",
+    "time_window": "sqrt(0.5*(1-cos(2*pi*(t-1000)/200))) for 1000<=t<=1200 s, zero otherwise; applied after damping removal by the production map.",
+    "synthetic_signal": "Two deterministic real Gaussian-windowed sinusoidal time signals (3.4 and 4.1 mHz), exponentially damped with FreqFull ep before conversion to raw RFFT spectra.",
+    "energy": "E=0.5*dtSI*sum((sqrtHann*uB)^2)=0.5*df*sum(eta*abs(P(BU))^2), eta=1 at DC/Nyquist and 2 otherwise.",
+    "gradient": "Freeze q=df*eta*p at baseline p=P(BU); raw gradient is B*P.adjoint(q), checked against central differences in the real-spectrum subspace.",
+    "linear_engine_convention": "Existing qdotp objective with weights q and output p is 2E; this probe reports the distinction explicitly.",
+    "frequency_bin_policy_open_item": "FreqFull::i1 skips DC (minimum bin 1) and i2 is an exclusive upper bound with a bracket bin above fmax. The synthetic map/energy checks exercise real DC and Nyquist endpoints. Resolve how solver-skipped DC and the bracket bin interact with this observable before making physical-kernel claims.",
+    "execution_boundary": "Compile the probe only in this phase. Parent owns numerical execution. No Earth/kernel solver run, no degree/convergence campaign."
+  }
+}

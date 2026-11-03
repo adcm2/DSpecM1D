@@ -1,0 +1,135 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l3-fd-v2-control",
+  "thread_cap": 8,
+  "external_campaigns": [
+    {
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-build-v1/configs/phase-c2-preweighted-v1-build-v1-build-plan.json",
+      "plan_sha256": "c011e88b6ca79636d0a956510788414b7630f5b0595aec719a54a035454169d9",
+      "task_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-build-v1-control/continuation/phase-c2-native-profile-build"
+    }
+  ],
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "OMP_THREAD_LIMIT": "1",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_WAIT_POLICY": "PASSIVE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "DSPEC_SYMBOLIC_REUSE": "1"
+  },
+  "jobs": [
+    {
+      "id": "phase-c2-l3-direct-common-fd",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-build-v1/candidates/phase-c2-preweighted-v1",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=1",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "DSPEC_FREQUENCY_WORKERS=1",
+        "DSPEC_PHASE_C_DIRECT_ADJOINT=1",
+        "DSPEC_PHASE_C_VALIDATE_DIRECT_ADJOINT=1",
+        "DSPEC_PHASE_C_VALIDATE_RECONSTRUCTION=1",
+        "DSPEC_PHASE_C_SKIP_ZERO_KERNEL_BINS=0",
+        "DSPEC_PHASE_B_RESTRICTED=0",
+        "DSFAST_RSTRAIN_BRIDGE=0",
+        "DSPEC_PHASE_C2_VALIDATE_WEIGHT_LINE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-c2-preweighted-v1-build-v1/phase-c2-profile/phase-c2-profile-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-build-v1/candidates/phase-c2-preweighted-v1/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "3",
+        "8",
+        "0.05",
+        "1",
+        "audit",
+        "0",
+        "-"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-build-v1/candidates/phase-c2-preweighted-v1/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-build-v1/candidates/phase-c2-preweighted-v1/case/prem.200",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/result.json",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/builds/phase-c2-preweighted-v1-build-v1/phase-c2-profile/phase-c2-profile-driver",
+        "/space/adcm2/research/builds/phase-c2-preweighted-v1-build-v1/phase-c2-profile/command.json"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/profile.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/components.csv",
+        "data/nodes.csv",
+        "data/frequency-grid.csv",
+        "data/mesh-elements.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/phase-c2-common-reconstruction-equivalence.csv",
+        "data/phase-c2-zero-bin-support.csv"
+      ],
+      "timeout_seconds": 3600,
+      "memory_gib": 16
+    },
+    {
+      "id": "phase-c2-l3-fd-check",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-build-v1/candidates/phase-c2-preweighted-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-build-v1/candidates/phase-c2-preweighted-v1/tools/check_phase_c_fd.py",
+        "--candidate",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l3-fd-v2-control/continuation/phase-c2-l3-fd-run-v2/phase-c2-l3-fd-01/phase-c2-l3-direct-common-fd/data",
+        "--base",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data",
+        "--plus",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data",
+        "--minus",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data",
+        "--out",
+        "{JOB_DIR}/data/phase-c-fd-check.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-build-v1/candidates/phase-c2-preweighted-v1/tools/check_phase_c_fd.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/spectrum.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l3-fd-v2-control/continuation/phase-c2-l3-fd-run-v2/phase-c2-l3-fd-01/phase-c2-l3-direct-common-fd/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l3-fd-v2-control/continuation/phase-c2-l3-fd-run-v2/phase-c2-l3-fd-01/phase-c2-l3-direct-common-fd/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l3-fd-v2-control/continuation/phase-c2-l3-fd-run-v2/phase-c2-l3-fd-01/phase-c2-l3-direct-common-fd/data/spectrum.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l3-fd-v2-control/continuation/phase-c2-l3-fd-run-v2/phase-c2-l3-fd-01/phase-c2-l3-direct-common-fd/data/components.csv"
+      ],
+      "outputs": [
+        "data/phase-c-fd-check.json"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 4
+    }
+  ]
+}

@@ -1,0 +1,70 @@
+{
+  "scope": "User-authorized physical PREM waveform/energy convergence, explicit DC policy, and matched all-component DSpec/YSpec profiling.",
+  "physical": {
+    "model": "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/PREM500",
+    "source_geocentric_lat_lon_deg": [
+      10,
+      20
+    ],
+    "source_depth_m": 50000,
+    "receiver_geocentric_lat_lon_deg": [
+      45,
+      75
+    ],
+    "receiver_depth_m": 3000,
+    "angular_distance_deg": 58.519662870962605,
+    "time_step_s": 5,
+    "output_duration_s": 3600,
+    "qex": 1,
+    "fft_samples_expected": 1024,
+    "fft_period_s_expected": 5120,
+    "frequency_spacing_hz_expected": 0.0001953125,
+    "nonnegative_bins_at_or_below_10mHz_including_DC": 52,
+    "last_inband_frequency_hz": 0.0099609375,
+    "first_outofband_frequency_hz": 0.01015625,
+    "frequency_filter": "unity below8mHz; cosine transition8\u201310mHz; zero at/above10mHz",
+    "window": "Hann support1000\u20131200s; sqrt(window) passed to linear P map so squared energy has one Hann factor",
+    "physical_degree_scale_only": {
+      "formula": "ell approx2*pi*f*R/c_phase",
+      "f_hz": 0.01,
+      "R_m": 6371000.0,
+      "illustrative_phase_speed_m_per_s": 3500,
+      "ell_scale": 114.371924548689,
+      "caveat": "Dimensional scale, not a converged Lmax or a fixed pass criterion."
+    }
+  },
+  "observable": "E=0.5*dt*sum(Hann1000-1200 * u_z,filtered^2)",
+  "threads": 1,
+  "compiler_jobs_overall": 2,
+  "convergence_gates": {
+    "waveform_window_relative_L2": 0.001,
+    "energy_relative": 0.001,
+    "cross_code_waveform_window_relative_L2": 0.001,
+    "cross_code_energy_relative": 0.001,
+    "policy": "Fixed gates; retain failures and distinguish refinement differences from convergence proof."
+  },
+  "degree_candidates": [
+    64,
+    96,
+    128,
+    192,
+    256,
+    384
+  ],
+  "kernel_policy": "Resolve waveform/energy first. Use complete2L angular bandwidth, native SEM radial sides, account explicitly for sampled radial domain and source/receiver singular regions. Assess memory before scheduling.",
+  "numerical_review": "Luna High implementation, fresh Luna High review, short Sol High review; additional Sol mathematical review when necessary.",
+  "production_policy": "Read-only production; isolated diagnostic adapters and instrumentation here; no commit/push.",
+  "dc_policy": {
+    "target": "Explicit bin0 at omega=-i*epsilon; use real DC component for real inverse FFT; record imaginary residual before projection.",
+    "inband": "k with k*df<0.01 Hz; first above-band guard may be solved but has zero filter and adjoint weight.",
+    "diagnostic": "Run explicit DC include/exclude comparison; excludingDC is a different observable."
+  },
+  "processing_policy": {
+    "target_epsilon_per_s": 0.001388888888888889,
+    "band_operator": "8-10mHz cosine taper sampled on damped-contour bins, before inverse FFT and undo damping. This defines the chosen processing; not a sharp filter of the undamped real-frequency spectrum.",
+    "padding": "Keep dt,epsilon fixed; vary qex/N independently (1024 to2048 to4096 as needed).",
+    "damping_sensitivity": "Changingepsilon changes this contour-filtered observable and must be labelled separately from padding convergence.",
+    "source": "Step moment tensor with1/(i*omega), fullgravity, attenuationoff.",
+    "units": "Windowed displacement energy in m^2 s; not mechanical energy in joules."
+  }
+}

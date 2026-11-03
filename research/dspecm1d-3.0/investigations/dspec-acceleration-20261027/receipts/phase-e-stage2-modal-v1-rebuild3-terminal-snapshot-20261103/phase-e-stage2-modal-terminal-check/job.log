@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1-validation-rebuild3/tools/check_phase_e_stage2_modal.py", line 227, in <module>
+    if __name__=='__main__':main()
+                            ^^^^^^
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1-validation-rebuild3/tools/check_phase_e_stage2_modal.py", line 216, in main
+    l3proof=modal_proof(l3/'modal-operator-oracle.csv',set(range(7,42)),3);need(l3proof['rows']==245,'L3 modal proof row count differs')
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1-validation-rebuild3/tools/check_phase_e_stage2_modal.py", line 107, in modal_proof
+    need(zero_counts['basis_adjoint']==len(rr),f'basis-adjoint zero classification differs from the direct-adjoint production route ({zero_counts["basis_adjoint"]}/{len(rr)})')
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1-validation-rebuild3/tools/check_phase_e_stage2_modal.py", line 8, in need
+    if not ok: raise ValueError(msg)
+               ^^^^^^^^^^^^^^^^^^^^^
+ValueError: basis-adjoint zero classification differs from the direct-adjoint production route (35/245)

@@ -1,0 +1,13 @@
+Study 2 checker-only retry v2 independent review — 2026-11-03
+Reviewer: Sol6.1 high /root/radial_review
+Disposition: PASS for the bounded checker-only correction and fresh terminal retry; no scientific rerun or changed criterion.
+
+Exact SHA-256:
+tools/check_study2.py d138e8869c349ce8510774e71e425bee0841c002330110775c42d5550ea12b3b
+configs/study2-terminal-check-v2-plan.json 041eff1e6f75c5e464a88f23d7348c699a096d9219d5f93fff7020fdb1192a0e
+Unchanged producer plan40de29bb4c0c64e689602c002ce7141770c970d0c58ef7584cec42f3376c9446
+Immutable completed producer snapshot9cd09f3e4bd0979a39a240cfa8d2a1a2bf631750ab50a8869a55db49cdfad704
+
+The first terminal failed only because parameters.txt line2 records a resolved absolute model filename, necessarily different in fresh Study1/Study2 roots. Read-only diff reported every other byte equal; both prem.200 inputs have pinned4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea hash. The inspected correction validates exact expected quoted model paths, checks pinned model hash, canonicalizes only line2 preserving newline endings, and requires all remaining bytes exactly equal. Both raw file hashes/path mismatch/normalization are explicitly reported; the other12 bridge files still require raw byte equality. No sparse-sampling/physical parameter field is generally excluded. Compile/import passed. Preserve the failed v1 checker state/log and unchanged producer evidence.
+
+Fresh v2 plan changes only cwd/script path, checker task/control identity and one declared script input; the other251 inputs, immutable original snapshot, all other command arguments, exact producer/build campaign bindings and4thread/8GiB caps are identical to sealed v1. All252 inputs remain unique and prior complete output/log/reference closure remains valid. No live own-state argument is introduced. Stage only exact minimal checker/plan/review delta into fresh v2 stage, verify current bytes and old external inputs/snapshot hash, then launch only standalone checker. Its own rc/input stability/cleanup/output hashes must be independently reviewed. AFTER STUDY2 numerical conclusions remain pending raw results/report review.

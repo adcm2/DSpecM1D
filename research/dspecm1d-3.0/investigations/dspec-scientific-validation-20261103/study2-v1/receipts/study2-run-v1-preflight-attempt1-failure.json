@@ -1,0 +1,17 @@
+{
+  "action": "readonly-preflight",
+  "active_processes": [
+    1165937,
+    1165938
+  ],
+  "command_context": "Study 2 DSpecPilot3D project build",
+  "diagnostic_excerpt": "Traceback (most recent call last):\n  File \"<stdin>\", line 172, in <module>\n  File \"<stdin>\", line 70, in report_preflight\n  File \"<stdin>\", line 27, in quiet\nAssertionError: ('competing Study 2 task', [{'pid': 1165937, 'command': '/opt/gcc-13.2.0/bin/g++ -ffunction-sections -fdata-sections -Wl,--gc-sections -I/space/adcm2/research/runs/dspecpilot3d-modal-endpoints20-20261103-r1/reference/extended_elastic/implementation/accepted/include -I/space/adcm2/research/runs/dspecpilot3d-compatible-bulk-shear-20261103-r1/src -I/space/adcm2/research/projects/CCDSM/src -I/space/adcm2/research/projects/CCDSM/deps/GaussQuad/GaussQuad/src -DGSHTRANS_HAVE_INTERPOLATION -DPLANETMODEL_VERSION=\\\"1.3.0\\\" -DPLANETMODEL_WITH_NETCDF=1 -I/space/adc'}, {'pid': 1165938, 'command': '/opt/gcc-13.2.0/libexec/gcc/x86_64-pc-linux-gnu/13.2.0/cc1plus -quiet -I /space/adcm2/research/runs/dspecpilot3d-modal-endpoints20-20261103-r1/reference/extended_elastic/implementation/accepted/include -I /space/adcm2/research/runs/dspecpilot3d-compatible-bulk-shear-20261103-r1/src -I /space/adcm2/research/projects/CCDSM/src -I /space/adcm2/research/projects/DSpecPilot3D/src -I /space/adcm2/research/projects/CCDSM/deps/GaussQuad/GaussQuad/src -I /space/adcm2/research/projects/CCDSM/include -I /s'}])",
+  "exit_code": 1,
+  "operator_path": "investigations/dspec-scientific-validation-20261103/study2-v1/operations/study2_run_stage.py",
+  "operator_sha256": "8c33d555c83411fb4a817ef5e950ca5acc21eac7b61896fcdcf23125fb124ba1",
+  "recorded_unix": 1793721210.729579,
+  "remote_mutations": false,
+  "schema": 1,
+  "staging_or_launch_attempted": false,
+  "status": "blocked-by-active-competing-build"
+}

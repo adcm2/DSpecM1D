@@ -1,0 +1,43 @@
+{
+  "purpose": "Reproducibility evidence for the website's corrected shallow-source shear-packet kernel illustration; it is not a convergence certificate.",
+  "source_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+  "canonical_fixture": {
+    "path": "docs/site/examples/kernels-small.json",
+    "sha256": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0"
+  },
+  "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+  "binary": "/tmp/yspecpp-plot-corrections-20261023/build/plot-validation/bin/yspec-kernels",
+  "binary_configuration": "Current a294fb3 source build; NetCDF on; at most two OpenMP/BLAS threads.",
+  "raw_directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-web",
+  "wall_seconds": 13.08,
+  "max_resident_kib": 43900,
+  "frequency_count": 35,
+  "measurement": {
+    "name": "shear-packet",
+    "component": "T",
+    "window_s": [1000, 1200],
+    "taper_s": 40,
+    "taup_s": 1093.838,
+    "taup_sS": 1108.787,
+    "taup_ScS": 1190.905,
+    "rows": 1201,
+    "time_start_s": 0,
+    "time_end_s": 2400,
+    "time_step_s": 2,
+    "nonzero_window_samples": 99,
+    "window_peak_velocity_m_per_s": 3.719067e-8,
+    "window_rms_velocity_m_per_s": 2.100164366814998e-8,
+    "pre_window_peak_velocity_m_per_s": 1.921963e-8
+  },
+  "outputs": {
+    "kernel-small.measurement": "4dc5ad0c32f49fc010548120579fc9ed2496cd4613b55e4ea16ce96c34a4a1e3",
+    "kernel-small.kernels": "b9929b9085373b6965c20c58a39831dd493862e2be1438fc6917fb782694dea5",
+    "kernel-small.sections": "a3dfb4943dc599d45600a1d3190beac03336937e95b6a33641a027e5cca036dd",
+    "kernel-small.maps": "dd00f6afb378288f1b0fe9b5716d3ae5f1ef2d7d9da942dc3fbfca9a8503cb03"
+  },
+  "limitations": [
+    "S, sS and ScS overlap the finite-frequency window; this is a mixed shear packet, not an isolated S measurement.",
+    "This run is an execution and illustration candidate only; no degree, duration, tolerance, mesh or finite-difference convergence study was performed.",
+    "The 20-minute kernels-volume-small.json remains an execution-only fixture and does not source a corrected scientific plot."
+  ]
+}

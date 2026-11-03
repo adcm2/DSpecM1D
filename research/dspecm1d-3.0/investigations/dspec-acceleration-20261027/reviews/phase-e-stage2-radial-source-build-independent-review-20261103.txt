@@ -1,0 +1,60 @@
+Phase E Stage 2 radial first substage — independent source/build review
+Sol 6.1 high — 2026-11-03
+
+SOURCE AND BUILD CONFIGURATION: PASS for the exact files below.
+This gate permits the isolated two-variant Tunya build only. Numerical launch
+still requires the separate exact run-plan/checker gate. No angular/modal next
+substage, production integration, discrepancy work, commit, or push is released.
+
+Compared against phase-e-stage1-backend-profiling-v2/dspec. The only changed
+code members are engine_headers/Windowed3DFields.h,
+phase_d_batched_reconstruction.hpp, and phase_d_driver.cpp. The original
+projected radial visitor remains unchanged. The selectable generic route keeps
+its original map tables, lookup materialization, and existing angular algebra.
+The new route uses native nodal extraction, q-ordered derivative sums over all
+modal columns with reusable scratch, cached Dref/J weights (or the existing
+physical-node Lagrange convention), and direct native table indexing.
+
+Reviewed family ordering and source-element-only lift, toroidal solid-domain
+restrictions, weighted radial l=0 capture, source/receiver axes, one-sided
+element/node keys, and separate forward/l=0-adjoint/receiver-adjoint slots.
+The initially colliding l=0-adjoint slot was corrected before this gate.
+No solver, angular GEMM, tiling, rotation, normalization, or contraction formula
+change is present. Existing native and non-native sampling entrypoints retain
+their roles; the native optimization is isolated to the candidate.
+
+New same-workspace oracle retains one frequency's keyed generic packets,
+compares complete key inventory and radius/fluid/lift/axes metadata, and gates
+finite radial value, derivative, role, fluid/solid, and per-packet strain errors
+at 1e-11. It emits one proof file per bin and has a conservative 256 MiB
+per-workspace retained-map limit. New fast derivative/modal scratch has a
+separate 32 MiB per-worker bound; no solved-field history is introduced.
+Additional native validation wrappers now carry frequency-bin identifiers.
+All explicit new timer stop lifetimes reviewed: radial child stops before
+parent; baseline lookup scope closes before angular reconstruction.
+
+Build configuration reproduces the reviewed Stage 1 D native/profile commands
+exactly after normalizing only the new D source path. Both variants explicitly
+link the unchanged Stage 1 timer-disabled YSpec DSO and matching RPATH/private
+headers. Native disables both D and Y timers; profile enables D mathprofile
+only. Build plan caps 8 observed threads and 32 GiB, sequential variants through
+the existing detached receipt/supervisor transport. Runtime dependency/source
+hashes and resource receipts remain required evidence.
+
+SHA256 seals:
+Windowed3DFields.h c3a9a7e6c1d7b9aea5137aeee4f85f3b5dcd570f128985ee7dc26d13f05f6340
+phase_d_batched_reconstruction.hpp 7bac9be9947c0d61dc5f52d7a305bdf0d3d8fee267d3d5076a243377c8a4853f
+phase_d_driver.cpp 229d9afc7353da0ca1c57aa845fc0a853fa168d790803837d73c28dda6df3c07
+configs/phase-e-stage2-radial-v1-build.json d48dc365b0fdd8ad9d28b3497bec8a352fd71cce4a831806565c3375995bbd86
+configs/phase-e-stage2-radial-v1-build-plan.json 4f845fa0c55572968071cf2dff245f904ed41994bc0133caf5228d541d94fbfc
+
+Any source/config change after these seals requires a focused delta review.
+This is source inspection, not numerical validation or a speedup result.
+
+Focused prebuild delta review: PASS. Deterministic per-bin proof names replace
+the earlier thread/call names; sample-only wrappers suppress duplicate oracle
+capture while the main frequency pipeline call retains it. The unchanged
+driver main call is once per frequency work item; no simultaneous writer to a
+single bin file is introduced. This avoids duplicate validation retention and
+does not change timed-route arithmetic. The hash above supersedes the earlier
+c9d4ed1e batched-header seal; the other four seals remain unchanged.

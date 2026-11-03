@@ -1,0 +1,2212 @@
+{
+  "finished_unix": 1793120014.146357,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l3/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "0,28,59,100,149,154,172,173",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "generated",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "723c1f239483ffeb20d26b06c2ea450b2db708ca35840ced4e9db1385d4b8b33",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 21.938508660998195,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2566176,
+          15132931
+        ]
+      ],
+      "finished_unix": 1793118100.8110015,
+      "id": "global-generated-t32-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "389381ad5c8cd89bc6b7f8cc84428765c5b5d192b7172a6e5956c91948da2f2a",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "934a3c5d0a228a7e58b17b03108028f48ceccd422d4b65d6aab434e82bf8ff65",
+        "data/kernel.bin.json": "d1b0146fe5b22fb02eeb709865daaf82af683d5226631466af704d4f47b3acc9",
+        "data/pole_response_spool.bin": "af6f5ecfbdf5ec6289191772fc9a4d51346b36a3c6641c17cd90c4a4446c84ef",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "15dfce286dfca3ffd6ca075dbe17cf40f2132d96f287479705c3ebf0b01316f1",
+        "data/spectrum.csv": "571a7df2f0cd47517b974a281e1bc8ff89eb520f2b8582ac9cfcb08cc1636a02",
+        "data/trace.csv": "008687a0a698c233c42b724aaec5c1a06f07bb4a0a81a3364c289b950024fb8e"
+      },
+      "peak_observed_rss_gib_userspace": 0.0369,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118078.8326535,
+      "status": "completed",
+      "system_cpu_seconds_children": 2.503108,
+      "updated_unix": 1793118099.2126837,
+      "user_cpu_seconds_children": 608.071765,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0369,
+        "elapsed_seconds": 20.38,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2566176,
+            "starttime_ticks": 15132931,
+            "threads": 33
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0369,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 34
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-benchmark-control/continuation/accel-global-benchmark-02",
+        "--reference-job",
+        "global-generated-w1-l3",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-generated-t32-l3",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-generated-t32-l3/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "generated",
+        "--reference-gsh-threads",
+        "1",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact",
+        "--reference-legacy-serial"
+      ],
+      "command_sha256": "4e166b91ee8afbf51847cdf69e1041c26892d67c25f334023d7f2f2d5f6e6cdc",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 1.564143644995056,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2566534,
+          15135130
+        ]
+      ],
+      "finished_unix": 1793118102.402003,
+      "id": "check-global-generated-t32-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "e7cc910e48fcd9fbd9132ab3245d1b4151ce43b71ebea54ba5f010f432bb757c"
+      },
+      "peak_observed_rss_gib_userspace": 0.0574,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793118100.8245053,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.17707799999999985,
+      "user_cpu_seconds_children": 0.36989599999992606
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-stored-t32-l3/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "0,28,59,100,149,154,172,173",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "stored",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "5099fc393abab635ae377737056e20ac0dccebbe64f907555f3aa17bc47a2982",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 12.205139388999669,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2566554,
+          15135289
+        ]
+      ],
+      "finished_unix": 1793118114.6582458,
+      "id": "global-stored-t32-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "d92492e2f51e3a04832dccaa185989664a994e9941299473a37dd88f9a32077c",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "934a3c5d0a228a7e58b17b03108028f48ceccd422d4b65d6aab434e82bf8ff65",
+        "data/kernel.bin.json": "32b7021f710e4d2354d522de93f1140f555f046d7caa460dca6b9ad52a674040",
+        "data/pole_response_spool.bin": "af6f5ecfbdf5ec6289191772fc9a4d51346b36a3c6641c17cd90c4a4446c84ef",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "9cfdc525ac9f588a8e7f5b17ea4373048ebbb6666e5aecd9fd2cd707ed07037e",
+        "data/spectrum.csv": "571a7df2f0cd47517b974a281e1bc8ff89eb520f2b8582ac9cfcb08cc1636a02",
+        "data/trace.csv": "008687a0a698c233c42b724aaec5c1a06f07bb4a0a81a3364c289b950024fb8e"
+      },
+      "peak_observed_rss_gib_userspace": 0.0373,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118102.4132047,
+      "status": "completed",
+      "system_cpu_seconds_children": 2.339913,
+      "updated_unix": 1793118112.9627626,
+      "user_cpu_seconds_children": 272.673265,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0373,
+        "elapsed_seconds": 10.55,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2566554,
+            "starttime_ticks": 15135289,
+            "threads": 33
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0373,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 34
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--reference-job",
+        "global-generated-t32-l3",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-stored-t32-l3",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-stored-t32-l3/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "stored",
+        "--reference-gsh-threads",
+        "32",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact"
+      ],
+      "command_sha256": "3465a032c1e7827a84ad028364bdd9ce089b916e998c1d3309e43c11b121d828",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 1.7401612889952958,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2566751,
+          15136515
+        ]
+      ],
+      "finished_unix": 1793118116.4253361,
+      "id": "check-global-stored-t32-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "ebb7155a531375c66e7a0ab4e1da80f22113789dda4d53158e41a75a15ced3bd"
+      },
+      "peak_observed_rss_gib_userspace": 0.0578,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793118114.6715863,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.14421899999999965,
+      "user_cpu_seconds_children": 0.34612700000002405
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l12/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "0,28,59,100,149,154,172,173",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "generated",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "796888689baa90bf4cb6ea4629ea951a3591e90c86414c21fe4f10f17d29db37",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 27.510067376017105,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2566774,
+          15136691
+        ]
+      ],
+      "finished_unix": 1793118144.06401,
+      "id": "global-generated-t32-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "a56e86a46fe9c75d47a5b296cc014631b40da04d70a757199643d1e564d35568",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "9b3a20db708d1ce92f140b03def6a2472da3717ccb86010c014f4258b80927cd",
+        "data/kernel.bin.json": "88e2109acb99cb6ebded73a72ee503d99d12b0d10a13ba60ab74bc6c4cf7b31f",
+        "data/pole_response_spool.bin": "240cc90bcc2d8a30a69eb1743585b4d8230b8ea25007685ebbc5d25fd804b03d",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "849e488d35a5a321bcf49efe18d731bd1d25ab3afc75960de980a748eccee8c5",
+        "data/spectrum.csv": "9deab7ba4347a259c87c201b770cee6ba8bd00e171cca5fa57cf9c4070665a6b",
+        "data/trace.csv": "3fdde8cce85ba7ef9d619d91db89690b5c7e0544f035a83977863119e5e9e267"
+      },
+      "peak_observed_rss_gib_userspace": 0.0452,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118116.4368248,
+      "status": "completed",
+      "system_cpu_seconds_children": 2.5343590000000003,
+      "updated_unix": 1793118143.4560745,
+      "user_cpu_seconds_children": 599.61105,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0452,
+        "elapsed_seconds": 27.02,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2566774,
+            "starttime_ticks": 15136691,
+            "threads": 33
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0452,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 34
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-benchmark-control/continuation/accel-global-benchmark-02",
+        "--reference-job",
+        "global-generated-w1-l12",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-generated-t32-l12",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-generated-t32-l12/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "generated",
+        "--reference-gsh-threads",
+        "1",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact",
+        "--reference-legacy-serial"
+      ],
+      "command_sha256": "3ac2ba1b6759f157196f5159fa65013cdff6cebc74757fd343d12f572aef21d2",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 2.4040754320158157,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2567157,
+          15139455
+        ]
+      ],
+      "finished_unix": 1793118146.4948473,
+      "id": "check-global-generated-t32-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "6dcdc8a3a6a3d152fa7d3a977f487e28699e23f0eee4669d5fb551f7723ca6c2"
+      },
+      "peak_observed_rss_gib_userspace": 0.0584,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793118144.077462,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.4641319999999993,
+      "updated_unix": 1793118146.2091393,
+      "user_cpu_seconds_children": 0.867193000000043,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0584,
+        "elapsed_seconds": 2.13,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2567157,
+            "starttime_ticks": 15139455,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0584,
+        "peak_observed_threads": 2,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-stored-t32-l12/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "0,28,59,100,149,154,172,173",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "stored",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "2c287bf141fee2653a3373371eb45b302006034327f7494f989aa205343f58bc",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 21.936852309998358,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2567176,
+          15139698
+        ]
+      ],
+      "finished_unix": 1793118168.5602067,
+      "id": "global-stored-t32-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "d01226b802e095bf2314d691945c734cb83e424228029e6bc7649e979b13466c",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "9b3a20db708d1ce92f140b03def6a2472da3717ccb86010c014f4258b80927cd",
+        "data/kernel.bin.json": "8a455140095362dce3ed0bda06ec205edde7bd18de68c649dabf8973171ff45d",
+        "data/pole_response_spool.bin": "240cc90bcc2d8a30a69eb1743585b4d8230b8ea25007685ebbc5d25fd804b03d",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "543913d386935b31d062de800647a9058088e3ab4f94a56af7d6787f6b6bbc58",
+        "data/spectrum.csv": "9deab7ba4347a259c87c201b770cee6ba8bd00e171cca5fa57cf9c4070665a6b",
+        "data/trace.csv": "3fdde8cce85ba7ef9d619d91db89690b5c7e0544f035a83977863119e5e9e267"
+      },
+      "peak_observed_rss_gib_userspace": 0.0452,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118146.5063505,
+      "status": "completed",
+      "system_cpu_seconds_children": 2.5496250000000007,
+      "updated_unix": 1793118167.4786186,
+      "user_cpu_seconds_children": 526.957064,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0452,
+        "elapsed_seconds": 20.97,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2567176,
+            "starttime_ticks": 15139698,
+            "threads": 33
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0452,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 34
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--reference-job",
+        "global-generated-t32-l12",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-stored-t32-l12",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-stored-t32-l12/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "stored",
+        "--reference-gsh-threads",
+        "32",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact"
+      ],
+      "command_sha256": "df029b4e59a25202b25c50f787970c9d3b4399814fc34acd13caa794f58b4857",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 2.0897853309870698,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2567454,
+          15141905
+        ]
+      ],
+      "finished_unix": 1793118170.6774302,
+      "id": "check-global-stored-t32-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "94b309ad8e152ef6ce036101cb3745379369f3d90769dac068d20c55299e0783"
+      },
+      "peak_observed_rss_gib_userspace": 0.0583,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793118168.5739713,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.25350300000000026,
+      "user_cpu_seconds_children": 0.8697110000000521
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l128/data",
+        "kernel",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "59,100",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "generated",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "cc582b394051dbfcfc19c5f72ff22c7424db4c6e1d24faedacb78cd09f656731",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 31.967635078995954,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2567474,
+          15142117
+        ]
+      ],
+      "finished_unix": 1793118203.926691,
+      "id": "global-generated-t32-l128",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "5126deb2a7603abc824cf824ed2f488453114f0b80ee1671f320ed2a56dfa4dd",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "9eb3a4e3f66ec24ab831576f12d39ff8eea41510de3710c8c395c4072d4d73f3",
+        "data/kernel.bin.json": "2ff122c33dc8160a219e3bbd1ce9e16fb7ed81e341aa4dbd5a41e771fee0feea",
+        "data/pole_response_spool.bin": "6ed4f8e47e9ed4db6d909ad3118ad12447ee76f4095a106c6eb864d3cb807643",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "7cc6668a9e531c4b5a3c19c99027dfa7b8c734f8bc413dd32375dcba87b5fe6c",
+        "data/spectrum.csv": "5c2af2aa10c9287cd9f259326e6576862f73cf14e400dca0b538cf930c21c02e",
+        "data/trace.csv": "3f6b7099d477a6d50f8c4165a1a87d0705a32e19cde19fcfa23b6ea6b0c4a49c"
+      },
+      "peak_observed_rss_gib_userspace": 0.1902,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118170.6902938,
+      "status": "completed",
+      "system_cpu_seconds_children": 7.069479000000001,
+      "updated_unix": 1793118202.3205059,
+      "user_cpu_seconds_children": 231.86706099999992,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0199,
+        "elapsed_seconds": 31.63,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2567474,
+            "starttime_ticks": 15142117,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.1902,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-benchmark-control/continuation/accel-global-benchmark-02",
+        "--reference-job",
+        "global-generated-w1-l128",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-generated-t32-l128",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-generated-t32-l128/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "generated",
+        "--reference-gsh-threads",
+        "1",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact",
+        "--reference-legacy-serial"
+      ],
+      "command_sha256": "888aa89d49abed2d86f613ff159e98d1cedf1689f17aa2dca15b5ed4e2a33e40",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 24.56021969599533,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2567964,
+          15145442
+        ]
+      ],
+      "finished_unix": 1793118228.5165746,
+      "id": "check-global-generated-t32-l128",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "540be43d132a5bcea17eed2c43542ef2cbbd58ed8ac1340f08be252cc2561ab1"
+      },
+      "peak_observed_rss_gib_userspace": 0.0769,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793118203.9411972,
+      "status": "completed",
+      "system_cpu_seconds_children": 16.034218999999997,
+      "updated_unix": 1793118227.0830777,
+      "user_cpu_seconds_children": 7.493519000000106,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0593,
+        "elapsed_seconds": 23.14,
+        "owned_processes": [
+          {
+            "pid": 2567964,
+            "starttime_ticks": 15145442,
+            "threads": 1
+          },
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0769,
+        "peak_observed_threads": 2,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-stored-t32-l128/data",
+        "kernel",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "59,100",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "stored",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "df7e9f2710f692acc19d114941cc41942b702a8630a5903757eba40affddcafc",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 30.423811073997058,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2568156,
+          15147901
+        ]
+      ],
+      "finished_unix": 1793118260.1116548,
+      "id": "global-stored-t32-l128",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "edbdd213e834f141e51ce5cc46bb9c12ab80678ae1569a1e213768c83831d9a1",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "9eb3a4e3f66ec24ab831576f12d39ff8eea41510de3710c8c395c4072d4d73f3",
+        "data/kernel.bin.json": "00f771d87c0701dfec7c7612f9a48111cc30219f7c2d2ba22550ba1f30fc9251",
+        "data/pole_response_spool.bin": "6ed4f8e47e9ed4db6d909ad3118ad12447ee76f4095a106c6eb864d3cb807643",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "06b3909cacc215d3c2e528be3af36dd4e075d82fcad1f05b0f2cb74ddbf646f0",
+        "data/spectrum.csv": "5c2af2aa10c9287cd9f259326e6576862f73cf14e400dca0b538cf930c21c02e",
+        "data/trace.csv": "3f6b7099d477a6d50f8c4165a1a87d0705a32e19cde19fcfa23b6ea6b0c4a49c"
+      },
+      "peak_observed_rss_gib_userspace": 0.3416,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118228.5368485,
+      "status": "completed",
+      "system_cpu_seconds_children": 5.638242000000005,
+      "updated_unix": 1793118258.1367993,
+      "user_cpu_seconds_children": 218.7841159999998,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.3261,
+        "elapsed_seconds": 29.6,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2568156,
+            "starttime_ticks": 15147901,
+            "threads": 33
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.3398,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 34
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--reference-job",
+        "global-generated-t32-l128",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-stored-t32-l128",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-stored-t32-l128/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "stored",
+        "--reference-gsh-threads",
+        "32",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact"
+      ],
+      "command_sha256": "0b11c9f7da56d25aecc239ceaa7f0af228d40cb69e90949f733afff6d4292050",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 25.16664124801173,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2568690,
+          15151060
+        ]
+      ],
+      "finished_unix": 1793118285.3082435,
+      "id": "check-global-stored-t32-l128",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "5e1709ff25ade8ba142b281803825a375eedc41816b79abc7ee88180046b6e5f"
+      },
+      "peak_observed_rss_gib_userspace": 0.0834,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793118260.1261868,
+      "status": "completed",
+      "system_cpu_seconds_children": 16.311940999999997,
+      "updated_unix": 1793118283.2473564,
+      "user_cpu_seconds_children": 7.511394999999993,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0593,
+        "elapsed_seconds": 23.12,
+        "owned_processes": [
+          {
+            "pid": 2568690,
+            "starttime_ticks": 15151060,
+            "threads": 1
+          },
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0834,
+        "peak_observed_threads": 2,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data",
+        "kernel",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "59,100",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "generated",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "4a0048145e451d8d89f887b4d2f935f30c56dc2281febe133584ca82a60a12d3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 104.86804494200624,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2568821,
+          15153581
+        ]
+      ],
+      "finished_unix": 1793118398.7431765,
+      "id": "global-generated-t32-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "faf079d7b905c0161fb2fae2292236348c6644863ee2b4e4f077ea89fa793e02",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "47f0e1201e96a54c4a6aaa96cba1e4925db2c195f62b5de9947bb05fbf1cbf82",
+        "data/kernel.bin.json": "ebb9f1c818782aeb807fd332defb3eebe5edff491c9b7a429eb21cf72ecc87ff",
+        "data/pole_response_spool.bin": "3e4f66f7034dab2b08a4aa6f4f777db7e492159c46294f79857c783a70bb3d27",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "99273e11a980baf09bb56bcfb5c637996a7e79c520b505d6f39acafc1b06c34c",
+        "data/spectrum.csv": "3c2dbb1232fd321c3e3dcbfe536d83a1aac2242df1a469c9420084e18218c84d",
+        "data/trace.csv": "c2fec88a3447b981d3cc8be4829bf8a4b66b345f79a9ee2878ebe50bf96f6fe6"
+      },
+      "peak_observed_rss_gib_userspace": 0.7436,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118285.3291466,
+      "status": "completed",
+      "system_cpu_seconds_children": 26.739990000000006,
+      "updated_unix": 1793118389.37515,
+      "user_cpu_seconds_children": 531.4891360000001,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.7436,
+        "elapsed_seconds": 104.04,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2568821,
+            "starttime_ticks": 15153581,
+            "threads": 33
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.7436,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 34
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-benchmark-control/continuation/accel-global-benchmark-02",
+        "--reference-job",
+        "global-generated-w1-l384",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-generated-t32-l384",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-generated-t32-l384/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "generated",
+        "--reference-gsh-threads",
+        "1",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact",
+        "--reference-legacy-serial"
+      ],
+      "command_sha256": "641e9fdaf8d5a7f08f6d868b23539c39f1f705b9463d4d81149f5bbd64306f8a",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 70.31975222399342,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2574479,
+          15164924
+        ]
+      ],
+      "finished_unix": 1793118469.0936735,
+      "id": "check-global-generated-t32-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "4eaaa5af83b6e6652e5d12ce8af2f653fcab763fc2efdfb59abcbdbd785da294"
+      },
+      "peak_observed_rss_gib_userspace": 0.2592,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793118398.7584715,
+      "status": "completed",
+      "system_cpu_seconds_children": 44.91621699999999,
+      "updated_unix": 1793118467.2244256,
+      "user_cpu_seconds_children": 23.591589999999997,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0599,
+        "elapsed_seconds": 68.46,
+        "owned_processes": [
+          {
+            "pid": 2574479,
+            "starttime_ticks": 15164924,
+            "threads": 1
+          },
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.2592,
+        "peak_observed_threads": 2,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-stored-t32-l384/data",
+        "kernel",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "59,100",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "stored",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "3a111bf53ceebb65f471762f85c7ba9abd5240d3a54553f33e4a96690dad904f",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 100.43264031797298,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2577224,
+          15171959
+        ]
+      ],
+      "finished_unix": 1793118578.075021,
+      "id": "global-stored-t32-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "90595f57e2a62a4bfcaae7ce5311e903ef7e794051356d81ede9f0e0d587695a",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "47f0e1201e96a54c4a6aaa96cba1e4925db2c195f62b5de9947bb05fbf1cbf82",
+        "data/kernel.bin.json": "53bc449a6668caca6e0d030192120223e494298f391afa37b369792c48355b2a",
+        "data/pole_response_spool.bin": "3e4f66f7034dab2b08a4aa6f4f777db7e492159c46294f79857c783a70bb3d27",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "4a4e4cea208ea5d43e52f8267cb4086bc9a134d9e7c4c225bcf1a1b7149d41e3",
+        "data/spectrum.csv": "3c2dbb1232fd321c3e3dcbfe536d83a1aac2242df1a469c9420084e18218c84d",
+        "data/trace.csv": "c2fec88a3447b981d3cc8be4829bf8a4b66b345f79a9ee2878ebe50bf96f6fe6"
+      },
+      "peak_observed_rss_gib_userspace": 4.9272,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118469.1147447,
+      "status": "completed",
+      "system_cpu_seconds_children": 23.880865000000014,
+      "updated_unix": 1793118567.3914032,
+      "user_cpu_seconds_children": 498.3285639999999,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 4.9272,
+        "elapsed_seconds": 98.27,
+        "owned_processes": [
+          {
+            "pid": 2577224,
+            "starttime_ticks": 15171959,
+            "threads": 33
+          },
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 4.9272,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 34
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--reference-job",
+        "global-generated-t32-l384",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-stored-t32-l384",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-stored-t32-l384/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "stored",
+        "--reference-gsh-threads",
+        "32",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact"
+      ],
+      "command_sha256": "c654606e2d5b91dc74f5a8ea6ff2ae312ad82174caf4a35b15c6d664193f63ed",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 69.53407659201184,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2578348,
+          15182857
+        ]
+      ],
+      "finished_unix": 1793118647.6404989,
+      "id": "check-global-stored-t32-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "021aa3f747c41a8e5ee5aa5d2e33769dacdf8cd8dfa05135c8847d2dad41bfc2"
+      },
+      "peak_observed_rss_gib_userspace": 0.2736,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793118578.090316,
+      "status": "completed",
+      "system_cpu_seconds_children": 45.48339999999999,
+      "updated_unix": 1793118645.9312434,
+      "user_cpu_seconds_children": 22.92331400000012,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0598,
+        "elapsed_seconds": 67.84,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2578348,
+            "starttime_ticks": 15182857,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.2736,
+        "peak_observed_threads": 2,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l1536/data",
+        "kernel",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "59",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "64",
+        "--global-wigner-storage",
+        "generated",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "ad0e4b9e2b3b5432413bd8bf3e9a2c4d13474f2f389d70c37a62b68d2e71d3af",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 509.2334584459895,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2579028,
+          15189814
+        ]
+      ],
+      "finished_unix": 1793119194.108708,
+      "id": "global-generated-t32-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "61441aaac741d62a6936116576a99fb8bd08e0e6499fed477eb8e597ee76b0e9",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "da2caf60ee7d31d6e7f33f735afb3827675099e53d9b63183a2197461632f9a0",
+        "data/kernel.bin.json": "3990a5c81ad425aef6e1a643acd2f51ae666e31fd4183bfd788e8c8b0c0ddf59",
+        "data/pole_response_spool.bin": "c9aea4a28c8466b68efdb7880c9ab13ca10e3bd0d59db8688426ed62a5a60b2e",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "e70ff491f9f94ea45f90ddb99322bfe3b5676c17a60b64071b1e42d98eb01a0d",
+        "data/spectrum.csv": "a574eed854ce47d3e07c7e77960aec576ddb43a5b416b28d28776527afe99f55",
+        "data/trace.csv": "6923c89d420836457a8a889f4d0a5957f5c49aedec255796d6930bfddd284069"
+      },
+      "peak_observed_rss_gib_userspace": 6.8598,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793118647.661824,
+      "status": "completed",
+      "system_cpu_seconds_children": 63.499537000000004,
+      "updated_unix": 1793119156.7313743,
+      "user_cpu_seconds_children": 5264.929948999999,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0213,
+        "elapsed_seconds": 509.07,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2579028,
+            "starttime_ticks": 15189814,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 6.8598,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "OMP_THREAD_LIMIT=32",
+        "OMP_NUM_THREADS=32",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_MAX_ACTIVE_LEVELS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-47",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-stored-t32-l1536/data",
+        "kernel",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "59",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "384",
+        "--global-wigner-storage",
+        "stored",
+        "--global-gsh-threads",
+        "32",
+        "--transform-scratch-gib-per-worker",
+        "8"
+      ],
+      "command_sha256": "6f6efaab87f6c0eb08ab60ca449388e30fc3d76b760a121f258f400a9d23d670",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 483.6681161460001,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2590163,
+          15244461
+        ]
+      ],
+      "finished_unix": 1793119714.5662577,
+      "id": "global-stored-t32-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-global-threads-02/global-profiled/physical-driver": "b7dc65057d58b561026727323506be6db43839c080d6fe11369bbd2ca8389dfe",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "46d984c12f70d3c789d56ac2eece343c69c53dbcca27b88d7adb721488c9abe4",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "outputs_sha256": {
+        "data/kernel.bin": "da2caf60ee7d31d6e7f33f735afb3827675099e53d9b63183a2197461632f9a0",
+        "data/kernel.bin.json": "5a13a9e8d180d4c923e7e80a144b2f546accc4afb12d57d40be4ce3bd031aa50",
+        "data/pole_response_spool.bin": "c9aea4a28c8466b68efdb7880c9ab13ca10e3bd0d59db8688426ed62a5a60b2e",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "e69b25bb186bc3d9412cf67dfa6c30acbbef61dbef41d87b66b15543adb14163",
+        "data/spectrum.csv": "a574eed854ce47d3e07c7e77960aec576ddb43a5b416b28d28776527afe99f55",
+        "data/trace.csv": "6923c89d420836457a8a889f4d0a5957f5c49aedec255796d6930bfddd284069"
+      },
+      "peak_observed_rss_gib_userspace": 276.7871,
+      "peak_observed_threads": 34,
+      "returncode": 0,
+      "started_unix": 1793119194.1310284,
+      "status": "completed",
+      "system_cpu_seconds_children": 82.91485399999999,
+      "updated_unix": 1793119677.1697764,
+      "user_cpu_seconds_children": 2952.5810950000014,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 63.43,
+        "elapsed_seconds": 483.03,
+        "owned_processes": [
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          },
+          {
+            "pid": 2590163,
+            "starttime_ticks": 15244461,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 276.7871,
+        "peak_observed_threads": 34,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--reference-job",
+        "global-generated-t32-l1536",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01",
+        "--candidate-job",
+        "global-stored-t32-l1536",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/check-global-stored-t32-l1536/checks.json",
+        "--reference-workers",
+        "1",
+        "--candidate-workers",
+        "1",
+        "--reference-storage-mode",
+        "generated",
+        "--candidate-storage-mode",
+        "stored",
+        "--reference-gsh-threads",
+        "32",
+        "--candidate-gsh-threads",
+        "32",
+        "--exact"
+      ],
+      "command_sha256": "eef009c57bf02bc3bd6ec43d3b0ed427487b69e1182ad2a5ee7b7683cb329d6a",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1",
+      "elapsed_seconds": 299.5331224539841,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2597760,
+          15296507
+        ]
+      ],
+      "finished_unix": 1793120014.1417146,
+      "id": "check-global-stored-t32-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_global_threads.py": "011845c8e2bdf592eb08296306af5227ea519dffd6960854db9c8623faaf3271",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-threads-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "bab73f9b4912f50f5164f5de44d8b036edf7f7a49d7030e0e7ba98efe573a608"
+      },
+      "peak_observed_rss_gib_userspace": 1.7507,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793119714.5927715,
+      "status": "completed",
+      "system_cpu_seconds_children": 201.59739500000006,
+      "updated_unix": 1793120012.1825836,
+      "user_cpu_seconds_children": 95.88582599999972,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0623,
+        "elapsed_seconds": 297.59,
+        "owned_processes": [
+          {
+            "pid": 2597760,
+            "starttime_ticks": 15296507,
+            "threads": 1
+          },
+          {
+            "pid": 2566168,
+            "starttime_ticks": 15132924,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 1.7507,
+        "peak_observed_threads": 2,
+        "thread_cap": 40,
+        "thread_count_including_supervisor": 2
+      }
+    }
+  ],
+  "plan_sha256": "37b5736bf9ab82b82f5decaf4831766908f64e0a1d28fe5f8f56f692685f6ed5",
+  "schema": 1,
+  "started_unix": 1793118078.822651,
+  "status": "completed",
+  "task_id": "accel-global-threads-run-01",
+  "thread_cap": 40
+}

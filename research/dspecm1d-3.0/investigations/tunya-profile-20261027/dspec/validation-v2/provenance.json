@@ -1,0 +1,65 @@
+{
+  "gate": "DSpec standalone receiver gate v2; wrapper-only validation revision",
+  "source_headers": {
+    "v4": {
+      "path": "investigations/dspec-sk-profile-20261026/physical-profile/dspec/source-v4-frozen/engine_headers/Windowed3DFields.h",
+      "sha256": "ea276794a6088ee742b9e2e5ad074f8242cb1a1f8d1b3be762a99e6e1067d8ff",
+      "manifest": "investigations/dspec-sk-profile-20261026/physical-profile/dspec/source-v4-frozen.sha256"
+    },
+    "v6": {
+      "path": "investigations/tunya-profile-20261027/dspec/source-v6-frozen/engine_headers/Windowed3DFields.h",
+      "sha256": "4d0548754eeb9e1bc179c94e0f9ff66f48d54563bb770059ab778d4fad6abca9",
+      "manifest": "investigations/tunya-profile-20261027/dspec/source-v6-frozen.sha256"
+    }
+  },
+  "prior_v1": {
+    "active_generated_source": "investigations/tunya-profile-20261027/dspec/validation/receiver_gate.cpp",
+    "sha256": "8b2ea3c4512761cd944631cbf8b380f3fd2157f54ed08f72601f75817b30c232",
+    "preserved_first_draft": "investigations/tunya-profile-20261027/dspec/validation/receiver_gate-v1.cpp",
+    "sha256_first_draft": "d4e909cc90fc2538be0724a4d9a013356822bd574fad5a48478ba7bc87759225",
+    "first_draft_diff_evidence": "v1 draft remains unchanged in validation/receiver_gate-v1.cpp"
+  },
+  "v2_files": {
+    "generate_receiver_gate.py": "698915f1fc7044d59d900c623b1d73a16876fa106a4b52be004cbcc4501f308f",
+    "receiver_gate_template.cpp.in": "7c9f6120ee9449107a3794b80b2b3d9b3e697b566bed42b16448d44c16311a02",
+    "receiver_gate-v2.cpp": "c1bfa12905783399af16c158f9b422fc1f4f81de9feff75d90073895ba63d3c9",
+    "receiver_gate-v1-to-v2.diff": "72f3b31a05b4dd38a75784ae38f9cd2f00c3a75b93e2f9da01c67b64989865e8",
+    "README.md": "d77e27db3dd6ead2d4632d0acfc4005cc375bf99d75f1ff03295b84dc5fd035c"
+  },
+  "wrapper_diff": {
+    "path": "investigations/tunya-profile-20261027/dspec/validation-v2/receiver_gate-v1-to-v2.diff",
+    "sha256": "72f3b31a05b4dd38a75784ae38f9cd2f00c3a75b93e2f9da01c67b64989865e8"
+  },
+  "extracted_bodies": [
+    {
+      "name": "v4_harmonic",
+      "source": "investigations/dspec-sk-profile-20261026/physical-profile/dspec/source-v4-frozen/engine_headers/Windowed3DFields.h",
+      "line": 445,
+      "signature": "static Complex harmonic(int degree, int m, int n, double theta, double phi)",
+      "sha256": "c5e2c7798fc26210ed197ce44a01f54d23e66c3acb62406429a0c1667de41a3b"
+    },
+    {
+      "name": "v4_receiver",
+      "source": "investigations/dspec-sk-profile-20261026/physical-profile/dspec/source-v4-frozen/engine_headers/Windowed3DFields.h",
+      "line": 530,
+      "signature": "static Eigen::MatrixXcd receiverAtPole(SensitivitySolveFamily family,int degree)",
+      "sha256": "4adbb26065ec41d2433382f32f28a4b8fceff7dc535754370323fe2b6eb98a5f"
+    },
+    {
+      "name": "v6_receiver",
+      "source": "investigations/tunya-profile-20261027/dspec/source-v6-frozen/engine_headers/Windowed3DFields.h",
+      "line": 540,
+      "signature": "static Eigen::MatrixXcd receiverAtPole(SensitivitySolveFamily family,int degree)",
+      "sha256": "4cb3320fc4a82f89f6adaa05ba7d694ed6288f751361ca8ad102800eba35b3ab"
+    },
+    {
+      "name": "v6_wigner_estimator",
+      "source": "investigations/tunya-profile-20261027/dspec/source-v6-frozen/engine_headers/Windowed3DFields.h",
+      "line": 436,
+      "signature": "static std::size_t angularWignerBytesPerAngle(int maxDegree,int mMax)",
+      "sha256": "0d50d47f2b7c6e286714f920b99acc7bb9e7242adef34a0fc38731088024b5f1"
+    }
+  ],
+  "change_boundary": "Only validation-v2 generator/template/generated harness and provenance documentation; no frozen implementation source changed.",
+  "execution": "Static source checks only. No compile, science, remote access, or Earth run."
+}

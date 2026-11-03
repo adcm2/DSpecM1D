@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-31",
+  "stage": "Stage2",
+  "prelaunch_remote": {
+    "missing_required_inputs": [],
+    "occupied_build_and_campaign_targets": [],
+    "relevant_active_processes": 0,
+    "cpus_16_23_available": true,
+    "loadavg": "0.06 0.15 0.29"
+  },
+  "authoritative_plan_sha256": {
+    "stages12-stage2-v1-build-plan.json": "c9b473cfd576e671abe0e4691791a4e7e47f6c2a5da238cfa3f35be58b75e499",
+    "stages12-stage2-v1-scheduler-build-plan.json": "a07db48a1d370b37497172443981e431f9c698603eb7829ce46d88b1b70f8e24",
+    "stages12-stage2-v1-controls-plan.json": "1b6d4d87b1260492d7830ae5c6d8406533d14d29e3a303ae82a6187c410a416b",
+    "stages12-stage2-v1-measure-plan.json": "9f0f505225728c0f7fc2ce551a5891d599d21a0ab0c80db3595bf08605dd7f53"
+  },
+  "failed_staging_attempts": [
+    {
+      "stage_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-frequency-v1",
+      "reason": "plan-bound required inputs resolve under stages12-stage2-v1-build; no campaign launched",
+      "preserved": true
+    }
+  ],
+  "build_launch": {
+    "task_id": "stages12-stage2-build-v1",
+    "pid": 3855334,
+    "control_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-build-control-v1",
+    "plan_sha256": "c9b473cfd576e671abe0e4691791a4e7e47f6c2a5da238cfa3f35be58b75e499",
+    "thread_cap": 8,
+    "initial_status": "running"
+  }
+}

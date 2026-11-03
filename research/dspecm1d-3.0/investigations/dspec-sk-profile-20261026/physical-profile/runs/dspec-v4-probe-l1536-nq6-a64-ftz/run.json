@@ -1,0 +1,57 @@
+{
+  "command": [
+    "investigations/dspec-sk-profile-20261026/physical-profile/dspec/physical_driver-profiled-v4-frozen",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/PREM500",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/runs/dspec-v4-probe-l1536-nq6-a64-ftz/data",
+    "kernel-probe",
+    "--lmax",
+    "1536",
+    "--nq",
+    "6",
+    "--radial-refinement",
+    ".05",
+    "--qex",
+    "1",
+    "--dc",
+    "include",
+    "--radial-traces",
+    "0",
+    "--probe-angle-count",
+    "64",
+    "--contacts",
+    "off",
+    "--pole-only",
+    "on",
+    "--forward-only",
+    "on",
+    "--max-output-gib",
+    "1"
+  ],
+  "cpu": 8,
+  "threads": 1,
+  "timeout_s": 1800,
+  "address_space_limit_gb": 8,
+  "executable_sha256": "8cc21c1da870b65050e3516921f0b81a0073cddc651805df7eb94e3e477c8484",
+  "start_unix": 1793052051.439329,
+  "cpu_index": 8,
+  "underflow_diagnostic_environment": {
+    "DSPEC_PROFILE_FTZ": "1",
+    "LD_PRELOAD": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/libdspec_profile_ftz-v1.so"
+  },
+  "preload_sha256": {
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/libdspec_profile_ftz-v1.so": "bda8197f9e679ad453bb736171fc1f9fb96a1785c4726efe0737b302d380d1cd"
+  },
+  "returncode": -9,
+  "wall_s": 1814.6219736350004,
+  "peak_rss_bytes": 1115471872,
+  "timedout": false,
+  "profiles": [],
+  "output_files": {
+    "data/angular_grid.csv": "9072004f513d50c801d8a1a216bd3b6f1cf4715759ba7a3a6e1d979842c61c25",
+    "data/kernel_probe.bin": "08ecc95d4df743c56b92685201d5c23338010d1ecaa975d4c7e385002d12bcd6",
+    "data/kernel_probe_angles.csv": "fa8176f20de0d789729ef9d139eb47a5abb3edbc8c6fc4ca577f503b541a92d2",
+    "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+    "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+    "data/parameters.txt": "85a83c85bc37d127e574b059bd75869988087b1d8528d3dd56e7eb0920fc7070"
+  }
+}

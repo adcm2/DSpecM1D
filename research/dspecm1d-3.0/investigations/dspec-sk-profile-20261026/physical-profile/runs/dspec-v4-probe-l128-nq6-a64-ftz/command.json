@@ -1,0 +1,44 @@
+{
+  "command": [
+    "investigations/dspec-sk-profile-20261026/physical-profile/dspec/physical_driver-profiled-v4-frozen",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/PREM500",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/runs/dspec-v4-probe-l128-nq6-a64-ftz/data",
+    "kernel-probe",
+    "--lmax",
+    "128",
+    "--nq",
+    "6",
+    "--radial-refinement",
+    ".05",
+    "--qex",
+    "1",
+    "--dc",
+    "include",
+    "--radial-traces",
+    "0",
+    "--probe-angle-count",
+    "64",
+    "--contacts",
+    "off",
+    "--pole-only",
+    "on",
+    "--forward-only",
+    "on",
+    "--max-output-gib",
+    "1"
+  ],
+  "cpu": 5,
+  "threads": 1,
+  "timeout_s": 300,
+  "address_space_limit_gb": 8,
+  "executable_sha256": "8cc21c1da870b65050e3516921f0b81a0073cddc651805df7eb94e3e477c8484",
+  "start_unix": 1793052052.734749,
+  "cpu_index": 5,
+  "underflow_diagnostic_environment": {
+    "DSPEC_PROFILE_FTZ": "1",
+    "LD_PRELOAD": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/libdspec_profile_ftz-v1.so"
+  },
+  "preload_sha256": {
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/libdspec_profile_ftz-v1.so": "bda8197f9e679ad453bb736171fc1f9fb96a1785c4726efe0737b302d380d1cd"
+  }
+}

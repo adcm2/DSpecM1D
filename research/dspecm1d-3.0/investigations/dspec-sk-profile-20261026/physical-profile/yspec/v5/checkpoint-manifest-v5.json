@@ -1,0 +1,473 @@
+{
+  "schema": "yspec-physical-checkpoint-v5",
+  "created_utc": "2026-10-26",
+  "scope": "compile-only bounded positioned-I/O streamed kernel adapter; angle-major output; no numerical execution",
+  "yspec_source_commit": "280eab0200495391539c0f97e62f978083c307bc",
+  "native_binary": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/physical-yspec",
+  "instrumented_binary": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/physical-yspec",
+  "archive_linked": false,
+  "compiled_library_translation_units": 14,
+  "streaming_api": "YSpec::ComputeSampledLoveModuliToFile; one 64-angle block of eight elastic channels read/updated/written per frequency, then converted to five Love channels; no full-volume array mapped or returned",
+  "scratch_layout": "angle-major [angle][native radial node][8 elastic channels]",
+  "output_layout": "native-endian float64 angle-major [angle][native radial node][A,C,F,L,N]",
+  "resident_buffers": "one angular block plus current contraction tile and bounded transform workspace; geometry and radial solver arrays included in driver preflight",
+  "failure_policy": "preserve scratch and partial output; remove scratch only after output fsync succeeds",
+  "numerical_execution": false,
+  "parent_validation_pending": [
+    "v3 monolithic output equality via explicit layout transpose at low degree",
+    "full radial-domain bounded-RSS run and disk-space behavior",
+    "profile overhead and output timing audit"
+  ],
+  "hashes": [
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/physical_yspec.cpp",
+      "sha256": "f723ddaa03b7e7f4c969efc341565c4d2235fe45d688cfceb0c0020267b49902",
+      "bytes": 29588
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build_physical.py",
+      "sha256": "0bd403144ff22cbca586124d9359a2faebcaed537b99415facdb9b608a8bdccb",
+      "bytes": 4892
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/profile.hpp",
+      "sha256": "f66880c1fbc3e24c75d138fa60fc86b66f38024b57acfb68e104c3c9c9445c66",
+      "bytes": 2996
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/implementation_status.md",
+      "sha256": "dbd0fa658541d85d03ba2cc9ac30c762cc76c6f10a984f3032b982b4bb84d924",
+      "bytes": 11817
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Kernels.hpp",
+      "sha256": "bc6b48ebfc75fd57a798a27a6884a9e2a1008cc8cb5af87a215ce02d1eeae5fb",
+      "bytes": 21776
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Calculation.hpp",
+      "sha256": "aeede184f05d3744619e6e21675f3dcdbe3acc77c9a04b0a41c23e2b05628b1e",
+      "bytes": 3221
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Input.hpp",
+      "sha256": "549dc8181fe6eb37574417b35d7ba84dc33fbff8b9ab4c2c405ca3a4d0feb36a",
+      "bytes": 8974
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Instrument.hpp",
+      "sha256": "298bd5bbe37c23ae7e5702c3b74913afe920d89a702c32e81440c99b35a8879c",
+      "bytes": 2057
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Location.hpp",
+      "sha256": "6c8b2162b4ea1653bc4f8f30ea52dfd51aa9f7db7abecb53aa924f4f1e8e3fa7",
+      "bytes": 1908
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Model.hpp",
+      "sha256": "1f8ee4e353175bf650d7728b9550644228b3b3b4e727467e3defccf9ec1e4ece",
+      "bytes": 10658
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/RadialSolver.hpp",
+      "sha256": "b435c69209a404169a61f12b18a3c7baec301eb425824d6228e16642008a1931",
+      "bytes": 8828
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Receiver.hpp",
+      "sha256": "582b3f0d39594b85edecf41349ccd123a01a259378e89eb1acfdbd914086c243",
+      "bytes": 644
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Run.hpp",
+      "sha256": "6c3b6e4fc64be86878e2bcfc3deb571bc593b7426cf96bda8ebb6c66c26e0df5",
+      "bytes": 6734
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Seismograms.hpp",
+      "sha256": "247611ba6cf8d9aa4fd9b10d36d932367b4e6b5b570696f925f707b4c5d9cbcb",
+      "bytes": 3433
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Snapshots.hpp",
+      "sha256": "231d7e55f2b4823e170dbc2cd9129f6f54a1af1911c20b446505fb725bed2f09",
+      "bytes": 4908
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Source.hpp",
+      "sha256": "bd962d472bd8cfe2e7347763f82cc50fb8a3af6a601265862a98eef44cb65b6b",
+      "bytes": 1527
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Synthetics.hpp",
+      "sha256": "f431f6d95361e6550c785e77524d13916b6e2d1003e94088c2b5e75b21028576",
+      "bytes": 2717
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Types.hpp",
+      "sha256": "e8ee5d4cab3960c818232245f22a227b7affc85eb3078dfc90f50111a6fc9f56",
+      "bytes": 349
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/Units.hpp",
+      "sha256": "70bddd4018e0cd16302ecb7a2d3277a2453887f8c637fc41224c01020c6f01ed",
+      "bytes": 2550
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/YSpec/YSpec.hpp",
+      "sha256": "95855559d880f84c83a3e323c100c7ae93dadda5b825a77f316cf8a605ae102e",
+      "bytes": 436
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/include/YSpec/Calculation.hpp",
+      "sha256": "aeede184f05d3744619e6e21675f3dcdbe3acc77c9a04b0a41c23e2b05628b1e",
+      "bytes": 3221
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/AngularFunctions.cpp",
+      "sha256": "394c74ebb6aca6f6684db90e675b02fc6c2b692d77a131ec268f7060469a1fbb",
+      "bytes": 3049
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/AngularFunctions.hpp",
+      "sha256": "2e8449fa32283610429f02245ffdb81ca24a849034e466f0ef01e0db5495a7a5",
+      "bytes": 3449
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Bessel.hpp",
+      "sha256": "3f424259e9817bd7a16bf9f29cba77100a1a51007d085886e8dc1d663e9e5dd5",
+      "bytes": 2146
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Coefficients.cpp",
+      "sha256": "eee098164609fd376f7c0ab047c9ffc0aa90a1265231d188fad668121862b6fe",
+      "bytes": 7908
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Coefficients.hpp",
+      "sha256": "a03e5841757ba33158c0c9a236cadc919bb05218d203b6aeeab9ee961ebf0ece",
+      "bytes": 4887
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Equations.hpp",
+      "sha256": "0a55e021a68ce705fe8f5a7af77a0fa41b0159733c765030912e74742bcfdc40",
+      "bytes": 33861
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Geometry.hpp",
+      "sha256": "eec8d547e727aee32249fcc7a86316513cf97275fa3b900d1c05c68ec00af993",
+      "bytes": 3558
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Input.cpp",
+      "sha256": "42bdf940973d04bfcf97748cc09e09f0be21e5702af494a12a41a47a3cb686cd",
+      "bytes": 10451
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/InputSections.cpp",
+      "sha256": "66a82e8aa6f41696877dd2e9d0927a52d4a208c17fcfaf4da54c64b5027f24c9",
+      "bytes": 12798
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/InputSections.hpp",
+      "sha256": "9f83d836b054b3b57669b100c17b849a8865837028a502c372671c74a0c764b4",
+      "bytes": 3108
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Instrument.cpp",
+      "sha256": "a73fef1cdd8f5ce6090d13c94c3be4be702750f510bd6870b32edd18cc807675",
+      "bytes": 3895
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/KernelParts.hpp",
+      "sha256": "21af53d0b1ed9a0e0c24c999c9bbf74e7e86c0e0b66e459333225105290933d2",
+      "bytes": 4756
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/KernelProducts.hpp",
+      "sha256": "0066333e016c6a2e3f6e4d54e32bc32ce385c11a75595e9c881fdc1df5b1d940",
+      "bytes": 12651
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Kernels.cpp",
+      "sha256": "1828d70b2046118c7bd1f148c05e5735ce5fff25ffe2430b5d79b8f79ca49c33",
+      "bytes": 29261
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Kinds.hpp",
+      "sha256": "961bf679d6179356e71fd2e6392e37e31f2e43505d9aec938ebc12b225bdc116",
+      "bytes": 8178
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Location.cpp",
+      "sha256": "53c3686f325b68dd7a3c0fe2a3a6b102d3213000a06f425739f4bf226e865459",
+      "bytes": 3350
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Model.cpp",
+      "sha256": "f03d9ba370617fe96127ad6311163c767c3761242438b6e7650b5fee4e78f3ee",
+      "bytes": 6799
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/OrderArray.hpp",
+      "sha256": "1fdd9da8e250f9189a9405d59d49bea4e2a006b506eaa7b3f39889b2b46dcef7",
+      "bytes": 929
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/PhysicalGrid.hpp",
+      "sha256": "8dc1a5245fe12e5072653d5781134e6af158645354628c9b98c9120e82396308",
+      "bytes": 244
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/RadialSolver.cpp",
+      "sha256": "4fc25404e6053ce604500f94a45a70c248980f27d5de4d04bd7bd88930bb50b7",
+      "bytes": 40130
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Report.hpp",
+      "sha256": "984aa003b46b26127d62e639faf668e6200fda849f4740872995b80ae38b84ba",
+      "bytes": 734
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Run.cpp",
+      "sha256": "016115dfa212640435f74d9d692bb5e564bd1ed386081fcaea8e326e2d0a7daa",
+      "bytes": 21833
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/RungeKutta.hpp",
+      "sha256": "46c950560753469e842680d5429b6726545831d62b7320a765d5f9819951f42e",
+      "bytes": 16135
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/SampledKernels.cpp",
+      "sha256": "28977cad4281ff0ea2bd94352a2cfb46301935c3cf56fc03277ed29541f60ea3",
+      "bytes": 49764
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Snapshots.cpp",
+      "sha256": "adcdde5c67a2d65505fa15902028bcde854066defc702a4f67ea0437461ba7ba",
+      "bytes": 10702
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/SourceWeights.hpp",
+      "sha256": "59b515040cd85346b320f53af5d40fe92d9e3126d6e997ee4eb65511a715114e",
+      "bytes": 7932
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Spectra.hpp",
+      "sha256": "26dad908f6818317667642136ce6380422583dd597f41af391f2c8584a4fe4fc",
+      "bytes": 3597
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Sphere.hpp",
+      "sha256": "f06934d50dfcd1009165fa9db6230600b11c0cb395d44d94b8042fda33fabbc9",
+      "bytes": 1240
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/Synthetics.cpp",
+      "sha256": "4699f05ad8889158c96b3d08643213739ce6cda4b2ee2cb2107862b7a0981b99",
+      "bytes": 8361
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/TimeSeries.cpp",
+      "sha256": "4b1f98c9f76473cdf32be7b14812f5c24fdcd3b8da70099f871084906a8dad29",
+      "bytes": 3668
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/source/src/TimeSeries.hpp",
+      "sha256": "61e108506f17f87ab171db608ae08b6d4cb861016f464051bc7479ea7fb3d464",
+      "bytes": 5284
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/AngularFunctions.cpp.o",
+      "sha256": "f25fb3ee55b986559452d6698b5c5ac9910946e9429f381f67a09ad560e87859",
+      "bytes": 104480
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Coefficients.cpp.o",
+      "sha256": "e8be7f77727edd5c7ec12c6888cd85ad2a498aab091f39d2f346955029b18a0d",
+      "bytes": 215144
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Input.cpp.o",
+      "sha256": "18d3d8774cff8214b283be8fca3b3fb9500fcb79a687d4780c9aa39ceee8d403",
+      "bytes": 250104
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/InputSections.cpp.o",
+      "sha256": "400ccb08aeb50b9102c34c346ef0d849779aab4608e85cbe07746053c977a2ef",
+      "bytes": 208776
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Instrument.cpp.o",
+      "sha256": "4e1f63dcb47ffa2d84aa96bf5d1830046831bda27caab7fd9eb0da7abc93c0d6",
+      "bytes": 185688
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Kernels.cpp.o",
+      "sha256": "ec7809434a398c8bf9710004b6b853e9560b8be331ece155bbaeb2dfbb09971c",
+      "bytes": 211800
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Location.cpp.o",
+      "sha256": "ad2fa66d889e26c025ef5e7a3d7c786b79422cf8611ff56e231d3b0e1adf51a5",
+      "bytes": 11384
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Model.cpp.o",
+      "sha256": "1f21030db132d72fe263db73add2650512aabcc40d1d83203ddfce33b2a0ed5a",
+      "bytes": 258208
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/RadialSolver.cpp.o",
+      "sha256": "19866c8d4530ebab1c2321e90346369ce88565df885b1f840da94be9ec5cbac9",
+      "bytes": 622624
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Run.cpp.o",
+      "sha256": "70ee824ca9568a73bd27d49f419467d8f4e1e19e70f12b0784ceeb940e4ed984",
+      "bytes": 574744
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/SampledKernels.cpp.o",
+      "sha256": "661956f70962911dbcd2b5cf4e6f62af277ebf72941bd5bb5ca5b6197ee167f3",
+      "bytes": 265216
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Snapshots.cpp.o",
+      "sha256": "5a1070064e14ac6ca201446704c5841fc0be80b32dc78ab20e62a3c855077f07",
+      "bytes": 39280
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/Synthetics.cpp.o",
+      "sha256": "7fde695f90b15388145ad616461af55852320a28e7ddd3f07089b38ef80cee46",
+      "bytes": 78272
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/TimeSeries.cpp.o",
+      "sha256": "9e5d7797ffce3dd1935f01db67c1a7a88701b403ec53a2bb623ca8006c365088",
+      "bytes": 59632
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/physical-yspec",
+      "sha256": "de1553ed5b5271fbc60fb11e227e280d409b9e1aafa3121bb47eaecb67caf9b6",
+      "bytes": 1650584
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/physical_yspec.o",
+      "sha256": "34bcc9e41f50e70dd71a42eca5d2a299920effe5309d666032546cece5d48f7f",
+      "bytes": 174880
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/AngularFunctions.cpp.o",
+      "sha256": "2b5ac4ad18e202c906ff3410b76b6a838363382fe0836ba68590c818ddd01bfa",
+      "bytes": 80744
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Coefficients.cpp.o",
+      "sha256": "e8be7f77727edd5c7ec12c6888cd85ad2a498aab091f39d2f346955029b18a0d",
+      "bytes": 215144
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Input.cpp.o",
+      "sha256": "18d3d8774cff8214b283be8fca3b3fb9500fcb79a687d4780c9aa39ceee8d403",
+      "bytes": 250104
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/InputSections.cpp.o",
+      "sha256": "400ccb08aeb50b9102c34c346ef0d849779aab4608e85cbe07746053c977a2ef",
+      "bytes": 208776
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Instrument.cpp.o",
+      "sha256": "4e1f63dcb47ffa2d84aa96bf5d1830046831bda27caab7fd9eb0da7abc93c0d6",
+      "bytes": 185688
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Kernels.cpp.o",
+      "sha256": "ec7809434a398c8bf9710004b6b853e9560b8be331ece155bbaeb2dfbb09971c",
+      "bytes": 211800
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Location.cpp.o",
+      "sha256": "ad2fa66d889e26c025ef5e7a3d7c786b79422cf8611ff56e231d3b0e1adf51a5",
+      "bytes": 11384
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Model.cpp.o",
+      "sha256": "1f21030db132d72fe263db73add2650512aabcc40d1d83203ddfce33b2a0ed5a",
+      "bytes": 258208
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/RadialSolver.cpp.o",
+      "sha256": "d3470ace575512f784ce6d01d3c12a39eeb6aa5e7a91c088b0b5f22228db939d",
+      "bytes": 644512
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Run.cpp.o",
+      "sha256": "70ee824ca9568a73bd27d49f419467d8f4e1e19e70f12b0784ceeb940e4ed984",
+      "bytes": 574744
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/SampledKernels.cpp.o",
+      "sha256": "816a40d69f07bece48290843196cd32771bbfe6c34f487aeb1f7335bcd891c25",
+      "bytes": 214352
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Snapshots.cpp.o",
+      "sha256": "5a1070064e14ac6ca201446704c5841fc0be80b32dc78ab20e62a3c855077f07",
+      "bytes": 39280
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/Synthetics.cpp.o",
+      "sha256": "7fde695f90b15388145ad616461af55852320a28e7ddd3f07089b38ef80cee46",
+      "bytes": 78272
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/TimeSeries.cpp.o",
+      "sha256": "9e5d7797ffce3dd1935f01db67c1a7a88701b403ec53a2bb623ca8006c365088",
+      "bytes": 59632
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/physical-yspec",
+      "sha256": "dc0bce8e637fc9ecb1b6bb33420ab5fdbc67f54ef0a419d4897018e5132b5503",
+      "bytes": 1650632
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/native/physical_yspec.o",
+      "sha256": "b813e6bf3ded1d36dff6e4548570f9bfd399e0e5adb4df1836f66ac0d3fb0e19",
+      "bytes": 157920
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5-native-commands.json",
+      "sha256": "bb3d3c290428b2cf1cc87a1b79a1454049db61e0ec812e2dcfcadd9b1db0724f",
+      "bytes": 33247
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5-instrumented-commands.json",
+      "sha256": "937ab6c3b8835b8ac0ae43a6335e9018046625c5fd6e8d651d710475f5224bfd",
+      "bytes": 32965
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/protocol.json",
+      "sha256": "1b8931c9b1ddda6e809f65ebd37d8dfb40523266ea76cfe6667043cf57114246",
+      "bytes": 3421
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v4/checkpoint-manifest-v4.json",
+      "sha256": "43dff936bf2cbf086a86ed29c916a25d1cc12fe3119de89941d6429053575812",
+      "bytes": 28593
+    },
+    {
+      "path": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/checkpoint-manifest-v3.json",
+      "sha256": "50a6e157546affc941f29ff5b8d40963c6ca1940809368df5ddf9bb129caee81",
+      "bytes": 44950
+    },
+    {
+      "path": "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/PREM500",
+      "sha256": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+      "bytes": 40869
+    }
+  ]
+}

@@ -1,0 +1,137 @@
+Phase D NQ6/batched angular reconstruction: bounded source review, Sol,2026-10-31
+Current gate: NOT released for build/run; focused actual blockers sent to owner.
+User approved the full saved phase incl one matched YSpec refresh. Reviewer only
+reads source/configs/results and writes review notes; no code,build or numerics.
+
+First source pass reviewed phase_d_controls.hpp,phase_d_batched_reconstruction.hpp
+and phase_d_driver.cpp against frozen C2 scalar/common semantics. Ordinary
+coefficients*angularWeights is correct (no conjugation); spin/frame rotation
+factors match scalar rotateToGlobal,including isolated radial-l0 adjoint frame.
+
+Concrete corrections required before build:
+1. Qualify nested Axes alias in prepareWeights (compile blocker).
+2. Tile accumulator must retain each angle separately. Current node-only array
+   sums all16angles and copies that sum into every output angle.
+3. Replace/extend inherited exact C2 product inventory guard for approved NQ6
+   meshes. Keep requested accuracy separate from legacy1e-5/h and make checker/
+   bounded mesh selection enforce that requested target,not only record it.
+4. Place scalar/batched field/product1e-11 proof in the actual fused initial
+   pass. Current fallback else-if frequencyRoute is unreachable with products.
+5. Preserve exact NQ10h=.025 reference and L3NQ8h=.05 audit paths. New NQ6
+   selector cannot silently rewrite them. Frozen C2 binary alone lacks full35
+   field capture; use narrow isolated archived-C2-source capture with frozen
+   kernel/forward parity if needed. Existing C2 FD alone does not exercise new
+   batched reconstruction; actual helper needs the narrow L3 validation control.
+6. Account new angular cache+coefficients+per-angle accumulators+Eigen scratch
+   together under<=32MiB/worker,with measured peaks distinct from configured
+   limit. Timed route should contract bounded tiles into existing C_unit outputs;
+   retain whole fields only in explicit oracle/validation mode if required.
+7. Report batched flag from actual route; backendYSpec must not claim it.
+
+Required completed validation path: full35 own waveform/measurement/P, common
+physical one-sided direct polynomial values+derivatives,grouped solid fields
+and complete35 summed kernels<requested1e-3; same-data batching1e-11 separate;
+fluid subgroup ratios remain diagnostic,not universal raw-field/SI claim. One
+matched YSpec refresh after selected mesh,using exactly its physical radial/
+angular output grid. Disclose native NQ10 reference output-size differences.
+Exact stage paths: control/continuation/actualTASK/jobID/data. Unique stages,
+actual /space/.../research/builds root,archived C2 seed hashes,existing receipts.
+All source corrections must be promptly logged; detached Tunya only,8total
+frequency workers inner1,<=50aggregate,cap20/8numeric/build,16/32GiB. No new
+backend,audit framework,production,discrepancy,figures,delete,commit or push.
+
+Focused correction review: angle-specific accumulators and fused tile sink now
+correct; scalar/batch35-bin gate runs in actual fused pass; type/duplicate
+declaration blockers fixed; NQ6 product storage bounded. Angular geometry now
+retains narrow real Legendre/frame data and phase factors, builds only frame/
+angle-tile weights, and reserves2MiB Eigen packing within angular<=32MiB bound.
+This is derived angular-working-storage accounting,not observed total frequency
+workspace memory; label it accordingly versus supervisor-observed RSS.
+Full35 common F/A coverage resolved as validation-only per-bin binary unit-field
+streams (~303MB total/case),single keyed physical-point inventory and post-own-
+waveform P.csv. Capture requires zero skipsOFF; no whole-field history in timed
+route. Both F/A fields at all35bins and complete35-summed common kernels must
+meet requested1e-3 grouped-solid target. No extra reference/mesh cases required.
+
+One remaining selector blocker at reviewed snapshot: explicit NQ10-reference/
+L3-FD modes still compare standard nominal recipe h to archived.025/.05,which
+are different values. Pre-approved exact fix: preserve those archived h in the
+two narrow modes; use standard recipe*scale only for NQ6. No other numerical
+source blocker remains. Source release becomes effective when that fix is
+applied; exact build/run configs and checker binding still require review.
+
+Source/build release: verified current driver356–383 now bypasses recipe for
+exact archivedStep=.025/.05 modes,validates argv h,uses recipe*scale onlyNQ6.
+Source PASS. Native/profile config/plan PASS: fresh phase-d-nq6-batched-v1-build-v1
+stage and actual research/builds root,correct copied includes/source,pinned
+GCC13.2/libyspec,existing receipt wrapper,cap8/32GiB. Detached build released
+after preflight/source freeze. Variant IDs were still phase-c2-native/profile;
+either bind those exact actual paths in run plans or rename to phase-d-native/
+profile before launch (pre-approved config-only correction). No approval round
+needed. Numerical accuracy/FD/timing plans and checker remain pending review.
+
+Parent's final timing matrix refines the approved fresh DSpec comparison to
+selected-NQ6 scalar-only versus batched native at IDENTICALh/grid/work. V1 build
+already launched and is preserved for science validation. Reviewed narrow v2
+driver delta against immutable v1 build tar: explicit DSPEC_PHASE_D_SCALAR_ONLY
+routes the SAME initial workspace through preserved phasec::sampleNativeSides,
+same complex contraction/own P/reduction; default batched unchanged. Validation
+combinations are rejected and route metadata is truthful. Delta PASS. Both timed
+jobs must disable all direct/reconstruction/common/weight/batch oracles; only
+scalar-only flag differs. Link v2 default-batched output to validated v1 at1e-11;
+no duplicate common35 field captures. One profile counterpart and exactly one
+selected-grid matched YSpec refresh; no extra NQ10 timed run required.
+
+V2 native/profile build config/path PASS: actual research/builds/phase-d-nq6-
+batched-v2,unique stage,phase-d-native/profile variants,correct source/include/
+config path,existing wrapper,cap8/32GiB. Owner may launch detached after preflight.
+
+Nominal validation queue reviewed: NQ10 exact.025 then NQ6 nominal,8workers/
+inner1,common+batch+tensor validationON,zero skipsOFF,all35 streams/products and
+ownP.54 declared outputs/case; exact TASK phase-d-nq6-nominal-run-v1 dependency
+paths pass. Scientific commands/source binding/caps are correct. Focused checker
+fixes required before release: fresh-stage checker path (not already immutable
+build archive); actually enforce finite1e-11 batch/tensor metrics for both cases,
+exact70keys/positive active norms; finite accepted binary values/errors; exact
+45122 common unique keys and35grid; NQ10 native node/angle equality before
+accepted binary kernel comparison; accepted spectrum/trace adjoint_source and
+measurement norm parity as own-weight reference binding. No numerical source
+rebuild for checker fixes. Requested mesh accuracy reads the user target and
+returns bounded next-scale status,not an invented unconditional mesh pass.
+
+Corrected accuracy checker now PASS: finite1e-11 proofs enforced for both70-row
+cases,exact45122 unique physical keys/shared35complex grid,exactP zero support,
+accepted forward/spectrum/adjoint-source/measurement parity,finite aligned
+native reference-kernel comparisons. Final existing-input list correction
+pre-approved: add F8a spectrum/nodes/along+acrossangles,both new frequency grids,
+and new NQ10 reference along+acrossangles. Add absoluteL2 errors beside existing
+relative errors/reference norms using already accumulated sums. Queue release
+effective once these report/input-only edits are applied and staged/hash-bound
+at fresh validation-v1 path; no new approval round or numerical source rebuild.
+
+Actual Phase D L3 FD queue/checker PASS and released: v2 profile,exact archived
+L3/NQ8/h=.05/157x91,35bins,1frequency/inner1; batched route/scalarproof35rows,
+existing frozen baseline/+/-2e-4 FD gate,exact waveform/gravity/time controls,
+proper fresh-stage checker and all reads/TASK/job paths bound. Preserve earlier
+accepted frozen-input hashes. No further source changes required.
+
+Timing queue commands/science/path/caps reviewed correctly selected.9h/208sides:
+same v2 binary scalar/native pair differing only scalar-only flag,profile batch,
+one YSpec refresh. Checker-only actual corrections required: proper key
+phase_c_zero_bin_skips;35 actual combined workspaces versus32unitadjoints;
+finite RAW along/across kernel comparison (sections integrated_profile_kernel
+is always0 and cannot prove parity); profile/native and validated-v1 native
+kernel links at1e-11; per-channel waveform comparison,not unlike-channel pooled
+norms includingwindow; normalize worker prefixes. Explicitly unset DSpec
+frequency env for YSpec; remove duplicate CLI arg. No extra cases or build.
+
+Timing corrected logic PASS: native pair/profile/v1 validated RAW kernel and
+per-channel waveform links at1e-11,byte-equal selected geometry includingYSpec,
+proper35/32/3 work counts and own-grid worker commands. Three deterministic
+final fixes pre-approved: Python script path must precede --plan argument;
+strip optional frequency_worker counter prefix; check YSpec raw kernel shape/
+finite values as diagnostic,not backend-accuracy gate. Queue release effective
+once these exact checker/config corrections are staged/hash-bound; no further
+review cycle. One YSpec refresh only,after actual D-L3 FD passes. Scientific
+accuracy checker selected.9h so no.8 mesh job. Final combined results/report
+review remains; no implementation/solver/source expansion requested.

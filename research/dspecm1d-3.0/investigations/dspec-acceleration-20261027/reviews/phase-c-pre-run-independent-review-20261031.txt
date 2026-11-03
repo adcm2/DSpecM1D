@@ -1,0 +1,127 @@
+Phase C bounded pre-run review — Sol,2026-10-31
+Source/FD-checker/native-profile build gate PASS after focused corrections;
+exact numerical run-plan release pending.
+No reviewer implementation edit, build or numerical calculation.
+
+Reviewed copied Windowed3DFields.h direct forcing changes,
+phase_c_reconstruction.hpp and phase_c_driver.cpp diff against reviewed B.
+Direct receiverMap^H localWeights uses the accepted pole harmonic/fz conjugation;
+validation compares against basisRhs*(basisTransform^H localWeights) and H^H
+solutions. Direct receiver solutions bypass old response cache/projection while
+source coefficients/lifts remain intact. Native reconstruction actually calls
+accepted Phase A strainOf,LegendreTable,evaluate,rotation/fluid projection.
+Separate l0 adjoint receiver=-1 table is isotropic; S/T contributions accumulate
+instead of overwriting. First35 forward pass uses true forward-only/no cache;
+kernel pass is worker-local recomputation/no cache. Exact pre-work adjoint
+weight*force zero predicate asserts original bins7,8,41, preserves all35forward
+bins and original frequency reduction positions; no threshold/cancellation skip.
+
+Actual source/API/coverage corrections required:
+1. Direct-route env flags/guard were inserted into sampleModalBlocks, which has
+   no poleOnly argument, while solveFrequencyModes uses them out of scope.
+   Move them to solveFrequencyModes.
+2. Native helper refers to Field3DPoint.colatitude/longitude; actual API fields
+   are thetaRadians/phiRadians.
+3. Tensor oracle cannot consume combined along/across duplicate-angle cloud.
+   Evaluate each original section's tensor grid separately and scatter/compare.
+4. Combined forward+adjoint error/norm hides forward errors under huge weighted
+   dual norms. Restore separate section/role error statistics and existing A
+   aggregate solid+fluid1e-11 gate for each(bin,section,role), retaining separate
+   fluid diagnostics, without imposing a new fluid-subset scientific threshold.
+5. C plan requires chain-rule products before real projection; current validator
+   compares only double kernelVs. Reuse a complex expression helper and compare
+   complex products, preserving final real projection/units/chain rule.
+6. Reuse immutable angular/Legendre geometry across frequencies rather than
+   rebuilding all tables each helper call; a bounded per-worker case/frame/angle
+   cache suffices. No new angular framework or full response history is requested.
+
+Final source/build/run release will check only these focused corrections and
+exact planned controls: direct/basis equivalence, same-data reconstruction,
+skip on/off unmasked full kernels, FD/time-shift/gravity, and matched native/
+profile boundaries with explicit extra two-pass factorization work. No production
+integration or discrepancy investigation is authorized.
+
+Focused correction verification PASS: flags now scoped in solveFrequencyModes;
+Field3DPoint member names corrected; tensor oracle runs each section separately;
+forward/adjoint aggregate errors and complex products have independent norms per
+bin/section with1e-11 same-data gates and separate fluid diagnostics. New complex
+product helper preserves real final kernel projection/chain rule. Worker-local
+angular plans reuse exact axes/angles/lmax keys across frequencies; mutable
+radial tables/workspaces remain frequency-local and no response cache is used.
+
+FD source/run wiring remains before final freeze: use the same C combined route
+on original L3/NQ8/.05/91-angle audit, e.g. existing phase_c_driver audit mode
+with one frequency worker. Compute its new integrated smooth-profile kernel,
+bind identical frozen A3 +/-traces/case/baseline waveform and compare with the
+existing2e-4 discrete derivative gate. Historical FD alone is not new C proof.
+No second independent FD engine or new global-volume campaign is requested.
+
+FD checker focused correction PASS: original F8 saved trace has1201samples at
+0:2:2400s, distinct from2048FFT samples/4096s padded period. Corrected erroneous
+2048saved-row assumption. Baseline physical-channel parity now uses finite
+relativeL2<=1e-11 with explicit zero-norm handling; time/bin/frequency/window
+columns compare exactly. Original absolute2e-12 floor would have hidden errors
+in tiny physical traces/components. Base/plus/minus share exact saved time grid
+and opposite frozen epsilon; candidate new integrated kernel is tested against
+the frozen-trace FD under unchanged2e-4 limit. Source+FD gate PASS; exact detached
+native/profile build and run configuration still require path/cap review.
+
+Build release PASS: configs/phase-c-direct-adjoint-v1-build-v1-build.json and
+matching build-plan.json use fresh actual /space/adcm2/research/builds root,
+correct staged candidate include/source paths, pinned GCC13.2 and libraries,
+native MATHPROFILE_DISABLED/profile variants, existing receipt wrapper and
+cap8/32GiB. Detached supervised Tunya build is released after owner resource
+preflight. Numerical validation still awaits exact run/checker plan review.
+
+L3 FD numerical plan release PASS after focused path/dependency fixes:
+configs/phase-c-direct-adjoint-v1-l3-fd-plan.json now references authoritative
+Stage2 F8 directories, binds checker to prior numerical result/trace/spectrum/
+components, and lists individual files rather than unsupported PATH=SHA pseudo-
+paths. Read-only historical-hash preflight is preserved at
+receipts/phase-c-l3-input-preflight-20261031.json and matches accepted A3 six
+trace/result hashes plus pinned shared library. Detached phase-c-l3-fd-01 is
+released after owner build/resource checks. L200 equivalence/skip queue remains
+pending exact plan review; FD result joins the single C results review.
+
+Actual L3 control01 failed at bin7 common-field gate before FD checker. Failed
+partial outputs/log remain preserved and no L200 control was launched. Focused
+failure diagnostics now report section/role/product errors, norm2 denominators
+and maximum location under the SAME1e-11 gate. Reviewer caught a shared mutable
+max-location vector; it is now task-local per frequency.
+
+Confirmed convention mismatch: tensor nonradial fluid coefficients project
+rr+h, but its separate radial-l0 scatter retains raw rr and horizontalTrace.
+Common helper projects the total fluid field. Accepted A2 explicitly projects
+BOTH reconstructed and oracle fluid arrays before comparison. The C validator
+now follows that identical canonical observable; tensor physics/source is not
+changed and no tolerance is weakened. Four comparison arrays must be mutable
+for projection (const mutation compile blocker identified before launch).
+Fresh v2 native/profile roots/configuration retain cap8/32GiB and are released
+after that trivial const correction. Fresh L3 retry only until same-gate
+equivalence/FD succeeds. This is implementation-contract correction, not a
+physical discrepancy investigation or lower-NQ/truncation adoption.
+
+L3 retry02 passed: new integrated common kernel-106.02359024964261 vs frozen
+FD-106.02358956682345, relative6.4402569408e-9<2e-4; reconstruction max4.6613e-14
+under unchanged1e-11, exact baseline parity, gravity1.9984e-15/time-shift1-6e-16.
+Receipt summary: receipts/phase-c-l3-fd-02.summary.json. Both original failed
+L3 control and v1 build remain preserved.
+
+L200 focused-control plan reviewed: four sequential jobs (equivalence oracle,
+profile skipoff,profile skipon,native skipon) at NQ10/.025/full domain/eight
+frequency workers/inner1/16GiB/cap20. A1 packet/common CSV diagnostics exist only
+in validation; oracle-off timing jobs omit packet lookup/output. Checker links
+validation output to oracle-off complete kernels/spectra, exact skip set7/8/41,
+native/profile parity, exact70reconstruction groups with positive active-bin
+norm2, no positive QR/unit-basis/cache work, full35forward/32kernelworkspaces,
+and saved A4 forward parity. Final full35 summed-kernel comparison against the
+accepted reference remains the next separately reviewed validation stage.
+
+Conditional L200 launch release PASS after three deterministic checker-only
+fixes: exclude intentionally differing skipped0/1 CSV from off/on byte-equality
+(still validate its semantics); normalize frequency_worker prefixes on counters;
+count actual prepare scopes in kernel phase32, since task wrapper scopes include
+all35queued bins before early skips. No new source/build is needed; owner may
+launch after these exact fixes, standard resource/build receipt preflight and
+staged checker hash capture, without another approval round. Single C result
+review remains required before final matched-reference pipeline stage.

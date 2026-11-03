@@ -1,0 +1,20 @@
+# Global spool pair checker implementation status
+
+## Change log
+
+- Added `check_global_pair.py`, a read-only checker that reuses `check_pair.py` receipt, CSV, numeric comparison, and profiler helpers. It verifies completed-job state, input status, all output/log hashes before and after reading, strict physical metadata, contacts-off and forward-only-off semantics, positive energy and recomputed qdot/(2E), waveform/spectrum at the shared `2e-13` gate, and MATHPROFILE scope closure.
+- Added spool/global checks for cache-disabled single-pass flags, the expected factorization count `53*(2L+1)`, 53 ordered original-bin audits with finite damped `z`, nonzero in-band q weights, an exact-zero guard q weight, receiver-basis residual at most `1e-12`, binary byte counts, bandwidth/count consistency, and separate manual worker/setup/total wall timings.
+- Added exact native-side identity validation through the global sidecar indices and metadata, candidate all-native CSV, reference all-native CSV, and direct reference selected-side CSV. The direct reference theta quadrature and angle-major layout are checked; data are aligned against candidate radial-side-major/theta-major data using identity maps and bounded memory chunks. Optional `--probe64` permits only a 64-angle `kernel-probe` prefix. Optional `--global-reference` requires byte-exact kernel and trace files for full global-to-global comparisons.
+- Added `test_check_global_pair.py` with synthetic checks for tensor transpose plus side permutation, wrong native-side identity rejection, contiguous frequency/q/residual audits, qdot energy identity, receipt hash mutation, and distinct global worker wall timing.
+- Corrected the checker to the inspected combined-v3 schema: SEM degree 6, supported L=3/L=12 full-grid cases, 180 total result sides versus 179 positive-radius CSV sides, 52 physical output bins versus 53 spool records, one-to-eight explicitly selected global sides as a subset of the full direct reference, and the exact-zero q guard record. Fixed CSV receipt lookup to pass artifact-relative names once.
+- Added producer-shaped combined-v3/global-v3 fixtures for the 180/179/1-8 and 52/53 split, exact-zero guard q, wrong side identity, L=3/L=12 full-comparison gates, higher-L probe-only routing, CSV receipt prefixes, and the selected-side subset relation. Native metadata scalar types are checked before identity comparison; the actual v3 stage timing sums and result side-count fields are covered.
+- Centralized the distinct physical-output and spool-record counts and used the spool count for manifest and factorization checks.
+- Preserved the pre-v2-review checker and test bytes in `preserved-checker-v2/` before this revision. The copies match the reviewed source hashes exactly. Global-to-global mode now compares kernel, trace, and spectrum byte-for-byte and requires exact energy/qdot scalars; it gates the reviewed reference/candidate as requested w1/w4 with actual workers equal to `min(requested, selected sides, 48)`. Combined-v4 worker elapsed and stage rollups are required and checked against summed worker rows with scale-aware roundoff.
+- Added regression coverage for global-to-global physical parity, exact w1/w4 actual-worker counts, and matching/missing/mismatched global-v3 timing rollups.
+- Preserved those reviewed v3 checker and test bytes in `preserved-checker-v3/` before changing the stability recheck. Final receipt stability now compares the exact completed job object and verified artifact-hash map while retaining the whole-state hash as informational output, allowing unrelated supervisor watchdog updates. Regression coverage confirms watchdog-only state changes pass while completed-job and artifact mutations fail.
+
+## Validation
+
+- `python3 -m py_compile check_global_pair.py test_check_global_pair.py` passed after the combined-v3 schema correction.
+- `python3 -m unittest -v test_check_global_pair.py` passed: 16 tests.
+- No completed Tunya job pair was available in this workspace, so end-to-end artifact-schema validation against a real supervisor receipt remains pending. No build, SSH, or scientific execution was performed.

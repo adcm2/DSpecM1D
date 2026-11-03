@@ -1,0 +1,1047 @@
+--- frozen-v6/driver.cpp
++++ math-profile/dspec/driver.cpp
+@@ -3,6 +3,7 @@
+ #include <DSpecM1D/All>
+ #include <DSpecM1D/ModelInput>
+ #include "engine_headers/Windowed3DKernels.h"
++#include "profile.hpp"
+ #include <DSpecM1D/src/InputParser.h>
+ #include <DSpecM1D/src/NormClass.h>
+ #include <DSpecM1D/src/SourceInfo.h>
+@@ -16,6 +17,7 @@
+ #include <iostream>
+ #include <limits>
+ #include <map>
++#include <memory>
+ #include <numbers>
+ #include <set>
+ #include <sstream>
+@@ -171,10 +173,15 @@
+     bool tensorRealMode,
+     ForwardTensorFieldCache *forwardTensorCache,
+     std::array<double,5> &stages) {
++  mathprofile::Scope candidateBody("candidate_body");
++  mathprofile::count("objective_count");
++  mathprofile::count("volume_point_count",points.size());
++  mathprofile::count("receiver_count",parameters.num_receivers());
++  mathprofile::count("frequency_bins",std::max(0,endBin-1));
+   const auto t0=Clock::now();
+   SPARSESPEC::WindowedDisplacementMap measurement(frequency,sem.lengthScaleMetres(),timeWindow);
+   auto stage0=Clock::now();
+-  const Eigen::MatrixXcd qhat=measurement.adjoint(weightsSI);
++  const Eigen::MatrixXcd qhat=[&]{mathprofile::Scope t("measurement_adjoint");return measurement.adjoint(weightsSI);}();
+   stages[0]+=std::chrono::duration<double>(Clock::now()-stage0).count();
+   SPARSESPEC::Windowed3DEvaluationResult out;
+   out.rawDisplacementSpectrum=Eigen::MatrixXcd::Zero(weightsSI.rows(),weightsSI.cols());
+@@ -194,14 +201,18 @@
+   const char *modalEnv=std::getenv("DSFAST_EXPORT_MODAL");
+   const bool exportModal=!modalEnv||std::string(modalEnv)!="0";
+   for(int bin=1;bin<endBin;++bin){
++    mathprofile::count("frequency_bin_iterations");
+     const Complex z=w.at(bin)+Complex(0,-frequency.ep());
+     stage0=Clock::now();
+-    auto workspace=SPARSESPEC::Windowed3DFieldEngine::prepareFrequencyWorkspace(
+-        sem,source,parameters,z,qhat.col(bin),batchResponses);
++    auto workspace=[&]{mathprofile::Scope t("frequency_workspace_and_modal_solve");return SPARSESPEC::Windowed3DFieldEngine::prepareFrequencyWorkspace(
++        sem,source,parameters,z,qhat.col(bin),batchResponses);}();
+     stages[1]+=std::chrono::duration<double>(Clock::now()-stage0).count();
+     auto forwardKey=forwardFieldKey(sem,source,parameters,parameters.lmax(),z,backend,
+         tensorRealMode,all);
+-    const auto *cachedForward=forwardTensorCache?forwardTensorCache->find(forwardKey):nullptr;
++    const SPARSESPEC::CachedForwardTensorFields3D *cachedForward=nullptr;
++    {mathprofile::Scope t("forward_angular_cache_lookup");cachedForward=forwardTensorCache?forwardTensorCache->find(forwardKey):nullptr;}
++    if(cachedForward)mathprofile::count("forward_angular_cache_hits");
++    else mathprofile::count("forward_angular_cache_misses");
+     std::vector<SPARSESPEC::PoleAngularCoefficientRecord3D> poleRecords;
+     std::set<std::tuple<std::uint64_t,bool,int,std::uint64_t>> packetTraceKeys;
+     std::function<void(const SPARSESPEC::PoleAngularCoefficientRecord3D&)> visitor;
+@@ -211,9 +222,9 @@
+       if(packetTraceKeys.insert(key).second)poleRecords.push_back(record);
+     };
+     stage0=Clock::now();
+-    const auto fields=tensorMode?
++    const auto fields=[&]{mathprofile::Scope t(tensorMode?"tensor_grid_semantic_plan_and_sampling":"packed_sampling");return tensorMode?
+         workspace.sampleForKernelsTensor(all,receiverBegin,&plan,backend,visitor,tensorRealMode,cachedForward):
+-        workspace.sampleForKernelsPacked(all,receiverBegin,&plan,backend,visitor);
++        workspace.sampleForKernelsPacked(all,receiverBegin,&plan,backend,visitor);}();
+     stages[2]+=std::chrono::duration<double>(Clock::now()-stage0).count();
+     if(forwardTensorCache&&!cachedForward){
+       SPARSESPEC::CachedForwardTensorFields3D saved;
+@@ -222,7 +233,7 @@
+       saved.receiverDisplacement.reserve(fields.size()-receiverBegin);
+       for(std::size_t p=receiverBegin;p<fields.size();++p)
+         saved.receiverDisplacement.push_back(fields[p].forwardRawDisplacement);
+-      forwardTensorCache->store(std::move(forwardKey),std::move(saved));
++      {mathprofile::Scope t("forward_angular_cache_store");forwardTensorCache->store(std::move(forwardKey),std::move(saved));}
+     }
+     const std::uint32_t binId=static_cast<std::uint32_t>(bin);
+     const std::uint64_t pointCount=static_cast<std::uint64_t>(points.size());
+@@ -257,11 +268,12 @@
+     }
+     }
+     stage0=Clock::now();
+-    for(std::size_t p=0;p<points.size();++p)
++    {mathprofile::Scope t("point_kernel_contraction_and_scatter");for(std::size_t p=0;p<points.size();++p)
+       addKernel(out.pointKernels[p],SPARSESPEC::Windowed3DKernelEngine::pointKernel(sem,fields[p]));
++    }
+     stages[3]+=std::chrono::duration<double>(Clock::now()-stage0).count();
+     stage0=Clock::now();
+-    const auto contacts=SPARSESPEC::Windowed3DKernelEngine::sourceShellContact(workspace,source,angles);
++    const auto contacts=[&]{mathprofile::Scope t("source_contact_separate_case");return SPARSESPEC::Windowed3DKernelEngine::sourceShellContact(workspace,source,angles);}();
+     stages[4]+=std::chrono::duration<double>(Clock::now()-stage0).count();
+     for(std::size_t p=0;p<contacts.size();++p){
+       out.sourceContact[p].A+=contacts[p].A;out.sourceContact[p].C+=contacts[p].C;
+@@ -269,16 +281,20 @@
+       out.sourceContact[p].N+=contacts[p].N;
+     }
+     const Complex fz=-Complex(0,1)/z;
+-    for(int rec=0;rec<parameters.num_receivers();++rec)for(int c=0;c<3;++c)
++    {mathprofile::Scope t("receiver_suffix_and_frequency_scatter");for(int rec=0;rec<parameters.num_receivers();++rec)for(int c=0;c<3;++c)
+       out.rawDisplacementSpectrum(3*rec+c,bin)=fz*fields[receiverBegin+rec].forwardRawDisplacement[c];
+-  }
+-  out.processedSISpectrum=measurement.forward(out.rawDisplacementSpectrum);
+-  out.objective=weightsSI.conjugate().cwiseProduct(out.processedSISpectrum).sum().real();
++    }
++  }
++  {mathprofile::Scope t("Pforward_fft_and_window");out.processedSISpectrum=measurement.forward(out.rawDisplacementSpectrum);}
++  {mathprofile::Scope t("final_frequency_objective_accumulation");out.objective=weightsSI.conjugate().cwiseProduct(out.processedSISpectrum).sum().real();}
+   seconds=std::chrono::duration<double>(Clock::now()-t0).count();
+   return out;
+ }
+ 
+ int main(int argc,char **argv) try {
++  const auto processStart=Clock::now();
++  auto setupRoot=std::make_unique<mathprofile::Root>("dspec_setup",-1);
++  auto setupAll=std::make_unique<mathprofile::Scope>("setup_all");
+   if(argc!=10) throw std::runtime_error("usage: fast_driver MODEL SAMPLES EMPTY_OUTPUT LMAX NF OBJECTIVES BACKEND RADIAL_MODE SOLVER_BACKEND");
+   const fs::path model=fs::absolute(argv[1]), samples=fs::absolute(argv[2]), output=fs::absolute(argv[3]);
+   const int lmax=std::stoi(argv[4]), nfreq=std::stoi(argv[5]), nobj=std::stoi(argv[6]);
+@@ -293,13 +309,18 @@
+   if(!fs::is_directory(output)||fs::directory_iterator(output)!=fs::directory_iterator{})
+     throw std::runtime_error("output must be an existing empty directory");
+   const auto paramPath=output/"parameters.txt";
+-  {std::ofstream f(paramPath);f<<paramsText(model,output,lmax);}
++  {mathprofile::Scope t("parameter_file_generation");std::ofstream f(paramPath);f<<paramsText(model,output,lmax);}
++  auto inputParametersScope=std::make_unique<mathprofile::Scope>("input_parameters_model_and_frequency_initialization");
+   InputParametersNew input(paramPath.string(),8,1,0.05,1.0,0.1,0.0,1);
++  inputParametersScope.reset();
+   auto &parameters=input.inputParameters();auto &frequency=input.freqFull();auto &source=input.cmt();auto &base=input.earthModel();
++  auto semSetupScope=std::make_unique<mathprofile::Scope>("SEM_mesh_and_matrix_setup");
+   Full1D::SEM sem(base,0.05,8,lmax,source);
++  semSetupScope.reset();
+   if(frequency.nt()!=nt||nfreq>frequency.nt()/2) throw std::runtime_error("resolved frequency grid mismatch");
+-  auto points=readPoints(samples);
++  auto points=[&]{mathprofile::Scope t("sample_CSV_read");return readPoints(samples);}();
+   if(radialMode=="native"){
++    mathprofile::Scope nativeGrid("native_grid_expansion");
+     std::map<std::pair<std::uint64_t,std::uint64_t>,std::array<double,2>> uniqueAngles;
+     for(const auto &p:points) uniqueAngles.try_emplace(
+         std::pair{std::bit_cast<std::uint64_t>(p.thetaRadians),std::bit_cast<std::uint64_t>(p.phiRadians)},
+@@ -339,13 +360,15 @@
+   double maxFieldErr=0,maxKernelL2Err=0,maxKernelPointErr=0,maxObjectiveErr=0,maxContactErr=0;
+   std::vector<double> candidateSeconds,referenceSeconds;
+   std::vector<std::array<double,5>> candidateStages;
+-  std::ofstream candidateArrays(output/"arrays_candidate.bin",std::ios::binary);
+-  std::ofstream referenceArrays(output/"arrays_reference.bin",std::ios::binary);
+-  std::ofstream coordinates(output/"coordinates.bin",std::ios::binary);
+-  if(!candidateArrays||!referenceArrays||!coordinates) throw std::runtime_error("cannot create binary arrays");
+-  const std::uint64_t coordCount=points.size();writeScalar(coordinates,coordCount);
+-  for(const auto &p:points){writeScalar(coordinates,p.radiusMetres);writeScalar(coordinates,p.thetaRadians);
+-    writeScalar(coordinates,p.phiRadians);writeScalar(coordinates,p.radialElement);}
++  std::ofstream candidateArrays,referenceArrays,coordinates;
++  {mathprofile::Scope streamSetup("result_stream_creation_and_coordinate_export");
++   candidateArrays.open(output/"arrays_candidate.bin",std::ios::binary);
++   referenceArrays.open(output/"arrays_reference.bin",std::ios::binary);
++   coordinates.open(output/"coordinates.bin",std::ios::binary);
++   if(!candidateArrays||!referenceArrays||!coordinates) throw std::runtime_error("cannot create binary arrays");
++   const std::uint64_t coordCount=points.size();writeScalar(coordinates,coordCount);
++   for(const auto &p:points){writeScalar(coordinates,p.radiusMetres);writeScalar(coordinates,p.thetaRadians);
++    writeScalar(coordinates,p.phiRadians);writeScalar(coordinates,p.radialElement);}}
+   const bool exportPacket=std::getenv("DSFAST_EXPORT_PACKET")&&std::string(std::getenv("DSFAST_EXPORT_PACKET"))=="1";
+   if(forwardFieldsEnabled&&exportPacket)
+     throw std::runtime_error("forward field caching is incompatible with full pole-coefficient packet export");
+@@ -353,6 +376,7 @@
+   const bool exportModal=!modalEnv||std::string(modalEnv)!="0";
+   const bool batchResponsesEnabled=std::getenv("DSFAST_BATCH_RESPONSES")&&
+       std::string(std::getenv("DSFAST_BATCH_RESPONSES"))=="1";
++  auto cacheBookkeeping=std::make_unique<mathprofile::Scope>("stream_packet_and_cache_bookkeeping");
+   std::ofstream packetFile;
+   std::ofstream *packet=nullptr;
+   if(exportPacket){packetFile.open(output/"solver_packet.bin",std::ios::binary);if(!packetFile) throw std::runtime_error("cannot create solver_packet.bin");packet=&packetFile;
+@@ -365,19 +389,31 @@
+   ForwardTensorFieldCache forwardTensorCache;
+   if(forwardLimitEnv)forwardTensorCache.retainedPayloadLimit=
+       static_cast<std::size_t>(std::strtoull(forwardLimitEnv,nullptr,10));
++  const double mainSetupSeconds=std::chrono::duration<double>(Clock::now()-processStart).count();
++  cacheBookkeeping.reset();
++  setupAll.reset();
++  setupRoot.reset();
++  std::vector<double> candidateCallWallSeconds,validationComparisonSeconds,binaryArrayExportSeconds;
+   for(int obj=0;obj<nobj;++obj){
+     const auto q=weights(obj);
+     double candS=0;std::array<double,5> stages{};
+-    auto fast=candidate(sem,source,parameters,frequency,timeWindow,q,nfreq+1,points,angles,
+-        candS,packet,static_cast<std::uint32_t>(obj),backendId,sharedPlan,
+-        batchResponsesEnabled?&batchResponses:nullptr,tensorMode,tensorRealMode,
+-        forwardFieldsEnabled?&forwardTensorCache:nullptr,stages);
++    const auto candidateWallStart=Clock::now();
++    auto fast=[&]{
++      mathprofile::Root profile("dspec",obj);
++      mathprofile::Scope api("candidate_api_including_local_cleanup");
++      return candidate(sem,source,parameters,frequency,timeWindow,q,nfreq+1,points,angles,
++          candS,packet,static_cast<std::uint32_t>(obj),backendId,sharedPlan,
++          batchResponsesEnabled?&batchResponses:nullptr,tensorMode,tensorRealMode,
++          forwardFieldsEnabled?&forwardTensorCache:nullptr,stages);
++    }();
++    candidateCallWallSeconds.push_back(std::chrono::duration<double>(Clock::now()-candidateWallStart).count());
+     candidateStages.push_back(stages);
+     const auto t0=Clock::now();
+     const auto ref=SPARSESPEC::Windowed3DKernelEngine::evaluate(sem,source,parameters,frequency,
+         timeWindow,q,1,nfreq+1,points,angles);
+     const double refS=std::chrono::duration<double>(Clock::now()-t0).count();
+     candidateSeconds.push_back(candS);referenceSeconds.push_back(refS);
++    const auto validationStart=Clock::now();
+     maxFieldErr=std::max(maxFieldErr,relNorm(fast.rawDisplacementSpectrum,ref.rawDisplacementSpectrum));
+     const auto ke=kernelError(fast.pointKernels,ref.pointKernels);
+     maxKernelL2Err=std::max(maxKernelL2Err,ke.maxL2);maxKernelPointErr=std::max(maxKernelPointErr,ke.maxPointwise);
+@@ -393,7 +429,10 @@
+         maxContactErr=std::max(maxContactErr,err);
+       }
+     }
++    validationComparisonSeconds.push_back(std::chrono::duration<double>(Clock::now()-validationStart).count());
++    const auto exportStart=Clock::now();
+     writeEvaluation(candidateArrays,fast);writeEvaluation(referenceArrays,ref);
++    binaryArrayExportSeconds.push_back(std::chrono::duration<double>(Clock::now()-exportStart).count());
+   }
+   candidateArrays.close();referenceArrays.close();coordinates.close();if(packet)packetFile.close(); fs::remove(paramPath);
+   std::ofstream meta(output/"result.json");
+@@ -409,7 +448,13 @@
+   for(std::size_t i=0;i<candidateSeconds.size();++i)meta<<(i?",":"")<<candidateSeconds[i];
+   meta<<"],\"reference_s\":[";
+   for(std::size_t i=0;i<referenceSeconds.size();++i)meta<<(i?",":"")<<referenceSeconds[i];
+-  meta<<"],\"candidate_stage_s\":[";
++  meta<<"],\"candidate_call_wall_s\":[";
++  for(std::size_t i=0;i<candidateCallWallSeconds.size();++i)meta<<(i?",":"")<<candidateCallWallSeconds[i];
++  meta<<"],\"reference_validation_compare_s\":[";
++  for(std::size_t i=0;i<validationComparisonSeconds.size();++i)meta<<(i?",":"")<<validationComparisonSeconds[i];
++  meta<<"],\"binary_array_export_s\":[";
++  for(std::size_t i=0;i<binaryArrayExportSeconds.size();++i)meta<<(i?",":"")<<binaryArrayExportSeconds[i];
++  meta<<"],\"main_setup_s\":"<<mainSetupSeconds<<",\"candidate_stage_s\":[";
+   for(std::size_t i=0;i<candidateStages.size();++i){if(i)meta<<",";meta<<"{\"measurement_adjoint\":"<<candidateStages[i][0]<<",\"modal_solve_and_basis\":"<<candidateStages[i][1]<<",\"packed_sampling\":"<<candidateStages[i][2]<<",\"final_kernel_contraction\":"<<candidateStages[i][3]<<",\"source_contact\":"<<candidateStages[i][4]<<"}";}
+   meta<<"],\"packet_export_enabled\":"<<(exportPacket?"true":"false")
+       <<",\"modal_export_enabled\":"<<(exportModal?"true":"false")
+--- frozen-v6/fast_engine.hpp
++++ math-profile/dspec/fast_engine.hpp
+@@ -6,7 +6,8 @@
+ #include <Eigen/SparseCore>
+ #include <Eigen/SparseLU>
+ #include <Eigen/SVD>
+-#include <DSpecM1D/src/EquilibratedSparseLU.h>
++#include "profile_equilibrated_sparse_lu.hpp"
++#include "profile.hpp"
+ 
+ #include <algorithm>
+ #include <array>
+@@ -86,6 +87,11 @@
+ inline Eigen::MatrixXcd synthesize(const Eigen::MatrixXd &basis,
+                                    const Eigen::MatrixXcd &coeff,
+                                    DotBackend backend) {
++  mathprofile::Scope total("tensor_angular_gemm_real_and_packing");
++  mathprofile::count("tensor_real_gemm_m",static_cast<std::uint64_t>(basis.rows()));
++  mathprofile::count("tensor_real_gemm_n",static_cast<std::uint64_t>(coeff.cols()));
++  mathprofile::count("tensor_real_gemm_k",static_cast<std::uint64_t>(basis.cols()));
++  mathprofile::count("tensor_real_gemm_batches");
+   if (basis.cols() != coeff.rows()) throw std::invalid_argument("synthesis dimensions differ");
+   Eigen::MatrixXcd out = Eigen::MatrixXcd::Zero(basis.rows(), coeff.cols());
+   if (backend == DotBackend::Scalar) {
+@@ -107,14 +113,16 @@
+   RowMatrix rr = RowMatrix::Zero(basis.rows(), coeff.cols());
+   RowMatrix ri = RowMatrix::Zero(basis.rows(), coeff.cols());
+   const double alpha=1.0,beta=0.0;
+-  cblas_dgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,static_cast<int>(basis.rows()),
++  {mathprofile::Scope t("actual_DGEMM_real_part");mathprofile::count("dgemm_calls");
++      mathprofile::count("tensor_actual_gemm_macs",static_cast<std::uint64_t>(basis.rows())*static_cast<std::uint64_t>(coeff.cols())*static_cast<std::uint64_t>(basis.cols()));cblas_dgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,static_cast<int>(basis.rows()),
+       static_cast<int>(coeff.cols()),static_cast<int>(basis.cols()),alpha,a.data(),
+       static_cast<int>(basis.cols()),cr.data(),static_cast<int>(coeff.cols()),beta,rr.data(),
+-      static_cast<int>(coeff.cols()));
+-  cblas_dgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,static_cast<int>(basis.rows()),
++      static_cast<int>(coeff.cols()));}
++  {mathprofile::Scope t("actual_DGEMM_imag_part");mathprofile::count("dgemm_calls");
++      mathprofile::count("tensor_actual_gemm_macs",static_cast<std::uint64_t>(basis.rows())*static_cast<std::uint64_t>(coeff.cols())*static_cast<std::uint64_t>(basis.cols()));cblas_dgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,static_cast<int>(basis.rows()),
+       static_cast<int>(coeff.cols()),static_cast<int>(basis.cols()),alpha,a.data(),
+       static_cast<int>(basis.cols()),ci.data(),static_cast<int>(coeff.cols()),beta,ri.data(),
+-      static_cast<int>(coeff.cols()));
++      static_cast<int>(coeff.cols()));}
+   return rr.cast<Complex>() + Complex(0,1)*ri.cast<Complex>();
+ #else
+   throw std::runtime_error("OpenBLAS backend requested without DSFAST_HAVE_CBLAS");
+@@ -124,6 +132,11 @@
+ inline Eigen::MatrixXcd synthesizeComplex(const Eigen::MatrixXcd &basis,
+                                          const Eigen::MatrixXcd &coeff,
+                                          DotBackend backend) {
++  mathprofile::Scope total("tensor_angular_gemm_complex_and_packing");
++  mathprofile::count("tensor_complex_gemm_m",static_cast<std::uint64_t>(basis.rows()));
++  mathprofile::count("tensor_complex_gemm_n",static_cast<std::uint64_t>(coeff.cols()));
++  mathprofile::count("tensor_complex_gemm_k",static_cast<std::uint64_t>(basis.cols()));
++  mathprofile::count("tensor_complex_gemm_batches");
+   if(basis.cols()!=coeff.rows())throw std::invalid_argument("complex synthesis dimensions differ");
+   if(backend==DotBackend::Scalar){
+     Eigen::MatrixXcd out=Eigen::MatrixXcd::Zero(basis.rows(),coeff.cols());
+@@ -143,10 +156,11 @@
+   using RowComplex=Eigen::Matrix<Complex,Eigen::Dynamic,Eigen::Dynamic,Eigen::RowMajor>;
+   RowComplex a=basis,c=coeff,out=RowComplex::Zero(basis.rows(),coeff.cols());
+   const Complex alpha{1,0},beta{0,0};
+-  cblas_zgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,static_cast<int>(basis.rows()),
++  {mathprofile::Scope t("actual_ZGEMM_complex");mathprofile::count("zgemm_calls");
++      mathprofile::count("tensor_actual_gemm_macs",static_cast<std::uint64_t>(basis.rows())*static_cast<std::uint64_t>(coeff.cols())*static_cast<std::uint64_t>(basis.cols()));cblas_zgemm(CblasRowMajor,CblasNoTrans,CblasNoTrans,static_cast<int>(basis.rows()),
+       static_cast<int>(coeff.cols()),static_cast<int>(basis.cols()),&alpha,a.data(),
+       static_cast<int>(basis.cols()),c.data(),static_cast<int>(coeff.cols()),&beta,out.data(),
+-      static_cast<int>(coeff.cols()));
++      static_cast<int>(coeff.cols()));}
+   return Eigen::MatrixXcd(out);
+ #else
+   throw std::runtime_error("OpenBLAS backend requested without DSFAST_HAVE_CBLAS");
+@@ -272,7 +286,11 @@
+ /** Build a rank-minimal exact basis and its row reconstruction map. */
+ inline ReceiverRowBasis exactReceiverRowBasis(const Eigen::MatrixXcd &rows,
+                                                double relativeTolerance=1e-13) {
++  mathprofile::Scope t("receiver_basis_and_QR_reconstruction");
++  mathprofile::count("receiver_basis_input_rows",static_cast<std::uint64_t>(rows.rows()));
++  mathprofile::count("receiver_basis_input_columns",static_cast<std::uint64_t>(rows.cols()));
+   const auto selected=independentRows(rows,relativeTolerance);
++  mathprofile::count("receiver_basis_selected_columns",selected.size());
+   ReceiverRowBasis result;
+   result.rightHandSides.resize(rows.cols(),static_cast<Eigen::Index>(selected.size()));
+   for(std::size_t j=0;j<selected.size();++j)
+--- frozen-v6/engine_headers/SensitivityKernels.h
++++ math-profile/dspec/engine_headers/SensitivityKernels.h
+@@ -1,4 +1,5 @@
+ #include "profile.hpp"
++#include "../profile.hpp"
+ #ifndef DSPECM1D_SENSITIVITY_KERNELS_H
+ #define DSPECM1D_SENSITIVITY_KERNELS_H
+ 
+@@ -16,7 +17,7 @@
+ #include "../solvers/batch_response_cache.hpp"
+ 
+ #include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/SEM/SEM.h"
+-#include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/EquilibratedSparseLU.h"
++#include "../profile_equilibrated_sparse_lu.hpp"
+ #include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/ParamInfo.h"
+ #include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/SpecHelpers.h"
+ #include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/frequency_info/FreqFull.h"
+@@ -252,6 +253,11 @@
+       const Eigen::MatrixXcd &adjointRhs, const Eigen::MatrixXcd &basisRhs,
+       Eigen::MatrixXcd &forward, Eigen::MatrixXcd &adjoint,
+       Eigen::MatrixXcd &basisAdjoint) {
++    mathprofile::Scope solve("shared_forward_and_adjoint_solver");
++    mathprofile::count("solver_degree",static_cast<std::uint64_t>(degree));
++    mathprofile::count("solver_forward_rhs_columns",static_cast<std::uint64_t>(forwardRhs.cols()));
++    mathprofile::count("solver_weighted_adjoint_rhs_columns",static_cast<std::uint64_t>(adjointRhs.cols()));
++    mathprofile::count("solver_unit_basis_rhs_columns",static_cast<std::uint64_t>(basisRhs.cols()));
+     const auto run=[&](auto &solver,auto factorize){
+       solveForwardAdjointFrequencyWithBackend(sem,family,degree,z,forwardRhs,
+           adjointRhs,basisRhs,solver,factorize,forward,adjoint,basisAdjoint);
+@@ -288,21 +294,21 @@
+         (basisRhs.size() != 0 && (basisRhs.rows() != (hasWeightedAdjoint?adjointRhs.rows():forwardRhs.rows()) ||
+                                   basisRhs.cols() == 0 || !basisRhs.allFinite())))
+       throw std::invalid_argument("Shared forward/adjoint right-hand sides are invalid.");
+-    SparseComplex h = systemMatrix(sem, family, degree, z);
++    SparseComplex h=[&]{mathprofile::Scope t("dynamic_H_assembly");return systemMatrix(sem,family,degree,z);}();
+     if (h.rows() != forwardRhs.rows() || (hasWeightedAdjoint&&h.rows() != adjointRhs.rows()) ||
+         (basisRhs.size()!=0&&h.rows()!=basisRhs.rows()))
+       throw std::invalid_argument("Shared right-hand sides do not match the selected SEM operator.");
+-    factorize(solver,h);
+-    forward = solver.solve(forwardRhs);
++    {mathprofile::Scope t("solver_factorization_dispatch");factorize(solver,h);}
++    {mathprofile::Scope t("forward_substitution");forward = solver.solve(forwardRhs);}
+     if (!forward.allFinite())
+       throw std::runtime_error("Shared forward SEM solve failed.");
+     if(hasWeightedAdjoint){
+-      adjoint = solver.solveAdjoint(adjointRhs);
++      {mathprofile::Scope t("full_weighted_HH_solve");adjoint = solver.solveAdjoint(adjointRhs);}
+       if (!adjoint.allFinite())
+         throw std::runtime_error("Shared Hermitian-adjoint SEM solve failed.");
+     }else adjoint.resize(h.rows(),0);
+     if (basisRhs.size() != 0) {
+-      basisAdjoint = solver.solveAdjoint(basisRhs);
++      {mathprofile::Scope t("minimal_unit_basis_HH_solve");basisAdjoint = solver.solveAdjoint(basisRhs);}
+       if (!basisAdjoint.allFinite())
+         throw std::runtime_error("Shared unit-basis adjoint solve failed.");
+     } else {
+--- frozen-v6/engine_headers/Windowed3DFields.h
++++ math-profile/dspec/engine_headers/Windowed3DFields.h
+@@ -1,6 +1,7 @@
+ #ifndef DSPECM1D_WINDOWED_3D_FIELDS_H
+ #define DSPECM1D_WINDOWED_3D_FIELDS_H
+ 
++#include "../profile.hpp"
+ #include "SensitivityKernels.h"
+ #include "../fast_engine.hpp"
+ 
+@@ -667,6 +668,10 @@
+       std::vector<PoleModalBlock> *poleBlocks=nullptr,
+       PoleFrame *sourceFrame=nullptr,
+       dssolver::BatchResponseCache *batchCache=nullptr) {
++    mathprofile::Scope total("modal_projection_source_lift_and_frequency_solve");
++    mathprofile::count("modal_lmax",static_cast<std::uint64_t>(parameters.lmax()));
++    mathprofile::count("modal_receiver_rhs_components",static_cast<std::uint64_t>(adjointWeights.size()));
++    mathprofile::count("full_weighted_measurement_adjoint_components",static_cast<std::uint64_t>(adjointWeights.size()));
+     if(!sem.sourceMatches(source)||parameters.attenuation()||
+        parameters.cowlingFrequencyMhz()!=0.0||parameters.gravitation()!=2||
+        parameters.output_type()!=0||!std::isfinite(z.real())||
+@@ -683,12 +688,14 @@
+     if(sourceFrame)*sourceFrame=poleFrame(source.Latitude(),source.Longitude());
+     ParamInfo angular(parameters,lmax);
+     if(flags.inc_rad){
++      mathprofile::Scope radial("radial_l0_source_and_adjoint_branch");
+       auto treatment=sem.sourceTreatedRadial(source,z);
+       Eigen::MatrixXcd receiver=Eigen::MatrixXcd::Zero(
+           3*parameters.num_receivers(),treatment.force.rows());
+       for(int rec=0;rec<parameters.num_receivers();++rec)
+         receiver.row(3*rec)=sem.rvZR(parameters,rec).transpose();
+       const Eigen::MatrixXcd rhs=receiver.adjoint()*(std::conj(fz)*adjointWeights);
++      mathprofile::count("full_weighted_modal_adjoint_rhs_columns",static_cast<std::uint64_t>(rhs.cols()));
+       const auto receiverBasis=dsfast::exactReceiverRowBasis(receiver);
+       Eigen::MatrixXcd forward,adjoint,unusedBasis;
+       if(batchCache){
+@@ -712,8 +719,10 @@
+           forward,adjoint,treatment.lift,noData,noData});
+     }
+     for(int degree=std::max(1,parameters.lmin());degree<=lmax;++degree){
++      mathprofile::count("modal_degree_iterations");
+       const int orders=2*degree+1;
+       if(flags.inc_sph){
++        mathprofile::Scope sph("spheroidal_source_lift_projection_and_solver");
+         auto treatment=sem.sourceTreatedSpheroidal(source,degree,z);
+         const Eigen::MatrixXcd sourceCoefficients=sem.calculateForceCoefficients(source,degree);
+         const Eigen::MatrixXcd modeReceiver=angular.rvFullSph(degree);
+@@ -722,6 +731,7 @@
+         const auto receiver=embedReceiver(sem,receiverBase,
+             sem.ltgS(0,receivers.front(),0),static_cast<int>(sem.hS(degree).rows()));
+         Eigen::MatrixXcd rhs=Eigen::MatrixXcd::Zero(receiver.cols(),orders);
++        mathprofile::count("full_weighted_modal_adjoint_rhs_columns",static_cast<std::uint64_t>(rhs.cols()));
+         for(int m=-degree;m<=degree;++m){
+           Eigen::MatrixXcd weighted=receiver;
+           for(int row=0;row<weighted.rows();++row)weighted.row(row)*=modeReceiver(row,m+degree);
+@@ -756,6 +766,7 @@
+         }
+       }
+       if(flags.inc_tor&&!sem.elementIsFluid(sem.sourceElement(source))){
++        mathprofile::Scope tor("toroidal_source_lift_projection_and_solver");
+         auto treatment=sem.sourceTreatedToroidal(source,degree,z);
+         const Eigen::MatrixXcd sourceCoefficients=sem.calculateForceCoefficientsT(source,degree);
+         const Eigen::MatrixXcd modeReceiver=angular.rvFullTor(degree);
+@@ -764,6 +775,7 @@
+         const auto receiver=embedReceiver(sem,receiverBase,
+             sem.ltgT(receivers.front(),0),static_cast<int>(sem.hTk(degree).rows()));
+         Eigen::MatrixXcd rhs=Eigen::MatrixXcd::Zero(receiver.cols(),orders);
++        mathprofile::count("full_weighted_modal_adjoint_rhs_columns",static_cast<std::uint64_t>(rhs.cols()));
+         for(int m=-degree;m<=degree;++m){
+           Eigen::MatrixXcd weighted=receiver;
+           for(int row=0;row<weighted.rows();++row)weighted.row(row)*=modeReceiver(row,m+degree);
+@@ -975,9 +987,9 @@
+       std::shared_ptr<CachedAngularWigner> angularTable;
+       if(samplingPlan){
+         const auto tableIt=samplingPlan->angularTables.find(angularKey);
+-        if(tableIt!=samplingPlan->angularTables.end()){angularTable=tableIt->second;++auditprofile::counters["wigner_hit"];}
+-      }
+-      if(!angularTable){auditprofile::Scope t("wigner_build");++auditprofile::counters["wigner_miss"];
++        if(tableIt!=samplingPlan->angularTables.end()){angularTable=tableIt->second;++auditprofile::counters["wigner_hit"];mathprofile::count("packed_wigner_cache_hits");}
++      }
++      if(!angularTable){auditprofile::Scope t("wigner_build");mathprofile::Scope mt("packed_Wigner_d_table_build");mathprofile::count("packed_wigner_cache_misses");++auditprofile::counters["wigner_miss"];
+         angularTable=std::make_shared<CachedAngularWigner>(
+             maxDegree,std::min(2,maxDegree),std::min(2,maxDegree),chunks[chunk].theta);
+         const std::size_t bytes=angularTableBytesPerAngle(maxDegree)*chunks[chunk].theta.size();
+@@ -991,9 +1003,9 @@
+       if(samplingPlan){
+         const auto coefficientsIt=samplingPlan->angularCoefficients.find(angularKey);
+         if(coefficientsIt!=samplingPlan->angularCoefficients.end())
+-          {angularCoefficients=coefficientsIt->second;++auditprofile::counters["angular_coefficient_hit"];}
+-      }
+-      if(!angularCoefficients){auditprofile::Scope t("angular_coefficient_build");++auditprofile::counters["angular_coefficient_miss"];
++          {angularCoefficients=coefficientsIt->second;++auditprofile::counters["angular_coefficient_hit"];mathprofile::count("packed_angular_coeff_cache_hits");}
++      }
++      if(!angularCoefficients){auditprofile::Scope t("angular_coefficient_build");mathprofile::Scope mt("packed_angular_coefficients_and_basis_build");mathprofile::count("packed_angular_coeff_cache_misses");++auditprofile::counters["angular_coefficient_miss"];
+         auto prepared=std::make_shared<AngularCoefficientTable>();
+         prepared->maxDegree=maxDegree;
+         prepared->nMax=std::min(2,maxDegree);
+@@ -1061,9 +1073,9 @@
+         const PoleCoefficientRows *coefficientsPtr=nullptr;
+         if(frequencyCoefficientCache){
+           const auto cached=frequencyCoefficientCache->rows.find(coefficientKey);
+-          if(cached!=frequencyCoefficientCache->rows.end()){coefficientsPtr=&cached->second;++auditprofile::counters["radial_coefficients_hit"];}
+-        }
+-        const auto buildCoefficients=[&](PoleCoefficientRows &coefficients){auditprofile::Scope t("radial_coefficients_build");++auditprofile::counters["radial_coefficients_miss"];
++          if(cached!=frequencyCoefficientCache->rows.end()){coefficientsPtr=&cached->second;++auditprofile::counters["radial_coefficients_hit"];mathprofile::count("radial_coefficient_cache_hits");}
++        }
++        const auto buildCoefficients=[&](PoleCoefficientRows &coefficients){auditprofile::Scope t("radial_coefficients_build");mathprofile::Scope mt("radial_interpolation_and_strain_numerator_build");mathprofile::count("radial_coefficient_cache_misses");++auditprofile::counters["radial_coefficients_miss"];
+           for(const auto &block:blocks){
+             if(block.family==SensitivitySolveFamily::Toroidal&&
+                (sem.elementIsFluid(elements[representative])||elements[representative]<sem.el()||elements[representative]>=sem.eu()))continue;
+@@ -1354,6 +1366,7 @@
+       SourceInfo::EarthquakeCMT &source,InputParameters &parameters,Complex z,
+       const Eigen::VectorXcd &adjointWeights,
+       dssolver::BatchResponseCache *batchCache=nullptr) {
++    mathprofile::Scope profileScope("frequency_workspace_prepare_and_modal_capture");
+     sensitivity_detail::requireConstructedSEM(sem);
+     auditprofile::Scope t("prepare_workspace");
+     std::vector<OwnedModalFrequencyBlock3D> blocks;
+@@ -1424,6 +1437,9 @@
+       const std::function<void(const PoleAngularCoefficientRecord3D&)> &coefficientVisitor={},
+       bool realDegreeLayout=false,
+       const CachedForwardTensorFields3D *cachedForward=nullptr) const {
++    mathprofile::Scope all("tensor_sampling_total");
++    mathprofile::count("tensor_volume_point_count",receiverBegin);
++    mathprofile::count("tensor_receiver_suffix_count",points.size()-receiverBegin);
+     if(receiverBegin>points.size()||contractionBackend<1||contractionBackend>3)
+       throw std::invalid_argument("Tensor kernel sample arguments are invalid.");
+     if(receiverBegin==0)throw std::invalid_argument("Tensor sample requires a receiver suffix.");
+@@ -1438,24 +1454,28 @@
+         std::bit_cast<std::uint64_t>(p.thetaRadians),std::bit_cast<std::uint64_t>(p.phiRadians)};};
+     using TensorGridLayout=Windowed3DFieldEngine::SamplingPlanCache::TensorGridLayout;
+     std::vector<std::uint64_t> gridKey;
+-    gridKey.reserve(2+4*receiverBegin);gridKey.push_back(0x4453464153544752ULL);
+-    gridKey.push_back(static_cast<std::uint64_t>(receiverBegin));
+-    for(std::size_t p=0;p<receiverBegin;++p){
+-      const auto tk=traceKey(points[p]);const auto ak=angleKey(points[p]);
+-      gridKey.push_back(static_cast<std::uint64_t>(static_cast<std::int64_t>(tk.first)));
+-      gridKey.push_back(tk.second);gridKey.push_back(ak.first);gridKey.push_back(ak.second);
+-    }
+     TensorGridLayout localGrid;
+     std::shared_ptr<TensorGridLayout> gridOwner;
+     const TensorGridLayout *gridPtr=nullptr;
+-    if(samplingPlan){
+-      const auto cached=samplingPlan->tensorGridLayouts.find(gridKey);
+-      if(cached!=samplingPlan->tensorGridLayouts.end()){
+-        gridOwner=cached->second;gridPtr=gridOwner.get();++samplingPlan->tensorGridHits;
++    {
++      mathprofile::Scope gridKeyLookup("tensor_grid_semantic_key_build_and_lookup");
++      gridKey.reserve(2+4*receiverBegin);gridKey.push_back(0x4453464153544752ULL);
++      gridKey.push_back(static_cast<std::uint64_t>(receiverBegin));
++      for(std::size_t p=0;p<receiverBegin;++p){
++        const auto tk=traceKey(points[p]);const auto ak=angleKey(points[p]);
++        gridKey.push_back(static_cast<std::uint64_t>(static_cast<std::int64_t>(tk.first)));
++        gridKey.push_back(tk.second);gridKey.push_back(ak.first);gridKey.push_back(ak.second);
++      }
++      if(samplingPlan){
++        const auto cached=samplingPlan->tensorGridLayouts.find(gridKey);
++        if(cached!=samplingPlan->tensorGridLayouts.end()){
++          gridOwner=cached->second;gridPtr=gridOwner.get();++samplingPlan->tensorGridHits;mathprofile::count("tensor_grid_cache_hits");
++        }
+       }
+     }
+     if(!gridPtr){
+-      if(samplingPlan)++samplingPlan->tensorGridMisses;
++      mathprofile::Scope gridCold("tensor_grid_cold_layout_map_build");
++      if(samplingPlan)++samplingPlan->tensorGridMisses;mathprofile::count("tensor_grid_cache_misses");
+       auto &grid=localGrid;
+       std::map<TraceKey,std::size_t> traceIndex;
+       std::map<AngleKey,std::size_t> angleIndex;
+@@ -1492,24 +1512,31 @@
+     const auto &pointForTrace=gridPtr->pointForTrace;
+ 
+     std::vector<Field3DPoint> representatives;
+-    representatives.reserve(traces.size());
+-    for(std::size_t t=0;t<traces.size();++t)
+-      representatives.push_back(points[pointForTrace[t].begin()->second]);
+     std::map<std::tuple<std::uint64_t,bool,int,std::uint64_t>,PoleAngularCoefficientRecord3D> records;
+-    const auto visitor=[&](const PoleAngularCoefficientRecord3D &record){
+-      const auto key=std::tuple{record.synthesisSet,record.adjoint,record.element,
+-          std::bit_cast<std::uint64_t>(record.radiusModel)};
+-      records.try_emplace(key,record);
+-      if(coefficientVisitor)coefficientVisitor(record);
+-    };
+-    (void)samplePoleFrames(representatives,false,true,representatives.size(),
+-        samplingPlan,contractionBackend,visitor);
+-
+-    std::vector<KernelField3DSample> result(points.size());
+-    for(std::size_t p=0;p<receiverBegin;++p){
+-      result[p].radialElement=points[p].radialElement;
+-      result[p].fluid=sem_->elementIsFluid(points[p].radialElement);
+-    }
++    {
++      mathprofile::Scope capture("tensor_representative_and_coefficient_record_capture");
++      representatives.reserve(traces.size());
++      for(std::size_t t=0;t<traces.size();++t)
++        representatives.push_back(points[pointForTrace[t].begin()->second]);
++      const auto visitor=[&](const PoleAngularCoefficientRecord3D &record){
++        const auto key=std::tuple{record.synthesisSet,record.adjoint,record.element,
++            std::bit_cast<std::uint64_t>(record.radiusModel)};
++        records.try_emplace(key,record);
++        if(coefficientVisitor)coefficientVisitor(record);
++      };
++      (void)samplePoleFrames(representatives,false,true,representatives.size(),
++          samplingPlan,contractionBackend,visitor);
++    }
++
++    auto result=[&]{
++      mathprofile::Scope allocation("tensor_result_allocation_and_volume_tagging");
++      std::vector<KernelField3DSample> samples(points.size());
++      for(std::size_t p=0;p<receiverBegin;++p){
++        samples[p].radialElement=points[p].radialElement;
++        samples[p].fluid=sem_->elementIsFluid(points[p].radialElement);
++      }
++      return samples;
++    }();
+     const int maxDegree=parameters_->lmax();
+     constexpr std::size_t radialTile=16;
+     const auto synthesisOne=[&](std::uint64_t set,bool adjoint){
+@@ -1523,24 +1550,28 @@
+       Windowed3DFieldEngine::PoleFrame frame{frameRecord->frame.axes};
+       using TensorAngularPlan=Windowed3DFieldEngine::SamplingPlanCache::TensorAngularPlan;
+       std::vector<std::uint64_t> tensorPlanKey;
+-      tensorPlanKey.reserve(11+2*angleKeys.size());
+-      tensorPlanKey.push_back(0x445346415354414eULL);
+-      tensorPlanKey.push_back(static_cast<std::uint64_t>(maxDegree));
+-      tensorPlanKey.push_back(static_cast<std::uint64_t>(angleKeys.size()));
+-      for(const auto &axis:frame.axes)for(const double x:axis)
+-        tensorPlanKey.push_back(std::bit_cast<std::uint64_t>(x));
+-      for(const auto &[thetaBits,phiBits]:angleKeys){tensorPlanKey.push_back(thetaBits);tensorPlanKey.push_back(phiBits);}
+       TensorAngularPlan localPlan;
+       std::shared_ptr<TensorAngularPlan> planOwner;
+       TensorAngularPlan *planPtr=nullptr;
+-      if(samplingPlan){
+-        const auto cached=samplingPlan->tensorAngularPlans.find(tensorPlanKey);
+-        if(cached!=samplingPlan->tensorAngularPlans.end()){
+-          planOwner=cached->second;planPtr=planOwner.get();++samplingPlan->tensorPlanHits;
++      {
++        mathprofile::Scope angularKeyLookup("tensor_angular_plan_key_build_and_lookup");
++        tensorPlanKey.reserve(11+2*angleKeys.size());
++        tensorPlanKey.push_back(0x445346415354414eULL);
++        tensorPlanKey.push_back(static_cast<std::uint64_t>(maxDegree));
++        tensorPlanKey.push_back(static_cast<std::uint64_t>(angleKeys.size()));
++        for(const auto &axis:frame.axes)for(const double x:axis)
++          tensorPlanKey.push_back(std::bit_cast<std::uint64_t>(x));
++        for(const auto &[thetaBits,phiBits]:angleKeys){tensorPlanKey.push_back(thetaBits);tensorPlanKey.push_back(phiBits);}
++        if(samplingPlan){
++          const auto cached=samplingPlan->tensorAngularPlans.find(tensorPlanKey);
++          if(cached!=samplingPlan->tensorAngularPlans.end()){
++            planOwner=cached->second;planPtr=planOwner.get();++samplingPlan->tensorPlanHits;mathprofile::count("tensor_angular_plan_cache_hits");
++          }
+         }
+       }
+       if(!planPtr){
+-        if(samplingPlan)++samplingPlan->tensorPlanMisses;
++        mathprofile::Scope angularCold("tensor_cold_frame_geometry_and_wigner_build");
++        if(samplingPlan)++samplingPlan->tensorPlanMisses;mathprofile::count("tensor_angular_plan_cache_misses");
+         localPlan.localTheta.resize(angleKeys.size());localPlan.localPhi.resize(angleKeys.size());
+         localPlan.rotA.resize(angleKeys.size());localPlan.rotB.resize(angleKeys.size());
+         for(std::size_t a=0;a<angleKeys.size();++a){
+@@ -1571,15 +1602,25 @@
+       const auto &rotB=planPtr->rotB;
+       const auto &wigner=*planPtr->wigner;
+       const auto complexBasisFor=[&](int spin,const std::vector<std::pair<int,int>> &keys){
+-        std::vector<std::uint64_t> basisKey{0x4453464153544342ULL,
+-            static_cast<std::uint64_t>(spin),static_cast<std::uint64_t>(keys.size())};
+-        for(const auto &[m,l]:keys){basisKey.push_back(static_cast<std::uint64_t>(static_cast<std::int64_t>(m)));basisKey.push_back(static_cast<std::uint64_t>(l));}
+-        const auto found=planPtr->complexBases.find(basisKey);
+-        if(found!=planPtr->complexBases.end()){
+-          if(samplingPlan)++samplingPlan->tensorBasisHits;
+-          return found->second;
+-        }
++        auto basisKey=[&]{
++          mathprofile::Scope keyBuild("tensor_complex_basis_key_construction");
++          std::vector<std::uint64_t> key{0x4453464153544342ULL,
++              static_cast<std::uint64_t>(spin),static_cast<std::uint64_t>(keys.size())};
++          for(const auto &[m,l]:keys){key.push_back(static_cast<std::uint64_t>(static_cast<std::int64_t>(m)));key.push_back(static_cast<std::uint64_t>(l));}
++          return key;
++        }();
++        {
++          mathprofile::Scope basisKeyLookup("tensor_complex_basis_cache_lookup");
++          const auto found=planPtr->complexBases.find(basisKey);
++          if(found!=planPtr->complexBases.end()){
++            if(samplingPlan)++samplingPlan->tensorBasisHits;
++            mathprofile::count("tensor_basis_cache_hits");
++            return found->second;
++          }
++        }
++        mathprofile::Scope basisFill("tensor_complex_basis_cold_fill_and_cache");
+         if(samplingPlan)++samplingPlan->tensorBasisMisses;
++        mathprofile::count("tensor_basis_cache_misses");
+         auto basis=std::make_shared<Eigen::MatrixXcd>(
+             static_cast<Eigen::Index>(angleKeys.size()),static_cast<Eigen::Index>(keys.size()));
+         for(std::size_t a=0;a<angleKeys.size();++a)for(std::size_t q=0;q<keys.size();++q){
+@@ -1598,16 +1639,26 @@
+         return basis;
+       };
+       const auto realBasisFor=[&](int spin,int m,const std::vector<int> &degrees){
+-        std::vector<std::uint64_t> basisKey{0x4453464153545242ULL,
+-            static_cast<std::uint64_t>(spin),static_cast<std::uint64_t>(static_cast<std::int64_t>(m)),
+-            static_cast<std::uint64_t>(degrees.size())};
+-        for(const int degree:degrees)basisKey.push_back(static_cast<std::uint64_t>(degree));
+-        const auto found=planPtr->realBases.find(basisKey);
+-        if(found!=planPtr->realBases.end()){
+-          if(samplingPlan)++samplingPlan->tensorBasisHits;
+-          return found->second;
+-        }
++        auto basisKey=[&]{
++          mathprofile::Scope keyBuild("tensor_real_basis_key_construction");
++          std::vector<std::uint64_t> key{0x4453464153545242ULL,
++              static_cast<std::uint64_t>(spin),static_cast<std::uint64_t>(static_cast<std::int64_t>(m)),
++              static_cast<std::uint64_t>(degrees.size())};
++          for(const int degree:degrees)key.push_back(static_cast<std::uint64_t>(degree));
++          return key;
++        }();
++        {
++          mathprofile::Scope basisKeyLookup("tensor_real_basis_cache_lookup");
++          const auto found=planPtr->realBases.find(basisKey);
++          if(found!=planPtr->realBases.end()){
++            if(samplingPlan)++samplingPlan->tensorBasisHits;
++            mathprofile::count("tensor_basis_cache_hits");
++            return found->second;
++          }
++        }
++        mathprofile::Scope basisFill("tensor_real_basis_cold_fill_and_cache");
+         if(samplingPlan)++samplingPlan->tensorBasisMisses;
++        mathprofile::count("tensor_basis_cache_misses");
+         auto basis=std::make_shared<Eigen::MatrixXd>(
+             static_cast<Eigen::Index>(angleKeys.size()),static_cast<Eigen::Index>(degrees.size()));
+         for(std::size_t a=0;a<angleKeys.size();++a)for(std::size_t q=0;q<degrees.size();++q)
+@@ -1626,6 +1677,7 @@
+       std::vector<std::array<Complex,6>> localFields(angleKeys.size()*traces.size());
+       const std::array<int,6> spins{0,0,1,-1,2,-2};
+       for(std::size_t component=0;component<6;++component){
++        mathprofile::Scope packing("tensor_coefficient_packing_and_key_reorder");
+         std::set<std::pair<int,int>> keySet;
+         for(const auto *record:byTrace)if(record)
+           for(const auto &[m,l]:record->labels)
+@@ -1693,7 +1745,7 @@
+           }
+         }
+       }
+-      for(std::size_t t=0;t<traces.size();++t)for(std::size_t a=0;a<angleKeys.size();++a){
++      {mathprofile::Scope scatter("tensor_phase_spin_rotation_and_scatter");for(std::size_t t=0;t<traces.size();++t)for(std::size_t a=0;a<angleKeys.size();++a){
+         const auto p=pointForTrace[t].at(angleKeys[a]);
+         const auto &v=localFields[a*traces.size()+t];
+         const SpinStrainField local{v[0],v[1],v[2],v[3],v[4],v[5]};
+@@ -1703,6 +1755,7 @@
+         target.radialPlus+=global.radialPlus;target.radialMinus+=global.radialMinus;
+         target.horizontalPlus+=global.horizontalPlus;target.horizontalMinus+=global.horizontalMinus;
+       }
++      }
+     };
+     if(!cachedForward)synthesisOne(0,false);
+     for(int rec=0;rec<parameters_->num_receivers();++rec)
+@@ -1710,6 +1763,8 @@
+ 
+     // Radial l=0 is already synthesized by sampleModalBlocks, and is kept as
+     // a separate reserved record so it can be added without refactoring it.
++    {
++    mathprofile::Scope l0Scatter("tensor_radial_l0_scatter");
+     for(std::size_t t=0;t<traces.size();++t){
+       const auto *fwd=records.contains({std::numeric_limits<std::uint64_t>::max(),false,
+           traces[t].first,traces[t].second})?&records.at({std::numeric_limits<std::uint64_t>::max(),false,
+@@ -1729,7 +1784,9 @@
+         }
+       }
+     }
++    }
+     if(cachedForward){
++      mathprofile::Scope cacheCopy("tensor_forward_cache_copy_and_receiver_suffix");
+       for(std::size_t p=0;p<receiverBegin;++p)
+         result[p].forwardRawStrain=cachedForward->volumeStrain[p];
+       for(std::size_t i=0;i<cachedForward->receiverDisplacement.size();++i){
+@@ -1739,6 +1796,7 @@
+         result[p].forwardRawDisplacement=cachedForward->receiverDisplacement[i];
+       }
+     }else if(receiverBegin<points.size()){
++      mathprofile::Scope receiverSuffix("tensor_receiver_suffix_sampling_and_scatter");
+       std::vector<Field3DPoint> receivers(points.begin()+receiverBegin,points.end());
+       const auto sampled=sampleForKernelsPacked(receivers,0,samplingPlan,contractionBackend);
+       for(std::size_t i=0;i<receivers.size();++i){
+@@ -1798,6 +1856,7 @@
+       Windowed3DFieldEngine::SamplingPlanCache *samplingPlan=nullptr,
+       int contractionBackend=0,
+       const std::function<void(const PoleAngularCoefficientRecord3D&)> &coefficientVisitor={}) const {
++    mathprofile::Scope all("pole_frame_sampling_total");
+     auditprofile::Scope t("sample_full_total");
+     std::vector<OwnedModalFrequencyBlock3D> radialBlocks;
+     for(const auto &block:blocks_)if(block.family==SensitivitySolveFamily::Radial)
+@@ -1805,9 +1864,9 @@
+ #ifndef DSFAST_DISABLE_PROFILE
+     auto radialStart=std::chrono::steady_clock::now();
+ #endif
+-    auto result=Windowed3DFieldEngine::sampleModalBlocks(
++    auto result=[&]{mathprofile::Scope t("radial_l0_sampling_and_interpolation");return Windowed3DFieldEngine::sampleModalBlocks(
+         *sem_,*parameters_,z_,radialBlocks,points,allowCenter,
+-        kernelRoute,displacementBegin);
++        kernelRoute,displacementBegin);}();
+     if(kernelRoute&&coefficientVisitor){
+       std::set<std::pair<int,std::uint64_t>> radialTraces;
+       for(std::size_t p=0;p<points.size();++p){
+@@ -1846,13 +1905,13 @@
+     }
+     const Complex fz=-Complex(0.0,1.0)/z_;
+     for(const auto &adjoint:adjointSynthesis_){
+-      Windowed3DFieldEngine::synthesizePoleFrame(*sem_,adjoint.blocks,
++      {mathprofile::Scope t("receiver_frame_geometry_phase_spin_rotation_and_scatter");Windowed3DFieldEngine::synthesizePoleFrame(*sem_,adjoint.blocks,
+           adjoint.frame,points,radii,elements,scale,result,kernelRoute,displacementBegin,
+-          samplingPlan,&frequencyCoefficientCache_,adjoint.synthesisSet,contractionBackend,coefficientVisitor);
+-    }
+-    Windowed3DFieldEngine::synthesizePoleFrame(*sem_,sourceSynthesis_,
++          samplingPlan,&frequencyCoefficientCache_,adjoint.synthesisSet,contractionBackend,coefficientVisitor);}
++    }
++    {mathprofile::Scope t("source_frame_geometry_phase_spin_rotation_and_scatter");Windowed3DFieldEngine::synthesizePoleFrame(*sem_,sourceSynthesis_,
+         sourceFrame_,points,radii,elements,scale,result,kernelRoute,displacementBegin,
+-        samplingPlan,&frequencyCoefficientCache_,0,contractionBackend,coefficientVisitor);
++        samplingPlan,&frequencyCoefficientCache_,0,contractionBackend,coefficientVisitor);}
+     for(auto &sample:result)for(int c=0;c<3;++c)
+       sample.observableForwardDisplacementSpectrumMetreSeconds[c]=
+           sem_->timeScaleSeconds()*fz*scale*sample.forwardRawDisplacement[c];
+--- frozen-v6/solvers/batch_response_cache.hpp
++++ math-profile/dspec/solvers/batch_response_cache.hpp
+@@ -1,4 +1,5 @@
+ #pragma once
++#include "../profile.hpp"
+ 
+ // Exact, bounded response reuse for one explicitly scoped batch request.
+ // This cache stores solved response blocks, never sparse matrices or factors.
+@@ -101,6 +102,9 @@
+     if(unitAdjointRhs.rows()!=forwardRhs.rows())
+       throw std::invalid_argument("batch response RHS row dimensions do not match");
+ 
++    mathprofile::Scope total("batch_response_cache_get_or_compute");
++    mathprofile::count("batch_forward_rhs_columns",static_cast<std::uint64_t>(forwardRhs.cols()));
++    mathprofile::count("batch_unit_basis_rhs_columns",static_cast<std::uint64_t>(unitAdjointRhs.cols()));
+     auto found=entries_.find(key);
+     if(found!=entries_.end()) {
+       const Entry &entry=found->second;
+@@ -108,6 +112,7 @@
+          !sameBits(entry.unitAdjointRhsSignature,unitAdjointRhs))
+         throw BasisMismatch("batch cache key reused with a different forward or unit-basis RHS");
+       ++cacheHits_;
++      mathprofile::count("batch_response_cache_hits");
+       Result result;
+       result.forward=entry.forwardResponse;
+       result.unitAdjoint=entry.unitAdjointResponse;
+@@ -116,6 +121,7 @@
+     }
+ 
+     ++cacheMisses_;
++    mathprofile::count("batch_response_cache_misses");
+     if(entries_.size()>=limits_.maximumEntries)
+       throw CapacityExceeded("batch response cache entry cap reached");
+     auto responses=std::invoke(std::forward<ComputeResponses>(computeResponses),
+@@ -152,6 +158,8 @@
+   WeightedResult deriveWeightedAdjoint(const BatchResponseKey &key,
+                                        const CacheDense &unitAdjointRhs,
+                                        const CacheDense &weightedAdjointRhs) const {
++    mathprofile::Scope total("batch_weighted_adjoint_reconstruction");
++    mathprofile::count("batch_weighted_adjoint_rhs_columns",static_cast<std::uint64_t>(weightedAdjointRhs.cols()));
+     validateRhs(unitAdjointRhs,"unit-basis adjoint RHS");
+     validateRhs(weightedAdjointRhs,"weighted adjoint RHS");
+     const auto found=entries_.find(key);
+--- frozen-v6/solvers/solver_backends.hpp
++++ math-profile/dspec/solvers/solver_backends.hpp
+@@ -1,4 +1,5 @@
+ #pragma once
++#include "../profile.hpp"
+ 
+ // Diagnostic solver alternatives.  These classes are deliberately isolated
+ // from the accepted production headers and expose the same matrix/RHS shape as
+--- /dev/null
++++ math-profile/dspec/profile.hpp
+@@ -0,0 +1,45 @@
++#pragma once
++#include <array>
++#include <chrono>
++#include <cstdint>
++#include <iomanip>
++#include <iostream>
++#include <map>
++#include <string>
++namespace mathprofile {
++using Clock=std::chrono::steady_clock;
++struct Entry {std::uint64_t inclusive=0,exclusive=0,calls=0;};
++struct Frame {const char*name=nullptr;Clock::time_point start;std::uint64_t children=0;};
++inline thread_local bool active=false;
++inline thread_local std::array<Frame,128> stack;
++inline thread_local std::size_t depth=0;
++inline thread_local std::map<std::string,Entry> entries;
++inline thread_local std::map<std::string,std::uint64_t> counters;
++#ifdef MATHPROFILE_DISABLED
++struct Scope { explicit Scope(const char*) noexcept {} };
++inline void count(const char*,std::uint64_t=1) noexcept {}
++struct Root { explicit Root(const char*,int=0) noexcept {} };
++#else
++struct Scope {
++ bool enabled;std::size_t index=0;
++ explicit Scope(const char*n):enabled(active){if(enabled){index=depth++;if(depth>stack.size())std::terminate();stack[index]={n,Clock::now(),0};}}
++ ~Scope(){if(!enabled)return;const auto end=Clock::now();auto &f=stack[index];const auto elapsed=std::chrono::duration_cast<std::chrono::nanoseconds>(end-f.start).count();--depth;auto &e=entries[f.name];e.inclusive+=elapsed;e.exclusive+=elapsed-f.children;++e.calls;if(depth)stack[depth-1].children+=elapsed;}
++ Scope(const Scope&)=delete;
++};
++inline void count(const char*n,std::uint64_t v=1){if(active)counters[n]+=v;}
++struct Root {
++ const char*solver;int objective;
++ explicit Root(const char*s,int o=0):solver(s),objective(o){if(active)std::terminate();entries.clear();counters.clear();depth=0;active=true;}
++ ~Root(){
++  if(depth)std::terminate();
++  active=false;
++  std::cerr<<std::setprecision(17)<<"MATHPROFILE {\"solver\":\""<<solver<<"\",\"objective\":"<<objective<<",\"stages\":{";
++  bool first=true;
++  for(const auto &[n,e]:entries){std::cerr<<(first?"":",")<<"\""<<n<<"\":{\"inclusive_s\":"<<e.inclusive*1e-9<<",\"exclusive_s\":"<<e.exclusive*1e-9<<",\"calls\":"<<e.calls<<"}";first=false;}
++  std::cerr<<"},\"counters\":{";first=true;
++  for(const auto &[n,c]:counters){std::cerr<<(first?"":",")<<"\""<<n<<"\":"<<c;first=false;}
++  std::cerr<<"}}\n";
++ }
++};
++#endif
++}
+--- /dev/null
++++ math-profile/dspec/profile_equilibrated_sparse_lu.hpp
+@@ -0,0 +1,154 @@
++#ifndef DSPECM1D_EQUILIBRATED_SPARSE_LU_H
++#define DSPECM1D_EQUILIBRATED_SPARSE_LU_H
++
++#include "profile.hpp"
++
++#include <Eigen/Core>
++#include <Eigen/Sparse>
++#include <Eigen/SparseLU>
++#include <algorithm>
++#include <cmath>
++#include <complex>
++#include <stdexcept>
++
++namespace SPARSESPEC {
++
++/**
++ * @brief SparseLU with symmetric positive diagonal equilibration.
++ *
++ * The factorized operator is D A D, where D_i is the inverse square root of
++ * the largest magnitude in row i of A. Forward and Hermitian-adjoint solves
++ * map their results back to the units of the original operator.
++ */
++template <typename Scalar> class EquilibratedSparseLU {
++public:
++  using SparseMatrix = Eigen::SparseMatrix<Scalar>;
++  using DenseMatrix = Eigen::Matrix<Scalar, Eigen::Dynamic, Eigen::Dynamic>;
++  using Real = typename Eigen::NumTraits<Scalar>::Real;
++  using RealVector = Eigen::Matrix<Real, Eigen::Dynamic, 1>;
++  using Solver = Eigen::SparseLU<SparseMatrix, Eigen::COLAMDOrdering<int>>;
++
++  void compute(const SparseMatrix &matrix) {
++    mathprofile::Scope total("sparse_factorization_total");
++    computed_ = false;
++    mathprofile::count("sparse_factorization_calls");
++    mathprofile::count("sparse_matrix_rows",static_cast<std::uint64_t>(matrix.rows()));
++    mathprofile::count("sparse_matrix_nonzeros",static_cast<std::uint64_t>(matrix.nonZeros()));
++    SparseMatrix equilibrated;
++    {mathprofile::Scope t("sparse_equilibration_and_scaling");equilibrated = equilibrate(matrix);}
++    // Eigen 3.4 SparseLU::compute is exactly analyzePattern(matrix), then
++    // factorize(matrix), in that order. Keep those calls and their ordering.
++    {mathprofile::Scope t("sparse_symbolic_analysis");solver_.analyzePattern(equilibrated);}
++    {mathprofile::Scope t("sparse_numerical_factorization");solver_.factorize(equilibrated);}
++    info_ = solver_.info();
++    computed_ = info_ == Eigen::Success;
++  }
++
++  void factorize(const SparseMatrix &matrix) {
++    const bool reusePattern = computed_;
++    SparseMatrix equilibrated = equilibrate(matrix);
++    if (reusePattern)
++      solver_.factorize(equilibrated);
++    else
++      solver_.compute(equilibrated);
++    info_ = solver_.info();
++    computed_ = info_ == Eigen::Success;
++  }
++
++  DenseMatrix solve(const DenseMatrix &rhs) {
++    mathprofile::Scope total("sparse_forward_solve_including_rhs_scaling");
++    mathprofile::count("forward_rhs_columns",static_cast<std::uint64_t>(rhs.cols()));
++    requireSolveInput(rhs);
++    DenseMatrix scaledRhs = rhs;
++    for (Eigen::Index row = 0; row < rhs.rows(); ++row)
++      scaledRhs.row(row) *= scale_[row];
++    DenseMatrix solution = solver_.solve(scaledRhs);
++    info_ = solver_.info();
++    if (info_ != Eigen::Success || !solution.allFinite())
++      throw std::runtime_error(
++          "EquilibratedSparseLU forward solve failed or returned non-finite values.");
++    for (Eigen::Index row = 0; row < solution.rows(); ++row)
++      solution.row(row) *= scale_[row];
++    if (!solution.allFinite())
++      throw std::runtime_error(
++          "EquilibratedSparseLU forward solution is not finite in original units.");
++    return solution;
++  }
++
++  DenseMatrix solveAdjoint(const DenseMatrix &rhs) {
++    mathprofile::Scope total("sparse_adjoint_solve_including_rhs_scaling");
++    mathprofile::count("adjoint_rhs_columns",static_cast<std::uint64_t>(rhs.cols()));
++    requireSolveInput(rhs);
++    DenseMatrix scaledRhs = rhs;
++    for (Eigen::Index row = 0; row < rhs.rows(); ++row)
++      scaledRhs.row(row) *= scale_[row];
++    DenseMatrix solution = solver_.adjoint().solve(scaledRhs);
++    info_ = solver_.info();
++    if (info_ != Eigen::Success || !solution.allFinite())
++      throw std::runtime_error(
++          "EquilibratedSparseLU adjoint solve failed or returned non-finite values.");
++    for (Eigen::Index row = 0; row < solution.rows(); ++row)
++      solution.row(row) *= scale_[row];
++    if (!solution.allFinite())
++      throw std::runtime_error(
++          "EquilibratedSparseLU adjoint solution is not finite in original units.");
++    return solution;
++  }
++
++  Eigen::ComputationInfo info() const { return info_; }
++
++private:
++  SparseMatrix equilibrate(const SparseMatrix &matrix) {
++    computed_ = false;
++    info_ = Eigen::InvalidInput;
++    if (matrix.rows() <= 0 || matrix.rows() != matrix.cols())
++      throw std::invalid_argument(
++          "EquilibratedSparseLU requires a nonempty square matrix.");
++    scale_.resize(matrix.rows());
++    scale_.setZero();
++    for (int column = 0; column < matrix.outerSize(); ++column)
++      for (typename SparseMatrix::InnerIterator entry(matrix, column); entry; ++entry) {
++        const Real magnitude = std::abs(entry.value());
++        if (!std::isfinite(magnitude))
++          throw std::invalid_argument(
++              "EquilibratedSparseLU matrix must contain only finite values.");
++        scale_[entry.row()] = std::max(scale_[entry.row()], magnitude);
++      }
++    for (Eigen::Index row = 0; row < scale_.size(); ++row) {
++      if (!(scale_[row] > Real(0)))
++        throw std::invalid_argument(
++            "EquilibratedSparseLU matrix must not contain zero rows.");
++      scale_[row] = Real(1) / std::sqrt(scale_[row]);
++      if (!std::isfinite(scale_[row]))
++        throw std::invalid_argument(
++            "EquilibratedSparseLU row scaling is not finite.");
++    }
++    SparseMatrix result = matrix;
++    for (int column = 0; column < result.outerSize(); ++column)
++      for (typename SparseMatrix::InnerIterator entry(result, column); entry; ++entry) {
++        entry.valueRef() *= scale_[entry.row()] * scale_[entry.col()];
++        if (!std::isfinite(std::abs(entry.value())))
++          throw std::invalid_argument(
++              "EquilibratedSparseLU scaled matrix is not finite.");
++      }
++    return result;
++  }
++
++  void requireSolveInput(const DenseMatrix &rhs) const {
++    if (!computed_)
++      throw std::logic_error(
++          "EquilibratedSparseLU must be successfully factorized before solving.");
++    if (rhs.rows() != scale_.size() || rhs.cols() == 0 || !rhs.allFinite())
++      throw std::invalid_argument(
++          "EquilibratedSparseLU right-hand side dimensions or values are invalid.");
++  }
++
++  Solver solver_;
++  RealVector scale_;
++  Eigen::ComputationInfo info_ = Eigen::InvalidInput;
++  bool computed_ = false;
++};
++
++} // namespace SPARSESPEC
++
++#endif // DSPECM1D_EQUILIBRATED_SPARSE_LU_H

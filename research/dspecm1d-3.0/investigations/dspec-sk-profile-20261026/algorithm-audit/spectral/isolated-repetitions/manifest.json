@@ -1,0 +1,27 @@
+{
+  "purpose": "Three isolated-process repetitions per L3/L6/L12 at F3/F48; actual three-trace DSpec-derived coefficient packets.",
+  "threads": {
+    "OMP_NUM_THREADS": 1,
+    "OPENBLAS_NUM_THREADS": 1,
+    "MKL_NUM_THREADS": 1
+  },
+  "binary": {
+    "path": "../frozen/v1/spectral_driver",
+    "sha256": "6048db7ce2e9da1f5b739c643c3f7371ed75cbeac1b8ba64829802c0e388577c"
+  },
+  "sources": {
+    "algorithms.hpp": "959bfe4eb73b3b23620409a1570973c5adea5b97097a6fa87910439b79384830",
+    "benchmark_reps.py": "3cef19b3fa54b8e707068f1d4ec4b740cb9ab3edc0414b700ec27b676206a406",
+    "spectral_driver.cpp": "0c3ad75500c23803f3b7ea8f59d0c617cef2c15143f8e24c4c9026be4d2c1343"
+  },
+  "packets": {
+    "l3-f3": "e94d584e17cb8339987eab67a0dcec9401dd1da8cb2abf450d7af48cfaa2d2a0",
+    "l3-f48": "777a4a421b3adc9dda81022f57a27e2e7d953a9fee1b442f4420478ad2cf4148",
+    "l6-f3": "c4dbc2bb94e3555441fc6b3429b22e6bcaef08f0718fb1e061c172604cab67fb",
+    "l6-f48": "22f5435435d77dd88059b9f4e47bb3b931a9fea7a42c40f3c062f0d366e459c0",
+    "l12-f3": "4f649558ed8ce88494f9b753e0533b2135840bfaa5d38f813739c6523ef1129a",
+    "l12-f48": "1d45a301353aa4987aefa99d556d49ff840049c756ce4a681007761a9317fda5"
+  },
+  "command": "python3 ../frozen/v1/benchmark_reps.py <frozen binary> ../packets ../isolated-repetitions",
+  "limitations": "Preliminary bounded algorithm comparison on one source, one receiver, one objective, and three element-side radial traces. Internal phase timers and total process wall time are not whole-workload production timings; parent provides independent upstream reference timings."
+}

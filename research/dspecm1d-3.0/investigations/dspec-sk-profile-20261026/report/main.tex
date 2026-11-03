@@ -1,0 +1,126 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{alex-report}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.4em,itemsep=3pt,topsep=3pt}
+\ReportSetup{DSpecM1D 2.0}{SK performance investigation}{26 October 2026}
+\hypersetup{pdftitle={DSpecM1D sensitivity-kernel performance: profile and plan}}
+\begin{document}
+\ReportTitle{Why the 3D kernels are slow}{Measured bottlenecks, comparison with YSpecpp, and an approval-gated plan}
+\textbf{Finding.} The remaining gap comes mainly from how DSpec reconstructs the angular fields. In the degree-12 profile, per-point modal accumulation takes 87\% of the API time. Preparing all radial solves takes about 4\%. Retaining the SEM radial method is compatible with addressing the dominant bottleneck.
+
+\section{Fresh matched timings}
+These are medians of three independent processes, with alternating solver order, one numerical thread, Release/O3, and BLAS disabled. DSpec is freshly compiled against the current accepted dirty checkout. YSpec uses the existing Release timing executable; its sampled-kernel translation unit was also freshly compiled for attribution and returned identical output.\footnote{The checkouts were preserved: DSpec HEAD \texttt{a778b13}, branch \texttt{feature/radial-sensitivity-kernels-k1}; YSpec HEAD \texttt{280eab0}. Source hashes, executable identities, dependency revisions and exact commands are retained in the evidence directory.}
+\begin{center}
+\begin{tabular}{rrrrr}
+\toprule
+$l_{\max}$ & Objectives & DSpec (s) & YSpec (s) & Ratio\\
+\midrule
+3 & 1 & 0.122 & 0.0242 & 5.07\\
+3 & 2 & 0.243 & 0.0356 & 6.83\\
+12 & 1 & 3.39 & 0.214 & 15.9\\
+12 & 2 & 6.34 & 0.266 & 23.8\\
+\bottomrule
+\end{tabular}
+\end{center}
+The degree-12 one-objective ranges are 2.88--3.47 s and 0.209--0.256 s. The two-objective ranges are 6.05--7.05 s and 0.265--0.323 s. The DSpec pair is two scalar calls; YSpec batches both objectives. These times exclude model setup and CSV writing. The first API call is compared in both solvers; YSpec's later warm call is not used for this table.
+
+\section{Where DSpec spends its time}
+One separately instrumented degree-12, one-objective call takes 3.277 s. The following stages are disjoint; nested timers have been removed from their parents.
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Stage & Time (s) & Share\\
+\midrule
+Per-point modal accumulation & 2.857 & 87.2\%\\
+All modal preparation, including solves & 0.125 & 3.8\%\\
+Radial interpolation & 0.110 & 3.4\%\\
+Geometry and grouping & 0.0645 & 2.0\%\\
+Angular table construction & 0.00869 & 0.3\%\\
+Final point-kernel contraction & 0.00549 & 0.2\%\\
+Other work & 0.106 & 3.2\%\\
+\bottomrule
+\end{tabular}
+\end{center}
+\textbf{Scope.} Homogeneous solid model, full gravity, no attenuation, source-aware order-8 SEM, raw bins 1--3, $n_t=128$, $\Delta t=20$ s and Hann samples 0--90. The grids contain 10,752 and 75,712 volume samples. This is a volume-only performance comparison; source-shell contact is separate. Degree 12 is an illustration, not a convergence result.
+\newpage
+
+\section{Why YSpec is faster}
+Both implementations already use exact source- and receiver-centred synthesis: moment-tensor fields have local $|m|\leq2$, and force adjoints have $|m|\leq1$. Reintroducing this idea is not a new optimization. YSpec integrates small radial systems from below and from the surface, reusing their solutions for source and adjoint radii. DSpec factors global SEM operators. Here, preparing those responses costs about 0.089 s in YSpec and 0.125 s in DSpec. Most of the gap appears after those solves.
+
+\textbf{DSpec's current route.} In \texttt{synthesizePoleFrame}, the loop order is angular chunk, family/degree, radial group, order, then point. Each modal contribution evaluates a complex azimuth phase, constructs displacement, raw strain and radius-scaled strain, rotates these quantities into the global frame, then adds them to a full sample. This repeats for both nonradial families, every degree and every frequency.
+
+At $l_{\max}=12$, there are 188 nonradial contributions per point/frequency: roughly 42.7 million phase evaluations and full contribution constructions across the three bins, including receiver sampling. These are source-level counts; the compiler can simplify some cases.
+
+\textbf{YSpec's route.} \texttt{StrainTable} prepares six strain coefficients once per unique radial node and degree, combining radial-response families first. Its storage places degree innermost. \texttt{Evaluate} then performs contiguous real/imaginary dot products over degree:
+\begin{equation}
+E_c^{F}(r,\Omega)
+ = \sum_{m=-2}^{2} e^{im\phi_s}
+   \sum_{\ell} S_c^{F}(r,m,\ell)\,
+   X_{\ell m}^{\,s_c}(\theta_s),
+\end{equation}
+with the analogous receiver expression restricted to $|m|\leq1$. It rotates the summed adjoint strain into the forward frame once per point, then forms the five material contractions. The phase is outside the degree loop, and displacement and duplicate strain representations are absent from this hot path.
+
+YSpec needs five forward and three adjoint phases per node/place/frequency, versus 188 in DSpec. This reduces that source-level repetition by about 23.5 times; it is not a prediction of a 23.5-fold total speedup. In the timed YSpec call pair, radial coefficient preparation averages 0.0890 s per call and synthesis/contraction 0.138 s. The complete instrumented average is 0.249 s.\footnote{YSpec's scoped counters include its first and subsequent warm API call, so these values are divided by two. Native timing comparisons use first calls only. Fine-timer overhead is not subtracted. For all four configurations, each instrumented output is byte-identical to its native counterpart. Hardware performance counters are unavailable in this sandbox.}
+
+\section{Secondary findings}
+\begin{itemize}
+\item DSpec makes 635,274 interpolation calls in the profiled workload. It rebuilds the Lagrange basis, weights and cardinal values repeatedly across angular chunks. A radial coefficient table removes much of this, but interpolation is only 3.4\% of current time.
+\item A full \texttt{Field3DSample} occupies 536 bytes: 40.6 MB for the 75,712 requested points, before other storage. Kernels need six strain components per field; receiver displacement is needed only at receivers.
+\item DSpec constructs and factorizes the same operator separately for forward and adjoint solves: 150 factorizations across the three bins, rather than 75 shared ones. All factorization work is only 0.0696 s here, so fixing this alone cannot close the gap.
+\item Chunk sizes 75,712, 4,096 and 256 take 1.16--1.19, 1.16 and 1.35 s for one already-prepared frequency. Kernels agree exactly in this diagnostic. Chunk overhead matters, but does not explain the order-of-magnitude gap.
+\end{itemize}
+\newpage
+
+\section{Proposed Phase 1: reconstruct coefficients, then contract}
+\textbf{Objective.} Replace the dominant work pattern while retaining the present radial equations, mesh, source treatment, measurement map and physical modal content. This is the phase recommended for approval first.
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=6pt]
+\item \textbf{Prepare radial coefficients once.} Key the sampling plan by resolved SEM element and exact radius. Interpolate each local-order field and its derivative once per frequency/radial trace, including the source lift on its owning element. Prepare six spin-strain coefficients and combine spheroidal/toroidal contributions before sampling points.
+\item \textbf{Make degree the contiguous sum.} Store radial strain and angular coefficients with degree innermost. Sum degree into small complex accumulators, multiply by a precomputed order phase, then sum order. Hoist degree constants and repeated phase evaluations out of point/modal loops.
+\item \textbf{Rotate after summation.} Apply the existing spin rotation to the complete strain once per field/point. Rotation is linear, so this reorders the existing calculation without truncating physical orders.
+\item \textbf{Give kernels a compact internal route.} Materialize strain needed by the kernel contraction, with bounded point blocks. Obtain forward displacement for the objective at receivers only. Keep the full public field API and the separate contact calculation available; share strain-coefficient formulas rather than introducing an independent mathematical implementation.
+\item \textbf{Reuse the sampling plan.} Retain one-sided radial keys, interpolation weights, geometry, phases and bounded angular tables across the active frequencies. Bound caches explicitly; do not approximate nearby radii or angles to create cache hits.
+\end{enumerate}
+
+\textbf{Likely code scope.} Coefficient preparation and sampling in \texttt{Windowed3DFields.h}; compact volume evaluation in \texttt{Windowed3DKernels.h}; focused sensitivity tests; and a concise implementation-status entry. No radial-operator or receiver-enrichment change is needed for this phase.
+
+\textbf{Performance checkpoint.} Require at least a threefold reduction in the degree-12 one-objective median on the unchanged matched workload, and report degree-3 behavior, ranges and memory. A useful overall engineering target is 0.4--0.7 s for one degree-12 objective on this machine, or roughly 2--3 times YSpec. This is a target inferred from the profile, not a demonstrated result or a guarantee.
+
+\textbf{Numerical acceptance.}
+\begin{itemize}
+\item Compare old/new fields and five-modulus kernels before speed claims. Retain the accepted limits: $10^{-12}$ for displacement and forward-strain norms, $10^{-9}$ for adjoint-strain norms, and $10^{-10}$ for the frozen scaled pointwise-kernel metric. Preserve every other existing gate and its normalization.
+\item Exercise PREM solids/fluids, source-owning and opposite traces, shared radii, poles, near-poles, non-node interpolation, permuted and repeated points, and multiple receivers. Preserve center-safe weighted integration and pointwise rejection at the center.
+\item Re-run the existing matched profile/integral gates and bounded source-volume/contact checks. Keep contacts separate from YSpec volume samples. Require the untouched contact route to retain its results.
+\item Use the existing sequential implementation/review procedure, then stop for phase approval. Do not change tolerances to obtain a performance result.
+\end{itemize}
+\newpage
+
+\section{Proposed Phase 2: batch measurements}
+Proceed only after Phase 1 is accepted and this phase is approved. Add a batched objective overload sharing one model, source, frequency grid and sampling plan. Retain the scalar API as a convenience route.
+
+Compute the forward modal solution, source strain and processed receiver spectrum once. Build the required receiver-force basis once, reuse its responses across measurement directions, and apply each objective's adjoint weights and material contractions. Different time windows or weights must retain their own exact adjoint processing.
+
+\textbf{Acceptance.} Each batched objective must agree with its scalar counterpart under the same frozen gates. The two-objective benchmark should cost no more than about 1.5 times a single objective, with actual performance reported independently of this target. The current medians are 6.34 s for DSpec and 0.266 s for YSpec; YSpec already has this reuse.
+
+\section{Proposed Phase 3: reduce the remaining solve cost}
+Re-profile after the preceding phases. If modal preparation has become material, share one equilibrated factorization between forward and Hermitian-adjoint solves for each family/degree/frequency. Reuse symbolic structure only when it is demonstrably unchanged.
+
+The volume route also currently solves all global-order adjoint columns as well as the local receiver basis. A later internal split could defer those global columns until the contact or diagnostic route asks for them. Preserve source-contact access and multiple-receiver behavior; do not simply delete the global representation.
+
+The present factorization budget is 0.0696 s of 3.277 s, with at most roughly half of that removable by forward/adjoint reuse alone. This is a sensible later improvement, not the primary performance intervention. Reconsider threading only after the serial route is efficient and SEM/workspace thread safety and aggregate memory have been checked.
+
+\section{Evidence and reproducibility}
+The adjacent evidence folder contains:
+\begin{itemize}
+\item \texttt{timing\_summary.json}, \texttt{records.json}: native medians, ranges, complete API metadata, exact commands and generated-output hashes.
+\item \texttt{analysis.json}: disjoint DSpec attribution, operation counts and the chunk-size experiment.
+\item \texttt{validation.json}: all four matched accuracy comparisons and instrumented/native identity checks.
+\item \texttt{provenance.json}, \texttt{source\_snapshot/}: source identities, dependency revisions, accepted dirty files and build details.
+\item Diagnostic drivers/builders and \texttt{runs/}: replayable instrumentation, raw logs and losslessly compressed timed kernel arrays.
+\end{itemize}
+Across the freshly calculated matched cases, the largest weighted profile and integral discrepancies are $2.32\times10^{-9}$ and $1.66\times10^{-8}$, respectively. All original $10^{-3}$ informative profile/integral gates pass. Instrumentation is byte-identical to native output for both solvers, both degrees and both objective counts.
+
+The existing receiver-region strain limitation remains: these regular-volume checks do not validate arbitrary receiver-neighborhood kernels. No new finite-difference campaign, convergence sweep, high-degree angular-library repair, or source-contact timing comparison was performed.
+
+\textbf{Status.} Investigation complete. Production checkouts, their uncommitted accepted changes, and the untracked Phase 0 evidence were preserved. No solver implementation, commit or push was made. Phase 1 is a concrete proposal awaiting approval.
+\end{document}

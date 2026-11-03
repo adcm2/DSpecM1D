@@ -1,0 +1,13 @@
+# Short Sol review: original-direct/global data wrapper
+
+2026-10-27. **PASS for data-only use of this wrapper on qualified completed L3/L12 original-direct and Estimate global jobs.** Reviewed after the fresh Luna wrapper review. No science execution, SSH, build, or implementation edits. Actual numerical acceptance remains unresolved until the real receipted data pass.
+
+The wrapper delegates directly to unchanged `check_global_pair.assess` with `probe64=False` and `global_reference=False`. The complete-grid original-direct path retains all 179 positive-radius reference sides, checks selected candidate native identities as a subset, aligns angle-major reference data to side-major candidate data, and applies the fixed `2e-13` channel/trace/spectrum/energy comparison. Qualified completed receipts, before/after job/artifact checks, physical metadata, energy identity, frequency audits and finite/domain/worker checks remain in the reviewed implementation. No global-to-global exactness shortcut or tolerance substitution is introduced.
+
+The only compatibility shim adapts an in-memory copy of the timings dictionary with the already-reviewed final timing-key adapter. It explicitly verifies every original timing field remains equal and that the compatibility key equals `serial_grid_and_context_setup_wall_s`. Missing/conflicting values fail. The original validator is restored in `finally`, including assessment exceptions. This serial command-line wrapper does not change saved producer manifests. Report provenance records the actual reviewed comparison-helper hash.
+
+Independently ran the complete synthetic receipt fixture successfully: 179 direct sides map to eight global sides through the real reviewed assessment path, with full grids, zero mapped error, preserved timing fields, declared adapter alias and unchanged `2e-13` tolerance. A separate bounded synthetic failure-path check confirmed the original timing validator is restored when assessment raises. These tests validate wrapper/data plumbing only.
+
+Reviewed SHA-256: wrapper `8e5b3792cce309b5e6570a3e7d946f3a0599e933b79c7ec449bb04804e58d56f`; fixture `37ecbeb90ac66c21018f8d3c24f705eee22899949e54faba542f0fa80d89d2df`; reviewed global helper `340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a`; adapter source `9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af`; pair helper `6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646`.
+
+This permits the requested actual-data control check only. It does not upgrade prior cross-route failures, claim Estimate correctness/determinism, promote global scientific status, authorize figures, or establish speedup. Any actual result exceeding `2e-13` remains FAIL/HOLD.

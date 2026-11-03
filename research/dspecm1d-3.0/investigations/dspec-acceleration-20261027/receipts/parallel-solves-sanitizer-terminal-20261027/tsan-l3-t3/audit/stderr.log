@@ -1,0 +1,25 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=2842626)
+  Write of size 8 at 0x7b0c00001d48 by main thread:
+    #0 operator delete(void*, unsigned long) ../../.././libsanitizer/tsan/tsan_new_delete.cpp:150 (libtsan.so.2+0x8794e)
+    #1 void GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Multiple>::ComputeAll<std::vector<double, std::allocator<double> >&>(std::vector<double, std::allocator<double> >&) <null> (physical-driver+0x457018)
+    #2 GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Multiple>::Wigner<std::vector<double, std::allocator<double> >&>(long, long, long, std::vector<double, std::allocator<double> >&) <null> (physical-driver+0x47c67c)
+    #3 SRInfo::SRInfo(InputParameters&) <null> (physical-driver+0x47d622)
+    #4 InputParametersNew::InputParametersNew(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, double, double, double, double, int) <null> (physical-driver+0x4aa134)
+    #5 main <null> (physical-driver+0x425420)
+
+  Previous read of size 8 at 0x7b0c00001d48 by thread T2:
+    #0 void GSHTrans::WignerDetails::ComputeBlock<double, GSHTrans::All>(GSHTrans::GSHView<double, GSHTrans::All>, long, double, std::span<double const, 18446744073709551615ul>, std::span<double const, 18446744073709551615ul>) <null> (physical-driver+0x49d267)
+    #1 void GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Multiple>::ComputeAll<std::vector<double, std::allocator<double> >&>(std::vector<double, std::allocator<double> >&) [clone ._omp_fn.0] <null> (physical-driver+0x49f1d8)
+    #2 gomp_thread_start ../.././libgomp/team.c:129 (libgomp.so.1+0x2136d)
+
+  Thread T2 (tid=2842629, running) created by main thread at:
+    #0 pthread_create ../../.././libsanitizer/tsan/tsan_interceptors_posix.cpp:1036 (libtsan.so.2+0x41556)
+    #1 gomp_team_start ../.././libgomp/team.c:858 (libgomp.so.1+0x2196e)
+    #2 GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All, GSHTrans::Multiple>::Wigner<std::vector<double, std::allocator<double> >&>(long, long, long, std::vector<double, std::allocator<double> >&) <null> (physical-driver+0x47c67c)
+    #3 SRInfo::SRInfo(InputParameters&) <null> (physical-driver+0x47d622)
+    #4 InputParametersNew::InputParametersNew(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int, int, double, double, double, double, int) <null> (physical-driver+0x4aa134)
+    #5 main <null> (physical-driver+0x425420)
+
+SUMMARY: ThreadSanitizer: data race ../../.././libsanitizer/tsan/tsan_new_delete.cpp:150 in operator delete(void*, unsigned long)
+==================

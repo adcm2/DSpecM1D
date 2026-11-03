@@ -1,0 +1,59 @@
+{
+  "task_id": "stages12-stage2-controls-v1",
+  "plan_sha256": "1b6d4d87b1260492d7830ae5c6d8406533d14d29e3a303ae82a6187c410a416b",
+  "campaign_status": "failed",
+  "launch_pid": 3861408,
+  "thread_cap": 20,
+  "first_gate": {
+    "id": "scheduler-helper-test",
+    "status": "failed",
+    "returncode": -6,
+    "elapsed_seconds": 0.36900147201959044,
+    "failure_reasons": [],
+    "cleanup": {
+      "proc_inspection_errors": [],
+      "reaped_pids": [],
+      "remaining": [],
+      "signal_log": [],
+      "unknown": [],
+      "verified_gone": true
+    },
+    "inputs_unchanged": true,
+    "log_sha256": "8ac1f624b36d2a44ce9c6df444b02fbf9010fe544fa197fa39f2b5fdaf4c717b"
+  },
+  "external_campaign_bindings": [
+    {
+      "task_id": "stages12-stage1-control-v3",
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-controls-v3/configs/stages12-stage1-v3-controls-plan.json",
+      "plan_sha256": "b6f543cdd5578626e9d98648b754115c725f9c49e6bc503c43459f612ed17fcf",
+      "plan_sha_verified": true,
+      "task_state_verified": true
+    },
+    {
+      "task_id": "stages12-stage2-build-v1",
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-build/configs/stages12-stage2-v1-build-plan.json",
+      "plan_sha256": "c9b473cfd576e671abe0e4691791a4e7e47f6c2a5da238cfa3f35be58b75e499",
+      "plan_sha_verified": true,
+      "task_state_verified": true
+    },
+    {
+      "task_id": "stages12-stage2-scheduler-build-v1",
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-scheduler-build/configs/stages12-stage2-v1-scheduler-build-plan.json",
+      "plan_sha256": "a07db48a1d370b37497172443981e431f9c698603eb7829ce46d88b1b70f8e24",
+      "plan_sha_verified": true,
+      "task_state_verified": true
+    },
+    {
+      "task_id": "documentation-wedges-run-05",
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/configs/documentation-wedges-run-v5-plan.json",
+      "plan_sha256": "e577b77b025950e6f4980b94e203f1b191addc04cfac7d64bc682fc9fbb4a10c",
+      "plan_sha_verified": true,
+      "task_state_verified": true
+    }
+  ],
+  "supervisor_sha256": "a6c7ea515bc144a41a81d6b05d2b30737696abd4902c984d7025b80af1ef6bd4",
+  "current_controls_plan_sha_verified": true,
+  "numerical_controls_started": false,
+  "measurement_launched": false,
+  "gate_failure": "terminate called after throwing std::runtime_error: OpenMP frequency team size differs from requested workers"
+}

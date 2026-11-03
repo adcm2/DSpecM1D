@@ -1,0 +1,151 @@
+{
+  "status": "pass",
+  "candidate": "candidates/phase-d-nq6-batched-v1",
+  "selected_mesh": {
+    "nq": 6,
+    "mesh_scale": 0.9,
+    "h": 0.02035382429229197,
+    "legacy_relative_error_input": 1e-05,
+    "requested_relative_accuracy": 0.001,
+    "native_sides": 208,
+    "frequency_bins": 35,
+    "requested_accuracy_met": true
+  },
+  "accuracy": {
+    "max_solid_complex_field_relative_l2": 0.00021952474713321954,
+    "max_solid_full35_kernel_relative_l2": 0.0001450918716573929,
+    "max_waveform_relative_l2": 1.191444203838423e-06,
+    "measurement_rate_norm_relative_error": 2.5619812061764196e-07,
+    "scalar_vs_batched_max_relative_l2": {
+      "adjoint_field_rel_l2": 7.389022962721731e-16,
+      "complex_product_rel_l2": 1.0882120385497865e-15,
+      "forward_field_rel_l2": 8.631317934446982e-16
+    },
+    "common_vs_tensor_max_relative_l2": {
+      "adjoint_field_rel_l2": 6.530310582037786e-16,
+      "complex_product_rel_l2": 1.6417045548130354e-15,
+      "forward_field_rel_l2": 7.285231611513483e-16
+    },
+    "derived_angular_temporary_peak_bound_bytes": 17940200,
+    "gravity_max_abs_nondimensional": 2.6645352591003757e-15,
+    "time_shift_adjoint_identity": 0.9999999999999994,
+    "validated_common_points": 45122,
+    "validated_bins": 35,
+    "selector": "user-selectable DSPEC_PHASE_D_REQUESTED_RELATIVE_ACCURACY; only requested1e-3 certified"
+  },
+  "l3_fd": {
+    "status": "pass",
+    "relative_error": 6.440261900046464e-09,
+    "limit": 0.0002,
+    "gravity_max_abs_nondimensional": 1.9984014443252818e-15,
+    "time_shift_identity": 0.9999999999999994
+  },
+  "matched_native": {
+    "driver_elapsed_scalar_s": 9.322228251,
+    "driver_elapsed_batched_s": 7.766392611,
+    "speedup_scalar_over_batched": 1.200329254253304,
+    "driver_elapsed_reduction_percent": 16.689525273457072,
+    "supervisor_elapsed_scalar_s": 9.71016164595494,
+    "supervisor_elapsed_batched_s": 8.10289510997245,
+    "peak_rss_scalar_gib": 1.1591,
+    "peak_rss_batched_gib": 1.1194,
+    "peak_threads_including_supervisor": {
+      "scalar": 9,
+      "batched": 9
+    }
+  },
+  "profiled_batched": {
+    "driver_elapsed_s": 7.724436636,
+    "supervisor_elapsed_s": 8.125524048984516,
+    "peak_rss_gib": 1.1139,
+    "master_pipeline_wall_s": 7.724039203,
+    "combined_master_pass_s": 7.707091767,
+    "tiled_angular_calls": 32,
+    "tiled_angular_worker_elapsed_sum_s_overlapping_not_wall": 21.917293929000003,
+    "forward_calls": 35,
+    "unit_adjoint_calls": 32,
+    "exact_zero_skips": 3,
+    "exact_zero_bins": [
+      7,
+      8,
+      41
+    ],
+    "profile_pipeline_wall_s": 7.724039203,
+    "modal_workspace_capture_worker_elapsed_sum_s_overlapping": 24.669738380000002,
+    "projected_radial_modes_to_strain_tables_worker_elapsed_sum_s_overlapping": 4.608710923,
+    "scope_sums_partition_per_worker": true,
+    "scope_sums_overlap_across_workers_in_wall_time": true,
+    "worker_elapsed_sums_are_not_master_wall_shares": true
+  },
+  "matched_yspec": {
+    "driver_elapsed_s": 4.298666802,
+    "supervisor_elapsed_s": 4.527166976011358,
+    "peak_rss_gib": 0.3287,
+    "cli_workers": 8,
+    "omp_threads": 1,
+    "omp_thread_limit": 8,
+    "dspec_frequency_workers_explicitly_unset": true,
+    "result_metadata_frequency_workers": 1,
+    "result_metadata_solve_workers": 8,
+    "metadata_is_not_proof_of_internal_scheduling": true,
+    "same_sampling_grid_byte_equal": true,
+    "waveform_component_relative_l2_diagnostics_only": {
+      "trace_velocity": 1.710416170311816e-05,
+      "trace_rate": 1.4775997262305649e-05,
+      "trace_adjoint_source": 1.2452158798197172e-05,
+      "spectrum_complex": 1.4031548371495058e-05,
+      "component_up": 4.182980223894244e-05,
+      "component_north": 1.4789781959328428e-05,
+      "component_east": 1.7549396929845472e-05
+    },
+    "raw_native_array_relative_l2_diagnostics_only": {
+      "along.bin": {
+        "expected_float64_values": 28080,
+        "relative_l2_to_dspec_diagnostic_only": 0.12273754168521266
+      },
+      "across.bin": {
+        "expected_float64_values": 3952,
+        "relative_l2_to_dspec_diagnostic_only": 0.03676498322746794
+      }
+    },
+    "dspec_over_yspec_driver_elapsed_ratio": 1.806697976076351
+  },
+  "context_vs_prior_accepted_nq10_c2": {
+    "prior_driver_elapsed_s": 15.890614612,
+    "current_driver_elapsed_s": 7.766392611,
+    "elapsed_reduction_percent": 51.12591425422206,
+    "prior_sides": 293,
+    "current_sides": 208,
+    "same_work_claim": false,
+    "prior_is_oracle_off_c2_timed_run": true,
+    "comparison_limit": "different discretization and293 versus208 native sides; contextual end-to-end comparison only"
+  },
+  "resources": {
+    "build_cap_threads": 8,
+    "build_memory_cap_gib": 32,
+    "numerical_thread_cap": 20,
+    "numerical_memory_cap_gib": 16,
+    "aggregate_thread_ceiling": 50,
+    "DSpec_frequency_workers": 8,
+    "inner_library_threads": 1,
+    "watchdog": "USER_SPACE_SESSION_WATCHDOG; user-space supervision, not kernel aggregate accounting"
+  },
+  "evidence": {
+    "timing_plan_sha256": "c08a0f11a91dd11b73f8c88ec77fa0a1b015bdbc2c6dd3bc6278251ba9d228e1",
+    "timing_snapshot_sha256": "3b248d644f5707b0de0ed2fb03d49efb737ca8b057c4ef0f7653d179ecff15f8",
+    "timing_snapshot_archive_sha256": "c9703ad64d149d4e69375ee7f06c8c3ca357f73c4c74f20d368f653c075dacc9",
+    "accuracy_receipt": "receipts/phase-d-nq6-refine09-run-v1/phase-d-nq6-09-accuracy-check/data/phase-d-accuracy-check.json",
+    "fd_receipt": "receipts/phase-d-l3-fd-run-v1/phase-d-l3-fd-check/data/phase-d-fd-check.json",
+    "timing_receipt": "receipts/phase-d-selected-grid-timing-run-v1/phase-d-timing-check/data/phase-d-timing-check.json",
+    "nominal_mesh_rejection_receipt": "receipts/phase-d-nq6-nominal-run-v2/phase-d-nq6-nominal-accuracy-check/data/phase-d-accuracy-check.json",
+    "build_v2_receipt": "receipts/phase-d-nq6-batched-build-v2",
+    "final_preflight_receipt": "receipts/phase-d-selected-grid-timing-preflight-v1.json"
+  },
+  "limits": [
+    "single matched native scalar/batched timing pair; no repeated timing distribution",
+    "YSpec is a timing comparator only; raw arrays have measurable cross-method differences",
+    "fluid subgroup differences are diagnostic, not part of solid acceptance",
+    "no production integration or discrepancy investigation"
+  ],
+  "independent_review": "reviews/phase-d-nq6-batched-final-independent-review-20261031.txt"
+}

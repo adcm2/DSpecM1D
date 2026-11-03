@@ -1,0 +1,111 @@
+{
+  "block": 2704,
+  "plan_budget_mb": 32,
+  "repeat": 1,
+  "cpu": 0,
+  "command": [
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/block-ablation",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/cache-ablation-01/b2704-mb32-r1/data",
+    "12",
+    "1",
+    "1"
+  ],
+  "env": {
+    "SK_BLOCK": "2704",
+    "SK_PLAN_MB": "32"
+  },
+  "metrics": {
+    "solver": "DSpecM1D",
+    "api": "Windowed3DKernelEngine::evaluate",
+    "lmax": 12,
+    "measurements": 1,
+    "repeats": 1,
+    "sample_count": 75712,
+    "warmup_batches": 0,
+    "warmup_api_calls": 0,
+    "setup_s": 0.155899413,
+    "warmup_batch_s": 0,
+    "api_s": [
+      0.54793569
+    ],
+    "first_workload_api_s": 0.54793569,
+    "first_model_to_arrays_s": 0.703835103,
+    "calculation_s": 0.703835103,
+    "end_to_end_s": 1.095491193,
+    "peak_rss_bytes": 39378944,
+    "objective_scale_S": {
+      "J_Z": 0.0012146850728957839
+    },
+    "config": {
+      "frequency_grid": {
+        "nt": 128,
+        "dt_s": 20,
+        "df_hz": 0.000390625,
+        "epsilon_s_inv": 0.002777777777777778,
+        "solver_bins_zero_based": [
+          1,
+          2,
+          3
+        ],
+        "band_hz": [
+          0.0001,
+          0.0008
+        ],
+        "degrees_inclusive": [
+          0,
+          12
+        ]
+      },
+      "physics": {
+        "gravity": "full",
+        "attenuation": false,
+        "physical_G": 6.672299999999999e-11
+      },
+      "source": {
+        "geocentric_latitude_deg": 10,
+        "longitude_deg": 20,
+        "depth_m": 50000,
+        "moment_tensor_Nm": [
+          1e+19,
+          2e+18,
+          -3e+18,
+          -5e+18,
+          4e+18,
+          -5e+18
+        ]
+      },
+      "receiver": {
+        "geocentric_latitude_deg": 45,
+        "longitude_deg": 90,
+        "depth_m": 3000
+      },
+      "window": {
+        "type": "Hann",
+        "first_sample": 0,
+        "last_sample": 90,
+        "nt": 128
+      },
+      "objective": {
+        "names": [
+          {
+            "name": "J_Z",
+            "component": "Z",
+            "q_nonzero": {
+              "bin_1": [
+                0.7,
+                0.2
+              ],
+              "bin_2": [
+                -0.25,
+                0.45
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "sha256": "302dc2766a1c414cb96492673c9abbcd78e16c6a897eee36d958d4468541cc19"
+}

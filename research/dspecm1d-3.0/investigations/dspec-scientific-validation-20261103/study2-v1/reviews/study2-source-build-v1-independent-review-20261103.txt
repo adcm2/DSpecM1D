@@ -1,0 +1,27 @@
+Study 2 source/build independent review — 2026-11-03
+Reviewer: Sol6.1 high /root/radial_review
+Disposition: PASS for the exact isolated source, build configuration and minimal-build operator below. No Study 2 numerical execution or results acceptance is implied; exact producer/checker gates still precede the physical queue.
+
+Sealed SHA-256 values:
+candidate/dspec/phase_d_driver.cpp 0502c54d74f0e9771dd3970dabd25921ad931701d12008507090b9466e54169b
+candidate/dspec/phase_d_controls.hpp 88600b2bcfea127e4ff0ccc759d5e141e805fe6463dfe91885707da62343e743
+configs/study2-build-v1.json 15fcf298aba916fda3944c49605f1ca1be4e66dfaf0fbc2d2674474ca6e5a2f9
+configs/study2-build-v1-plan.json 20c9cfa6a99d92ca9b679d56be66775a939a20126d74e5690c9df109006487a1
+operations/build_stage.py fa84737ae9066e46b4553fcbcd787dfe69b8834f651d307925af90a0d97f51db
+
+Source scope:
+Compared against the validated Study 1 source. Only two compiled files above change; solver, material/source/lift, radial/angular reconstruction and normalization mathematics remain byte-identical. The explicit Study 2 flag permits only the reviewed L100/150/300 DSpec/YSpec degree controls, L200 DSpec sparse bridge, two NQ6 h controls (nominal scale .675/.50625), and NQ8/NQ10 fixed-absolute-h controls. Study 2 requires explicit sparse-section flag, sections mode, epsilon zero and 168 fixed probes. Old controls remain gated separately; L300 is allowed only under the Study 2 flag. Fixed-h DSpec commands must carry exact string 0.02035382429229197 in both override and CLI, overriding NQ-dependent mesh selection, with element-boundary equality still required from saved results. h controls verify frozen nominal step 0.022615360324768855 before scaling. YSpec NQ6/.9 selector depends on NQ/frequency/scales/relative-error, not degree; actual YSpec boundaries must be checked, and its h is output sampling, not ODE solver refinement.
+
+Sparse sections use sampling degree100 independently of actual solve degree. Actual solver/reconstruction L is unchanged. Separate JSON metadata records this distinction. These sparse arrays cannot establish full kernel angular-bandwidth reconstruction or global extrema; only the unmasked sampled extrema and exact fixed probes may be interpreted. Bridge L200 must verify waveform/P/fixed-probe equivalence to Study1; coarser section extrema are not the same sampling test. Complete source-shell inner/outer classification, solid-side receiver functional and no fabricated YSpec source traces are inherited unchanged.
+
+Memory:
+C2 product whitelist now includes only valid Study2 workloads while preserving overflow checks and a hard 32 MiB product-storage bound. Existing 32 MiB angular temporary and 16 MiB geometry-reservation checks remain. For78 section angles, L300/NQ6 n=208 has derived geometry10,404,576B and real-route temporary18,054,152B. At L200/NQ10 fixed h, conservative350 output nodes (34 elements wholly above3Mm plus one cut element, at most10 nodes each) gives16,874,088B temporary. Actual section/node/cache/temporary metadata must verify these budgets; new finer h meshes require their actual counts and the same runtime guards. No cap increase, silent fallback, new harmonic contraction or retained solved-field history was introduced.
+
+Build/config/operator:
+Both configs independently rehashed. After replacing only fresh study2 roots/names with study1, parsed JSON equals reviewed Study1 build config/plan exactly: compiler flags, two timer variants, explicit pinned native YSpec DSO/private header and 12 shared external dependencies are unchanged. Build remains8threads/32GiB under identity-aware user-space watchdog with quiet sequential preflight, fresh isolated roots and detached supervision. Before/after dependency maps and actual binaries must be checked after build.
+Operator diff is confined to new roots/names, corrected local investigations depth and requiring both changed source hashes in this review. Existing minimal recursive LOCAL include closure, exact exclusive extraction, dependency/tool hashes, freshness/quiet checks and compile-before-transfer ordering are retained. All three embedded remote Python bodies independently AST-compiled locally. Minimal archive must still be byte-verified before export; no broad unrelated history/cache payload.
+
+Related scientific gate:
+../reviews/study1-after-results-independent-review-20261103.txt SHA-256 d73b839a4fad25a66a8a52fcae1eb9507c21437156a80b4a3cfe19a9dfa2ee95 releases the authorized convergence study while preserving its limits. Study2 remains an initially spatial study: no frequency convergence, universal contact-point 0.1% claim, global H1 result or singularity diagnosis follows from source existence. Independent AFTER STUDY2 saved-results review remains mandatory.
+
+No remaining source/build blockers. Build may proceed from a verified minimal allowlist while exact run/checker preparation continues.

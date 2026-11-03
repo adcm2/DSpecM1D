@@ -1,0 +1,61 @@
+{
+  "scope": "private candidate only; CCDSM owner deploys after independent review and verified admission",
+  "base_source_path": "investigations/dspec-scientific-validation-20261103/angular-v1/resource-coordination/base-monitor_tunya_global_ram_v4.py",
+  "base_sha256": "d3607c5bf5ceec84234dc1204cd1b82eefd520ba8f88f493c06edcf9c995afec",
+  "candidate_sha256": "03421ab7cb49f3e28cfa08c3907ff264cae34d3a4b6f9ea170120b1976989d51",
+  "change": "owned_units inventory registers exactly one additional sibling slice/service prefix; all other functions unchanged",
+  "slice": "dspecscienceangular20261103.slice",
+  "service_prefix": "dspec-science-angular-v1-",
+  "slice_properties": {
+    "MemoryMax": 40000000000,
+    "TasksMax": 12,
+    "MemorySwapMax": 0,
+    "CPUQuota": "800%"
+  },
+  "job_supervision": {
+    "build": {
+      "service": "dspec-science-angular-v1-build.service",
+      "MemoryMax": 34359738368,
+      "TasksMax": 12
+    },
+    "numerical": {
+      "service_prefix": "dspec-science-angular-v1-run-",
+      "MemoryMax": 17179869184,
+      "TasksMax": 12,
+      "service": "dspec-science-angular-v1-run.service",
+      "jobs": [
+        "angular-l400-dspec-nq6",
+        "angular-l400-yspec-nq6",
+        "angular-l600-dspec-nq6",
+        "angular-l600-yspec-nq6",
+        "angular-l800-dspec-nq6",
+        "angular-l800-yspec-nq6",
+        "angular-l800-dspec-nq8",
+        "angular-l800-dspec-nq10"
+      ],
+      "containment": "one campaign service contains supervisor and all eight sequential child jobs; never two numerical jobs"
+    },
+    "checker": {
+      "service": "dspec-science-angular-v1-check.service",
+      "MemoryMax": 8589934592,
+      "TasksMax": 12
+    }
+  },
+  "concurrency": "one service at a time; all descendants contained in its kernel cgroup",
+  "inner_library_threads": 1,
+  "outer_workers": 8,
+  "guard_state_schema": "tunya-global-memory-observer-v4",
+  "guard_freshness_seconds": 5,
+  "host_active_pause_bytes": 825000000000,
+  "host_active_urgent_bytes": 875000000000,
+  "host_active_ceiling_bytes": 900000000000,
+  "admission": "fresh valid MONITORING, no unknown/conflicting frozen units; forecast active+40GB+unconsumed other reservation headroom<825GB; exact slice and child limits; runtime single guardian sees all registered units",
+  "prohibited": [
+    "second freezing guardian",
+    "automatic thaw",
+    "kill",
+    "whole-slice freeze",
+    "change existing CCDSM/Pilot child caps or processes"
+  ],
+  "original_base_source_path": "CCDSM_extended_elastic_20261031/sp12_20261101/controller/monitor_tunya_global_ram_v4.py"
+}

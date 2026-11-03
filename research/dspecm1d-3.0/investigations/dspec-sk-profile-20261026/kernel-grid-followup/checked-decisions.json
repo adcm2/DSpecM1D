@@ -1,0 +1,81 @@
+{
+  "scope": "Check and prepare physically defined replacement benchmark; no converged Earth-kernel performance claim from these checks.",
+  "user_choices": {
+    "matrix_backend": "Eigen internal matrix multiplication; external BLAS disabled for candidate",
+    "angular_grid": "GSHTrans product-resolving ForBand(L,2,2.0)",
+    "observable": "windowed vertical-displacement energy",
+    "window_seconds": [
+      1000,
+      1200
+    ],
+    "band_hz": [
+      0,
+      0.01
+    ]
+  },
+  "proposed_fixture": {
+    "model": "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/PREM500",
+    "source_geocentric_lat_lon_deg": [
+      10,
+      20
+    ],
+    "source_depth_m": 50000,
+    "receiver_geocentric_lat_lon_deg": [
+      45,
+      75
+    ],
+    "receiver_depth_m": 3000,
+    "angular_distance_deg": 58.519662870962605,
+    "time_step_s": 5,
+    "output_duration_s": 3600,
+    "qex": 1,
+    "fft_samples_expected": 1024,
+    "fft_period_s_expected": 5120,
+    "frequency_spacing_hz_expected": 0.0001953125,
+    "nonnegative_bins_at_or_below_10mHz_including_DC": 52,
+    "last_inband_frequency_hz": 0.0099609375,
+    "first_outofband_frequency_hz": 0.01015625,
+    "frequency_filter": "unity below8mHz; cosine transition8\u201310mHz; zero at/above10mHz",
+    "window": "Hann support1000\u20131200s; sqrt(window) passed to linear P map so squared energy has one Hann factor",
+    "physical_degree_scale_only": {
+      "formula": "ell approx2*pi*f*R/c_phase",
+      "f_hz": 0.01,
+      "R_m": 6371000.0,
+      "illustrative_phase_speed_m_per_s": 3500,
+      "ell_scale": 114.371924548689,
+      "caveat": "Dimensional scale, not a converged Lmax or a fixed pass criterion."
+    }
+  },
+  "required_before_physical_timings": [
+    "Verify baseline receiver trace contains intended signal in1000\u20131200s window.",
+    "Build q from baseline energy derivative; freeze q only for analytic kernel linearization. Separate returned linear q-dot-Pu (twice baseline energy) from energy itself.",
+    "Apply frequency-band weights and time-window processing in the specified order and use the exact reverse adjoint; windowing mixes frequency samples.",
+    "Handle DC explicitly: FreqFull default i1 starts at1, while high-level evaluate permits firstBin0. Do not silently labelDC-excluded calculation as includingDC.",
+    "Gate receiver waveform and windowed energy against degree/radial/time-padding convergence before kernel performance claims.",
+    "Gate kernel output at adequate L, using native grid for complete2L bandwidth; assess full-sphere/radial output memory before scheduling.",
+    "Compare DSpec and YSpec with identical model, physical source, receiver component, frequency grid/damping/filter, window and baseline energy derivative."
+  ],
+  "old_benchmark_limits": [
+    "Earlier48-bin case spans through18.75mHz on its fixed grid.",
+    "The old128-sample/20s fixed-weight fixture is a performance/equivalence control, not the requestedphysicalenergycase.",
+    "No backend timing superiority is inferred for Eigen versus BLAS without identical-layout comparisons."
+  ],
+  "receiver_selection": {
+    "legacy_receiver_geocentric_lat_lon_deg": [
+      45,
+      90
+    ],
+    "legacy_S_ray_time_s": 1198.8041866403516,
+    "legacy_window_issue": "S arrives at the trailing zero of the1000\u20131200s Hann window.",
+    "selected_receiver_geocentric_lat_lon_deg": [
+      45,
+      75
+    ],
+    "selected_S_ray_time_s": 1070.8362392956267,
+    "selected_sS_ray_time_s": 1093.5040095619897,
+    "selected_ScS_ray_time_s": 1175.5923437038891,
+    "evidence": "evidence/prem-arrival-check.json",
+    "caveat": "ObsPy TauP PREM ray arrivals only; finite-band baseline waveform still must be computed/checked."
+  },
+  "source_status": "No converged PREM DSpec/YSpec kernel or physical runtime comparison has been run in this checking phase."
+}

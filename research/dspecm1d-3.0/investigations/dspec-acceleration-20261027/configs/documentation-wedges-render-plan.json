@@ -1,0 +1,56 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control",
+  "thread_cap": 20,
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_WAIT_POLICY": "PASSIVE",
+    "OMP_DYNAMIC": "FALSE",
+    "MPLBACKEND": "Agg"
+  },
+  "jobs": [
+    {
+      "id": "render-comparison",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-render-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-render-v1/tools/check_doc_wedges.py",
+        "plot",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05",
+        "dspec-l200",
+        "yspec-l200",
+        "{JOB_DIR}/data"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-render-v1/tools/check_doc_wedges.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-render-v1/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/yspec-l200/data/result.json"
+      ],
+      "outputs": [
+        "data/along-common-scale.png",
+        "data/along-common-scale.pdf",
+        "data/along-residual-scale.png",
+        "data/along-residual-scale.pdf",
+        "data/across-common-scale.png",
+        "data/across-common-scale.pdf",
+        "data/across-residual-scale.png",
+        "data/across-residual-scale.pdf",
+        "data/waveform-comparison.png",
+        "data/waveform-comparison.pdf",
+        "data/comparison.json",
+        "data/figure-manifest.json"
+      ],
+      "timeout_seconds": 1200,
+      "memory_gib": 16
+    }
+  ],
+  "external_campaigns": [
+    {
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/configs/documentation-wedges-run-v5-plan.json",
+      "plan_sha256": "e577b77b025950e6f4980b94e203f1b191addc04cfac7d64bc682fc9fbb4a10c",
+      "task_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05"
+    }
+  ]
+}

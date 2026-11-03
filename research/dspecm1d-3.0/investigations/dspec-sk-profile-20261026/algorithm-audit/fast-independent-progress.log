@@ -1,0 +1,21 @@
+l3-f1-a3-direct-bridge0 passed False time [0.010777034]
+l3-f1-a3-direct-bridge1 passed False time [0.015848029]
+l3-f1-a3-native-bridge0 passed False time [0.011786549]
+l3-f1-a3-native-bridge1 passed False time [0.037811672]
+l12-f3-a24-direct-bridge0 passed False time [0.104174089]
+l12-f3-a24-direct-bridge1 passed False time [0.18556317]
+l12-f3-a1352-direct-bridge0 passed False time [0.593091737]
+l12-f3-a1352-direct-bridge1 passed False time [0.649211894]
+l12-f3-a24-native-bridge0 passed False time [0.150447261]
+l12-f3-a24-native-bridge1 passed False time [0.519965296]
+l12-f12-a192-direct-bridge0 passed False time [0.630447056]
+l12-f12-a192-direct-bridge1 passed False time [1.002940105]
+l12-f48-a192-direct-bridge0 passed True time [2.609857365]
+l12-f48-a192-direct-bridge1 passed True time [3.841755983]
+l6-f3-a1352-direct-bridge0 passed True time [0.360992281]
+l6-f3-a1352-direct-bridge1 passed True time [0.400929835]
+Traceback (most recent call last):
+  File "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/run_fast_independent.py", line 24, in <module>
+    assert hashlib.sha256(exe.read_bytes()).hexdigest()==exe_sha,'Candidate executable changed during validation; results are preliminary'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Candidate executable changed during validation; results are preliminary

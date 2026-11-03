@@ -1,0 +1,44 @@
+Complete isolated pipeline and fresh native reference: Sol review, 2026-10-31
+PASS. Read-only receipt/result review; no reviewer build or numerical solve.
+
+Receipt: receipts/phase-c2-accepted-reference-native-v1-terminal-20261031.json,
+SHA2abf162575d37cd6bf1fc8164e7d08855e3c20fd85456db6209fb112f4da3684.
+Task phase-c2-accepted-reference-native-v1, plan
+b89eaaed7b135f83c1ff565b15a14d172678f65dd8289a9744ef704c47e099b5.
+Fresh accepted native job and checker completed rc0, unchanged inputs, cleanup
+verified. Exact saved F8a native binary reused, SHA
+bce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab.
+Exact command/cwd/input-set match was checked before launch; only output changed.
+
+L200,NQ10,h=.025,full gravity/attenuation,full35bins,8total solve workers and
+inner/library1,293 one-sided radial locations,135along+19across angles. Fresh
+accepted reference kernels byte-match saved F8a. C2 relativeL2 versus fresh:
+along4.2224753803836724e-13,across2.2884102633728705e-13 < existing1e-11.
+Native geometry hashes match; trace, spectrum and all displacement components
+are numerically identical; measurement-rate norm matches. Together with C2
+70-row reconstruction,6-row RHS/mode/complex-product weighting proof,35/32
+work/zero-support proof and NEW combined-route L3 FD6.44e-9, this establishes
+the authorized complete-pipeline lnVs contract for this isolated scientific case.
+Phase A common reconstruction is actually exercised in the combined route.
+Fluid subgroup limitations remain exactly those in C/C2 final independent reviews;
+this is not universal raw-fluid-adjoint equality or a physical SI-strain claim.
+
+Single fresh comparison (no repeated-run distribution):
+  driver elapsed: accepted16.934899220s,C2 15.890614612s,observed6.17% lower;
+  supervisor elapsed: accepted17.593984394s,C2 16.296116217s,observed7.38% lower;
+  peak observed RSS: accepted4.7375GiB,C2 1.647GiB; both9threads.
+Report the timing boundaries separately. C2 combined forward/unit-adjoint/
+reconstruction/contraction wall15.859072063s is not pure forward time.
+Accepted reference retains unconditional tensor oracle work (.525339009 summed
+worker seconds in this run); C2 timed oracle controls are off. Disclose this
+asymmetry and ordinary single-run variability. Do not subtract worker-summed
+time from wall, claim a robust speed distribution, or use old51.883s baseline.
+User-space observed RSS/thread watchdog is not kernel aggregate accounting.
+
+Recommendation: preserve isolated C2 NQ10/full-domain implementation as the
+validated low-memory candidate, with this modest observed timing improvement;
+keep accepted production unchanged and two-pass C as oracle. No lower-NQ or
+restriction adoption without scientific accuracy budget. Remaining campaign
+closure is B repaired side-diagnostic results and independent final report review.
+Stop before production integration,discrepancy work,new figures,YSpec reruns,
+delete,commit or push.

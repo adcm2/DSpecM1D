@@ -1,0 +1,58 @@
+{
+  "compiler_gate": "python3 investigations/dspec-sk-profile-20261026/algorithm-audit/run_compile.py --",
+  "compile_only": true,
+  "generator": {
+    "source": "investigations/dspec-sk-profile-20261026/kernel-grid-followup/kernel_grid_generator.cpp",
+    "output": "investigations/dspec-sk-profile-20261026/kernel-grid-followup/kernel_grid_generator",
+    "command": [
+      "/usr/bin/g++", "-O3", "-DNDEBUG", "-std=gnu++23", "-fopenmp",
+      "-DGSHTRANS_HAVE_INTERPOLATION",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/numericconcepts-src/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/fftwpp-src",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gaussquad-src",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/interpolation-src/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/planetmodel-src/cpp/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gshtrans-src",
+      "-isystem", "/usr/include/eigen3",
+      "investigations/dspec-sk-profile-20261026/kernel-grid-followup/kernel_grid_generator.cpp",
+      "-o", "investigations/dspec-sk-profile-20261026/kernel-grid-followup/kernel_grid_generator",
+      "-lfftw3", "-lfftw3f", "-lfftw3l"
+    ]
+  },
+  "eigen_candidate": {
+    "source_tree": "copied from investigations/dspec-sk-profile-20261026/algorithm-audit/fast/v6/",
+    "driver_change": "backendId maps tensor and tensor-real to 2 (Eigen); all other mappings are unchanged",
+    "output": "investigations/dspec-sk-profile-20261026/kernel-grid-followup/eigen-candidate/eigen_candidate_driver",
+    "rejected_dispatch_binary": {
+      "path": "investigations/dspec-sk-profile-20261026/kernel-grid-followup/eigen-candidate/eigen_candidate_driver-rejected-dispatch",
+      "sha256": "1eea0b58d3e1429c7fae706540792f36b6c718b6113c09d26a857d0eb4f1bf5b",
+      "reason": "implicit enum values did not match driver backendId; tensor id 2 selected OpenBlas"
+    },
+    "dispatch_fix": "DotBackend values are now explicitly Scalar=1, Eigen=2, OpenBlas=3 to match the unchanged driver contract",
+    "corrected_build": {
+      "status": "compile-only succeeded through the shared two-slot gate",
+      "binary_size_bytes": 1556480,
+      "binary_sha256": "ab60c650e58824b94ea0d3cb269c5cb56e1c714ec45052dddd43e6c6c6006320",
+      "fast_engine_hpp_sha256": "e26c438d7e4760e610a10dec5e834f58159eecadea7c5cd87678b38f78629be6"
+    },
+    "command": [
+      "/usr/bin/g++", "-O3", "-DNDEBUG", "-std=gnu++23", "-fopenmp",
+      "-DGSHTRANS_HAVE_INTERPOLATION", "-DDSFAST_DISABLE_PROFILE",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/numericconcepts-src/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/fftwpp-src",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gaussquad-src",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/interpolation-src/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/planetmodel-src/cpp/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gshtrans-src",
+      "-isystem", "/usr/include/eigen3",
+      "investigations/dspec-sk-profile-20261026/kernel-grid-followup/eigen-candidate/driver.cpp",
+      "-o", "investigations/dspec-sk-profile-20261026/kernel-grid-followup/eigen-candidate/eigen_candidate_driver",
+      "-lfftw3", "-lfftw3f", "-lfftw3l", "-llapack"
+    ],
+    "omitted": ["-DDSFAST_HAVE_CBLAS", "-lopenblas", "EIGEN_USE_BLAS"],
+    "solver_link_note": "-llapack resolves the frozen solver's zgbtrf_/zgbtrs_ calls; this does not enable Eigen CBLAS multiplication. The installed liblapack.so declares a runtime dependency on libopenblas.so.0.",
+    "runtime_owner": "parent; keep existing command line; no numerical execution in this implementation phase"
+  }
+}

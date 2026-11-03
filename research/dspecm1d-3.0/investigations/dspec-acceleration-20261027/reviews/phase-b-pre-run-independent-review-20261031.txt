@@ -1,0 +1,97 @@
+Phase B bounded pre-run independent review — Sol, 2026-10-31
+Source/build/run-plan gate PASS after focused corrections; results pending.
+No reviewer implementation edit, compilation or numerical execution.
+
+Reviewed phase_b_driver.cpp, phase_b_controls.hpp and copied solver/field header
+changes against Phase A. Mesh recipe uses parsed relerr, abs(highest complex
+normalized omega), standard coefficient/cap and finer h/2. Source-aware SEM,
+full35 own waveform measurement and optional accepted frozen kernel weights are
+present. Restricted solve uses actual P H P^T and backend0 solveAdjoint; support
+containment falls back full, zero extension is explicitly an approximation.
+The initial empty-weighted-adjoint audit gap was corrected to audit basisLocal
+when that is the actual rank-basis route. Frequency audit keys now use exact
+IEEE component bits; residual counters are quantized at1e-15 and must be reported
+as bounds. Backend0 exact-pattern check safely reanalyzes varying restrictions.
+
+Concrete driver corrections required before launch:
+1. Frozen localNode0/9 are endpoints of old elements, not necessarily physical
+   discontinuities. Exact candidate boundary-only lookup rejects valid common
+   radii on another mesh. Preserve source/material sides; use same-material
+   containing-element evaluation for continuous old mesh endpoints.
+2. Combined along/across validation clouds and duplicated continuous reference
+   sides need not be a unique-angle tensor grid. Use existing packed arbitrary-
+   cloud evaluator or equivalent duplicate-safe direct polynomial evaluation;
+   do not smooth/interpolate already formed fields.
+3. The inherited12634160-byte contribution buffer limit encodes293 native sides
+   and may reject required B finer meshes. Bound/log actual allocated memory
+   consistently with unchanged16GiB solve limit, not the old grid inventory.
+
+Final release also requires exact staged build/run plan and unique checker;
+explicit direct-derivative environment, four mesh rows max, full35 waveforms,
+frozen nonzero-bin common-field paired restriction controls, omitted-domain
+error reporting and no invented scientific tolerance. Actual failures only
+receive focused corrections; no generic new audit framework is requested.
+
+Correction verification: commonSideElement now uses explicit CommonModel layer
+bounds and sem.sourceRadius() for physical breaks, same-layer containing elements
+otherwise; the unsupported sem.earthModel() accessor introduced during the first
+correction was removed. Common cloud uses sampleForKernelsPacked, avoiding tensor
+uniqueness assumptions. Buffer allowance is512MiB within unchanged16GiB solve
+limit. Run environment must set DSFAST_RSTRAIN_BRIDGE=0 for direct derivatives.
+Source is releasable to its reviewed isolated build; no remaining mathematical
+or source/API issue identified by this bounded review. Compilation and actual
+scientific results remain implementation-owner execution and later result review.
+
+Build-plan release PASS: configs/phase-b-fixed-mesh-v1-build.json and its
+supervised build plan target fresh /space/adcm2/research/builds/phase-b-fixed-
+mesh-v1 with native/profile variants, thread cap8 and32GiB. Duplicated candidate
+include path was identified and implementation owner corrected both variants.
+The small optional '-' frozen-trace CLI guard is valid; own-weight controls
+remain distinct. Detached supervised Tunya build is released. Numerical launch
+still awaits exact paired run/checker plan below; no build execution by reviewer.
+
+Focused execution-preparation corrections: build01 exposed profile::count's
+const-char API mismatch for dynamic audit keys; local composed-string helper
+is safe because profile counters copy keys. Build01 is preserved. Before any
+numerical release, waveform scoping changed to full35 untruncated first pass.
+Reviewer then identified a critical full/full false-control risk: cache keys
+do not encode restriction, so full initial responses would bypass restricted
+kernel solves. Corrected restricted kernel workspaces pass nullptr instead of
+the full-response cache in both branches; no cache redesign. Each active-bin
+frequency workspace separately exports its own receiver spectrum for actual
+truncation comparison. Reviewed correction PASS; fresh supervised build03 is
+released, build02 preserved and unreleased numerically. Numerical checker must
+require actual positive omitted DOFs/restricted H^H work and compare workspace
+receiver controls, not the deliberately full first-pass mesh waveform alone.
+
+Omitted-domain diagnostic completion PASS: per-family/degree/exact-z actual cut
+elements and solve-call counts, full mesh element radii/layers and exact complex
+frequency CSVs permit a direct postprocess cutoff-to-location map. Source-only
+metadata addition is released to fresh build04; build03 remains preserved.
+Affected-sample label means below at least one applicable family/degree cut,
+not that the whole frequency-summed field is omitted or physically zero. Fluid
+rows cannot be classified affected solely by toroidal cuts.
+
+Run/checker focused findings: initial generated runtime paths used the wrong
+campaign/builds root instead of actual /space/adcm2/research/builds. Initial HH
+coverage checker read profile.entries, whereas output uses rows with worker
+prefixes; must inspect kernel-phase rows and exact per-solve counters. Add
+explicit NQ5 and NQ6 self-refinement field/product comparisons and frozen NQ10
+waveform/product references using saved A4 components/A2 products (no rerun).
+Updated checker had an extra None argument on its two-argument self-refinement
+helper and mislabeled full/trunc product denominator as NQ10; sent exact fixes.
+No scientific error threshold is added. Full-cache versus restricted-recompute
+timings cannot establish truncation speedup; preserve actual workcounts/costs.
+
+Final numerical launch release PASS: configs/phase-b-fixed-mesh-v1-fixed-mesh-
+v3-plan.json and corrected check_phase_b_fixed_mesh.py bind four mesh configs,
+sequential own/full/restricted jobs, actual build04/library paths, explicit
+restriction0/1, saved A4/A2 references and source inputs. Each job retains
+eight total frequency workers/inner1,16GiB, numerical cap20 with direct-derivative
+environment. Checker retains exact per-solve cuts, actual HH/positive omission
+evidence, actual kernel-workspace receiver controls, self-refinement strains/
+products and frozen NQ10 comparison without invented accuracy tolerance. Common
+affected labels exclude toroidal cuts on fluid rows. Release to detached Tunya
+supervision after owner preflight/build-receipt verification. The inherited
+dspec-forward branch still captures unit-adjoint bases; its own-row waveform
+control is not pure-forward timing. No remaining pre-run issue identified.

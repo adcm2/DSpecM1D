@@ -1,0 +1,103 @@
+{
+  "schema": 1,
+  "candidate": "stages12-stage2-frequency-v1",
+  "purpose": "Opt-in whole-frequency scheduling and ownership on the frozen Stage 1 documentation case. The frequency route retains all Stage 1 math, cache admission, outputs, and within-frequency operation order.",
+  "routes": {
+    "default": "Legacy degree-parallel route, unchanged when DSPEC_FREQUENCY_WORKERS is unset.",
+    "frequency": "DSPEC_FREQUENCY_WORKERS=1..8 is accepted for dspec and dspec-forward only; CLI solve-workers must remain one. Each complete frequency is statically assigned to one outer OpenMP worker; all inner solve and numerical-library pools remain one."
+  },
+  "ownership": {
+    "shared_read_only": [
+      "model",
+      "grid",
+      "source",
+      "InputParameters",
+      "SEM",
+      "native nodes",
+      "section samplings",
+      "receiver",
+      "direction"
+    ],
+    "shared_locked": [
+      "one stable BatchResponseCache instance across both passes"
+    ],
+    "worker_private": [
+      "workspace per frequency task",
+      "fields",
+      "points",
+      "per-worker/per-section persistent SamplingPlanCache",
+      "worker diagnostics and profile TLS"
+    ],
+    "indexed_frequency_slots": [
+      "forward raw spectrum",
+      "forward components",
+      "per-bin validation error/duration",
+      "per-bin diagnostic snapshot",
+      "per-frequency kernel contributions",
+      "per-bin exception"
+    ],
+    "cache_identity": "The same SEM address, response-cache object, key families, and cache limits are used for initial forward/unit capture and weighted kernel work. No cache policy or implementation is changed."
+  },
+  "passes": [
+    {
+      "name": "initial_forward_and_unit_adjoint_capture",
+      "work": "All grid frequencies complete before serial measure(), FFT, window, normalization, and adjoint-spectrum construction."
+    },
+    {
+      "name": "kernel_frequency",
+      "work": "Each frequency computes its existing sections and first-two-bin tensor/packed validation into private buffers. Parent joins, checks errors, then performs += in original increasing frequency, section, angle, native-node order."
+    }
+  ],
+  "reduction": {
+    "expression": "existing values[section][node*angle_count+angle] += kernelVs(...) is applied by the parent to stored per-bin values in strictly ascending frequency order.",
+    "max_contribution_bytes": 12634160,
+    "bound_method": "Checked size multiplication and sum; Stage 2 documented L200 sections bound. L3 controls are smaller."
+  },
+  "failure": "Each task captures its exception in its frequency slot; all assigned tasks finish and join; parent rethrows the lowest failed bin with pass context. No partial result.json is produced.",
+  "profiling": {
+    "worker_domain_prefix": "frequency_worker.",
+    "worker_capture_lifetime": "One WorkerCapture and one fresh WorkerData slot per outer worker per pass, merged by the parent after join.",
+    "diagnostics": "Per-frequency snapshots/deltas are parent-merged. Diagnostic worker rows are removed from worker production deltas and emitted once as a separate diagnostic overlay. No worker elapsed sum is subtracted from any master wall interval.",
+    "timing_fields": [
+      "kernel_s",
+      "kernel_timing_semantics",
+      "kernel_parallel_pass_wall_s",
+      "reduction_wall_s",
+      "diagnostic_worker_elapsed_s"
+    ],
+    "domain_rule": "frequency_worker.* and parallel_worker.* rows are worker_elapsed_sum. All other rows are master_wall. Master exclusive closure excludes both worker domains.",
+    "component_mapping": "Exact scope-name mapping seeded from the accepted Stage 1 audited map, with ambiguous shared diagnostic/production scopes corrected to their mathematical component; diagnostic flag and overlay phase identify the separate validation role."
+  },
+  "explicit_reporting_map": {
+    "source": "Exact table embedded in the runtime emitter from the 101-scope accepted Stage 1 audited mapping, plus six Stage 2 entries.",
+    "new_stage2_scopes": {
+      "initial_frequency_workspace_forward_and_unit_adjoint_capture": "frequency_initial_task",
+      "kernel_frequency_workspace_sampling_validation_and_contribution": "frequency_kernel_task",
+      "driver_frequency_parallel_kernel_pass_including_diagnostics": "kernel_pipeline_including_diagnostics",
+      "driver_kernel_pipeline_including_diagnostics": "kernel_pipeline_including_diagnostics",
+      "driver_measurement_fft_window_adjoint_and_diagnostic_construction": "measurement_and_adjoint_construction",
+      "driver_frequency_ordered_kernel_contribution_reduction": "ordered_kernel_reduction"
+    },
+    "lookup": "Strip exactly one worker prefix then exact string match; unknown names remain unclassified; raw scope_name values are unchanged.",
+    "shared_scopes_corrected_from_overlay_misclassification": {
+      "packed_Wigner_d_table_build": "tensor_angular_synthesis",
+      "packed_angular_coefficients_and_basis_build": "tensor_angular_synthesis",
+      "packed_to_compact_kernel_sample_copy": "tensor_angular_synthesis",
+      "pole_frame_sampling_total": "tensor_angular_synthesis",
+      "radial_l0_sampling_and_interpolation": "radial_sampling_reconstruction",
+      "receiver_frame_geometry_phase_spin_rotation_and_scatter": "tensor_angular_synthesis",
+      "source_frame_geometry_phase_spin_rotation_and_scatter": "tensor_angular_synthesis",
+      "tensor_angular_gemm_complex_and_packing": "tensor_angular_synthesis"
+    }
+  },
+  "unchanged_science": [
+    "kernelVs formula",
+    "sampling grids and section order",
+    "material lookup",
+    "tensor/packed validation",
+    "measurement and FFT",
+    "output encoding",
+    "cache limits and admission",
+    "within-frequency family and degree order"
+  ]
+}

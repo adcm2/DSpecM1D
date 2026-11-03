@@ -1,0 +1,183 @@
+{
+  "status": "completed_documentation_case_comparison",
+  "created_utc": "2026-10-27T21:53:52.249667+00:00",
+  "candidate": "documentation-wedges-v9",
+  "solve_workers": 8,
+  "watchdog_thread_cap": 20,
+  "observed_peak_campaign_threads": 9,
+  "supervision": "nohup detached; user-space session/ancestry watchdog, not kernel aggregate accounting",
+  "scientific_scope": "YSpec kernels-small.json PREM attenuated full-gravity transverse velocity traveltime,1000-1200s,2-10mHz,L200; nativeSEM293sides,135along/19across; bulk lnvs fixedvp/rho/effectiveQ",
+  "production_repositories_edited": false,
+  "scope_limitations": [
+    "No degree-convergence claim; documentation degree retained.",
+    "Bulk comparison excludes top150km and along-path points within5degrees of endpoints. All samples retained in raw arrays and plots; singular/contact/receiver-lift treatment not claimed validated.",
+    "DSpec uses shared YSpec model, geometry, FFT and measurement helpers, independently assembled SEM solves and field contractions. YSpec uses original library solvers and sampled kernels."
+  ],
+  "fixes": [
+    "Adapter uses vertical/north/east receiver order; no pole rotation change.",
+    "Canonical tensor/l0 radius keys use same boundary snap as coefficient capture; one-sided element identity preserved."
+  ],
+  "validation": {
+    "finite_difference": {
+      "status": "PASS",
+      "finite_difference_seconds": -106.02358956682346,
+      "integrated_kernel_seconds": -106.02359024964328,
+      "relative_error": 6.4402631063599945e-09,
+      "limit": 0.0002,
+      "perturbation": "ln(vs) smooth sin^2 bump, radius5300-5800km; fixedvp/rho/effectiveQ; source/receiver support excluded",
+      "jobs": [
+        "audit-l3-t8",
+        "audit-plus",
+        "audit-minus"
+      ]
+    },
+    "serial_parallel": {
+      "status": "PASS",
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "components.csv": true,
+        "nodes.csv": true,
+        "along.bin": true,
+        "along-angles.csv": true
+      },
+      "jobs": [
+        "audit-l3-t1",
+        "audit-l3-t8"
+      ]
+    },
+    "dspec_tensor_packed_relative_l2": 5.954448952206202e-16
+  },
+  "comparison": {
+    "dspec_job": "dspec-l200",
+    "yspec_job": "yspec-l200",
+    "degree": 200,
+    "waveform_window_relative_l2": 2.3320305973477654e-05,
+    "timings": {
+      "DSpec": {
+        "backend": "dspec",
+        "degree": 200,
+        "nq": 10,
+        "refinement": 0.025,
+        "workers": 8,
+        "attenuation": true,
+        "epsilon_perturbation": 0,
+        "frequency_count": 35,
+        "first_bin": 7,
+        "last_bin": 41,
+        "fft_samples": 2048,
+        "fft_period_s": 4096,
+        "damping_si": 0.0020833333333333333,
+        "native_side_count": 293,
+        "along_angles": 135,
+        "across_angles": 19,
+        "gravity_max_abs_nd_error": 2.886579864025407e-15,
+        "time_shift_adjoint_identity": 0.9999999999999997,
+        "measurement_rate_norm": 1.8022564490035656e-16,
+        "integrated_profile_kernel": 0,
+        "forward_s": 10.6913727,
+        "measurement_s": 0.002650056,
+        "kernel_s": 40.659227846,
+        "tensor_packed_relative_l2": 5.954448952206202e-16,
+        "tensor_validation_s": 0.514160926,
+        "cache_bytes": 2907520000,
+        "elapsed_s": 51.883172808,
+        "kernel_parameter": "ln_vs_at_fixed_vp_density_and_effective_Q",
+        "kernel_units": "s m^-3",
+        "layout": "native-side-major then angle, float64",
+        "source_shell_contacts": false
+      },
+      "YSpec": {
+        "backend": "yspec",
+        "degree": 200,
+        "nq": 10,
+        "refinement": 0.025,
+        "workers": 8,
+        "attenuation": true,
+        "epsilon_perturbation": 0,
+        "frequency_count": 35,
+        "first_bin": 7,
+        "last_bin": 41,
+        "fft_samples": 2048,
+        "fft_period_s": 4096,
+        "damping_si": 0.0020833333333333333,
+        "native_side_count": 293,
+        "along_angles": 135,
+        "across_angles": 19,
+        "gravity_max_abs_nd_error": 2.886579864025407e-15,
+        "time_shift_adjoint_identity": 0.9999999999999997,
+        "measurement_rate_norm": 1.8022305245712562e-16,
+        "integrated_profile_kernel": 0,
+        "forward_s": 0.251983572,
+        "measurement_s": 0.00239707,
+        "kernel_s": 5.370850703,
+        "tensor_packed_relative_l2": 0,
+        "tensor_validation_s": 0,
+        "cache_bytes": 0,
+        "elapsed_s": 5.641430309,
+        "kernel_parameter": "ln_vs_at_fixed_vp_density_and_effective_Q",
+        "kernel_units": "s m^-3",
+        "layout": "native-side-major then angle, float64",
+        "source_shell_contacts": false
+      }
+    },
+    "resources": {
+      "DSpec": {
+        "peak_observed_threads": 9,
+        "peak_observed_rss_gib_userspace": 2.4258
+      },
+      "YSpec": {
+        "peak_observed_threads": 9,
+        "peak_observed_rss_gib_userspace": 0.4361
+      }
+    },
+    "sections": {
+      "along": {
+        "native_sides": 293,
+        "angles": 135,
+        "bulk_area_weighted_relative_l2": 2.2383710831230576e-05,
+        "bulk_point_relative_l2": 2.300343945585659e-05,
+        "bulk_cosine_similarity": 0.9999999997697663,
+        "shared_limit": 3.7798933940192316e-16,
+        "difference_own_limit": 8.185661457085874e-21,
+        "max_abs": {
+          "DSpec": 1.0457855842886983e-14,
+          "YSpec": 1.0457920438074167e-14,
+          "difference": 5.197428078326972e-15
+        },
+        "saturated_fraction": {
+          "DSpec": 0.070838073568449,
+          "YSpec": 0.07073694855264821,
+          "difference": 0.0008595626343066616
+        }
+      },
+      "across": {
+        "native_sides": 293,
+        "angles": 19,
+        "bulk_area_weighted_relative_l2": 3.379078933269254e-05,
+        "bulk_point_relative_l2": 3.719207346826251e-05,
+        "bulk_cosine_similarity": 0.9999999993546452,
+        "shared_limit": 1.872148225887787e-16,
+        "difference_own_limit": 9.503489388514707e-21,
+        "max_abs": {
+          "DSpec": 2.1758946383072554e-16,
+          "YSpec": 2.1759228217545398e-16,
+          "difference": 4.921051957545192e-17
+        },
+        "saturated_fraction": {
+          "DSpec": 0.007005568528830609,
+          "YSpec": 0.007005568528830609,
+          "difference": 0.0
+        }
+      }
+    },
+    "status": "COMPARISON",
+    "colour_scaling": "shared DSpec/YSpec combined99percentile; primary difference shares same scale; additional explicitly labelled residual-scale version"
+  },
+  "remote_run": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05",
+  "remote_render": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-render-01",
+  "figure_manifest_sha256": "e74aec5dcf3257db8fb802f11e6f9e380988ab851709d6a2155a44b70d9758c6",
+  "run_snapshot_sha256": "5303d9aa4c9599d9a9f27b288d8afcbda4de37cba1236f6c9085cb582ad5a617",
+  "all_existing_evidence_preserved": true,
+  "next_phase_started": false
+}

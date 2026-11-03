@@ -1,0 +1,110 @@
+{
+  "finished_unix": 1793115160.6207993,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "-c",
+        "import json,pathlib,subprocess,sys\nhelper,reference,candidate,output=sys.argv[1:]\nsummary={}\nfor degree in (3,12):\n report=str(pathlib.Path(output)/('l'+str(degree)+'-checks.json'))\n command=[sys.executable,helper,'--reference-root',reference,'--reference-job','reference-l'+str(degree),'--candidate-root',candidate,'--candidate-job','global-generated-w1-l'+str(degree),'--output',report]\n run=subprocess.run(command,check=False)\n summary[str(degree)]={'returncode':run.returncode,'report':pathlib.Path(report).name}\nwith (pathlib.Path(output)/'controls-summary.json').open('x') as stream:json.dump(summary,stream,indent=2)\nsys.exit(0 if all(x['returncode']==0 for x in summary.values()) else 1)\n",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_global_original.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-reuse-control/continuation/accel-reuse-run-01",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-benchmark-control/continuation/accel-global-benchmark-02",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-original-check-control/continuation/accel-global-original-controls-01/original-controls"
+      ],
+      "command_sha256": "7087e18a8dd69e968609ba9a4d387a8552eedd5674670a714e980be30b8af752",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1",
+      "elapsed_seconds": 7.041008789994521,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2506924,
+          14840404
+        ],
+        [
+          2506925,
+          14840407
+        ],
+        [
+          2507015,
+          14840742
+        ]
+      ],
+      "finished_unix": 1793115160.6187344,
+      "id": "original-controls",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_global_original.py": "8e5b3792cce309b5e6570a3e7d946f3a0599e933b79c7ec449bb04804e58d56f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_global_cache.py": "9890e033bfab6f9bd7a4c3bfdf42cab005fdddb97fa248cbd107d0d82c1a21af",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_global_original.py": "8e5b3792cce309b5e6570a3e7d946f3a0599e933b79c7ec449bb04804e58d56f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_global_pair.py": "340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-original-checks-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "l3-checks.json",
+        "l12-checks.json",
+        "controls-summary.json"
+      ],
+      "outputs_sha256": {
+        "controls-summary.json": "d23a6ef702e94bd56114047a581eb3ee64c32bd70d7222f44adf8b2e78ebc0ea",
+        "l12-checks.json": "b17ded0bf88eb7634116a5818fbd034057b3ed283409270bba195a2326c36d9d",
+        "l3-checks.json": "1ee3dfa076c158837223f284b333b8307c12f355995fc627af019f670aabbaec"
+      },
+      "peak_observed_rss_gib_userspace": 0.0684,
+      "peak_observed_threads": 3,
+      "returncode": 1,
+      "started_unix": 1793115153.5650845,
+      "status": "failed",
+      "system_cpu_seconds_children": 0.525806,
+      "updated_unix": 1793115159.7237394,
+      "user_cpu_seconds_children": 0.677458,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0602,
+        "elapsed_seconds": 6.16,
+        "owned_processes": [
+          {
+            "pid": 2507015,
+            "starttime_ticks": 14840742,
+            "threads": 1
+          },
+          {
+            "pid": 2506921,
+            "starttime_ticks": 14840397,
+            "threads": 1
+          },
+          {
+            "pid": 2506924,
+            "starttime_ticks": 14840404,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0682,
+        "peak_observed_threads": 3,
+        "thread_cap": 6,
+        "thread_count_including_supervisor": 3
+      }
+    }
+  ],
+  "plan_sha256": "ecf5de25aed1b079600004a7ef465bef33383067be0c30a320a1ab0868c25b2e",
+  "schema": 1,
+  "started_unix": 1793115153.5520172,
+  "status": "failed",
+  "task_id": "accel-global-original-controls-01",
+  "thread_cap": 6
+}

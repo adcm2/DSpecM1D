@@ -1,0 +1,9 @@
+# Short Sol review: implicit OpenMP setup-team launch delta
+
+2026-10-27. **HOLD pending retained-thread-pool cleanup or equivalent source control.** No SSH, compilation, scientific run or implementation edits.
+
+The plan diff is exactly ten inline `OMP_NUM_THREADS=32` additions. The pinned `GSHTrans/Wigner.hpp:924-963` confirms `ComputeAll()` uses an implicit `omp parallel for` over independent upper-index/theta entries. The environment change therefore enables setup teams in addition to the explicitly configured inverse-transform teams. Existing `OMP_THREAD_LIMIT=32`, dynamic-false, single active level and CPU binding remain unchanged, as do exact/numerical gates.
+
+The reviewed consumer constructs the shared grid in the calling thread and later creates an outer std::thread worker. GNU OpenMP may retain the calling thread's team pool and create another pool for the worker's team. A small non-scientific local runtime probe with team/limit 4 observed one→four resident threads after the first main-thread team, then eight after a team in a separate thread. This is local mechanism evidence, not a Tunya measurement, but shows why a per-team limit does not establish the cap40 resident-thread bound for the proposed 32+32 sequence. Earlier baseline implicit OpenMP work can have the same retention effect; `Eigen::setNbThreads(1)` in the consumer does not govern every earlier operation.
+
+Parent agrees to preserve v2 and implement independently reviewed cleanup before worker creation. Do not launch v2 under cap40 on the assumption that non-overlapping execution implies non-overlapping resident pools. Keep the old-cap12-terminal condition, completed build prerequisite, total-cap/resource checks and diagnostic-only scope. No tolerance or cap relaxation is approved. Final source/build reviews must bind the cleanup solution before this HOLD can clear.

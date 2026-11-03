@@ -1,0 +1,23 @@
+{
+  "wrapper": "../../algorithm-audit/run_compile.py (two-slot compile semaphore)",
+  "compiler": "/usr/bin/g++",
+  "arguments": [
+    "-O2", "-DNDEBUG", "-std=gnu++23", "-fopenmp",
+    "-DGSHTRANS_HAVE_INTERPOLATION", "-DPLANETMODEL_VERSION=\"1.2.5\"", "-DPLANETMODEL_WITH_NETCDF=1",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/numericconcepts-src/include",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/fftwpp-src",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gaussquad-src",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/interpolation-src/include",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/planetmodel-src/cpp/include",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gshtrans-src",
+    "-isystem", "/usr/include/eigen3",
+    "measurement_probe.cpp",
+    "-o", "bin/measurement_probe",
+    "-lfftw3", "-lfftw3f", "-lfftw3l"
+  ],
+  "forbidden_link_or_compile_options": ["-lopenblas", "-DEIGEN_USE_BLAS"],
+  "build_result": "Post-review v2 compilation succeeded; executable was not run.",
+  "output": "bin/measurement_probe",
+  "runtime_authorization": "Parent-owned. Do not execute the binary in this phase."
+}

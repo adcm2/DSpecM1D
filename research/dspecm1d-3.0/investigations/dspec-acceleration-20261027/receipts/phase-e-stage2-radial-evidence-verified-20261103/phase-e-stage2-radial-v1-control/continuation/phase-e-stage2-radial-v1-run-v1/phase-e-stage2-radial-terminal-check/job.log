@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1-validation-v1/tools/check_phase_e_stage2_radial.py", line 275, in <module>
+    if __name__=='__main__': main()
+                             ^^^^^^
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1-validation-v1/tools/check_phase_e_stage2_radial.py", line 273, in main
+    Path(a.out).write_text(json.dumps(report,indent=2,sort_keys=True)+'\n')
+  File "/usr/lib/python3.11/pathlib.py", line 1079, in write_text
+    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/pathlib.py", line 1045, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-radial-v1-control/continuation/phase-e-stage2-radial-v1-run-v1/phase-e-stage2-radial-terminal-check/data/phase-e-stage2-radial-report.json'

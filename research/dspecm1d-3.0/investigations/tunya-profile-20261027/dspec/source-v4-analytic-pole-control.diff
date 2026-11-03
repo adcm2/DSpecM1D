@@ -1,0 +1,15 @@
+diff -ru investigations/tunya-profile-20261027/dspec/source-v4-tunya/engine_headers/Windowed3DFields.h investigations/tunya-profile-20261027/dspec/source-v4-analytic-pole-control/engine_headers/Windowed3DFields.h
+--- investigations/tunya-profile-20261027/dspec/source-v4-tunya/engine_headers/Windowed3DFields.h	2026-10-26 21:32:15.448643608 +0000
++++ investigations/tunya-profile-20261027/dspec/source-v4-analytic-pole-control/engine_headers/Windowed3DFields.h	2026-10-27 08:46:06.590116563 +0000
+@@ -443,6 +443,11 @@
+   }
+ 
+   static Complex harmonic(int degree, int m, int n, double theta, double phi) {
++    if (degree >= 1 && m >= -degree && m <= degree && n >= -degree && n <= degree &&
++        theta == 0.0 && phi == 0.0) {
++      const double norm = std::sqrt((2.0 * degree + 1.0) / (4.0 * EIGEN_PI));
++      return m == n ? Complex(norm, 0.0) : Complex{};
++    }
+     GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All,
+                      GSHTrans::Single> w(degree, degree, std::min(2, degree), theta);
+     return w[n][degree, m] * std::exp(Complex(0.0, m * phi));

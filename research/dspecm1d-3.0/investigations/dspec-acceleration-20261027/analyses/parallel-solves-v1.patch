@@ -1,0 +1,338 @@
+--- combined-final-v5/engine_headers/SensitivityKernels.h
++++ parallel-solves-v1/engine_headers/SensitivityKernels.h
+@@ -172,6 +172,8 @@
+   using Complex = std::complex<double>;
+   using SparseComplex = Eigen::SparseMatrix<Complex>;
+   using Solver = EquilibratedSparseLU<Complex>;
++
++  static int diagnosticBackend() noexcept { return selectedBackend(); }
+ 
+   static void setDiagnosticBackend(int backend) {
+     if(backend<0||backend>3)throw std::invalid_argument("Unknown diagnostic solver backend.");
+--- combined-final-v5/engine_headers/Windowed3DFields.h
++++ parallel-solves-v1/engine_headers/Windowed3DFields.h
+@@ -12,6 +12,8 @@
+ #include <complex>
+ #include <cstdint>
+ #include <functional>
++#include <exception>
++#include <omp.h>
+ #include <limits>
+ #include <map>
+ #include <memory>
+@@ -229,7 +231,7 @@
+       Full1D::SEM &sem,SourceInfo::EarthquakeCMT &source,
+       InputParameters &parameters,Complex z,const Eigen::VectorXcd &adjointWeights,
+       dssolver::BatchResponseCache *batchCache=nullptr,bool poleOnly=false,
+-      bool forwardOnly=false,double *basisReconstructionRelative=nullptr);
++      bool forwardOnly=false,double *basisReconstructionRelative=nullptr,int solveThreads=1);
+ 
+   static std::vector<Sample> sampleModalBlocks(
+       Full1D::SEM &sem,InputParameters &parameters,Complex z,
+@@ -742,8 +744,15 @@
+       std::vector<PoleModalBlock> *poleBlocks=nullptr,
+       PoleFrame *sourceFrame=nullptr,
+       dssolver::BatchResponseCache *batchCache=nullptr,bool poleOnly=false,
+-      bool forwardOnly=false,double *basisReconstructionRelative=nullptr) {
++      bool forwardOnly=false,double *basisReconstructionRelative=nullptr,int solveThreads=1) {
+     mathprofile::Scope total("modal_projection_source_lift_and_frequency_solve");
++    if(solveThreads<1||solveThreads>48)
++      throw std::invalid_argument("solveThreads must be between 1 and 48");
++    if(solveThreads>1&&(!poleOnly&&!forwardOnly))
++      throw std::invalid_argument("parallel modal solves require the pole-frame or forward-only route");
++    if(solveThreads>1&&omp_in_parallel())
++      throw std::invalid_argument("nested modal solve parallelism is not supported");
++
+     mathprofile::count("modal_lmax",static_cast<std::uint64_t>(parameters.lmax()));
+     mathprofile::count("modal_receiver_rhs_components",static_cast<std::uint64_t>(adjointWeights.size()));
+     mathprofile::count("full_weighted_measurement_adjoint_components",static_cast<std::uint64_t>(adjointWeights.size()));
+@@ -795,7 +804,8 @@
+       visitor({SensitivitySolveFamily::Radial,0,treatment.sourceElement,
+           forward,adjoint,treatment.lift,noData,noData});
+     }
+-    for(int degree=std::max(1,parameters.lmin());degree<=lmax;++degree){
++    const auto solveDegree=[&](int degree,std::vector<PoleModalBlock> *poleBlocks,
++                                double *basisReconstructionRelative){
+       mathprofile::count("modal_degree_iterations");
+       const int orders=2*degree+1;
+       if(flags.inc_sph&&poleOnly)mathprofile::count("pole_only_spheroidal_weighted_rhs_columns_avoided",static_cast<std::uint64_t>(orders));
+@@ -927,6 +937,50 @@
+           poleBlocks->push_back({SensitivitySolveFamily::Toroidal,degree,
+               treatment.sourceElement,forward,adjointUnit,treatment.lift,reduced,reconstruction});
+         }
++      }
++    };
++    const int firstDegree=std::max(1,parameters.lmin());
++    if(solveThreads==1){
++      for(int degree=firstDegree;degree<=lmax;++degree)
++        solveDegree(degree,poleBlocks,basisReconstructionRelative);
++    }else{
++      // SEM matrices, mesh, source and input getters are read-only on this
++      // route. Sparse factors and profiling state are thread-local. Each
++      // degree owns one result slot; no worker invokes a shared visitor.
++      struct DegreeResult {
++        std::vector<PoleModalBlock> blocks;
++        double residual=0.0;
++        std::exception_ptr error;
++      };
++      const int workers=std::min(solveThreads,std::max(1,lmax-firstDegree+1));
++      std::vector<DegreeResult> results(static_cast<std::size_t>(lmax+1));
++      std::vector<mathprofile::WorkerData> profiles(static_cast<std::size_t>(workers));
++      const bool profileWorkers=mathprofile::active;
++      const int backend=FixedMeshAdjointSolver::diagnosticBackend();
++      #pragma omp parallel num_threads(workers)
++      {
++        mathprofile::WorkerCapture profile(profileWorkers,profiles.at(omp_get_thread_num()));
++        const int previousBackend=FixedMeshAdjointSolver::diagnosticBackend();
++        FixedMeshAdjointSolver::setDiagnosticBackend(backend);
++        #pragma omp for schedule(static)
++        for(int degree=firstDegree;degree<=lmax;++degree){
++          auto &result=results[static_cast<std::size_t>(degree)];
++          try {
++            solveDegree(degree,poleBlocks?&result.blocks:nullptr,
++                        basisReconstructionRelative?&result.residual:nullptr);
++          }catch(...){result.error=std::current_exception();}
++        }
++        FixedMeshAdjointSolver::setDiagnosticBackend(previousBackend);
++      }
++      for(const auto &profile:profiles)mathprofile::mergeWorker(profile);
++      // Ordered collection preserves the serial harmonic accumulation and
++      // spool order. Exceptions cross the OpenMP boundary only after joining.
++      for(int degree=firstDegree;degree<=lmax;++degree){
++        auto &result=results[static_cast<std::size_t>(degree)];
++        if(result.error)std::rethrow_exception(result.error);
++        if(basisReconstructionRelative)*basisReconstructionRelative=std::max(
++            *basisReconstructionRelative,result.residual);
++        if(poleBlocks)for(auto &block:result.blocks)poleBlocks->push_back(std::move(block));
+       }
+     }
+   }
+@@ -1486,7 +1540,7 @@
+       SourceInfo::EarthquakeCMT &source,InputParameters &parameters,Complex z,
+       const Eigen::VectorXcd &adjointWeights,
+       dssolver::BatchResponseCache *batchCache=nullptr,bool poleOnly=false,
+-      bool forwardOnly=false,double *basisReconstructionRelative=nullptr) {
++      bool forwardOnly=false,double *basisReconstructionRelative=nullptr,int solveThreads=1) {
+     mathprofile::Scope profileScope("frequency_workspace_prepare_and_modal_capture");
+     sensitivity_detail::requireConstructedSEM(sem);
+     auditprofile::Scope t("prepare_workspace");
+@@ -1500,7 +1554,7 @@
+     };
+     Windowed3DFieldEngine::solveFrequencyModes(
+         sem,source,parameters,z,adjointWeights,capture,&poleBlocks,&sourceFrame,batchCache,poleOnly,forwardOnly,
+-        basisReconstructionRelative);
++        basisReconstructionRelative,solveThreads);
+     return Windowed3DFrequencyWorkspace(sem,parameters,z,adjointWeights,
+         std::move(blocks),std::move(poleBlocks),sourceFrame,forwardOnly);
+   }
+@@ -2128,9 +2182,9 @@
+     Full1D::SEM &sem,SourceInfo::EarthquakeCMT &source,InputParameters &parameters,
+     Complex z,const Eigen::VectorXcd &adjointWeights,
+     dssolver::BatchResponseCache *batchCache,bool poleOnly,bool forwardOnly,
+-    double *basisReconstructionRelative) {
++    double *basisReconstructionRelative,int solveThreads) {
+   return Windowed3DFrequencyWorkspace::prepare(sem,source,parameters,z,adjointWeights,batchCache,poleOnly,forwardOnly,
+-      basisReconstructionRelative);
++      basisReconstructionRelative,solveThreads);
+ }
+ 
+ inline std::vector<Windowed3DFieldEngine::Sample>
+--- combined-final-v5/solvers/batch_response_cache.hpp
++++ parallel-solves-v1/solvers/batch_response_cache.hpp
+@@ -15,6 +15,8 @@
+ #include <functional>
+ #include <limits>
+ #include <map>
++#include <memory>
++#include <mutex>
+ #include <stdexcept>
+ #include <string>
+ #include <utility>
+@@ -105,6 +107,7 @@
+     mathprofile::Scope total("batch_response_cache_get_or_compute");
+     mathprofile::count("batch_forward_rhs_columns",static_cast<std::uint64_t>(forwardRhs.cols()));
+     mathprofile::count("batch_unit_basis_rhs_columns",static_cast<std::uint64_t>(unitAdjointRhs.cols()));
++    std::unique_lock guard(*mutex_);
+     auto found=entries_.find(key);
+     if(found!=entries_.end()) {
+       const Entry &entry=found->second;
+@@ -124,6 +127,7 @@
+     mathprofile::count("batch_response_cache_misses");
+     if(entries_.size()>=limits_.maximumEntries)
+       throw CapacityExceeded("batch response cache entry cap reached");
++    guard.unlock(); // Factorization and substitutions are worker-local.
+     auto responses=std::invoke(std::forward<ComputeResponses>(computeResponses),
+                                forwardRhs,unitAdjointRhs);
+     CacheDense forwardResponse=std::move(responses.first);
+@@ -135,6 +139,20 @@
+        !forwardResponse.allFinite()||!unitAdjointResponse.allFinite())
+       throw std::runtime_error("computed batch response dimensions or values are invalid");
+ 
++    guard.lock();
++    // A duplicate concurrent request may have published while we computed.
++    // Verify signatures before returning its response; never keep map
++    // references after releasing the lock.
++    found=entries_.find(key);
++    if(found!=entries_.end()){
++      const auto &entry=found->second;
++      if(!sameBits(entry.forwardRhsSignature,forwardRhs)||
++         !sameBits(entry.unitAdjointRhsSignature,unitAdjointRhs))
++        throw BasisMismatch("concurrent batch key reused with different RHS");
++      return {entry.forwardResponse,entry.unitAdjointResponse,true};
++    }
++    if(entries_.size()>=limits_.maximumEntries)
++      throw CapacityExceeded("batch response cache entry cap reached");
+     Entry entry;
+     entry.forwardRhsSignature=bitSignature(forwardRhs);
+     entry.unitAdjointRhsSignature=bitSignature(unitAdjointRhs);
+@@ -162,6 +180,7 @@
+     mathprofile::count("batch_weighted_adjoint_rhs_columns",static_cast<std::uint64_t>(weightedAdjointRhs.cols()));
+     validateRhs(unitAdjointRhs,"unit-basis adjoint RHS");
+     validateRhs(weightedAdjointRhs,"weighted adjoint RHS");
++    std::lock_guard guard(*mutex_);
+     const auto found=entries_.find(key);
+     if(found==entries_.end())throw std::out_of_range("no cached response for batch key");
+     const Entry &entry=found->second;
+@@ -183,16 +202,20 @@
+     return result;
+   }
+ 
+-  std::size_t entryCount() const noexcept { return entries_.size(); }
+-  std::size_t retainedBytes() const noexcept { return currentBytes_; }
+-  std::size_t cacheHits() const noexcept { return cacheHits_; }
+-  std::size_t cacheMisses() const noexcept { return cacheMisses_; }
+-  double maximumBasisReconstructionRelative() const noexcept {
++  std::size_t entryCount() const { std::lock_guard guard(*mutex_); return entries_.size(); }
++  std::size_t retainedBytes() const { std::lock_guard guard(*mutex_); return currentBytes_; }
++  std::size_t cacheHits() const { std::lock_guard guard(*mutex_); return cacheHits_; }
++  std::size_t cacheMisses() const { std::lock_guard guard(*mutex_); return cacheMisses_; }
++  double maximumBasisReconstructionRelative() const {
++    std::lock_guard guard(*mutex_);
+     return maximumBasisReconstructionRelative_;
+   }
+-  void clear() noexcept { entries_.clear();currentBytes_=0; }
++  void clear() { std::lock_guard guard(*mutex_);entries_.clear();currentBytes_=0; }
+ 
+ private:
++  // Indirection preserves the existing movable cache API. Workers only borrow
++  // the cache; moving or destroying it requires all borrowers to have joined.
++  mutable std::shared_ptr<std::mutex> mutex_=std::make_shared<std::mutex>();
+   struct Entry {
+     std::vector<std::uint64_t> forwardRhsSignature;
+     std::vector<std::uint64_t> unitAdjointRhsSignature;
+--- combined-final-v5/profile.hpp
++++ parallel-solves-v1/profile.hpp
+@@ -15,6 +15,33 @@
+ inline thread_local std::size_t depth=0;
+ inline thread_local std::map<std::string,Entry> entries;
+ inline thread_local std::map<std::string,std::uint64_t> counters;
++// Worker stage times are sums of elapsed worker durations, not wall times.
++// Save/restore also handles the OpenMP master, which already has open scopes.
++struct WorkerData {
++ std::map<std::string,Entry> entries;
++ std::map<std::string,std::uint64_t> counters;
++};
++struct WorkerCapture {
++ bool previousActive;std::size_t previousDepth;
++ std::array<Frame,128> previousStack;
++ WorkerData previous;WorkerData &output;
++ WorkerCapture(bool enabled,WorkerData &data):previousActive(active),previousDepth(depth),
++     previousStack(stack),output(data){
++  previous.entries.swap(entries);previous.counters.swap(counters);depth=0;active=enabled;
++ }
++ ~WorkerCapture(){
++  if(depth)std::terminate();
++  output.entries.swap(entries);output.counters.swap(counters);
++  previous.entries.swap(entries);previous.counters.swap(counters);
++  stack=previousStack;depth=previousDepth;active=previousActive;
++ }
++ WorkerCapture(const WorkerCapture&)=delete;
++};
++inline void mergeWorker(const WorkerData &data){
++ for(const auto &[name,value]:data.entries){auto &e=entries["parallel_worker."+name];
++  e.inclusive+=value.inclusive;e.exclusive+=value.exclusive;e.calls+=value.calls;}
++ for(const auto &[name,value]:data.counters)counters[name]+=value;
++}
+ #ifdef MATHPROFILE_DISABLED
+ struct Scope { explicit Scope(const char*) noexcept {} };
+ inline void count(const char*,std::uint64_t=1) noexcept {}
+--- combined-final-v5/physical_driver.cpp
++++ parallel-solves-v1/physical_driver.cpp
+@@ -48,6 +48,7 @@
+   std::string mode = "forward";
+   int lmax = 64, semDegree = 8, qex = 1, radialTraceLimit = 1;
+   std::size_t probeAngleCount = 0;
++  int solveThreads = 1;
+   double dt = 5.0, duration = 3600.0, radialRefinement = 0.05, maxOutputGiB = 8.0;
+   double responseCacheGiB = 32.0;
+   double responseSpoolGiB = 128.0;
+@@ -64,14 +65,15 @@
+ 
+ Options parse(int argc, char **argv) {
+   if (argc < 4) throw std::runtime_error(
+-      "usage: physical_driver MODEL EMPTY_OUTPUT forward|kernel|kernel-probe [--lmax N] [--nq N] [--radial-refinement X] [--dt-s S] [--duration-s S] [--qex N] [--radial-traces N|0-for-all] [--probe-angle-count N] [--dc include|exclude] [--contacts on|off] [--pole-only on|off] [--forward-only on|off] [--response-reuse on|off] [--response-cache-gib G] [--response-record-spool on|off] [--response-spool-gib G] [--global-workers N] [--global-angle-tile N] [--global-wigner-storage generated|stored] [--global-radial-sides I[,I...]] [--global-max-radial-sides N<=8] [--max-working-gib G] [--transform-scratch-gib-per-worker G] [--max-output-gib G]");
++      "usage: physical_driver MODEL EMPTY_OUTPUT forward|kernel|kernel-probe [--solve-threads N<=48] [--lmax N] [--nq N] [--radial-refinement X] [--dt-s S] [--duration-s S] [--qex N] [--radial-traces N|0-for-all] [--probe-angle-count N] [--dc include|exclude] [--contacts on|off] [--pole-only on|off] [--forward-only on|off] [--response-reuse on|off] [--response-cache-gib G] [--response-record-spool on|off] [--response-spool-gib G] [--global-workers N] [--global-angle-tile N] [--global-wigner-storage generated|stored] [--global-radial-sides I[,I...]] [--global-max-radial-sides N<=8] [--max-working-gib G] [--transform-scratch-gib-per-worker G] [--max-output-gib G]");
+   Options o; o.model = fs::absolute(argv[1]); o.output = fs::absolute(argv[2]); o.mode = argv[3];
+   if (o.mode != "forward" && o.mode != "kernel" && o.mode != "kernel-probe")
+     throw std::runtime_error("mode must be forward, kernel, or kernel-probe");
+   for (int i=4; i<argc; ++i) {
+     if (i+1>=argc) throw std::runtime_error("option is missing its value");
+     const std::string key=argv[i++], value=argv[i];
+-    if (key=="--lmax") o.lmax=std::stoi(value);
++    if (key=="--solve-threads") o.solveThreads=std::stoi(value);
++    else if (key=="--lmax") o.lmax=std::stoi(value);
+     else if (key=="--nq" || key=="--sem-degree") o.semDegree=std::stoi(value);
+     else if (key=="--qex") o.qex=std::stoi(value);
+     else if (key=="--radial-traces") o.radialTraceLimit=std::stoi(value);
+@@ -118,6 +120,7 @@
+   fs::create_directories(o.output);
+   if (fs::directory_iterator(o.output)!=fs::directory_iterator{})
+     throw std::runtime_error("EMPTY_OUTPUT must be empty");
++  if (o.solveThreads<1 || o.solveThreads>48 || (o.solveThreads>1&&!o.poleOnly&&!o.forwardOnly)) throw std::runtime_error("invalid parallel solve options");
+   if (o.lmax<1 || o.semDegree<2 || o.qex<1 || o.radialTraceLimit<0 || !(o.dt>0.0) || !(o.duration>0.0) || !(o.radialRefinement>0.0) || !(std::isfinite(o.maxOutputGiB)&&o.maxOutputGiB>0.0) || !(std::isfinite(o.responseCacheGiB)&&o.responseCacheGiB>0.0) || !(std::isfinite(o.responseSpoolGiB)&&o.responseSpoolGiB>0.0) || !(std::isfinite(o.globalMaxWorkingGiB)&&o.globalMaxWorkingGiB>0.0) || !(std::isfinite(o.globalTransformScratchGiBPerWorker)&&o.globalTransformScratchGiBPerWorker>0.0) || o.globalWorkers==0 || o.globalWorkers>48 || o.globalAngleTile==0)
+     throw std::runtime_error("degree, time, duration, and radial refinement must be positive");
+   if(o.globalMaxRadialSides==0||o.globalMaxRadialSides>8||o.globalRadialSideIndices.size()>o.globalMaxRadialSides)
+@@ -226,7 +229,7 @@
+     double basisResidual=0.0;
+     auto workspace=SPARSESPEC::Windowed3DFieldEngine::prepareFrequencyWorkspace(
+         sem,source,parameters,z,weights,batchCache,o.poleOnly,
+-        (batchCache||recordSink)?false:o.forwardOnly,recordSink?&basisResidual:nullptr);
++        (batchCache||recordSink)?false:o.forwardOnly,recordSink?&basisResidual:nullptr,o.solveThreads);
+     if(recordSink&&basisResiduals)basisResiduals->at(static_cast<std::size_t>(k))=basisResidual;
+     const auto field=workspace.sampleForKernelsPacked(receiver,0,nullptr,2).at(0);
+     const Complex fz=Complex(0.0,-1.0)/z;
+@@ -383,7 +386,7 @@
+     if((k==0&&!o.includeDc)||bandWeight(freq.f(k)/freq.timeNorm())==0.0) continue;
+     const Complex z=freq.w().at(k)+Complex(0.0,-freq.ep());
+     auto workspace=[&]{ mathprofile::Scope t("frequency_workspace_modal_solve_and_adjoint_construction");
+-      return SPARSESPEC::Windowed3DFieldEngine::prepareFrequencyWorkspace(sem,source,parameters,z,energyAdjoint.weights.col(k),batchCache,o.poleOnly); }();
++      return SPARSESPEC::Windowed3DFieldEngine::prepareFrequencyWorkspace(sem,source,parameters,z,energyAdjoint.weights.col(k),batchCache,o.poleOnly,false,nullptr,o.solveThreads); }();
+     for(std::size_t angleBegin=0;angleBegin<sampledAngles;angleBegin+=kAngleTile) {
+       const std::size_t angleEnd=std::min(sampledAngles,angleBegin+kAngleTile), angleN=angleEnd-angleBegin;
+       std::vector<SPARSESPEC::Field3DPoint> points; points.reserve(angleN*selected.size());
+@@ -452,6 +455,8 @@
+ 
+ int main(int argc,char **argv) try {
+   const auto processStart=Clock::now(); const Options o=parse(argc,argv);
++  Eigen::setNbThreads(1);
++  omp_set_dynamic(0);
+   mathprofile::Root topProfile("dspec",-1);
+   mathprofile::Scope totalProfile("physical_case_total");
+   auto c=prepare(o); auto &freq=c.input->freqFull(); auto &sem=*c.sem;
+@@ -557,6 +562,7 @@
+     }
+     responseSpool->finalize();
+     mathprofile::count("response_spool_bytes",responseSpool->bytesWritten());
++    if(omp_pause_resource_all(omp_pause_hard)!=0)throw std::runtime_error("cannot release solve OpenMP team");
+     dspec_global_gsh::ConsumerOptions consumerOptions;
+     consumerOptions.sampleAngleCount=o.mode=="kernel-probe"?o.probeAngleCount:0;
+     consumerOptions.workers=o.globalWorkers;
+@@ -580,7 +586,7 @@
+   }
+   writeTrace(o.output/"trace.csv",unwindowed,win,dt);
+   { std::ofstream m(o.output/"result.json"); m<<std::setprecision(17)
+-    <<"{\"mode\":\""<<o.mode<<"\",\"degree\":"<<o.lmax<<",\"sem_degree\":"<<o.semDegree
++    <<"{\"mode\":\""<<o.mode<<"\",\"degree\":"<<o.lmax<<",\"sem_degree\":"<<o.semDegree<<",\"solve_threads_requested\":"<<o.solveThreads
+     <<",\"nq_gll_points_per_element\":"<<o.semDegree<<",\"polynomial_degree\":"<<o.semDegree-1
+     <<",\"radial_refinement_maxstep\":"<<o.radialRefinement<<",\"qex\":"<<o.qex<<",\"dt_s\":"<<dt<<",\"duration_s\":"<<o.duration
+     <<",\"fft_samples\":"<<freq.nt()<<",\"fft_period_s\":"<<freq.nt()*dt<<",\"frequency_bins\":"<<last+1

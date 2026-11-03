@@ -1,0 +1,71 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{alex-report}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.4em,itemsep=4pt,topsep=3pt}
+\ReportSetup{DSpecM1D 2.0}{Phase 1 completion}{26 October 2026}
+\hypersetup{pdftitle={DSpecM1D Phase 1 compact kernel reconstruction results}}
+\input{results.tex}
+\begin{document}
+\ReportTitle{Phase 1: compact kernel reconstruction}{Implemented, numerically checked and independently reviewed}
+\textbf{Result.} The matched degree-12, one-objective volume-kernel calculation is \OneSpeedup{} times faster: \OneBefore{} s becomes \OneAfter{} s. The proposed minimum threefold speedup passes, and the result lies within the original 0.4--0.7 s engineering target. All frozen numerical gates pass, with unchanged tolerances.
+
+\section{Fresh before/after measurements}
+Each row uses three independent native processes per solver/configuration, alternating execution order. Measurements use one numerical thread, the same compiler and O3 flags, BLAS disabled, and first API calls. Setup and file writing are excluded. The frozen before binary contains the previously accepted source/receiver-frame optimizations.\footnote{Standard checkout: \texttt{feature/radial-sensitivity-kernels-k1}, HEAD \texttt{a778b13}. Accepted uncommitted changes were preserved. Source identities, exact commands and timed-output hashes are retained beside this report.}
+
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+$l_{\max}$ & Objectives & Before (s) & After (s) & Speedup & YSpec (s)\\
+\midrule
+\TimingRows
+\bottomrule
+\end{tabular}
+\end{center}
+The degree-12 one-objective ranges are \OneBeforeRange{} s before and \OneAfterRange{} s after. Its remaining gap to YSpec is \OneGap{} times. The two-objective row sums two DSpec scalar API calls; YSpec batches both objectives. Measurement batching remains Phase 2.
+
+The requested sample grids contain 10,752 points at degree 3 and 75,712 at degree 12, with common full-gravity homogeneous-model physics, no attenuation, raw bins 1--3, an order-8 source-aware SEM, and the existing SI Hann-window measurement. These are bounded volume-only timings; source-shell contact is separate. They establish no degree or mesh convergence.
+
+\section{What changed}
+\begin{itemize}
+\item \textbf{Prepare strain coefficients once.} Frequency workspaces retain source and per-receiver synthesis matrices. Shared existing strain formulas prepare six-component coefficient rows for each exact resolved element/radius and field set. Spheroidal and toroidal contributions combine before angular synthesis.
+\item \textbf{Sum contiguous degree rows.} Real angular coefficients and complex strain coefficients have contiguous degree storage. Each order phase is applied after the degree sum; the completed strain rotates once per field and point. All five local physical order phases are precomputed.
+\item \textbf{Sample only needed quantities.} High-level kernels process 4,096-point blocks, skip displacement and radius-scaled strain at integration points, and obtain receiver displacement once per frequency. Full public field samples and separate source contacts remain available.
+\item \textbf{Reuse exact bounded plans.} Geometry, phases, interpolation weights and angular tables persist across bins. A separate frequency-local coefficient cache distinguishes source and receiver field sets, including colocated receivers with different weights. Entries that exceed admission budgets are recomputed.
+\end{itemize}
+The radial operator and factorization route, source-lift ownership, physical orders, measurement processing and kernel definitions retain their existing treatment.
+\newpage
+
+\section{Numerical acceptance and regression}
+\begin{center}
+\begin{tabular}{p{.40\textwidth}p{.52\textwidth}}
+\toprule
+Check & Result\\
+\midrule
+Full Release regression & 177 enabled tests pass; two pre-existing diagnostics remain disabled.\\
+Expanded frozen fields & 336 field-group comparisons pass; largest relative norm \FieldMax.\\
+Source contacts & 240 comparisons pass; numerical arrays are identical.\\
+Five-modulus old/new kernels & 30 objective/modulus groups pass; maximum relative L2 \KernelLTwo{}, maximum scaled pointwise difference \KernelPoint.\\
+Full Earth-slice preservation & All five moduli pass on the 14,823-point plane.\\
+Matched YSpec profiles/integrals & All four configurations pass. Largest weighted profile and integral discrepancies: \YProfile{} and \YIntegral.\\
+Independent bounded Born checks & Fresh regular and source-local volume/contact/total checks pass.\\
+\bottomrule
+\end{tabular}
+\end{center}
+All tolerances are unchanged: field norms $10^{-12}$ (adjoint strain $10^{-9}$), kernel relative L2 $10^{-12}$, scaled pointwise $10^{-10}$ with the existing $0.01$-of-peak floor, contacts $10^{-12}$, and informative YSpec profiles/integrals $10^{-3}$.
+
+Coverage includes PREM solids/fluids, both source traces, poles, interpolation, repeated/permuted samples, multiple receivers, center-safe integration and cache-full fallback. New regressions cover coincident source/receiver frames and duplicate receivers with different weights. Repeated native outputs are deterministic.
+
+\section{Independent reviews and resource limits}
+Independent Luna High and subsequent Sol High reviews both returned \textbf{PASS}, with no required changes. They ran 31 and 14 focused checks respectively. Sol also recomputed saved numerical comparisons and timing medians, and verified 362 protected tracked files and seven Phase 0 files.
+
+Both reviews retain one nonblocking memory note: compact sampling temporarily creates full sample records before copying selected fields. The high-level 4,096-point block bounds this scratch. The cross-bin plan and frequency-local coefficient cache each have a 32 MiB data-admission budget; solver matrices, synthesis blocks, output arrays and allocation overhead are additional.
+
+For the degree-12 one-objective case, the maximum observed per-process high-water memory changes from \MemoryBefore{} to \MemoryAfter{} MiB.\footnote{These are maxima of sampled \texttt{/proc/PID/status} high-water values over the three native processes, polled every 10 ms. They include setup and output. They are process diagnostics, not aggregate-memory accounting or a hard memory cap.}
+
+\section{Evidence and stop point}
+The Phase 1 evidence folder retains authoritative \texttt{attempt-02/} timings and numerical arrays, fresh \texttt{born-01/} checks, exact commands, frozen source snapshots, protected-file manifests and both reviews. Preliminary evidence is retained separately.
+
+The full-plane comparison checks preservation of the existing calculation. The receiver-region strain limitation remains, and these runs establish no new physical validity there. No model finite-difference sweep or high-degree angular-library repair was performed.
+
+\textbf{Status.} Phase 1 is complete and recorded in implementation status. Pre-existing changes are preserved. No commit or push was made. Work stops before Phase 2 pending approval.
+\end{document}

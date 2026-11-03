@@ -1,0 +1,48 @@
+{
+  "purpose": "Validation-only v4 exact-pole scalar harmonic control against independent analytic pole matrices and frozen v6 receiver.",
+  "original_v4_portable_manifest_sha256": "b56ed7352c645fa3e513dfea535f43076c844777d7e3dcf7eaf285f68dba84e7",
+  "control_12_file_manifest_sha256": "cc9ec12748f7527e172be6c25e84f8758217dac2c4c3501e957a98a6d88142c7",
+  "v6_frozen_manifest_sha256": "f356076fad36d19640199f04fc4b1815d6f91c51c8384b2d9d7910e78425663e",
+  "changed_control_file": "engine_headers/Windowed3DFields.h only",
+  "source_diff": {
+    "path": "investigations/tunya-profile-20261027/dspec/source-v4-analytic-pole-control.diff",
+    "sha256": "39ed396a03ed30dbd94cd0d4a79f1c02b7208e5d762105f34bd1086db86344b9"
+  },
+  "radial_l0_callsite": "unchanged exact `harmonic(0,0,0,0.0,0.0)` source line; control branch excludes degree zero.",
+  "call_graph": "Static check requires three direct scalar harmonic calls inside original byte-identical receiverAtPole and exactly one separate radial L=0 call; control callsite list equals original.",
+  "extracted_bodies": [
+    {
+      "name": "old_v4_harmonic",
+      "path": "investigations/tunya-profile-20261027/dspec/source-v4-tunya/engine_headers/Windowed3DFields.h",
+      "line": 445,
+      "body_sha256": "c5e2c7798fc26210ed197ce44a01f54d23e66c3acb62406429a0c1667de41a3b"
+    },
+    {
+      "name": "control_v4_harmonic",
+      "path": "investigations/tunya-profile-20261027/dspec/source-v4-analytic-pole-control/engine_headers/Windowed3DFields.h",
+      "line": 445,
+      "body_sha256": "1a42e1338a5a17d9ec94bff095aae2358eaf8ab145802c593f572979d3b5e946"
+    },
+    {
+      "name": "control_v4_receiver",
+      "path": "investigations/tunya-profile-20261027/dspec/source-v4-analytic-pole-control/engine_headers/Windowed3DFields.h",
+      "line": 535,
+      "body_sha256": "4adbb26065ec41d2433382f32f28a4b8fceff7dc535754370323fe2b6eb98a5f"
+    },
+    {
+      "name": "v6_receiver",
+      "path": "investigations/tunya-profile-20261027/dspec/source-v6-frozen/engine_headers/Windowed3DFields.h",
+      "line": 540,
+      "body_sha256": "4cb3320fc4a82f89f6adaa05ba7d694ed6288f751361ca8ad102800eba35b3ab"
+    }
+  ],
+  "gate_files": {
+    "generate_control_receiver_gate.py": "25c7d5658db8dc1c80d0af9848c050a29c248d75272cd3552e9fbd7d50311491",
+    "control_receiver_gate_template.cpp.in": "3fa4895d3fdd958a999e28191d4ba77b68b0cf9ffa0faa16d19020310c87fe54",
+    "control_receiver_gate.cpp": "5fb4bcb5247196ea776c362872b24f71da924aa760d93ed45e8851c5828d9837",
+    "README.md": "19545f9d39973ea1a0d4454a18ed5eeba3ac997d1c6cd04c6aa082107a26882f"
+  },
+  "execution": "Generation and static source/hash checks only; no compile, remote action, or scientific run.",
+  "original_v4_frozen_manifest_sha256": "294a9d4e01b4aa1da53924c15dec5ba3b8b23ecea7eeb46e6dd096de68af19e1",
+  "portable_base_relationship": "source-v4-tunya was copied from the frozen v4 manifest and differs only by the reviewed five include portability substitutions; this control differs from source-v4-tunya only in the scalar pole-helper early branch."
+}

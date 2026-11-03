@@ -1,0 +1,200 @@
+Next acceleration stage: common reconstruction and fixed-mesh radial controls
+Sol6.1-high planning document,2026-10-31. APPROVAL PENDING.
+This turn authorizes planning only: no numerical code changes/builds/calculations.
+Recommend approving Phase A below first, then returning its results before B/C.
+Production integration remains a separately approved final phase.
+
+1. Preserve the case and establish the actual forward comparison
+
+Use the existing attenuated full-gravity PREM transverse-velocity traveltime
+case:1000–1200s,2–10mHz,L200,35bins7–41,source29.5km/receiver3km,along/across
+great-circle sections only. Freeze accepted Stage2 source/build/input/output
+hashes from analyses/stages12-acceleration-final-report.json and original staged
+sources; preserve all failed/dirty evidence. The current16.817633768s median is
+the isolated prototype, with forward+unit-adjoint capture~9.4s and inclusive
+kernel~7.36s. That9.4s does not establish that normal DSpec forward modelling is
+slow. Historical YSpec5.641430309s has different internal phase boundaries.
+
+Actual source inspection:
+  FullSpecMultiSem.h chooses frequency-chunk mesh sizes and uses source-aware
+  radial truncation, preassembled family matrices and factorization cadence.
+  FullSpecSingleSem.h offers the prepared single-SEM route.
+  StartElement.h chooses evanescent cutoffs; kernel SensitivityKernels.h instead
+  assembles full systems. Existing doc_driver "dspec-forward" still captures
+  unit-adjoint responses (forwardOnly=false): it is NOT a pure-forward control.
+
+New pure-forward control must explicitly skip unit-adjoint solves/general QR,
+perform the same source/lift/receiver projection, and measure only forward work.
+Compare kernel radial backend against a narrow isolated adapter of the standard
+optimized DSpec per-frequency algorithm. Supply both exactly the documentation
+complex frequencies/damping/material/source/receiver/component normalization and
+same prepared mesh. Standard FreqFull/API grids and normalization constants are
+not automatically identical: record/map them explicitly, rather than silently
+comparing different spectra or rewriting the normal production caller.
+Time setup, matrix assembly/factorization and source substitution separately;
+disclose standard-policy truncation versus full-system differences. Also compare
+untruncated settings at identical inputs to isolate the backend/adapter contract.
+
+2. Phase A — first approval: reconstruction control, unchanged NQ10 radial maths
+
+Keep the accepted NQ10/refinement0.025/source-aligned SEM and unchanged radial
+solve/attenuation/lift/interface equations. FIRST freeze a small response packet
+at active bins9,25,40, all required degrees0–200 and native sides. Use the exact
+accepted measurement/adjoint-source arrays. Export existing radial responses
+and one-sided derivatives without changing solver/truncation. Do not claim these
+radial traces already exist on disk: qualify any reusable spool, or generate
+this single bounded packet from the accepted path after approval. Keep each
+frequency packet separate; no new full-campaign response cache.
+
+Define one backend-neutral contract: frequency,degree,family,source/adjoint role,
+one-sided element/layer/radius,fluid flag,U,V,W,dU/dr,dV/dr,dW/dr,source lift/contact
+metadata,units/scales and exact harmonic/displacement convention. Match the
+definition u=U*Y*rhat+V*grad1(Y)-W*rhat×grad1(Y); explicitly adapt DSpec's modal
+normalizations rather than assume its V/W equal YSpec's. Preserve physical
+one-sided traces, derivative scaling and fluid strain rules. Keep gravitational
+unknowns needed for radial solves even if the shear contraction does not use them.
+
+Build an isolated common six-spin strain/reconstruction harness. Recommended
+starting point is the exact StrainOf/StrainTable/LegendreTable/Evaluate formulas
+in pinned YSpec src/SampledKernels.cpp: contiguous degree-inner strain tables,
+source orders|m|<=2,receiver-force orders|m|<=1; frozen geometry/angular tables
+constructed once per immutable section/frame and read concurrently. Use Eigen
+internal multiplication where appropriate, no CBLAS backend switch or giant
+Wigner/global-volume table. This is literal extraction/reuse of selected pinned
+formulas in an isolated harness, NOT a claim the existing two production engines
+already share code and NOT a YSpec backend rewrite. Both radial backend adapters
+can eventually feed this contract; no new ODE implementation is needed in A.
+
+Map Hermitian dual/conjugation/phase/rotation conventions explicitly. DSpec's
+H^H adjoint and YSpec's bilinear representation are not interchangeable arrays
+without that map. Verify complex strain channels before real projection. YSpec
+accumulates8elastic/attenuation products; this case requests one ln(vs) kernel
+at fixedvp/rho/effectiveQ. Compare the same chain-rule contraction, not the cost
+or numerical values of different requested parameter sets. Preserve l0/l1 limits,
+up/north/east convention, full gravity and source lifts; no singularity repair.
+
+A gates, in order:
+  (a) Accepted radial arrays fixed; old and new reconstruction consume the SAME
+      bytes. Complex forward AND nonzero-adjoint strains must satisfy existing
+      tensor/packed relative-L2<=1e-11 on bins9,25,40, every native radial side
+      and both section angle grids; retain channel/side/max-location errors.
+      Old k<2 checks use bins7/8 with exact-zero adjoints: they validate forward
+      fields, not nonzero-adjoint reconstruction. This is a coverage gap, not a
+      relabeling of the old passed gate as a scientific failure.
+  (b) Compare existing contraction from those complex fields and measurement/
+      time-shift identity, with the existing identity<1e-10 and gravity<1e-10.
+  (c) Rerun the existing low-degree attenuated FD using the unchanged smooth
+      supported perturbation and2e-4gate; frozen +/-forward traces may be reused
+      only if inputs/formulas are identical. Historical FD6.440263106e-9 remains.
+  (d) Only after field gates, run the matched pure-forward comparisons from1.
+      Preserve raw native spectra and component conventions. A true-forward
+      timer must not include spatial adjoint or unit-basis setup.
+Return the active-bin field proof and decomposed costs; stop for approval.
+
+Phase A scope: a new isolated next-stage-a-reconstruction-v1 candidate seeded
+from hash-bound accepted Stage2 sources; new contract/reconstruction/control
+headers and driver, read-only pinned formula copies/adapters and additive
+checker/config/evidence files. No edits to production DSpec/YSpec or accepted
+Stage2 candidate. After each code change update candidate and campaign
+implementation_status.md. Luna-high implements/executes after approval; Sol-high
+reviews the mathematical contract and gate evidence.
+Bound A to two physical driver builds plus a small contract-test executable;
+five numerical jobs:3-bin NQ10 radial packet,old/new reconstruction replay,L3 FD
+kernel control,kernel true-forward35bins,standard-adapter forward35bins. The
+replay is not a second radial solve. No repeated performance campaign or YSpec
+rerun in A; single-run timings are exploratory, not a claimed speedup. A small
+synthetic coefficient/adjoint-identity test runs in the contract test executable.
+
+3. Phase B — separate approval: one mesh per run, NQ5 versus NQ6, safe truncation
+
+No multi-mesh/regridding implementation. For each NQ separately choose ONE mesh
+from highest retained complex-frequency/wavelength/error criterion, source-align
+it and hold it fixed throughout both forward and adjoint passes. NQ5 is baseline,
+NQ6 the accuracy/cost candidate. Preserve the standard model's material/interface
+knots. The existing max-step recipe scales as
+  min((100*relative_error)^(1/(NQ-1))*(0.78*1000/TimeNorm*2pi)/omega_ref,0.05).
+Use the actual accepted relative_error input and document how damping/complex z
+is conservatively included; highest frequency selection alone is not a proof
+of error. Do not carry0.025 blindly to lower NQ or call NQ10 ground truth.
+
+Compare NQ5/NQ6 nominal meshes and one bounded finer-mesh check each on common
+physical radii taken from the frozen reference SEM native-side nodes. Evaluate
+each candidate directly inside the correct element/material side; never smooth,
+nearest-neighbour resample, or interpolate across discontinuities/source depth.
+Direct native output on the selected candidate mesh remains allowed for normal
+use. The common-r output is a validation control, not mandatory production
+resampling. Report source/receiver/interface/bulk errors separately, all unmasked.
+
+Use standard DSpec radial truncation as policy, but choose a retained domain
+safe for BOTH earthquake source and receiver adjoint forcing. The old source-only
+cutoff cannot be assumed sufficient for the kernel or all requested radial
+samples. Preserve source/receiver lifts and compare truncated vs untruncated on
+the SAME mesh/frequencies/forcing: boundary trace/traction where meaningful,
+forward response, complex adjoint strains and kernel contributions, including
+source29.5km/receiver3km and omitted-domain samples. Extend/deepen the cut if
+needed; never silently zero an unvalidated region. Keep full gravity, no Cowling
+approximation substitution. Test the transpose/conjugate restricted operator
+itself; forward waveform equivalence alone does not validate H^H adjoints.
+
+No new arbitrary numerical ceiling: existing1e-11 is same-radial-data
+reconstruction equivalence, not a mesh-accuracy target. Existing2e-4FD checks
+the derivative of the selected discrete problem, not continuous accuracy.
+Nominal relative_error is a mesh-selection input, not a convergence certificate.
+Return NQ5/6 self-refinement, common-r fields/waveforms/measurement/kernel errors
+and truncation increments alongside cost. Choose acceptance against the stated
+scientific error budget and measured refinement envelope before promotion;
+if no budget is established, report the tradeoff and obtain that choice rather
+than invent a tolerance or claim convergence. Limit this future branch to4mesh
+configurations and3active-bin truncated/untruncated control batches; finalize
+its exact queue after A evidence. No general degree-convergence claim beyondL200.
+
+4. Phase C — separate approval: fixed-direction adjoint and bounded workspace
+
+For this one measurement direction form the required receiver forcing directly,
+instead of recomputing general receiver QR/unit-basis projections. Prove RHS
+and H^H solution equivalence against the accepted rank-basis route, including
+conjugations and normalization, before replacing it. Keep adjoint-source
+integration/FFT separate from the spatial adjoint solve in timings.
+Use worker-bounded frequency workspaces/contiguous strain tables and immutable
+geometry, not the current~2.9GB whole-campaign solved-response cache. The full
+waveform must precede construction of its measurement adjoint. Start with a
+simple two-pass recomputation strategy; record any extra factorizations honestly
+and measure the memory/time tradeoff. Do not hide them by carrying forward old
+counter invariants. Any compact checkpoint or pre-weighted complex-contraction
+scheme needs its own linearity/weighting control before inclusion.
+
+After inspecting exact adjoint weights, skip only the zero-contribution KERNEL
+tasks for bins7,8,41 (35retained,32active). No small-value threshold; assert the
+exact zero set, retain all forward bins/raw spectrum and FFT normalization.
+Compare skip-on/off unmasked scientific output, record changed factor/RHS/cache/
+task counts, and move production adjoint diagnostics to active bins9,25,40.
+Preserve old checks as historical evidence; do not claim they covered adjoints.
+
+5. Timing and matched workload before claiming success
+
+Report model/mesh setup; true forward assembly/factor/substitution; measurement
+and adjoint-source integration; spatial adjoint; radial strain preparation;
+angular reconstruction; material contraction; frequency reduction; I/O;
+diagnostics and total. Distinguish shared factorization cost from its forward/
+adjoint substitutions, exclusive wall from summed worker elapsed, native from
+instrumented. Never subtract overlapping worker diagnostic duration from wall.
+Compare identical observables, requested parameters/radii, frequency grids,
+accuracy evidence and8total workers. Retain frozen current prototype and
+historical YSpec as labeled context; no new long YSpec campaign. If a short
+instrumented YSpec comparison becomes necessary, propose its exact scope first.
+
+6. Resource/evidence and approval boundary
+
+All numerical work/builds on Tunya via nohup, existing hashed staging/supervisor,
+fresh exclusive stage/task/output paths,8total workers,inner Eigen/library pools1,
+no nested parallelism,aggregate<=50threads. Recheck current work/resources and
+pinned dependencies before launch; preserve all dirty/failed/accepted evidence.
+Use prior campaign cap20 for numerical jobs,cap8 builds; carry memory limits
+explicitly and stop rather than silently enlarge them. Watchdog evidence is
+user-space observed accounting, not kernel enforcement. No deletes/commits/pushes.
+
+Approve A only as the next concrete phase. Its response contract, active-adjoint
+field proof, FD and matched pure-forward costs determine the exact B/C release.
+Stop after each approved phase with status, diffs, hashes, receipts, validation,
+costs and limitations. Normal-library integration and broader regressions come
+after the isolated prototype is accepted, under separate approval.

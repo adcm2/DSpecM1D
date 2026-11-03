@@ -1,0 +1,89 @@
+Phase A mathematical contract and review checklist — Sol6.1-high,2026-10-31
+User-approved Phase A only. This document permits implementation preparation;
+Sol-high source-contract review and parent build release remain required.
+
+1. Exact data contract
+Record bin,complex z,degree,family,field role,source/receiver frame axes,order m,
+element/node/layer,canonical one-sided radius r_nd and r_SI=L0*r_nd,fluid flag,
+source-lift application and L0/T0/material/force normalizations. Array payload is
+[U,Uprime,V,Vprime,W,Wprime], complexfloat64; primes are d/dr_nd. Store exact
+metadata and hashes, not reconstructed decimal coordinates. Missing |m|>l slots
+are zero. Source|m|<=2,receiver|m|<=1. Merge spheroidalU/V and toroidalW at matching
+degree/order/side exactly as existing coefficient capture; l0 is separate U only.
+
+Export AFTER existing source-moment and receiver-unit-basis projection so the
+packet contains precisely the modes already used by accepted reconstruction.
+Do not replace unit-basis/QR here. Lift is included once, only on its designated
+source element, including its one-sided derivative. Do not add an adjoint lift
+absent from the accepted path. Native derivative uses existing Dref/J branch,
+canonical radius snap and element identity; no interpolation-policy/env changes.
+
+2. Explicit normalization/formula map
+Inspected DS radialToStrain and pinned YSpec StrainOf use the SAME displacement
+convention u=U*Y*rhat+V*grad1Y-W*rhat×grad1Y. There is no extra blanket sqrt(l(l+1))
+rescaling at this export point. The radial-slot map is identity:
+YS(u,du,v,dv,w,dw)=DS(U,Uprime,V,Vprime,W,Wprime), with the SAME normalized radius.
+For dimensional forward displacement U_SI=L0*U and derivative dU_SI/dr_SI=Uprime;
+do not divide primes by L0 a second time. Adjoint payload remains a tagged
+Hermitian-dual field, not mislabeled physical SI displacement.
+
+For lambda=l(l+1),zeta=sqrt(lambda),eta=sqrt((l-1)(l+2)) for l>=2 else0:
+  E_rr=Uprime; E_h=(2U-lambdaV)/r;
+  S=Vprime-(V-U)/r; T=Wprime-W/r;
+  E_rplus=-zeta/2*(S+iT); E_rminus=zeta/2*(S-iT);
+  E_hplus=zeta*eta/r*(V+iW); E_hminus=zeta*eta/r*(V-iW).
+Multiply each by its X_lm^spin and exp(+im*phi); spin=(0,0,+1,-1,+2,-2).
+Frame rotation stays accepted DS rotateStrain: c=a-i*b, multiply rplus byc,
+rminus byconj(c),hplus byc^2,hminus byconj(c)^2. Source/receiver field frames
+must not be interchanged. Degree0 has only rr/h; degree1 has no spin2 component.
+No center samples occur in this case. Do not import a new center prescription.
+
+3. Hermitian-dual/observable contract
+Keep accepted H(z),attenuation/source treatment and H^H solve. Documentation
+weights=direction*conj(adjoint.weight[k]*adjoint.force[k]); fz=-i/z. Existing
+receiver local forcing contains conj(poleReceiver)*(conj(fz)*weights), followed
+by existing adjointBasisTransform^H and solved unit-response mixing. Export that
+result verbatim. No new conjugation, m reversal or factor of (-1)^m in replay.
+The unchanged kernelVs conjugates the dual strains in its Hermitian products.
+Do NOT replace it with YSpec's bilinear products or its8parameter accumulation.
+Only the six-spin reconstruction formulas/layout are shared. Keep fixedvp/rho/
+effectiveQ ln(vs),raw-field versus observable factors and source-shell policy.
+Observable L0*T0*(-i/z) and documentation spectrum scaling remain the existing
+driver conventions; no extra SI/FFT conversion inside strain reconstruction.
+
+4. Fluids and gate domain
+Solid rows compare all six complex channels. Existing packed/tensor fluid path
+retains the scalar dilatation E_rr+E_h and unavailable shear channels are zero.
+On fluid rows compare that SAME old observable projection, retain all new raw
+rr/h components and validity tags for transparency, and report the fluid subset
+separately. Do not compare independent rr/h to an old compressed scalar, discard
+fluid rows, invent absent derivatives, or claim old packed data resolved them.
+Fluid kernelVs remains exactly zero. Norms use the same representation on both
+sides. Native solid/fluid interface traces remain distinct at identical radii.
+
+5. Required proof before numerical release
+[ ] Formula copy pinned/attributed; DS export point and slot identity shown in
+    source, same r/derivative/frame/scales, lift once, no hidden normalization.
+[ ] Same frozen radial bytes feed old DS replay and common replay; old DS sample
+    reference bound to the same solved workspace and packet, not another solve.
+[ ] l0/l1,one-sided lift,fluid projection,complex phases,rotation and Hermitian
+    contraction get meaningful tiny synthetic controls. Trace that the real
+    backend remains H^H. New fixtures do not count as numerical validation.
+[ ] Contiguous tables degree-inner; geometry/angular tables built once and fully
+    immutable before workers. No lazy shared maps,counters or scratch mutation.
+[ ] Active bins9,25,40 have nonzero measurement weights and aggregate adjoint
+    strain norm; individual zero channels/l0T response handled without fake ratios.
+[ ] Per-bin/per-section/per-role complex field relativeL2<=existing1e-11 over ALL
+    293native sides/angles using above fluid projection; per-channel absolute/
+    relative errors,max locations and interface/source/receiver subsets retained.
+[ ] Existing bins7/8 controls preserved as forward/zero-adjoint coverage only.
+    Packet/replay active-bin gate adds nonzero-adjoint coverage; no old failure
+    relabeling. No bins skipped or temporal weights changed in Phase A.
+[ ] Pure-forward control uses forwardOnly=true with zero unit/weighted-HH solves,
+    zero receiver QR/unit projection counters; old dspec-forward spelling alone
+    does not establish this. Same exact z/model/mesh/lift/receiver output checked.
+
+Sol-high reviews candidate diff against this checklist before parent releases
+builds. Numerical field/FD/timing gates then require separate completed evidence.
+Any unresolved representation mismatch halts with its exact samples; do not
+change tolerances,radial maths or expand to Phase B to make the gate pass.

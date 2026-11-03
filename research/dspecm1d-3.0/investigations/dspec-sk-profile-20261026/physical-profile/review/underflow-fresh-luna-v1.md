@@ -1,0 +1,15 @@
+# Independent review: frozen FTZ/DAZ underflow preload v1
+
+Reviewed the frozen C source, README, build metadata, source and binary manifests, and ELF dynamic metadata. I did not load or run the shared object. Source and binary hashes validate. The shared object has only a libc dependency and defines no exported function that interposes on application APIs; its only behavior is a constructor.
+
+## Static findings
+
+- **Default behavior is numerically inert.** The constructor returns unless `DSPEC_PROFILE_FTZ` is exactly the string `1`; unset, empty, or any other value does not read or write MXCSR. This is a meaningful guard for a diagnostic injected through `LD_PRELOAD`.
+- **Enabled behavior is explicit and broad.** On x86, it reads the calling thread's MXCSR, ORs in FTZ bit 15 and DAZ bit 6 (preserving all other control/status bits), writes the value, and logs old/new values. It does not restore the original word. If enabled, the change affects subsequent floating-point work on that thread across the whole preloaded process, not just DSpec/GSH code. Later-created threads generally inherit their creator's floating-point environment on the intended POSIX setup, but the C source itself sets no per-thread state; verify thread behavior for any multithreaded benchmark. The README correctly requires same-binary on/off comparisons and warns that subnormal handling changes.
+- **Unsupported targets fail visibly, but DAZ capability detection is incomplete.** Non-x86 builds with the option enabled log and `_exit(78)`; GCC/Clang x86 builds also check SSE/SSE2 before using MXCSR intrinsics. However, SSE/SSE2 support alone does not guarantee MXCSR DAZ bit 6 is writable on every legacy x86 processor. Intel's SDM says to inspect `MXCSR_MASK` bit 6; writing DAZ when unsupported can raise `#GP` ([Intel SDM, §11.6.3](https://cdrdv2-public.intel.com/868137/325462-089-sdm-vol-1-2abcd-3abcd-4.pdf)). This is a portability caveat for older/atypical x86 CPUs, not a blocker for the current parent-run target if its successful FTZ-enabled result confirms support.
+- **Environment scope matters.** `LD_PRELOAD` applies to every dynamically linked process launched with that environment, so keep both the variable and preload path attached to the specific benchmark invocation. If `DSPEC_PROFILE_FTZ=1` is inherited by an unrelated process using the preload on a non-x86 or unsupported target, the constructor intentionally terminates it with status 78.
+- **Build provenance is bounded.** The build record uses GCC (`/usr/bin/cc`) and `-Wall -Wextra -Werror`; metadata states compile-only for the implementation stage. Hash manifests pass. These establish artifact identity, not the correctness or performance impact of FTZ/DAZ; parent-owned on/off numerical and timing comparisons remain the evidence for those questions.
+
+## Verdict
+
+No default-path blocker found: absent the exact opt-in environment value, the preload leaves numerical state unchanged. Enabled mode is a process-wide diagnostic perturbation scoped per thread, with the legacy DAZ support check noted above. Static review does not establish numerical equivalence or speedup.

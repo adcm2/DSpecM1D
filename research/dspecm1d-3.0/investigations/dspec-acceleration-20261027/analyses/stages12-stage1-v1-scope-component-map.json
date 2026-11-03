@@ -1,0 +1,1067 @@
+{
+  "schema": 1,
+  "profile_path": "investigations/dspec-acceleration-20261027/receipts/stages12-stage1-v3-profile-packet/P1-profile-L200/data/profile.json",
+  "profile_sha256": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+  "policy": "Raw profile row values are preserved. This mapping groups exclusive durations by explicit scope_name and execution_domain only; inclusive values are never summed. Worker elapsed sums are reported separately from master wall.",
+  "scope_name_to_component": {
+    "driver_frequency_grid_setup": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "driver_setup"
+      ],
+      "phases": [
+        "setup"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_input_and_grid_setup": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "driver_setup"
+      ],
+      "phases": [
+        "setup"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_model_deck_and_common_material_setup": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "driver_setup"
+      ],
+      "phases": [
+        "setup"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_native_side_sampling_and_gravity_audit": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "driver_setup"
+      ],
+      "phases": [
+        "setup"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_parameters_file_io_and_input_parameters": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "setup"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_result_cache_and_sampling_plan_initialisation": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "setup"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_section_sampling_and_receiver_construction": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "setup"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_sem_constructor_mesh_static_matrices_and_model_setup": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "driver_setup"
+      ],
+      "phases": [
+        "setup"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_initial_frequency_workspace_and_forward_capture": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "driver_setup"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "dynamic_H_assembly": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "forward_substitution": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "frequency_workspace_prepare_and_modal_capture": {
+      "analysis_component": "unclassified_by_scope_name",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "modal_degree_ordered_result_collection": {
+      "analysis_component": "parallel_ordered_result_collection",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "modal_degree_parallel_region_wall": {
+      "analysis_component": "parallel_degree_region_wall",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "modal_degree_worker_profile_merge": {
+      "analysis_component": "parallel_worker_profile_merge",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "modal_projection_source_lift_and_frequency_solve": {
+      "analysis_component": "unclassified_by_scope_name",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "modal_response_copy_and_capture": {
+      "analysis_component": "unclassified_by_scope_name",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "packed_Wigner_d_table_build": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation",
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "packed_angular_coefficients_and_basis_build": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation",
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "packed_to_compact_kernel_sample_copy": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation",
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.batch_cache_locked_initial_lookup": {
+      "analysis_component": "batch_response_cache",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.batch_response_cache_get_or_compute": {
+      "analysis_component": "batch_response_cache",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.batch_response_cache_miss_admission_signatures_and_copies": {
+      "analysis_component": "batch_response_cache",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.dynamic_H_assembly": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.forward_substitution": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.minimal_unit_basis_HH_solve": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.receiver_basis_and_QR_reconstruction": {
+      "analysis_component": "receiver_basis_projection",
+      "runtime_logical_component_labels": [
+        "receiver_basis_projection"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.shared_forward_and_adjoint_solver": {
+      "analysis_component": "unclassified_by_scope_name",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.solver_factorization_dispatch": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_adjoint_eigen_solve": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_adjoint_result_unscaling_and_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_adjoint_result_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_adjoint_rhs_scaling": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_adjoint_rhs_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_adjoint_solve_including_rhs_scaling": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_equilibration_and_scaling": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_factorization_total": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_forward_eigen_solve": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_forward_result_unscaling_and_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_forward_result_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_forward_rhs_scaling": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_forward_rhs_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_forward_solve_including_rhs_scaling": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_numerical_factorization": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.sparse_symbolic_analysis": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.spheroidal_receiver_basis_assembly_and_qr": {
+      "analysis_component": "receiver_basis_projection",
+      "runtime_logical_component_labels": [
+        "receiver_basis_projection"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.spheroidal_source_lift_projection_and_solver": {
+      "analysis_component": "source_projection_solver_wrapper_remainder",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.spheroidal_source_treatment_and_lift": {
+      "analysis_component": "source_treatment_and_lift",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.toroidal_receiver_basis_assembly_and_qr": {
+      "analysis_component": "receiver_basis_projection",
+      "runtime_logical_component_labels": [
+        "receiver_basis_projection"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.toroidal_source_lift_projection_and_solver": {
+      "analysis_component": "source_projection_solver_wrapper_remainder",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.toroidal_source_treatment_and_lift": {
+      "analysis_component": "source_treatment_and_lift",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "pole_frame_sampling_total": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation",
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "radial_interpolation_and_strain_numerator_build": {
+      "analysis_component": "radial_sampling_reconstruction",
+      "runtime_logical_component_labels": [
+        "radial_sampling_reconstruction"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "radial_l0_sampling_and_interpolation": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "radial_sampling_reconstruction"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation",
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "radial_l0_source_and_adjoint_branch": {
+      "analysis_component": "radial_sampling_reconstruction",
+      "runtime_logical_component_labels": [
+        "radial_sampling_reconstruction"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "receiver_at_pole_closed_form": {
+      "analysis_component": "unclassified_by_scope_name",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "receiver_basis_mix_and_unit_adjoint_projection": {
+      "analysis_component": "receiver_basis_projection",
+      "runtime_logical_component_labels": [
+        "receiver_basis_projection"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation",
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "receiver_local_weight_materialization": {
+      "analysis_component": "unclassified_by_scope_name",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "shared_forward_and_adjoint_solver": {
+      "analysis_component": "unclassified_by_scope_name",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "solver_factorization_dispatch": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "source_frame_geometry_phase_spin_rotation_and_scatter": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation",
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_equilibration_and_scaling": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_factorization_total": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_forward_eigen_solve": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_forward_result_unscaling_and_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_forward_result_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_forward_rhs_scaling": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_forward_rhs_validation": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_forward_solve_including_rhs_scaling": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_numerical_factorization": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "sparse_symbolic_analysis": {
+      "analysis_component": "modal_solver",
+      "runtime_logical_component_labels": [
+        "modal_solver"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_angular_gemm_complex_and_packing": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation",
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "workspace_synthesis_vector_construction": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "initial_frequency_workspace_and_capture",
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_initial_trace_spectrum_components_and_nodes_io": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "measurement_and_initial_output"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_measurement_fft_window_adjoint_and_diagnostic_construction": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "diagnostic"
+      ],
+      "phases": [
+        "measurement_and_initial_output"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_kernel_adjoint_spectrum_and_plan_setup": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_kernel_frequency_weights_and_workspace": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "driver_setup"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_kernel_pipeline_including_diagnostics": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "diagnostic"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_section_points_construction": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_tensor_sampling_call": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "kernel_fused_material_evaluation_weak_form_contraction_frequency_accumulation": {
+      "analysis_component": "material_evaluation_weak_form_contraction_accumulation",
+      "runtime_logical_component_labels": [
+        "material_evaluation_weak_form_contraction_accumulation"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.batch_cache_locked_hit_response_return_copies": {
+      "analysis_component": "batch_response_cache",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "parallel_worker.batch_cache_locked_hit_signature_validation": {
+      "analysis_component": "batch_response_cache",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_angular_plan_key_build_and_lookup": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_coefficient_layout_dedup_and_permutation_build": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_coefficient_packing_and_key_reorder": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_cold_frame_geometry_and_wigner_build": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_complex_basis_cache_lookup": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_complex_basis_cold_fill_and_cache": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_complex_basis_key_construction": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_grid_cold_layout_map_build": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_grid_semantic_key_build_and_lookup": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "sampling_plan_or_basis_cache"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_phase_spin_rotation_and_scatter": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_radial_l0_scatter": {
+      "analysis_component": "radial_sampling_reconstruction",
+      "runtime_logical_component_labels": [
+        "radial_sampling_reconstruction"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_representative_and_coefficient_record_capture": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_result_allocation_and_volume_tagging": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "tensor_sampling_total": {
+      "analysis_component": "tensor_angular_synthesis",
+      "runtime_logical_component_labels": [
+        "tensor_angular_synthesis"
+      ],
+      "phases": [
+        "kernel_production_excluding_isolated_diagnostics"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_kernel_output_and_result_io": {
+      "analysis_component": "driver_setup",
+      "runtime_logical_component_labels": [
+        "output_io"
+      ],
+      "phases": [
+        "kernel_output_and_result_io"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "driver_tensor_vs_packed_diagnostic_validation": {
+      "analysis_component": "diagnostic_validation",
+      "runtime_logical_component_labels": [
+        "diagnostic"
+      ],
+      "phases": [
+        "diagnostic_tensor_validation"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    },
+    "profile_pipeline_wall": {
+      "analysis_component": "pipeline_total",
+      "runtime_logical_component_labels": [
+        "unclassified"
+      ],
+      "phases": [
+        "profile_pipeline_total"
+      ],
+      "rule": "explicit scope-name mapping; runtime logical_component retained as raw provenance and not used for these analysis groups"
+    }
+  }
+}

@@ -1,0 +1,168 @@
+Phase A v1 Sol6.1-high source/math review — 2026-10-31
+Read-only implementation review; no compiler, test executable, build or numerical
+calculation was invoked by this reviewer. Only this review document was written.
+Source review is distinct from completed numerical validation and parent release.
+
+Scope/binding
+Reviewed isolated candidates/phase-a-reconstruction-v1 against the exact archived
+Stage2 seed, tree c9e8364c45c2b7b3591090d205a54364df2f0b544faeff8888b833a18c39dd5e.
+Snapshot inspected after the A1 namespace/A2 timing fixes:
+ phase_a_driver.cpp 50c2d2486f6f526ddf513d03709f512b5dfed88759f7e94dbfd0b293a399b6e6
+ phase_a_reconstruction.hpp 3644be9b75ce439e7f2e94c06850cdf81e96f0d832bfe77aba376c88c7911fbb
+ phase_a_contract.hpp 89fa7c1e85dcfad8f943d4538ff32a33bb11feee2246c3b6a387499864ab4d5c
+ phase_a_contract_test.cpp 32d02e53dd7d9e034ee774d8fe469f981957b2c9c3cde2faa09b402122405beb
+ phase_a_standard_forward.hpp 6284f20335eed3709b446944598797019a470d600d5e89147c5048c7e57cde59
+ engine_headers/Windowed3DFields.h 5ad3ea5197d0b2880b56c9a4292bcdec67983d3e412638e18004bc2c2c7745e7
+The final post-review delta and hashes must be appended before build release.
+
+Mathematical/ownership findings
+1. Engine delta is a read-only projected-mode visitor/accessor. l0 comes from
+   captured radial blocks; l>=1 from already source/receiver-projected synthesis
+   blocks. The export reuses interpolatePlanned with native Dref/J and one-sided
+   element/node identity. Source lift is added once on its designated element;
+   no adjoint lift is added. Toroidal fluid/out-of-domain samples are excluded
+   before ltgT; selected radius bound is applied before interpolation. No solver,
+   SEM, material, cache, source treatment or existing synthesis arithmetic changed.
+2. Compact family merging retains spheroidal U/V plus toroidal W before strain
+   assignment. Bit masks and duplicate-family guards are correct. Source/dual
+   frames are separate; the l0 dual uses an isotropic sentinel. Modal primes are
+   derivatives in normalized radius; the common six-spin map introduces no
+   additional length or sqrt(l(l+1)) normalization. l0/l1 forbidden spin channels
+   are zero and low-degree Wigner reads are restricted to valid index ranges.
+3. Common strain/evaluation formulas match the attributed pinned YSpec algebra
+   and degree-inner layout. exp(+im*phi), c=a-ib rotations and existing Hermitian
+   kernelVs are retained. This shares reconstruction only, not YSpec's bilinear
+   kernel products or its eight-parameter material accumulation.
+4. A1 reads qualified frozen accepted adjoint-source data and solves only bins
+   9,25,40, with per-bin workspace/cache lifetime. Raw modes and PACKED field
+   oracle come from the same workspace. A2 reads each radial packet once and
+   feeds those records to both real replay computations: DS radial algebra plus
+   complex Eigen basis product, and common real degree-inner summation. The old
+   route is not reference-file loading and is not the Stage2 production TENSOR
+   algorithm. A2 angular cache is immutable and reused over native sides/bins.
+5. Both field replays and the PACKED oracle use the same fluid rr+h projection;
+   raw common channels are retained. Full native-side/section/role coverage and
+   positive nonzero-adjoint norms are enforced on active bins. Existing bins7/8
+   do not establish nonzero-adjoint validation. Product errors are diagnostic;
+   there is no invented per-point relative denominator/floor acceptance gate.
+6. Corrected A3 uses the exact old GL X/W/acos(X) grid and native radial weights,
+   fixed frozen adjoint source, ordered frequency accumulation and original
+   profile/integral. Both l0 isotropic and l>=1 receiver-frame adjoints contribute.
+   SampleCount, not FFT length, qualifies stored time samples. The old FD ceiling
+   remains2e-4. Frozen time identity is reused evidence, not a new measurement.
+7. A4 explicitly passes poleOnly=true and forwardOnly=true, skips receiver QR
+   and unit/weighted adjoints, and checks actual counters/scope absence plus
+   complex receiver spectrum. The frozen engine already increments the actual
+   true_forward_only_route counter; a missing-counter concern was withdrawn.
+8. A5 copied standard body retains private solver/work matrices, protected output
+   accumulation and the ordinary degree-worker decomposition (radial region may
+   parallelize frequencies). WorkerCapture surrounds each existing OpenMP region;
+   output slots are replaced on capture completion and merged after join. Worker
+   elapsed sums are separate from parent wall. Exact common complex z is used,
+   and output_type0's -i/z is undone before multiplying by L0 for comparison.
+   The request reference PERIOD is now2*pi/model.ReferenceFrequency(), not the
+   angular frequency itself. Pinned Tunya API was directly checked read-only:
+    SpecHelpers.h b346611dc19e67c2dd5fc2d29927c884d76f92c1003fa3363db397a28253c4d5
+    SpectraRunContext.h f2f83b1a73479f45706ccf3ac03a8678ccb24424cb1a6d98140ada5eedc03365
+    frequency_info/FreqFull.h b76ae7922e6c12dd892f7c40411492d4a8017eafe5aa8a680e38d3130832e815
+   SpecConstants uses w0=2*pi/tref, confirming this conversion.
+9. Tiny rotation fixture is corrected to W=Omega*r,Wprime=Omega and checks
+   complex magnitudes, not real parts alone. Runtime exceptions preserve checks
+   under NDEBUG. These source fixtures still require their planned executable run.
+
+Final narrow conditions before parent build release
+- Parent approved A5 nskip=10 in BOTH submodes, matching prepared single-SEM
+  default cadence. This is not the frequency-dependent MultiSEM policy (whose
+  internal nfreq/20 would be1 here). Report actual symbolic-analysis cadence and
+  grouped cutoff starts. Numeric factor/RHS totals remain14035/42035/0HH.
+- A3 frame/role/angle cache sharing was subsequently completed and source-checked:
+  exact (axes,isotropic,orders) keys deduplicate all radii and a stable key-set
+  check covers35bins. Both l0 and receiver-frame adjoints remain summed.
+- Narrow explicit SpectraRunContext/StartElement includes were added to close the
+  copied standard helper's include graph without importing broad FullSpec code.
+- Retain A5 actual cut-index evidence requested in the execution plan: selected
+  start DOF/retained rows/full rows for each family/degree/bin, recorded from the
+  actual chosen values into private indexed slots and emitted after join. No
+  extra solve, recomputed cutoff, additional job, or policy change is authorized.
+- Parent requires A5 additive component scopes before release: master parallel
+  region wall, worker umbrella, static operator/angular preparation, dynamic H,
+  source treatment, receiver lift/projection and cutoff selection. Existing LU
+  timers remain nested children. Add stop() boundaries without changing object
+  lifetimes or expressions. These are elapsed worker sums including waits,
+  not CPU seconds, and cannot be added to or subtracted from master wall.
+- Checkers must reject nonfinite fields/errors/times, qualify every frozen trace
+  and result by hashes/input receipts, and use the existing field1e-11/FD2e-4/
+  identity+gravity1e-10 gates without expanding tolerances.
+- Preserve variant mapping A1=P,A2=N,A3=N,A4=P,A5=P for both sequential submodes.
+  Exactly five numerical processes; no extra paired timing or baseline jobs.
+  A2 times include symmetric harness map lookup/dispatch/output collection and
+  are labeled replay harness elapsed. A4/A5 times are instrumented exploratory;
+  no native-overhead, full-pipeline or historical YSpec speed claim follows.
+- Parent independently reviews final source/config/checkers and freezes hashes
+  before detached Tunya build release. Numerical acceptance comes only after
+  tiny/field/FD/counter/receipt gates complete. Stop and report before Phase B.
+
+Final source addendum — bounded source/math PASS
+Reviewed subsequent fixes and directly hashed the current files:
+ phase_a_driver.cpp 6d2173d284c3be021b7a778fa98e4e99bfa74ffce104baec150a0531827a09f1
+ phase_a_standard_forward.hpp 2c33797e91eac442feedbc54ae37adb82ebeb5ebb816b262cd5d3094c1b3296c
+Other mathematical contract/reconstruction/test/hook hashes remain as above.
+The final driver has nskip10, shared A3 frame-keyed angular tables, actual
+cut-index CSVs, corrected source order constants and explicit harness timing
+labels. The helper has the narrow include closure, private preallocated audit
+slots, and all requested additive component/worker/parallel-wall scopes. Scope
+stop order is LIFO; existing objects retain their original lifetimes and matrix,
+source, receiver and cutoff expressions. All22 seed members were separately
+compared: only the approved Windowed3DFields diagnostic addition and status file
+changed. No production repository mutation or numerical implementation was made
+by this reviewer.
+
+No remaining mathematical/source blocker was identified in this bounded audit.
+Parent source/config/checker review, immutable build/source receipt binding and
+explicit build release remain required; this source PASS is not a claim that
+the candidate compiles or that field/FD/timing gates have passed. A new source
+delta after these hashes needs a targeted review before release.
+
+Provenance-label-only source update
+Current phase_a_driver.cpp SHA is
+4855a1de022c735da616920b7145351cbbb5abfd87843a41fdc437c26bb5a31e.
+Direct byte check removed exactly one added output line,
+time_shift_adjoint_identity_source="frozen L3 baseline result.json", and recovered
+the previously reviewed6d2173d284c3be021b7a778fa98e4e99bfa74ffce104baec150a0531827a09f1
+hash exactly. No numerical/control-flow/timing change. Source PASS carries to
+this hash; helper hash remains2c33797e91eac442feedbc54ae37adb82ebeb5ebb816b262cd5d3094c1b3296c.
+
+A2 gate-domain correction required before A2 release
+Parent identified a distinction missed in the prior source PASS: the approved
+1e-11 relativeL2 acceptance domain is each (bin,section,role) over ALL293native
+sides using the agreed fluid projection. Current source instead gates every
+(bin,section,role,fluid) subset separately. A fluid-only transverse-adjoint norm
+can be tiny by section symmetry, making that a stronger, unapproved criterion.
+Concur with the targeted correction: aggregate existing error2/norm2 across both
+fluid classes before acceptance for both PACKED/common and DS/common. Retain all
+fluid/channel/null/absolute/max-location diagnostics and every row; introduce no
+floor or new tolerance. This changes gate grouping, not reconstructed fields.
+The prior source PASS does not release A2 until this delta is reviewed and bound
+to the applicable build. Preserve ongoing archived inputs/build receipts; parent
+decides fresh staging/rebuild logistics. No numerical implementation edited by
+this reviewer.
+
+Targeted A2 correction addendum — PASS
+Directly inspected runtime driver SHA
+301b9bbc9825a9f6b21a30fcfea48b24c7b5c857fc5d98af44d1e9bbb6626ce9
+and checker SHA26e3a758f053b6b9b30c45d167fdc947a1647995142f57aaf013fd35f7213b6e.
+Both approved metric maps are keyed by(bin,section,role), add the squared error
+and reference norm of all6 complex channels on every solid/fluid-projected row,
+and count every sample once. Existing1e-11 acceptance is applied to these full
+native-side groups with expected293*angle counts and positive norms. Original
+per-fluid error/norm/count/max-location arrays and raw CSV diagnostics remain;
+no floor, omitted rows or changed field/kernel expression was introduced by
+this grouping correction. Both comparisons export12 accepted groups. Checker
+requires their exact unique keys, correct coverage, finite nonnegative errors
+and equality of summary maxima with the accepted group maxima.
+
+The CSV emitter now has the correct escaped newline character literal; byte
+inspection finds zero quote/literal-newline/quote sequences. Source-level PASS
+for this bounded correction supersedes the A2 hold above. Parent independent
+source/config review and fresh immutable build/source binding remain required.
+No compilation, checker/test execution or numerical calculation by this reviewer.

@@ -1,0 +1,45 @@
+{
+  "model": "prem.200",
+  "attenuation": true,
+  "gravity": "full",
+  "output": {
+    "prefix": "out",
+    "quantity": "acceleration",
+    "potential_and_tilt_corrections": true
+  },
+  "degrees": {
+    "min": 0,
+    "max": 0
+  },
+  "frequencies_mHz": {
+    "min": 0.2,
+    "max": 8.0
+  },
+  "time_series": {
+    "length_min": 240.0,
+    "time_step_s": 20.0
+  },
+  "filter_mHz": [0.3, 0.6, 7.0, 8.0],
+  "sources": [
+    {
+      "depth_km": 29.5,
+      "latitude": 0.0,
+      "longitude": 0.0,
+      "moment_tensor_Nm": {
+        "rr": 1e+18,
+        "rt": 0.0,
+        "rp": 0.0,
+        "tt": 1e+18,
+        "tp": 0.0,
+        "pp": 1e+18
+      }
+    }
+  ],
+  "receivers": {
+    "depth_km": 3.0,
+    "locations": [
+      [0.0, 30.0],
+      [0.0, 120.0]
+    ]
+  }
+}

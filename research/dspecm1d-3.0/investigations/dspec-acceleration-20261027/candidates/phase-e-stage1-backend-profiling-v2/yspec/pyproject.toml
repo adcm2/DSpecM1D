@@ -1,0 +1,95 @@
+# The Python package, yspec-seismo, imported as yspec: the library through a
+# nanobind module, a Python interface around it, the programs, the bundled
+# PREM decks and, with the plot extra, yspec-plot. scikit-build-core builds
+# the module with the CMake of the C++ library (python/CMakeLists.txt), with
+# pocketfft in place of FFTW so that the wheels stay BSD.
+
+[build-system]
+requires = ["scikit-build-core>=0.10", "nanobind>=2.4"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "yspec-seismo"
+dynamic = ["version"]
+description = "Synthetic seismograms, snapshots and adjoint kernels for spherically symmetric earth models"
+readme = "python/README.md"
+license = "BSD-3-Clause"
+license-files = ["LICENSE"]
+authors = [{ name = "David Al-Attar" }]
+# planetmodel, which draws the figures, needs 3.12.
+requires-python = ">=3.12"
+dependencies = ["numpy>=1.24"]
+keywords = ["seismology", "synthetic seismograms", "normal modes", "sensitivity kernels"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Education",
+  "Operating System :: POSIX :: Linux",
+  "Operating System :: MacOS",
+  "Programming Language :: C++",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Physics",
+]
+
+[project.optional-dependencies]
+plot = ["matplotlib>=3.7", "planetmodel[plot,maps,netcdf]>=1.3.0"]
+obspy = ["obspy>=1.4"]
+test = ["pytest>=7"]
+all = ["yspec-seismo[plot,obspy,test]"]
+
+[project.urls]
+Source = "https://github.com/da380/YSpecpp"
+
+[project.scripts]
+yspec = "yspec.programs:seismograms"
+yspec-snapshot = "yspec.programs:snapshots"
+yspec-kernels = "yspec.programs:kernels"
+yspec-plot = "yspec.plot.cli:main"
+
+[tool.scikit-build]
+minimum-version = "build-system.requires"
+cmake.version = ">=3.24"
+cmake.build-type = "Release"
+build-dir = "build/python/{wheel_tag}"
+wheel.packages = ["python/yspec"]
+# The stable ABI of Python 3.12, so that one wheel serves every later Python.
+wheel.py-api = "cp312"
+sdist.exclude = ["docs/papers", "build", "tests/fortran", ".github"]
+
+[tool.scikit-build.cmake.define]
+YSPEC_PYTHON = "ON"
+YSPEC_FFT = "pocketfft"
+YSPEC_WITH_NETCDF = "OFF"
+YSPEC_BUILD_PROGRAMS = "OFF"
+YSPEC_BUILD_EXAMPLES = "OFF"
+YSPEC_BUILD_TESTS = "OFF"
+
+# The version is CMake's project version, the one place it is set.
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.regex"
+input = "CMakeLists.txt"
+regex = 'project\(YSpec\s+VERSION\s+(?P<value>[0-9.]+)'
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]
+
+[tool.cibuildwheel]
+build = "cp312-*"
+skip = "*-musllinux_*"
+test-extras = ["test"]
+test-command = "pytest {project}/python/tests"
+build-verbosity = 1
+
+[tool.cibuildwheel.linux]
+# GCC 14, for C++23.
+manylinux-x86_64-image = "manylinux_2_28"
+manylinux-aarch64-image = "manylinux_2_28"
+
+[tool.cibuildwheel.macos]
+# Apple's clang is missing C++23 library pieces the code uses
+# (views::cartesian_product, floating-point from_chars), so the macOS wheel
+# is built with GCC, as everywhere else — which also brings OpenMP; delocate
+# bundles libstdc++ and libgomp into the wheel. ARCHFLAGS must be empty:
+# GCC takes no -arch flag, and the build is natively arm64 anyway.
+before-all = "brew install gcc@14"
+environment = { CC = "gcc-14", CXX = "g++-14", MACOSX_DEPLOYMENT_TARGET = "14.0", ARCHFLAGS = "" }

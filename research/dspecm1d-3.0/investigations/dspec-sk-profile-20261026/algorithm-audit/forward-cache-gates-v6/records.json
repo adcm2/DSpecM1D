@@ -1,0 +1,3592 @@
+[
+  {
+    "case": "l3-a192-o3-b0-c1-tensor",
+    "cap_bytes": 0,
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l3-a192-o3-b0-c1-tensor/cap0",
+      "3",
+      "3",
+      "3",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.086426399882793e-16,
+              "max_scaled_pointwise": 6.558787353738105e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 4.718402872166115e-14,
+              "max_scaled_pointwise": 2.7604516849482352e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 3.949697871762553e-14,
+              "max_scaled_pointwise": 3.0284040421724066e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 2.6293468476335906e-14,
+              "max_scaled_pointwise": 1.2818940427860181e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 9.552804094927807e-16,
+              "max_scaled_pointwise": 7.473693825188474e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 6.924704302887761e-16,
+              "max_scaled_pointwise": 1.1289686409279122e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.9816722253251246e-14,
+              "max_scaled_pointwise": 2.2772622570364434e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.1250636978856238e-14,
+              "max_scaled_pointwise": 2.1701104902619983e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 3.369527780227606e-14,
+              "max_scaled_pointwise": 4.035270716442983e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 5.873417312902138e-16,
+              "max_scaled_pointwise": 7.5929708738392e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 2,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 5.347617011149763e-16,
+              "max_scaled_pointwise": 3.4802499622145224e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 2.2381414184487927e-14,
+              "max_scaled_pointwise": 2.3717332427916516e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.0579097760436968e-14,
+              "max_scaled_pointwise": 1.34247039138272e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.5453647248495684e-14,
+              "max_scaled_pointwise": 8.163508419604649e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.915038325365198e-16,
+              "max_scaled_pointwise": 7.396880094759148e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "metrics": {
+      "degree": 3,
+      "frequency_bins": 3,
+      "objectives": 3,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 10752,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 1.533691389925717e-15,
+      "max_kernel_pointwise_scaled_error": 1.1456529065573886e-13,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.03573111,
+        0.033119089,
+        0.033314291
+      ],
+      "reference_s": [
+        0.048885577,
+        0.048968163,
+        0.048817792
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000578068,
+          "modal_solve_and_basis": 0.020860752,
+          "packed_sampling": 0.012561313,
+          "final_kernel_contraction": 0.000330618,
+          "source_contact": 0.000484473
+        },
+        {
+          "measurement_adjoint": 8.4849e-05,
+          "modal_solve_and_basis": 0.020165751,
+          "packed_sampling": 0.011345550999999999,
+          "final_kernel_contraction": 0.000325359,
+          "source_contact": 0.000486057
+        },
+        {
+          "measurement_adjoint": 6.9066e-05,
+          "modal_solve_and_basis": 0.020035893,
+          "packed_sampling": 0.011676625999999999,
+          "final_kernel_contraction": 0.000328912,
+          "source_contact": 0.00047942
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": true,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 9,
+      "forward_tensor_cache_admission_skips": 9,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 0,
+      "sampling_plan_bytes_estimate": 1530400,
+      "tensor_grid_hits": 8,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 954464,
+      "tensor_plan_hits": 16,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 98,
+      "tensor_basis_misses": 10,
+      "tensor_angular_payload_bytes_estimate": 558880,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l3-a192-o3-b0-c1-tensor/cap0"
+  },
+  {
+    "case": "l3-a192-o3-b0-c1-tensor",
+    "cap_bytes": 134217728,
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l3-a192.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l3-a192-o3-b0-c1-tensor/cap134217728",
+      "3",
+      "3",
+      "3",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.086426399882793e-16,
+              "max_scaled_pointwise": 6.558787353738105e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 4.718402872166115e-14,
+              "max_scaled_pointwise": 2.7604516849482352e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 3.949697871762553e-14,
+              "max_scaled_pointwise": 3.0284040421724066e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 2.6293468476335906e-14,
+              "max_scaled_pointwise": 1.2818940427860181e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 9.552804094927807e-16,
+              "max_scaled_pointwise": 7.473693825188474e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 6.924704302887761e-16,
+              "max_scaled_pointwise": 1.1289686409279122e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 1.9816722253251246e-14,
+              "max_scaled_pointwise": 2.2772622570364434e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.1250636978856238e-14,
+              "max_scaled_pointwise": 2.1701104902619983e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 3.369527780227606e-14,
+              "max_scaled_pointwise": 4.035270716442983e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 5.873417312902138e-16,
+              "max_scaled_pointwise": 7.5929708738392e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 2,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 5.347617011149763e-16,
+              "max_scaled_pointwise": 3.4802499622145224e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 2.2381414184487927e-14,
+              "max_scaled_pointwise": 2.3717332427916516e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 1.0579097760436968e-14,
+              "max_scaled_pointwise": 1.34247039138272e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.5453647248495684e-14,
+              "max_scaled_pointwise": 8.163508419604649e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.915038325365198e-16,
+              "max_scaled_pointwise": 7.396880094759148e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "metrics": {
+      "degree": 3,
+      "frequency_bins": 3,
+      "objectives": 3,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 10752,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 1.533691389925717e-15,
+      "max_kernel_pointwise_scaled_error": 1.1456529065573886e-13,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.035657333,
+        0.031220273,
+        0.033833925
+      ],
+      "reference_s": [
+        0.048570347,
+        0.048962874,
+        0.048544614
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000548395,
+          "modal_solve_and_basis": 0.020251602,
+          "packed_sampling": 0.013119137999999999,
+          "final_kernel_contraction": 0.000322818,
+          "source_contact": 0.000467202
+        },
+        {
+          "measurement_adjoint": 7.3038e-05,
+          "modal_solve_and_basis": 0.020186895,
+          "packed_sampling": 0.009491332,
+          "final_kernel_contraction": 0.000322414,
+          "source_contact": 0.0005049869999999999
+        },
+        {
+          "measurement_adjoint": 7.9382e-05,
+          "modal_solve_and_basis": 0.02155055,
+          "packed_sampling": 0.01004491,
+          "final_kernel_contraction": 0.000327559,
+          "source_contact": 0.0009968379999999999
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": true,
+      "forward_tensor_cache_entries": 3,
+      "forward_tensor_cache_hits": 6,
+      "forward_tensor_cache_misses": 3,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 3096720,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 1530400,
+      "tensor_grid_hits": 8,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 954464,
+      "tensor_plan_hits": 10,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 62,
+      "tensor_basis_misses": 10,
+      "tensor_angular_payload_bytes_estimate": 558880,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l3-a192-o3-b0-c1-tensor/cap134217728"
+  },
+  {
+    "case": "l12-a1352-o2-b0-c1-tensor",
+    "cap_bytes": 0,
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o2-b0-c1-tensor/cap0",
+      "12",
+      "3",
+      "2",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.915587036047117e-16,
+              "max_scaled_pointwise": 4.9491768221368276e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.601253940791244e-14,
+              "max_scaled_pointwise": 5.744848306595882e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 7.833853149670284e-14,
+              "max_scaled_pointwise": 2.9718697124816192e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 8.699804493767745e-15,
+              "max_scaled_pointwise": 4.759104209865912e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 9.283067697584254e-16,
+              "max_scaled_pointwise": 2.75664862252738e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.0808718911791498e-15,
+              "max_scaled_pointwise": 6.029824512461157e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.320146285333408e-14,
+              "max_scaled_pointwise": 9.0402995928252e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.720419792347958e-14,
+              "max_scaled_pointwise": 6.4704402151571955e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 6.409660869137721e-14,
+              "max_scaled_pointwise": 5.987681423857287e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.929032971297911e-16,
+              "max_scaled_pointwise": 3.643341836723406e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 2,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 1.7498712310020635e-15,
+      "max_kernel_pointwise_scaled_error": 9.781614145118176e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.244544768,
+        0.203046962
+      ],
+      "reference_s": [
+        0.711709262,
+        0.684990516
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000612216,
+          "modal_solve_and_basis": 0.09524296399999999,
+          "packed_sampling": 0.133815835,
+          "final_kernel_contraction": 0.002832529,
+          "source_contact": 0.002396614
+        },
+        {
+          "measurement_adjoint": 0.000106055,
+          "modal_solve_and_basis": 0.09250713199999999,
+          "packed_sampling": 0.100496005,
+          "final_kernel_contraction": 0.002712261,
+          "source_contact": 0.0023984230000000002
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": true,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 6,
+      "forward_tensor_cache_admission_skips": 6,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 0,
+      "sampling_plan_bytes_estimate": 33528992,
+      "tensor_grid_hits": 5,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 10,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 52,
+      "tensor_basis_misses": 20,
+      "tensor_angular_payload_bytes_estimate": 26769120,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o2-b0-c1-tensor/cap0"
+  },
+  {
+    "case": "l12-a1352-o2-b0-c1-tensor",
+    "cap_bytes": 134217728,
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o2-b0-c1-tensor/cap134217728",
+      "12",
+      "3",
+      "2",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.915587036047117e-16,
+              "max_scaled_pointwise": 4.9491768221368276e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.601253940791244e-14,
+              "max_scaled_pointwise": 5.744848306595882e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 7.833853149670284e-14,
+              "max_scaled_pointwise": 2.9718697124816192e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 8.699804493767745e-15,
+              "max_scaled_pointwise": 4.759104209865912e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 9.283067697584254e-16,
+              "max_scaled_pointwise": 2.75664862252738e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.0808718911791498e-15,
+              "max_scaled_pointwise": 6.029824512461157e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.320146285333408e-14,
+              "max_scaled_pointwise": 9.0402995928252e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.720419792347958e-14,
+              "max_scaled_pointwise": 6.4704402151571955e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 6.409660869137721e-14,
+              "max_scaled_pointwise": 5.987681423857287e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.929032971297911e-16,
+              "max_scaled_pointwise": 3.643341836723406e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 2,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 1.7498712310020635e-15,
+      "max_kernel_pointwise_scaled_error": 9.781614145118176e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.249541424,
+        0.163177104
+      ],
+      "reference_s": [
+        0.687664101,
+        0.696394725
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.00062523,
+          "modal_solve_and_basis": 0.09472956199999999,
+          "packed_sampling": 0.138873164,
+          "final_kernel_contraction": 0.0030740209999999997,
+          "source_contact": 0.002482343
+        },
+        {
+          "measurement_adjoint": 0.000113602,
+          "modal_solve_and_basis": 0.09161312599999999,
+          "packed_sampling": 0.062715819,
+          "final_kernel_contraction": 0.002798781,
+          "source_contact": 0.002413702
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": true,
+      "forward_tensor_cache_entries": 3,
+      "forward_tensor_cache_hits": 3,
+      "forward_tensor_cache_misses": 3,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 21805200,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 33528992,
+      "tensor_grid_hits": 5,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 7,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 34,
+      "tensor_basis_misses": 20,
+      "tensor_angular_payload_bytes_estimate": 26769120,
+      "contacts_enabled": true,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o2-b0-c1-tensor/cap134217728"
+  },
+  {
+    "case": "l12-a1352-o3-b1-c0-tensor",
+    "cap_bytes": 0,
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o3-b1-c0-tensor/cap0",
+      "12",
+      "3",
+      "3",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.0652668536394812e-15,
+              "max_scaled_pointwise": 5.514797030381036e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.650959594730613e-14,
+              "max_scaled_pointwise": 6.0632204418117035e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 8.122591046805592e-14,
+              "max_scaled_pointwise": 3.150693384253034e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 8.699804493767745e-15,
+              "max_scaled_pointwise": 4.759104209865912e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 9.813703811229914e-16,
+              "max_scaled_pointwise": 2.8273319205409025e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.0808718911791498e-15,
+              "max_scaled_pointwise": 6.029824512461157e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.320146285333408e-14,
+              "max_scaled_pointwise": 9.0402995928252e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.720419792347958e-14,
+              "max_scaled_pointwise": 6.4704402151571955e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 6.409660869137721e-14,
+              "max_scaled_pointwise": 5.987681423857287e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.929032971297911e-16,
+              "max_scaled_pointwise": 3.643341836723406e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 2,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.4210137017894271e-15,
+              "max_scaled_pointwise": 9.191519669790523e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 3.814070198528329e-14,
+              "max_scaled_pointwise": 2.176381700340088e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 2.573561850573657e-14,
+              "max_scaled_pointwise": 3.0688002465221088e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.4599211088855108e-14,
+              "max_scaled_pointwise": 6.849355666420847e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 1.6721877839002666e-15,
+              "max_scaled_pointwise": 9.728732992864262e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 3,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.241177602077131e-15,
+      "max_kernel_pointwise_scaled_error": 9.374976465140043e-13,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.226743255,
+        0.130469623,
+        0.129318593
+      ],
+      "reference_s": [
+        0.675294924,
+        0.684208423,
+        0.709465567
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000634538,
+          "modal_solve_and_basis": 0.07665997499999999,
+          "packed_sampling": 0.136643869,
+          "final_kernel_contraction": 0.003063522,
+          "source_contact": 1.1062e-05
+        },
+        {
+          "measurement_adjoint": 0.000116244,
+          "modal_solve_and_basis": 0.019587689,
+          "packed_sampling": 0.102706399,
+          "final_kernel_contraction": 0.002924169,
+          "source_contact": 7.89e-06
+        },
+        {
+          "measurement_adjoint": 0.00010996,
+          "modal_solve_and_basis": 0.019964697,
+          "packed_sampling": 0.10131103,
+          "final_kernel_contraction": 0.002822923,
+          "source_contact": 8.551e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": true,
+      "batch_cache_entries": 75,
+      "batch_cache_bytes": 7006560,
+      "batch_cache_hits": 150,
+      "batch_cache_misses": 75,
+      "batch_max_basis_reconstruction_relative": 3.947223938879997e-16,
+      "forward_tensor_fields_enabled": true,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 9,
+      "forward_tensor_cache_admission_skips": 9,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 0,
+      "sampling_plan_bytes_estimate": 33528992,
+      "tensor_grid_hits": 8,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 16,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 82,
+      "tensor_basis_misses": 26,
+      "tensor_angular_payload_bytes_estimate": 26769120,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o3-b1-c0-tensor/cap0"
+  },
+  {
+    "case": "l12-a1352-o3-b1-c0-tensor",
+    "cap_bytes": 134217728,
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o3-b1-c0-tensor/cap134217728",
+      "12",
+      "3",
+      "3",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.0652668536394812e-15,
+              "max_scaled_pointwise": 5.514797030381036e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.650959594730613e-14,
+              "max_scaled_pointwise": 6.0632204418117035e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 8.122591046805592e-14,
+              "max_scaled_pointwise": 3.150693384253034e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 8.699804493767745e-15,
+              "max_scaled_pointwise": 4.759104209865912e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 9.813703811229914e-16,
+              "max_scaled_pointwise": 2.8273319205409025e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.0808718911791498e-15,
+              "max_scaled_pointwise": 6.029824512461157e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.320146285333408e-14,
+              "max_scaled_pointwise": 9.0402995928252e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.720419792347958e-14,
+              "max_scaled_pointwise": 6.4704402151571955e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 6.409660869137721e-14,
+              "max_scaled_pointwise": 5.987681423857287e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.929032971297911e-16,
+              "max_scaled_pointwise": 3.643341836723406e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 2,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.4210137017894271e-15,
+              "max_scaled_pointwise": 9.191519669790523e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 3.814070198528329e-14,
+              "max_scaled_pointwise": 2.176381700340088e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 2.573561850573657e-14,
+              "max_scaled_pointwise": 3.0688002465221088e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.4599211088855108e-14,
+              "max_scaled_pointwise": 6.849355666420847e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 1.6721877839002666e-15,
+              "max_scaled_pointwise": 9.728732992864262e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 3,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.241177602077131e-15,
+      "max_kernel_pointwise_scaled_error": 9.374976465140043e-13,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.233067767,
+        0.089525057,
+        0.087434553
+      ],
+      "reference_s": [
+        0.683880486,
+        0.698614273,
+        0.699242889
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.00065599,
+          "modal_solve_and_basis": 0.078655611,
+          "packed_sampling": 0.140717357,
+          "final_kernel_contraction": 0.002995608,
+          "source_contact": 1.1087e-05
+        },
+        {
+          "measurement_adjoint": 0.000113578,
+          "modal_solve_and_basis": 0.019403418,
+          "packed_sampling": 0.063877934,
+          "final_kernel_contraction": 0.002717565,
+          "source_contact": 1.0636e-05
+        },
+        {
+          "measurement_adjoint": 0.000108672,
+          "modal_solve_and_basis": 0.020010622,
+          "packed_sampling": 0.060680473,
+          "final_kernel_contraction": 0.002954744,
+          "source_contact": 1.0685e-05
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": true,
+      "batch_cache_entries": 75,
+      "batch_cache_bytes": 7006560,
+      "batch_cache_hits": 150,
+      "batch_cache_misses": 75,
+      "batch_max_basis_reconstruction_relative": 3.947223938879997e-16,
+      "forward_tensor_fields_enabled": true,
+      "forward_tensor_cache_entries": 3,
+      "forward_tensor_cache_hits": 6,
+      "forward_tensor_cache_misses": 3,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 21805200,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 33528992,
+      "tensor_grid_hits": 8,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 10,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 46,
+      "tensor_basis_misses": 26,
+      "tensor_angular_payload_bytes_estimate": 26769120,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o3-b1-c0-tensor/cap134217728"
+  },
+  {
+    "case": "l12-a1352-o3-b1-c0-tensor-real",
+    "cap_bytes": 0,
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o3-b1-c0-tensor-real/cap0",
+      "12",
+      "3",
+      "3",
+      "tensor-real",
+      "direct",
+      "equilibrated"
+    ],
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.80920690491098e-16,
+              "max_scaled_pointwise": 5.168179280765816e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.649428614436556e-14,
+              "max_scaled_pointwise": 6.062336074769438e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 8.126554031589729e-14,
+              "max_scaled_pointwise": 3.149903439816717e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 8.685110586447656e-15,
+              "max_scaled_pointwise": 4.704021985214686e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.815244333873998e-16,
+              "max_scaled_pointwise": 2.8980152185544254e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 8.782772023971013e-16,
+              "max_scaled_pointwise": 6.029824512461164e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.320566142158373e-14,
+              "max_scaled_pointwise": 9.034566999551426e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.722660500983715e-14,
+              "max_scaled_pointwise": 6.4712766486271394e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 6.409140383225062e-14,
+              "max_scaled_pointwise": 5.972452263524012e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 6.920372933338259e-16,
+              "max_scaled_pointwise": 2.9839134499861404e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 2,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.242820434498887e-15,
+              "max_scaled_pointwise": 8.465873380070218e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 3.813740059335335e-14,
+              "max_scaled_pointwise": 2.181885555796151e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 2.5737995529234766e-14,
+              "max_scaled_pointwise": 3.0763931543485545e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.4591768948205284e-14,
+              "max_scaled_pointwise": 6.856924015223522e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 1.3081534508122e-15,
+              "max_scaled_pointwise": 5.632424364289836e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 3,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.214082704156831e-15,
+      "max_kernel_pointwise_scaled_error": 9.380579040716818e-13,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.279990321,
+        0.19404299,
+        0.195417349
+      ],
+      "reference_s": [
+        0.68662618,
+        0.68120939,
+        0.697712164
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000614283,
+          "modal_solve_and_basis": 0.078051929,
+          "packed_sampling": 0.188761757,
+          "final_kernel_contraction": 0.002864777,
+          "source_contact": 9.984e-06
+        },
+        {
+          "measurement_adjoint": 0.000108509,
+          "modal_solve_and_basis": 0.019869156,
+          "packed_sampling": 0.166162178,
+          "final_kernel_contraction": 0.002808127,
+          "source_contact": 9.781e-06
+        },
+        {
+          "measurement_adjoint": 0.000127204,
+          "modal_solve_and_basis": 0.020252076,
+          "packed_sampling": 0.166765204,
+          "final_kernel_contraction": 0.002916493,
+          "source_contact": 8.939999999999999e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": true,
+      "batch_cache_entries": 75,
+      "batch_cache_bytes": 7006560,
+      "batch_cache_hits": 150,
+      "batch_cache_misses": 75,
+      "batch_max_basis_reconstruction_relative": 3.947223938879997e-16,
+      "forward_tensor_fields_enabled": true,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 9,
+      "forward_tensor_cache_admission_skips": 9,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 0,
+      "sampling_plan_bytes_estimate": 30063008,
+      "tensor_grid_hits": 8,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 16,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 392,
+      "tensor_basis_misses": 40,
+      "tensor_angular_payload_bytes_estimate": 23303136,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o3-b1-c0-tensor-real/cap0"
+  },
+  {
+    "case": "l12-a1352-o3-b1-c0-tensor-real",
+    "cap_bytes": 134217728,
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o3-b1-c0-tensor-real/cap134217728",
+      "12",
+      "3",
+      "3",
+      "tensor-real",
+      "direct",
+      "equilibrated"
+    ],
+    "comparison": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 9.80920690491098e-16,
+              "max_scaled_pointwise": 5.168179280765816e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 5.649428614436556e-14,
+              "max_scaled_pointwise": 6.062336074769438e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 8.126554031589729e-14,
+              "max_scaled_pointwise": 3.149903439816717e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 8.685110586447656e-15,
+              "max_scaled_pointwise": 4.704021985214686e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 8.815244333873998e-16,
+              "max_scaled_pointwise": 2.8980152185544254e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 1,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 8.782772023971013e-16,
+              "max_scaled_pointwise": 6.029824512461164e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.320566142158373e-14,
+              "max_scaled_pointwise": 9.034566999551426e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 4.722660500983715e-14,
+              "max_scaled_pointwise": 6.4712766486271394e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 6.409140383225062e-14,
+              "max_scaled_pointwise": 5.972452263524012e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 6.920372933338259e-16,
+              "max_scaled_pointwise": 2.9839134499861404e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        },
+        {
+          "objective": 2,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 1.242820434498887e-15,
+              "max_scaled_pointwise": 8.465873380070218e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 3.813740059335335e-14,
+              "max_scaled_pointwise": 2.181885555796151e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 2.5737995529234766e-14,
+              "max_scaled_pointwise": 3.0763931543485545e-12,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 1.4591768948205284e-14,
+              "max_scaled_pointwise": 6.856924015223522e-13,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 1.3081534508122e-15,
+              "max_scaled_pointwise": 5.632424364289836e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 3,
+      "backend": "tensor-real",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.214082704156831e-15,
+      "max_kernel_pointwise_scaled_error": 9.380579040716818e-13,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.291071799,
+        0.108446226,
+        0.107309955
+      ],
+      "reference_s": [
+        0.684606328,
+        0.711529232,
+        0.699208778
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000638421,
+          "modal_solve_and_basis": 0.080612009,
+          "packed_sampling": 0.196871927,
+          "final_kernel_contraction": 0.0029755270000000004,
+          "source_contact": 1.0629e-05
+        },
+        {
+          "measurement_adjoint": 0.000121984,
+          "modal_solve_and_basis": 0.019360526,
+          "packed_sampling": 0.08273199,
+          "final_kernel_contraction": 0.00272191,
+          "source_contact": 1.1259000000000002e-05
+        },
+        {
+          "measurement_adjoint": 0.000112477,
+          "modal_solve_and_basis": 0.019790040999999998,
+          "packed_sampling": 0.080552497,
+          "final_kernel_contraction": 0.002674686,
+          "source_contact": 1.0204e-05
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": true,
+      "batch_cache_entries": 75,
+      "batch_cache_bytes": 7006560,
+      "batch_cache_hits": 150,
+      "batch_cache_misses": 75,
+      "batch_max_basis_reconstruction_relative": 3.947223938879997e-16,
+      "forward_tensor_fields_enabled": true,
+      "forward_tensor_cache_entries": 3,
+      "forward_tensor_cache_hits": 6,
+      "forward_tensor_cache_misses": 3,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 21805200,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 30063008,
+      "tensor_grid_hits": 8,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 10,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 212,
+      "tensor_basis_misses": 40,
+      "tensor_angular_payload_bytes_estimate": 23303136,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/forward-cache-gates-v6/l12-a1352-o3-b1-c0-tensor-real/cap134217728"
+  }
+]

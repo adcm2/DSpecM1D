@@ -1,0 +1,16 @@
+{
+  "task_id": "phase-e-stage2-radial-v1-run-v1",
+  "status": "failed",
+  "completed_jobs": 14,
+  "failed_jobs": [
+    "phase-e-stage2-radial-terminal-check"
+  ],
+  "changed_inputs": {
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-radial-v1-control/continuation/phase-e-stage2-radial-v1-run-v1/state.json": {
+      "before": "97d2c2420e8be075918f4e42cd8c497d20c2a233ba1d4108ff529a00acd5b59b",
+      "after": "21ab218ea18fea149d0da940b130d45b166ffae0f16a6ca430051e325f648465"
+    }
+  },
+  "job_log": "Traceback (most recent call last):\n  File \"/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1-validation-v1/tools/check_phase_e_stage2_radial.py\", line 275, in <module>\n    if __name__=='__main__': main()\n                             ^^^^^^\n  File \"/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1-validation-v1/tools/check_phase_e_stage2_radial.py\", line 273, in main\n    Path(a.out).write_text(json.dumps(report,indent=2,sort_keys=True)+'\\n')\n  File \"/usr/lib/python3.11/pathlib.py\", line 1079, in write_text\n    with self.open(mode='w', encoding=encoding, errors=errors, newline=newline) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.11/pathlib.py\", line 1045, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-radial-v1-control/continuation/phase-e-stage2-radial-v1-run-v1/phase-e-stage2-radial-terminal-check/data/phase-e-stage2-radial-report.json'\n",
+  "job_log_sha256": "7104fe1306199f8a11b48583721ea9b3e1f671b8de9d8ec3d8d6e0d5d392b0b4"
+}

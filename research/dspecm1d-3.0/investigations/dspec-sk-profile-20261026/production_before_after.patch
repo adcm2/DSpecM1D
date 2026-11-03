@@ -1,0 +1,882 @@
+diff --git a/DSpecM1D/src/SensitivityKernels.h b/DSpecM1D/src/SensitivityKernels.h
+index 86411a1..a989788 100644
+--- a/DSpecM1D/src/SensitivityKernels.h
++++ b/DSpecM1D/src/SensitivityKernels.h
+@@ -147,6 +147,8 @@ struct FrequencyAdjointFields {
+  * for all compact RHS columns and its Hermitian transpose. Full SEM matrices
+  * are used; no turning-point truncation or frequency-to-frequency reuse occurs.
+  */
++class Windowed3DFieldEngine;
++
+ class FixedMeshAdjointSolver {
+ public:
+   using Complex = std::complex<double>;
+@@ -235,6 +237,33 @@ public:
+   }
+ 
+ private:
++  friend class Windowed3DFieldEngine;
++
++  /** Keep the original weighted RHS width while reusing its factorization for a basis. */
++  static void solveAdjointFrequencyWithSupplementalBasis(
++      const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
++      Complex z, const Eigen::MatrixXcd &rightHandSides,
++      const Eigen::MatrixXcd &basisRightHandSides,
++      Eigen::MatrixXcd &fields, Eigen::MatrixXcd &basisFields) {
++    if (rightHandSides.rows() == 0 || rightHandSides.cols() == 0 ||
++        !rightHandSides.allFinite() || basisRightHandSides.rows() == 0 ||
++        basisRightHandSides.cols() == 0 || !basisRightHandSides.allFinite())
++      throw std::invalid_argument("Adjoint right-hand sides must be nonempty and finite.");
++    SparseComplex h = systemMatrix(sem, family, degree, z);
++    if (h.rows() != rightHandSides.rows() || h.rows() != basisRightHandSides.rows())
++      throw std::invalid_argument("Adjoint right-hand sides do not match the selected SEM operator.");
++    Solver solver;
++    solver.compute(h);
++    if (solver.info() != Eigen::Success)
++      throw std::runtime_error("Adjoint SEM factorization failed.");
++    fields = solver.solveAdjoint(rightHandSides);
++    if (solver.info() != Eigen::Success || !fields.allFinite())
++      throw std::runtime_error("Hermitian-adjoint SEM solve failed or returned non-finite fields.");
++    basisFields = solver.solveAdjoint(basisRightHandSides);
++    if (solver.info() != Eigen::Success || !basisFields.allFinite())
++      throw std::runtime_error("Hermitian-adjoint basis solve failed or returned non-finite fields.");
++  }
++
+   static SparseComplex systemMatrix(const Full1D::SEM &sem,
+                                     SensitivitySolveFamily family, int degree,
+                                     Complex z) {
+diff --git a/DSpecM1D/src/Windowed3DFields.h b/DSpecM1D/src/Windowed3DFields.h
+index b20ca18..676523e 100644
+--- a/DSpecM1D/src/Windowed3DFields.h
++++ b/DSpecM1D/src/Windowed3DFields.h
+@@ -5,10 +5,13 @@
+ 
+ #include <algorithm>
+ #include <array>
++#include <bit>
+ #include <cmath>
+ #include <complex>
++#include <cstdint>
+ #include <functional>
+ #include <limits>
++#include <map>
+ #include <stdexcept>
+ #include <vector>
+ 
+@@ -59,6 +62,31 @@ struct OwnedModalFrequencyBlock3D {
+   Eigen::MatrixXcd forward, adjoint, sourceLift, sourceCoefficients, modeReceiver;
+ };
+ 
++namespace windowed3d_detail {
++
++/** Private-workspace modal basis used to synthesize a pole-centred field. */
++struct PoleModalFrequencyBlock3D {
++  SensitivitySolveFamily family;
++  int degree = 0;
++  int sourceElement = -1;
++  Eigen::MatrixXcd forward, adjointUnit, sourceLift, sourceCoefficients;
++};
++
++/** Geocentric orthonormal frame columns (theta, east, radial). */
++struct PoleFrame3D {
++  std::array<std::array<double,3>,3> axes{};
++};
++
++struct PoleSynthesisBlock3D {
++  SensitivitySolveFamily family;
++  int degree = 0;
++  int sourceElement = -1;
++  bool adjoint = false;
++  Eigen::MatrixXcd fields, lift;
++};
++
++} // namespace windowed3d_detail
++
+ class Windowed3DFrequencyWorkspace;
+ 
+ /**
+@@ -116,6 +144,8 @@ public:
+          sem.timeScaleSeconds()>0.0))throw std::invalid_argument("3D SI scales must be positive and finite.");
+     std::vector<Sample> result(points.size());
+     std::vector<double> radii(points.size());std::vector<int> elements(points.size());
++    std::vector<std::vector<std::size_t>> radialGroups;
++    std::map<std::pair<int,double>,std::size_t> groupIndex;
+     const auto tol=[](double r,double b){return 8.0*std::numeric_limits<double>::epsilon()*
+         std::max({1.0,std::abs(r),std::abs(b)});};
+     for(std::size_t p=0;p<points.size();++p){
+@@ -134,11 +164,56 @@ public:
+       if(r<sem.mesh().ELR(e)||r>sem.mesh().EUR(e)||
+          r>sem.mesh().EUR(sem.mesh().NE()-1))throw std::invalid_argument("One-sided field element does not contain the point.");
+       radii[p]=r;elements[p]=e;result[p].radialElement=e;result[p].fluid=sem.elementIsFluid(e);
++      const auto [group,added]=groupIndex.try_emplace({e,r},radialGroups.size());
++      if(added)radialGroups.emplace_back();
++      radialGroups[group->second].push_back(p);
+     }
+-    for(const auto &owned:blocks){
+-      const ModalFrequencyBlock3D block{owned.family,owned.degree,owned.sourceElement,
+-        owned.forward,owned.adjoint,owned.sourceLift,owned.sourceCoefficients,owned.modeReceiver};
+-      accumulateModalFields(sem,block,points,radii,elements,scale,result);
++    int maxAngularDegree=-1;
++    for(const auto &block:blocks)if(block.family!=SensitivitySolveFamily::Radial)
++      maxAngularDegree=std::max(maxAngularDegree,block.degree);
++    if(maxAngularDegree<0){
++      for(const auto &owned:blocks){
++        const ModalFrequencyBlock3D block{owned.family,owned.degree,owned.sourceElement,
++          owned.forward,owned.adjoint,owned.sourceLift,owned.sourceCoefficients,owned.modeReceiver};
++        accumulateModalFields(sem,block,points,radii,elements,radialGroups,scale,result,nullptr,0,{});
++      }
++    }else{
++      std::map<std::uint64_t,std::size_t> angleMap;
++      std::vector<double> uniqueTheta;
++      std::vector<std::size_t> angleForPoint(points.size());
++      for(std::size_t p=0;p<points.size();++p){
++        const auto [it,added]=angleMap.try_emplace(
++            std::bit_cast<std::uint64_t>(points[p].thetaRadians),uniqueTheta.size());
++        if(added)uniqueTheta.push_back(points[p].thetaRadians);
++        angleForPoint[p]=it->second;
++      }
++      constexpr std::size_t tableBudget=32u*1024u*1024u;
++      const std::size_t perAngle=angularTableBytesPerAngle(maxAngularDegree);
++      const std::size_t angleChunkSize=std::max<std::size_t>(1,
++          std::min<std::size_t>(64,tableBudget/std::max<std::size_t>(1,perAngle)));
++      const std::size_t chunkCount=(uniqueTheta.size()+angleChunkSize-1)/angleChunkSize;
++      std::vector<AngularPointChunk> chunks(chunkCount);
++      for(std::size_t c=0;c<chunkCount;++c){
++        const std::size_t begin=c*angleChunkSize;
++        const std::size_t end=std::min(uniqueTheta.size(),begin+angleChunkSize);
++        chunks[c].theta.assign(uniqueTheta.begin()+begin,uniqueTheta.begin()+end);
++      }
++      for(std::size_t g=0;g<radialGroups.size();++g)for(const auto p:radialGroups[g]){
++        const std::size_t c=angleForPoint[p]/angleChunkSize;
++        auto &chunk=chunks[c];
++        if(chunk.lastRadialGroup!=g){chunk.radialGroups.emplace_back();chunk.lastRadialGroup=g;}
++        chunk.radialGroups.back().push_back(p);
++      }
++      for(std::size_t c=0;c<chunks.size();++c){
++        const std::size_t angleBegin=c*angleChunkSize;
++        AngularWigner w(maxAngularDegree,maxAngularDegree,std::min(2,maxAngularDegree),chunks[c].theta);
++        for(const auto &owned:blocks){
++          const ModalFrequencyBlock3D block{owned.family,owned.degree,owned.sourceElement,
++            owned.forward,owned.adjoint,owned.sourceLift,owned.sourceCoefficients,owned.modeReceiver};
++          accumulateModalFields(sem,block,points,radii,elements,chunks[c].radialGroups,
++              scale,result,&w,angleBegin,angleForPoint);
++        }
++      }
+     }
+     const Complex fz=-Complex(0.0,1.0)/z;
+     for(auto &sample:result)for(int c=0;c<3;++c)
+@@ -158,7 +233,27 @@ public:
+       const std::vector<Point> &points);
+ 
+ private:
++  using PoleModalBlock=windowed3d_detail::PoleModalFrequencyBlock3D;
++  using PoleFrame=windowed3d_detail::PoleFrame3D;
++  using PoleSynthesisBlock=windowed3d_detail::PoleSynthesisBlock3D;
+   struct RadialMode { Complex U{}, Up{}, V{}, Vp{}, W{}, Wp{}; };
++  using AngularWigner = GSHTrans::Wigner<double,GSHTrans::All,GSHTrans::All,
++                                           GSHTrans::Multiple>;
++
++  struct AngularPointChunk {
++    std::vector<double> theta;
++    std::vector<std::vector<std::size_t>> radialGroups;
++    std::size_t lastRadialGroup=std::numeric_limits<std::size_t>::max();
++  };
++
++  static std::size_t angularTableBytesPerAngle(int maxDegree) {
++    const int nMax=std::min(2,maxDegree);
++    std::size_t values=0;
++    for(int n=-nMax;n<=nMax;++n)
++      for(int degree=std::abs(n);degree<=maxDegree;++degree)
++        values+=static_cast<std::size_t>(2*degree+1);
++    return values*sizeof(double)+static_cast<std::size_t>(2*nMax+1)*sizeof(std::size_t);
++  }
+ 
+   static Complex harmonic(int degree, int m, int n, double theta, double phi) {
+     GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All,
+@@ -168,9 +263,8 @@ private:
+ 
+   template <class Wigner>
+   static Complex harmonic(const Wigner &w, int degree, int m, int n,
+-                          const Point &point, std::size_t index) {
+-    return w[n, static_cast<int>(index)][degree, m] *
+-           std::exp(Complex(0.0, m * point.phiRadians));
++                          std::size_t thetaIndex, Complex phase) {
++    return w[n, static_cast<int>(thetaIndex)][degree, m] * phase;
+   }
+ 
+   static Eigen::MatrixXcd embedReceiver(const Full1D::SEM &sem,
+@@ -182,6 +276,88 @@ private:
+     return full;
+   }
+ 
++  static PoleFrame poleFrame(double latitudeDegrees,double longitudeDegrees) {
++    const double theta=(90.0-latitudeDegrees)*EIGEN_PI/180.0;
++    const double phi=longitudeDegrees*EIGEN_PI/180.0;
++    const double st=std::sin(theta),ct=std::cos(theta),sp=std::sin(phi),cp=std::cos(phi);
++    return {{{{ct*cp,ct*sp,-st},{-sp,cp,0.0},{st*cp,st*sp,ct}}}};
++  }
++
++  static std::array<double,3> frameCoordinates(const PoleFrame &frame,
++      const std::array<double,3> &global) {
++    std::array<double,3> local{};
++    for(int j=0;j<3;++j)for(int i=0;i<3;++i)local[j]+=frame.axes[j][i]*global[i];
++    return local;
++  }
++
++  static std::array<double,3> frameVector(const PoleFrame &frame,
++      const std::array<double,3> &local) {
++    std::array<double,3> global{};
++    for(int i=0;i<3;++i)for(int j=0;j<3;++j)global[i]+=frame.axes[j][i]*local[j];
++    return global;
++  }
++
++  static std::array<double,3> tangentRotation(const PoleFrame &frame,
++      double theta,double phi,double &a,double &b) {
++    const auto x=frameCoordinates(frame,unitPoint(theta,phi));
++    const double horizontal=std::hypot(x[0],x[1]);
++    const double localTheta=std::atan2(horizontal,x[2]);
++    const double localPhi=horizontal==0.0?0.0:std::atan2(x[1],x[0]);
++    const auto localEt=frameVector(frame,{std::cos(localTheta)*std::cos(localPhi),
++        std::cos(localTheta)*std::sin(localPhi),-std::sin(localTheta)});
++    const std::array<double,3> globalEt={std::cos(theta)*std::cos(phi),
++        std::cos(theta)*std::sin(phi),-std::sin(theta)};
++    const std::array<double,3> globalEp={-std::sin(phi),std::cos(phi),0.0};
++    a=0.0;b=0.0;
++    for(int i=0;i<3;++i){a+=globalEt[i]*localEt[i];b+=globalEp[i]*localEt[i];}
++    return {localTheta,localPhi,0.0};
++  }
++
++  static std::array<Complex,3> rotateDisplacement(const std::array<Complex,3> &v,
++      double a,double b) {
++    return {v[0],a*v[1]+b*v[2],-b*v[1]+a*v[2]};
++  }
++
++  static SpinStrainField rotateStrain(const SpinStrainField &v,double a,double b) {
++    const Complex c(a,-b),c2=c*c;
++    return {v.rr,v.horizontalTrace,c*v.radialPlus,std::conj(c)*v.radialMinus,
++        c2*v.horizontalPlus,std::conj(c2)*v.horizontalMinus};
++  }
++
++  static void rotateContribution(Sample &sample,double a,double b,bool adjoint) {
++    if(adjoint){
++      sample.adjointDualDisplacement=rotateDisplacement(sample.adjointDualDisplacement,a,b);
++      sample.adjointDualStrain=rotateStrain(sample.adjointDualStrain,a,b);
++      sample.rScaledAdjointDualStrainMetres=rotateStrain(sample.rScaledAdjointDualStrainMetres,a,b);
++    }else{
++      sample.forwardRawDisplacement=rotateDisplacement(sample.forwardRawDisplacement,a,b);
++      sample.forwardRawStrain=rotateStrain(sample.forwardRawStrain,a,b);
++      sample.rScaledForwardStrainMetres=rotateStrain(sample.rScaledForwardStrainMetres,a,b);
++    }
++  }
++
++  static std::array<double,3> unitPoint(double theta,double phi) {
++    return {std::sin(theta)*std::cos(phi),std::sin(theta)*std::sin(phi),std::cos(theta)};
++  }
++
++  static Eigen::MatrixXcd receiverAtPole(SensitivitySolveFamily family,int degree) {
++    const int mmax=std::min(1,degree),orders=2*mmax+1;
++    Eigen::MatrixXcd result=Eigen::MatrixXcd::Zero(3,orders);
++    for(int m=-mmax;m<=mmax;++m){
++      const int col=m+mmax;
++      if(family==SensitivitySolveFamily::Spheroidal)
++        result(0,col)=harmonic(degree,m,0,0.0,0.0);
++      const Complex ym=harmonic(degree,m,-1,0.0,0.0);
++      const Complex yp=harmonic(degree,m,1,0.0,0.0);
++      if(family==SensitivitySolveFamily::Spheroidal){
++        result(1,col)=yp-ym;result(2,col)=-Complex(0,1)*(ym+yp);
++      }else{
++        result(1,col)=Complex(0,1)*(ym+yp);result(2,col)=yp-ym;
++      }
++    }
++    return result;
++  }
++
+   static Eigen::MatrixXcd interpolate(const Full1D::SEM &sem,
+       SensitivitySolveFamily family, const Eigen::MatrixXcd &fields,
+       const Eigen::MatrixXcd &lift, double radius, int element, int column = 0,
+@@ -270,7 +446,9 @@ private:
+ 
+   static void solveFrequencyModes(Full1D::SEM &sem,
+       SourceInfo::EarthquakeCMT &source,InputParameters &parameters,Complex z,
+-      const Eigen::VectorXcd &adjointWeights,const ModalVisitor &visitor) {
++      const Eigen::VectorXcd &adjointWeights,const ModalVisitor &visitor,
++      std::vector<PoleModalBlock> *poleBlocks=nullptr,
++      PoleFrame *sourceFrame=nullptr) {
+     if(!sem.sourceMatches(source)||parameters.attenuation()||
+        parameters.cowlingFrequencyMhz()!=0.0||parameters.gravitation()!=2||
+        parameters.output_type()!=0||!std::isfinite(z.real())||
+@@ -284,6 +462,7 @@ private:
+     if(!flags.inc_rad&&!flags.inc_sph&&!flags.inc_tor)
+       throw std::invalid_argument("3D field mode selection is empty.");
+     const Complex fz=-Complex(0.0,1.0)/z;
++    if(sourceFrame)*sourceFrame=poleFrame(source.Latitude(),source.Longitude());
+     ParamInfo angular(parameters,lmax);
+     if(flags.inc_rad){
+       auto treatment=sem.sourceTreatedRadial(source,z);
+@@ -309,7 +488,8 @@ private:
+         const Eigen::MatrixXcd sourceCoefficients=sem.calculateForceCoefficients(source,degree);
+         const Eigen::MatrixXcd modeReceiver=angular.rvFullSph(degree);
+         const auto receivers=sem.receiverElements(parameters,false);
+-        const auto receiver=embedReceiver(sem,sem.rvBaseFull(parameters,degree,false),
++        const auto receiverBase=sem.rvBaseFull(parameters,degree,false);
++        const auto receiver=embedReceiver(sem,receiverBase,
+             sem.ltgS(0,receivers.front(),0),static_cast<int>(sem.hS(degree).rows()));
+         Eigen::MatrixXcd rhs=Eigen::MatrixXcd::Zero(receiver.cols(),orders);
+         for(int m=-degree;m<=degree;++m){
+@@ -317,10 +497,17 @@ private:
+           for(int row=0;row<weighted.rows();++row)weighted.row(row)*=modeReceiver(row,m+degree);
+           rhs.col(m+degree)=weighted.adjoint()*(std::conj(fz)*adjointWeights);
+         }
+-        const auto adjoint=FixedMeshAdjointSolver::solveAdjointFrequency(
+-            sem,SensitivitySolveFamily::Spheroidal,degree,z,rhs);
++        Eigen::MatrixXcd adjoint,adjointUnit;
++        FixedMeshAdjointSolver::solveAdjointFrequencyWithSupplementalBasis(
++            sem,SensitivitySolveFamily::Spheroidal,degree,z,rhs,
++            receiver.topRows(3).adjoint(),adjoint,adjointUnit);
+         visitor({SensitivitySolveFamily::Spheroidal,degree,treatment.sourceElement,
+           forward,adjoint,treatment.lift,sourceCoefficients,modeReceiver});
++        if(poleBlocks){
++          const auto reduced=sem.calculateForceRedCoefficients(source,degree,0.0);
++          poleBlocks->push_back({SensitivitySolveFamily::Spheroidal,degree,
++              treatment.sourceElement,forward,adjointUnit,treatment.lift,reduced});
++        }
+       }
+       if(flags.inc_tor&&!sem.elementIsFluid(sem.sourceElement(source))){
+         auto treatment=sem.sourceTreatedToroidal(source,degree,z);
+@@ -329,7 +516,8 @@ private:
+         const Eigen::MatrixXcd sourceCoefficients=sem.calculateForceCoefficientsT(source,degree);
+         const Eigen::MatrixXcd modeReceiver=angular.rvFullTor(degree);
+         const auto receivers=sem.receiverElements(parameters,true);
+-        const auto receiver=embedReceiver(sem,sem.rvBaseFullT(parameters,degree),
++        const auto receiverBase=sem.rvBaseFullT(parameters,degree);
++        const auto receiver=embedReceiver(sem,receiverBase,
+             sem.ltgT(receivers.front(),0),static_cast<int>(sem.hTk(degree).rows()));
+         Eigen::MatrixXcd rhs=Eigen::MatrixXcd::Zero(receiver.cols(),orders);
+         for(int m=-degree;m<=degree;++m){
+@@ -337,10 +525,17 @@ private:
+           for(int row=0;row<weighted.rows();++row)weighted.row(row)*=modeReceiver(row,m+degree);
+           rhs.col(m+degree)=weighted.adjoint()*(std::conj(fz)*adjointWeights);
+         }
+-        const auto adjoint=FixedMeshAdjointSolver::solveAdjointFrequency(
+-            sem,SensitivitySolveFamily::Toroidal,degree,z,rhs);
++        Eigen::MatrixXcd adjoint,adjointUnit;
++        FixedMeshAdjointSolver::solveAdjointFrequencyWithSupplementalBasis(
++            sem,SensitivitySolveFamily::Toroidal,degree,z,rhs,
++            receiver.topRows(3).adjoint(),adjoint,adjointUnit);
+         visitor({SensitivitySolveFamily::Toroidal,degree,treatment.sourceElement,
+           forward,adjoint,treatment.lift,sourceCoefficients,modeReceiver});
++        if(poleBlocks){
++          const auto reduced=sem.calculateForceRedCoefficientsT(source,degree,0.0);
++          poleBlocks->push_back({SensitivitySolveFamily::Toroidal,degree,
++              treatment.sourceElement,forward,adjointUnit,treatment.lift,reduced});
++        }
+       }
+     }
+   }
+@@ -348,11 +543,14 @@ private:
+   static void accumulateModalFields(const Full1D::SEM &sem,
+       const ModalFrequencyBlock3D &block,const std::vector<Point> &points,
+       const std::vector<double> &radii,const std::vector<int> &elements,
+-      double radiusScale,std::vector<Sample> &result) {
++      const std::vector<std::vector<std::size_t>> &radialGroups,
++      double radiusScale,std::vector<Sample> &result,const AngularWigner *w,
++      std::size_t angleBegin,const std::vector<std::size_t> &angleForPoint) {
+     const int l=block.degree;
+     if(block.family==SensitivitySolveFamily::Radial){
+       const Complex y00=harmonic(0,0,0,0.0,0.0);
+-      for(std::size_t p=0;p<points.size();++p){
++      for(const auto &group:radialGroups){
++        const auto p=group.front();
+         const auto fRadial=interpolate(sem,block.family,block.forward,
+             block.sourceLift,radii[p],elements[p],0,block.sourceElement);
+         const auto aRadial=interpolate(sem,block.family,block.adjoint,
+@@ -360,55 +558,163 @@ private:
+         Eigen::MatrixXcd f=Eigen::MatrixXcd::Zero(6,1),a=f;
+         f(0,0)=fRadial(0,0);f(1,0)=fRadial(1,0);
+         a(0,0)=aRadial(0,0);a(1,0)=aRadial(1,0);
+-        add(result[p].forwardRawDisplacement,radialToDisplacement(0,f,1.0,y00,{},{},{},{}));
+-        add(result[p].adjointDualDisplacement,radialToDisplacement(0,a,1.0,y00,{},{},{},{}));
+-        if(radii[p]>0.0){
+-          add(result[p].forwardRawStrain,radialToStrain(0,f,radii[p],y00,{},{},{},{}));
+-          add(result[p].adjointDualStrain,radialToStrain(0,a,radii[p],y00,{},{},{},{}));}
+-        add(result[p].rScaledForwardStrainMetres,scale(rScaledStrainFromModal(
+-            0,f(0,0),f(1,0),{},{},{},{},radii[p],y00,{},{},{},{}),radiusScale));
+-        add(result[p].rScaledAdjointDualStrainMetres,scale(rScaledStrainFromModal(
+-            0,a(0,0),a(1,0),{},{},{},{},radii[p],y00,{},{},{},{}),radiusScale));
++        for(const auto q:group){
++          add(result[q].forwardRawDisplacement,radialToDisplacement(0,f,1.0,y00,{},{},{},{}));
++          add(result[q].adjointDualDisplacement,radialToDisplacement(0,a,1.0,y00,{},{},{},{}));
++          if(radii[q]>0.0){
++            add(result[q].forwardRawStrain,radialToStrain(0,f,radii[q],y00,{},{},{},{}));
++            add(result[q].adjointDualStrain,radialToStrain(0,a,radii[q],y00,{},{},{},{}));}
++          add(result[q].rScaledForwardStrainMetres,scale(rScaledStrainFromModal(
++              0,f(0,0),f(1,0),{},{},{},{},radii[q],y00,{},{},{},{}),radiusScale));
++          add(result[q].rScaledAdjointDualStrainMetres,scale(rScaledStrainFromModal(
++              0,a(0,0),a(1,0),{},{},{},{},radii[q],y00,{},{},{},{}),radiusScale));
++        }
+       }
+       return;
+     }
+-    std::vector<double> theta;theta.reserve(points.size());
+-    for(const auto &p:points)theta.push_back(p.thetaRadians);
+-    GSHTrans::Wigner<double,GSHTrans::All,GSHTrans::All,
+-                     GSHTrans::Multiple> w(l,l,std::min(2,l),theta);
+-    for(std::size_t p=0;p<points.size();++p){
++    if(w==nullptr||angleForPoint.size()!=points.size())
++      throw std::logic_error("Missing angular table for 3D field block.");
++    for(const auto &group:radialGroups){
++      const auto representative=group.front();
+       if(block.family==SensitivitySolveFamily::Toroidal&&
+-         (sem.elementIsFluid(elements[p])||elements[p]<sem.el()||elements[p]>=sem.eu()))continue;
++         (sem.elementIsFluid(elements[representative])||elements[representative]<sem.el()||elements[representative]>=sem.eu()))continue;
+       for(int m=-l;m<=l;++m){
+         const auto fmode=interpolateCombination(sem,block.family,block.forward,
+             block.sourceLift,block.sourceCoefficients.row(m+l).transpose(),
+-            radii[p],elements[p],block.sourceElement);
++            radii[representative],elements[representative],block.sourceElement);
+         const auto amode=interpolate(sem,block.family,block.adjoint,
+-            Eigen::MatrixXcd{},radii[p],elements[p],m+l);
+-        const Complex x0=block.family==SensitivitySolveFamily::Spheroidal?
+-            harmonic(w,l,m,0,points[p],p):Complex{};
+-        const Complex xp=harmonic(w,l,m,1,points[p],p);
+-        const Complex xm=harmonic(w,l,m,-1,points[p],p);
+-        const Complex xpp=l>=2?harmonic(w,l,m,2,points[p],p):Complex{};
+-        const Complex xmm=l>=2?harmonic(w,l,m,-2,points[p],p):Complex{};
+-        const auto fd=block.family==SensitivitySolveFamily::Spheroidal?
+-            radialToDisplacement(l,fmode,radii[p],x0,xp,xm,xpp,xmm):
+-            toroidalDisplacement(l,fmode,xp,xm);
+-        add(result[p].forwardRawDisplacement,fd);
+-        if(radii[p]>0.0)add(result[p].forwardRawStrain,radialToStrain(
+-            l,fmode,radii[p],x0,xp,xm,xpp,xmm));
+-        const auto fm=mode(fmode);
+-        add(result[p].rScaledForwardStrainMetres,scale(rScaledStrainFromModal(
+-            l,fm.U,fm.Up,fm.V,fm.Vp,fm.W,fm.Wp,radii[p],x0,xp,xm,xpp,xmm),radiusScale));
+-        const auto ad=block.family==SensitivitySolveFamily::Spheroidal?
+-            radialToDisplacement(l,amode,radii[p],x0,xp,xm,xpp,xmm):
+-            toroidalDisplacement(l,amode,xp,xm);
+-        add(result[p].adjointDualDisplacement,ad);
+-        if(radii[p]>0.0)add(result[p].adjointDualStrain,radialToStrain(
+-            l,amode,radii[p],x0,xp,xm,xpp,xmm));
+-        const auto am=mode(amode);
+-        add(result[p].rScaledAdjointDualStrainMetres,scale(rScaledStrainFromModal(
+-            l,am.U,am.Up,am.V,am.Vp,am.W,am.Wp,radii[p],x0,xp,xm,xpp,xmm),radiusScale));
++            Eigen::MatrixXcd{},radii[representative],elements[representative],m+l);
++        for(const auto p:group){
++          const Complex phase=std::exp(Complex(0.0,m*points[p].phiRadians));
++          const std::size_t thetaIndex=angleForPoint[p]-angleBegin;
++          const Complex x0=block.family==SensitivitySolveFamily::Spheroidal?
++              harmonic(*w,l,m,0,thetaIndex,phase):Complex{};
++          const Complex xp=harmonic(*w,l,m,1,thetaIndex,phase);
++          const Complex xm=harmonic(*w,l,m,-1,thetaIndex,phase);
++          const Complex xpp=l>=2?harmonic(*w,l,m,2,thetaIndex,phase):Complex{};
++          const Complex xmm=l>=2?harmonic(*w,l,m,-2,thetaIndex,phase):Complex{};
++          const auto fd=block.family==SensitivitySolveFamily::Spheroidal?
++              radialToDisplacement(l,fmode,radii[p],x0,xp,xm,xpp,xmm):
++              toroidalDisplacement(l,fmode,xp,xm);
++          add(result[p].forwardRawDisplacement,fd);
++          if(radii[p]>0.0)add(result[p].forwardRawStrain,radialToStrain(
++              l,fmode,radii[p],x0,xp,xm,xpp,xmm));
++          const auto fm=mode(fmode);
++          add(result[p].rScaledForwardStrainMetres,scale(rScaledStrainFromModal(
++              l,fm.U,fm.Up,fm.V,fm.Vp,fm.W,fm.Wp,radii[p],x0,xp,xm,xpp,xmm),radiusScale));
++          const auto ad=block.family==SensitivitySolveFamily::Spheroidal?
++              radialToDisplacement(l,amode,radii[p],x0,xp,xm,xpp,xmm):
++              toroidalDisplacement(l,amode,xp,xm);
++          add(result[p].adjointDualDisplacement,ad);
++          if(radii[p]>0.0)add(result[p].adjointDualStrain,radialToStrain(
++              l,amode,radii[p],x0,xp,xm,xpp,xmm));
++          const auto am=mode(amode);
++          add(result[p].rScaledAdjointDualStrainMetres,scale(rScaledStrainFromModal(
++              l,am.U,am.Up,am.V,am.Vp,am.W,am.Wp,radii[p],x0,xp,xm,xpp,xmm),radiusScale));
++        }
++      }
++    }
++  }
++
++  static void synthesizePoleFrame(const Full1D::SEM &sem,
++      const std::vector<PoleSynthesisBlock> &blocks,const PoleFrame &frame,
++      const std::vector<Point> &points,const std::vector<double> &radii,
++      const std::vector<int> &elements,double radiusScale,
++      std::vector<Sample> &result) {
++    if(blocks.empty())return;
++    struct PointAngle { double theta=0.0,phi=0.0,a=1.0,b=0.0; };
++    std::vector<PointAngle> angles(points.size());
++    std::map<std::uint64_t,std::size_t> angleMap;
++    std::vector<double> uniqueTheta;
++    std::vector<std::size_t> angleForPoint(points.size());
++    for(std::size_t p=0;p<points.size();++p){
++      double a=1.0,b=0.0;
++      const auto local=tangentRotation(frame,points[p].thetaRadians,points[p].phiRadians,a,b);
++      angles[p]={local[0],local[1],a,b};
++      const auto [it,added]=angleMap.try_emplace(std::bit_cast<std::uint64_t>(local[0]),uniqueTheta.size());
++      if(added)uniqueTheta.push_back(local[0]);
++      angleForPoint[p]=it->second;
++    }
++    std::vector<std::vector<std::size_t>> radialGroups;
++    std::map<std::pair<int,double>,std::size_t> groupIndex;
++    for(std::size_t p=0;p<points.size();++p){
++      const auto [it,added]=groupIndex.try_emplace({elements[p],radii[p]},radialGroups.size());
++      if(added)radialGroups.emplace_back();
++      radialGroups[it->second].push_back(p);
++    }
++    int maxDegree=0;
++    for(const auto &block:blocks)maxDegree=std::max(maxDegree,block.degree);
++    constexpr std::size_t tableBudget=32u*1024u*1024u;
++    const std::size_t perAngle=angularTableBytesPerAngle(maxDegree);
++    const std::size_t angleChunkSize=std::max<std::size_t>(1,
++        std::min<std::size_t>(64,tableBudget/std::max<std::size_t>(1,perAngle)));
++    const std::size_t chunkCount=(uniqueTheta.size()+angleChunkSize-1)/angleChunkSize;
++    std::vector<AngularPointChunk> chunks(chunkCount);
++    for(std::size_t c=0;c<chunkCount;++c){
++      const std::size_t begin=c*angleChunkSize;
++      const std::size_t end=std::min(uniqueTheta.size(),begin+angleChunkSize);
++      chunks[c].theta.assign(uniqueTheta.begin()+begin,uniqueTheta.begin()+end);
++    }
++    for(std::size_t g=0;g<radialGroups.size();++g)for(const auto p:radialGroups[g]){
++      auto &chunk=chunks[angleForPoint[p]/angleChunkSize];
++      if(chunk.lastRadialGroup!=g){chunk.radialGroups.emplace_back();chunk.lastRadialGroup=g;}
++      chunk.radialGroups.back().push_back(p);
++    }
++    for(std::size_t chunk=0;chunk<chunkCount;++chunk){
++      const std::size_t begin=chunk*angleChunkSize;
++      AngularWigner w(maxDegree,std::min(2,maxDegree),std::min(2,maxDegree),chunks[chunk].theta);
++      for(const auto &block:blocks){
++        const int l=block.degree,mmax=(static_cast<int>(block.fields.cols())-1)/2;
++        for(const auto &group:chunks[chunk].radialGroups){
++          const auto representative=group.front();
++          if(block.family==SensitivitySolveFamily::Toroidal&&
++             (sem.elementIsFluid(elements[representative])||elements[representative]<sem.el()||elements[representative]>=sem.eu()))continue;
++          for(int m=-mmax;m<=mmax;++m){
++            const int column=m+mmax;
++            const auto values=interpolate(sem,block.family,block.fields,block.lift,
++                radii[representative],elements[representative],column,block.sourceElement);
++            for(const auto p:group){
++              const std::size_t thetaIndex=angleForPoint[p]-begin;
++              const Complex phase=std::exp(Complex(0.0,m*angles[p].phi));
++              const Complex x0=block.family==SensitivitySolveFamily::Spheroidal?
++                  harmonic(w,l,m,0,thetaIndex,phase):Complex{};
++              const Complex xp=harmonic(w,l,m,1,thetaIndex,phase);
++              const Complex xm=harmonic(w,l,m,-1,thetaIndex,phase);
++              const Complex xpp=l>=2?harmonic(w,l,m,2,thetaIndex,phase):Complex{};
++              const Complex xmm=l>=2?harmonic(w,l,m,-2,thetaIndex,phase):Complex{};
++              Sample contribution;contribution.radialElement=elements[p];
++              contribution.fluid=sem.elementIsFluid(elements[p]);
++              const auto displacement=block.family==SensitivitySolveFamily::Spheroidal?
++                  radialToDisplacement(l,values,radii[p],x0,xp,xm,xpp,xmm):
++                  toroidalDisplacement(l,values,xp,xm);
++              const auto strain=radii[p]>0.0?
++                  radialToStrain(l,values,radii[p],x0,xp,xm,xpp,xmm):SpinStrainField{};
++              const auto modal=mode(values);
++              const auto rScaled=scale(rScaledStrainFromModal(
++                  l,modal.U,modal.Up,modal.V,modal.Vp,modal.W,modal.Wp,radii[p],
++                  x0,xp,xm,xpp,xmm),radiusScale);
++              if(block.adjoint){
++                contribution.adjointDualDisplacement=displacement;
++                contribution.adjointDualStrain=strain;
++                contribution.rScaledAdjointDualStrainMetres=rScaled;
++              }else{
++                contribution.forwardRawDisplacement=displacement;
++                contribution.forwardRawStrain=strain;
++                contribution.rScaledForwardStrainMetres=rScaled;
++              }
++              rotateContribution(contribution,angles[p].a,angles[p].b,block.adjoint);
++              if(block.adjoint){
++                add(result[p].adjointDualDisplacement,contribution.adjointDualDisplacement);
++                add(result[p].adjointDualStrain,contribution.adjointDualStrain);
++                add(result[p].rScaledAdjointDualStrainMetres,contribution.rScaledAdjointDualStrainMetres);
++              }else{
++                add(result[p].forwardRawDisplacement,contribution.forwardRawDisplacement);
++                add(result[p].forwardRawStrain,contribution.forwardRawStrain);
++                add(result[p].rScaledForwardStrainMetres,contribution.rScaledForwardStrainMetres);
++              }
++            }
++          }
++        }
+       }
+     }
+   }
+@@ -439,20 +745,23 @@ public:
+       const Eigen::VectorXcd &adjointWeights) {
+     sensitivity_detail::requireConstructedSEM(sem);
+     std::vector<OwnedModalFrequencyBlock3D> blocks;
++    std::vector<windowed3d_detail::PoleModalFrequencyBlock3D> poleBlocks;
++    windowed3d_detail::PoleFrame3D sourceFrame;
+     const auto capture=[&](const ModalFrequencyBlock3D &b){
+       blocks.push_back({b.family,b.degree,b.sourceElement,b.forward,b.adjoint,
+                         b.sourceLift,b.sourceCoefficients,b.modeReceiver});
+     };
+     Windowed3DFieldEngine::solveFrequencyModes(
+-        sem,source,parameters,z,adjointWeights,capture);
+-    return Windowed3DFrequencyWorkspace(sem,parameters,z,adjointWeights,std::move(blocks));
++        sem,source,parameters,z,adjointWeights,capture,&poleBlocks,&sourceFrame);
++    return Windowed3DFrequencyWorkspace(sem,parameters,z,adjointWeights,
++        std::move(blocks),std::move(poleBlocks),sourceFrame);
+   }
+   std::vector<Field3DSample> sample(const std::vector<Field3DPoint> &points) const {
+-    return Windowed3DFieldEngine::sampleModalBlocks(*sem_,*parameters_,z_,blocks_,points,false);
++    return samplePoleFrames(points,false);
+   }
+   std::vector<Field3DSample> sampleWeightedChunk(
+       const std::vector<Field3DPoint> &points) const {
+-    return Windowed3DFieldEngine::sampleModalBlocks(*sem_,*parameters_,z_,blocks_,points,true);
++    return samplePoleFrames(points,true);
+   }
+   const std::vector<OwnedModalFrequencyBlock3D> &modalBlocks() const { return blocks_; }
+   Full1D::SEM &sem() const { return *sem_; }
+@@ -462,14 +771,70 @@ public:
+ private:
+   Windowed3DFrequencyWorkspace(Full1D::SEM &sem,InputParameters &parameters,
+       Complex z,const Eigen::VectorXcd &adjointWeights,
+-      std::vector<OwnedModalFrequencyBlock3D> blocks)
++      std::vector<OwnedModalFrequencyBlock3D> blocks,
++      std::vector<windowed3d_detail::PoleModalFrequencyBlock3D> poleBlocks,
++      windowed3d_detail::PoleFrame3D sourceFrame)
+       :sem_(&sem),parameters_(&parameters),z_(z),adjointWeights_(adjointWeights),
+-       blocks_(std::move(blocks)){}
++       blocks_(std::move(blocks)),poleBlocks_(std::move(poleBlocks)),sourceFrame_(sourceFrame){}
++
++  std::vector<Field3DSample> samplePoleFrames(
++      const std::vector<Field3DPoint> &points,bool allowCenter) const {
++    std::vector<OwnedModalFrequencyBlock3D> radialBlocks;
++    for(const auto &block:blocks_)if(block.family==SensitivitySolveFamily::Radial)
++      radialBlocks.push_back(block);
++    auto result=Windowed3DFieldEngine::sampleModalBlocks(
++        *sem_,*parameters_,z_,radialBlocks,points,allowCenter);
++    if(points.empty())return result;
++    const double scale=sem_->lengthScaleMetres();
++    const auto tol=[](double r,double b){return 8.0*std::numeric_limits<double>::epsilon()*
++        std::max({1.0,std::abs(r),std::abs(b)});};
++    std::vector<double> radii(points.size());std::vector<int> elements(points.size());
++    for(std::size_t p=0;p<points.size();++p){
++      double r=points[p].radiusMetres/scale;const int e=result[p].radialElement;
++      for(double b:{sem_->mesh().ELR(e),sem_->mesh().EUR(e)})
++        if(b>0.0&&std::abs(r-b)<=tol(r,b))r=b;
++      radii[p]=r;elements[p]=e;
++    }
++    std::vector<windowed3d_detail::PoleSynthesisBlock3D> sourceSynthesis;
++    const Complex fz=-Complex(0.0,1.0)/z_;
++    for(const auto &block:poleBlocks_){
++      const auto coeff=block.sourceCoefficients.transpose();
++      sourceSynthesis.push_back({block.family,block.degree,block.sourceElement,false,
++          block.forward*coeff,block.sourceLift*coeff});
++    }
++    for(int rec=0;rec<parameters_->num_receivers();++rec){
++      std::vector<windowed3d_detail::PoleSynthesisBlock3D> adjointSynthesis;
++      const auto station=parameters_->receivers()[rec];
++      const auto receiverFrame=Windowed3DFieldEngine::poleFrame(station.first,station.second);
++      for(const auto &block:poleBlocks_){
++        const auto poleReceiver=Windowed3DFieldEngine::receiverAtPole(block.family,block.degree);
++        const int mmax=(static_cast<int>(poleReceiver.cols())-1)/2;
++        Eigen::MatrixXcd localWeights=Eigen::MatrixXcd::Zero(3,2*mmax+1);
++        for(int comp=0;comp<3;++comp)for(int m=-mmax;m<=mmax;++m)
++          localWeights(comp,m+mmax)=std::conj(poleReceiver(comp,m+mmax))*
++              (std::conj(fz)*adjointWeights_[3*rec+comp]);
++        const auto localAdjoint=block.adjointUnit*localWeights;
++        adjointSynthesis.push_back({block.family,block.degree,block.sourceElement,true,
++            localAdjoint,Eigen::MatrixXcd{}});
++      }
++      Windowed3DFieldEngine::synthesizePoleFrame(*sem_,adjointSynthesis,
++          receiverFrame,points,radii,elements,scale,result);
++    }
++    Windowed3DFieldEngine::synthesizePoleFrame(*sem_,sourceSynthesis,
++        sourceFrame_,points,radii,elements,scale,result);
++    for(auto &sample:result)for(int c=0;c<3;++c)
++      sample.observableForwardDisplacementSpectrumMetreSeconds[c]=
++          sem_->timeScaleSeconds()*fz*scale*sample.forwardRawDisplacement[c];
++    return result;
++  }
++
+   Full1D::SEM *sem_;
+   InputParameters *parameters_;
+   Complex z_;
+   Eigen::VectorXcd adjointWeights_;
+   std::vector<OwnedModalFrequencyBlock3D> blocks_;
++  std::vector<windowed3d_detail::PoleModalFrequencyBlock3D> poleBlocks_;
++  windowed3d_detail::PoleFrame3D sourceFrame_;
+ };
+ 
+ inline Windowed3DFrequencyWorkspace Windowed3DFieldEngine::prepareFrequencyWorkspace(
+diff --git a/implementation_status.md b/implementation_status.md
+index 2f17810..1f0c193 100644
+--- a/implementation_status.md
++++ b/implementation_status.md
+@@ -1,5 +1,57 @@
+ # Implementation Status
+ 
++## 2026-10-26 — Pole-centred field synthesis (accepted)
++
++- Reconstruct the opt-in 3D fields in exact source/receiver pole frames using
++  source orders up to two and receiver orders up to one, then rotate vector and
++  spin-strain components into the common global frame. Public global modal
++  blocks/sampling and source lifts remain available with their existing meaning.
++- Reuse one adjoint factorization for the original-width weighted solve followed
++  by a separate three-column unit-basis solve; frozen source contacts now match
++  bit-for-bit. This avoids the rounding changes from a combined-width solve.
++- All 118 enabled CTest checks and unchanged YSpec profile/integral gates pass;
++  the two established expensive diagnostics remain disabled. Independent Luna
++  mathematical/code review and Sol review found no formula/API blocker.
++- User-approved frozen limits are `1e-9` for adjoint strain and `1e-10` for
++  kernel pointwise scaled error; maxima are `6.89e-11` and `1.1e-11`.
++  All 336 field, 240 contact and 10 kernel comparisons pass, with both YSpec
++  degrees rechecked. Every other limit and permanent test is unchanged; kernel
++  L2 remains below `1.6e-13`. Independent Luna and Sol acceptance audits pass.
++  The original failed `1e-12` audit is retained alongside `accepted_comparison.json`.
++- At one fluid point, full-rank long-double solves of the same assembled operator
++  reduce direct/compact strain disagreement from `7.94e-11` to `2.14e-13`;
++  reference backward error is below `1.1e-23`. This supports a localized rounding
++  explanation, without proving every comparison in higher precision.
++- Three alternating single-thread first-call medians: degree 12, `6.57 -> 2.91 s`
++  (2.26x; YSpec `0.240 s`); degree 3, `0.123 -> 0.120 s` (YSpec `0.023 s`).
++  Evidence and bounded diagnostic: `build/kernel-reconstruction-pole-frames-20261026/`.
++
++## 2026-10-26 — Exact radial reuse in 3D field reconstruction
++
++- Grouped requested points by resolved SEM element and model radius after
++  existing endpoint canonicalization within each sampling call. Each modal block
++  now interpolates forward
++  and adjoint radial values once per group and reuses them across its angular
++  points; modal summation order, one-sided element identity, and per-call cache
++  lifetime are preserved.
++- Extended the existing field reconstruction regression to compare all sampled
++  field components against singleton and reversed-order sampling at a
++  `1e-12` per-component relative scale with a `1e-30` floor. Existing checks
++  continue to cover batching, fluids, source lift and one-sided source traces.
++- Built the existing Release sensitivity-kernel target with one build job;
++  all 30 tests passed with one OpenMP and BLAS thread. The grouped sampling
++  regression passed for singleton, reversed-order, and existing chunked calls.
++- YSpec's exact layer/radius registration confirmed this design. Frozen PREM
++  field exports and all six old/new kernel CSV pairs are byte-identical;
++  all six unchanged YSpec profile/integral gates pass (maximum relative errors
++  `2.32e-9` / `1.66e-8`). Three single-thread first-call repeats give median
++  before/after API times of `0.762/0.156 s` at lmax 3 and `55.2/15.6 s` at lmax 12
++  (`4.89x` / `3.54x`). These homogeneous-fixture timings establish no convergence.
++- Independent Luna High and final Sol High reviews pass. Compact evidence and
++  the raw timing-metadata caveat are in
++  `build/kernel-reconstruction-radial-reuse-20261026/`. Angular optimization
++  was deferred at that checkpoint; receiver-region limitations and physics are unchanged.
++
+ ## 2026-07-29 — MeshModel gravity integration correction
+ 
+ - Added focused analytic regression coverage for constant density, linearly
+@@ -676,3 +728,22 @@ Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Co
+ ## 2026-10-26 — Commit reviewed Earth-slice tooling
+ 
+ - Package the existing plotting runner, instructions and optional YSpec sampling argument; numerical solver code is unchanged. Five focused Python checks, runner syntax and whitespace checks pass. Receiver-region limitations remain documented; matched-measurement development is paused.
++
++## 2026-10-26 — Bounded angular-table and phase reuse
++
++- Reuse one maximum-degree Wigner table across modal blocks per exact-angle
++  chunk, with at most 64 angles and a 32 MiB estimated table-storage target
++  (at least one angle; not a total-memory cap). Reuse one azimuth phase across
++  spin components. Coordinate frames, all modal orders, and physics are unchanged.
++- Extended an existing regression with 72 angular samples covering chunk
++  boundaries, shared/nextafter-close angles, poles and permutations; 30/30
++  sensitivity tests pass. Expanded PREM fields, all six old/new kernel CSV pairs,
++  and the archived 14,823-point full-plane CSV are byte-identical.
++- All six unchanged YSpec profile/integral gates pass (maximum relative errors
++  `2.32e-9` / `1.66e-8`). Three single-thread first-call repeats give median
++  pre/post API times `0.157/0.106 s` at lmax 3 and `15.1/7.03 s` at lmax 12
++  (`1.48x` / `2.15x`); YSpec gives `0.0243/0.214 s`. No convergence claim.
++- Independent Luna High and final Sol High reviews pass. Compact evidence,
++  source snapshots and timing/RSS caveats are in
++  `build/kernel-reconstruction-angular-reuse-20261026/`. Source/receiver-frame
++  synthesis and receiver treatment remain separate future work.
+diff --git a/tests/test_sensitivity_kernels.cpp b/tests/test_sensitivity_kernels.cpp
+index 28bfcbd..6fd4ff5 100644
+--- a/tests/test_sensitivity_kernels.cpp
++++ b/tests/test_sensitivity_kernels.cpp
+@@ -253,6 +253,8 @@ TEST(Windowed3DFieldEngineTests, ReconstructsRadialAndCoupledFieldsAtReceiversAn
+           sem,source,parameters,z,adjointWeights);
+       const auto ownedCount=workspace.modalBlocks().size();
+       const auto all=workspace.sample(points);
++      const auto global=SPARSESPEC::Windowed3DFieldEngine::sampleModalBlocks(
++          sem,parameters,z,workspace.modalBlocks(),points);
+       const std::vector<SPARSESPEC::Field3DPoint> first(points.begin(),points.begin()+3);
+       const std::vector<SPARSESPEC::Field3DPoint> second(points.begin()+3,points.end());
+       const auto left=workspace.sample(first),right=workspace.sample(second);
+@@ -267,6 +269,85 @@ TEST(Windowed3DFieldEngineTests, ReconstructsRadialAndCoupledFieldsAtReceiversAn
+         EXPECT_LT(std::abs(all[i].forwardRawStrain.radialPlus-chunk.forwardRawStrain.radialPlus),1e-12);
+         EXPECT_LT(std::abs(all[i].forwardRawStrain.horizontalMinus-chunk.forwardRawStrain.horizontalMinus),1e-12);
+       }
++      const auto flatten=[](const SPARSESPEC::Field3DSample &sample){
++        std::vector<std::complex<double>> values;
++        const auto append=[&](const auto &field){
++          values.insert(values.end(),field.begin(),field.end());
++        };
++        const auto appendStrain=[&](const SPARSESPEC::SpinStrainField &field){
++          values.insert(values.end(),{field.rr,field.horizontalTrace,field.radialPlus,
++              field.radialMinus,field.horizontalPlus,field.horizontalMinus});
++        };
++        append(sample.forwardRawDisplacement);
++        append(sample.observableForwardDisplacementSpectrumMetreSeconds);
++        append(sample.adjointDualDisplacement);
++        appendStrain(sample.forwardRawStrain);appendStrain(sample.adjointDualStrain);
++        appendStrain(sample.rScaledForwardStrainMetres);
++        appendStrain(sample.rScaledAdjointDualStrainMetres);
++        return values;
++      };
++      const auto compare=[&](const auto &actual,const auto &expected){
++        ASSERT_EQ(actual.size(),expected.size());
++        for(std::size_t j=0;j<actual.size();++j)
++          EXPECT_LE(std::abs(actual[j]-expected[j]),1e-12*std::max({
++              std::abs(actual[j]),std::abs(expected[j]),1e-30})) << "field " << j;
++      };
++      const auto compareGroup=[&](const auto &actual,const auto &expected,
++                                  std::size_t begin,std::size_t count){
++        Eigen::VectorXcd a(count),b(count);
++        for(std::size_t j=0;j<count;++j){a[j]=actual[begin+j];b[j]=expected[begin+j];}
++        EXPECT_LE((a-b).norm(),1e-12*std::max({a.norm(),b.norm(),1e-30}));
++      };
++      for(std::size_t i=0;i<all.size();++i){
++        const auto compactValues=flatten(all[i]),globalValues=flatten(global[i]);
++        compareGroup(compactValues,globalValues,0,3);
++        compareGroup(compactValues,globalValues,3,3);
++        compareGroup(compactValues,globalValues,6,3);
++        compareGroup(compactValues,globalValues,9,6);
++        compareGroup(compactValues,globalValues,15,6);
++        compareGroup(compactValues,globalValues,21,6);
++        compareGroup(compactValues,globalValues,27,6);
++        const auto single=workspace.sample({points[i]});
++        ASSERT_EQ(single.size(),1u);
++        compare(flatten(all[i]),flatten(single.front()));
++      }
++      auto reversedPoints=points;
++      std::reverse(reversedPoints.begin(),reversedPoints.end());
++      const auto reversed=workspace.sample(reversedPoints);
++      ASSERT_EQ(reversed.size(),all.size());
++      for(std::size_t i=0;i<all.size();++i)
++        compare(flatten(all[i]),flatten(reversed[all.size()-1-i]));
++
++      std::vector<SPARSESPEC::Field3DPoint> angularChunks;
++      angularChunks.reserve(70);
++      for(int i=0;i<67;++i){
++        auto point=points[3];
++        point.thetaRadians=EIGEN_PI*(i+0.25)/68.0;
++        point.phiRadians=0.17*i;
++        angularChunks.push_back(point);
++      }
++      auto sharedTheta=points[3];
++      sharedTheta.thetaRadians=0.73;
++      angularChunks.push_back(sharedTheta);
++      sharedTheta.phiRadians=2.31;
++      angularChunks.push_back(sharedTheta);
++      auto closeTheta=sharedTheta;
++      closeTheta.thetaRadians=std::nextafter(sharedTheta.thetaRadians,EIGEN_PI);
++      angularChunks.push_back(closeTheta);
++      auto northPole=points[3];northPole.thetaRadians=0.0;
++      auto southPole=points[3];southPole.thetaRadians=EIGEN_PI;
++      angularChunks.push_back(northPole);angularChunks.push_back(southPole);
++      const auto angularFields=workspace.sample(angularChunks);
++      ASSERT_EQ(angularFields.size(),angularChunks.size());
++      auto permutedAngular=angularChunks;
++      std::reverse(permutedAngular.begin(),permutedAngular.end());
++      const auto permutedFields=workspace.sample(permutedAngular);
++      for(std::size_t i=0;i<angularFields.size();++i){
++        const auto single=workspace.sample({angularChunks[i]});
++        ASSERT_EQ(single.size(),1u);
++        compare(flatten(angularFields[i]),flatten(single.front()));
++        compare(flatten(angularFields[i]),flatten(permutedFields[angularFields.size()-1-i]));
++      }
+     }
+     ASSERT_EQ(fields.size(), points.size());
+     for (const auto &sample : fields) {

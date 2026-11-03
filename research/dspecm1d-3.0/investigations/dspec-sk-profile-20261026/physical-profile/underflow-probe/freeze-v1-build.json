@@ -1,0 +1,24 @@
+{
+  "compiler_gate": "python3 investigations/dspec-sk-profile-20261026/algorithm-audit/run_compile.py --",
+  "source_snapshot": "investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/source-v1-frozen",
+  "source_manifest": "investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/source-v1-frozen.sha256",
+  "command": [
+    "/usr/bin/cc",
+    "-std=c11",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-fPIC",
+    "-shared",
+    "investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/source-v1-frozen/dspec_profile_ftz.c",
+    "-o",
+    "investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/libdspec_profile_ftz-v1.so"
+  ],
+  "binary_hash_manifest": "investigations/dspec-sk-profile-20261026/physical-profile/underflow-probe/freeze-v1.sha256",
+  "platform": "x86 MXCSR diagnostic; non-x86 is an explicit runtime error only when DSPEC_PROFILE_FTZ=1",
+  "activation": "DSPEC_PROFILE_FTZ=1 required; unset or any other value leaves MXCSR unchanged",
+  "behavior": "Sets MXCSR FTZ bit 15 and DAZ bit 6; logs old/new MXCSR; changes subnormal handling",
+  "runtime": "Compile only; preload and scientific executable were not run by the implementation agent.",
+  "exit_code": 0
+}

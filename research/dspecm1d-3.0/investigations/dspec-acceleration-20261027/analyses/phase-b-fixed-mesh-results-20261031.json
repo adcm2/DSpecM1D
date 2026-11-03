@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "phase": "B",
+  "status": "result review passed; fixed-mesh comparisons descriptive; truncation rejected",
+  "candidate": "candidates/phase-b-fixed-mesh-v1",
+  "build": {
+    "task": "phase-b-fixed-mesh-v1-profile-build-04",
+    "binary": "/space/adcm2/research/builds/phase-b-fixed-mesh-v1-build-v4/phase-b-profile/phase-b-profile-driver",
+    "sha256": "3de02d1c95545a52223f6f664ba4f9ee1f89b4614e56192f1080c0b2b7ca9b67",
+    "elapsed_s": 66.98,
+    "max_rss_gib": 2.2649,
+    "max_threads": 6
+  },
+  "numerics": {
+    "task": "phase-b-fixed-mesh-v1-fixed-mesh-03",
+    "control_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-fixed-mesh-v1-controls-v3/continuation/phase-b-fixed-mesh-v1-fixed-mesh-03",
+    "jobs": 12,
+    "status": "all 12 completed successfully",
+    "worker_cap": 8,
+    "inner_threads": 1,
+    "job_memory_cap_gib": 16,
+    "thread_cap": 20,
+    "max_observed_rss_gib": 5.95,
+    "max_observed_threads": 9,
+    "outputs": "raw CSVs remain remote and are bound by the supervised staging manifest"
+  },
+  "checker": {
+    "task": "phase-b-fixed-mesh-check-01",
+    "control_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-fixed-mesh-check-v1-control/continuation/phase-b-fixed-mesh-check-01",
+    "summary": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-fixed-mesh-check-v1-control/continuation/phase-b-fixed-mesh-check-01/summarize-preserved-phase-b-numerical-outputs/phase-b-summary.json",
+    "summary_bytes": 49300939,
+    "summary_sha256": "a603ca8d79d9e34668aa56cc805b5db764fb0d885f4c08d58d613b6cbe3dd13e",
+    "elapsed_s": 133.15,
+    "max_rss_gib": 1.291,
+    "max_threads": 2,
+    "status": "completed successfully; all 120 numerical input hashes matched"
+  },
+  "mesh_rows": [
+    {"mesh":"nq5-nominal","elements":70,"native_sides":199,"nominal_h":0.0160104490042484,"own_waveform_vs_nq5_finer_rel_l2":9.61535547727168e-6,"own_waveform_vs_nq10_rel_l2":9.424433604274229e-6,"full_kernel_s":11.345662487,"restricted_kernel_s":13.796841807,"kernel_pass_hh_calls":14000,"omitted_dofs_counter":4216180},
+    {"mesh":"nq5-finer","elements":132,"native_sides":363,"nominal_h":0.0160104490042484,"own_waveform_vs_nq5_nominal_rel_l2":9.61535547727168e-6,"own_waveform_vs_nq10_rel_l2":3.5499799616538046e-7,"full_kernel_s":17.914201106,"restricted_kernel_s":22.008849296,"kernel_pass_hh_calls":14000,"omitted_dofs_counter":8237832},
+    {"mesh":"nq6-nominal","elements":53,"native_sides":189,"nominal_h":0.022615360324768855,"own_waveform_vs_nq6_finer_rel_l2":3.160309104765376e-6,"own_waveform_vs_nq10_rel_l2":3.1984692450073845e-6,"full_kernel_s":11.508604054,"restricted_kernel_s":14.068405661,"kernel_pass_hh_calls":14000,"omitted_dofs_counter":3818292},
+    {"mesh":"nq6-finer","elements":96,"native_sides":322,"nominal_h":0.022615360324768855,"own_waveform_vs_nq6_nominal_rel_l2":3.160309104765376e-6,"own_waveform_vs_nq10_rel_l2":1.7956851041979488e-7,"full_kernel_s":17.51392593,"restricted_kernel_s":21.529978522,"kernel_pass_hh_calls":14000,"omitted_dofs_counter":7435699}
+  ],
+  "aggregate_results": {
+    "time_shift_adjoint_identity_range": [0.9999999999999997, 1.0000000000000004],
+    "common_nominal_vs_finer_max_relative_l2": {
+      "nq5_forward": 0.0006478263230474433,
+      "nq5_adjoint": 0.0011106866790802606,
+      "nq5_kernel_product": 0.0031244960136931465,
+      "nq6_forward": 0.0005196507786065014,
+      "nq6_adjoint": 0.00043672110008030325,
+      "nq6_kernel_product": 0.0005121770865297331
+    },
+    "restricted_minus_full_max_relative_l2": {
+      "forward": 8.097618315913823e-5,
+      "adjoint": 0.7354292488666696,
+      "kernel_product": 9.872279272708098e-5
+    },
+    "restriction_outlier": {
+      "mesh": "nq6-finer",
+      "bin": 9,
+      "group": "material_interface|fluid=1|outside_all_relevant_cut_radii",
+      "samples": 154,
+      "adjoint_relative_l2": 0.7354292488666696,
+      "componentwise_pooled_absolute_error_norm": 1.121591979855899,
+      "componentwise_pooled_full_field_norm": 1.525084814867404,
+      "interpretation": "measured approximation difference; no accuracy threshold specified"
+    },
+    "max_restricted_receiver_spectrum_vs_full_relative_l2": 3.4716607790428024e-10,
+    "max_quantized_solver_counters": {
+      "forward_residual_scaled_1e15": 290,
+      "adjoint_residual_scaled_1e15": 1884781,
+      "complex_hh_identity_error_scaled_1e15": 2167754,
+      "interpretation": "integer counters use a 1e-15 scale and floor/cap; not raw full-precision residuals"
+    },
+    "restriction_acceptance": "rejected; no accuracy budget; C uses NQ10 h=0.025 full domain",
+    "timing_interpretation": "not a truncation speed comparison: full controls use cached responses and restricted controls force actual restricted solves"
+  },
+  "review": "reviews/phase-b-final-independent-review-20261031.txt"
+}

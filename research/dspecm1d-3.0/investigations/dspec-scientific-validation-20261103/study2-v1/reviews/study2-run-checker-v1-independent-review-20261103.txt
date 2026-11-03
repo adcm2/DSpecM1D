@@ -1,0 +1,36 @@
+Study 2 run/checker independent review — 2026-11-03
+Reviewer: Sol6.1 high /root/radial_review
+Disposition: PASS for the exact 11-job producer and separate immutable-state terminal checker. Pre-execution gate only; AFTER STUDY2 raw-results/interpretation review remains mandatory.
+
+Sealed SHA-256 values:
+configs/study2-run-v1-plan.json 40de29bb4c0c64e689602c002ce7141770c970d0c58ef7584cec42f3376c9446
+configs/study2-terminal-check-v1-plan.json c35e98454d1c53f86ecbe42fbfd45d8ee26645184a8b647d62f7fa2127793358
+tools/check_study2.py 5b845bbe3bedb07e4b6f47b454417665b5caed51f2d7902ce3fcb29f500aca10
+tools/check_study1_helpers.py 610271198745973b654f2154395bde7aac7b034ca39cd47b0238837d3a982c17
+reference-manifest.json a46002b387e20a34f9a61ca5960ef6d9419a0c5500699a7d99c05a81ac7f4a66
+configs/study2-build-v1-plan.json 20c9cfa6a99d92ca9b679d56be66775a939a20126d74e5690c9df109006487a1
+
+Workload and fairness:
+Exactly one L200/NQ6 sparse bridge, two DSpec h levels with actual selected-h ratios .75/.5625, L100/L150/L300 DSpec and YSpec, and L200 DSpec NQ8/NQ10 at fixed absolute mesh parameter0.02035382429229197. All actual solves use their named degree; only diagnostic sections use sampling degree100 (68 along/10 across). Fixed168 physical probes and all35bins7..41 are retained. No high-L full-volume quadrature, extra FD, frequency convergence or performance campaign is introduced. Sparse sampled extrema cannot establish full angular bandwidth/global extrema.
+All DSpec commands pin eight frequency workers/one inner worker, legacy modal route, batched radial, real-Legendre angular, native dref and oracle-off routes; YSpec commands explicitly unset frequency-worker and absolute-h overrides and use CLI8 with ODE tolerance1e-7. All physical jobs sequential under20threads/16GiB; existing per-worker angular temporary32MiB/geometry16MiB and product32MiB caps are independently checked from finite positive result metadata. Numerical use is user-space watchdog accounting, not kernel aggregate enforcement.
+
+One-factor controls:
+The checker requires exact frequency grid and sparse coordinates in all jobs; exact element boundaries in fixed-h NQ/degree controls; exact NQ6 native nodes in degree controls; and unchanged YSpec output-sampling mesh relative to accepted tightL200. YSpec h remains output sampling, not its ODE discretization. The dimensionless selected-h parameter is distinguished from SI element widths. Actual h ratios, physical-width summaries and decreased maximum widths verify that the two h controls really refine the physical mesh. Own waveform-derived P, positive normalization, gravity and time-shift checks are retained.
+The sparse bridge requires exact non-section output parity against validated Study1 DSpec for13 named files, including full traces/spectra/components, all fixed-probe products and selected-bin fields, grids and mesh. Thus section resampling must not alter the physical calculation. Same-L DSpec/YSpec fixed-probe comparisons may be computed from the retained raw outputs for final reporting, preserving unavailable source-shell rows.
+
+Mathematics/interpretation:
+The unchanged hash-sealed Study1 helpers validate168 fixed coordinates/material/trace classes, all35-bin DSpec product reductions, selected-bin conjugate-P strain identities, own weights and unmasked native diagnostics. Taper checks accept actual finite0..1 values and require exact frozen time/window grids; the earlier erroneous binary-window draft was corrected before launch. Memory values are finite-checked before bounds. Adjacent fine h/NQ and degree pairs are included; actual errors, independent norms and exact-zero classes have no unit floors. No arbitrary global pointwise convergence threshold is imposed. The checker PASS means declared controls/integrity validated, not that an asymptotic regime has been observed. Source-shell and exact-contact samples remain separate; fixed-distance bands exclude source-shell rows. No full H1 derivation, universal contact-point limit, absence-of-all-defects conclusion, YSpec unit-field proof or new tangent derivative is claimed. Study1's away-supported lowL full-forward FD remains the directional validation, not a newly performed highL action test.
+
+Provenance/execution:
+Producer binds the exact accepted build and finalized Study1 campaign. Reference manifest binds finalized Study1 state2cb3b316... and raw archivef1f60203...; all32 listed DSpec baseline/tightYSpec reference data hashes/bytes independently matched against previously verified raw evidence, with three scientific provenance files explicitly listed. The plan pins the exact reference-manifest hash.
+Standalone terminal job uses separate stage/control,4threads/8GiB, mkdir output parent and a producer-state-finalized.json snapshot outside its own mutable control tree. Exact build and producer plan hashes/task roots are bound. Its252 unique inputs include all producer data outputs/logs, every file-valued command argument and explicit reference/helper/model closures. Only producer outputs/logs and immutable final snapshot may be deferred until the earlier scientific task has finished. Launch terminal only after completed producer state is independently frozen/hash-verified; inspect terminal's own receipt/input stability/cleanup separately afterward.
+
+Local independent verification:
+Exact hashes recomputed; eleven command/worker/cap contracts checked; Python import/compile passed; unchanged helper hash checked;32 reference file hashes/bytes checked; both real1201-row frozen tapered time/window grids accepted; complete252-input uniqueness and all producer-output/log closure asserted; immutable-state separation and exact build/producer bindings checked. The newly added reversed external-YSpec-candidate pair that would have failed at runtime was removed before this seal; the same adjacent comparison remains in the supported orientation.
+
+Related gates:
+Source/build review SHA25acccdf5133501b6dd271c5cbd7dc36814c63f6e868e432c5da12ac3d5d4027
+Build evidence review SHAbdc2dd7e789af8ccc1779cf0c48c81a8242d3bfd895efb6e34b7b2320879df8c
+AFTER STUDY1 review SHAd73b839a4fad25a66a8a52fcae1eb9507c21437156a80b4a3cfe19a9dfa2ee95
+
+No remaining run/checker blockers. Verify minimal allowlist bytes, fresh roots, all external input paths/hash pins and quiet resources before producer launch. Preserve failures and stop after authorized Study2 evidence/report review; no production integration or optimization follows.

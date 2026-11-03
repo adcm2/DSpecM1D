@@ -1,0 +1,41 @@
+\newcommand{\HeadlineRows}{3 & 3 & 1 & 0.059 & 0.033 & 0.030 & 1.80$\times$\\
+6 & 3 & 1 & 0.409 & 0.155 & 0.157 & 2.64$\times$\\
+12 & 3 & 1 & 0.730 & 0.240 & 0.266 & 3.05$\times$\\
+12 & 3 & 2 & 1.403 & 0.316 & 0.312 & 4.43$\times$\\
+12 & 12 & 1 & 2.687 & 0.804 & 1.090 & 3.34$\times$\\
+12 & 48 & 1 & 11.177 & 3.188 & 6.487 & 3.51$\times$\\}
+\newcommand{\HeadlineConclusion}{The degree-12 three-bin prototype improves the accepted DSpec calculation by 3.05 times for one objective and 4.43 times for two. Its measured times are 0.240/0.316 s versus YSpec's 0.266/0.312 s. The smaller-degree case remains slower than YSpec. These are measured single-thread prototypes, not changes to the production default.}
+\newcommand{\SpectralRows}{3 & 3 & 0.42 & 0.67 & 0.29 & 5.15 & 1.70\\
+3 & 48 & 6.56 & 0.77 & 0.81 & 4.96 & 1.75\\
+6 & 3 & 4.00 & 11.81 & 1.78 & 121.15 & 23.41\\
+6 & 48 & 66.31 & 14.41 & 5.60 & 149.94 & 30.07\\
+12 & 3 & 9.60 & 50.72 & 19.69 & 1067.08 & 100.53\\
+12 & 48 & 119.74 & 52.96 & 51.05 & 962.89 & 106.33\\}
+\newcommand{\SpectralPlanTwelve}{0.96}
+\newcommand{\AblationText}{\begin{center}
+\begin{tabular}{lrl}
+\toprule
+Actual L12/F3/full-grid route & Median (s) & Frozen volume gates\\
+\midrule
+v4 real & 0.313 & pass\\
+v5 real & 0.289 & pass\\
+v5 complex & 0.231 & pass\\
+packed scalar & 0.457 & pass\\
+packed eigen & 0.529 & pass\\
+packed openblas & 0.513 & pass\\
+minimal basis & 0.275 & pass\\
+rstrain bridge & 0.337 & pass\\
+strict native build & 0.275 & fail\\
+\bottomrule
+\end{tabular}
+\end{center}
+The complex tensor layout is faster here than the real-degree split, despite its higher nominal arithmetic count. Small packed Eigen/OpenBLAS calls lose to the packed scalar route; matrix-matrix work over many radii pays. The nodal r-strain bridge loses on this grid. Strict native-architecture compilation (without fast-math, FMA contraction disabled) fails the processed-spectrum ($1.42\times10^{-12}$) and objective ($6.46\times10^{-12}$) gates and is rejected. The final headline table therefore uses portable O3 and the complex tensor layout.
+
+The v6 forward angular cache adds actual reuse across objectives: it retains the volume forward strains and receiver displacement by exact grid/frequency identity. Hits skip source tensor synthesis and receiver suffix sampling; workspace preparation and representative coefficient gathering still run. The separate radial response cache saves repeated solves. At L12/F3 the forward field payload is 21.8 MB. Zero-budget fallback and contact-bearing reuse with radial response caching disabled both pass frozen gates. This scheduling/cache prototype is distinct from a general multi-objective API.
+}
+\newcommand{\ValidationText}{The final v6 headline outputs pass all 18 independent process/configuration comparisons against the unchanged production evaluator: returned raw/processed spectra, objectives and all six stored modulus channels, at exact matched coordinates. Repeated outputs are deterministic. Maximum kernel relative L2 is $8.12\times10^{-14}$ and scaled pointwise $9.04\times10^{-12}$. Expanded tests separately establish 336 public field and 240 source-contact comparisons per bridge setting against the saved production arrays. An additional complete permuted PREM tensor product agrees with the standard field reconstruction in solid strains/fluid divergence below $1.13\times10^{-15}$; it is not the source of those historical contact arrays.
+
+Fresh v5 optimized tensor Born checks pass the independent Cartesian regular and source-local volume/contact/total gates, with the existing factorization and radial-response cache disabled. The v6 forward angular cache is checked separately against frozen full outputs; it was not used in that Born adapter run. The final forward-cache tests pass all eight frozen comparisons at default and zero budgets, covering two/three objectives and complex/real layouts. Specifically, contact-bearing L3/three-objective and L12/two-objective cases use the complex layout and radial-response cache off; L12/three-objective complex/real cases use radial-response cache on and contacts off. The response-cache contacts-on and native L12 failures remain explicitly rejected; all gates were retained.
+}
+\newcommand{\MemoryText}{For degree 12, one/two objectives, maximum sampled process high-water memory is Phase 1: 44.5/45.0 MiB; prototype: 83.9/124.2 MiB; YSpec: 17.9/27.7 MiB. These values are polled after executable entry every 10 ms and include setup, outputs and, in the prototype driver, its subsequent same-engine reference calculation. They are process-level diagnostics, not isolated API allocator peaks or aggregate limits. The runtime advantage has a clear memory cost. The tensor coefficient multiplication is tiled, but full volume strain/output arrays and plan maps are still materialized; production integration should bound those intermediates more tightly.
+}

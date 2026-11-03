@@ -1,0 +1,106 @@
+{
+  "status": "DESCRIPTIVE_SECTION_COMPARISON;SLICES_PENDING_AT_LAUNCH",
+  "degrees": [
+    384,
+    1536
+  ],
+  "channels": [
+    {
+      "channel": "A",
+      "all_native_sides": {
+        "relative_l2_vs_fine": 1.0077330894742416,
+        "max_difference_scaled_by_fine_max": 1.0852666133531021
+      },
+      "mantle100_1500km": {
+        "relative_l2_vs_fine": 0.06013468928573486,
+        "max_difference_scaled_by_fine_max": 0.4132894823264084
+      }
+    },
+    {
+      "channel": "C",
+      "all_native_sides": {
+        "relative_l2_vs_fine": 1.0280564403938066,
+        "max_difference_scaled_by_fine_max": 1.104607337027977
+      },
+      "mantle100_1500km": {
+        "relative_l2_vs_fine": 0.06469359317939909,
+        "max_difference_scaled_by_fine_max": 0.297892672869263
+      }
+    },
+    {
+      "channel": "F",
+      "all_native_sides": {
+        "relative_l2_vs_fine": 1.0142268270489112,
+        "max_difference_scaled_by_fine_max": 1.0915481014070991
+      },
+      "mantle100_1500km": {
+        "relative_l2_vs_fine": 0.06355202431424228,
+        "max_difference_scaled_by_fine_max": 0.3322918928435572
+      }
+    },
+    {
+      "channel": "L",
+      "all_native_sides": {
+        "relative_l2_vs_fine": 1.028586392797767,
+        "max_difference_scaled_by_fine_max": 1.10508127603686
+      },
+      "mantle100_1500km": {
+        "relative_l2_vs_fine": 0.06557541971890418,
+        "max_difference_scaled_by_fine_max": 0.2445638097599578
+      }
+    },
+    {
+      "channel": "N",
+      "all_native_sides": {
+        "relative_l2_vs_fine": 0.8050679688310185,
+        "max_difference_scaled_by_fine_max": 1.1224598533711423
+      },
+      "mantle100_1500km": {
+        "relative_l2_vs_fine": 0.009511205103893278,
+        "max_difference_scaled_by_fine_max": 0.0171743626577068
+      }
+    },
+    {
+      "channel": "kappa",
+      "all_native_sides": {
+        "relative_l2_vs_fine": 1.0000177736053875,
+        "max_difference_scaled_by_fine_max": 1.0000248768618287
+      },
+      "mantle100_1500km": {
+        "relative_l2_vs_fine": 0,
+        "max_difference_scaled_by_fine_max": 0
+      }
+    }
+  ],
+  "mask": "outside5degree source/receiver wedges; same179 native radial sides",
+  "alignment": "periodic Fourier resampling of L384 section onto L1536 angular samples; no radial interpolation",
+  "energy_m2_s": {
+    "384": 8.824364556391933e-10,
+    "1536": 8.573420696708428e-10
+  },
+  "energy_difference_relative_to_fine": 0.029269980858381235,
+  "waveform_relative_l2_0_3600s": 0.05575832316318825,
+  "hann_weighted_window_relative_l2": 0.042709905660890946,
+  "comparison_figure_shared_raw_scales": {
+    "A": 1.0313464259966485e-37,
+    "C": 1.0480046277212344e-37,
+    "F": 1.916479223242061e-37,
+    "L": 2.048184669996409e-37,
+    "N": 1.3094440957678922e-37
+  },
+  "section_source_sha256": {
+    "384": "57195ac967e0910a620582cdef3bd0c585f36ce4fd534d9682c2992d70866b48",
+    "1536": "b9ed1d53361766485c7b3e36102ccb08b0a4d71d019be06b4ed8dfa64acee324"
+  },
+  "figure_sha256": {
+    "section-comparison.png": "c7be8f1181077b596d4f98d7bc849587eb92b6bfd769f8fe1d6842132a285843",
+    "section-comparison.pdf": "e52ea8c49769ad2fe81b4deac18df82602d2d9713801128d2a3aa576a6bbe927",
+    "waveform-comparison.pdf": "143ed14f660a3c21c6e3adc88b33b5d5ac994446316b55e6b25f796550bf2f70",
+    "waveform-comparison.png": "5523c6f7375c27ad8ca09a86a3729e040ce6d097bdcb9d2d2e29fc43205b9386"
+  },
+  "limits": [
+    "Two degrees do not establish convergence.",
+    "Unweighted sample norms are descriptive; not volume-integrated Sobolev norms.",
+    "Source-shell contacts and receiver enrichment remain omitted."
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "status": "read_only_saved_output_count",
+  "source_task": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-fixed-mesh-v1-controls-v3/continuation/phase-b-fixed-mesh-v1-fixed-mesh-03",
+  "source_bins": [9],
+  "count_definition": "For common-fields-bin9.csv rows with reference_node=0, count when candidate_element upper_radius matches the reference radius and a same-layer, same-material element lower_radius matches that radius. These are artificial aligned boundaries mapped to the inner element. Physical source/material-interface rows excluded by matching metadata.",
+  "per_mesh_unique_location_counts": {
+    "nq5-nominal": {"total_localnode0_rows": 4466, "affected_artificial_localnode0_rows": 308},
+    "nq5-finer": {"total_localnode0_rows": 4466, "affected_artificial_localnode0_rows": 2618},
+    "nq6-nominal": {"total_localnode0_rows": 4466, "affected_artificial_localnode0_rows": 308},
+    "nq6-finer": {"total_localnode0_rows": 4466, "affected_artificial_localnode0_rows": 0}
+  },
+  "replicated_for_full_and_restricted_controls": true,
+  "location_class": "all counted affected records are tagged bulk; no source/material-interface rows were counted",
+  "evidence": "Saved mesh-elements.csv and common-fields-bin9.csv from the eight successful full/restricted controls; no solver or waveform pass was run."
+}

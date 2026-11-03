@@ -1,0 +1,125 @@
+{
+  "dspec_job": "pilot-dspec-l12",
+  "yspec_job": "pilot-yspec-l12",
+  "degree": 12,
+  "waveform_window_relative_l2": 3.318279786563194e-05,
+  "timings": {
+    "DSpec": {
+      "backend": "dspec",
+      "degree": 12,
+      "nq": 10,
+      "refinement": 0.025,
+      "workers": 8,
+      "attenuation": true,
+      "epsilon_perturbation": 0,
+      "frequency_count": 35,
+      "first_bin": 7,
+      "last_bin": 41,
+      "fft_samples": 2048,
+      "fft_period_s": 4096,
+      "damping_si": 0.0020833333333333333,
+      "native_side_count": 293,
+      "along_angles": 10,
+      "across_angles": 3,
+      "gravity_max_abs_nd_error": 2.886579864025407e-15,
+      "time_shift_adjoint_identity": 1.0000000000000002,
+      "measurement_rate_norm": 4.827134798165565e-19,
+      "integrated_profile_kernel": 0,
+      "forward_s": 0.892422586,
+      "measurement_s": 0.002470373,
+      "kernel_s": 1.562939689,
+      "cache_bytes": 174451200,
+      "elapsed_s": 2.473149247,
+      "kernel_parameter": "ln_vs_at_fixed_vp_density_and_effective_Q",
+      "kernel_units": "s m^-3",
+      "layout": "native-side-major then angle, float64",
+      "source_shell_contacts": false
+    },
+    "YSpec": {
+      "backend": "yspec",
+      "degree": 12,
+      "nq": 10,
+      "refinement": 0.025,
+      "workers": 8,
+      "attenuation": true,
+      "epsilon_perturbation": 0,
+      "frequency_count": 35,
+      "first_bin": 7,
+      "last_bin": 41,
+      "fft_samples": 2048,
+      "fft_period_s": 4096,
+      "damping_si": 0.0020833333333333333,
+      "native_side_count": 293,
+      "along_angles": 10,
+      "across_angles": 3,
+      "gravity_max_abs_nd_error": 2.886579864025407e-15,
+      "time_shift_adjoint_identity": 1.0000000000000007,
+      "measurement_rate_norm": 4.826979594277376e-19,
+      "integrated_profile_kernel": 0,
+      "forward_s": 0.028756228,
+      "measurement_s": 0.002379307,
+      "kernel_s": 0.314059572,
+      "cache_bytes": 0,
+      "elapsed_s": 0.360102895,
+      "kernel_parameter": "ln_vs_at_fixed_vp_density_and_effective_Q",
+      "kernel_units": "s m^-3",
+      "layout": "native-side-major then angle, float64",
+      "source_shell_contacts": false
+    }
+  },
+  "resources": {
+    "DSpec": {
+      "peak_observed_threads": 9,
+      "peak_observed_rss_gib_userspace": 0.2261
+    },
+    "YSpec": {
+      "peak_observed_threads": 9,
+      "peak_observed_rss_gib_userspace": 0.0682
+    }
+  },
+  "sections": {
+    "along": {
+      "native_sides": 293,
+      "angles": 10,
+      "bulk_area_weighted_relative_l2": 0.03571108608074943,
+      "bulk_point_relative_l2": 0.09964176928961703,
+      "bulk_cosine_similarity": 0.9950233755398538,
+      "shared_limit": 1.2083706891351525e-16,
+      "difference_own_limit": 2.446326143232641e-17,
+      "max_abs": {
+        "DSpec": 1.4982834411400519e-16,
+        "YSpec": 1.498327509193451e-16,
+        "difference": 7.314237201573159e-17
+      },
+      "saturated_fraction": {
+        "DSpec": 0.007508532423208191,
+        "YSpec": 0.007849829351535836,
+        "difference": 0.0
+      }
+    },
+    "across": {
+      "native_sides": 293,
+      "angles": 3,
+      "bulk_area_weighted_relative_l2": 0.02667082681970411,
+      "bulk_point_relative_l2": 0.07216121601904517,
+      "bulk_cosine_similarity": 0.9973929813404554,
+      "shared_limit": 7.727231361363813e-17,
+      "difference_own_limit": 1.2840351737347683e-17,
+      "max_abs": {
+        "DSpec": 8.799554947092365e-17,
+        "YSpec": 8.799619787878397e-17,
+        "difference": 1.9114367582004273e-17
+      },
+      "saturated_fraction": {
+        "DSpec": 0.006825938566552901,
+        "YSpec": 0.007963594994311717,
+        "difference": 0.0
+      }
+    }
+  },
+  "status": "PASS",
+  "pilot_limits": {
+    "waveform_window_relative_l2": 0.1,
+    "bulk_area_weighted_relative_l2": 0.2
+  }
+}

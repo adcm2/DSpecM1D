@@ -1,0 +1,712 @@
+{
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data",
+        "200",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "command_sha256": "37e1e4dd9f7e405b436902d2b27989ea40836576cc2f2aa84132368541adb194",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3",
+      "elapsed_seconds": 52.48097145598149,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          3817424,
+          48104458
+        ]
+      ],
+      "finished_unix": 1793447846.6066325,
+      "id": "N1-native-L200",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-native/command.json": "eefe030f7812716f3e7d01dd4bdfc16fbc3e6bf72f4a8c4f02afffe0988358a5",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-native/doc-driver": "8f5b47b7e85920b41add04047d268676fed9dfb3cf1d3674d816b2a25ee4e46e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-native/command.json": "eefe030f7812716f3e7d01dd4bdfc16fbc3e6bf72f4a8c4f02afffe0988358a5",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-native/doc-driver": "8f5b47b7e85920b41add04047d268676fed9dfb3cf1d3674d816b2a25ee4e46e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/components.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "data/result.json": "6c27ca31ab3b1762d55522c61a0c4f984400a37dee13207b24b057b9af0f89ba",
+        "data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21"
+      },
+      "peak_observed_rss_gib_userspace": 2.4242,
+      "peak_observed_threads": 9,
+      "returncode": 0,
+      "started_unix": 1793447794.1105726,
+      "status": "completed",
+      "system_cpu_seconds_children": 13.606085,
+      "updated_unix": 1793447845.6303165,
+      "user_cpu_seconds_children": 100.020518,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 2.4242,
+        "elapsed_seconds": 51.52,
+        "owned_processes": [
+          {
+            "pid": 3817422,
+            "starttime_ticks": 48104452,
+            "threads": 1
+          },
+          {
+            "pid": 3817424,
+            "starttime_ticks": 48104458,
+            "threads": 8
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.4242,
+        "peak_observed_threads": 9,
+        "thread_cap": 20,
+        "thread_count_including_supervisor": 9
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py",
+        "--parity-candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3",
+        "--parity-candidate-job",
+        "N1-native-L200",
+        "--parity-reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05",
+        "--parity-reference-job",
+        "dspec-l200",
+        "--expected-candidate-workers",
+        "8",
+        "--expected-reference-workers",
+        "8",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-vs-frozen-v9-L200/checks.json"
+      ],
+      "command_sha256": "d36a44388c9016f2c1e65ed102a7fbbacaaf2ec7c4ea2384a37e7418174c79a8",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3",
+      "elapsed_seconds": 1.2881765000056475,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          3820684,
+          48109710
+        ]
+      ],
+      "finished_unix": 1793447847.927272,
+      "id": "N1-vs-frozen-v9-L200",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py": "d5af940862d05cd7c960ae6b127d1c96624dcae20cb8205374db1ae75536d686",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/result.json": "5d475122a3801fab53af7542ffb0a9ba02385e5a07e88a3b9c6ddf6db10a1c9a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/state.json": "1756c9555849ff49dd9caf8d209727658db9b23fc4fd326b17658f3aeca5a0b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/result.json": "6c27ca31ab3b1762d55522c61a0c4f984400a37dee13207b24b057b9af0f89ba",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py": "d5af940862d05cd7c960ae6b127d1c96624dcae20cb8205374db1ae75536d686",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/result.json": "5d475122a3801fab53af7542ffb0a9ba02385e5a07e88a3b9c6ddf6db10a1c9a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/state.json": "1756c9555849ff49dd9caf8d209727658db9b23fc4fd326b17658f3aeca5a0b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/result.json": "6c27ca31ab3b1762d55522c61a0c4f984400a37dee13207b24b057b9af0f89ba",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "71800968b3d38636c7f6f3b36bddd0c0fecd3d5f5745934948be41c21d375ab7"
+      },
+      "peak_observed_rss_gib_userspace": 0.0519,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793447846.6225007,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.1228820000000006,
+      "user_cpu_seconds_children": 0.13477400000000728
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-profile/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data",
+        "200",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "command_sha256": "c8ab6236478e3ea5be82a322a682038f3ba0bd1289a80bcb3c6ede2a4988528c",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3",
+      "elapsed_seconds": 52.83154502505204,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          3820691,
+          48109842
+        ]
+      ],
+      "finished_unix": 1793447900.7879066,
+      "id": "P1-profile-L200",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-profile/command.json": "ae8075e142470d43f83bc8b4ca671a3c0dca73819782da8b51245b476aafafa9",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-profile/doc-driver": "39c60c2cdb3815d5944088d2b0bd42879d0051d62b65df72ab1b88fb5bda403f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-profile/command.json": "ae8075e142470d43f83bc8b4ca671a3c0dca73819782da8b51245b476aafafa9",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-profile/doc-driver": "39c60c2cdb3815d5944088d2b0bd42879d0051d62b65df72ab1b88fb5bda403f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "3a5686a6d817200c97ced3eff2ea3c317d03f0bf587b5250e9a0ee178e28545b",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/components.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv",
+        "data/profile.json"
+      ],
+      "outputs_sha256": {
+        "data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "data/profile.json": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+        "data/result.json": "e43af666cf56f3414f5327fe8ae6ce5f4d3ded0d36b08bfeacd3dd27fdecea93",
+        "data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21"
+      },
+      "peak_observed_rss_gib_userspace": 2.4226,
+      "peak_observed_threads": 9,
+      "returncode": 0,
+      "started_unix": 1793447847.941104,
+      "status": "completed",
+      "system_cpu_seconds_children": 13.762055999999998,
+      "updated_unix": 1793447899.258022,
+      "user_cpu_seconds_children": 100.767055,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 2.4226,
+        "elapsed_seconds": 51.31,
+        "owned_processes": [
+          {
+            "pid": 3817422,
+            "starttime_ticks": 48104452,
+            "threads": 1
+          },
+          {
+            "pid": 3820691,
+            "starttime_ticks": 48109842,
+            "threads": 8
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.4226,
+        "peak_observed_threads": 9,
+        "thread_cap": 20,
+        "thread_count_including_supervisor": 9
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py",
+        "--profile",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/profile.json",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-accounting-gate/checks.json"
+      ],
+      "command_sha256": "a5ee7ee1aad15668be492cc25e6f7ecb85e3950c019ac237ad53a25b5fe1335e",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3",
+      "elapsed_seconds": 0.33137932600220665,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          3821292,
+          48115128
+        ]
+      ],
+      "finished_unix": 1793447901.1440954,
+      "id": "P1-profile-accounting-gate",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py": "d5af940862d05cd7c960ae6b127d1c96624dcae20cb8205374db1ae75536d686",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/profile.json": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py": "d5af940862d05cd7c960ae6b127d1c96624dcae20cb8205374db1ae75536d686",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/profile.json": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "7910e11b77333f2d0e0beb95e79dbeb0a5b218f3bf35d24efa3f4edceffca8a6"
+      },
+      "peak_observed_rss_gib_userspace": 0.0204,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793447900.8005342,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.004308000000001755,
+      "user_cpu_seconds_children": 0.043082999999995764
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py",
+        "--parity-candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3",
+        "--parity-candidate-job",
+        "P1-profile-L200",
+        "--parity-reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3",
+        "--parity-reference-job",
+        "N1-native-L200",
+        "--expected-candidate-workers",
+        "8",
+        "--expected-reference-workers",
+        "8",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-vs-N1/checks.json"
+      ],
+      "command_sha256": "bf4e98abf53995792ade7a173c899ecde66b4791958d91c5e9713710d325f56c",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3",
+      "elapsed_seconds": 1.279229661973659,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          3821293,
+          48115164
+        ]
+      ],
+      "finished_unix": 1793447902.4563594,
+      "id": "P1-vs-N1",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py": "d5af940862d05cd7c960ae6b127d1c96624dcae20cb8205374db1ae75536d686",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/result.json": "6c27ca31ab3b1762d55522c61a0c4f984400a37dee13207b24b057b9af0f89ba",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/profile.json": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/result.json": "e43af666cf56f3414f5327fe8ae6ce5f4d3ded0d36b08bfeacd3dd27fdecea93",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py": "d5af940862d05cd7c960ae6b127d1c96624dcae20cb8205374db1ae75536d686",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/result.json": "6c27ca31ab3b1762d55522c61a0c4f984400a37dee13207b24b057b9af0f89ba",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N1-native-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/profile.json": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/result.json": "e43af666cf56f3414f5327fe8ae6ce5f4d3ded0d36b08bfeacd3dd27fdecea93",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "7e14fd5b1722885f1406b1b4cc986508c7c675068d352eca7da0e828f459d7ff"
+      },
+      "peak_observed_rss_gib_userspace": 0.0553,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793447901.1601565,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.09057800000000071,
+      "user_cpu_seconds_children": 0.15958900000001108
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py",
+        "--parity-candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3",
+        "--parity-candidate-job",
+        "P1-profile-L200",
+        "--parity-reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05",
+        "--parity-reference-job",
+        "dspec-l200",
+        "--expected-candidate-workers",
+        "8",
+        "--expected-reference-workers",
+        "8",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-vs-frozen-v9-L200/checks.json"
+      ],
+      "command_sha256": "760c7d7d0cc4b26e8b9e1b7b0a42426693433c5b6d980ab556cb4d8cdf6c2a45",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3",
+      "elapsed_seconds": 0.49799618002725765,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          3821311,
+          48115295
+        ]
+      ],
+      "finished_unix": 1793447902.989241,
+      "id": "P1-vs-frozen-v9-L200",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py": "d5af940862d05cd7c960ae6b127d1c96624dcae20cb8205374db1ae75536d686",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/result.json": "5d475122a3801fab53af7542ffb0a9ba02385e5a07e88a3b9c6ddf6db10a1c9a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/state.json": "1756c9555849ff49dd9caf8d209727658db9b23fc4fd326b17658f3aeca5a0b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/profile.json": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/result.json": "e43af666cf56f3414f5327fe8ae6ce5f4d3ded0d36b08bfeacd3dd27fdecea93",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3/tools/check_stages12_stage1.py": "d5af940862d05cd7c960ae6b127d1c96624dcae20cb8205374db1ae75536d686",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/result.json": "5d475122a3801fab53af7542ffb0a9ba02385e5a07e88a3b9c6ddf6db10a1c9a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/state.json": "1756c9555849ff49dd9caf8d209727658db9b23fc4fd326b17658f3aeca5a0b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/profile.json": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/result.json": "e43af666cf56f3414f5327fe8ae6ce5f4d3ded0d36b08bfeacd3dd27fdecea93",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/P1-profile-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "c09299f2ab086d19b398400a7f5e42884f146d771def0c84ceaae016ad4caa50"
+      },
+      "peak_observed_rss_gib_userspace": 0.0376,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793447902.4732945,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.03471000000000046,
+      "user_cpu_seconds_children": 0.11184399999999073
+    },
+    {
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage1-measure-control-v3/continuation/stages12-stage1-measure-v3/N2-native-L200/data",
+        "200",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "command_sha256": "18d444a09730e9af7d4a7b48fb36d308b51d151d614a24472f35132c026a7f3d",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1-measure-v3",
+      "id": "N2-native-L200",
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-native/command.json": "eefe030f7812716f3e7d01dd4bdfc16fbc3e6bf72f4a8c4f02afffe0988358a5",
+        "/space/adcm2/research/builds/stages12-stage1-v1/doc-native/doc-driver": "8f5b47b7e85920b41add04047d268676fed9dfb3cf1d3674d816b2a25ee4e46e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "log": "job.log",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/components.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv"
+      ],
+      "started_unix": 1793447903.003932,
+      "status": "running",
+      "updated_unix": 1793447951.165525,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 2.4272,
+        "elapsed_seconds": 48.16,
+        "owned_processes": [
+          {
+            "pid": 3817422,
+            "starttime_ticks": 48104452,
+            "threads": 1
+          },
+          {
+            "pid": 3821313,
+            "starttime_ticks": 48115348,
+            "threads": 8
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.4272,
+        "peak_observed_threads": 9,
+        "thread_cap": 20,
+        "thread_count_including_supervisor": 9
+      }
+    }
+  ],
+  "plan_sha256": "6b85fc4942225f504b00c52505e6297c2398ba65435cb5f4cb12fa3953b2a019",
+  "schema": 1,
+  "started_unix": 1793447794.0966587,
+  "status": "running",
+  "task_id": "stages12-stage1-measure-v3",
+  "thread_cap": 20
+}

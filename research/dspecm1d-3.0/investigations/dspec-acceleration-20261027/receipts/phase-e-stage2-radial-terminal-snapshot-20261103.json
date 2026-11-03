@@ -1,0 +1,98 @@
+{
+  "date": "2026-11-03",
+  "stage": "Phase E Stage 2 radial first substage",
+  "authorization": "User explicitly authorized reviewed Tunya Stage2 transfer/build/validation/timing/result retrieval.",
+  "preflight": {
+    "fresh_before_stage_roots": [
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1-validation-v1",
+      "/space/adcm2/research/builds/phase-e-stage2-radial-v1",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-radial-v1-build-control",
+      "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-radial-v1-control"
+    ],
+    "matching_processes_before_stage": 0,
+    "mem_available_kib_before_stage": 1007993096,
+    "free_gib_before_stage": 17602.468383789062,
+    "compiler": "GCC 13.2.0",
+    "pinned_stage1_yspec_disabled_dso_sha256": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738"
+  },
+  "reviewed_allowlists": {
+    "phase-e-stage2-radial-v1-build-allowlist-20261103.json": {
+      "manifest_path": "investigations/dspec-acceleration-20261027/receipts/phase-e-stage2-radial-v1-build-allowlist-20261103.json",
+      "file_count": 23,
+      "archive_path": "investigations/dspec-acceleration-20261027/receipts/phase-e-stage2-radial-v1-build-allowlist-20261103.tar.gz",
+      "archive_sha256": "bebafd6dd7a98c02526b634e68928398be658310ca2d5950770e008ec30472c4",
+      "archive_bytes": 115979,
+      "intended_remote_stage_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1"
+    },
+    "phase-e-stage2-radial-v1-validation-allowlist-20261103.json": {
+      "manifest_path": "investigations/dspec-acceleration-20261027/receipts/phase-e-stage2-radial-v1-validation-allowlist-20261103.json",
+      "file_count": 4,
+      "archive_path": "investigations/dspec-acceleration-20261027/receipts/phase-e-stage2-radial-v1-validation-allowlist-20261103.tar.gz",
+      "archive_sha256": "aad2c567829df9a2b374e00b5c201b95958d0bf04a33f28b5ea40cdf3e799233",
+      "archive_bytes": 16583,
+      "intended_remote_stage_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-v1-validation-v1"
+    },
+    "phase-e-stage2-radial-terminal-retry-v3-allowlist-20261103.json": {
+      "manifest_path": "investigations/dspec-acceleration-20261027/receipts/phase-e-stage2-radial-terminal-retry-v3-allowlist-20261103.json",
+      "file_count": 2,
+      "archive_path": "investigations/dspec-acceleration-20261027/receipts/phase-e-stage2-radial-terminal-retry-v3-allowlist-20261103.tar.gz",
+      "archive_sha256": "f8c58d36d5369d62d2dbfb3ebb8787c2cffb7960e2b3e0d4cea670bd4015a609",
+      "archive_bytes": 10080,
+      "intended_remote_stage_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-radial-terminal-retry-v3"
+    }
+  },
+  "stage_member_verification": {
+    "build_members_verified": 23,
+    "validation_members_verified": 4,
+    "terminal_retry_v3_members_verified": 2,
+    "all_member_sha256_matches": true,
+    "retry_prelaunch_static_inputs_present": 274,
+    "retry_original_state_sha256": "62547581671d88cad18cf5946711ef9ed126847cf833aad60fe0acad5ffcaa33"
+  },
+  "staging_attempts_preserved": [
+    {
+      "stage": "phase-e-stage2-radial-v1",
+      "detail": "Initial transfer put both reviewed bundles in build .payload; build source extracted/verified, validation pair copied to its distinct correct root and reverified. Extra original payload files preserved."
+    },
+    {
+      "stage": "phase-e-stage2-radial-terminal-retry-v1",
+      "detail": "Checker-only package preserved; prelaunch guard found stale checker input path; no task/control launched."
+    },
+    {
+      "stage": "phase-e-stage2-radial-terminal-retry-v2",
+      "detail": "Checker-only package preserved untransferred; strict local assertion found stale command checker path; no task launched."
+    },
+    {
+      "stage": "phase-e-stage2-radial-terminal-retry-v3",
+      "detail": "Reviewed consistent cwd/command/input stage root; two members verified and one checker-only task launched/completed."
+    }
+  ],
+  "build_evidence_path": "receipts/phase-e-stage2-radial-v1-build-evidence-20261103.json",
+  "build_evidence_sha256": "1368e364528c04331d197675b4ff5312c490bfb85cb64e48c34bf17930c0a333",
+  "stage1_external_baseline_path": "receipts/phase-e-stage1-v2-build-external-baseline-20261103.json",
+  "stage1_external_baseline_sha256": "578910097acea88d26f0ef6303da07b00cd30ca260b6b8e627d951302564cdb8",
+  "run_launch_receipt_path": "receipts/phase-e-stage2-radial-v1-run-launch-20261103.json",
+  "original_terminal_failure_path": "receipts/phase-e-stage2-radial-v1-terminal-failure-full-20261103.json",
+  "retry_launch_receipt_path": "receipts/phase-e-stage2-radial-terminal-retry-launch-20261103.json",
+  "evidence_archive": {
+    "path": "receipts/phase-e-stage2-radial-evidence-canonical-20261103.tar.gz",
+    "manifest": "receipts/phase-e-stage2-radial-evidence-canonical-20261103.json",
+    "archive_sha256": "c8ec48d8a6a64ce1fb4ae526a47f304957c46a34248eed871365472556cac9d9",
+    "unique_members": 100,
+    "payload_bytes": 610952
+  },
+  "checker_report": {
+    "path": "investigations/dspec-acceleration-20261027/analyses/phase-e-stage2-radial-report-20261103.json",
+    "sha256": "6cadfe132104162ad831d11bffd80caf1ba172f9ed2bba6732ed035452b5bcc8"
+  },
+  "matched_report": {
+    "path": "analyses/phase-e-stage2-radial-matched-report-20261103.md",
+    "sha256": "7c27a5cc6b99970c6407dbc9e8d4e9921c64c2bef075e9587a12d4bf2af3df4f"
+  },
+  "remote_execution_completed": true,
+  "matched_report_json": {
+    "path": "analyses/phase-e-stage2-radial-matched-report-20261103.json",
+    "sha256": "640a0c3b8edca7991372a9940f0e1fa4b8406dd55739672bb5d6e36a77845392"
+  }
+}

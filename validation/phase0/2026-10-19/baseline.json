@@ -1,0 +1,303 @@
+{
+  "branch": "master",
+  "commit": "fa265f584496f204589839fa6c9f10168d290b57",
+  "tree": "8b57f310e8ce2ea4fb4f7a10d3a687be48bb99a5",
+  "source_archive_commit": "6627fd21541fb17b58996eef8cdc005a4378ee43",
+  "local_checkout_branch": "dev/cowling",
+  "local_checkout_commit": "6627fd21541fb17b58996eef8cdc005a4378ee43",
+  "branch_policy": "Do not fetch/prune/switch/merge/delete local or remote branches during Phase 0.",
+  "next_phase_approval_required": true,
+  "documentation_requirements": [
+    "Prioritize simple download, setup and library-use examples.",
+    "Replace the quick start with a clear progression and appropriate levels of detail.",
+    "Review the current website visually for readability, usability and professional presentation.",
+    "Compare suitable professional scientific-software websites before a focused redesign.",
+    "Keep the documentation work focused and bounded."
+  ],
+  "known_cache_mismatch": {
+    "declared_interpolation": "4508a7b3d2205f5647e87cdbaa4496cc0283c389",
+    "historical_release_cache_interpolation": "1557aad571ceac1899c2d3795696aa4047f41d8a",
+    "baseline_uses": "declared_interpolation"
+  },
+  "dependencies": {
+    "fftwpp": {
+      "commit": "06cc1fb04c4398407839e637cb5414b179b0e9c3",
+      "archive_sha256": "26232224b79522fa6630ba14288806d3ca182fb6c02492d081593ff127379ca1"
+    },
+    "gaussquad": {
+      "commit": "fbe37c7eef93695317dbf9c48715110bf64c800f",
+      "archive_sha256": "ae8a36e2afbff3d8071901c6f57fbf73f9275d05ba8f3c6a439ce990971ce2a1"
+    },
+    "gshtrans": {
+      "commit": "b880ac9aeacdb54a6480fca3aee70a20a727c678",
+      "archive_sha256": "226eb5ffb247be7f2312789901eb9a629dfd11aede9bf961905aa752467dd336"
+    },
+    "interpolation": {
+      "commit": "4508a7b3d2205f5647e87cdbaa4496cc0283c389",
+      "archive_sha256": "73878a848a213ef5cfd70f65835558bda9d59aaee431ac3df9516de987e2a8b4"
+    },
+    "numericconcepts": {
+      "commit": "888126b44a979fda5dcc9d0b11d80cb8b3f61b52",
+      "archive_sha256": "4e00dcb991c0ee427463957c87d88d9cdbda6c6229fc340170e66d9e319aa8af"
+    },
+    "googletest": {
+      "commit": "f8d7d77c06936315286eb55f8de22cd23c188571",
+      "archive_sha256": "e5f89b43d9cc0916723695c8503430fdd5cc25e8bd50881dbd242cef468a0533"
+    }
+  },
+  "key_inputs": {
+    "CMakeLists.txt": {
+      "sha256": "c274eedcd574b0cab42929e6a42be1cc7a51f79ed49e569869ec1e81a4ad8dcc",
+      "size": 6106
+    },
+    "cmake/DSpecM1DConfig.cmake.in": {
+      "sha256": "6d9e0bf06248ab25639c222fd20bffcd2534660e010a5942607ee2ed6f0efe45",
+      "size": 1978
+    },
+    "DSpecM1D/src/NormClass.h": {
+      "sha256": "85033902ecb72d2105ed61d186564ee8c322b51d59e86908502b720c4cb6d0e2",
+      "size": 1253
+    },
+    "DSpecM1D/src/model_info/ModelInput.h": {
+      "sha256": "cbb2e70821f5e94c440cbdc31e025981f3b50750b72357eb1ccd965f670ce068",
+      "size": 14079
+    },
+    "DSpecM1D/src/model_info/MeshModel.h": {
+      "sha256": "0f4c639cc69170dfcd4c66f8b38b1dd979f6917a2dd24954513777ea22ec1586",
+      "size": 7834
+    },
+    "DSpecM1D/src/ParamInfo.h": {
+      "sha256": "02565df133d9ffebbcf26fabb531221c8e1b4818d1370e71ffe2eec94fcaf375",
+      "size": 3201
+    },
+    "DSpecM1D/src/SpecHelpers.h": {
+      "sha256": "d77e1077ad664efa0feae7b531af624ae0e0cb2c655b30ca734d010ea1a5efd9",
+      "size": 2654
+    },
+    "DSpecM1D/src/SignalFiltering.h": {
+      "sha256": "3c1e71db7235af97c94b1ed319b6861d8f3e58869d7fb300e9c4a8a777ebceb1",
+      "size": 3711
+    },
+    "DSpecM1D/src/SEM/SEMConstructor.h": {
+      "sha256": "a4ab7e5eef092709bb36d18ed04ccd07a2175b734853aa72b7a0566a5251689c",
+      "size": 25836
+    },
+    "DSpecM1D/src/FullSpecSingleSem.h": {
+      "sha256": "49451ea7819b14001f89e99c3db2f40a189bf4db847cb43cd438d567c02df5bd",
+      "size": 9701
+    },
+    "DSpecM1D/src/FullSpecMultiSem.h": {
+      "sha256": "27356db70039ad926bb0f414d9584d2f5e9d2e11ebd236b5e7b3f01fb9ceedc0",
+      "size": 14277
+    },
+    "data/models/prem.200.no.txt": {
+      "sha256": "4e64ef450a0304e6846a453d5d02ed45355fac853ed1f7a4cbad03cf6716dd9f",
+      "size": 17694
+    },
+    "data/models/prem.200.noatten.txt": {
+      "sha256": "35071296c7fccf52730c3cdc476eb0ac5b2d42550c77dec484bc33dcbbac32f8",
+      "size": 16761
+    },
+    "data/params/generate_seismogram_smoke.txt": {
+      "sha256": "8711fd616654d8989ca9893cf6744b3cce249061852b10d42259182e398eba27",
+      "size": 970
+    },
+    "data/params/t1.txt": {
+      "sha256": "ea1c2e32da4ee59b93bd834b4b8d608ba185b17d6af67674e9304a053934ae43",
+      "size": 1103
+    },
+    "validation/cowling/full_regression.cpp": {
+      "sha256": "0363215a8bd92bd7e8868754d62facbd2474c7ac77b36267cfb289fcb92480e6",
+      "size": 1849
+    },
+    "validation/cowling/multi_sem_cleanup.cpp": {
+      "sha256": "95d4f7137bf40c1dac8b383d3f255374f9171c40089bc9441511546684b88ff5",
+      "size": 4060
+    },
+    "tests/test_utils.h": {
+      "sha256": "d64d41ffa7fd648b34dfcdf888c850a24a054789989afbd28fb33f1c381337e3",
+      "size": 3756
+    }
+  },
+  "system_packages": [
+    "libeigen3-dev 3.4.0-4build0.1",
+    "libfftw3-dev 3.3.10-1ubuntu3",
+    "libgomp1 14.2.0-4ubuntu2~24.04.1",
+    "libstdc++6 14.2.0-4ubuntu2~24.04.1"
+  ],
+  "checks": {
+    "release_build": "PASS",
+    "active_ctest": 125,
+    "disabled_opt_in_tests": 2,
+    "focused_solver_threads4": 10,
+    "installed_consumer_implicit_standard": "FAIL: no C++23 requirement on imported target",
+    "installed_consumer_explicit_cpp23": "PASS",
+    "source_and_dependency_hashes_unchanged": true
+  },
+  "github_prs": {
+    "observed_at_utc": "2026-10-19T09:24:07.476079+00:00",
+    "items": [
+      {
+        "number": 17,
+        "title": "Add frequency-dependent Cowling approximation for spheroidal spectra",
+        "state": "closed",
+        "merged_at": "2026-10-19T08:57:47Z",
+        "closed_at": "2026-10-19T08:57:47Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/17",
+        "merge_commit_sha": "fa265f584496f204589839fa6c9f10168d290b57",
+        "base": "master",
+        "head": "dev/cowling",
+        "head_sha": "6627fd21541fb17b58996eef8cdc005a4378ee43"
+      },
+      {
+        "number": 15,
+        "title": "Add static loading and tidal Love-number module",
+        "state": "closed",
+        "merged_at": "2026-07-29T14:38:09Z",
+        "closed_at": "2026-07-29T14:38:09Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/15",
+        "merge_commit_sha": "889452b6790d2c60afacc156b4c7512990758aee",
+        "base": "master",
+        "head": "dev/love-numbers",
+        "head_sha": "45e8b2b8da57b1dd45c7d231096a2d2d5ab55459"
+      },
+      {
+        "number": 14,
+        "title": "Fix/meshmodel gravity",
+        "state": "closed",
+        "merged_at": "2026-07-29T09:53:01Z",
+        "closed_at": "2026-07-29T09:53:01Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/14",
+        "merge_commit_sha": "ff45c3508cba0c7d9f823e683b80bef3413e811d",
+        "base": "master",
+        "head": "fix/meshmodel-gravity",
+        "head_sha": "207b6462ab169a86b7cd4ea183424e2a65d7c34b"
+      },
+      {
+        "number": 13,
+        "title": "Update Interpolation dependency to pin to specific commit for cubic-s\u2026",
+        "state": "closed",
+        "merged_at": "2026-07-21T21:32:38Z",
+        "closed_at": "2026-07-21T21:32:38Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/13",
+        "merge_commit_sha": "7cca085bb652952d132b182c8067010e491e8dc8",
+        "base": "master",
+        "head": "dev/cubic-spline-fix",
+        "head_sha": "c3f0f82e012f9788ccd56e3ce70c46c8bcd9e4bd"
+      },
+      {
+        "number": 12,
+        "title": "Develop restructure 1",
+        "state": "closed",
+        "merged_at": "2026-07-16T08:59:31Z",
+        "closed_at": "2026-07-16T08:59:31Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/12",
+        "merge_commit_sha": "938794ed02c9747628f8161264f5ef81bbc43a07",
+        "base": "master",
+        "head": "develop-restructure-1",
+        "head_sha": "4a0d46bea6462484edc89adea4d468edcb685a31"
+      },
+      {
+        "number": 6,
+        "title": "Update documentation: refine links in README and remove GitHub Pages \u2026",
+        "state": "closed",
+        "merged_at": "2026-04-26T15:10:14Z",
+        "closed_at": "2026-04-26T15:10:14Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/6",
+        "merge_commit_sha": "e4fc2243765186474abd93e5f671fa858c160ac6",
+        "base": "master",
+        "head": "dev-docs",
+        "head_sha": "8e16ce2b5455fd33ed7b654596329adf14df28f3"
+      },
+      {
+        "number": 5,
+        "title": "Develop restructure 1",
+        "state": "closed",
+        "merged_at": "2026-04-26T14:35:52Z",
+        "closed_at": "2026-04-26T14:35:52Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/5",
+        "merge_commit_sha": "562b10cb8025db0ae625c94898aeacc37098a142",
+        "base": "master",
+        "head": "develop-restructure-1",
+        "head_sha": "d87e06a92502cdf236526f7b5edc61c2b4f0224a"
+      },
+      {
+        "number": 4,
+        "title": "Develop restructure 1",
+        "state": "closed",
+        "merged_at": null,
+        "closed_at": "2026-04-26T14:27:44Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/4",
+        "merge_commit_sha": "0d8e24a41e0cb3c04e88e0eecb65e13de839680e",
+        "base": "master",
+        "head": "develop-restructure-1",
+        "head_sha": "96105e716b8295f46bf176e4460750903df90035"
+      },
+      {
+        "number": 3,
+        "title": "Develop restructure 1",
+        "state": "closed",
+        "merged_at": null,
+        "closed_at": "2026-04-26T14:20:36Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/3",
+        "merge_commit_sha": null,
+        "base": "master",
+        "head": "develop-restructure-1",
+        "head_sha": "f2fbc55433eba63183437c74b4a4160cd9e13314"
+      },
+      {
+        "number": 2,
+        "title": "Codex review",
+        "state": "closed",
+        "merged_at": "2026-04-23T15:59:03Z",
+        "closed_at": "2026-04-23T15:59:03Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/2",
+        "merge_commit_sha": "e133eb83ec19ee2eebc30710ed7c4e4b2cf154b7",
+        "base": "develop-restructure-1",
+        "head": "codex-review",
+        "head_sha": "7e6af6738a7f174900e8b70ff54516540584430a"
+      },
+      {
+        "number": 1,
+        "title": "Normalize naming in SEM force/receiver internals",
+        "state": "closed",
+        "merged_at": "2026-04-21T16:42:06Z",
+        "closed_at": "2026-04-21T16:42:06Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/pull/1",
+        "merge_commit_sha": "c3a07b0b1db8f2e649664a0ccac7bb9f473f7c66",
+        "base": "develop-restructure-1",
+        "head": "codex/ensure-consistent-naming-conventions",
+        "head_sha": "a97fb4781f7a354c9bf7f71cd5d51c91b3a658e5"
+      }
+    ]
+  },
+  "github_ci": {
+    "observed_at_utc": "2026-10-19T09:24:08.028495+00:00",
+    "items": [
+      {
+        "name": "Pages",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "fa265f584496f204589839fa6c9f10168d290b57",
+        "event": "push",
+        "created_at": "2026-10-19T08:57:49Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/actions/runs/39226520580"
+      },
+      {
+        "name": "CI",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "fa265f584496f204589839fa6c9f10168d290b57",
+        "event": "push",
+        "created_at": "2026-10-19T08:57:49Z",
+        "html_url": "https://github.com/adcm2/DSpecM1D/actions/runs/39226520707"
+      }
+    ]
+  },
+  "artifact_location": "build/phase0-2026-10-19",
+  "numerical_reference_policy": {
+    "serial_same_environment": "Compare retained arrays; serial repeat was byte-identical.",
+    "thread_comparison_relative_frobenius_tolerance": 1e-10,
+    "future_dependency_update": "Use array comparisons and analytic checks; hashes establish provenance rather than universal numerical tolerances."
+  }
+}

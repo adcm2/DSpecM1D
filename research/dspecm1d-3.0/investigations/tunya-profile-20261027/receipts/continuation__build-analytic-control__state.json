@@ -1,0 +1,130 @@
+{
+  "finished_unix": 1793091588.5690064,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v6/configs/build-control.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/build-analytic-control/build/build-result.json"
+      ],
+      "command_sha256": "edfb3ea4bc25319db1f7d9649f59beb510cf27a67184c521c2fd16c240992f6d",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "elapsed_seconds": 69.76317891100189,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2032389,
+          12476926
+        ],
+        [
+          2032390,
+          12476929
+        ],
+        [
+          2032391,
+          12476941
+        ],
+        [
+          2032392,
+          12476942
+        ],
+        [
+          2033092,
+          12483537
+        ],
+        [
+          2033095,
+          12483599
+        ],
+        [
+          2033096,
+          12483599
+        ]
+      ],
+      "finished_unix": 1793091588.56669,
+      "id": "build",
+      "inputs_sha256_after": {
+        "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v6/configs/build-control.json": "b2ab881c9985da2aff15fcab37eb2a5eeec72aa22ee291cc81de93d60f122346",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v6/configs/build-control.json": "b2ab881c9985da2aff15fcab37eb2a5eeec72aa22ee291cc81de93d60f122346",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "build-result.json"
+      ],
+      "outputs_sha256": {
+        "build-result.json": "d59b910f9e0e1b263e1d5a18ee266563746a96f8fc81a6ecca2317b8be1c97ba"
+      },
+      "peak_observed_rss_gib_userspace": 2.3936,
+      "peak_observed_threads": 5,
+      "returncode": 0,
+      "started_unix": 1793091518.7829485,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.961418,
+      "updated_unix": 1793091587.2373018,
+      "user_cpu_seconds_children": 68.447243,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.2784,
+        "elapsed_seconds": 68.45,
+        "owned_processes": [
+          {
+            "pid": 2032387,
+            "starttime_ticks": 12476918,
+            "threads": 1
+          },
+          {
+            "pid": 2033095,
+            "starttime_ticks": 12483599,
+            "threads": 1
+          },
+          {
+            "pid": 2033096,
+            "starttime_ticks": 12483599,
+            "threads": 1
+          },
+          {
+            "pid": 2032390,
+            "starttime_ticks": 12476929,
+            "threads": 1
+          },
+          {
+            "pid": 2032389,
+            "starttime_ticks": 12476926,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.3936,
+        "peak_observed_threads": 5,
+        "thread_cap": 50,
+        "thread_count_including_supervisor": 5
+      }
+    }
+  ],
+  "plan_sha256": "0b80060bdcbe3cb777752f2815e466f3dc2c661d904161251f7f5efd20fc10dc",
+  "schema": 1,
+  "started_unix": 1793091518.7616138,
+  "status": "completed",
+  "task_id": "build-analytic-control",
+  "thread_cap": 50
+}

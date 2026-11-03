@@ -1,0 +1,12 @@
+# SK performance investigation — 26 October 2026
+
+Approved scope: profile the current accepted DSpecM1D sensitivity-kernel calculation, compare its method with YSpecpp, and propose an implementation plan. No production implementation, commits, pushes, high-degree repair, or convergence sweep is authorized.
+
+- Created an isolated evidence directory in the chat workspace. The standard DSpecM1D and YSpecpp checkouts are read-only inputs; their dirty state and existing evidence will be preserved.
+- Diagnostics may instrument copied headers and drivers here. Such instrumentation is solely for attribution and is not a solver change.
+- Added reproducible diagnostic builders: a fresh current-source timing driver, copied DSpec headers with scoped timers, and a timed YSpec sampled-kernel translation unit. Production sources are unchanged. Hardware perf counters are unavailable at perf_event_paranoid=4; scoped wall timers provide primary attribution, with a sampling-profiler cross-check retained separately.
+- Completed 24 alternating native runs (three independent processes for each solver, degree 3/12, and one/two measurements), four timed DSpec/YSpec pairs, and fixed-degree output-size diagnostics. Preserved an adapter rejection of one-angle YSpec sampling; resumed with supported three-angle fixtures, retaining the failure log.
+- Added and ran a public-workspace chunk-size diagnostic at degree 12. It measures one frequency without additional solves; chunk sizes 75,712/4,096/256 give identical kernels in that case. This is an API sampling diagnostic, not a convergence experiment.
+- Re-ran all four existing matched five-modulus accuracy comparisons. Every instrumented output is byte-identical to its native counterpart; all original profile/integral gates pass. Initial numerical source hashes and checkout status remain unchanged.
+- Completed a four-page report in Alex's standard LaTeX style, with measured stage attribution, local-source methodology comparison, exact numerical acceptance criteria, and proposed phases. The system LaTeX engine passed; all final pages were rendered and inspected with no overflow warnings. The desktop compiler was unavailable because its bundle was not cached.
+- Final result: investigation complete, Phase 1 proposed only. Production checkouts and accepted dirty changes were preserved. No solver implementation, commit, push, convergence sweep or high-degree repair was performed.

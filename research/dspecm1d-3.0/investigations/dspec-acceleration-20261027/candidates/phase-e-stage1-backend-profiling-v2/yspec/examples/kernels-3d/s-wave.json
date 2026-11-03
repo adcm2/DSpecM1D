@@ -1,0 +1,24 @@
+{
+  "model": "../prem.200",
+  "gravity": "full",
+  "output": { "prefix": "s-wave", "quantity": "velocity" },
+  "degrees": { "max": 200 },
+  "frequencies_mHz": { "min": 0.2, "max": 10 },
+  "time_series": { "length_min": 40, "time_step_s": 2 },
+  "filter_mHz": [2, 4, 8, 10],
+  "sources": [
+    { "depth_km": 29.5, "latitude": 36.87, "longitude": 35.58,
+      "moment_tensor_Nm": { "rr": 4.22e17, "rt": 3.08e17, "rp": 6.99e17,
+                            "tt": -2.976e18, "tp": 6.54e17, "pp": 2.55e18 } }
+  ],
+  "receiver": { "depth_km": 3, "distance_deg": 60, "azimuth_deg": 30 },
+  "measurements": [
+    { "name": "S", "component": "T",
+      "traveltime": { "window_s": [1000, 1200], "taper_s": 40 } }
+  ],
+  "kernels": {
+    "parameters": "velocities",
+    "scaling": "relative",
+    "volume": { "degree": 48, "max_element_km": 100 }
+  }
+}

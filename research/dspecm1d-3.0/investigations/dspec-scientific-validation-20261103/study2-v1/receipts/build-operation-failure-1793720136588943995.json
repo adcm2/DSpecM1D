@@ -1,0 +1,8 @@
+{
+  "operation": [
+    "preflight"
+  ],
+  "operator_sha256": "fa84737ae9066e46b4553fcbcd787dfe69b8834f651d307925af90a0d97f51db",
+  "time_unix": 1793720136.5671458,
+  "traceback": "Traceback (most recent call last):\n  File \"/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-scientific-validation-20261103/study2-v1/operations/build_stage.py\", line 235, in <module>\n    result = remote(sys.argv[1])\n             ^^^^^^^^^^^^^^^^^^^\n  File \"/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-scientific-validation-20261103/study2-v1/operations/build_stage.py\", line 220, in remote\n    raw = transport.python(source)\n          ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/tunya-profile-20261027/ssh_transport.py\", line 18, in python\n    result.check_returncode()\n  File \"/usr/lib/python3.12/subprocess.py\", line 502, in check_returncode\n    raise CalledProcessError(self.returncode, self.args, self.stdout,\nsubprocess.CalledProcessError: Command '['ssh', '-F', '/tmp/ccdsm-tunya-20261027/ssh_config', '-o', 'ControlMaster=no', '-o', 'ControlPath=none', '-o', 'UpdateHostKeys=no', '-o', 'AddKeysToAgent=no', '-o', 'ProxyCommand=ssh -F /tmp/ccdsm-tunya-20261027/ssh_config -o ControlMaster=no -o ControlPath=none -o UpdateHostKeys=no -o AddKeysToAgent=no -W %h:%p ssh-west', '-T', 'tunya', 'python3 -']' returned non-zero exit status 1.\n"
+}

@@ -1,0 +1,33 @@
+Phase A replay gate/timing clarification — parent/Sol-high,2026-10-31
+
+Before build/launch, preserve approved field relativeL2<=1e-11, existing FD2e-4
+and gravity/time-identity1e-10 criteria. No independent maxpointwise kernel
+relative1e-10 gate or arbitrary1e-30 denominator was approved; remove that new
+criterion now, rather than interpreting a later cancellation-driven false failure
+as grounds to relax a gate. This corrects the implementation to the approved
+contract; it changes no numerical formula or approved tolerance.
+
+Product evidence: source-bind unchanged Hermitian kernelVs, pair forward and
+adjoint at identical bin/section/native side/angle, assert and report nonzero
+aggregate complex adjoint fields on active9,25,40, and retain raw complex channels.
+Report kernel global relativeL2,max absolute and section-peak-scaled errors when
+reference norms/peaks are nonzero. If zero, report absolute error and an explicit
+undefined-relative/null value, not an invented floor. A new product gate would
+require an actual bilinear perturbation/roundoff bound; it is not required here.
+Check complete293side/135+19angle/bothrole inventories so partial/zero packets
+cannot pass vacuously. Individual l0T/zero channels remain valid zeros.
+
+Both old DS replay and new contiguous-table replay must consume the SAME frozen
+radial packet bytes in A2. A1 live packed fields are an additional independent
+field reference, not a substitute for old packet replay. Do not time loading
+reference files as old reconstruction. Identify the old post-radial algorithm
+actually implemented (e.g. complex angular basis plus Eigen multiplication),
+its basis/table setup,packing,angular evaluation/rotation and material contraction
+costs separately. A1 reference uses PACKED sampling; it is not Stage2 production
+TENSOR. Do not relabel packed timing as tensor or total pipeline acceleration.
+Explicitly identify omitted workspace/key/interpolation/solver/I/O costs.
+
+Keep geometry/angular tables immutable and reused across native radii/frequencies
+where keys permit, not silently rebuilding inside each timed per-point loop.
+All timing is within existing A2 process; no new35bin job/repeat/submode is added.
+Previous five-job inventory/binary mapping/resource/PhaseBstop boundaries stand.

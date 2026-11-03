@@ -1,0 +1,32 @@
+{
+  "build_root": "/space/adcm2/research/builds/stages12-stage2-v1-scheduler-test",
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "variants": [
+    {
+      "id": "frequency-scheduler-test",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-scheduler-build/candidates/stages12-stage2-frequency-v1",
+      "output_name": "frequency-scheduler-test",
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-O2",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-scheduler-build/candidates/stages12-stage2-frequency-v1",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-scheduler-build/candidates/stages12-stage2-frequency-v1/frequency_scheduler_test.cpp",
+        "-o",
+        "{OUTPUT}"
+      ],
+      "sources": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-scheduler-build/candidates/stages12-stage2-frequency-v1/frequency_scheduler.hpp",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-scheduler-build/candidates/stages12-stage2-frequency-v1/frequency_scheduler_test.cpp"
+      ],
+      "dependencies": [
+        "/opt/gcc-13.2.0/bin/g++"
+      ]
+    }
+  ]
+}

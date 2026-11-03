@@ -1,0 +1,361 @@
+{
+  "status": "stages1_2_complete_stop_before_stage3",
+  "scope": "Isolated DSpecM1D acceleration candidates for approved stages 1 and 2 only; no Stage 3 implementation and no production integration.",
+  "stage1": {
+    "status": "stage1_complete",
+    "accepted_source": {
+      "remote_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1/candidates/stages12-stage1-profile-v1",
+      "local_exact_extract": "receipts/stages12-stage1-v1-frozen-inputs/candidate",
+      "archive_sha256": "52fccc457361e1fc8b1e865f05738f93a04e933f2725ac24169f59770de3ad63",
+      "tree_sha256": "17609c812f316d91bc22ca058460bc6c19c483e9dbfd8d666000dc746bda5daf"
+    },
+    "build_validation": "receipts/stages12-stage1-v1-build-validation.json",
+    "controls": {
+      "snapshot": "receipts/stages12-stage1-v3-controls-completed/",
+      "state_sha256": "6a15ec61056c4511d2e9dc3bbd66c690df3f2a62c8f9cd7dbbcd211a919dbdfa",
+      "jobs": 12,
+      "all_pass": true
+    },
+    "measurements": {
+      "snapshot": "receipts/stages12-stage1-v3-measure-completed/",
+      "state_sha256": "34bbfa86c05e749e1efe293b2cd26b289487e5ed164da5e79a2f3f45304e4316",
+      "jobs": 10,
+      "all_pass": true,
+      "native_runs": [
+        {
+          "run": "N1-native-L200",
+          "result_elapsed_s": 51.840044503,
+          "supervisor_elapsed_seconds": 52.48097145598149,
+          "kernel_s": 40.678408821,
+          "peak_rss_gib_userspace": 2.4242,
+          "peak_threads": 9
+        },
+        {
+          "run": "N2-native-L200",
+          "result_elapsed_s": 51.832922741,
+          "supervisor_elapsed_seconds": 52.39479140000185,
+          "kernel_s": 40.663871973,
+          "peak_rss_gib_userspace": 2.4272,
+          "peak_threads": 9
+        },
+        {
+          "run": "N3-native-L200",
+          "result_elapsed_s": 52.140116475,
+          "supervisor_elapsed_seconds": 52.73058440699242,
+          "kernel_s": 40.896136167,
+          "peak_rss_gib_userspace": 2.4237,
+          "peak_threads": 9
+        }
+      ],
+      "native_result_elapsed_min_median_max_s": [
+        51.832922741,
+        51.840044503,
+        52.140116475
+      ],
+      "max_native_rss_gib_userspace": 2.4272,
+      "max_native_threads": 9
+    },
+    "profile_packet": "receipts/stages12-stage1-v3-profile-packet/",
+    "profile_raw_csv": "analyses/stages12-stage1-v1-profile-raw-rows.csv",
+    "counter_raw_csv": "analyses/stages12-stage1-v1-profile-raw-counters.csv",
+    "component_map": "analyses/stages12-stage1-v1-scope-component-map.json",
+    "profile_counters": {
+      "sparse_factorization_calls_total": 14070,
+      "initial_response_cache_misses": 14000,
+      "kernel_response_cache_hits": 14000,
+      "radial_l0_bypass_counter_events": 70
+    },
+    "finite_difference_relative_error": 6.4402631063599945e-09,
+    "stage2_implementation_started": false
+  },
+  "stage2": {
+    "accepted_candidate": "candidates/stages12-stage2-frequency-v1",
+    "seed": "receipts/stages12-stage1-v1-frozen-inputs/candidate",
+    "seed_archive_sha256": "52fccc457361e1fc8b1e865f05738f93a04e933f2725ac24169f59770de3ad63",
+    "runtime_hashes": {
+      "doc_driver.cpp": "0014948bbaad9cc445fb6afa13c4bb3b6f4ea1d3e53b2b65f90e99d68b09c981",
+      "profile.hpp": "8e1ddc414cd200d9858581622c3cf9a04b26ddca26aeff673b718a75e48a191d",
+      "frequency_scheduler.hpp": "d954acaf93f2334caa655caa82559e71251619c99339a08a5220536992d9fd60",
+      "scheduler_helper_test": "0d7a422c5cd84000e82fc76b227cc5fc35dde7f0866a8214f1cff6a8ba52b714",
+      "component_map": "13d447b87568f14f311be1611f101b0ef8ed5d47a2feb4fb22f3720fdbc5bb02"
+    },
+    "build": {
+      "root": "/space/adcm2/research/builds/stages12-stage2-v1",
+      "native_binary_sha256": "bce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab",
+      "profile_binary_sha256": "50414d5639fe5432c6d7aeb9f86fa93987bda31c2f9cfea21452c79aa372c99f",
+      "scheduler_test_binary_sha256": "47303769639abfa50898e5f808a213d9788a3e4665eb727f896b56550603f2a2",
+      "build_validation": "receipts/stages12-stage2-v1-build-completed/build-validation.json",
+      "build_validation_sha256": "f383ed8a3d7aae47a7bb2fe8dc493e8c134690feb340bb2230ec072fadb60e8b"
+    },
+    "checker": {
+      "checker_sha256": "21fc923b3d38febc02fad3f3f0497f84b4b5711de053e61c855a323167bc3ef1",
+      "tests_sha256": "f220b4412c816657b3bea8e8563e029ca4fda87f01832fdac7a5a7412226b206",
+      "regressions": "17 synthetic/regression tests and the preserved degree8 anchor validation passed"
+    },
+    "controls": {
+      "task_id": "stages12-stage2-controls-v2",
+      "plan_sha256": "63f25db859443aba8f3fd0453474109477e6d8c7967d652889b596bd23c2d385",
+      "jobs": 13,
+      "all_pass": true,
+      "state": "receipts/stages12-stage2-v2-controls-completed/raw-task/state.json",
+      "state_sha256": "de20dac701fd1e641b93dac3a93e0d87cb3f75de7a5be72de2ea8b9b44f537ca",
+      "peak_threads": 9,
+      "peak_rss_gib_userspace": 0.1561
+    },
+    "measurement": {
+      "task_id": "stages12-stage2-measure-v3",
+      "plan_sha256": "3e12a9b32f7026e7a15a6f69b9b5951c78fcb4e8425165fa04911b36e57de55d",
+      "jobs": 16,
+      "all_pass": true,
+      "all_inputs_unchanged": true,
+      "cleanup_verified": true,
+      "terminal_state": "receipts/stages12-stage2-v3-measure-completed/raw-task/state.json",
+      "terminal_state_sha256": "16d879978fee1682770fc9eda9485a9199d9ad2d8b186d6081e62799a0c5094e",
+      "launch_receipt": "receipts/stages12-stage2-v3-measure-completed/stages12-stage2-measure-v3.launch.json",
+      "launch_receipt_sha256": "3d3f25dd2c0e6297c0fe03141c10cf8ff8d44a15a5ea2a34629ed8598e945890",
+      "runs": [
+        {
+          "id": "F1a",
+          "result_elapsed_s": 107.038496691,
+          "external_elapsed_s": 107.47146544401767,
+          "forward_s": 62.353311653,
+          "kernel_inclusive_s": 44.664353455,
+          "kernel_pass_wall_s": 44.647226457,
+          "peak_rss_gib": 2.2677,
+          "peak_threads": 2
+        },
+        {
+          "id": "F1b",
+          "result_elapsed_s": 106.946435628,
+          "external_elapsed_s": 107.48566198803019,
+          "forward_s": 62.300818123,
+          "kernel_inclusive_s": 44.625336413,
+          "kernel_pass_wall_s": 44.607948786,
+          "peak_rss_gib": 2.2698,
+          "peak_threads": 2
+        },
+        {
+          "id": "F1c",
+          "result_elapsed_s": 106.817845652,
+          "external_elapsed_s": 107.33953542204108,
+          "forward_s": 62.305996196,
+          "kernel_inclusive_s": 44.49078854,
+          "kernel_pass_wall_s": 44.473020508,
+          "peak_rss_gib": 2.2698,
+          "peak_threads": 2
+        },
+        {
+          "id": "F8a",
+          "result_elapsed_s": 16.670131539,
+          "external_elapsed_s": 17.4355631369981,
+          "forward_s": 9.293288697,
+          "kernel_inclusive_s": 7.356635459,
+          "kernel_pass_wall_s": 7.291468732,
+          "peak_rss_gib": 4.7398,
+          "peak_threads": 9
+        },
+        {
+          "id": "F8b",
+          "result_elapsed_s": 16.842276646,
+          "external_elapsed_s": 17.5893880710355,
+          "forward_s": 9.490208193,
+          "kernel_inclusive_s": 7.332108327,
+          "kernel_pass_wall_s": 7.261905891,
+          "peak_rss_gib": 4.7398,
+          "peak_threads": 9
+        },
+        {
+          "id": "F8c",
+          "result_elapsed_s": 16.817633768,
+          "external_elapsed_s": 17.615503460983746,
+          "forward_s": 9.401451694,
+          "kernel_inclusive_s": 7.396304721,
+          "kernel_pass_wall_s": 7.330019256,
+          "peak_rss_gib": 4.7398,
+          "peak_threads": 9
+        }
+      ],
+      "degree8_anchor": {
+        "result_elapsed_s": 52.250099309,
+        "schedule": "degree",
+        "workers": 8,
+        "solve_workers": 8,
+        "frequency_workers": 1,
+        "legacy_kernel_s": 40.9390908,
+        "serial_diagnostic_s": 0.519657124,
+        "kernel_inclusive_with_diagnostics_s": 41.458747924,
+        "kernel_timing_note": "legacy kernel_s excludes serial diagnostics; inclusive value adds the separately measured diagnostic time."
+      },
+      "profile_run": {
+        "result_elapsed_s": 16.926771392,
+        "external_elapsed_s": 17.64588469400769,
+        "forward_s": 9.469249589,
+        "kernel_inclusive_s": 7.438092699,
+        "kernel_pass_wall_s": 7.372566516,
+        "peak_rss_gib": 4.739,
+        "peak_threads": 9,
+        "profile_overhead_vs_F8_native_median_percent": 0.648947560076274
+      },
+      "max_frequency_contribution_buffer_bytes": 12634160
+    },
+    "profile_evidence": {
+      "packet": "receipts/stages12-stage2-v3-profile-packet/",
+      "analysis": "receipts/stages12-stage2-v3-profile-packet/profile-packet-analysis.json",
+      "analysis_sha256": "3bc88a27fa302ea3e207de66c7d2608e74bd144a6018e7926f195ccb6343e72b",
+      "raw_scope_rows": "receipts/stages12-stage2-v3-profile-packet/p8-raw-scope-rows.csv",
+      "raw_counters": "receipts/stages12-stage2-v3-profile-packet/p8-raw-counters.csv",
+      "explicit_scope_map": "receipts/stages12-stage2-v3-profile-packet/stage-to-math-map.json",
+      "worker_components": "receipts/stages12-stage2-v3-profile-packet/p8-worker-exclusive-components.csv",
+      "master_wall_partition_s": 16.926455471,
+      "master_wall_residual_s": 0,
+      "master_kernel_phase_including_diagnostics_and_reduction_s": 7.438092719,
+      "kernel_parallel_pass_wall_s": 7.372566516,
+      "ordered_reduction_wall_s": 0.002826909,
+      "diagnostic_worker_elapsed_s": 0.519680216,
+      "diagnostic_overlay_worker_exclusive_s": 0.519673316,
+      "worker_elapsed_is_thread_time_not_wall": true,
+      "worker_exclusive_top": [
+        {
+          "component": "modal_solver",
+          "phase": "initial_frequency_workspace_and_capture",
+          "seconds": 49.66656451
+        },
+        {
+          "component": "tensor_angular_synthesis",
+          "phase": "kernel",
+          "seconds": 30.255004562
+        },
+        {
+          "component": "radial_sampling_reconstruction",
+          "phase": "kernel",
+          "seconds": 10.825834745
+        },
+        {
+          "component": "receiver_basis_projection",
+          "phase": "initial",
+          "seconds": 8.513977622
+        },
+        {
+          "component": "receiver_basis_projection",
+          "phase": "kernel",
+          "seconds": 5.029144077
+        },
+        {
+          "component": "batch_response_cache",
+          "phase": "kernel",
+          "seconds": 2.183393881
+        }
+      ],
+      "counters": {
+        "sparse_factorization_calls": 14070,
+        "solver_forward_rhs_columns": 42070,
+        "unit_basis_rhs_columns": 21000,
+        "weighted_adjoint_rhs": 70,
+        "batch_response_cache_misses": 14000,
+        "batch_response_cache_hits": 14000,
+        "radial_l0_bypass_events": 70,
+        "zero_weighted_adjoint_skips": 70
+      },
+      "cross_stage_symbolic_analysis_note": "Stage 1 reported 17 symbolic analyses and Stage 2 reported 24; this difference reflects changed TLS/instrumentation history and is not interpreted as a numerical-work reduction. Logical numerical invariants, RHS counts and response-cache counts remain unchanged."
+    },
+    "failures_preserved": [
+      "receipts/stages12-stage2-v1-controls-failed/",
+      "receipts/stages12-stage2-v1-controls-failure-audit.json",
+      "receipts/stages12-stage2-v2-measure-failed/",
+      "receipts/stages12-stage2-v2-measure-failed/degree8-anchor-output-comparison.json"
+    ],
+    "case_scope": {
+      "backend": "dspec",
+      "degree": 200,
+      "nq": 10,
+      "refinement": 0.025,
+      "frequency_count": 35,
+      "first_bin": 7,
+      "last_bin": 41,
+      "attenuation": true,
+      "fft_samples": 2048,
+      "fft_period_s": 4096,
+      "native_side_count": 293,
+      "along_angles": 135,
+      "across_angles": 19,
+      "kernel_parameter": "ln_vs_at_fixed_vp_density_and_effective_Q",
+      "kernel_units": "s m^-3",
+      "layout": "native-side-major then angle, float64",
+      "source_shell_contacts": false
+    }
+  },
+  "comparisons": {
+    "result_elapsed_s": {
+      "F1_min_median_max": [
+        106.817845652,
+        106.946435628,
+        107.038496691
+      ],
+      "F8_min_median_max": [
+        16.670131539,
+        16.817633768,
+        16.842276646
+      ]
+    },
+    "external_elapsed_s": {
+      "F1_min_median_max": [
+        107.33953542204108,
+        107.47146544401767,
+        107.48566198803019
+      ],
+      "F8_min_median_max": [
+        17.4355631369981,
+        17.5893880710355,
+        17.615503460983746
+      ]
+    },
+    "forward_s": {
+      "F1_min_median_max": [
+        62.300818123,
+        62.305996196,
+        62.353311653
+      ],
+      "F8_min_median_max": [
+        9.293288697,
+        9.401451694,
+        9.490208193
+      ]
+    },
+    "kernel_inclusive_s": {
+      "F1_min_median_max": [
+        44.49078854,
+        44.625336413,
+        44.664353455
+      ],
+      "F8_min_median_max": [
+        7.332108327,
+        7.356635459,
+        7.396304721
+      ]
+    },
+    "kernel_pass_wall_s": {
+      "F1_min_median_max": [
+        44.473020508,
+        44.607948786,
+        44.647226457
+      ],
+      "F8_min_median_max": [
+        7.261905891,
+        7.291468732,
+        7.330019256
+      ]
+    },
+    "speedups": {
+      "F8_median_vs_F1_median": 6.359184478823288,
+      "F8_median_vs_degree8_anchor": 3.1068639042681285,
+      "F8_median_vs_stage1_native_median": 3.082481472609982,
+      "F1_median_elapsed_divided_by_stage1_native_median": 2.063008175500524
+    }
+  },
+  "limitations": [
+    "Stage 1 kernel_s excludes tensor-validation diagnostics while Stage 2 kernel_s includes diagnostics and ordered reduction; those kernel totals are not directly compared.",
+    "Stage 2 worker-exclusive sums are accumulated worker thread-time and are not wall time; diagnostic worker time is reported separately and is not subtracted from parallel-pass wall.",
+    "Historical YSpec result_elapsed_s 5.641430309 is context only and was not rerun.",
+    "Results apply to isolated candidates and this L200 case; no Stage 3 or production integration was performed."
+  ]
+}

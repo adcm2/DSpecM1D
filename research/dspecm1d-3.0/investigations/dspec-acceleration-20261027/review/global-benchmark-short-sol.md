@@ -1,0 +1,15 @@
+# Short Sol review: diagnostic global benchmark
+
+2026-10-27. **HOLD for one final checker call-signature mismatch.** No science, SSH, build, or implementation changes. This does not delay or reopen the separately approved direct plan/build gates.
+
+`check_global_cache.assess()` currently calls `spool._unchanged(root, job, initial, current)` with four arguments. The actual reviewed shared helper accepts `(roots, jobs, before)` and rereads the completed receipts itself. Every otherwise successful assessment therefore raises `TypeError` at its final evidence recheck. Binding those four arguments against the imported helper's actual signature independently confirms `too many positional arguments`.
+
+Required bounded fix: replace the redundant after-read/loop with `after = spool._unchanged(roots, jobs, receipts)`. Add one actual end-to-end synthetic `assess()` regression, rather than only helper-level tests, and obtain fresh targeted review. Keep completed-job/artifact mutation rejection and unrelated-watchdog acceptance intact. No other correction is requested here.
+
+The nine supplied synthetic tests passed independently but do not call `assess()`, so they do not cover this integration failure. Static/data plan checks otherwise pass: 23 unique jobs, 14 producers and nine exact checks; all expected worker/storage arguments match their paired producer commands and native selections. Candidate command binary index 5 matches its declared input and reviewed final04 profiled binary. Producer worker requests do not exceed selected side counts, so the earlier generic worker/side HOLD is inapplicable to these invocations assuming declared memory remains nonbinding.
+
+L3/12 use eight sides with workers 1/4; L128/384 use two with workers 1/2; L1536 uses fluid side 59 and one worker. All use full angular grids over selected sides, CPU set 4–15, cap 12, numerical library threads forced to one by the existing supervisor, cache off/spool on, and immediate pair gates before higher-degree comparisons. L1536 Stored table formula is approximately 270.44 GiB, with 384 GiB working limit and 512 GiB job watchdog budget. Parent-reported machine availability is not independently reverified here.
+
+The declared scope is internal generated/stored/parallel diagnostics only. The existing `2e-13` numerical gate is unchanged, with all nine checks additionally requiring byte-exact kernel/trace/spectrum and exact energy/qdot scalars. Full physical/frequency/native identity, 52 physical bins plus guard, finite fields, factor counts and timing audits remain required. No direct-reference cross-route acceptance, 179-side volume, figure, global scientific promotion, or speedup claim follows from internal parity. Previous cross-route FAIL remains unresolved.
+
+Reviewed SHA-256: helper `303d7c1ef67ef3758305595db681bb758448d600f83b99ad8a51f771c04d63c9`; tests `1df4c165d8ff13de00b858dded0e39a6c5f6bb9c119fe47bd0b6248a1cc9dd3b`; shared global checker `340efdf0c60b80eea23fa69d642595cf7b989112d9310ed792b21ebe4b36d51a`; plan `9cc5c7a67f50139e169e2be0e39872ec54b1faf4f1fb6bef989d081af2e202a1`.

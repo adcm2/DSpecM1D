@@ -1,0 +1,59 @@
+{
+  "build_root": "/space/adcm2/research/builds/kernel-parallel-cache-20261027-01",
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "variants": [
+    {
+      "id": "cache-native",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-cache-audit-v1/candidates/parallel-cache-audit-v1",
+      "output_name": "cache-audit",
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-std=c++20",
+        "-pthread",
+        "-DMATHPROFILE_DISABLED",
+        "-O2",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-cache-audit-v1/candidates/parallel-cache-audit-v1/cache_audit.cpp",
+        "-o",
+        "{OUTPUT}"
+      ],
+      "sources": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-cache-audit-v1/candidates/parallel-cache-audit-v1"
+      ],
+      "dependencies": [
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3"
+      ]
+    },
+    {
+      "id": "cache-tsan",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-cache-audit-v1/candidates/parallel-cache-audit-v1",
+      "output_name": "cache-audit",
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-std=c++20",
+        "-pthread",
+        "-DMATHPROFILE_DISABLED",
+        "-O1",
+        "-g",
+        "-fsanitize=thread",
+        "-fno-omit-frame-pointer",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-cache-audit-v1/candidates/parallel-cache-audit-v1/cache_audit.cpp",
+        "-o",
+        "{OUTPUT}"
+      ],
+      "sources": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-cache-audit-v1/candidates/parallel-cache-audit-v1"
+      ],
+      "dependencies": [
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+Independent review plan, 2026-10-31 — additive authorization
+
+The user's latest instruction authorizes isolated B, then C, then complete-
+pipeline validation while away. Earlier B-only stops are historical and are
+superseded for this sequence. No further approval is needed between these
+authorized stages. Luna is the sole implementation/execution owner; Sol reviews.
+The implementation authorization plan is bc-completion-authorization-20261031.txt.
+
+B release to C: one bounded source review and one results review. Require four
+or fewer fixed source-aligned NQ5/6 nominal/finer configurations, full35-bin
+waveform/measurement controls, direct one-sided common-location SEM values and
+derivatives, frozen-weight complex forward/adjoint/kernel diagnostics at bins
+9/25/40, and an actually restricted full-gravity H/H^H policy paired with full
+solves. Record omitted-domain behaviour and per family/degree/bin cut/residual
+evidence. Full/full equality is no truncation evidence. No scientific error
+budget is invented: unresolved lower-NQ/truncation accuracy means C uses the
+original NQ10/.025 untruncated configuration. B may reject its attempted policy
+scientifically while completing a useful measured investigation.
+
+C release to complete pipeline: fresh isolated source/output paths. Prove the
+direct receiver measurement-direction RHS and H^H solution equivalent to the
+existing QR/rank-basis route, including fz conjugation, force normalization,
+receiver frame/harmonic phases, source lift and one-sided complex strain fields.
+Compare kernel contraction before real projection/frequency sum. Use bounded
+two-pass recomputation: first full35 forward spectra and waveform-derived
+measurement adjoint; then worker-local forward/adjoint/reconstruction/contraction
+and deterministic reduction, with honest repeated factor counts. No entire-
+campaign response cache, giant angular table or hidden changed workload.
+Exact-zero kernel bins7,8,41 may be skipped only after proving their exact
+zero weights and skip-on/off unmasked equality. All35 forward bins remain.
+One bounded C source review before build/run, one results review before final.
+
+The combined isolated C/final route must state whether accepted Phase A common
+degree-inner reconstruction is actually exercised. Planned combination reuses
+phase_a_reconstruction.hpp: stream existing projected radial visitor data into
+worker-local contiguous StrainTables, then unchanged LegendreTable/evaluate,
+spin rotation and fluid projection. Retain A's separate isotropic l0 adjoint
+semantics and source lifts. Keep old tensor mode as a same-in-memory-data oracle
+for complex fields/products before full35 combination. Reuse existing immutable
+section/frame geometry; no new angular framework, ODE engine or disk response
+packet is needed. If common code remains harness-only, explicitly report that
+combination incomplete rather than attributing its isolated13.4% harness timing
+to the complete pipeline. Existing non-roundoff fluid subgroup diagnostics remain
+visible in tagged Hermitian-dual convention, without universal SI-strain claims.
+
+Complete-pipeline proof: same frozen attenuated anisotropic PREM/full gravity,
+L200,35 retained bins7–41,2048FFT/4096s,dt2s,5e-fold damping/2400s,2/4/8/10mHz
+filter,1000–1200s window/40s taper,source29.5km,receiver3km,60deg/30deg and
+135/19 great-circle sections. Compute a complete frequency-summed ln(vs) kernel
+on the declared native/common side grid and compare against the matched accepted
+isolated path at identical mesh, forcing, radii and requested parameter; saved
+three-bin A packets alone are not a full-kernel reference. Preserve source/
+interface/receiver/bulk and fluid diagnostics without masks. Compare raw full35
+spectra, waveform, measurement normalization/adjoint-source/time-shift identity,
+complex forward/adjoint fields, complex products and final summed kernels.
+Meaningful attenuated low-degree FD reuses identical +/- traces only when exact
+inputs/formulas match; retain existing2e-4 discrete-derivative gate. Retain
+gravity/time-shift1e-10 gates and1e-11 same-data reconstruction equivalence;
+none is a continuous mesh-accuracy certificate.
+
+Measure matched accepted/reference and final native total complete-pipeline
+wall at eight total frequency workers/inner1. Add one instrumented component
+control with setup, assembly, factorization, substitutions, radial prep,
+reconstruction/contraction, reduction, measurement/FFT, I/O and total. Distinguish
+native/profile, worker elapsed/master wall and overlapping inclusive/exclusive
+scopes; no subtraction of overlapping worker time. Single runs are exploratory
+costs, not general speedup distributions. Include memory/thread/counter work.
+One bounded final source review and one final results/report review; focused
+corrections for concrete failures only, no repeated generic audit campaign.
+
+Every numerical/build operation remains detached Tunya nohup through existing
+staging/supervisor/SSH. Recheck resource use before launch; cap20 numerical,
+cap8 build,<=50 aggregate,<=existing32GiB build/16GiB solve,inner teams1. Preserve
+failures, hashes, logs and status appends. User-space watchdog is not kernel
+aggregate accounting. No production integration, discrepancy/singularity work,
+YSpec rerun, new figures/global volumes, deletion, commit or push. Final stop is
+after independent final report review, before production promotion.

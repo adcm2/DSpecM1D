@@ -1,0 +1,13 @@
+PHASE E STAGE 2 MODAL — CHECKER-ONLY BASIS CLASSIFICATION FIX
+Date: 2026-11-03
+Disposition: CHECKER DELTA / STANDALONE RETRY PLAN PASS. No scientific outputs or source/binary/tolerance change.
+
+Actual completed producer has14 clean jobs. Independent raw coverage confirms L20014035rows have absent basis RHS throughout, whereas L3 validators enable S/T receiver-basis RHS:245rows with exactly35R0basis zeros and positive S/T basis norms. This is selected validation-mode behavior. The previous checker incorrectly imposed the L200 absent-basis classification on L3. The bounded correction parameterizes only that classification: absent mode requires all rows exact zero; active-ST mode requires exactly35R0zero classifications and positive S/T basis aggregate. All H/physical/basis/probe parity, exact-zero and1e-11 normwise/backward-error gates are retained.
+
+Locally running the corrected modal_proof helper on ACTUAL retrieved90-column raw files accepts all14035L200 and245L3 keys, rawfactor/denominator/ratio arithmetic and exact-zero classes. Independent scans show all H/full physical/basis/probe equivalence errors exactly0, backward-error maxima8.930578439992973e-17 and6.98228366922879e-17, normwise-dual maxima1.7165789076840687e-17 and4.070234852124198e-18. Original scalar diagnostic maxima1.1111133306283056e-11 and3.085887646993994e-11 remain preserved; these are not claimed to pass the old scalar gate.
+
+Retry terminal plan differs only in fresh checker-only stage/cwd/script input and fresh terminal control root. It retains original immutable producer-final-state outside itself, original exact producer plan/task binding,279input closure and all reference/accuracy/science paths. No science or timing job is present. Release only exact updated checker + new retry plan + this review to fresh stage; verify immutable producer snapshot and input hashes, preserve failed original terminal receipt, and inspect retry's own rc0/stable-input/cleanup receipt after execution. No scientific rerun is required for this checker bug.
+
+Sealed SHA-256
+792730ce702e8025fc4723e6517cdfa686fac50fbdf484df98f7dab6e2d7a3a2  tools/check_phase_e_stage2_modal.py
+6b664f185bd9ee3905e98a90e9dbf72ab957a0880b183089b739139fdc0b2ba4  configs/phase-e-stage2-modal-v1-rebuild3-terminal-check-plan-v2.json

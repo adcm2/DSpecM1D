@@ -1,0 +1,88 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}"
+    },
+    {
+      "name": "release",
+      "inherits": "base",
+      "displayName": "Default compiler, Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "debug",
+      "inherits": "base",
+      "displayName": "Default compiler, Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "asan",
+      "inherits": "base",
+      "displayName": "AddressSanitizer and UndefinedBehaviorSanitizer",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_CXX_FLAGS": "-fsanitize=address,undefined -fno-omit-frame-pointer -fno-sanitize-recover=all"
+      }
+    },
+    {
+      "name": "serial",
+      "inherits": "base",
+      "displayName": "Release without OpenMP",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "YSPEC_WITH_OPENMP": "OFF"
+      }
+    },
+    {
+      "name": "pocketfft",
+      "inherits": "base",
+      "displayName": "Release with pocketfft in place of FFTW, as the Python wheels are built",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "YSPEC_FFT": "pocketfft"
+      }
+    },
+    {
+      "name": "local",
+      "inherits": "base",
+      "displayName": "Release, against checkouts of the dependencies in ~/dev",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "FETCHCONTENT_SOURCE_DIR_NUMERICCONCEPTS": "$env{HOME}/dev/NumericConcepts",
+        "FETCHCONTENT_SOURCE_DIR_INTERPOLATION": "$env{HOME}/dev/Interpolation",
+        "FETCHCONTENT_SOURCE_DIR_FFTWPP": "$env{HOME}/dev/FFTWpp",
+        "FETCHCONTENT_SOURCE_DIR_GAUSSQUAD": "$env{HOME}/dev/GaussQuad",
+        "FETCHCONTENT_SOURCE_DIR_GSHTRANS": "$env{HOME}/dev/GSHTrans",
+        "FETCHCONTENT_SOURCE_DIR_PLANETMODEL": "$env{HOME}/dev/planetmodel"
+      }
+    }
+  ],
+  "buildPresets": [
+    {"name": "release", "configurePreset": "release"},
+    {"name": "debug", "configurePreset": "debug"},
+    {"name": "asan", "configurePreset": "asan"},
+    {"name": "serial", "configurePreset": "serial"},
+    {"name": "pocketfft", "configurePreset": "pocketfft"},
+    {"name": "local", "configurePreset": "local"}
+  ],
+  "testPresets": [
+    {"name": "release", "configurePreset": "release", "output": {"outputOnFailure": true}},
+    {"name": "debug", "configurePreset": "debug", "output": {"outputOnFailure": true}},
+    {"name": "asan", "configurePreset": "asan", "output": {"outputOnFailure": true}},
+    {"name": "serial", "configurePreset": "serial", "output": {"outputOnFailure": true}},
+    {"name": "pocketfft", "configurePreset": "pocketfft", "output": {"outputOnFailure": true}},
+    {"name": "local", "configurePreset": "local", "output": {"outputOnFailure": true}}
+  ]
+}

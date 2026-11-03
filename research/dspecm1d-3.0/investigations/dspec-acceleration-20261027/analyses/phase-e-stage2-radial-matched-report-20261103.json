@@ -1,0 +1,190 @@
+{
+  "accuracy_anchor": {
+    "max_solid_field_relative_l2": 0.00021952474713321954,
+    "max_solid_full35_kernel_relative_l2": 0.0001450918716573929,
+    "phase_d_final_report_path": "analyses/phase-d-nq6-batched-final-report-20261031.json",
+    "phase_d_final_report_sha256": "013273941560685863015e48aeef42daeada129b3174ff47217637f21e605a95"
+  },
+  "checker_report_path": "analyses/phase-e-stage2-radial-report-20261103.json",
+  "checker_report_sha256": "6cadfe132104162ad831d11bffd80caf1ba172f9ed2bba6732ed035452b5bcc8",
+  "l3": {
+    "bins_with_radial_oracle": 35,
+    "fd_relative_error": 6.440261900046464e-09,
+    "limit": 0.0002,
+    "route": "batched-direct-index",
+    "status": "pass"
+  },
+  "l3_parity_against_frozen_phase_d": {
+    "along_kernel": 0.0,
+    "components": {
+      "east_im": 0.0,
+      "east_re": 0.0,
+      "north_im": 0.0,
+      "north_re": 0.0,
+      "up_im": 0.0,
+      "up_re": 0.0
+    },
+    "spectrum": {
+      "imag_m": 0.0,
+      "real_m": 0.0
+    },
+    "trace": {
+      "adjoint_source": 0.0,
+      "rate_m_s2": 0.0,
+      "velocity_m_s": 0.0
+    }
+  },
+  "limits": [
+    "worker sums are not wall time",
+    "user-space RSS/thread watchdog is not kernel aggregate accounting",
+    "matched YSpec is a context refresh, not equivalent arithmetic"
+  ],
+  "matched_driver_elapsed_s": {
+    "batched": [
+      7.576651356,
+      7.589408306,
+      7.585382455
+    ],
+    "batched_median": 7.585382455,
+    "generic": [
+      7.800024017,
+      7.781501814,
+      7.788696483
+    ],
+    "generic_median": 7.788696483,
+    "median_absolute_reduction_s": 0.20331402799999942,
+    "median_elapsed_reduction_fraction": 0.02610372973754502,
+    "supervisor_wall_medians_s": {
+      "batched": 7.878134964965284,
+      "generic": 8.057737326947972
+    }
+  },
+  "matched_markdown_path": "analyses/phase-e-stage2-radial-matched-report-20261103.md",
+  "matched_markdown_sha256": "7c27a5cc6b99970c6407dbc9e8d4e9921c64c2bef075e9587a12d4bf2af3df4f",
+  "parity_against_frozen_phase_d": {
+    "across_kernel": 0.0,
+    "along_kernel": 0.0,
+    "components": {
+      "east_im": 0.0,
+      "east_re": 0.0,
+      "north_im": 0.0,
+      "north_re": 0.0,
+      "up_im": 0.0,
+      "up_re": 0.0
+    },
+    "spectrum": {
+      "imag_m": 0.0,
+      "real_m": 0.0
+    },
+    "trace": {
+      "adjoint_source": 0.0,
+      "rate_m_s2": 0.0,
+      "velocity_m_s": 0.0
+    }
+  },
+  "profile_driver_elapsed_s": {
+    "batched": 7.59719179,
+    "generic": 7.814170005
+  },
+  "profiled_worker_scope_observations_one_run_per_route": {
+    "batched": {
+      "phase_e_angular_coefficient_row_lookup_and_packing": {
+        "calls": 147840,
+        "exclusive_worker_s": 1.728386235,
+        "inclusive_worker_s": 1.728386235
+      },
+      "phase_e_angular_eigen_gemm": {
+        "calls": 147840,
+        "exclusive_worker_s": 19.224154517000002,
+        "inclusive_worker_s": 19.224154517000002
+      },
+      "phase_e_angular_mode_lookup_materialization": null,
+      "phase_e_radial_mode_interpolation_and_strain_table_build": {
+        "calls": 32,
+        "exclusive_worker_s": 4.017802243,
+        "inclusive_worker_s": 4.017802243
+      }
+    },
+    "generic": {
+      "phase_e_angular_coefficient_row_lookup_and_packing": {
+        "calls": 147840,
+        "exclusive_worker_s": 1.972437253,
+        "inclusive_worker_s": 1.972437253
+      },
+      "phase_e_angular_eigen_gemm": {
+        "calls": 147840,
+        "exclusive_worker_s": 19.21356557,
+        "inclusive_worker_s": 19.21356557
+      },
+      "phase_e_angular_mode_lookup_materialization": {
+        "calls": 32,
+        "exclusive_worker_s": 0.004497936,
+        "inclusive_worker_s": 0.004497936
+      },
+      "phase_e_radial_mode_interpolation_and_strain_table_build": {
+        "calls": 32,
+        "exclusive_worker_s": 4.965903364,
+        "inclusive_worker_s": 4.965903364
+      }
+    }
+  },
+  "radial_oracle": {
+    "bins": 35,
+    "keyed_radial_record_count": 21715400,
+    "max_relative_l2_by_category": {
+      "adjoint_rel_l2": 0.0,
+      "all_radial_rel_l2": 0.0,
+      "derivative_slots_rel_l2": 0.0,
+      "fluid_rel_l2": 0.0,
+      "forward_rel_l2": 0.0,
+      "solid_rel_l2": 0.0,
+      "strain_rel_l2": 0.0,
+      "value_slots_rel_l2": 0.0
+    },
+    "maximum_conservative_capture_bytes_per_workspace": 210949600,
+    "record_semantics": "node/order/family/field-role keyed radial entries; not independent model solves"
+  },
+  "same_workspace_full_pipeline_scalar_parity_max_relative_l2": {
+    "adjoint_field_rel_l2": 7.389022962721731e-16,
+    "complex_product_rel_l2": 1.0882120385497865e-15,
+    "forward_field_rel_l2": 8.631317934446982e-16
+  },
+  "schema": 1,
+  "selected_case": {
+    "angles": [
+      135,
+      19
+    ],
+    "audit_zero_skips": [],
+    "degree": 200,
+    "frequency_bins": 35,
+    "h": 0.02035382429229197,
+    "native_sides": 208,
+    "nq": 6,
+    "timed_zero_skips": [
+      7,
+      8,
+      41
+    ]
+  },
+  "stage": "Phase E Stage 2 radial first substage",
+  "status": "pass",
+  "terminal_recovery": {
+    "changed_input_sha256_after": "21ab218ea18fea149d0da940b130d45b166ffae0f16a6ca430051e325f648465",
+    "changed_input_sha256_before": "97d2c2420e8be075918f4e42cd8c497d20c2a233ba1d4108ff529a00acd5b59b",
+    "only_changed_input": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-radial-v1-control/continuation/phase-e-stage2-radial-v1-run-v1/state.json",
+    "prior_failure_reasons": [
+      "missing_outputs:data/phase-e-stage2-radial-report.json",
+      "input_hash_changed_during_job"
+    ],
+    "prior_task_id": "phase-e-stage2-radial-v1-run-v1",
+    "prior_terminal_returncode": 1,
+    "prior_terminal_status": "failed",
+    "recovery_reason": "the terminal checker read the mutable state file of its own supervisor task; this retry reads the finalized immutable state snapshot, validates the 14 prior scientific/FD jobs, skips only the known failed terminal-check lifecycle, and relies on the retry supervisor receipt for the new terminal-check lifecycle"
+  },
+  "yspec_context_driver_elapsed_s": [
+    4.298078351,
+    4.30614597,
+    4.306802959
+  ]
+}

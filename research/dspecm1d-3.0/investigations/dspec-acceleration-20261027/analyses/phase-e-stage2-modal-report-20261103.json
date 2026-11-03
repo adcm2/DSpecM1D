@@ -1,0 +1,551 @@
+{
+  "build": {
+    "binary_sha256": {
+      "timer_disabled": "f513c0ddc7d707a8c81d0c509715ce72b4277a495b785b834c0297de3ded0372",
+      "timer_enabled": "292ebb1ae4d8299b5b8cf84ebbc16bb0485ca4c90963d542d540dcebd2046de6"
+    },
+    "elapsed_s": 161.611249358044,
+    "peak_rss_gib_userspace": 2.5072,
+    "peak_threads": 6,
+    "returncode": 0,
+    "shared_external_dependency_hashes_match_rebuild2": true,
+    "status": "completed"
+  },
+  "correctness": {
+    "L3_fd_limit": 0.0002,
+    "L3_fd_relative_error": 6.440261900046464e-09,
+    "L3_operator_and_solution_proof": {
+      "max_rel_or_backward_error": 6.98228366922879e-17,
+      "physical_exact_zero_counts": {
+        "adjoint": 35,
+        "basis_adjoint": 35,
+        "forward": 0
+      },
+      "physical_reference_norm2_by_family": {
+        "0": {
+          "adjoint": 0.0,
+          "basis_adjoint": 0.0,
+          "forward": 4.672855562868988e-27
+        },
+        "1": {
+          "adjoint": 0.02905994025622331,
+          "basis_adjoint": 67.41132146280435,
+          "forward": 9411.382601852423
+        },
+        "2": {
+          "adjoint": 0.018048328409126308,
+          "basis_adjoint": 6.477076615046121,
+          "forward": 9470.910358109362
+        }
+      },
+      "rows": 245,
+      "unique_keys": 245
+    },
+    "all_bin_end_to_end_parity_vs_final_angular": {
+      "across.bin": 0.0,
+      "along.bin": 0.0,
+      "components": {
+        "east_im": 0.0,
+        "east_re": 0.0,
+        "north_im": 0.0,
+        "north_re": 0.0,
+        "up_im": 0.0,
+        "up_re": 0.0
+      },
+      "spectrum": {
+        "imag_m": 0.0,
+        "real_m": 0.0
+      },
+      "trace": {
+        "adjoint_source": 0.0,
+        "rate_m_s2": 0.0,
+        "velocity_m_s": 0.0
+      }
+    },
+    "basis_adjoint_zero_classification": "L200 direct-adjoint route: all 14,035 basis-adjoint references exact zero because no receiver-basis RHS is formed; L3 with unit-basis validators: exactly 35 R0 rows are zero, S/T coverage active.",
+    "modal_operator_and_solution_proof": {
+      "max_rel_or_backward_error": 8.930578439992973e-17,
+      "physical_exact_zero_counts": {
+        "adjoint": 35,
+        "basis_adjoint": 14035,
+        "forward": 0
+      },
+      "physical_reference_norm2_by_family": {
+        "0": {
+          "adjoint": 0.0,
+          "basis_adjoint": 0.0,
+          "forward": 3.663186791434198e-27
+        },
+        "1": {
+          "adjoint": 2.8826396467612803,
+          "basis_adjoint": 0.0,
+          "forward": 1841687.8676820497
+        },
+        "2": {
+          "adjoint": 0.05298351625481771,
+          "basis_adjoint": 0.0,
+          "forward": 9697.962984660018
+        }
+      },
+      "rows": 14035,
+      "unique_keys": 14035
+    },
+    "nq10_accuracy_anchor": {
+      "selected_mesh": {
+        "frequency_bins": 35,
+        "h": 0.02035382429229197,
+        "legacy_relative_error_input": 1e-05,
+        "mesh_scale": 0.9,
+        "native_sides": 208,
+        "nq": 6,
+        "requested_accuracy_met": true,
+        "requested_relative_accuracy": 0.001
+      },
+      "sha256": "013273941560685863015e48aeef42daeada129b3174ff47217637f21e605a95",
+      "solid_accuracy": {
+        "max_solid_complex_field_relative_l2": 0.00021952474713321954,
+        "max_solid_full35_kernel_relative_l2": 0.0001450918716573929
+      }
+    },
+    "terminal_checker_status": "pass",
+    "cached_legacy_operator_physical_solution_probe_solution_equivalence_exact_zero": true
+  },
+  "dual_identity_audit_definition": {
+    "changed_from": "The original scalar relative quotient delta/max(|y^H Hx|,|(H^H y)^H x|) was retained as a diagnostic and independently recomputed, but not used as the acceptance criterion after exact identical old/new operator/solution outputs exceeded 1e-11 due cancellation at near-zero R0 scalar products.",
+    "criterion": "delta/(||H||_F * ||x||_2 * ||y||_2) <= 1e-11 independently for cached and legacy operators; no denominator floor; zero denominator requires exact zero delta",
+    "delta": "|y^H H x - (H^H y)^H x|",
+    "first_failed_attempt": {
+      "bin": 33,
+      "degree": 0,
+      "family": "R0",
+      "new_scalar_relative": 1.0142585919841719e-11,
+      "operator_solution_probe_relative_errors": 0,
+      "raw_error": 7.640312286208057e-06,
+      "reference_scalar_relative": 1.0142585919841719e-11,
+      "scalar_denominator": 753290.3686092007
+    },
+    "max_normwise_gated_ratio": {
+      "bin": 8,
+      "degree": 168,
+      "family": 2,
+      "value": 1.7165789076840687e-17
+    },
+    "max_scalar_diagnostic": {
+      "bin": 40,
+      "degree": 0,
+      "family": 0,
+      "raw_error": 8.414854230340299e-06,
+      "value": 1.1111133306283056e-11
+    },
+    "original_scalar_criterion_result": "fails 1e-11 at cancellation-sensitive R0 rows for both old and cached routes; this report does not claim the original scalar criterion passed.",
+    "max_scalar_diagnostic_l3": {
+      "bin": 24,
+      "degree": 0,
+      "family": 0,
+      "value": 3.085887646993994e-11
+    }
+  },
+  "evidence": {
+    "build_evidence_review": "reviews/phase-e-stage2-modal-rebuild3-build-evidence-independent-review-20261103.txt",
+    "checker_v2_review": "reviews/phase-e-stage2-modal-checker-v2-independent-review-20261103.txt",
+    "confirmation_producer_state_sha256": "0495324910be7e07df694cf2d6885daa3ede42ef1bdcc2beea79f06bdb2ad984",
+    "confirmation_snapshot_archive_sha256": "24b635848dd4808a4ae78d8bc8ea55d193e49a9df54ce1fc00545b9750883fd1",
+    "final_terminal_report_sha256": "324365882e2c8f86e4a9aab4c82b84c084e14eb6d979ab31a8996a7542c5b28f",
+    "independent_reviews": {
+      "build_evidence": {
+        "path": "reviews/phase-e-stage2-modal-rebuild3-build-evidence-independent-review-20261103.txt",
+        "sha256": "40cabce86a555b91db5c014b2b77c8ce1a2fdd47e73548206cb1dc2c79f0759c"
+      },
+      "checker_only_retry": {
+        "path": "reviews/phase-e-stage2-modal-checker-v2-independent-review-20261103.txt",
+        "sha256": "588938adf24202b70fea502b2cc2b27ff531894efa09c935e0825fc3f234dd59"
+      },
+      "numerical_acceptance": {
+        "path": "reviews/phase-e-stage2-modal-numerical-independent-review-20261103.txt",
+        "sha256": "eae3a62224aadfa905ffd67ce27379105087c46fd3b33118ade0e8ef98e0706a"
+      },
+      "producer_run_checker": {
+        "path": "reviews/phase-e-stage2-modal-rebuild3-run-checker-independent-review-20261103.txt",
+        "sha256": "cb00ef34c7ec339344595efd47efa7c8324c549fa7095bc449c299897000dd96"
+      },
+      "source_build": {
+        "path": "reviews/phase-e-stage2-modal-rebuild3-normwise-independent-review-20261103.txt",
+        "sha256": "7f80a600b27d55e91006adffe5dfdec33a7c268c60f5bffcc9f2d3b7508cd779"
+      },
+      "timing_confirmation_plan": {
+        "path": "reviews/phase-e-stage2-modal-timing-confirmation-independent-review-20261103.txt",
+        "sha256": "8872142cebdc00159ed62e231ea09689ab22e9aec061eaeb2bfe0363ff496aaa"
+      }
+    },
+    "initial_producer_state_sha256": "894afd8fdcf0c651ec22bda6b4c37f7ca17c37360d0f24fd531b32f520aaaac3",
+    "initial_snapshot_archive_sha256": "5c5c9d45a32fc38d54003386d0bed2a3cfb8530131c976f2439a813d7a654108",
+    "numerical_independent_review": "reviews/phase-e-stage2-modal-numerical-independent-review-20261103.txt",
+    "raw_modal_oracle_csv_sha256": "36343f2c115d2c76f8448c26bcc1b631770d037f334033e5f2af968a1dc1de43",
+    "run_checker_review": "reviews/phase-e-stage2-modal-rebuild3-run-checker-independent-review-20261103.txt",
+    "source_build_review": "reviews/phase-e-stage2-modal-rebuild3-normwise-independent-review-20261103.txt",
+    "timing_plan_review": "reviews/phase-e-stage2-modal-timing-confirmation-independent-review-20261103.txt"
+  },
+  "history": {
+    "checker_only_retry": "completed rc0 against original immutable producer-final-state; no science rerun",
+    "preserved_first_rebuild3_terminal_checker_failure": "receipts/phase-e-stage2-modal-v1-rebuild3-terminal-snapshot-20261103/",
+    "preserved_initial_scalar_oracle_failure": "receipts/phase-e-stage2-modal-v1-rebuild1-failed-audit-20261103.json",
+    "preserved_rebuild2_named_failure_snapshot": "receipts/phase-e-stage2-modal-v1-rebuild2-diagnostic-snapshot-20261103/"
+  },
+  "modal_work": {
+    "actual_component_cache_payload_bytes": 136612316,
+    "cold_cache_construction_scope_s": 0.147317305,
+    "matrix_component_cache_entries": 401,
+    "shared_component_cache_cap_bytes": 268435456,
+    "sparse_factorizations_per_route": 14035,
+    "symbolic_analyses_per_route": 24,
+    "symbolic_reuses_per_route": 14011,
+    "worker_scratch_cap_bytes": 33554432,
+    "worker_scratch_high_water_bytes": 305052
+  },
+  "performance_conclusion": "Both cached-route block medians were lower, but paired results had inconsistent signs and overlapping ranges; the measurements do not establish a reliable speedup. No further optimization performed.",
+  "profile_single_observation_worker_seconds": {
+    "cached": {
+      "combined_frequency_workspace_forward_unit_adjoint_and_reconstruction": {
+        "calls": 35,
+        "exclusive_s": 0.16903848200000002,
+        "inclusive_s": 28.506358773000002
+      },
+      "component_cache_bytes": 136612316,
+      "component_cache_entries": 401,
+      "direct_measurement_receiver_map_assembly": {
+        "calls": 12800,
+        "exclusive_s": 0.037362818,
+        "inclusive_s": 0.037362818
+      },
+      "dynamic_H_assembly": {
+        "calls": 14035,
+        "exclusive_s": 2.482717812,
+        "inclusive_s": 2.482717812
+      },
+      "modal_component_cache_cold_build": {
+        "calls": 1,
+        "exclusive_s": 0.147317305,
+        "inclusive_s": 0.147317305
+      },
+      "profile_pipeline_wall": {
+        "calls": 1,
+        "exclusive_s": 0.000336443,
+        "inclusive_s": 4.397697303
+      },
+      "solver_factorization_dispatch": {
+        "calls": 14035,
+        "exclusive_s": 0.004002133000000001,
+        "inclusive_s": 11.192259194
+      },
+      "sparse_adjoint_eigen_solve": {
+        "calls": 12800,
+        "exclusive_s": 1.6803845880000001,
+        "inclusive_s": 1.6803845880000001
+      },
+      "sparse_equilibration_and_scaling": {
+        "calls": 14035,
+        "exclusive_s": 2.355894016,
+        "inclusive_s": 2.355894016
+      },
+      "sparse_forward_eigen_solve": {
+        "calls": 14035,
+        "exclusive_s": 2.070822079,
+        "inclusive_s": 2.070822079
+      },
+      "sparse_numerical_factorization": {
+        "calls": 14035,
+        "exclusive_s": 8.780375643000001,
+        "inclusive_s": 8.780375643000001
+      },
+      "worker_scratch_high_water_bytes": 305052,
+      "radial_strain_construction": {
+        "calls": 32,
+        "exclusive_s": 3.934542509,
+        "inclusive_s": 3.934542509
+      },
+      "phase_e_angular_real_legendre_gemm": {
+        "calls": 27552,
+        "exclusive_s": 3.531851937,
+        "inclusive_s": 3.531851937
+      }
+    },
+    "legacy": {
+      "combined_frequency_workspace_forward_unit_adjoint_and_reconstruction": {
+        "calls": 35,
+        "exclusive_s": 0.19922510400000001,
+        "inclusive_s": 42.788977483000004
+      },
+      "direct_measurement_receiver_map_assembly": {
+        "calls": 12800,
+        "exclusive_s": 1.7282841590000002,
+        "inclusive_s": 1.7282841590000002
+      },
+      "dynamic_H_assembly": {
+        "calls": 14035,
+        "exclusive_s": 7.148316645,
+        "inclusive_s": 7.148316645
+      },
+      "profile_pipeline_wall": {
+        "calls": 1,
+        "exclusive_s": 0.00026325400000000004,
+        "inclusive_s": 6.161383689
+      },
+      "solver_factorization_dispatch": {
+        "calls": 14035,
+        "exclusive_s": 0.004434616000000001,
+        "inclusive_s": 13.917443784000001
+      },
+      "sparse_adjoint_eigen_solve": {
+        "calls": 12800,
+        "exclusive_s": 2.434067176,
+        "inclusive_s": 2.434067176
+      },
+      "sparse_equilibration_and_scaling": {
+        "calls": 14035,
+        "exclusive_s": 3.1309878830000004,
+        "inclusive_s": 3.1309878830000004
+      },
+      "sparse_forward_eigen_solve": {
+        "calls": 14035,
+        "exclusive_s": 3.117068964,
+        "inclusive_s": 3.117068964
+      },
+      "sparse_numerical_factorization": {
+        "calls": 14035,
+        "exclusive_s": 10.568282879,
+        "inclusive_s": 10.568282879
+      },
+      "radial_strain_construction": {
+        "calls": 32,
+        "exclusive_s": 4.441249367,
+        "inclusive_s": 4.441249367
+      },
+      "phase_e_angular_real_legendre_gemm": {
+        "calls": 27552,
+        "exclusive_s": 4.980183522,
+        "inclusive_s": 4.980183522
+      }
+    }
+  },
+  "resource_limitations": "The supervisor enforces a user-space session watchdog, not kernel aggregate accounting.",
+  "schema": 1,
+  "scope": {
+    "L3_control": {
+      "degree": 3,
+      "frequency_workers": 1,
+      "h": 0.05,
+      "native_sides": 157,
+      "nq": 8
+    },
+    "both_timing_routes": "batched radial + real-Legendre angular; modal oracle off",
+    "candidate": "candidates/phase-e-stage2-modal-v1/dspec",
+    "operator_change": "case-owned cached degree/family SEM matrix components with worker-local bounded H scratch; preserves accepted COLAMD factorization and factors every family/degree/frequency; exact legacy assembly retained selectable as same-source baseline",
+    "workload": {
+      "across_angles": 19,
+      "all_bin_audit_zero_skips": false,
+      "along_angles": 135,
+      "degree": 200,
+      "frequency_bins": [
+        7,
+        41
+      ],
+      "frequency_count": 35,
+      "frequency_workers": 8,
+      "h": 0.02035382429229197,
+      "inner_solve_threads": 1,
+      "mesh_scale": 0.9,
+      "native_sides": 208,
+      "nq": 6,
+      "timed_exact_zero_skips": [
+        7,
+        8,
+        41
+      ]
+    }
+  },
+  "stage": "Phase E Stage 2 modal operator component cache",
+  "status": "pass",
+  "timing_blocks": [
+    {
+      "all_jobs_completed_rc0_inputs_unchanged_cleanup_verified": true,
+      "block": "original",
+      "cached_to_yspec_driver_median_ratio": 1.0966105563960524,
+      "jobs": 14,
+      "median_elapsed_reduction_fraction": 0.0136098408629394,
+      "median_elapsed_s_saved": 0.0811383130000003,
+      "peak_observed_rss_gib_userspace": 2.308,
+      "peak_observed_threads": 9,
+      "routes": {
+        "cached": {
+          "driver_elapsed_s": [
+            6.140654477,
+            5.880600242,
+            5.034904411
+          ],
+          "driver_median_s": 5.880600242,
+          "driver_range_s": [
+            5.034904411,
+            6.140654477
+          ],
+          "supervisor_wall_median_s": 6.321483770036139,
+          "supervisor_wall_range_s": [
+            5.412383342045359,
+            6.669134658994153
+          ],
+          "supervisor_wall_s": [
+            6.669134658994153,
+            6.321483770036139,
+            5.412383342045359
+          ]
+        },
+        "legacy": {
+          "driver_elapsed_s": [
+            6.000283845,
+            5.554908534,
+            5.961738555
+          ],
+          "driver_median_s": 5.961738555,
+          "driver_range_s": [
+            5.554908534,
+            6.000283845
+          ],
+          "supervisor_wall_median_s": 6.337081913021393,
+          "supervisor_wall_range_s": [
+            5.952513416064903,
+            6.395308449980803
+          ],
+          "supervisor_wall_s": [
+            6.337081913021393,
+            5.952513416064903,
+            6.395308449980803
+          ]
+        },
+        "yspec": {
+          "driver_elapsed_s": [
+            6.284758158,
+            5.321027779,
+            5.362523831
+          ],
+          "driver_median_s": 5.362523831,
+          "driver_range_s": [
+            5.321027779,
+            6.284758158
+          ],
+          "supervisor_wall_median_s": 5.629956013057381,
+          "supervisor_wall_range_s": [
+            5.527376484009437,
+            6.499531114008278
+          ],
+          "supervisor_wall_s": [
+            6.499531114008278,
+            5.527376484009437,
+            5.629956013057381
+          ]
+        }
+      },
+      "schedule": "legacy then cached, interleaved",
+      "terminal_status": "completed",
+      "reliable_speedup_established": false,
+      "pair_driver_elapsed_reduction_percent_cached_vs_legacy": [
+        -2.3394,
+        -5.86313,
+        15.54637
+      ]
+    },
+    {
+      "all_jobs_completed_rc0_inputs_unchanged_cleanup_verified": true,
+      "block": "confirmation",
+      "cached_to_yspec_driver_median_ratio": 1.020370271133171,
+      "jobs": 9,
+      "median_elapsed_reduction_fraction": 0.05582192417098215,
+      "median_elapsed_s_saved": 0.3175965989999998,
+      "peak_observed_rss_gib_userspace": 1.2839,
+      "peak_observed_threads": 9,
+      "routes": {
+        "cached": {
+          "driver_elapsed_s": [
+            5.033527446,
+            5.982223189,
+            5.371863299
+          ],
+          "driver_median_s": 5.371863299,
+          "driver_range_s": [
+            5.033527446,
+            5.982223189
+          ],
+          "supervisor_wall_median_s": 5.830511228065006,
+          "supervisor_wall_range_s": [
+            5.421626211027615,
+            6.2945994780166075
+          ],
+          "supervisor_wall_s": [
+            5.421626211027615,
+            6.2945994780166075,
+            5.830511228065006
+          ]
+        },
+        "legacy": {
+          "driver_elapsed_s": [
+            6.514197644,
+            5.228265052,
+            5.689459898
+          ],
+          "driver_median_s": 5.689459898,
+          "driver_range_s": [
+            5.228265052,
+            6.514197644
+          ],
+          "supervisor_wall_median_s": 6.058551580063067,
+          "supervisor_wall_range_s": [
+            5.574573757941835,
+            6.890761491958983
+          ],
+          "supervisor_wall_s": [
+            6.890761491958983,
+            5.574573757941835,
+            6.058551580063067
+          ]
+        },
+        "yspec": {
+          "driver_elapsed_s": [
+            4.930904212,
+            5.264621531,
+            5.879469649
+          ],
+          "driver_median_s": 5.264621531,
+          "driver_range_s": [
+            4.930904212,
+            5.879469649
+          ],
+          "supervisor_wall_median_s": 5.510885835974477,
+          "supervisor_wall_range_s": [
+            5.287445037974976,
+            6.163469553925097
+          ],
+          "supervisor_wall_s": [
+            5.287445037974976,
+            5.510885835974477,
+            6.163469553925097
+          ]
+        }
+      },
+      "schedule": "cached then legacy, interleaved; one reviewed confirmation block",
+      "terminal_status": "completed",
+      "reliable_speedup_established": false,
+      "pair_driver_elapsed_reduction_percent_cached_vs_legacy": [
+        22.72989,
+        -14.42081,
+        5.58219
+      ]
+    }
+  ],
+  "timing_repeat_context_array_comparison": {
+    "all_same_length": true,
+    "byte_identical": false,
+    "max_absolute_difference": 4.733165431326071e-30,
+    "max_relative_l2": 3.077522019117631e-16,
+    "new_scientific_jobs_run": false,
+    "path": "receipts/phase-e-stage2-modal-v1-rebuild3-yspec-repeat-array-comparison-20261103.json",
+    "sha256": "0b541cb58b42ddbd89e8ceb22a89c9e404f9f38bb66736874393077b7766ef28"
+  }
+}

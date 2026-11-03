@@ -1,0 +1,796 @@
+[
+  {
+    "degree": 3,
+    "mode": "eigen",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/eigen-candidate/eigen_candidate_driver",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/evidence/gsh-kernel-l3.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/evidence/regression-v2/l3-eigen",
+      "3",
+      "3",
+      "1",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "result": {
+      "degree": 3,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 5096,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 4.497082815913654e-16,
+      "max_kernel_pointwise_scaled_error": 2.0522365575677223e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.041818882
+      ],
+      "reference_s": [
+        0.047335957
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000680613,
+          "modal_solve_and_basis": 0.028355188000000003,
+          "packed_sampling": 0.012015093000000001,
+          "final_kernel_contraction": 0.000210812,
+          "source_contact": 3.713e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": false,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 0,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 738128,
+      "tensor_grid_hits": 2,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 454688,
+      "tensor_plan_hits": 4,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 26,
+      "tensor_basis_misses": 10,
+      "tensor_angular_payload_bytes_estimate": 266384,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "output_sha256": "53788e9636b50ce3fe696d5730e26fec920625bc6510193226908f468be96708"
+  },
+  {
+    "degree": 3,
+    "mode": "frozen_cblas",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/evidence/gsh-kernel-l3.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/evidence/regression-v2/l3-frozen_cblas",
+      "3",
+      "3",
+      "1",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "result": {
+      "degree": 3,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 5096,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 5.164722151198477e-16,
+      "max_kernel_pointwise_scaled_error": 2.2061542993853015e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.060067081
+      ],
+      "reference_s": [
+        0.046422712
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000868225,
+          "modal_solve_and_basis": 0.028095319,
+          "packed_sampling": 0.030419343999999997,
+          "final_kernel_contraction": 0.000190244,
+          "source_contact": 3.1090000000000002e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": false,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 0,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 738128,
+      "tensor_grid_hits": 2,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 454688,
+      "tensor_plan_hits": 4,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 26,
+      "tensor_basis_misses": 10,
+      "tensor_angular_payload_bytes_estimate": 266384,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "output_sha256": "8f0acb98b23034560a6b2f94e8433ee09072c5e408e9bc05cc1223c6d7958dad"
+  },
+  {
+    "degree": 3,
+    "comparison": "Eigen internal vs frozen explicit CBLAS at identical native kernel-band grid",
+    "gate": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 3.636158469987894e-16,
+              "max_scaled_pointwise": 9.414958058291174e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 3.814310961294385e-16,
+              "max_scaled_pointwise": 2.2448653685947403e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 3.3405548728187993e-16,
+              "max_scaled_pointwise": 6.510506569093422e-15,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 5.167159057423574e-16,
+              "max_scaled_pointwise": 2.881938965426525e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 4.160079152538151e-16,
+              "max_scaled_pointwise": 2.1706890998695216e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  },
+  {
+    "degree": 12,
+    "mode": "eigen",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/eigen-candidate/eigen_candidate_driver",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/evidence/gsh-kernel-l12.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/evidence/regression-v2/l12-eigen",
+      "12",
+      "3",
+      "1",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "result": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 68600,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 4.786850950878287e-16,
+      "max_kernel_pointwise_scaled_error": 1.975463318195952e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.349344661
+      ],
+      "reference_s": [
+        0.774055846
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.001290171,
+          "modal_solve_and_basis": 0.115405074,
+          "packed_sampling": 0.22249605,
+          "final_kernel_contraction": 0.002628191,
+          "source_contact": 7.273e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": false,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 0,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 31743488,
+      "tensor_grid_hits": 2,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6073760,
+      "tensor_plan_hits": 4,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 26,
+      "tensor_basis_misses": 10,
+      "tensor_angular_payload_bytes_estimate": 25609472,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "output_sha256": "ac558f4471a727c7e6eface08e6f43bd6bfb4a176c67292ae0d87cdc554e4ff5"
+  },
+  {
+    "degree": 12,
+    "mode": "frozen_cblas",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/evidence/gsh-kernel-l12.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/kernel-grid-followup/evidence/regression-v2/l12-frozen_cblas",
+      "12",
+      "3",
+      "1",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "result": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 68600,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 7.230174037745266e-16,
+      "max_kernel_pointwise_scaled_error": 3.29243886365992e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.264862769
+      ],
+      "reference_s": [
+        0.750733588
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000688147,
+          "modal_solve_and_basis": 0.118029111,
+          "packed_sampling": 0.137123148,
+          "final_kernel_contraction": 0.0028890139999999996,
+          "source_contact": 8.976e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": false,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 0,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 31743488,
+      "tensor_grid_hits": 2,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6073760,
+      "tensor_plan_hits": 4,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 26,
+      "tensor_basis_misses": 10,
+      "tensor_angular_payload_bytes_estimate": 25609472,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "output_sha256": "a4126b5171f5fd964db02134fb0a2d264209b54c108b62b74d4d44db2093f5ad"
+  },
+  {
+    "degree": 12,
+    "comparison": "Eigen internal vs frozen explicit CBLAS at identical native kernel-band grid",
+    "gate": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 5.220269769712868e-16,
+              "max_scaled_pointwise": 2.0995268239459153e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 6.898204162921556e-16,
+              "max_scaled_pointwise": 3.292438863659919e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 7.312081970245303e-16,
+              "max_scaled_pointwise": 1.4711656946335995e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 6.060127200646638e-16,
+              "max_scaled_pointwise": 3.913473618860233e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 5.496991455214246e-16,
+              "max_scaled_pointwise": 2.6733937567353008e-14,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    }
+  }
+]

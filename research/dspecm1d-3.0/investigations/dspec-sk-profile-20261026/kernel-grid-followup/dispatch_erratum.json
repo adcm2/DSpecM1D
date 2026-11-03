@@ -1,0 +1,21 @@
+{
+  "finding": "The fresh runtime review and an independent fresh review found that the copied v6 DotBackend enum used implicit values Scalar=0, Eigen=1, OpenBlas=2 while the driver passed backend IDs 1, 2, and 3. The prior tensor/tensor-real candidate therefore dispatched ID 2 to OpenBlas, not Eigen; with CBLAS disabled that route throws.",
+  "correction": "The isolated candidate fast_engine.hpp now declares DotBackend as Scalar=1, Eigen=2, OpenBlas=3. The existing tensor/tensor-real backendId=2 mapping is unchanged.",
+  "reliability_note": "Earlier comparisons labelled as packed Eigen backend comparisons are not reliable as Eigen measurements.",
+  "preserved_headline_result": "The headline frozen tensor3 route called CBLAS and remains unchanged.",
+  "rejected_binary": {
+    "path": "eigen-candidate/eigen_candidate_driver-rejected-dispatch",
+    "sha256": "1eea0b58d3e1429c7fae706540792f36b6c718b6113c09d26a857d0eb4f1bf5b"
+  },
+  "corrected_build": {
+    "status": "compile-only succeeded via the shared two-slot gate; no runtime execution",
+    "fast_engine_hpp_sha256": "e26c438d7e4760e610a10dec5e834f58159eecadea7c5cd87678b38f78629be6",
+    "binary_sha256": "ab60c650e58824b94ea0d3cb269c5cb56e1c714ec45052dddd43e6c6c6006320"
+  },
+  "scope": "Source correction and compile only; no numerical runs performed.",
+  "parent_runtime_validation": {
+    "status": "Corrected candidate subsequently passed strict production-reference and frozen-CBLAS equivalence gates at L3 and L12 on identical native grids.",
+    "evidence": "evidence/eigen-grid-gates.json",
+    "limits": "Regression checks only; no backend performance superiority or physical PREM result is inferred."
+  }
+}

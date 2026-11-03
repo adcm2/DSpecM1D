@@ -1,0 +1,15 @@
+
+2026-10-31 B replay checker: added diagnostic-only B replay verification for the six affected full/restricted controls, keyed one-sided field/product comparisons, actual per-family cut radii and DOF work, q0 mapper impact recomputed from saved meshes/rows, and receipt-qualified reuse of unchanged NQ6 finer data. It retains original waveform/cost hashes and applies no accuracy tolerance. The checker binds frozen trace/packet hashes and validates all output hashes through the supervisor receipts. Review pending.
+2026-10-31 Phase E checker/run-plan update after independent review: fixed the external build task-path binding, excluded DSpec-only zero-support artifacts from YSpec checker inputs, and added explicit scope closure, 35-workspace/3-skip, DSpec wall-partition, and fresh-native instrumentation-overhead accounting. The checks preserve separate worker, API, driver, and supervisor timing domains. No numerical execution is authorized by these checker changes alone.
+
+2026-10-31 Phase E staging preflight preserved a no-launch failure because the plan named `dspec/prem.200`; the actual candidate input is `dspec/case/prem.200`. Corrected all eight in-plan input references and staged the checker under a new validation-v2 root, retaining the failed v1 stage. The exact run-plan path-only correction was approved by Sol; no supervisor task was launched by the failed attempt.
+
+2026-10-31 Added a Phase E-specific run stager rather than modifying shared staging helpers. It verifies the archive and tool hashes, requires all external inputs to exist, and allows only exact output paths of earlier jobs in the same sequential plan as deferred inputs. The new helper passed local byte-compilation; source hash `6f63c51f6ad7e80b7605afed67d15f4018a9b359a1e63cd56c4464a89e011220`. No numerical task has launched.
+
+2026-10-31 Phase E Stage 1 queue launched under the PhaseE-specific staged runner after Sol PASS and a successful fresh resource/path/process preflight. Task `phase-e-stage1-backend-profiling-v1-run-v1` is detached; numerical results and checker status pending.
+
+2026-10-31 Phase E failed-run audit: D profile SIGABRT was traced to outer-before-inner `mathprofile::Scope::stop()` order in the new D angular helper. A fresh v2 D candidate reverses the stops; Sol confirmed the exact source fix. The failed v1 task and outputs are retained. No numerical formula/schedule changed; new same-source D native/profile controls require a fresh D driver build.
+
+2026-10-31 Phase E v2 build plan: reuses immutable v1 timer-disabled/enabled YSpec DSO hashes and rebuilds only D timer-disabled, D timer-enabled, and YSpec-profile D drivers. The three D variant link paths and RPATHs were corrected to the matching v1 DSO directories after Sol review. Fresh v2 build root and task; no numerical work yet.
+
+2026-10-31 Phase E Stage 1 terminal checker: all native/profile outputs passed exact-grid and same-backend output parity checks; checker and summary hashes are recorded in `analyses/phase-e-stage1-matched-profiling-20261031.json`. No further checker/tool code change was made for the final report.

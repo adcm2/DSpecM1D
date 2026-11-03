@@ -1,0 +1,22 @@
+{
+  "status": "complete_read_only_comparison",
+  "candidate_task": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c-direct-adjoint-v1-l200-controls-v1/continuation/phase-c-l200-controls-01/phase-c-l200-native-skip-on/data",
+  "accepted_reference_task": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data",
+  "case": {"degree": 200, "nq": 10, "refinement": 0.025, "frequency_count": 35, "first_bin": 7, "last_bin": 41},
+  "common_grid": {"native_sides": 293, "along_angles": 135, "across_angles": 19, "nodes_and_angles_identical": true},
+  "reference_hashes": {
+    "along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+    "across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5"
+  },
+  "candidate_hashes": {
+    "along.bin": "8c8f45b17de46d7576d927ae72b7b86348aa2fdfe6fd720505a3b9c88335f767",
+    "across.bin": "197024117e90776655419329cea8239598cea0b3a312a10b5d2886d22a8fc4c0"
+  },
+  "relative_l2": {
+    "along": {"all": 6.507485982600377e-13, "solid": 6.507485982600377e-13, "bulk": 2.3238616457398473e-13, "source_element": 9.16337314398681e-13, "receiver_element": 2.448514941804432e-13, "fluid": 0.0},
+    "across": {"all": 1.1671055986709785e-13, "solid": 1.1671055986709785e-13, "bulk": 5.543172662919831e-14, "source_element": 4.656292329713538e-13, "receiver_element": 2.111487488891123e-13, "fluid": 0.0}
+  },
+  "max_abs_difference": {"along": 2.547034647732342e-26, "across": 1.759283078159297e-28},
+  "fluid_reference_kernel_norm": 0.0,
+  "limitations": ["Kernel comparison uses full35 summed native-side arrays; exact byte hashes differ although aligned numeric arrays agree at the reported relative L2.", "Source and receiver groups are the full native-side entries whose SEM element equals the result metadata source_element or receiver_element; bulk is all remaining elements."]
+}

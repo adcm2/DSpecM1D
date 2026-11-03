@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "archive": "investigations/dspec-acceleration-20261027/stages12-stage1-v1-inputs.tar.gz",
+  "archive_sha256": "52fccc457361e1fc8b1e865f05738f93a04e933f2725ac24169f59770de3ad63",
+  "staging_manifest": "investigations/dspec-acceleration-20261027/stages12-stage1-v1-inputs.json",
+  "staging_manifest_sha256": "4beba8e2931b128bf3a593812b45f177e89a0244a285e894e132a4340587e5fd",
+  "frozen_candidate_files": 20,
+  "candidate_tree_differences_from_current_local_draft": [
+    {
+      "file": "implementation_status.md",
+      "archived_sha256": "f8e7aca596933628cd2b32b3a38b685681241e284853fb620d07f83d39c3004b",
+      "local_draft_sha256": "bdcc58abc45eac9f929d0ed439b0b5ac87e26e5f48c4e6a61efc1b57a1a9d85b"
+    },
+    {
+      "file": "solvers/batch_response_cache.hpp",
+      "archived_sha256": "576c80b7d342fbe1f9e41fe667e6a1db94d59825c85364cc0cf06e806ccb7750",
+      "local_draft_sha256": "9668c9fbf20877b6e2b2677f338404a320b7d91098a253a448cf4ea7628a26a3"
+    }
+  ],
+  "interpretation": "This extracted candidate is the exact archived v1 source used by the running released build. The mutable local candidate remains a draft containing the optional profile-only batch cache byte counter guard; do not describe that guard as built or measured in v1."
+}

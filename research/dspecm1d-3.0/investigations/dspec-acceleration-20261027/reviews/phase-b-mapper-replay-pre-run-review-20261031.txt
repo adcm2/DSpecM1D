@@ -1,0 +1,42 @@
+B packet-side diagnostic repair: bounded source review, Sol, 2026-10-31
+Source PASS after the focused nullptr response-cache correction. Exact build/run
+config and checker receipt binding remain pending. Reviewer performed no build,
+numerical solve, or implementation edit.
+
+Reviewed isolated phase-b-fixed-mesh-v1-mapper-replay-v1/phase_b_driver.cpp.
+Mapper preserves explicit localNode0/9 sides at every coincident candidate edge;
+only noncoincident artificial old boundaries use same-layer containment. Physical
+source/material breaks never cross. This repairs diagnostic sampling only.
+
+Explicit DSPEC_PHASE_B_DIAGNOSTIC_REPLAY branch reads the hash-bound frozen
+adjoint_source, uses the original MakeAdjointSpectrum and direction*conj(weight*
+force) convention, and visits only bins9/25/40 with the original rank-basis path.
+No full35 waveform/measurement solve or fabricated full35 outputs are emitted.
+Mesh selection still sees the original complete grid through bin41. Both paired
+operators bypass response caching; restriction remains the reviewed full-gravity
+principal H/H^H policy. Metadata marks replay-only and waveform_solve_performed=false.
+
+Required bounded queue/checker evidence: three affected meshes x full/restricted,
+each emitting exact3-bin receiver/common-field inventory; old/new mesh, parameter,
+frequency grids equal; frozen trace/packet SHA binding; unique exact keyed common
+rows, corrected element-side mappings and finite field/product channels; actual
+positive restriction/omitted-DOF/H^H work counters and per-family/degree cut radii.
+Four-mesh tables may receipt-reuse untouched original NQ6-finer3-bin rows with
+explicit original hashes and zero-impact qualification. No new accuracy budget.
+Old affected common tables are superseded; original35-bin waveform, refinement,
+cost/resource evidence stays valid and is not rerun or relabeled as repaired.
+
+Build configuration reviewed/released: fresh profile-only mapper-replay-v1
+candidate/stage/root, pinned GCC13.2/libyspec,existing wrapper,cap8/32GiB.
+Six numerical replay jobs in mapper-replay-v1-run-v1-plan.json reviewed as
+correctly scoped and TASK/job paths verified. Queue release is effective after
+focused checker corrections: missing serialized zero cut counters mean0 only
+with positive matching calls; derive exact radius from element/mesh (old B has
+no radius counter), optional new quantized radius cross-check; solid points use
+R/S/T cuts and fluid points R/S; original own-forward jobs verify only declared
+outputs, without nonexistent common/receiver diagnostics; receipt-qualified
+reused NQ6-finer rows also produce the same full/restricted/reference3-bin metrics.
+Actual positive restricted H^H/omitted-DOF/zero-extension work is required.
+No new numerical accuracy budget, source rebuild, or waveform solve is needed
+for these checker-only corrections. Original state failed only after numerics;
+verify individual completed numerical jobs and their unchanged-input hashes.

@@ -1,0 +1,23 @@
+{
+  "kind": "Fresh bounded baseline and Born calculation; no finite-differences. Same frozen fixture, single numerical thread. Existing native YSpec adapter reused; freshly compiled DSpec adapter and freshly recalculated Cartesian oracle.",
+  "runtime_threads": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLAS_NUM_THREADS": "1"
+  },
+  "sources": {
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/Windowed3DFields.h": "bf577ae209e225ca3f6525b53f6d3fff14e23a34aab98374bbc450bfb170e010",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/Windowed3DKernels.h": "4513aa125f2ad0e73432ef28b2a318a601b7b30069269d873936d7e3df8becaa",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/SensitivityKernels.h": "c67dea113088037a518e3deff16b20aefea3e523a056aa4ec2b7685af28d1cbb",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/benchmarks/yspecpp/kernels/3d/dspec_3d_adapter.cpp": "2d067b98844c4672002feef87278f596e8ba91c8c5763c3f682ecd62eeea9e1e",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/benchmarks/yspecpp/kernels/3d/yspec_3d_adapter.cpp": "7975d1aa06044b083b1a88bbe092ca2362ce4f25e6bf1d6b6b188cfe70021724",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/benchmarks/yspecpp/kernels/3d/cartesian_ti_oracle.py": "08e48d124d3efcc515a69ea1a95012eb6087c66f18b027d83e9eb90c4876e08a",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/benchmarks/yspecpp/kernels/3d/fixture.json": "030ce9bc9098bca178988670c1abd69a9c4a840b891a2a4e4f0074fa7eb1619e"
+  },
+  "executables": {
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/bin/after-adapter": "c6fe89db9a4431efd18ddf4d6e6056c139c8ae43d1b30da3e9758ea1ee233d3c",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/phase_d_adapter": "9e08f5c8b0a09722f878b111d581fe93b72da00793c08298530f4a42b5807248"
+  },
+  "all_baseline_gates_pass": true
+}

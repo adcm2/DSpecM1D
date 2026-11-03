@@ -75,7 +75,8 @@ public:
     if(!sem.sourceMatches(source))
       throw std::invalid_argument("3D evaluation requires a source-aligned SEM.");
     sensitivity_detail::requireMatchingTimeScale(sem,frequency);
-    std::vector<Field3DPoint> allPoints=points;
+    std::vector<Field3DPoint> receiverPoints;
+    receiverPoints.reserve(static_cast<std::size_t>(parameters.num_receivers()));
     const auto receiverElements=sem.receiverElements(parameters,false);
     if(receiverElements.empty())
       throw std::invalid_argument("3D evaluation found no radial receiver trace.");
@@ -85,7 +86,7 @@ public:
       const auto coordinate=parameters.receivers().at(rec);
       const double radius=(sem.mesh().PR()-1000.0*parameters.receiver_depth()/
           sem.lengthScaleMetres())*sem.lengthScaleMetres();
-      allPoints.push_back({radius,(90.0-coordinate.first)*radians,
+      receiverPoints.push_back({radius,(90.0-coordinate.first)*radians,
           coordinate.second*radians,receiverElement});
     }
     WindowedDisplacementMap measurement(frequency,sem.lengthScaleMetres(),timeWindow);
@@ -95,28 +96,34 @@ public:
     result.pointKernels.resize(points.size());
     result.sourceContact.resize(angles.size());
     const auto w=frequency.w();
+    Windowed3DFieldEngine::SamplingPlanCache samplingPlan;
     for(int bin=firstBin;bin<endBin;++bin){
       const Complex z=w.at(bin)+Complex(0.0,-frequency.ep());
-      const auto fields=angles.empty()
-          ? Windowed3DFrequencyResult{Windowed3DFieldEngine::evaluateFrequency(
-                sem,source,parameters,z,qhat.col(bin),allPoints),{}}
-          : evaluateFrequencyWithContact(sem,source,parameters,z,qhat.col(bin),allPoints,angles);
-      for(std::size_t p=0;p<points.size();++p){
-        const auto kernel=pointKernel(sem,fields.fields[p]);
-        addPoint(result.pointKernels[p],kernel);
+      auto workspace=Windowed3DFieldEngine::prepareFrequencyWorkspace(
+          sem,source,parameters,z,qhat.col(bin));
+      const auto receiverSamples=workspace.sampleForKernels(receiverPoints,0,&samplingPlan);
+      std::vector<SourceShellContact3D> contacts;
+      if(!angles.empty())contacts=sourceShellContact(workspace,source,angles);
+      constexpr std::size_t fieldBlockSize=4096;
+      for(std::size_t begin=0;begin<points.size();begin+=fieldBlockSize){
+        const std::size_t end=std::min(points.size(),begin+fieldBlockSize);
+        std::vector<Field3DPoint> pointBlock(points.begin()+begin,points.begin()+end);
+        const auto fields=workspace.sampleForKernels(pointBlock,pointBlock.size(),&samplingPlan);
+        for(std::size_t p=0;p<fields.size();++p)
+          addPoint(result.pointKernels[begin+p],pointKernel(sem,fields[p]));
       }
-      for(std::size_t p=0;p<fields.sourceContact.size();++p){
-        result.sourceContact[p].A+=fields.sourceContact[p].A;
-        result.sourceContact[p].C+=fields.sourceContact[p].C;
-        result.sourceContact[p].F+=fields.sourceContact[p].F;
-        result.sourceContact[p].L+=fields.sourceContact[p].L;
-        result.sourceContact[p].N+=fields.sourceContact[p].N;
+      for(std::size_t p=0;p<contacts.size();++p){
+        result.sourceContact[p].A+=contacts[p].A;
+        result.sourceContact[p].C+=contacts[p].C;
+        result.sourceContact[p].F+=contacts[p].F;
+        result.sourceContact[p].L+=contacts[p].L;
+        result.sourceContact[p].N+=contacts[p].N;
       }
       const Complex fz=-Complex(0.0,1.0)/z;
       for(int rec=0;rec<parameters.num_receivers();++rec)
         for(int c=0;c<3;++c)
           result.rawDisplacementSpectrum(3*rec+c,bin)=
-              fz*fields.fields[points.size()+static_cast<std::size_t>(rec)].forwardRawDisplacement[c];
+              fz*receiverSamples[static_cast<std::size_t>(rec)].forwardRawDisplacement[c];
     }
     result.processedSISpectrum=measurement.forward(result.rawDisplacementSpectrum);
     result.objective=weightsSI.conjugate().cwiseProduct(result.processedSISpectrum).sum().real();
@@ -237,8 +244,9 @@ public:
     return result;
   }
 
+  template <class SampleType>
   static ModulusKernel3D pointKernel(const Full1D::SEM &sem,
-                                     const Sample &sample) {
+                                     const SampleType &sample) {
     const double scale = objectiveScale(sem);
     ModulusKernel3D result;
     result.fluid = sample.fluid;

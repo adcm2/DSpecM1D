@@ -1,0 +1,76 @@
+--- source-v5-frozen/engine_headers/Windowed3DFields.h
++++ source-v6-frozen/engine_headers/Windowed3DFields.h
+@@ -285,7 +285,7 @@
+         angleForPoint[p]=it->second;
+       }
+       constexpr std::size_t tableBudget=32u*1024u*1024u;
+-      const std::size_t perAngle=angularWignerBytesPerAngle(maxAngularDegree);
++      const std::size_t perAngle=angularWignerBytesPerAngle(maxAngularDegree,maxAngularDegree);
+       const std::size_t angleChunkSize=std::max<std::size_t>(1,
+           std::min<std::size_t>(64,tableBudget/std::max<std::size_t>(1,perAngle)));
+       const std::size_t chunkCount=(uniqueTheta.size()+angleChunkSize-1)/angleChunkSize;
+@@ -433,8 +433,9 @@
+     return out;
+   }
+ 
+-  static std::size_t angularWignerBytesPerAngle(int maxDegree) {
+-    const int nMax=std::min(2,maxDegree),mMax=std::min(2,maxDegree);
++  static std::size_t angularWignerBytesPerAngle(int maxDegree,int mMax) {
++    const int nMax=std::min(2,maxDegree);
++    mMax=std::min(mMax,maxDegree);
+     std::size_t values=0;
+     for(int n=-nMax;n<=nMax;++n)
+       values+=GSHTrans::GSHIndices<GSHTrans::All>(maxDegree,mMax,n).Size();
+@@ -447,8 +448,8 @@
+         static_cast<std::size_t>(maxDegree+1)*sizeof(double);
+   }
+ 
+-  static std::size_t angularTableBytesPerAngle(int maxDegree) {
+-    return angularWignerBytesPerAngle(maxDegree)+angularCoefficientBytesPerAngle(maxDegree);
++  static std::size_t angularTableBytesPerAngle(int maxDegree,int mMax) {
++    return angularWignerBytesPerAngle(maxDegree,mMax)+angularCoefficientBytesPerAngle(maxDegree);
+   }
+ 
+   static Complex harmonic(int degree, int m, int n, double theta, double phi) {
+@@ -1025,7 +1026,7 @@
+     int maxDegree=0;
+     for(const auto &block:blocks)maxDegree=std::max(maxDegree,block.degree);
+     constexpr std::size_t tableBudget=32u*1024u*1024u;
+-    const std::size_t perAngle=angularTableBytesPerAngle(maxDegree);
++    const std::size_t perAngle=angularTableBytesPerAngle(maxDegree,std::min(2,maxDegree));
+     const std::size_t angleChunkSize=std::max<std::size_t>(1,
+         std::min<std::size_t>(64,tableBudget/std::max<std::size_t>(1,perAngle)));
+     const std::size_t chunkCount=(uniqueTheta.size()+angleChunkSize-1)/angleChunkSize;
+@@ -1061,7 +1062,7 @@
+       if(!angularTable){auditprofile::Scope t("wigner_build");mathprofile::Scope mt("packed_Wigner_d_table_build");mathprofile::count("packed_wigner_cache_misses");++auditprofile::counters["wigner_miss"];
+         angularTable=std::make_shared<CachedAngularWigner>(
+             maxDegree,std::min(2,maxDegree),std::min(2,maxDegree),chunks[chunk].theta);
+-        const std::size_t bytes=angularWignerBytesPerAngle(maxDegree)*chunks[chunk].theta.size();
++        const std::size_t bytes=angularWignerBytesPerAngle(maxDegree,std::min(2,maxDegree))*chunks[chunk].theta.size();
+         if(samplingPlan&&samplingPlan->bytes+bytes<=SamplingPlanCache::byteBudget){
+           samplingPlan->bytes+=bytes;
+           samplingPlan->angularTables.emplace(angularKey,angularTable);
+@@ -1657,7 +1658,8 @@
+             maxDegree,std::min(2,maxDegree),std::min(2,maxDegree),localPlan.localTheta);
+         const std::size_t estimate=tensorPlanKey.capacity()*sizeof(std::uint64_t)+
+             4*angleKeys.size()*sizeof(double)+
+-            angleKeys.size()*Windowed3DFieldEngine::angularWignerBytesPerAngle(maxDegree);
++            angleKeys.size()*Windowed3DFieldEngine::angularWignerBytesPerAngle(
++                maxDegree,std::min(2,maxDegree));
+         if(samplingPlan&&samplingPlan->bytes+estimate<=
+             Windowed3DFieldEngine::SamplingPlanCache::byteBudget){
+           localPlan.payloadBytes=estimate;samplingPlan->bytes+=estimate;
+--- source-v5-frozen/stage-to-math-map.json
++++ source-v6-frozen/stage-to-math-map.json
+@@ -61,7 +61,10 @@
+     "tensor_complex_basis_key_construction": "Directly constructs and fills the semantic complex-basis key vector through a return-value lambda; preserves original vector construction while timing key formation.",
+     "tensor_complex_basis_cache_lookup": "Looks up the direct-constructed complex-basis key in the current angular plan basis map.",
+     "tensor_real_basis_key_construction": "Directly constructs and fills the semantic real-basis key vector through a return-value lambda; preserves original vector construction while timing key formation.",
+-    "tensor_real_basis_cache_lookup": "Looks up the direct-constructed real-basis key in the current angular plan basis map."
++    "tensor_real_basis_cache_lookup": "Looks up the direct-constructed real-basis key in the current angular plan basis map.",
++    "receiver_at_pole_closed_form": "Constructs the closed-form pole receiver basis once for each receiver and modal block during the frequency-workspace constructor.",
++    "receiver_local_weight_materialization": "Forms the component- and order-resolved local receiver weights for each receiver and modal block.",
++    "receiver_basis_mix_and_unit_adjoint_projection": "Mixes local receiver weights through the adjoint basis transform and projects them onto the unit-adjoint basis for each receiver and modal block."
+   },
+   "excluded_or_separately_timed": {
+     "main_setup_s": "External driver wall duration through creation of per-run caches, before candidate roots. The nested dspec_setup profile root breaks this interval into named stages; root serialization is included in this wall duration.",

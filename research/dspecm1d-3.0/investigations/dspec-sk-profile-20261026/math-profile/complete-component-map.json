@@ -1,0 +1,635 @@
+{
+  "accounting": "Each API stage is assigned exactly once by exclusive time. Frontend roots are independent. Original frozen implementation maps are unchanged; this supplement includes all emitted wrappers.",
+  "stages": [
+    {
+      "solver": "dspec",
+      "stage": "Pforward_fft_and_window",
+      "group": "Pforward",
+      "description": "WindowedDisplacementMap::forward, including damping/window and FFT transform."
+    },
+    {
+      "solver": "dspec",
+      "stage": "SEM_mesh_and_matrix_setup",
+      "group": "frontend_setup_or_export",
+      "description": "Full1D::SEM construction from the loaded Earth model and source, including mesh and system matrix/preconditioner setup performed by the constructor."
+    },
+    {
+      "solver": "dspec",
+      "stage": "actual_ZGEMM_complex",
+      "group": "angular_gemm",
+      "description": "Actual CBLAS ZGEMM; records one complex matrix product dimension triplet and contributes m*n*k to tensor_actual_gemm_macs."
+    },
+    {
+      "solver": "dspec",
+      "stage": "batch_response_cache_get_or_compute",
+      "group": "response_cache",
+      "description": "Exact-key lookup, signatures, and response cache miss computation; records cache hit/miss and input RHS widths."
+    },
+    {
+      "solver": "dspec",
+      "stage": "batch_weighted_adjoint_reconstruction",
+      "group": "source_receiver_recovery",
+      "description": "Exact unit-basis QR reconstruction of requested weighted RHS and response mixing."
+    },
+    {
+      "solver": "dspec",
+      "stage": "candidate_api_including_local_cleanup",
+      "group": "api_misc_cleanup",
+      "description": "Caller API duration including candidate function return/local cleanup. Its exclusive remainder is candidate work not placed in narrower scopes: allocations, input/key/map bookkeeping, value copies and moves, per-bin bookkeeping, and destruction. Profile serialization itself is outside this scope and included in candidate_call_wall_s."
+    },
+    {
+      "solver": "dspec",
+      "stage": "candidate_body",
+      "group": "api_misc_cleanup",
+      "description": "Exclusive api misc cleanup cost at the candidate_body scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "dynamic_H_assembly",
+      "group": "operator",
+      "description": "FixedMeshAdjointSolver::systemMatrix for current complex frequency and family."
+    },
+    {
+      "solver": "dspec",
+      "stage": "final_frequency_objective_accumulation",
+      "group": "objective",
+      "description": "Final weighted spectrum inner product and scalar objective."
+    },
+    {
+      "solver": "dspec",
+      "stage": "forward_angular_cache_lookup",
+      "group": "forward_cache",
+      "description": "Exact-key cross-objective forward tensor field cache lookup; hit/miss counters are candidate-root scoped."
+    },
+    {
+      "solver": "dspec",
+      "stage": "forward_angular_cache_store",
+      "group": "forward_cache",
+      "description": "Retained forward volume strain and receiver displacement insertion on miss."
+    },
+    {
+      "solver": "dspec",
+      "stage": "forward_substitution",
+      "group": "forward_substitution",
+      "description": "EquilibratedSparseLU forward solve, including RHS/result diagonal scaling."
+    },
+    {
+      "solver": "dspec",
+      "stage": "frequency_workspace_and_modal_solve",
+      "group": "source_receiver_recovery",
+      "description": "Per-bin workspace creation outside the modal loops; includes modal projection, source treatment/lift, receiver map preparation, and block capture."
+    },
+    {
+      "solver": "dspec",
+      "stage": "frequency_workspace_prepare_and_modal_capture",
+      "group": "source_receiver_recovery",
+      "description": "Exclusive source receiver recovery cost at the frequency_workspace_prepare_and_modal_capture scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "full_weighted_HH_solve",
+      "group": "adjoint_substitution",
+      "description": "Full receiver-weighted Hermitian-adjoint solve when the non-batch branch is used."
+    },
+    {
+      "solver": "dspec",
+      "stage": "input_parameters_model_and_frequency_initialization",
+      "group": "frontend_setup_or_export",
+      "description": "InputParametersNew construction, model/input parser, source/event metadata and frequency setup."
+    },
+    {
+      "solver": "dspec",
+      "stage": "measurement_adjoint",
+      "group": "measurement",
+      "description": "WindowedDisplacementMap::adjoint(weightsSI), P* construction."
+    },
+    {
+      "solver": "dspec",
+      "stage": "minimal_unit_basis_HH_solve",
+      "group": "adjoint_substitution",
+      "description": "Rank-minimal receiver basis Hermitian-adjoint solve on the shared-factor non-batch route."
+    },
+    {
+      "solver": "dspec",
+      "stage": "modal_projection_source_lift_and_frequency_solve",
+      "group": "source_receiver_recovery",
+      "description": "Radial, spheroidal and toroidal modal families; source/lift coefficients, receiver projection, and solver calls. This is a family-level scope, not per-point arithmetic."
+    },
+    {
+      "solver": "dspec",
+      "stage": "packed_Wigner_d_table_build",
+      "group": "angular_plan_basis",
+      "description": "Exclusive angular plan basis cost at the packed_Wigner_d_table_build scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "packed_angular_coefficients_and_basis_build",
+      "group": "angular_plan_basis",
+      "description": "Exclusive angular plan basis cost at the packed_angular_coefficients_and_basis_build scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "parameter_file_generation",
+      "group": "frontend_setup_or_export",
+      "description": "Writes the temporary parameter file consumed by InputParametersNew."
+    },
+    {
+      "solver": "dspec",
+      "stage": "point_kernel_contraction_and_scatter",
+      "group": "kernel_products",
+      "description": "Existing pointKernel formula and aggregate point-kernel scatter over the complete volume batch."
+    },
+    {
+      "solver": "dspec",
+      "stage": "pole_frame_sampling_total",
+      "group": "representative_receiver_sampling",
+      "description": "Enclosing pole-frame coefficient sampling for the volume and receiver grid."
+    },
+    {
+      "solver": "dspec",
+      "stage": "radial_interpolation_and_strain_numerator_build",
+      "group": "radial_strain",
+      "description": "Radial coefficient construction using existing interpolation plans and r-strain numerators; one scope per existing coefficient-build batch."
+    },
+    {
+      "solver": "dspec",
+      "stage": "radial_l0_sampling_and_interpolation",
+      "group": "radial_strain",
+      "description": "Radial-only modal sampling, including the l=0 branch."
+    },
+    {
+      "solver": "dspec",
+      "stage": "radial_l0_source_and_adjoint_branch",
+      "group": "source_receiver_recovery",
+      "description": "The existing radial degree-zero source and adjoint path."
+    },
+    {
+      "solver": "dspec",
+      "stage": "receiver_basis_and_QR_reconstruction",
+      "group": "source_receiver_recovery",
+      "description": "Exact rank-minimal receiver row selection, QR solves, reconstruction matrix; records input and selected basis dimensions."
+    },
+    {
+      "solver": "dspec",
+      "stage": "receiver_frame_geometry_phase_spin_rotation_and_scatter",
+      "group": "representative_receiver_sampling",
+      "description": "Exclusive representative receiver sampling cost at the receiver_frame_geometry_phase_spin_rotation_and_scatter scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "receiver_suffix_and_frequency_scatter",
+      "group": "receiver_scatter",
+      "description": "Receiver displacement suffix extraction and raw spectrum bin write."
+    },
+    {
+      "solver": "dspec",
+      "stage": "result_stream_creation_and_coordinate_export",
+      "group": "frontend_setup_or_export",
+      "description": "Opens candidate/reference/coordinate streams and writes the coordinate binary before solving."
+    },
+    {
+      "solver": "dspec",
+      "stage": "sample_CSV_read",
+      "group": "frontend_setup_or_export",
+      "description": "Reads the requested sample CSV into the working point grid."
+    },
+    {
+      "solver": "dspec",
+      "stage": "setup_all",
+      "group": "frontend_setup_or_export",
+      "description": "Inclusive total of driver setup before candidate roots. Exclusive remainder is argument validation, path/environment checks, and setup control/bookkeeping not called out separately."
+    },
+    {
+      "solver": "dspec",
+      "stage": "shared_forward_and_adjoint_solver",
+      "group": "source_receiver_recovery",
+      "description": "One family/degree/frequency solve path; counts degree and forward, weighted-adjoint, and unit-basis RHS widths."
+    },
+    {
+      "solver": "dspec",
+      "stage": "solver_factorization_dispatch",
+      "group": "factor_overhead",
+      "description": "Exclusive factor overhead cost at the solver_factorization_dispatch scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "source_contact_separate_case",
+      "group": "source_contacts",
+      "description": "Existing sourceShellContact evaluation measured separately from volume point kernels."
+    },
+    {
+      "solver": "dspec",
+      "stage": "source_frame_geometry_phase_spin_rotation_and_scatter",
+      "group": "representative_receiver_sampling",
+      "description": "Exclusive representative receiver sampling cost at the source_frame_geometry_phase_spin_rotation_and_scatter scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "sparse_adjoint_solve_including_rhs_scaling",
+      "group": "adjoint_substitution",
+      "description": "Exclusive adjoint substitution cost at the sparse_adjoint_solve_including_rhs_scaling scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "sparse_equilibration_and_scaling",
+      "group": "equilibration",
+      "description": "Copied EquilibratedSparseLU row scaling and D H D matrix construction."
+    },
+    {
+      "solver": "dspec",
+      "stage": "sparse_factorization_total",
+      "group": "factor_overhead",
+      "description": "Copied EquilibratedSparseLU::compute; wrapper total, with exact Eigen SparseLU analyzePattern then factorize call order retained."
+    },
+    {
+      "solver": "dspec",
+      "stage": "sparse_forward_solve_including_rhs_scaling",
+      "group": "forward_substitution",
+      "description": "Exclusive forward substitution cost at the sparse_forward_solve_including_rhs_scaling scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "sparse_numerical_factorization",
+      "group": "factorization",
+      "description": "Eigen SparseLU factorize on that same equilibrated matrix."
+    },
+    {
+      "solver": "dspec",
+      "stage": "sparse_symbolic_analysis",
+      "group": "symbolic",
+      "description": "Eigen SparseLU analyzePattern on the equilibrated matrix."
+    },
+    {
+      "solver": "dspec",
+      "stage": "spheroidal_source_lift_projection_and_solver",
+      "group": "source_receiver_recovery",
+      "description": "Exclusive source receiver recovery cost at the spheroidal_source_lift_projection_and_solver scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "dspec",
+      "stage": "stream_packet_and_cache_bookkeeping",
+      "group": "frontend_setup_or_export",
+      "description": "Configures optional packet stream and initializes response, sampling-plan and forward-field cache objects before candidate roots."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_angular_gemm_complex_and_packing",
+      "group": "gemm_buffers_copies",
+      "description": "Complex-basis synthesis wrapper; dimensions and batch count are reported separately from actual ZGEMM."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_angular_plan_key_build_and_lookup",
+      "group": "angular_plan_basis",
+      "description": "Builds the frame/grid angular-plan key and looks up the cached plan."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_coefficient_packing_and_key_reorder",
+      "group": "coefficient_packing",
+      "description": "Per-component tensor radial coefficient packing and ordered (m,l) key handling."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_cold_frame_geometry_and_wigner_build",
+      "group": "angular_plan_basis",
+      "description": "On angular-plan miss, computes tangent frame rotations and constructs/populates the Wigner table and plan."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_complex_basis_cache_lookup",
+      "group": "angular_plan_basis",
+      "description": "Looks up the direct-constructed complex-basis key in the current angular plan basis map."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_complex_basis_cold_fill_and_cache",
+      "group": "angular_plan_basis",
+      "description": "On complex-basis miss, allocates/fills the angular matrix and optionally admits it to the basis cache."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_complex_basis_key_construction",
+      "group": "angular_plan_basis",
+      "description": "Directly constructs and fills the semantic complex-basis key vector through a return-value lambda; preserves original vector construction while timing key formation."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_forward_cache_copy_and_receiver_suffix",
+      "group": "forward_cache",
+      "description": "Copies cached forward volume strain and receiver displacement into the current result when the exact forward cache hits."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_grid_cold_layout_map_build",
+      "group": "grid_cold_layout",
+      "description": "On grid-cache miss, validates and constructs radial-trace, shared-angle, and point maps, then admits or retains the layout."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_grid_semantic_key_build_and_lookup",
+      "group": "grid_key_lookup",
+      "description": "Builds the exact semantic volume-grid key and performs its cache lookup; excludes cold layout construction."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_grid_semantic_plan_and_sampling",
+      "group": "tensor_misc_cleanup",
+      "description": "Tensor sampling call including exact grid address plan creation/reuse and sample reconstruction."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_phase_spin_rotation_and_scatter",
+      "group": "rotation_scatter",
+      "description": "Tensor field azimuthal phase, spin frame rotation and scatter to requested grid points."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_radial_l0_scatter",
+      "group": "l0_scatter",
+      "description": "Adds the reserved radial degree-zero forward/adjoint strain record to each volume result."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_receiver_suffix_sampling_and_scatter",
+      "group": "representative_receiver_sampling",
+      "description": "Samples receiver points through the existing packed route and copies radial/fluid tags and forward displacement into the receiver suffix."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_representative_and_coefficient_record_capture",
+      "group": "representative_receiver_sampling",
+      "description": "Builds representative points, samples pole frames and captures coefficient records through the existing visitor."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_result_allocation_and_volume_tagging",
+      "group": "result_allocation",
+      "description": "Allocates the result vector and tags volume points with radial element and fluid metadata."
+    },
+    {
+      "solver": "dspec",
+      "stage": "tensor_sampling_total",
+      "group": "tensor_misc_cleanup",
+      "description": "Tensor contraction route; nested scopes and counters separate plan, basis, packing, GEMM and scatter work."
+    },
+    {
+      "solver": "dspec",
+      "stage": "toroidal_source_lift_projection_and_solver",
+      "group": "source_receiver_recovery",
+      "description": "Exclusive source receiver recovery cost at the toroidal_source_lift_projection_and_solver scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "angular.generalized_legendre_table_population",
+      "group": "angular_tables",
+      "description": "Exclusive angular tables cost at the angular.generalized_legendre_table_population scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "angular.spin_legendre_table_population",
+      "group": "angular_tables",
+      "description": "Exclusive angular tables cost at the angular.spin_legendre_table_population scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "angular.wigner_function_table_build",
+      "group": "angular_tables",
+      "description": "Exclusive angular tables cost at the angular.wigner_function_table_build scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "api.ComputeSampledKernels",
+      "group": "api_misc_cleanup",
+      "description": "Exclusive api misc cleanup cost at the api.ComputeSampledKernels scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "frontend.model_sampling_configuration_and_input_setup",
+      "group": "frontend_setup_or_export",
+      "description": "Exclusive frontend setup or export cost at the frontend.model_sampling_configuration_and_input_setup scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "frontend.sampled_kernel_csv_export",
+      "group": "frontend_setup_or_export",
+      "description": "Exclusive frontend setup or export cost at the frontend.sampled_kernel_csv_export scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.angular_block_batch",
+      "group": "angular_block_misc_cleanup",
+      "description": "Exclusive angular block misc cleanup cost at the kernel.angular_block_batch scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.angular_harmonic_synthesis.adjoint",
+      "group": "angular_adjoint",
+      "description": "Exclusive angular adjoint cost at the kernel.angular_harmonic_synthesis.adjoint scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.angular_harmonic_synthesis.source",
+      "group": "angular_source",
+      "description": "Exclusive angular source cost at the kernel.angular_harmonic_synthesis.source scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.elastic_energy_pair_contraction",
+      "group": "energy_pairs",
+      "description": "Exclusive energy pairs cost at the kernel.elastic_energy_pair_contraction scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.frequency_block_accumulation_copy",
+      "group": "frequency_accumulation",
+      "description": "Exclusive frequency accumulation cost at the kernel.frequency_block_accumulation_copy scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.measurement_frequency_basis_weights",
+      "group": "measurement",
+      "description": "Exclusive measurement cost at the kernel.measurement_frequency_basis_weights scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.modulus_dispersion_frequency_weights",
+      "group": "modulus_weights",
+      "description": "Exclusive modulus weights cost at the kernel.modulus_dispersion_frequency_weights scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.objective_weight_and_parameter_products",
+      "group": "parameter_products",
+      "description": "Exclusive parameter products cost at the kernel.objective_weight_and_parameter_products scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "kernel.relative_spin_rotation",
+      "group": "rotation",
+      "description": "Exclusive rotation cost at the kernel.relative_spin_rotation scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "output.parameter_transform_scaling_and_construction",
+      "group": "output_scaling",
+      "description": "Exclusive output scaling cost at the output.parameter_transform_scaling_and_construction scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.bvp_up_down_integration_and_matching",
+      "group": "radial_driver_overhead",
+      "description": "Exclusive radial driver overhead cost at the radial.bvp_up_down_integration_and_matching scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.coefficient_combine_and_strain_recovery",
+      "group": "radial_strain",
+      "description": "Exclusive radial strain cost at the radial.coefficient_combine_and_strain_recovery scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.context_material_frequency",
+      "group": "radial_driver_overhead",
+      "description": "Exclusive radial driver overhead cost at the radial.context_material_frequency scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.determinant_jumps_matching_and_response_transport",
+      "group": "matching_transport",
+      "description": "Exclusive matching transport cost at the radial.determinant_jumps_matching_and_response_transport scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.initial_conditions_and_downward_integration",
+      "group": "ode_down_integration",
+      "description": "Exclusive ode down integration cost at the radial.initial_conditions_and_downward_integration scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.initial_conditions_and_upward_integration",
+      "group": "ode_up_integration",
+      "description": "Exclusive ode up integration cost at the radial.initial_conditions_and_upward_integration scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.radial_physical_variable_recovery",
+      "group": "radial_recovery",
+      "description": "Exclusive radial recovery cost at the radial.radial_physical_variable_recovery scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.radial_response_family",
+      "group": "radial_driver_overhead",
+      "description": "Exclusive radial driver overhead cost at the radial.radial_response_family scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.solve_radial_family",
+      "group": "radial_driver_overhead",
+      "description": "Exclusive radial driver overhead cost at the radial.solve_radial_family scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.solve_toroidal_and_spheroidal_families",
+      "group": "radial_driver_overhead",
+      "description": "Exclusive radial driver overhead cost at the radial.solve_toroidal_and_spheroidal_families scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.spheroidal_b_vector_transport",
+      "group": "b_vector_transport",
+      "description": "Exclusive b vector transport cost at the radial.spheroidal_b_vector_transport scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.spheroidal_physical_variable_recovery",
+      "group": "radial_recovery",
+      "description": "Exclusive radial recovery cost at the radial.spheroidal_physical_variable_recovery scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.spheroidal_response_family",
+      "group": "radial_driver_overhead",
+      "description": "Exclusive radial driver overhead cost at the radial.spheroidal_response_family scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.toroidal_physical_variable_recovery",
+      "group": "radial_recovery",
+      "description": "Exclusive radial recovery cost at the radial.toroidal_physical_variable_recovery scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "radial.toroidal_response_family",
+      "group": "radial_driver_overhead",
+      "description": "Exclusive radial driver overhead cost at the radial.toroidal_response_family scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.construct_kernel_solver",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.construct_kernel_solver scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.frequency_sampling_grid",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.frequency_sampling_grid scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.map_adjoint_receiver_depths",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.map_adjoint_receiver_depths scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.measurement_adjoint_spectra_and_weights",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.measurement_adjoint_spectra_and_weights scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.measurement_direction_basis",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.measurement_direction_basis scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.merge_sample_nodes",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.merge_sample_nodes scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.sampled_node_materials_and_phases",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.sampled_node_materials_and_phases scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.source_receiver_frame_geometry",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.source_receiver_frame_geometry scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "setup.validate_measurements_and_source",
+      "group": "setup_api",
+      "description": "Exclusive setup api cost at the setup.validate_measurements_and_source scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "source_weights.forward_moment_force_rhs",
+      "group": "source_receiver_weights",
+      "description": "Exclusive source receiver weights cost at the source_weights.forward_moment_force_rhs scope; inclusive time also contains nested named scopes and is not additive."
+    },
+    {
+      "solver": "yspec",
+      "stage": "source_weights.receiver_unit_force_rhs",
+      "group": "source_receiver_weights",
+      "description": "Exclusive source receiver weights cost at the source_weights.receiver_unit_force_rhs scope; inclusive time also contains nested named scopes and is not additive."
+    }
+  ]
+}

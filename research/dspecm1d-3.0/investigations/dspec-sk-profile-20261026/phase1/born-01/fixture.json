@@ -1,0 +1,83 @@
+{
+  "schema": "dspec-3d-fixture-v1",
+  "status": "Operational fixture derived from the reviewed Phase D preflight; baseline-only until independent pre-run release",
+  "origin_preflight_sha256": "cc614ba0ab6384877373da9bff18451ddfd5d4a0d949e487053e8f3724473e12",
+  "model": {
+    "source_deck": "../homogeneous_shell.deck",
+    "radius_m": 6371000.0,
+    "radial_breaks_m": [0, 2000000, 4000000, 4200000, 6200000, 6311000, 6321000, 6331000, 6346000, 6371000],
+    "rho_kg_m3": 5515.0,
+    "vp_m_s": 8000.0,
+    "vs_m_s": 4500.0,
+    "gravity": "full",
+    "attenuation": false,
+    "perturbed_fields": "one of A,C,F,L,N at a time; density and geometry fixed"
+  },
+  "event": {
+    "source_geocentric_latitude_deg": 10.0,
+    "source_east_longitude_deg": 20.0,
+    "source_depth_m": 50000.0,
+    "source_radius_m": 6321000.0,
+    "moment_tensor_Nm_rr_rt_rp_tt_tp_pp": [1e19, 2e18, -3e18, -5e18, 4e18, -5e18],
+    "receiver_geocentric_latitude_deg": 45.0,
+    "receiver_east_longitude_deg": 90.0,
+    "receiver_depth_m": 3000.0,
+    "receiver_radius_m": 6368000.0,
+    "yspec_geographic_latitude_rule": "atan(tan(geocentric_latitude)/0.993277); check round trip"
+  },
+  "solver": {
+    "degrees_inclusive": [0, 3],
+    "active_bins_zero_based": [1, 2, 3],
+    "nt": 128,
+    "dt_s": 20.0,
+    "duration_s": 1800.0,
+    "epsilon_s_inv": 0.002777777777777778,
+    "frequency_rule": "z_k=2*pi*k/(nt*dt)-i*epsilon for k=0..nt/2",
+    "window": "Hann samples 0..90 inclusive; zero samples 91..127",
+    "component_order": ["Z-up", "N", "E"],
+    "raw_spectrum_rule": "full 65-bin real RFFT grid; solver output exactly zero outside bins 1,2,3",
+    "physical_spectrum_map": "L0*T0*f_z in m*s exactly once; apply full-grid P/P* and matching DC/Nyquist weights",
+    "objectives": {
+      "J_Z": {"q_shape": [3, 65], "nonzero_q": {"Z,1": [0.7, 0.2], "Z,2": [-0.25, 0.45]}},
+      "J_N": {"q_shape": [3, 65], "nonzero_q": {"N,1": [0.7, 0.2], "N,2": [-0.25, 0.45]}}
+    }
+  },
+  "perturbations": {
+    "chi": "Re(Y21)+0.5*Re(Y32), normalized complex scalar harmonics, Condon-Shortley convention, geocentric colatitude, east longitude",
+    "regular_volume": {"support_m": [4200000, 6200000], "profile": "sin(pi*(r-4200000)/2000000)^2; exact zero at both endpoints"},
+    "source_local": {"support_m": [6311000, 6331000], "source_m": 6321000, "profile": "cos(pi*(r-source)/20000)^2; exact zero at endpoints", "moduli": ["C", "F", "L"]},
+    "fractional_steps": [0.08, 0.04, 0.02, 0.01, 0.005, 0.0025],
+    "richardson": "R_i=(4*D(h[i+1])-D(h[i]))/3; select finest consecutive triple using R and S only; every |R|>1e-6*S and pairwise spread/max|R|<=1e-6"
+  },
+  "quadrature": {
+    "angular": "8-point Gauss-Legendre in cos(theta) by 24 uniform east-longitude points",
+    "dspec": {"maxstep_fraction": 0.05, "gll_points_per_element": 8},
+    "yspec_regular_max_element_m": 250000,
+    "yspec_source_local_max_element_m": 1000,
+    "yspec_ode_tolerance": 1e-9,
+    "yspec_start_decay_efolds": 11,
+    "yspec_step_factor": 0.25
+  },
+  "gates": {
+    "physical_G_relative": 1e-12,
+    "baseline_component_relative_l2": 1e-5,
+    "yspec_regular_profile_relative": 1e-3,
+    "yspec_integral_relative": 1e-3,
+    "oracle_baseline_relative": 1e-9,
+    "independent_born_relative": 1e-6,
+    "informative_signal_floor_over_S": 1e-6,
+    "profile_scale": "Kscale_X=S/(abs(X0)*Vsupport), with all support-owned quadrature points including zero-valued boundary nodes",
+    "source_contact_boundary": "YSpec sampled volume kernels omit shell/contact; source-local C/F/L contact evidence is from the independent finite-h SEM oracle"
+  },
+  "resources": {"jobs": 1, "omp_threads": 1, "blas_threads": 2, "sparse_memory_cap_bytes": 1073741824, "no_dense_global_factorization": true},
+  "dependencies": {
+    "NumericConcepts": "e03a2889d43a03660d0879f46dda1406d90c9517",
+    "Interpolation": "d5a1711ca6a89fc8ad8148fe13212398fe569bc0",
+    "FFTWpp": "cb152c0e85f3822493c2d9e85a56307ac7b4f1c0",
+    "GaussQuad": "7d4786d192f68077cd99a34dcdf1379ed1eeac9a",
+    "GSHTrans": "8dd116df8df4222fe9b10a40c7213d34f2a274fb",
+    "planetmodel": "fa6e230fde25152d40f27d9839de44c4f3182a24"
+  },
+  "dspec_planetmodel": "35be4ee54b3d84df1483e647878c5446a886c90b",
+  "execution": {"default_mode": "baseline-only", "finite_difference_requires": "independent review of implementation and frozen baseline packet"}
+}

@@ -1,0 +1,139 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-l3-fd-validation",
+  "thread_cap": 20,
+  "external_campaigns": [
+    {
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-d-nq6-batched-v2/configs/phase-d-nq6-batched-v2-build-plan.json",
+      "plan_sha256": "c5047f75fe88730e3f3d5e697b6de0d35a5fc053628a5cfcd45f2f629173a20e",
+      "task_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-nq6-batched-v2-control/continuation/phase-d-nq6-batched-build-v2"
+    }
+  ],
+  "timing_interpretation_limit": "One profile L3 FD validation to exercise the actual Phase D batched angular helper; one worker, no timing claims. Frozen Stage2 +/- traces and exact 2e-4 central-difference gate are reused; base/plus/minus inputs are hash-bound.",
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "jobs": [
+    {
+      "id": "phase-d-l3-batched-fd-validation",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-d-nq6-batched-v2/candidates/phase-d-nq6-batched-v1",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=1",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "DSPEC_FREQUENCY_WORKERS=1",
+        "DSPEC_PHASE_C_DIRECT_ADJOINT=1",
+        "DSPEC_PHASE_C_VALIDATE_DIRECT_ADJOINT=1",
+        "DSPEC_PHASE_C_VALIDATE_RECONSTRUCTION=1",
+        "DSPEC_PHASE_B_RESTRICTED=0",
+        "DSFAST_RSTRAIN_BRIDGE=0",
+        "DSPEC_PHASE_C2_VALIDATE_WEIGHT_LINE=0",
+        "DSPEC_PHASE_C_SKIP_ZERO_KERNEL_BINS=0",
+        "DSPEC_PHASE_D_MESH_SELECTION=1",
+        "DSPEC_PHASE_D_L3_FD_CONTROL=1",
+        "DSPEC_PHASE_D_MESH_SCALE=1.0",
+        "DSPEC_PHASE_D_REQUESTED_RELATIVE_ACCURACY=0.001",
+        "DSPEC_PHASE_D_VALIDATE_BATCHED=1",
+        "DSPEC_PHASE_D_VALIDATE_COMMON=0",
+        "DSPEC_PHASE_D_SCALAR_ONLY=0",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-d-nq6-batched-v2/phase-d-profile/phase-d-profile-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-d-nq6-batched-v2/candidates/phase-d-nq6-batched-v1/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "3",
+        "8",
+        ".05",
+        "1",
+        "audit",
+        "0",
+        "-"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/phase-d-nq6-batched-v2/phase-d-profile/phase-d-profile-driver",
+        "/space/adcm2/research/builds/phase-d-nq6-batched-v2/phase-d-profile/command.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-d-nq6-batched-v2/candidates/phase-d-nq6-batched-v1/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-d-nq6-batched-v2/candidates/phase-d-nq6-batched-v1/case/prem.200",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/spectrum.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/result.json",
+        "/usr/bin/env",
+        "/usr/bin/taskset"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/profile.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/components.csv",
+        "data/nodes.csv",
+        "data/frequency-grid.csv",
+        "data/mesh-elements.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/phase-c2-common-reconstruction-equivalence.csv",
+        "data/phase-c2-zero-bin-support.csv",
+        "data/phase-d-batched-scalar-equivalence.csv"
+      ],
+      "timeout_seconds": 3600,
+      "memory_gib": 16
+    },
+    {
+      "id": "phase-d-l3-fd-check",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-d-l3-fd-validation-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-d-l3-fd-validation-v1/tools/check_phase_d_fd.py",
+        "--candidate",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-l3-fd-validation/continuation/phase-d-l3-fd-run-v1/phase-d-l3-batched-fd-validation/data",
+        "--base",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data",
+        "--plus",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data",
+        "--minus",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data",
+        "--out",
+        "{JOB_DIR}/data/phase-d-fd-check.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-d-l3-fd-validation-v1/tools/check_phase_d_fd.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-l3-fd-validation/continuation/phase-d-l3-fd-run-v1/phase-d-l3-batched-fd-validation/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-l3-fd-validation/continuation/phase-d-l3-fd-run-v1/phase-d-l3-batched-fd-validation/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-l3-fd-validation/continuation/phase-d-l3-fd-run-v1/phase-d-l3-batched-fd-validation/data/spectrum.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-l3-fd-validation/continuation/phase-d-l3-fd-run-v1/phase-d-l3-batched-fd-validation/data/components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-l3-fd-validation/continuation/phase-d-l3-fd-run-v1/phase-d-l3-batched-fd-validation/data/phase-d-batched-scalar-equivalence.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/spectrum.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/result.json"
+      ],
+      "outputs": [
+        "data/phase-d-fd-check.json"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 4
+    }
+  ]
+}

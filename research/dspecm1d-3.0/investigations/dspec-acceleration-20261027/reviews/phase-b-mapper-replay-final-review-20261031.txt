@@ -1,0 +1,54 @@
+B mapper diagnostic repair: independent final result review, Sol,2026-10-31
+PASS. Supersedes affected old common-side diagnostic tables; preserves original
+35-bin own-waveform,mesh-refinement,timing/resource evidence. No physical
+discrepancy inquiry or new accuracy budget; NQ10/full-domain remains recommended.
+Reviewer read saved receipts/summary only; no build,solve or implementation edit.
+
+Evidence: receipts/phase-b-mapper-replay-run-v1-terminal-20261031.json,
+SHA2419b8c138efcc520431d59e164f89cc2b151d210aff6b76bc2d744b87f8bf9b.
+Task phase-b-mapper-replay-run-v1; plan
+eb60fe9a4c7fb2ebc72cb2a368326de217213a36ca23301a64025597b5dfb4b5.
+Checker output SHA65fb6e69cf39eeec4b2f0697dc777c0ac84f7cfa5c2eb7adc1ad94129f3473e4.
+Six new diagnostic-only numerical jobs and checker completed rc0, unchanged
+inputs,verified cleanup. Original B state SHAbe4a5949f8c5caa0a8122d110b283eec7483b344b66741b97dc4d2e8d3d787ac
+matches the independently reviewed initial campaign; frozen forcing and NQ10
+reference-product SHA inputs are bound. Replays execute only9/25/40; no new
+35-bin waveform or measured-performance claim is produced.
+
+Three affected meshes were replayed full+restricted on identical original mesh
+recipes/grids and frozen weights. Corrected explicit coincident q0 sides changed
+exactly308 NQ5-nominal,2618 NQ5-finer,308 NQ6-nominal rows in BOTH full and
+restricted outputs at each bin; all are bulk. NQ6-finer zero-impact qualification
+and original output/forcing/geometry hashes permit explicit saved-row reuse;
+its full/restricted/reference metrics are included, not merely provenance hashes.
+Every bin has401 actual family/degree cuts, with radius from exact mesh edge;
+fluid applies R/S cuts,solid R/S/T. Fresh cases have31,108 requested points below
+at least one applicable cut and14,014 outside all such cuts. This is a sampling
+classification, not a physical-zero assertion for the summed field.
+
+Corrected solid group maxima full versus frozen NQ10:
+forward1.515872618641864e-3,adjoint1.1721282073127858e-3,
+lnVs product3.3002203425735437e-3. Worst product is NQ5-nominal,bin9,along
+source group; reference product norm2=1.2232274590302219e-33.
+Same-frozen-forcing restricted-minus-full solid maxima:
+forward8.207124499003043e-5,adjoint1.5326579585442467e-5,
+product1.0400490783452492e-4,all NQ5-finer/bin9/along affected bulk group.
+Product nominal/finer self-refinement maxima: NQ5 3.1191028338048974e-3,
+NQ6 6.828468186536761e-4. All are descriptive; no pass/fail physical accuracy
+limit is invented. Large raw-fluid-adjoint ratios/absolute errors and reference
+norms remain visible separately; fluid lnVs products are zero by construction.
+Small receiver-spectrum differences do not establish kernel/truncation accuracy.
+
+Actual restricted principal H/H^H,omitted DOFs,cross-cut terms and zero-extension
+work are positive. HH counts1200 for each fresh3-bin replay and14,000 for reused
+original35-bin kernel pass are WHOLE-PASS counts, repeated inside bin objects;
+they are not per-bin counts. Quantized aggregate residual/identity counters are
+sums, not per-solve maximum residuals. Exact per-bin cut inventories are separate.
+
+New replays take11.61–13.97s each,observed RSS.3848–.4617GiB/2threads;
+checker163.6389s,2.797GiB/2threads. These diagnostic-only costs are not comparable
+to original35-bin inclusive costs. All within cap20/16GiB for numerics and8GiB
+checker; user-space watchdog remains observational rather than kernel aggregate.
+No further mapper/numerical repair needed. Complete final report independent
+review,then stop before production integration,discrepancy work,YSpec reruns,
+new figures,deletion,commit or push.

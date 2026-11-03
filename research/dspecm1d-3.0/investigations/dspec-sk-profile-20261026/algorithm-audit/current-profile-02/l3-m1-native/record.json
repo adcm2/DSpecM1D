@@ -1,0 +1,109 @@
+{
+  "degree": 3,
+  "measurements": 1,
+  "kind": "native",
+  "cpu": 0,
+  "command": [
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/attempt-02/bin/after-timing",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-small-03/samples.csv",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/current-profile-02/l3-m1-native/data",
+    "3",
+    "1",
+    "1"
+  ],
+  "metrics": {
+    "solver": "DSpecM1D",
+    "api": "Windowed3DKernelEngine::evaluate",
+    "lmax": 3,
+    "measurements": 1,
+    "repeats": 1,
+    "sample_count": 10752,
+    "warmup_batches": 0,
+    "warmup_api_calls": 0,
+    "setup_s": 0.028180424,
+    "warmup_batch_s": 0,
+    "api_s": [
+      0.056778752
+    ],
+    "first_workload_api_s": 0.056778752,
+    "first_model_to_arrays_s": 0.084959176,
+    "calculation_s": 0.084959176,
+    "end_to_end_s": 0.137332428,
+    "peak_rss_bytes": 17522688,
+    "objective_scale_S": {
+      "J_Z": 0.0005827907727363519
+    },
+    "config": {
+      "frequency_grid": {
+        "nt": 128,
+        "dt_s": 20,
+        "df_hz": 0.000390625,
+        "epsilon_s_inv": 0.002777777777777778,
+        "solver_bins_zero_based": [
+          1,
+          2,
+          3
+        ],
+        "band_hz": [
+          0.0001,
+          0.0008
+        ],
+        "degrees_inclusive": [
+          0,
+          3
+        ]
+      },
+      "physics": {
+        "gravity": "full",
+        "attenuation": false,
+        "physical_G": 6.672299999999999e-11
+      },
+      "source": {
+        "geocentric_latitude_deg": 10,
+        "longitude_deg": 20,
+        "depth_m": 50000,
+        "moment_tensor_Nm": [
+          1e+19,
+          2e+18,
+          -3e+18,
+          -5e+18,
+          4e+18,
+          -5e+18
+        ]
+      },
+      "receiver": {
+        "geocentric_latitude_deg": 45,
+        "longitude_deg": 90,
+        "depth_m": 3000
+      },
+      "window": {
+        "type": "Hann",
+        "first_sample": 0,
+        "last_sample": 90,
+        "nt": 128
+      },
+      "objective": {
+        "names": [
+          {
+            "name": "J_Z",
+            "component": "Z",
+            "q_nonzero": {
+              "bin_1": [
+                0.7,
+                0.2
+              ],
+              "bin_2": [
+                -0.25,
+                0.45
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "profile": [],
+  "csv_sha256": "8e43a88e6efa759c0a8bbabf6df9d6aad0d3cfce60270d3897181f042e1c3fae",
+  "wall_s": 0.1944734739990963
+}

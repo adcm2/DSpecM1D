@@ -1,0 +1,23 @@
+Angular shared-resource registration independent review — 2026-11-03
+Reviewer: Sol6.1 high /root/radial_review
+Disposition: PASS for the exact PRIVATE inventory-only guardian candidate and supervision manifest. This is NOT launch admission and does not authorize this chat to deploy/replace/start/stop any shared guardian or other project's process. CCDSM owner must review/deploy the SAME guardian, preserve original source/service/state and issue explicit ADMITTED coverage receipt before DSpec build/numerics.
+
+Exact SHA-256:
+Original guardian d3607c5bf5ceec84234dc1204cd1b82eefd520ba8f88f493c06edcf9c995afec
+Private monitor_tunya_global_ram_v4.py 03421ab7cb49f3e28cfa08c3907ff264cae34d3a4b6f9ea170120b1976989d51
+supervision-manifest.json 3081a901c79978f9c60f56843e83d9ebe1c866571c279c9ffb05e6d68a44ec55
+test_guard_registration.py 04d377224077e2556d7ef7ea8d129ace288288cd1a4021757047fda11cbc44dc
+
+Independent inspection:
+The final manifest points base_source_path to the private immutable bytecopy base-monitor_tunya_global_ram_v4.py (d3607c5b...), retaining original_base_source_path separately; independent AST fixtures therefore do not change when CCDSM later deploys. Basecopy hash independently verified.
+Verified original/private bytes and hashes. AST comparison after removing owned_units is IDENTICAL: active-RAM metric,825/875/900GB thresholds,poll/freshness,state schema/output path,pressure transitions,freeze command,one-pause latch,no-auto-thaw/no-kill/no-whole-slice policy are unchanged. Only owned_units inventory is extended. It scans exactly immediate service children of original research cgroup for ccdsm-sp12-/dspecpilot3d-modal-projection- prefixes, and immediate service children of sibling dspecscienceangular20261103.slice ONLY for dspec-science-angular-v1- prefix. Wrong prefixes, wrong roots, non-service names and non-directories are excluded. Original root remains mandatory; absence of new root before admission is tolerated. It preserves pids/memory/freezer/error inspection for each registered child. No broad prefix or recursive whole-user inventory was introduced.
+The unchanged main chooses max memory among live/nonfrozen owned service candidates from the combined inventory, freezes at most one service through its unique unit name, confirms its cgroup.freeze path and latches. Unknown freezer states/conflicting frozen units retain fail-closed pressure decisions. No second guardian or new process-control semantics introduced. State's existing limitation remains: this is not a machine-wide kernel cap on other users; 900GB compliance additionally requires the agreed forecast/admission and coordinator enforcement.
+
+Tests independently run locally:
+All7 file-fixture tests PASS in0.008s. Process control is monkeypatched to raise; guardian main not started. Tests exercise old inventory with new root absent, exact new root/prefix with wrong-root/prefix/suffix exclusions, largest selection across roots, mandatory original-root failure, unknown freezer state, existing one-pause/no-auto-thaw conflict transitions, and AST identity outsideinventory. No Tunya process/service/control action was taken by reviewer.
+
+Manifest/resource contract:
+Separate dspecscienceangular20261103.slice: MemoryMax40,000,000,000 bytes,TasksMax12,MemorySwapMax0,CPUQuota800%. Existing CCDSM299GB shared slice/reservations and DSpecM3D/Pilot8GB12tasks are untouched. One service at a time:32GiB build OR16GiB numerical campaign OR8GiB checker, all descendants kernel-contained;8outer/1inner. The manifest names all8 exact angular numerical job IDs under one dspec-science-angular-v1-run.service, sequentially. No unmanaged nohup-only launch is accepted under this new agreement.
+Admission requires fresh<=5s valid MONITORING guard, no unknown/conflicting frozen unit, forecast activeRAM+distinct40GB+other unconsumed reservations below825GB, exact kernel slice/child limits, and VERIFIED same-guardian inventory/freezer/accounting coverage of the new unit. Proposed coordination receipt explicitly remains CONDITIONAL_NOT_ADMITTED_PENDING_SINGLE_GUARD_REGISTRATION_REVIEW. PASS here is a prerequisite for CCDSM deployment, not a substitute for their ADMITTED receipt.
+
+No blocking findings in the bounded private patch/manifest. Parent may transmit the exact reviewed private artifacts/review to the authorized CCDSM owner; only that owner deploys and establishes coverage. Keep remote DSpec launch hold until admission. Source/build/run/scientific result gates remain independently required.

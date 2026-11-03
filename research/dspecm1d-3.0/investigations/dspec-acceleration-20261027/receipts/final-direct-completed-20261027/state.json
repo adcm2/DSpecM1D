@@ -1,0 +1,2779 @@
+{
+  "finished_unix": 1793116068.2624414,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-reuse-l3/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "145edf8cd57fdeb6b2335182cbbd8d6447f7b2a4c1b775e9e2886e2778281293",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 1.5797825899790041,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2480766,
+          14715676
+        ]
+      ],
+      "finished_unix": 1793113907.8746371,
+      "id": "final-reuse-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "60e418de0c7501f63b77a0e80196639dfd71ad3e1a101ec974607344b1885015",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "9d5d776aa8f5287531016c50c5b321def582dc20bfa83171709369e1cd4b19c4",
+        "data/kernel.bin": "4f157e4d421d21d398bea45ddd7633c55c789d6e9f9eb063b232d85a5cfd159c",
+        "data/kernel_domain.json": "423b590c1da3b0cf4932d6fd362c4f77da92ef829397c0155b5ba4f7c1507f73",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "1bcc634a17bc6533f70a34256fbb120e5b8dfc756f9a14124de5e3f787879fef",
+        "data/spectrum.csv": "571a7df2f0cd47517b974a281e1bc8ff89eb520f2b8582ac9cfcb08cc1636a02",
+        "data/trace.csv": "008687a0a698c233c42b724aaec5c1a06f07bb4a0a81a3364c289b950024fb8e"
+      },
+      "peak_observed_rss_gib_userspace": 0.0544,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113906.283711,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.13180799999999998,
+      "user_cpu_seconds_children": 1.178291
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-reuse-control/continuation/accel-reuse-run-01",
+        "--reference-job",
+        "reference-l3",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-reuse-l3",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-reuse-l3/checks.json",
+        "--symbolic",
+        "off"
+      ],
+      "command_sha256": "d45181afb4798ecdc0bc9258761be6dbe1fa644010917207593392a2359efab1",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 5.361878834984964,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2480783,
+          14715837
+        ]
+      ],
+      "finished_unix": 1793113913.2734096,
+      "id": "check-final-reuse-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "7add5ec8d0089f6688a62c87316a5af8875426e09ae7e4c162c9dc1c6717df69"
+      },
+      "peak_observed_rss_gib_userspace": 0.0549,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113907.899585,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.12684299999999998,
+      "updated_unix": 1793113912.0778916,
+      "user_cpu_seconds_children": 0.18003400000000003,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0449,
+        "elapsed_seconds": 4.18,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2480783,
+            "starttime_ticks": 14715837,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0449,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-symbolic-l3/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "768946811f46a89ccdf5fe32c23a76a7c3700724c2e091c81cb04ec5d9134407",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 1.6015140189847443,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2480872,
+          14716377
+        ]
+      ],
+      "finished_unix": 1793113914.9122798,
+      "id": "final-symbolic-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "acccdfa0dd7a2a34fb5f5b0b08781fb2ca8a1e5e04c304ffa08579b9709bdf12",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "9d5d776aa8f5287531016c50c5b321def582dc20bfa83171709369e1cd4b19c4",
+        "data/kernel.bin": "4f157e4d421d21d398bea45ddd7633c55c789d6e9f9eb063b232d85a5cfd159c",
+        "data/kernel_domain.json": "4b43ef52f4ff35a90b638ab9005e9e1cdc975064da5147645d9ce2c526fe025f",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "ccbadddb3f322ad31b49d8c46993b344506784f78749ecd01793520fd5e0e5a3",
+        "data/spectrum.csv": "571a7df2f0cd47517b974a281e1bc8ff89eb520f2b8582ac9cfcb08cc1636a02",
+        "data/trace.csv": "008687a0a698c233c42b724aaec5c1a06f07bb4a0a81a3364c289b950024fb8e"
+      },
+      "peak_observed_rss_gib_userspace": 0.0558,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113913.2840528,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.10720800000000003,
+      "user_cpu_seconds_children": 1.1594399999999998
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-reuse-control/continuation/accel-reuse-run-01",
+        "--reference-job",
+        "reference-l3",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-symbolic-l3",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-symbolic-l3/checks.json",
+        "--symbolic",
+        "on"
+      ],
+      "command_sha256": "c8797e7a2e51def7adbb0c393c2814f86a9ffcec7f13680845aa43caea2c9803",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 4.639623684983235,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2480891,
+          14716540
+        ]
+      ],
+      "finished_unix": 1793113919.5748165,
+      "id": "check-final-symbolic-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "64168651216aae9689dc9eeef5cd6f55297067f39ba2ec51d7fac6bc5ebc3f30"
+      },
+      "peak_observed_rss_gib_userspace": 0.0551,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113914.92363,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.077845,
+      "updated_unix": 1793113918.9969544,
+      "user_cpu_seconds_children": 0.21304900000000027,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0521,
+        "elapsed_seconds": 4.07,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2480891,
+            "starttime_ticks": 14716540,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0521,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-native-l3/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "ff52f7d2186d8407bc9346feee56c2f961c53ca7565f3eec7ceafed4e1f752ab",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 1.3917260440066457,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2480927,
+          14717006
+        ]
+      ],
+      "finished_unix": 1793113920.9872127,
+      "id": "final-native-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver": "8ccfc45655f73be1a39f0c55e8ca50067c3c570678d1806788ee209136540cbf",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver": "8ccfc45655f73be1a39f0c55e8ca50067c3c570678d1806788ee209136540cbf",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "9d5d776aa8f5287531016c50c5b321def582dc20bfa83171709369e1cd4b19c4",
+        "data/kernel.bin": "4f157e4d421d21d398bea45ddd7633c55c789d6e9f9eb063b232d85a5cfd159c",
+        "data/kernel_domain.json": "1691596883c7904c4a67e3a73c24a58442ec5cc8ec8935737ef9a8ece685695e",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "ab7e36e4d03c63814037cc541945347e3ad4fd1564b3968db1da7257a6b3ad05",
+        "data/spectrum.csv": "571a7df2f0cd47517b974a281e1bc8ff89eb520f2b8582ac9cfcb08cc1636a02",
+        "data/trace.csv": "008687a0a698c233c42b724aaec5c1a06f07bb4a0a81a3364c289b950024fb8e"
+      },
+      "peak_observed_rss_gib_userspace": 0.0558,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113919.5837433,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.13177799999999995,
+      "user_cpu_seconds_children": 1.0342539999999998
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "final-symbolic-l3",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-native-l3",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-native-l3/checks.json",
+        "--exact"
+      ],
+      "command_sha256": "4fd0df04dc936ec388744f0eaa1f1b3f9502422c560257a567dcbaab4d90031c",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 4.543813273980049,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2480928,
+          14717147
+        ]
+      ],
+      "finished_unix": 1793113925.5543869,
+      "id": "check-final-native-l3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "79b468f486f64cc4a38f638d0d4f99f4684a73cacf6e3343d395cf9874245591"
+      },
+      "peak_observed_rss_gib_userspace": 0.054,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113920.9986057,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.11982900000000007,
+      "updated_unix": 1793113925.1115978,
+      "user_cpu_seconds_children": 0.1757500000000003,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.053,
+        "elapsed_seconds": 4.11,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2480928,
+            "starttime_ticks": 14717147,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.053,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-reuse-l12/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "398e1e0d074e1b2862004eeebc2403adf2bb1f2ea41ed4ce6893b0a125b8ec11",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 19.77807192801265,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2481014,
+          14717604
+        ]
+      ],
+      "finished_unix": 1793113945.3680258,
+      "id": "final-reuse-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "2078ec7141f69385918f40475188a35ce6215c030834fcc17e62f777c41ea7b0",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "6557a3a539e583d06473cedee64f1e08201e33b98634dd4b3a3638cec626637a",
+        "data/kernel.bin": "8cb35c0c0e78318ddba9830d7561651132938bc05b44f9190f0ab98a6ab4ee97",
+        "data/kernel_domain.json": "d28448712ea81f8fc7fa08843751a79d118804e25854eaabebb87ce710cfd7e9",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "8435f55873bbe2db9b0fb93f5121a95a86573e09aa3f0ae59ebdd6ec0829c050",
+        "data/spectrum.csv": "9deab7ba4347a259c87c201b770cee6ba8bd00e171cca5fa57cf9c4070665a6b",
+        "data/trace.csv": "3fdde8cce85ba7ef9d619d91db89690b5c7e0544f035a83977863119e5e9e267"
+      },
+      "peak_observed_rss_gib_userspace": 0.1371,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113925.564546,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.6952879999999999,
+      "updated_unix": 1793113944.211679,
+      "user_cpu_seconds_children": 18.808743,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.1371,
+        "elapsed_seconds": 18.64,
+        "owned_processes": [
+          {
+            "pid": 2481014,
+            "starttime_ticks": 14717604,
+            "threads": 1
+          },
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.1371,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-reuse-control/continuation/accel-reuse-run-01",
+        "--reference-job",
+        "reference-l12",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-reuse-l12",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-reuse-l12/checks.json",
+        "--symbolic",
+        "off"
+      ],
+      "command_sha256": "f1831b38eeae9494a0ec19d792c151f0fbb7cf7fd49d8ff1ceb5f1b555207814",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 1.4526109769940376,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2481387,
+          14719586
+        ]
+      ],
+      "finished_unix": 1793113946.8464444,
+      "id": "check-final-reuse-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "5b8c8b31a3efd499f5e1ecdb766272958376f0e0ac0570dc0956cff4876cf73b"
+      },
+      "peak_observed_rss_gib_userspace": 0.0751,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113945.3808396,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.10984100000000008,
+      "user_cpu_seconds_children": 0.24322000000000088
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-symbolic-l12/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "12fb0814791487a32b766aa6dcff666e307de2ff25a70401cbe4e6a1a78b1300",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 19.517452636995586,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2481399,
+          14719733
+        ]
+      ],
+      "finished_unix": 1793113966.4021513,
+      "id": "final-symbolic-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "a5a57ecc0f1ae76e825f3418b3b87b8876951cff4c1b24b908fa2f8ccae4496d",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "6557a3a539e583d06473cedee64f1e08201e33b98634dd4b3a3638cec626637a",
+        "data/kernel.bin": "8cb35c0c0e78318ddba9830d7561651132938bc05b44f9190f0ab98a6ab4ee97",
+        "data/kernel_domain.json": "2967db2aac8cd0fd1afc33f65765f7f10a9c86cabfb0028ae525c20b11525f97",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "9c3f97f66cba08a0b032fd402da7e44952fb53967b75c6625d041e8ddbb54958",
+        "data/spectrum.csv": "9deab7ba4347a259c87c201b770cee6ba8bd00e171cca5fa57cf9c4070665a6b",
+        "data/trace.csv": "3fdde8cce85ba7ef9d619d91db89690b5c7e0544f035a83977863119e5e9e267"
+      },
+      "peak_observed_rss_gib_userspace": 0.1385,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113946.8569767,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.627445,
+      "updated_unix": 1793113965.562249,
+      "user_cpu_seconds_children": 18.643515,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.1385,
+        "elapsed_seconds": 18.7,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2481399,
+            "starttime_ticks": 14719733,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.1385,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-reuse-control/continuation/accel-reuse-run-01",
+        "--reference-job",
+        "reference-l12",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-symbolic-l12",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-symbolic-l12/checks.json",
+        "--symbolic",
+        "on"
+      ],
+      "command_sha256": "de2808e32b4282a7b03f22d0d4507cbb59f2a4def5da493661e1a5a1b4f2f7ce",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 5.199785078002606,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2481689,
+          14721689
+        ]
+      ],
+      "finished_unix": 1793113971.6290522,
+      "id": "check-final-symbolic-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "2b7975559f9e10a37b028c0a28586c3963432ab28f5044f97a4eec244179c200"
+      },
+      "peak_observed_rss_gib_userspace": 0.074,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113966.4156258,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.1845119999999998,
+      "updated_unix": 1793113970.685382,
+      "user_cpu_seconds_children": 0.2591019999999986,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0485,
+        "elapsed_seconds": 4.27,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2481689,
+            "starttime_ticks": 14721689,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0485,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-native-l12/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "c9d7fefb57c9abb4bea5b2d15c888f8a63cfa0b511d1a1ffa11f1eaebaec1673",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 18.589818455977365,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2481735,
+          14722212
+        ]
+      ],
+      "finished_unix": 1793113990.2583504,
+      "id": "final-native-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver": "8ccfc45655f73be1a39f0c55e8ca50067c3c570678d1806788ee209136540cbf",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver": "8ccfc45655f73be1a39f0c55e8ca50067c3c570678d1806788ee209136540cbf",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "6557a3a539e583d06473cedee64f1e08201e33b98634dd4b3a3638cec626637a",
+        "data/kernel.bin": "8cb35c0c0e78318ddba9830d7561651132938bc05b44f9190f0ab98a6ab4ee97",
+        "data/kernel_domain.json": "0c032776cd97d1565e6774d00d8c7a974cc7b73ec7089d5fb227bc6cc06ea764",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "9763f5140d61fe9a2a9f5aae26f4fc2c89e60474872b40da3bafa934899ba619",
+        "data/spectrum.csv": "9deab7ba4347a259c87c201b770cee6ba8bd00e171cca5fa57cf9c4070665a6b",
+        "data/trace.csv": "3fdde8cce85ba7ef9d619d91db89690b5c7e0544f035a83977863119e5e9e267"
+      },
+      "peak_observed_rss_gib_userspace": 0.1381,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113971.641389,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.7231580000000002,
+      "updated_unix": 1793113988.5004132,
+      "user_cpu_seconds_children": 17.571537,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.1381,
+        "elapsed_seconds": 16.86,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2481735,
+            "starttime_ticks": 14722212,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.1381,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "final-symbolic-l12",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-native-l12",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-native-l12/checks.json",
+        "--exact"
+      ],
+      "command_sha256": "0d27cfaca3bdf059445760c89fbaf9e46c92b01a50258654c35c4d0261ce917a",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 4.418606994993752,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2481991,
+          14724075
+        ]
+      ],
+      "finished_unix": 1793113994.703775,
+      "id": "check-final-native-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "c47a9d779c9f7e542fe686ccd6b5383304eb95b5911ab45f35b7130138608543"
+      },
+      "peak_observed_rss_gib_userspace": 0.0767,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113990.2717004,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.1640609999999998,
+      "updated_unix": 1793113994.4087718,
+      "user_cpu_seconds_children": 0.26922799999999825,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0767,
+        "elapsed_seconds": 4.13,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2481991,
+            "starttime_ticks": 14724075,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0767,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-reuse-l128/data",
+        "kernel-probe",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "ea3e23a50526f892d6fd9372a10968bac7c9df57de99b5e617854c7ce52be470",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 32.42184577599983,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2482207,
+          14724519
+        ]
+      ],
+      "finished_unix": 1793114027.153622,
+      "id": "final-reuse-l128",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "dfea987054d7b1550ffc11ec168e71c9714936c8d25873eebd0ec885da622ca2",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "cdc2033e38fd74a07f61d971c60c8c5822c5bd0660fa1f573ecebda6ee362197",
+        "data/kernel_probe.bin": "c60a1d5009c76db2bb65d7674ce537259e3f62fea6e257eef9fbc017e0483f7a",
+        "data/kernel_probe.json": "9febd7ab2f8125d7b4ab32dbfb6aa77dff1d210eed0350f6e8db76de6ef5c619",
+        "data/kernel_probe_angles.csv": "373ba80f600c10d5a66b64f1a2efb7834697805d6024029617e5f9525ba85f5c",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "086d6e1bc1359dfea6e11d8a48f5746fb3caf8ea19c76f401a98dfa30d239bcf",
+        "data/spectrum.csv": "5c2af2aa10c9287cd9f259326e6576862f73cf14e400dca0b538cf930c21c02e",
+        "data/trace.csv": "3f6b7099d477a6d50f8c4165a1a87d0705a32e19cde19fcfa23b6ea6b0c4a49c"
+      },
+      "peak_observed_rss_gib_userspace": 0.7892,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793113994.7178159,
+      "status": "completed",
+      "system_cpu_seconds_children": 4.460481000000001,
+      "updated_unix": 1793114026.3159015,
+      "user_cpu_seconds_children": 27.682161,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.7892,
+        "elapsed_seconds": 31.59,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2482207,
+            "starttime_ticks": 14724519,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.7892,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-reuse-control/continuation/accel-reuse-run-01",
+        "--reference-job",
+        "reference-l128",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-reuse-l128",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-reuse-l128/checks.json",
+        "--symbolic",
+        "off"
+      ],
+      "command_sha256": "5f97cbafb1a1f37ca6f50201dbe1723e960b574be06f9b4b3873a539fea5af52",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 2.002796658023726,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2484575,
+          14727765
+        ]
+      ],
+      "finished_unix": 1793114029.1937091,
+      "id": "check-final-reuse-l128",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "0403c244919b06c8aacfa8518702ee5393e2a6b3bf801a72df18762f0d758dce"
+      },
+      "peak_observed_rss_gib_userspace": 0.0502,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114027.1769388,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.08808299999999925,
+      "user_cpu_seconds_children": 0.18036200000000235
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-symbolic-l128/data",
+        "kernel-probe",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "8991a8054c9658673f9bc938b1dbe4fad3f9fa999e4f39e6e1416b137744bdea",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 27.113679414003855,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2484636,
+          14727968
+        ]
+      ],
+      "finished_unix": 1793114056.3325634,
+      "id": "final-symbolic-l128",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "020ba6fcc341c3eb7af44d97ecae88db8824e89bcc7a48f1a90a80b415cfcf3a",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "cdc2033e38fd74a07f61d971c60c8c5822c5bd0660fa1f573ecebda6ee362197",
+        "data/kernel_probe.bin": "c60a1d5009c76db2bb65d7674ce537259e3f62fea6e257eef9fbc017e0483f7a",
+        "data/kernel_probe.json": "f8edebcb849bd6c7d8381cbd2598b35d0d1e30fed1564242b5c241fcc3393675",
+        "data/kernel_probe_angles.csv": "373ba80f600c10d5a66b64f1a2efb7834697805d6024029617e5f9525ba85f5c",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "58c398820df34743d49ecdc872e272862fc54cec4ab865db15611b23ef11d4eb",
+        "data/spectrum.csv": "5c2af2aa10c9287cd9f259326e6576862f73cf14e400dca0b538cf930c21c02e",
+        "data/trace.csv": "3f6b7099d477a6d50f8c4165a1a87d0705a32e19cde19fcfa23b6ea6b0c4a49c"
+      },
+      "peak_observed_rss_gib_userspace": 0.7892,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114029.2056122,
+      "status": "completed",
+      "system_cpu_seconds_children": 1.035089000000001,
+      "updated_unix": 1793114054.6407366,
+      "user_cpu_seconds_children": 25.861239999999995,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.7892,
+        "elapsed_seconds": 25.43,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2484636,
+            "starttime_ticks": 14727968,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.7892,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-reuse-control/continuation/accel-reuse-run-01",
+        "--reference-job",
+        "reference-l128",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-symbolic-l128",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-symbolic-l128/checks.json",
+        "--symbolic",
+        "on"
+      ],
+      "command_sha256": "88a4f25af3ad85e28827a55cb5ab74e5bf2ca7a2d733565987727ad1d558ff05",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 4.470786231016973,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2485678,
+          14730682
+        ]
+      ],
+      "finished_unix": 1793114060.8312464,
+      "id": "check-final-symbolic-l128",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "c090be9d4df908648673fb388bec51053dde54dcf379599b21fbeb8057ee5655"
+      },
+      "peak_observed_rss_gib_userspace": 0.0533,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114056.3459263,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.13186900000000001,
+      "updated_unix": 1793114060.5296881,
+      "user_cpu_seconds_children": 0.19413900000000694,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0533,
+        "elapsed_seconds": 4.18,
+        "owned_processes": [
+          {
+            "pid": 2485678,
+            "starttime_ticks": 14730682,
+            "threads": 1
+          },
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0533,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/reference-l384/data",
+        "kernel-probe",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "command_sha256": "2f8d2892f8535df432506a17d5bbb8fb106e3457985e5edcf318dd009432a589",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 130.52531788300257,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2485831,
+          14731133
+        ]
+      ],
+      "finished_unix": 1793114191.396455,
+      "id": "reference-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver": "c504a9e4eb04b4f8c6c2c900fa5ba35bc1ee035ea3c09eea8950426e7cabff98",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver": "c504a9e4eb04b4f8c6c2c900fa5ba35bc1ee035ea3c09eea8950426e7cabff98",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "6f1809cd1aafb5435206939c52243344f8ee2b2f229916149abedef46a81ad7f",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "b78d4e8b4444b3de146db80d9b0798b8eebcb9a03f1cfcded8f06a164ffb8fab",
+        "data/kernel_probe.bin": "9c0cefb137d170e8e9ee086b5ee8f3626110ed3bb9f26389f5a2d7a6e06be3e8",
+        "data/kernel_probe.json": "3d8d1360232812b7a885225603bff209108bf9635eaadc9106a89a083f0cf14f",
+        "data/kernel_probe_angles.csv": "5e67a647cdd38097bde4b3f19ea1698e7741ec8bce7d5a14ef5bf520909fc5f0",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "d4a4eac35bed58a3bfe15990888b3aecafc8157890c17fca4b0b72c1e6af60cd",
+        "data/spectrum.csv": "3c2dbb1232fd321c3e3dcbfe536d83a1aac2242df1a469c9420084e18218c84d",
+        "data/trace.csv": "c2fec88a3447b981d3cc8be4829bf8a4b66b345f79a9ee2878ebe50bf96f6fe6"
+      },
+      "peak_observed_rss_gib_userspace": 0.3651,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114060.850959,
+      "status": "completed",
+      "system_cpu_seconds_children": 3.628551999999999,
+      "updated_unix": 1793114190.700568,
+      "user_cpu_seconds_children": 126.49582899999999,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.3651,
+        "elapsed_seconds": 129.85,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2485831,
+            "starttime_ticks": 14731133,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.3651,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-reuse-l384/data",
+        "kernel-probe",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "cd0afe541cfbf89ce2ee785ae136447afb20362f5f62079a03915b06a032a148",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 85.5751496659941,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2487279,
+          14744189
+        ]
+      ],
+      "finished_unix": 1793114277.0130239,
+      "id": "final-reuse-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "05777baf642ed04723dc14f13a8ea3df270b89c9a10b51c2c74928df5dec9cf7",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "b78d4e8b4444b3de146db80d9b0798b8eebcb9a03f1cfcded8f06a164ffb8fab",
+        "data/kernel_probe.bin": "9c0cefb137d170e8e9ee086b5ee8f3626110ed3bb9f26389f5a2d7a6e06be3e8",
+        "data/kernel_probe.json": "f29ea0e096deb2096cb306f8bf8418fd51650c56306284b467c3fe53f26fbfaf",
+        "data/kernel_probe_angles.csv": "5e67a647cdd38097bde4b3f19ea1698e7741ec8bce7d5a14ef5bf520909fc5f0",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "4e5382f9867e0a718bd45b73f6adfb1ed3b5163767f8376f27f0e572a675d682",
+        "data/spectrum.csv": "3c2dbb1232fd321c3e3dcbfe536d83a1aac2242df1a469c9420084e18218c84d",
+        "data/trace.csv": "c2fec88a3447b981d3cc8be4829bf8a4b66b345f79a9ee2878ebe50bf96f6fe6"
+      },
+      "peak_observed_rss_gib_userspace": 2.2799,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114191.4160016,
+      "status": "completed",
+      "system_cpu_seconds_children": 2.816746,
+      "updated_unix": 1793114275.0894742,
+      "user_cpu_seconds_children": 82.35684799999999,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 2.2799,
+        "elapsed_seconds": 83.67,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2487279,
+            "starttime_ticks": 14744189,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.2799,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "reference-l384",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-reuse-l384",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-reuse-l384/checks.json",
+        "--symbolic",
+        "off"
+      ],
+      "command_sha256": "0eebcd0638d914bbfe59b8f97b39beb7cc7fb5ad8a55e973f4a070f26ac13d08",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 7.093644206004683,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2490655,
+          14752750
+        ]
+      ],
+      "finished_unix": 1793114284.1353104,
+      "id": "check-final-reuse-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "b148270a59aa4204741b228c43332e2add4e26b6a88d06b9befcb860293bf852"
+      },
+      "peak_observed_rss_gib_userspace": 0.0571,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114277.0274072,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.12983799999999945,
+      "updated_unix": 1793114283.2176232,
+      "user_cpu_seconds_children": 0.2150450000000319,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0504,
+        "elapsed_seconds": 6.19,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2490655,
+            "starttime_ticks": 14752750,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0504,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-symbolic-l384/data",
+        "kernel-probe",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "1d8f877c7e9e5b75c4dd602b72c9d19eac9a55fa48cc8431c39ff926f4a72b11",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 80.84045672800858,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2490746,
+          14753462
+        ]
+      ],
+      "finished_unix": 1793114365.0017366,
+      "id": "final-symbolic-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "59d66eb43e43e73377d40aeb063a3cda2826668edbc42bf37d77ea764218b9c4",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "b78d4e8b4444b3de146db80d9b0798b8eebcb9a03f1cfcded8f06a164ffb8fab",
+        "data/kernel_probe.bin": "9c0cefb137d170e8e9ee086b5ee8f3626110ed3bb9f26389f5a2d7a6e06be3e8",
+        "data/kernel_probe.json": "066c3e1c5cbda047dec0d78d41c79b52d9dae793deb024c2abcf729050dcbed1",
+        "data/kernel_probe_angles.csv": "5e67a647cdd38097bde4b3f19ea1698e7741ec8bce7d5a14ef5bf520909fc5f0",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "e1c3f832fe1f4f2cdf38c1605eabf4f82719f6af0704b3ac28b3186240e105fc",
+        "data/spectrum.csv": "3c2dbb1232fd321c3e3dcbfe536d83a1aac2242df1a469c9420084e18218c84d",
+        "data/trace.csv": "c2fec88a3447b981d3cc8be4829bf8a4b66b345f79a9ee2878ebe50bf96f6fe6"
+      },
+      "peak_observed_rss_gib_userspace": 2.2789,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114284.1472378,
+      "status": "completed",
+      "system_cpu_seconds_children": 2.389400000000002,
+      "updated_unix": 1793114363.900713,
+      "user_cpu_seconds_children": 78.17892999999998,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 2.2789,
+        "elapsed_seconds": 79.75,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2490746,
+            "starttime_ticks": 14753462,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.2789,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "reference-l384",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-symbolic-l384",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-symbolic-l384/checks.json",
+        "--symbolic",
+        "on"
+      ],
+      "command_sha256": "b03451b3da0f7e7cbdc9b79a975965e2b348b6a2ffb37b564e076568dd9e66b6",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 6.522745468013454,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2491857,
+          14761549
+        ]
+      ],
+      "finished_unix": 1793114371.5540473,
+      "id": "check-final-symbolic-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "8cb5bc40f802335428eb5fba2d0a2d66c399f74d96c4b45292177bf5f6223e1c"
+      },
+      "peak_observed_rss_gib_userspace": 0.0562,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114365.0160398,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.1266929999999995,
+      "updated_unix": 1793114371.1235752,
+      "user_cpu_seconds_children": 0.229629999999986,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0524,
+        "elapsed_seconds": 6.1,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2491857,
+            "starttime_ticks": 14761549,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0524,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/reference-l1536/data",
+        "kernel-probe",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "command_sha256": "cc49dc34b014a626591b0bd260cf478fa1bcff382b9ba4760d31b2563c89b937",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 559.8691490709898,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2491932,
+          14762205
+        ]
+      ],
+      "finished_unix": 1793114931.4648633,
+      "id": "reference-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver": "c504a9e4eb04b4f8c6c2c900fa5ba35bc1ee035ea3c09eea8950426e7cabff98",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver": "c504a9e4eb04b4f8c6c2c900fa5ba35bc1ee035ea3c09eea8950426e7cabff98",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "0b6505c23b7b8ae4079bc6b676090cbd9e5a56526f61e4b222b18fc1ed868ffc",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "9072004f513d50c801d8a1a216bd3b6f1cf4715759ba7a3a6e1d979842c61c25",
+        "data/kernel_probe.bin": "799c912471a9086ce8c2901286d504d828d5cc9f048bc6a55c7af1a388bd4d26",
+        "data/kernel_probe.json": "e73eb23b3f7b62f862c46fc0eed6de6bda221552be216c38eb94eb104c3bad00",
+        "data/kernel_probe_angles.csv": "fa8176f20de0d789729ef9d139eb47a5abb3edbc8c6fc4ca577f503b541a92d2",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "ed7e180124c0e76ff4a900bef7dab87227f21a22e4da7b9e646e0b4374c104fd",
+        "data/spectrum.csv": "a574eed854ce47d3e07c7e77960aec576ddb43a5b416b28d28776527afe99f55",
+        "data/trace.csv": "6923c89d420836457a8a889f4d0a5957f5c49aedec255796d6930bfddd284069"
+      },
+      "peak_observed_rss_gib_userspace": 1.0905,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114371.5740352,
+      "status": "completed",
+      "system_cpu_seconds_children": 5.3100999999999985,
+      "updated_unix": 1793114930.8150198,
+      "user_cpu_seconds_children": 553.6608780000001,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 1.0889,
+        "elapsed_seconds": 559.24,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2491932,
+            "starttime_ticks": 14762205,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 1.0905,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-reuse-l1536/data",
+        "kernel-probe",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "9511b677172c86b3564242ed1ef962ecf7c628fc7146329022a3bbd0bf8acff2",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 385.35821878598654,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2504359,
+          14818196
+        ]
+      ],
+      "finished_unix": 1793115316.8676488,
+      "id": "final-reuse-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "dbde1595205213f771604eb2d3213d0dd1572497928c92b7ab77e987552279ed",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "9072004f513d50c801d8a1a216bd3b6f1cf4715759ba7a3a6e1d979842c61c25",
+        "data/kernel_probe.bin": "799c912471a9086ce8c2901286d504d828d5cc9f048bc6a55c7af1a388bd4d26",
+        "data/kernel_probe.json": "7b0137b414e116af8c98f9a82f068bbca00910f2f8dc0f64325ce5f4db47f59c",
+        "data/kernel_probe_angles.csv": "fa8176f20de0d789729ef9d139eb47a5abb3edbc8c6fc4ca577f503b541a92d2",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "7149567dbae5f56501aa420c60f32c00330656e3c3123be93f1deb9978a61781",
+        "data/spectrum.csv": "a574eed854ce47d3e07c7e77960aec576ddb43a5b416b28d28776527afe99f55",
+        "data/trace.csv": "6923c89d420836457a8a889f4d0a5957f5c49aedec255796d6930bfddd284069"
+      },
+      "peak_observed_rss_gib_userspace": 8.7358,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793114931.4851813,
+      "status": "completed",
+      "system_cpu_seconds_children": 8.739301999999999,
+      "updated_unix": 1793115314.9688091,
+      "user_cpu_seconds_children": 375.94981199999995,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 8.7358,
+        "elapsed_seconds": 383.48,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2504359,
+            "starttime_ticks": 14818196,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 8.7358,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "reference-l1536",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-reuse-l1536",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-reuse-l1536/checks.json",
+        "--symbolic",
+        "off"
+      ],
+      "command_sha256": "92d06eee9821a16d5cefb9779aa0f32d12b3e2196107f3209c925a4a420d6093",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 6.3089669439941645,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2513566,
+          14856737
+        ]
+      ],
+      "finished_unix": 1793115323.2168133,
+      "id": "check-final-reuse-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "be1f40383b4b14f25a14b508b6e849b0eaa6db25c31dbc2464318a149dc1c6ae"
+      },
+      "peak_observed_rss_gib_userspace": 0.0582,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793115316.892926,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.14573500000000195,
+      "updated_unix": 1793115321.055387,
+      "user_cpu_seconds_children": 0.23010900000008405,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0494,
+        "elapsed_seconds": 4.16,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2513566,
+            "starttime_ticks": 14856737,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0494,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-symbolic-l1536/data",
+        "kernel-probe",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "d91013004896209f225466179a8badc9b6c2371d733e0dad106a6b6f94779a53",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 370.68347042199457,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2513633,
+          14857371
+        ]
+      ],
+      "finished_unix": 1793115693.9372656,
+      "id": "final-symbolic-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-profiled/physical-driver": "1be78fc2aae6c1c41b1e14871396d02c236cac2e2a11a2bb4e5302595d0b1075",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "9b889c33ef180db92ffd4252d36b2656224e86324408cabba15200a576515579",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "9072004f513d50c801d8a1a216bd3b6f1cf4715759ba7a3a6e1d979842c61c25",
+        "data/kernel_probe.bin": "799c912471a9086ce8c2901286d504d828d5cc9f048bc6a55c7af1a388bd4d26",
+        "data/kernel_probe.json": "4757ceb5298110fc9ab4e569e35450a15bcb4881fd6d360d74c941dd1fe939b2",
+        "data/kernel_probe_angles.csv": "fa8176f20de0d789729ef9d139eb47a5abb3edbc8c6fc4ca577f503b541a92d2",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "ea2c78ebbc2219d276b255d10528148360f0b716b48744cd492576dbc833907a",
+        "data/spectrum.csv": "a574eed854ce47d3e07c7e77960aec576ddb43a5b416b28d28776527afe99f55",
+        "data/trace.csv": "6923c89d420836457a8a889f4d0a5957f5c49aedec255796d6930bfddd284069"
+      },
+      "peak_observed_rss_gib_userspace": 8.7412,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793115323.2297559,
+      "status": "completed",
+      "system_cpu_seconds_children": 8.383692000000003,
+      "updated_unix": 1793115693.442225,
+      "user_cpu_seconds_children": 361.6136399999998,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0221,
+        "elapsed_seconds": 370.21,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2513633,
+            "starttime_ticks": 14857371,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 8.7412,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "reference-l1536",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-symbolic-l1536",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-symbolic-l1536/checks.json",
+        "--symbolic",
+        "on"
+      ],
+      "command_sha256": "327aee2d8d531de492b9a612ca06529de30f3c634a568236d50d6dd2581854a1",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 3.1657624549989123,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2518328,
+          14894443
+        ]
+      ],
+      "finished_unix": 1793115697.133282,
+      "id": "check-final-symbolic-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_reuse_radial_exact.py": "a985177a244eef296ec1b80751880ba4e6b23db6d4c8f0345f1c9fe430420cec",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "e30e441e348118de46d2df717429fabe3724d4d898b9c155a2ca2002a7bb829e"
+      },
+      "peak_observed_rss_gib_userspace": 0.0583,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793115693.952014,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.12758299999999423,
+      "updated_unix": 1793115696.0685847,
+      "user_cpu_seconds_children": 0.21388999999999214,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0434,
+        "elapsed_seconds": 2.11,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2518328,
+            "starttime_ticks": 14894443,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0434,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "1",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/final-native-l1536/data",
+        "kernel-probe",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64",
+        "--response-reuse",
+        "on",
+        "--response-cache-gib",
+        "32"
+      ],
+      "command_sha256": "ffaf5723e667426e21c6e913aeb7858dab786108f2392fa1e6402583603182a4",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 369.67699037102284,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2518366,
+          14894763
+        ]
+      ],
+      "finished_unix": 1793116066.8547702,
+      "id": "final-native-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver": "8ccfc45655f73be1a39f0c55e8ca50067c3c570678d1806788ee209136540cbf",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-final-04/final-native/physical-driver": "8ccfc45655f73be1a39f0c55e8ca50067c3c570678d1806788ee209136540cbf",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "outputs_sha256": {
+        "data/angular_grid.csv": "9072004f513d50c801d8a1a216bd3b6f1cf4715759ba7a3a6e1d979842c61c25",
+        "data/kernel_probe.bin": "799c912471a9086ce8c2901286d504d828d5cc9f048bc6a55c7af1a388bd4d26",
+        "data/kernel_probe.json": "9521d75b628191658258fcaf731af070c3fdff76a1d649d0cc9170745ccc4122",
+        "data/kernel_probe_angles.csv": "fa8176f20de0d789729ef9d139eb47a5abb3edbc8c6fc4ca577f503b541a92d2",
+        "data/kernel_radial_nodes.csv": "c7dbf3192882f7dcd1d01763d13788d423368e1152308c3b2dd963617bc6e89a",
+        "data/radial_nodes.csv": "f36996ed286aa01e55f4b6b050f3998f67fb40841f43ab6875de39584b8056b6",
+        "data/result.json": "fab6e564ef27315863fbada62c55399db716d51b02ddeaf598a1b49bef9fa878",
+        "data/spectrum.csv": "a574eed854ce47d3e07c7e77960aec576ddb43a5b416b28d28776527afe99f55",
+        "data/trace.csv": "6923c89d420836457a8a889f4d0a5957f5c49aedec255796d6930bfddd284069"
+      },
+      "peak_observed_rss_gib_userspace": 8.741,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793115697.1547217,
+      "status": "completed",
+      "system_cpu_seconds_children": 9.101476000000005,
+      "updated_unix": 1793116066.1171272,
+      "user_cpu_seconds_children": 360.1841050000003,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 8.3518,
+        "elapsed_seconds": 368.96,
+        "owned_processes": [
+          {
+            "pid": 2480764,
+            "starttime_ticks": 14715669,
+            "threads": 1
+          },
+          {
+            "pid": 2518366,
+            "starttime_ticks": 14894763,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 8.741,
+        "peak_observed_threads": 2,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--reference-job",
+        "final-symbolic-l1536",
+        "--candidate-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01",
+        "--candidate-job",
+        "final-native-l1536",
+        "--output",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-final-control/continuation/accel-final-direct-run-01/check-final-native-l1536/checks.json",
+        "--exact"
+      ],
+      "command_sha256": "a4eb1901ad2060e9f54e83c092e52a1abf87b90e291eb006d27d862d7e477b92",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1",
+      "elapsed_seconds": 1.371909704990685,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2524770,
+          14931735
+        ]
+      ],
+      "finished_unix": 1793116068.2565322,
+      "id": "check-final-native-l1536",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/final-direct-run-v1/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "6eb73231fea901ecf0109b21bcff4c4cb75436a985ce5c523b02ff9a43b4fdf5"
+      },
+      "peak_observed_rss_gib_userspace": 0.0591,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793116066.8695774,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.11992599999999953,
+      "user_cpu_seconds_children": 0.189560999999685
+    }
+  ],
+  "plan_sha256": "cafe51e3371c50abf65882674769782182026abda9c061a9f955bb3502226a26",
+  "schema": 1,
+  "started_unix": 1793113906.274699,
+  "status": "completed",
+  "task_id": "accel-final-direct-run-01",
+  "thread_cap": 4
+}

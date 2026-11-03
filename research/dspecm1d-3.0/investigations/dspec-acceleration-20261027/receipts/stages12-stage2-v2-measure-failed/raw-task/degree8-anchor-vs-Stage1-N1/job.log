@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v2-controls/tools/check_stages12_stage2.py", line 326, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v2-controls/tools/check_stages12_stage2.py", line 320, in main
+    report["parity"] = validate_parity(Path(args.parity_candidate_data), Path(args.parity_reference_data), args.expected_frequency_workers)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v2-controls/tools/check_stages12_stage2.py", line 253, in validate_parity
+    validate_result(candidate_result, expected_frequency_workers)
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v2-controls/tools/check_stages12_stage2.py", line 106, in validate_result
+    raise ValueError("result does not identify the frequency schedule")
+ValueError: result does not identify the frequency schedule

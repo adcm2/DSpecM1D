@@ -1,0 +1,27 @@
+Stage2 helper environment repair — planning conformance addendum,2026-10-31
+
+Read-only review confirms this config-only repair conforms to the final Stage2
+plan and its existing resource allowance. No source, build, physics, scheduler,
+test expectation or gate relaxation is needed.
+
+Evidence: receipts/stages12-stage2-v1-controls-failure-audit.json and preserved
+receipts/stages12-stage2-v1-controls-failed/job.log show helper first gate failed
+with requested/actual OpenMP team mismatch, unchanged inputs and cleanup verified.
+No numerical controls or measurement started. Existing supervisor lines382–384
+sets every THREAD_VARS entry to1 AFTER applying plan environment. The helper
+command used taskset directly, so it inherited OMP_THREAD_LIMIT=1; physical
+commands already use /usr/bin/env OMP_THREAD_LIMIT=8 and are unaffected.
+
+Permitted correction: fresh immutable v2 control/measure plan/stage/task paths;
+prepend helper command with /usr/bin/env OMP_THREAD_LIMIT=8 OMP_NUM_THREADS=1
+OMP_DYNAMIC=FALSE, then unchanged taskset16–23 and same hashed helper executable.
+This permits the helper's explicit num_threads(4) team within the8worker allowance,
+while retaining its exact4team equality assertion, timeout60s/memory2GiB and
+campaign cap20/aggregate<=50thread boundaries. Other library pools remain1 from
+supervisor. Preserve source/binary hashes, original failure evidence and existing
+staging/supervisor tools; rebind dependent plan paths/hashes for the fresh release.
+
+Re-run helper first, then original gated numerical queue only after it passes.
+No source rebuild, worker-count sweep, skipped gate, widened numerical tolerance,
+supervisor change or Stage3 work follows from this repair. Planner performed
+source/config/receipt inspection only; implementation/execution remain Luna's.

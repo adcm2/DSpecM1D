@@ -1,0 +1,107 @@
+{
+  "native_reference_s": 0.700448398,
+  "instrumented_s": 0.74229903,
+  "profile": {
+    "timers": {
+      "adjoint_basis_substitution": {
+        "seconds": 0.00538862,
+        "calls": 72
+      },
+      "adjoint_global_substitution": {
+        "seconds": 0.0229573,
+        "calls": 72
+      },
+      "adjoint_substitution": {
+        "seconds": 8.9946e-05,
+        "calls": 3
+      },
+      "angular_coefficient_build": {
+        "seconds": 0.0377194,
+        "calls": 1971
+      },
+      "compact_copy": {
+        "seconds": 0.0070435,
+        "calls": 60
+      },
+      "degree_sums_phases": {
+        "seconds": 0.268308,
+        "calls": 6702
+      },
+      "factorization": {
+        "seconds": 0.0778965,
+        "calls": 150
+      },
+      "final_kernel_contraction": {
+        "seconds": 0.00263378,
+        "calls": 57
+      },
+      "forward_substitution": {
+        "seconds": 0.00648871,
+        "calls": 75
+      },
+      "measurement_adjoint": {
+        "seconds": 0.000597038,
+        "calls": 1
+      },
+      "pole_geometry_grouping": {
+        "seconds": 0.0759985,
+        "calls": 120
+      },
+      "pole_synthesis": {
+        "seconds": 0.566656,
+        "calls": 120
+      },
+      "prepare_workspace": {
+        "seconds": 0.146803,
+        "calls": 3
+      },
+      "radial_coefficients_build": {
+        "seconds": 0.00622786,
+        "calls": 342
+      },
+      "radial_sampling_and_point_validation": {
+        "seconds": 0.0132584,
+        "calls": 60
+      },
+      "rotate_add_scratch": {
+        "seconds": 0.0146339,
+        "calls": 2229
+      },
+      "sample_compact_total": {
+        "seconds": 0.589644,
+        "calls": 60
+      },
+      "sample_full_total": {
+        "seconds": 0.582553,
+        "calls": 60
+      },
+      "system_matrix": {
+        "seconds": 0.0184728,
+        "calls": 150
+      },
+      "wigner_build": {
+        "seconds": 0.14546,
+        "calls": 1989
+      }
+    },
+    "counters": {
+      "angular_coefficient_hit": 258,
+      "angular_coefficient_miss": 1971,
+      "geometry_hit": 451572,
+      "geometry_miss": 2706,
+      "radial_coefficients_hit": 6360,
+      "radial_coefficients_miss": 342,
+      "strain_component_macs": 128106396,
+      "wigner_hit": 240,
+      "wigner_miss": 1989
+    }
+  },
+  "scopes_overlap": true,
+  "numerical_arrays_byte_identical": true,
+  "grid": {
+    "points": 75712,
+    "radial_traces": 56,
+    "angles": 1352
+  },
+  "finding": "Angular chunk keys defeat intended cross-radius/frequency table reuse. 1989 Wigner builds and 1971 angular coefficient builds; radial coefficient work is 0.00623s."
+}

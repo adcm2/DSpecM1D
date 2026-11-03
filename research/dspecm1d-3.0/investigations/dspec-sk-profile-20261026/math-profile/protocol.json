@@ -1,0 +1,13 @@
+{
+  "request": "Profile the tested DSpec prototype and YSpec against their mathematics, timing every solution component and comparing them.",
+  "scope": "Instrumentation-only isolated copies; no algorithm changes, production edits, commits, convergence sweeps or high-degree repairs.",
+  "reference": "algorithm-audit/fast/v6 complex tensor, original equilibrated solver; forward and radial response reuse only for multiple objectives. Original YSpec sampled kernel API, same fixed model/grid/measurement.",
+  "cases": [[3,3,1],[6,3,1],[12,3,1],[12,3,2],[12,12,1],[12,48,1]],
+  "supplementary": "DSpec contact-enabled full-grid case; first/reused objective split; native/instrumented output equivalence; complete setup-to-array and output I/O separately.",
+  "timing": "At least three independent native and instrumented processes per headline configuration; one thread, one fixed CPU, alternate solver/build order. Profile inclusive and exclusive stage time; sum exclusive leaves/self entries to API root, retain residual/cleanup rather than hiding it. Quantify instrumentation overhead against native. No timing comparison from simultaneously running compilers/numerical jobs.",
+  "math_buckets": ["input/geometry/static setup", "measurement adjoint", "frequency operator assembly or ODE context", "equilibration/symbolic/numerical factors or fundamental ODE integration", "forward and adjoint/source response recovery", "radial interpolation/strain coefficients", "angular geometry/Wigner/bases", "harmonic synthesis or matrix products", "spin rotations/scatter", "bilinear modulus products", "frequency/objective accumulation", "measurement forward/objective", "source contact", "result construction/copy/cleanup"],
+  "comparability": "YSpec ODE boundary Green responses and DSpec SEM LU are different methods. YSpec sampled API returns volume kernels only; DSpec additionally returns raw/processed receiver spectra and objective, which must be separately costed. YSpec sampled API excludes source contacts. Do not invent missing equivalent stages.",
+  "gates": "Instrumentation output arrays must equal native output byte-for-byte where possible; otherwise unchanged previous strict frozen numerical thresholds with explicit explanation. No threshold relaxation. Instrumentation is never a new numerical implementation.",
+  "resources": "One numerical thread, maximum two compiler jobs through existing shared compile semaphore. No aggregate hard memory cap claim.",
+  "procedure": "User handoff: Luna High implementation, fresh independent Luna High review, then short Sol High review. Parent owns timings and accounting. All changes noted in local implementation_status.md."
+}

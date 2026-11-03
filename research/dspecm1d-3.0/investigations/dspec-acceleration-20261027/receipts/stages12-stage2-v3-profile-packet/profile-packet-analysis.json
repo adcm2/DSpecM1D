@@ -1,0 +1,167 @@
+{
+  "schema": 1,
+  "campaign_task": "stages12-stage2-measure-v3",
+  "task_state_snapshot_sha256": "75a6fdf758f411834966588574ec0b6e459a5805e410ae25f98fe17ace888626",
+  "profile_sha256": "c0565e443d81bbb0da3289aeeec73e1a8704805d5caeb1b94deba38fe54f9bcc",
+  "result_sha256": "6c65a157772268e641adf3e1b0a2de2b018cd3b62b78306d3d92db82e50271b0",
+  "profile_packet_validation_sha256": "bf664f26c5493b2086685e6392518da187b8c80ae42d3ca529e627b888866782",
+  "scope_map_sha256": "13d447b87568f14f311be1611f101b0ef8ed5d47a2feb4fb22f3720fdbc5bb02",
+  "profile_rows": 134,
+  "profile_counters": 100,
+  "master_wall_partition": {
+    "profile_pipeline_wall_s": 16.926455471,
+    "master_exclusive_partition_s": 16.926455471,
+    "residual_s": 0,
+    "tolerance_s": 0.016926455471,
+    "worker_elapsed_excluded": true
+  },
+  "master_exclusive_seconds_by_phase": {
+    "setup": 0.010403898,
+    "initial_frequency_workspace_and_capture": 9.469204311,
+    "measurement_and_initial_output": 0.006428370000000001,
+    "kernel_frequency_parallel_pass_and_ordered_reduction_including_diagnostics": 7.438092718999999,
+    "kernel_output_and_result_io": 0.001592812,
+    "profile_pipeline_total": 0.0007333610000000001
+  },
+  "worker_diagnostic_partition": {
+    "production_rows_exclude_diagnostic_overlay": true,
+    "raw_inclusive_umbrellas_preserve_diagnostics": true,
+    "diagnostic_overlay_phase": "diagnostic_tensor_validation"
+  },
+  "diagnostic_overlay_worker_exclusive_s": 0.519673316,
+  "diagnostic_worker_elapsed_result_s": 0.519680216,
+  "worker_elapsed_excluded_from_master_wall": true,
+  "non_diagnostic_worker_exclusive_top10": [
+    {
+      "phase": "initial_frequency_workspace_and_capture",
+      "logical_component": "modal_solver",
+      "exclusive_worker_seconds": 49.66656451,
+      "scope_rows": 20
+    },
+    {
+      "phase": "kernel_frequency_parallel_pass_and_ordered_reduction_including_diagnostics",
+      "logical_component": "tensor_angular_synthesis",
+      "exclusive_worker_seconds": 30.255004562,
+      "scope_rows": 21
+    },
+    {
+      "phase": "kernel_frequency_parallel_pass_and_ordered_reduction_including_diagnostics",
+      "logical_component": "radial_sampling_reconstruction",
+      "exclusive_worker_seconds": 10.825834745000002,
+      "scope_rows": 4
+    },
+    {
+      "phase": "initial_frequency_workspace_and_capture",
+      "logical_component": "receiver_basis_projection",
+      "exclusive_worker_seconds": 8.513977622,
+      "scope_rows": 4
+    },
+    {
+      "phase": "kernel_frequency_parallel_pass_and_ordered_reduction_including_diagnostics",
+      "logical_component": "receiver_basis_projection",
+      "exclusive_worker_seconds": 5.029144077000001,
+      "scope_rows": 4
+    },
+    {
+      "phase": "kernel_frequency_parallel_pass_and_ordered_reduction_including_diagnostics",
+      "logical_component": "batch_response_cache",
+      "exclusive_worker_seconds": 2.183393881,
+      "scope_rows": 4
+    },
+    {
+      "phase": "initial_frequency_workspace_and_capture",
+      "logical_component": "tensor_angular_synthesis",
+      "exclusive_worker_seconds": 2.1129426660000004,
+      "scope_rows": 8
+    },
+    {
+      "phase": "initial_frequency_workspace_and_capture",
+      "logical_component": "unclassified_by_scope_name",
+      "exclusive_worker_seconds": 1.8823450720000001,
+      "scope_rows": 6
+    },
+    {
+      "phase": "initial_frequency_workspace_and_capture",
+      "logical_component": "source_treatment_and_lift",
+      "exclusive_worker_seconds": 0.76624478,
+      "scope_rows": 2
+    },
+    {
+      "phase": "kernel_frequency_parallel_pass_and_ordered_reduction_including_diagnostics",
+      "logical_component": "source_treatment_and_lift",
+      "exclusive_worker_seconds": 0.7593621960000001,
+      "scope_rows": 2
+    }
+  ],
+  "external_supervisor_timings_resources": {
+    "F1a-native-L200": {
+      "supervisor_elapsed_s": 107.47146544401767,
+      "peak_observed_rss_gib_userspace": 2.2677,
+      "peak_observed_threads": 2,
+      "returncode": 0
+    },
+    "F8a-native-L200": {
+      "supervisor_elapsed_s": 17.4355631369981,
+      "peak_observed_rss_gib_userspace": 4.7398,
+      "peak_observed_threads": 9,
+      "returncode": 0
+    },
+    "P8-profile-L200": {
+      "supervisor_elapsed_s": 17.64588469400769,
+      "peak_observed_rss_gib_userspace": 4.739,
+      "peak_observed_threads": 9,
+      "returncode": 0
+    }
+  },
+  "internal_driver_timings": {
+    "F1a-native-L200": {
+      "schedule_mode": "frequency",
+      "workers": 1,
+      "frequency_workers": 1,
+      "solve_workers": 1,
+      "forward_s": 62.353311653,
+      "measurement_s": 0.002970242,
+      "kernel_s": 44.664353455,
+      "tensor_validation_s": 0.516618657,
+      "kernel_parallel_pass_wall_s": 44.647226457,
+      "reduction_wall_s": 0.003007388,
+      "diagnostic_worker_elapsed_s": 0.516618657,
+      "frequency_contribution_buffer_bytes": 12634160,
+      "elapsed_s": 107.038496691
+    },
+    "F8a-native-L200": {
+      "schedule_mode": "frequency",
+      "workers": 1,
+      "frequency_workers": 8,
+      "solve_workers": 1,
+      "forward_s": 9.293288697,
+      "measurement_s": 0.002875781,
+      "kernel_s": 7.356635459,
+      "tensor_validation_s": 0.520081705,
+      "kernel_parallel_pass_wall_s": 7.291468732,
+      "reduction_wall_s": 0.003031684,
+      "diagnostic_worker_elapsed_s": 0.520081705,
+      "frequency_contribution_buffer_bytes": 12634160,
+      "elapsed_s": 16.670131539
+    },
+    "P8-profile-L200": {
+      "schedule_mode": "frequency",
+      "workers": 1,
+      "frequency_workers": 8,
+      "solve_workers": 1,
+      "forward_s": 9.469249589,
+      "measurement_s": 0.002567322,
+      "kernel_s": 7.438092699,
+      "tensor_validation_s": 0.519680216,
+      "kernel_parallel_pass_wall_s": 7.372566516,
+      "reduction_wall_s": 0.002826909,
+      "diagnostic_worker_elapsed_s": 0.519680216,
+      "frequency_contribution_buffer_bytes": 12634160,
+      "elapsed_s": 16.926771392
+    }
+  },
+  "raw_scope_rows_csv": "investigations/dspec-acceleration-20261027/receipts/stages12-stage2-v3-profile-packet/p8-raw-scope-rows.csv",
+  "raw_counter_rows_csv": "investigations/dspec-acceleration-20261027/receipts/stages12-stage2-v3-profile-packet/p8-raw-counters.csv",
+  "component_summary_csv": "investigations/dspec-acceleration-20261027/receipts/stages12-stage2-v3-profile-packet/p8-worker-exclusive-components.csv",
+  "map_note": "logical_component is the candidate exact scope map; raw scope_name values are retained in the raw CSV and no substring reclassification is applied."
+}

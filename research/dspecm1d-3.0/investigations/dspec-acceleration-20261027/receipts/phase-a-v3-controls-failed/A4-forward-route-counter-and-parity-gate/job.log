@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v3/tools/check_phase_a.py", line 417, in <module>
+    main()
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v3/tools/check_phase_a.py", line 412, in main
+    else: result=data_gate(a.mode,a.data_dir)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v3/tools/check_phase_a.py", line 300, in data_gate
+    require(counters.get("true_forward_only_route")==35 and counters.get("solver_forward_rhs_columns",0)>0 and
+  File "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v3/tools/check_phase_a.py", line 68, in require
+    raise ValueError(message)
+ValueError: A4 profiler call/RHS counters failed

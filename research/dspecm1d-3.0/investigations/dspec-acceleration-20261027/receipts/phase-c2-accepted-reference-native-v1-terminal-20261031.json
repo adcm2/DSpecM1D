@@ -1,0 +1,383 @@
+{
+  "fresh_result": {
+    "across_angles": 19,
+    "along_angles": 135,
+    "attenuation": true,
+    "backend": "dspec",
+    "cache_bytes": 2907520000,
+    "damping_si": 0.0020833333333333333,
+    "degree": 200,
+    "diagnostic_worker_elapsed_s": 0.525339009,
+    "elapsed_s": 16.93489922,
+    "epsilon_perturbation": 0,
+    "fft_period_s": 4096,
+    "fft_samples": 2048,
+    "first_bin": 7,
+    "forward_s": 9.582835909,
+    "frequency_contribution_buffer_bytes": 12634160,
+    "frequency_count": 35,
+    "frequency_workers": 8,
+    "gravity_max_abs_nd_error": 2.886579864025407e-15,
+    "integrated_profile_kernel": 0,
+    "kernel_parallel_pass_wall_s": 7.266148176,
+    "kernel_parameter": "ln_vs_at_fixed_vp_density_and_effective_Q",
+    "kernel_s": 7.332015411,
+    "kernel_timing_semantics": "kernel_s includes setup, parallel pass with diagnostics, and parent ordered reduction",
+    "kernel_units": "s m^-3",
+    "last_bin": 41,
+    "layout": "native-side-major then angle, float64",
+    "measurement_rate_norm": 1.8022564490035656e-16,
+    "measurement_s": 0.002651299,
+    "native_side_count": 293,
+    "nq": 10,
+    "reduction_wall_s": 0.003040279,
+    "refinement": 0.025,
+    "schedule_mode": "frequency",
+    "solve_workers": 1,
+    "source_shell_contacts": false,
+    "tensor_packed_relative_l2": 5.954448952206202e-16,
+    "tensor_validation_s": 0.525339009,
+    "time_shift_adjoint_identity": 0.9999999999999997,
+    "workers": 1
+  },
+  "state": {
+    "finished_unix": 1793477730.8615096,
+    "jobs": [
+      {
+        "cleanup": {
+          "proc_inspection_errors": [],
+          "reaped_pids": [],
+          "remaining": [],
+          "signal_log": [],
+          "unknown": [],
+          "verified_gone": true
+        },
+        "command": [
+          "/usr/bin/env",
+          "DSPEC_SYMBOLIC_REUSE=1",
+          "OMP_NUM_THREADS=1",
+          "OMP_THREAD_LIMIT=8",
+          "OMP_DYNAMIC=FALSE",
+          "OMP_WAIT_POLICY=PASSIVE",
+          "OPENBLAS_NUM_THREADS=1",
+          "MKL_NUM_THREADS=1",
+          "BLIS_NUM_THREADS=1",
+          "VECLIB_MAXIMUM_THREADS=1",
+          "NUMEXPR_NUM_THREADS=1",
+          "DSPEC_FREQUENCY_WORKERS=8",
+          "/usr/bin/taskset",
+          "-c",
+          "16-23",
+          "/space/adcm2/research/builds/stages12-stage2-v1/doc-native/doc-driver",
+          "dspec",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data",
+          "200",
+          "10",
+          "0.025",
+          "1",
+          "sections",
+          "0"
+        ],
+        "command_sha256": "4e79552b410d287ee838423ff93118c45e728cc141bb75f98371835ea13f3cef",
+        "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v3-measure",
+        "elapsed_seconds": 17.59398439398501,
+        "failure_reasons": [],
+        "final_owned_processes": [
+          [
+            199938,
+            51096332
+          ]
+        ],
+        "finished_unix": 1793477730.4590423,
+        "id": "accepted-reference-native-l200",
+        "inputs_sha256_after": {
+          "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+          "/space/adcm2/research/builds/stages12-stage2-v1/doc-native/command.json": "8ad5163d724e58e4f042f56d14c663c52e764322c891678657e3b2df9f78b72d",
+          "/space/adcm2/research/builds/stages12-stage2-v1/doc-native/doc-driver": "bce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+          "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+          "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+        },
+        "inputs_sha256_before": {
+          "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+          "/space/adcm2/research/builds/stages12-stage2-v1/doc-native/command.json": "8ad5163d724e58e4f042f56d14c663c52e764322c891678657e3b2df9f78b72d",
+          "/space/adcm2/research/builds/stages12-stage2-v1/doc-native/doc-driver": "bce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+          "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+          "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+        },
+        "inputs_unchanged": true,
+        "log": "job.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "outputs": [
+          "data/parameters.txt",
+          "data/result.json",
+          "data/trace.csv",
+          "data/spectrum.csv",
+          "data/components.csv",
+          "data/nodes.csv",
+          "data/along.bin",
+          "data/along-angles.csv",
+          "data/across.bin",
+          "data/across-angles.csv"
+        ],
+        "outputs_sha256": {
+          "data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+          "data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+          "data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+          "data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+          "data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+          "data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+          "data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+          "data/result.json": "7ece89bc735480e8600822b41808c244ee71d506213177f597e8dd790345ad73",
+          "data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+          "data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21"
+        },
+        "peak_observed_rss_gib_userspace": 4.7375,
+        "peak_observed_threads": 9,
+        "returncode": 0,
+        "started_unix": 1793477712.8500044,
+        "status": "completed",
+        "system_cpu_seconds_children": 13.527796,
+        "updated_unix": 1793477729.1068468,
+        "user_cpu_seconds_children": 98.625989,
+        "watchdog": {
+          "aggregate_rss_gib_userspace": 4.7375,
+          "elapsed_seconds": 16.25,
+          "owned_processes": [
+            {
+              "pid": 199938,
+              "starttime_ticks": 51096332,
+              "threads": 8
+            },
+            {
+              "pid": 199936,
+              "starttime_ticks": 51096325,
+              "threads": 1
+            }
+          ],
+          "peak_observed_rss_gib_userspace": 4.7375,
+          "peak_observed_threads": 9,
+          "thread_cap": 20,
+          "thread_count_including_supervisor": 9
+        }
+      },
+      {
+        "cleanup": {
+          "proc_inspection_errors": [],
+          "reaped_pids": [],
+          "remaining": [],
+          "signal_log": [],
+          "unknown": [],
+          "verified_gone": true
+        },
+        "command": [
+          "/usr/bin/python3",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-reference-match-v1/tools/check_phase_c2_matched_reference.py",
+          "--task-root",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1",
+          "--candidate",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data",
+          "--candidate-state",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/state.json",
+          "--saved-reference",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data",
+          "--saved-state",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/state.json",
+          "--out",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/phase-c2-matched-reference-check/phase-c2-matched-reference-summary.json"
+        ],
+        "command_sha256": "804ab037a0cbb0367ea395ad05d83b186a436da0e22ce7f81a20fef94ce80338",
+        "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v3-measure",
+        "elapsed_seconds": 0.364811894018203,
+        "failure_reasons": [],
+        "final_owned_processes": [
+          [
+            200245,
+            51098095
+          ]
+        ],
+        "finished_unix": 1793477730.8590722,
+        "id": "phase-c2-matched-reference-check",
+        "inputs_sha256_after": {
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-reference-match-v1/tools/check_phase_c2_matched_reference.py": "7b6f31f59658eed0e35c2b05b1aac1221cb8437c2de0d9f7063bed50c34e0c04",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/across.bin": "21288985eb4e223e122118efb2e0320870109e6237ed1169c2dc111b35c242f6",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/along.bin": "150f978ad36114210c8be5325ee22e69c01a6de97b427fa109968bc89a9a0973",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/result.json": "400b3c67b539725a1440998220ca629edeacf002fc53f539bad61780d535eb26",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/state.json": "0466938a4fe9c598e7b061b02b6c66106647af134d3d4a2db337a72ee5927181",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/result.json": "7ece89bc735480e8600822b41808c244ee71d506213177f597e8dd790345ad73",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/result.json": "7635cc1e3e9bff0f1b08acc4b8e14898a0949622ca70bb35b2b95c88d7e858ac",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/state.json": "16d879978fee1682770fc9eda9485a9199d9ad2d8b186d6081e62799a0c5094e",
+          "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+        },
+        "inputs_sha256_before": {
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-c2-preweighted-v1-reference-match-v1/tools/check_phase_c2_matched_reference.py": "7b6f31f59658eed0e35c2b05b1aac1221cb8437c2de0d9f7063bed50c34e0c04",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/across.bin": "21288985eb4e223e122118efb2e0320870109e6237ed1169c2dc111b35c242f6",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/along.bin": "150f978ad36114210c8be5325ee22e69c01a6de97b427fa109968bc89a9a0973",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/result.json": "400b3c67b539725a1440998220ca629edeacf002fc53f539bad61780d535eb26",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/phase-c2-l200-native-skip-on/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2/state.json": "0466938a4fe9c598e7b061b02b6c66106647af134d3d4a2db337a72ee5927181",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/result.json": "7ece89bc735480e8600822b41808c244ee71d506213177f597e8dd790345ad73",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-reference-match-v1-control/continuation/phase-c2-accepted-reference-native-v1/accepted-reference-native-l200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/result.json": "7635cc1e3e9bff0f1b08acc4b8e14898a0949622ca70bb35b2b95c88d7e858ac",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/state.json": "16d879978fee1682770fc9eda9485a9199d9ad2d8b186d6081e62799a0c5094e",
+          "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+        },
+        "inputs_unchanged": true,
+        "log": "job.log",
+        "log_sha256": "0bd48c62b1cb493e2b8090473f6e31354d94a52875bdfac25a0d0176dbbba9b6",
+        "outputs": [
+          "phase-c2-matched-reference-summary.json"
+        ],
+        "outputs_sha256": {
+          "phase-c2-matched-reference-summary.json": "d7dd012265e24fb4daee5192b4dec183d11c1a34160f10e6750c4ccd448a4609"
+        },
+        "peak_observed_rss_gib_userspace": 0.0363,
+        "peak_observed_threads": 2,
+        "returncode": 0,
+        "started_unix": 1793477730.4762616,
+        "status": "completed",
+        "system_cpu_seconds_children": 0.015850000000000364,
+        "user_cpu_seconds_children": 0.08717199999999536
+      }
+    ],
+    "plan_sha256": "b89eaaed7b135f83c1ff565b15a14d172678f65dd8289a9744ef704c47e099b5",
+    "schema": 1,
+    "started_unix": 1793477712.8294306,
+    "status": "completed",
+    "task_id": "phase-c2-accepted-reference-native-v1",
+    "thread_cap": 20
+  },
+  "summary": {
+    "case": {
+      "bins": 35,
+      "degree": 200,
+      "frequency_workers": 8,
+      "inner_workers": 1,
+      "nq": 10,
+      "refinement": 0.025
+    },
+    "kernel_relative_l2": {
+      "across.bin": {
+        "C2_native_relative_l2": 2.2884102633728705e-13,
+        "fresh_sha256": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "saved_F8a_relative_l2": 0.0
+      },
+      "along.bin": {
+        "C2_native_relative_l2": 4.2224753803836724e-13,
+        "fresh_sha256": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "saved_F8a_relative_l2": 0.0
+      }
+    },
+    "measurement_rate_norm_relative_error": {
+      "C2_native_relative_error": 0.0,
+      "saved_F8a_relative_error": 0.0
+    },
+    "reference_provenance": {
+      "candidate_C2_job_sha256": "77102339555f812df6d5d8ba6e311e67b10ab9efab0d727e983f32458d517d9f",
+      "fresh_binary_sha256": "bce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab",
+      "fresh_state_job_sha256": "4e79552b410d287ee838423ff93118c45e728cc141bb75f98371835ea13f3cef",
+      "saved_F8a_binary_sha256": "bce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab"
+    },
+    "status": "pass",
+    "timing": {
+      "C2_native_driver_elapsed_s": 15.890614612,
+      "C2_native_supervisor_elapsed_s": 16.296116217039526,
+      "fresh_reference_driver_elapsed_s": 16.93489922,
+      "fresh_reference_supervisor_elapsed_s": 17.59398439398501,
+      "historical_stage2_native_median_s": 16.8176,
+      "interpretation": "single fresh pair; report driver and supervisor boundaries separately; descriptive timing, not a repeated-run distribution",
+      "saved_F8a_driver_elapsed_s": 16.670131539,
+      "saved_F8a_supervisor_elapsed_s": 17.4355631369981
+    },
+    "waveform_channel_relative_l2": {
+      "components.csv": {
+        "C2_native_vs_fresh_reference": {
+          "east_im": 0.0,
+          "east_re": 0.0,
+          "north_im": 0.0,
+          "north_re": 0.0,
+          "up_im": 0.0,
+          "up_re": 0.0
+        },
+        "fresh_reference_vs_saved_F8a": {
+          "east_im": 0.0,
+          "east_re": 0.0,
+          "north_im": 0.0,
+          "north_re": 0.0,
+          "up_im": 0.0,
+          "up_re": 0.0
+        }
+      },
+      "spectrum.csv": {
+        "C2_native_vs_fresh_reference": {
+          "imag_m": 0.0,
+          "real_m": 0.0
+        },
+        "fresh_reference_vs_saved_F8a": {
+          "imag_m": 0.0,
+          "real_m": 0.0
+        }
+      },
+      "trace.csv": {
+        "C2_native_vs_fresh_reference": {
+          "adjoint_source": 0.0,
+          "rate_m_s2": 0.0,
+          "velocity_m_s": 0.0
+        },
+        "fresh_reference_vs_saved_F8a": {
+          "adjoint_source": 0.0,
+          "rate_m_s2": 0.0,
+          "velocity_m_s": 0.0
+        }
+      }
+    }
+  }
+}

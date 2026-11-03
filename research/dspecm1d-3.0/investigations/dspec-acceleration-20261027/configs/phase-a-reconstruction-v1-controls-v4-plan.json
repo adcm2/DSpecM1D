@@ -1,0 +1,144 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls",
+  "thread_cap": 20,
+  "external_campaigns": [
+    {
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/configs/phase-a-reconstruction-v1-build-plan.json",
+      "plan_sha256": "3b214bd94b5de0eee7690886fe8f581da5e45b72597c437b8e1747d837ed429c",
+      "task_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v1-build-control/continuation/phase-a-v1-build"
+    },
+    {
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v3/configs/phase-a-reconstruction-v1-controls-v3-plan.json",
+      "plan_sha256": "15259c318cc8c0770e3ac31736e05d6906e795fb165565e18a3c437335eed42c",
+      "task_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls"
+    }
+  ],
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "OMP_THREAD_LIMIT": "8",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_WAIT_POLICY": "PASSIVE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "DSPEC_SYMBOLIC_REUSE": "1"
+  },
+  "jobs": [
+    {
+      "id": "A4-v3-receipt-and-corrected-parity-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4/tools/check_phase_a_reuse.py",
+        "--task-root",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls",
+        "--state-sha256",
+        "e44abdaddc02aa9675407fa85a8a22b9cc8b47499fe94fe24d65089eca9f759f",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4/tools/check_phase_a_reuse.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/state.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/A4-profiled-true-forward-only-35bin-control/job.log",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/A4-profiled-true-forward-only-35bin-control/data/a4-summary.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/A4-profiled-true-forward-only-35bin-control/data/a4-profile.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/A4-profiled-true-forward-only-35bin-control/data/a4-components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/A4-profiled-true-forward-only-35bin-control/data/parameters.txt",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/A4-forward-route-counter-and-parity-gate/job.log"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    },
+    {
+      "id": "A5-profiled-standard-forward-two-submodes",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/A4-profiled-true-forward-only-35bin-control/data/a4-components.csv",
+        "200",
+        "10",
+        "0.025",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/command.json",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/prem.200",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls/A4-profiled-true-forward-only-35bin-control/data/a4-components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A4-v3-receipt-and-corrected-parity-gate/checks.json"
+      ],
+      "outputs": [
+        "data/a5-summary.json",
+        "data/a5-untruncated-profile.json",
+        "data/a5-truncated-profile.json",
+        "data/a5-untruncated-components.csv",
+        "data/a5-truncated-components.csv",
+        "data/a5-untruncated-cut-indices.csv",
+        "data/a5-truncated-cut-indices.csv",
+        "data/parameters.txt"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 16
+    },
+    {
+      "id": "A5-standard-policy-cut-index-profile-and-parity-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4/tools/check_phase_a.py",
+        "a5",
+        "--data-dir",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A5-profiled-standard-forward-two-submodes/data",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v4/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A5-profiled-standard-forward-two-submodes/data/a5-summary.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-profile.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A5-profiled-standard-forward-two-submodes/data/a5-truncated-profile.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A5-profiled-standard-forward-two-submodes/data/a5-truncated-components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-cut-indices.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A5-profiled-standard-forward-two-submodes/data/a5-truncated-cut-indices.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls/A4-v3-receipt-and-corrected-parity-gate/checks.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    }
+  ]
+}

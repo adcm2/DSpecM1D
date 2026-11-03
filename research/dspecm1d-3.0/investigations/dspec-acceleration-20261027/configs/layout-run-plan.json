@@ -1,0 +1,1014 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya",
+  "thread_cap": 50,
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "jobs": [
+    {
+      "id": "reference-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "packing-shared-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-packing-shared-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l3",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "packing-shared-l3",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "nodal-shared-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-nodal-shared-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l3",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "nodal-shared-l3",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "reference-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "packing-shared-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-packing-shared-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l12",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "packing-shared-l12",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "nodal-shared-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-nodal-shared-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l12",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "nodal-shared-l12",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "reference-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "packing-shared-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-packing-shared-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l128",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "packing-shared-l128",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "nodal-shared-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "128",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-nodal-shared-l128",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l128",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "nodal-shared-l128",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "reference-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "packing-shared-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-packing-shared-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l384",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "packing-shared-l384",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "nodal-shared-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "384",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-nodal-shared-l384",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l384",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "nodal-shared-l384",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "reference-l1536",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "packing-shared-l1536",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/packing-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-packing-shared-l1536",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l1536",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "packing-shared-l1536",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "nodal-shared-l1536",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel-probe",
+        "--lmax",
+        "1536",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8",
+        "--probe-angle-count",
+        "64"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-layout-01/nodal-shared-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel_probe.bin",
+        "data/kernel_probe.json",
+        "data/kernel_probe_angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "check-nodal-shared-l1536",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l1536",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "nodal-shared-l1536",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--exact"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/layout-run-v1/tools/check_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    }
+  ]
+}

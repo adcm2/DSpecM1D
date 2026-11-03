@@ -1,0 +1,63 @@
+{
+  "build_root": "/space/adcm2/research/builds/phase-b-fixed-mesh-v1",
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "variants": [
+    {
+      "id": "phase-b-profile",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-fixed-mesh-v1-build/candidates/phase-b-fixed-mesh-v1",
+      "output_name": "phase-b-profile-driver",
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-fixed-mesh-v1-build/candidates/phase-b-fixed-mesh-v1",
+        "-O3",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DNDEBUG",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-DGSHTRANS_HAVE_INTERPOLATION",
+        "-DDSFAST_DISABLE_PROFILE",
+        "-I/space/adcm2/research/projects/DSpecM1D",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-fixed-mesh-v1-build/candidates/phase-b-fixed-mesh-v1/phase_b_driver.cpp",
+        "-I/space/adcm2/research/projects/YSpecpp",
+        "-I/space/adcm2/research/projects/YSpecpp/src",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "-Wl,-rpath,/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library",
+        "-o",
+        "{OUTPUT}",
+        "-lfftw3",
+        "-lfftw3f",
+        "-lfftw3l",
+        "-llapack",
+        "-lblas"
+      ],
+      "sources": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-fixed-mesh-v1-build/candidates/phase-b-fixed-mesh-v1"
+      ],
+      "dependencies": [
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "/space/adcm2/research/projects/YSpecpp/src",
+        "/space/adcm2/research/projects/YSpecpp/YSpec",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so"
+      ]
+    }
+  ]
+}

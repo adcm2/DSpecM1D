@@ -1,0 +1,334 @@
+{
+  "status": "pass",
+  "stage": "Stage 1 matched instrumentation-only profiling",
+  "stage2_started": false,
+  "selected_case": {
+    "degree": 200,
+    "NQ": 6,
+    "mesh_step_h": 0.02035382429229197,
+    "bins": [
+      7,
+      41
+    ],
+    "bin_count": 35,
+    "physical_one_sided_sides": 208,
+    "angles": {
+      "along": 135,
+      "across": 19
+    },
+    "same_backend_output_relative_l2_gate": 1e-11
+  },
+  "source_and_run": {
+    "pinned_yspec_commit": "280eab0200495391539c0f97e62f978083c307bc",
+    "yspec_source_tree_sha256": "26f29edb53e94fda4859f3bb962b49b33cd3c8da8e1d3433a3037a6c7608e692",
+    "yspec_tree_sha256": "eb023ebfd0953a9b60d5be3b4d7c652ff320f573755b4cbd4913ca3118615853",
+    "original_yspec_library_sha256": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+    "run_plan_sha256": "07a69d7996fc57f74f335c23e525ba6dce3fc2c234c2b241290c0c3d50c71d5c",
+    "checker_sha256": "44095eb7785df315a0443f0c43e24581297aaa57d9fc484f6c60960a39bc6e94",
+    "v2_build_plan_sha256": "a3a8135c1683f58ce36d4cecf5246065ad5115578c70d4acfcd0d1b615228e69",
+    "v2_build_config_sha256": "5e8d2c8ef2abf7cdbfc87f1f6d85d4e804474015ec065e86f4d29f24835d6af1",
+    "v2_build_return_code": 0,
+    "v2_build_elapsed_s": 222.561708317,
+    "v2_build_peak_rss_gib": 2.3101,
+    "v2_build_peak_threads": 6,
+    "v2_build_outputs": {
+      "dspec_native": "145b87d215505bcf9a55c956181a58356ff223ab2effc53e7c89904100172191",
+      "dspec_profile": "9afb378e56fcf18088000a94c78289c2d4e481eec12f9fa782218263c90cd07f",
+      "yspec_profile_driver": "2690e7fcb4e0895cf0983cf81486b3b998120b104b73300fe5162457d72681c7",
+      "yspec_timer_disabled_dso": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+      "yspec_timer_enabled_dso": "5ff01c759fb240f1487d5d5e9d05b1b8a84d2de320219dbf4c79246b39caf576"
+    },
+    "all_v2_jobs_return_code_0": true,
+    "all_v2_inputs_unchanged": true,
+    "checker_summary_sha256": "b20354e3a8f4e6876e2f4079bbfc43f7526e2e9d6b5d453d1ce1445a9644621c"
+  },
+  "requested_backend_work": {
+    "dspec_parameter": "relative lnVs contracted directly",
+    "yspec_requested_parameter_set": "Velocities",
+    "yspec_actual_returned_parameter_names": [
+      "vp",
+      "vs",
+      "qkappa",
+      "qmu"
+    ],
+    "yspec_selected_parameter": "vs",
+    "yspec_forward_channels": [
+      "up",
+      "north",
+      "east"
+    ],
+    "yspec_elastic_intermediate_products": 8,
+    "yspec_radial_solver": {
+      "name": "DepthSolves",
+      "relative_tolerance": 1e-05,
+      "start_decay_efolds": 11,
+      "step_factor": 0.25,
+      "mesh_note": "YSpec's internal radial integration mesh is distinct from the DSpec SEM output mesh"
+    },
+    "comparison_note": "Same requested case and output, not identical internal arithmetic or physical work"
+  },
+  "timing": {
+    "time_domain": "driver elapsed seconds; supervisor elapsed is recorded separately",
+    "native_controls": {
+      "dspec": {
+        "driver_elapsed_s": [
+          7.74162134,
+          7.764413965,
+          7.722947465
+        ],
+        "median_s": 7.74162134,
+        "min_s": 7.722947465,
+        "max_s": 7.764413965,
+        "range_s": 0.0414665,
+        "relative_range_to_median": 0.00535630693,
+        "supervisor_elapsed_s": [
+          8.033092138,
+          8.030778349,
+          8.110993038
+        ]
+      },
+      "yspec": {
+        "driver_elapsed_s": [
+          4.325552285,
+          4.300957274,
+          4.321987202
+        ],
+        "median_s": 4.321987202,
+        "min_s": 4.300957274,
+        "max_s": 4.325552285,
+        "range_s": 0.024595011,
+        "relative_range_to_median": 0.00569067187,
+        "supervisor_elapsed_s": [
+          4.567132547,
+          4.555779713,
+          4.584883766
+        ]
+      }
+    },
+    "profile_single_observation": {
+      "dspec": {
+        "driver_elapsed_s": 7.753109314,
+        "supervisor_elapsed_s": 8.162427256
+      },
+      "yspec": {
+        "driver_elapsed_s": 4.339061823,
+        "supervisor_elapsed_s": 4.601430371
+      }
+    },
+    "profile_driver_delta_vs_fresh_native_median": {
+      "dspec_s": 0.011487974,
+      "dspec_fraction": 0.00148392352,
+      "yspec_s": 0.017074621,
+      "yspec_fraction": 0.00395064127,
+      "interpretation": "One profile observation per backend; both differences are smaller than the corresponding three-run native range and do not isolate timer cost precisely"
+    },
+    "historical_phase_d_timing": "Context only; no optimization claim or causal comparison is made"
+  },
+  "profile_summary": {
+    "dspec": {
+      "combined_worker_scope_exclusive_sum_s": 51.751219346,
+      "master_pipeline_wall_s": 7.752661697,
+      "master_partition_residual_s": 0,
+      "forward_workspace_prepares": 35,
+      "active_unit_adjoint_calls": 32,
+      "exact_zero_skips": {
+        "bins": [
+          7,
+          8,
+          41
+        ],
+        "count": 3
+      },
+      "sparse_factorizations": 14035,
+      "symbolic_reuse_calls": 14011,
+      "selected_worker_scopes": {
+        "angular_eigen_gemm": {
+          "exclusive_worker_s": 19.22347025,
+          "calls": 147840
+        },
+        "radial_interpolation_strain_tables": {
+          "exclusive_worker_s": 4.609042289,
+          "calls": 32
+        },
+        "angular_coefficient_row_lookup_packing": {
+          "exclusive_worker_s": 1.960010257,
+          "calls": 147840
+        },
+        "angular_plan_weight_preparation": {
+          "exclusive_worker_s": 0.219974826,
+          "calls": 32
+        },
+        "angular_tile_weight_packing": {
+          "exclusive_worker_s": 0.354276188,
+          "calls": 960
+        },
+        "angular_tile_scatter": {
+          "exclusive_worker_s": 0.094270841,
+          "calls": 147840
+        },
+        "material_evaluation_contraction": {
+          "exclusive_worker_s": 0.130278956,
+          "calls": 320
+        },
+        "remaining_scopes_after_grouping_s": 0.270611782,
+        "dynamic_H_assembly": {
+          "exclusive_worker_s": 6.078993844,
+          "calls": 14035
+        },
+        "sparse_numerical_factorization": {
+          "exclusive_worker_s": 8.477784541,
+          "calls": 14035
+        },
+        "sparse_equilibration_and_scaling": {
+          "exclusive_worker_s": 2.129794128,
+          "calls": 14035
+        },
+        "sparse_forward_eigen_solve": {
+          "exclusive_worker_s": 2.022116772,
+          "calls": 14035
+        },
+        "sparse_adjoint_eigen_solve": {
+          "exclusive_worker_s": 1.651592072,
+          "calls": 12800
+        },
+        "direct_measurement_receiver_map_assembly": {
+          "exclusive_worker_s": 1.525389906,
+          "calls": 12800
+        }
+      }
+    },
+    "yspec": {
+      "worker_exclusive_sum_s": 33.520833128,
+      "forward_root_inclusive_s": 1.73854067,
+      "forward_count": 35,
+      "kernel_root_inclusive_s": 31.782292458,
+      "kernel_count": 35,
+      "worker_closure_residual_s": 0,
+      "thread_ids_observed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "selected_worker_scopes": {
+        "radial_solve_R": {
+          "inclusive_worker_s": 0.018069352,
+          "calls": 67
+        },
+        "radial_solve_T": {
+          "inclusive_worker_s": 0.900566949,
+          "calls": 13400
+        },
+        "radial_solve_S": {
+          "inclusive_worker_s": 16.467651075,
+          "calls": 13400
+        },
+        "strain_table": {
+          "inclusive_worker_s": 1.041219298,
+          "calls": 6432
+        },
+        "angular_evaluation": {
+          "inclusive_worker_s": 13.981666472,
+          "calls": 2050048
+        },
+        "material_contraction": {
+          "inclusive_worker_s": 14.250667824,
+          "exclusive_worker_s": 0.269001352,
+          "calls": 26624
+        },
+        "reduction": {
+          "exclusive_worker_s": 0.012627505,
+          "calls": 163
+        },
+        "sampling_and_remaining_after_grouping_s": 0.090236977,
+        "scope_time_phase_note": "R/T/S, strain, and angular totals aggregate across forward and kernel work items."
+      },
+      "master_thread_frequency_root_bridge_s": 4.263386783,
+      "caller_outer_api_inclusive_s": 4.323717031,
+      "caller_exclusive_sum_s": 0.074838464,
+      "driver_unscoped_residual_s": 0.000836576,
+      "kernel_active_bins": 32,
+      "kernel_exact_zero_skipped_bins": [
+        7,
+        8,
+        41
+      ]
+    },
+    "interpretation": "Inclusive nested scopes overlap children. Worker elapsed sums overlap across concurrently scheduled work and are not wall-clock shares or additive to driver/supervisor wall.",
+    "coarse_functional_groups_exclusive_worker_s": {
+      "modal_preparation_and_radial_solves": {
+        "dspec": 24.566405655,
+        "yspec": 17.386287376,
+        "correspondence": "approximate; internal work differs"
+      },
+      "radial_interpolation_and_strain_tables": {
+        "dspec": 4.609166997,
+        "yspec": 1.041219298
+      },
+      "angular_synthesis_and_reconstruction": {
+        "dspec": 22.174880664,
+        "yspec": 14.72146062
+      },
+      "material_contraction": {
+        "dspec": 0.130278956,
+        "yspec": 0.269001352,
+        "dspec_scope_label": "material evaluation/contraction plus fused tile sample emission; not pure material time"
+      },
+      "note": "Exclusive worker scopes only; DSpec modal/angular groups aggregate selected scopes. This grouping is not a wall-time partition.",
+      "reduction": {
+        "dspec": "included in remaining scopes",
+        "yspec": 0.012627505
+      },
+      "sampling_and_remaining": {
+        "dspec": 0.270487074,
+        "yspec": 0.090236977
+      }
+    }
+  },
+  "parity": {
+    "same_backend_gate": 1e-11,
+    "geometry_and_frequency_grids_exact": true,
+    "dspec_max_relative_l2_to_phase_d_reference": 0,
+    "yspec_trace_spectrum_components_relative_l2_to_phase_d_reference": 0,
+    "yspec_max_sampled_array_relative_l2_to_phase_d_reference": 1.387373982053065e-16,
+    "cross_backend_raw_sampled_relative_l2_diagnostic_only": {
+      "along": 0.1211230597,
+      "across": 0.03669990382,
+      "denominator": "YSpec output",
+      "comparison_note": "A prior report used DSpec as denominator; percentages are not directly comparable and do not imply changed output differences. This stage did not investigate their source."
+    },
+    "cross_backend_gate": false
+  },
+  "resources": {
+    "build_cap_threads": 8,
+    "build_cap_gib": 32,
+    "numeric_job_cap_threads": 20,
+    "numeric_job_cap_gib": 16,
+    "aggregate_thread_ceiling": 50,
+    "configured_workers_per_backend": 8,
+    "inner_numerical_threads": 1,
+    "max_observed_process_threads_in_numerical_jobs": 9,
+    "peak_observed_rss_gib": {
+      "dspec": 1.1211,
+      "yspec": 0.3288
+    },
+    "watchdog_limit": "Existing user-space session watchdog; not kernel-level aggregate thread or memory accounting"
+  },
+  "preserved_failure": {
+    "v1_three_dspec_native_controls_completed": true,
+    "v1_dspec_profile_return_code": -6,
+    "cause": "Timer scope stop order violated LIFO while parent and nested scopes were active",
+    "resolution": "A focused stop-order correction in isolated v2; formulas and scheduling unchanged",
+    "v1_artifacts_preserved": true
+  },
+  "evidence": {
+    "local_terminal_snapshot": "../receipts/phase-e-stage1-terminal-snapshots-20261031.json",
+    "local_terminal_snapshot_sha256": "1778af89bb3acaca2f95e723502b33fba37fddcbe5475346627bb3f56ece303f",
+    "plan": "../plans/phase-e-stage1-backend-profiling-plan-20261031.md",
+    "remote_checker_summary_sha256": "b20354e3a8f4e6876e2f4079bbfc43f7526e2e9d6b5d453d1ce1445a9644621c"
+  }
+}

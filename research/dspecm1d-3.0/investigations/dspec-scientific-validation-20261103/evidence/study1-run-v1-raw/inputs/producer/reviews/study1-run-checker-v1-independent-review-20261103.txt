@@ -1,0 +1,35 @@
+Study 1 run/checker independent review — 2026-11-03
+Reviewer: Sol6.1 high, /root/radial_review
+Disposition: PASS for the exact ten-job Study 1 producer and standalone checker below. This is a pre-execution gate, not a numerical/scientific results PASS or a release of Study 2.
+
+Exact sealed files (SHA-256):
+configs/study1-run-v1-plan.json a1bf9d07ed56799537db489432c42f57b58287d24d5ee537eb94e91c20219e62
+configs/study1-terminal-check-v1-plan.json d4f3cc3c203dddb69d43d1c78d65e31af1a66309f0c79c0223f4ccf478971201
+candidate/dspec/tools/check_study1.py 610271198745973b654f2154395bde7aac7b034ca39cd47b0238837d3a982c17
+candidate/dspec/phase_d_driver.cpp 9a92e019e85d4a7e6a15bc585a0f97e5e174b969c6d7f3f474e18a2e040f19cb
+configs/study1-build-v1-plan.json 31eb960a56cb3cadb1f11e90e864848b8d1f99c2ed90e85c4ac3c6c2a9fc9ef2
+
+Scope and queue:
+The ten supported sequential jobs comprise four current L200 fixed-probe/control cases, two L3 full-volume baselines, and four DSpec centered full-forward runs at epsilon=1e-4 and 5e-5. All DSpec jobs use the compiled Study 1 binary, unchanged legacy modal solver, batched radial and real-Legendre angular routes, eight frequency workers and one inner worker. The three YSpec commands explicitly use /usr/bin/env -u DSPEC_FREQUENCY_WORKERS and CLI eight workers. Their default/tighter ODE tolerances are auditable. The numerical supervisor cap is 20 threads/16 GiB; these are user-space watchdog controls, not kernel aggregate accounting. No speed benchmark or additional physical cases are approved by this review.
+
+The L200 fine DSpec case uses meshScale 0.8 versus baseline 0.9: selected h=0.01809228825981428 versus 0.02035382429229197, ratio 8/9. It is not a 0.75-times-h study. L3 jobs use the same NQ8/h=0.05 FE and frequency space; the checker demands byte-identical mesh-elements, nodes, frequency-grid and parameter files across baseline and both centered pairs.
+
+Checker mathematics and coverage:
+The checker preserves raw native extrema and nearest-grid diagnostics separately from common physical probes and 25/50/100 km diagnostic exclusion subsets. Geometry is Cartesian and anchored to the reviewed geocentric path and v2 probe grid. All 28 source-radius probe rows are explicitly unmatched/not exposed on YSpec, and native source-radius comparisons are also labelled as unmatched one-sided samples. Source-shell traces remain separate from regular interior-point interpretation, including off-axis rows: a finite-L moment-tensor radial jump is not resolved merely by excluding a 3D ball. Receiver-side physical functional stays solid-side at the actual solid-fluid interface; fluid diagnostic samples do not redefine it.
+
+Own frequency weights, force and P are checked; DSpec bin products and selected forward/unit/weighted-adjoint strain outputs have finite, operand-scaled consistency checks. A DSpec-fields/YSpec-weights counterfactual is asymmetric and cannot establish YSpec unit-field equivalence or uniquely attribute the remaining difference.
+
+The true 3D L3 smooth radial bump action is compared with the centered full-forward derivative using the unperturbed baseline adjoint source, unchanged window, grids and FE space. The perturbed runs' own weights are ignored in this dot product. Both step errors and the step-pair relative change are required <=2e-4, using positive actual-magnitude denominators without unit floors. Exact-zero action is not accepted as nonzero directional evidence. The checker writes an explicit science_acceptance FAIL report and exits nonzero if these criteria fail. Independent analytic delta-H/tangent evidence and same-continuous-law YSpec finite differences remain prospectively deferred/unsupported; this review makes neither claim.
+
+Execution/provenance:
+The standalone terminal job reads an immutable producer-finalized state outside its own control state, binds the exact supplied producer plan hash, and validates all ten clean producer receipts, logs and output hashes. The terminal plan binds both exact build and producer plan hashes. Its 157 unique declared inputs cover every producer output and job log plus explicit reference/checker inputs. Output parent creation is present. No live supervisor-state argument is used. Producer must finish and its final state must be frozen before terminal launch; terminal job's own input stability/cleanup/receipt must be inspected independently after completion.
+
+Local verification performed:
+Exact file hashes above independently recomputed; ten-job inventory and all three YSpec explicit unsets checked; exact build/producer dependency bindings checked; 157-input uniqueness and complete producer-output/log closure asserted; immutable snapshot path separation asserted; checker compile() passed. Tiny-scale helper checks accepted valid 1e-30 equality and exact zero, rejected 2e-30 versus 1e-30 and 1e-30 versus zero. Prior focused source/API, geometry and checker reviews are retained; this final seal closes the previously reported blockers without expanding the scientific scope.
+
+Related gates:
+reviews/study1-source-build-v1-metadata-addendum-20261103.txt SHA-256 e81346fa007e781ab15fde69f69c0b6e70cf6bade92a662f39b67e4942a8ed15
+reviews/study1-build-v1-evidence-independent-review-20261103.txt SHA-256 604680ad75b3806e3229d77b66777468ab0cac7a2bf0be51640aa27aab337dd5
+reviews/studies-1-2-plan-addendum-independent-review-20261103.txt SHA-256 ddd3ed672ac08e7515b1d4ff876106976ab6113f90859b8f3fe2c673dc0ef6c3
+
+No remaining pre-execution blocking findings. Transfer only a minimal hash-verified validation allowlist, recheck external inputs/fresh roots/quiet resources, then run the reviewed producer. Saved raw outputs, scientific acceptance and interpretation require an AFTER STUDY 1 independent review before Study 2 numerical execution. No singularity, implementation-defect, global-H1 or convergence conclusion is established by code existence or this gate.

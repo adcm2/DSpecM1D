@@ -1,0 +1,275 @@
+DSpecM1D Stage2 whole-frequency parallel scheduling — DRAFT
+2026-10-31, requested Sol6.1-high planner; read-only audit/planning only.
+NOT RELEASED FOR IMPLEMENTATION OR EXECUTION. Stage1 is still running.
+The parent must supply accepted Stage1 evidence before this planner finalizes.
+
+1. Scope and dependencies
+
+Stage2 changes scheduling and ownership only, on the exact Stage1 documentation
+case. No copy/construction removal, loop fusion, new cache policy, skipped or
+reduced frequency work, mathematical reformulation, source/receiver discrepancy
+investigation, convergence campaign or production integration. Keep all Stage1
+instrumentation and fixed physics/outputs. Luna-high agents alone implement,
+review/build/execute; planner does not. Report the accepted Stage1+2 results to
+the user before any Stage3 action, even if Stage2 speedup disappoints.
+
+Finalization requires: Stage1 accepted source/dependency hashes and frozen v9
+parity; all low-degree controls; truthful exclusive wall/worker domains; actual
+component costs/counters/RSS;3native L200 repeats and1profile run; environment,
+affinity/build flags; receipt closure and unchanged tracked inputs. Choose the
+accepted immutable Stage1 candidate version, not a still-mutating working copy.
+Use original v9 and Stage1 accepted degree8 timings/output as separate references.
+No new YSpec execution. Historical comparison remains51.883s versus5.641s;
+new native repeats, speedups and uncertainty are reported independently.
+
+2. Intended implementation and exact dependency ordering
+
+Retain original CLI/route as default degree-parallel baseline. Add an explicit
+bounded frequency scheduling opt-in (e.g. DSPEC_FREQUENCY_WORKERS=1..8) with
+result metadata distinguishing frequency_workers and solve_workers. Legacy
+workers argument retains its current meaning unless opt-in is present; reject
+frequency>1 combined with solve>1. New frequency1 route uses the same scheduler
+logic as frequency8 with inner solves1, providing a scheduler serial control.
+Do not reinterpret an8worker baseline invocation silently. Existing yspec route
+remains untouched; new opt-in limited to dspec and dspec-forward controls.
+
+Keep the two-pass algorithm, including the existing cache's unit-adjoint capture:
+  A. Construct model/SEM/source/parameters/samplings on parent exactly once.
+  B. Parallel35 complete initial-frequency tasks, each prepares its own workspace
+     with solveThreads=1, captures forward+unit adjoints through the SAME stable
+     BatchResponseCache, samples receiver, writes only components[k]/raw[k].
+  C. Join every task, inspect error slots; only if all succeed perform unchanged
+     serial measure()/FFT/window/normalization/adjoint-spectrum construction.
+     No kernel task runs until the complete waveform and adjoint are available.
+  D. Parallel35 complete kernel-frequency tasks, using already-populated response
+     cache, task-local weights/workspace/points/fields, persistent private plans,
+     original within-frequency section/order and first2bin validation behaviour.
+     Each writes its own per-frequency section contribution buffers and metrics.
+  E. Join, check errors/validation, then parent reduces contributions in strictly
+     original increasing k order, for each original side/angle address. No worker
+     ever adds into shared values. Serial I/O and integral audit follow unchanged.
+
+Use OpenMP one outer region/pass and schedule(static); exactly8total numerical
+workers maximum, solveThreads=1, Eigen and library pools1. Set Eigen/OpenMP global
+settings before regions, never mutate process-global thread settings in workers.
+Do not make thread-local root-per-frequency dumps to stderr. Preserve worker
+backend selection by copying/restoring selected diagnostic backend in each worker,
+as existing degree scheduler does; symbolic factor state is already thread_local.
+Use one indexed result/error slot per frequency, not shared push_back. A local
+workspace is destroyed by its owning worker before that worker handles next task.
+
+For exact accumulation, contribution[k][section][side*angles+angle] is a plain
+assignment of existing kernelVs result. Parent starts original values at+0.0 and
+performs the original += in increasing k, retaining exact per-point arithmetic
+sequence; no OpenMP reductions, pairwise sums or thread-order sums. Preserve
+original material lookup/contraction expression/order, including fluid zeros.
+35*293*(135+19)*8=12,634,160bytes (~12.05MiB) contribution storage is bounded and
+small compared with existing~2.9GB response cache. Do not retain volume fields.
+Use checked dimensions/overflow bounds for the allowed exact case and L3 audit.
+
+Return no partial scientific success if a task fails. Catch each task's exception
+into its indexed exception_ptr, allow already-dispatched work to complete, join,
+then rethrow the lowest-frequency failure with pass/bin context on parent. Avoid
+early-stop flags that unpredictably skip frequencies or alter successful-run work.
+Parent alone emits deterministic progress/log messages after each joined pass;
+small progress buffering is scheduler support, not numerical work removal.
+
+3. Ownership/thread-safety audit and release requirements
+
+Preliminary inspected candidate: documentation-wedges-v9. Stage1 accepted source
+must be re-audited for added instrumentation before final release. Local production
+headers below were read only to trace callees; they are NOT proof of matching
+Tunya pinned dependencies. Final audit must cite exact accepted dependency hashes.
+Update: the pinned remote call-tree audit is now recorded in companion
+stages12-stage2-thread-safety-audit-draft.txt with full file and function/source-
+span SHA256 values. No shared lazy mutation was found on inspected routes;
+Wigner<double> uses owned storage/direct recursion and nested teams are suppressed,
+model Segment is const upper_bound, and Lagrange evaluation uses only locals.
+Formal binding to Luna's published preflight receipt remains pending, as does the
+accepted Stage1 instrumentation review. This does not release this draft.
+
+Shared lifetime table:
+  SEM: construct fully once, retain one stable address through both passes, no
+    move/rebuild/reinitialization while tasks exist. Existing solver methods use
+    read-only mesh/matrices and local return allocations on inspected routes,
+    despite non-const signatures. Audit exact sourceTreatedRadial/Spheroidal/
+    Toroidal, receiverElements, rvBaseFull/T, rvZR, sourceMatches/sourceElement,
+    calculateForceRedCoefficients/T, hS/hTk/systemMatrix, interpolation and mesh
+    getter call trees for lazy writes/statics. If any mutation exists, stop and
+    surface the precise gap; do not clone SEM per task, change cache keys or add
+    a broad mutex around full frequency work as an unmeasured fallback.
+  SourceInfo/EarthquakeCMT,InputParameters,CommonModel,model,grid,source frame,
+    nodes/samplings/receiver/direction: immutable shared inputs. Source methods
+    inspected return computed scalars; receiver/projection methods allocate local
+    vectors/matrices. YSpec Layer::operator() const reads polynomial coefficients
+    and returns Material by value on inspected local source. Confirm pinned
+    Segment lookup has no shared cursor and all workers avoid model/parser/FFT
+    mutation. Existing shared-model operator calls remain in worker contraction.
+  BatchResponseCache: keep original locked implementation and original entry/byte
+    limits, single stable cache object shared by both passes. Every key uses the
+    same &sem, family, degree, z and dispersion. getOrCompute holds mutex for
+    signature validation/copies, unlocks for local compute, then locks admission;
+    accessors/deriveWeightedAdjoint are locked. Do not change these semantics.
+    Unique frequency/family/degree ownership prevents same-key concurrent misses.
+    No clear(), move or destroy until joins. Stage2 must preserve miss/hit totals
+    and stored response count/bytes; kernel nonradial pass must hit, not recompute.
+  SamplingPlanCache: NOT thread safe. Its maps/counters/bytes and nested
+    TensorAngularPlan basis maps are mutable; shared_ptr payloads make shallow
+    copies unsafe. Create independent empty per-worker/per-section plans once,
+    keep them for that worker's frequencies within kernel pass, and destroy after
+    join. Do not clone pointer graphs from a warm shared plan. Cold builds repeat
+    up to number of workers; disclose this unavoidable ownership cost explicitly,
+    not as a cache-policy optimisation. Per-frequency fresh plans are forbidden
+    because they discard the existing cross-frequency reuse unnecessarily.
+  Workspace/PoleCoefficientCache/fields/points/records/coefficients/GSH Wigner:
+    task-private; no sharing the mutable frequencyCoefficientCache_. Tensor
+    local plan-owned Wigner and real/complex bases independent across workers.
+    Audit pinned GSH/Interpolation internals for global lazy caches/static scratch;
+    owned object alone does not establish thread safety. Do not add giant tables.
+  Solver factors/backend: existing thread_local factors and backend. Serial
+    degree iteration inside each frequency retains family order. Numerical
+    factor/RHS counts unchanged; symbolic analysis/reuse counts can differ with
+    new worker task history and must be reported rather than forced equal.
+  Profiling: auditprofile stays disabled; mathprofile thread_local WorkerCapture
+    and separate output slots, merge on parent after joins. Never share maps,
+    active scope stacks or snapshots. Existing mergeWorker prefixes are for
+    degree workers; avoid silently labeling frequency workers as degree workers.
+  Results/I/O/FFTW helpers: indexed unique task slots; no shared stream/file writes
+    or parent cumulative validation max/duration writes in workers. Per-task
+    diagnostics reduced deterministically after join; serial measurement/FFTs.
+
+Count invariants pending Stage1 confirmation: full L200 successful path should
+have14000nonradial response misses in initial pass and14000hits in kernel pass,
+14000cache entries,70radial cache-bypass solves, hence14070numeric factorizations.
+Forward/unit/weighted RHS-column counts must match Stage1 measured values exactly;
+do not assume weighted HH happens simply because an adjoint exists (zero RHS
+skip and pole-only projection are distinct). No promise that symbolic counts
+match degree8, because thread-local symbolic history changes with scheduling.
+No factorization cache change or cross-frequency numerical factor reuse.
+
+4. Planned file scope, subject to accepted Stage1 version
+
+New immutable candidates/stages12-stage2-frequency-v1 copied from accepted
+Stage1 candidate with complete case/dependency hashes; preserve all predecessors.
+Runtime edits expected ONLY doc_driver.cpp and profile.hpp (frequency-domain
+worker merge/metadata if needed). Prefer driver-local scheduler helper/header
+frequency_scheduler.hpp for bounded execution/exception testing. No planned
+change to solvers/BatchResponseCache/SEM/Windowed3DFields math or sampling routes.
+Additive configs/stages12-stage2-v1-{build.json,build-plan.json,controls-plan.json,
+measure-plan.json}, tools/check_stages12_stage2.py, meaningful scheduler tests,
+copied stage-to-math-map.json/status, campaign implementation_status.md updates
+after each change, reviews/analyses/receipts/manifests with unique stage2 prefix.
+If accepted Stage1 tooling requires new names, finalize exact paths before edit.
+No operator/supervisor rewrites or production checkout changes, commits or pushes.
+
+5. Required tests/gates and draft bounded queue
+
+Review before build: ownership/call-tree proof, diff excludes numerical edits,
+inner solve count1 enforced, no nested region/shared +=, work/byte bounds, paths
+and prior evidence hashes stable. Meaningful tiny scheduler tests must exercise
+out-of-order task completion with deterministic collection, exceptions on multiple
+bins selecting lowest failed bin after join, and an injected cache callback
+failure/capacity failure propagating without deadlock or partial success. No
+fault-injection controls in physical production run; small test harness only.
+
+Two sequential new build variants from same accepted source/settings: native
+profile-disabled and profile-enabled, auditprofile disabled both; reuse original
+hashed YSpec shared lib/dependencies and stage1 flags.2400s/32GiB each, cap8.
+Controls beforeL200, each600s/8GiB numerical and120s/4GiB checks:
+  native L3,nq8,.05,audit,epsilon0 frequency1/inner1;
+  native same frequency8/inner1;
+  profile same frequency8/inner1;
+  native dspec-forward same frequency8 epsilon+1e-5 and-1e-5;
+  byte exact parity against accepted Stage1 low-degree outputs, native/profile,
+    frequency1/8; original FD2e-4 gate, tensor/packed<=1e-11, gravity/time identity.
+  tiny native sections L12 frequency1/8 only if ownership changes require a
+    real multisection control beyondL3 audit; otherwise fullL200 provides it.
+
+L200 tentative measurement queue: three matched repetitions each of new native
+frequency1/inner1 and native frequency8/inner1 (alternate), one new profile8 run,
+plus one fresh untouched accepted Stage1 degree8 native anchor to disclose host
+drift. Eight numerical jobs total, each600s/16GiB initially, no concurrent jobs.
+Finalize count/order after Stage1 timing/noise/RSS evidence; no sweeps or automatic
+retries. Exact scientific files compared to Stage1/v9 and frequency1/8, preserving
+all unmasked one-sided output. Byte identity is the intended gate. If it fails,
+halt and locate first mismatch, saved per-bin evidence and operation-order cause;
+do not relax a tolerance after seeing the answer. Any justified fixed alternative
+gate requires separate review/final plan revision before rerun.
+
+Native comparison: medians/min/max, frequency1->frequency8 speedup, new frequency8
+versus Stage1 degree8 accepted repeats, and fresh degree8 anchor host context.
+Report initial forward+unit capture, measurement, kernel incl ordered reduction,
+setup, I/O, diagnostics, total and peak RSS/cache/plan/contribution bytes. Profile
+parallel pass wall is distinct from sum of frequency-worker exclusive durations;
+parent reduction has its own serial wall bucket. Inner degree-worker timers must
+be absent. Stage1 factor/RHS/cache invariants must match; mutable-plan cold/hit
+counts may differ because of private ownership and must be disclosed. Profile
+overhead compared against matching native frequency8, not a speedup.
+
+5a. Stage1 profiler carryover and frequency-route timing semantics
+
+Read-only inspection of current stages12-stage1-profile-v1/profile.hpp and
+doc_driver.cpp confirms Scope::stop() is idempotent and enforces LIFO; Snapshot
+copies thread_local entries/counters; difference checks monotonically increasing
+maps; WorkerCapture preserves/restores the master active stack and isolates maps.
+Stage1 candidate is still provisional; final source hash must be pinned again.
+
+Stage2 capture requirements: exactly one WorkerCapture per worker per outer pass,
+fresh empty WorkerData slots for each pass; close every task-local Scope before
+capture destruction. No Root in a frequency task. Preserve parent open scopes
+on master; join before any parent snapshot or merge. Label merged records
+frequency_worker.* and teach emitter/checker explicit execution-domain recognition;
+current Stage1 parallel_worker.* alone must not cause frequency rows to enter
+master-wall partition. Prefix/counter schema changes are reporting support only.
+
+Stage1 shared diagnosticTotals,profileSnapshotOverheadSeconds,tensorReferenceError,
+tensorValidationSeconds and phaseSnapshots may be updated ONLY by parent.
+Frequency tasks instead own per-bin diagnostics snapshots/error/duration/overhead;
+snapshot/difference only their TLS maps. Parent combines indexed results after
+join, in bin order. Diagnostic snapshots cover closed diagnostic child scopes;
+open frequency/parallel umbrellas remain labeled raw inclusive scopes. Subtract
+diagnostic worker scopes only from worker-production subtotals, then show the
+diagnostic worker subtotal separately. Never turn those worker subtotals into
+master wall or remove overlapping worker durations from any wall interval.
+
+For frequency route, kernel_s is the measured kernel pipeline wall INCLUDING
+diagnostics and ordered reduction; add explicit kernel_timing_semantics metadata
+and kernel_parallel_pass_wall_s including diagnostic work, plus reduction_wall_s.
+tensor_validation_s on that route, if retained for compatibility, is labeled
+summed worker elapsed, not additive wall; also expose diagnostic_worker_elapsed_s.
+NEVER retain current kernelSeconds=parallel_wall-tensorValidationSeconds when
+tensorValidationSeconds becomes a sum across frequency workers. Diagnostics can
+overlap other workers' production; subtracting that sum invents a wall estimate.
+Preserve original degree-route legacy kernel_s subtraction/label explicitly.
+Do not move diagnostics to another pass or prewarm caches to isolate their wall.
+Native and profile timing comparison always uses full elapsed_s/process wall;
+component comparisons use labeled inclusive kernel wall on both routes.
+Raw diagnostics-inclusive umbrellas retain inclusive diagnostic durations, while
+exclusive scope partitions remain additive within their execution domain.
+
+6. Resources, receipts, stop and finalization
+
+Same existing hashed exclusive staging/build/run operators and nohup supervisor;
+fresh stage2 roots/IDs, no overwrites/deletes, verify source/dependency/HEAD/status
+against accepted Stage1 provenance before build. Strict known-host/auth boundaries.
+Check other campaigns first, aggregate<=50threads; numerical8workers with cap20,
+build cap8, no concurrent campaigns unless parent demonstrates aggregate margin.
+Use accepted CPU16–23 affinity/settings; pools1, OMP_THREAD_LIMIT8, dynamicFALSE,
+passive wait; no8x8 nesting. Private plans upper bound2*8*32MiB plus8private
+512MiB coefficient budgets and~2.9GBresponse cache require actual RSS evidence;
+16GiB watchdog initial cap, stop on violation, no resource increase silently.
+USER_SPACE_SESSION_WATCHDOG is not kernel aggregate accounting; retain observed
+peak threads/RSS, input/output/binary hashes, launch/complete/cleanup receipts.
+
+Halt on dependency drift, unproved shared mutation, failed prerequisite/bytes/
+counters/accounting/FD/resource/cleanup, or exception; retain all evidence and
+return failure. No progression to Stage3 or physical-case modification.
+
+Outstanding finalization items for parent/Stage1 packet:
+  - accepted immutable candidate and exact pinned dependency manifest;
+  - verified source safety of full pinned SEM/GSH/model call tree, not local drift;
+  - actual breakdown and profile overhead selecting final instrumentation carryover;
+  - complete factor/RHS/cache counters and diagnostic timing semantics;
+  - native timing spread and peak RSS determining exact Stage2 bounded queue;
+  - accepted baseline/receipt paths and numerical hashes for every fixed gate.
+Once supplied, planner issues a FINAL Stage2 plan; this DRAFT grants no release.

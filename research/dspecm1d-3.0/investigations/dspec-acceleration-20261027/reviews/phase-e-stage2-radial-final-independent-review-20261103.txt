@@ -1,0 +1,129 @@
+Phase E Stage 2 radial first substage — Sol 6.1 high independent final review
+2026-11-03
+
+TERMINAL SCIENTIFIC EVIDENCE, MATCHED TIMING, AND FINAL REPORT: PASS.
+Only the authorized radial first substage is complete. Stop before subsequent
+angular/modal optimization, production integration, or discrepancy work.
+
+FINAL REPORT SEALS
+analyses/phase-e-stage2-radial-matched-report-20261103.md
+7c27a5cc6b99970c6407dbc9e8d4e9921c64c2bef075e9587a12d4bf2af3df4f
+analyses/phase-e-stage2-radial-matched-report-20261103.json
+640a0c3b8edca7991372a9940f0e1fa4b8406dd55739672bb5d6e36a77845392
+analyses/phase-e-stage2-radial-report-20261103.json (actual terminal checker)
+6cadfe132104162ad831d11bffd80caf1ba172f9ed2bba6732ed035452b5bcc8
+receipts/phase-e-stage2-radial-terminal-snapshot-20261103.json
+010f8ff70b46702cc951a565127a1b7b32bd8acc967b772e2805da2b616276ad
+Canonical evidence archive
+c8ec48d8a6a64ce1fb4ae526a47f304957c46a34248eed871365472556cac9d9
+
+Independently checked all100 unique regular members of the canonical archive
+against its manifest and extracted current bytes. Collected result/profile/
+proof/checker files match their producing supervisor output SHA256 values.
+The two duplicate-identical entries in the original retrieval archive were
+preserved there; canonical deduplication changes no evidence bytes.
+
+BUILD AND SOURCE PROVENANCE
+Actual two compiler argv lists reproduce the approved build config exactly;
+command SHA256 recomputes, both rc0, all13 tracked before/after input paths
+stable per variant. Native/profile binary hashes are respectively
+a5faaff2548b76b26f00f521f6fd1bb428ad800a428d3cd0a2521d5cc884709c
+b8b76521ee57fb970445ecb0e523ee96c49fb944d1830790d5a3875b4f1ea426.
+Fetched Stage1-v2 command and binary identities match the frozen Stage1
+terminal snapshot. All12 shared external dependency paths, including the
+DSpec core/model/dependencies, YSpec private headers and disabled DSO, match
+Stage1 exactly in both variants. Only the isolated candidate source tree
+differs. No external core drift is silently inherited.
+Build evidence SHA1368e364528c04331d197675b4ff5312c490bfb85cb64e48c34bf17930c0a333;
+Stage1 comparison SHA578910097acea88d26f0ef6303da07b00cd30ca260b6b8e627d951302564cdb8.
+
+NUMERICAL AND ACCURACY GATES
+Selected case remains L200/NQ6/h=.02035382429229197, scale.9,35 bins7..41,
+208 one-sided sides,135+19 angles, full-domain/gravity solves,8 total workers
+and inner1. Timed/profile routes retain35forward/32activeadjoint/3zero skips.
+The independent all35 audit instead disables exact-zero skips.
+
+Each of35 L200 proof bins contains620440 keyed radial records:
+387432 forward,233008 adjoint,44800 fluid,575640 solid; total21715400.
+All recorded radial packet/value/derivative/role/fluid/solid/per-mode strain
+relative-L2 errors are exactly0. Metadata/key coverage checks preserve native
+one-sided interfaces, source lift and frame/family domains. The maximum
+conservative single-workspace diagnostic capture estimate210949600B is below
+the256MiB bound; this is diagnostic capture, not timed-path field history.
+
+All70 scalar proof rows cover35bins x2sections. Independently verified positive
+finite forward,adjoint and product oracle norms in EVERY row, including7/8/41.
+Maximum same-workspace field/product relative-L2 errors are forward8.6313e-16,
+adjoint7.3890e-16,product1.0882e-15, below1e-11. All9 selected D runs (audit,
+6native repeats,2profiles) have physical CSV channels, full kernel arrays and
+geometry bytehash-exact against frozen PhaseD outputs. Fluid packet diagnostics
+remain visible and separate; no additional physical fluid-accuracy claim.
+
+Actual new-helper L3/NQ8 audit:35 bins,6760 keyed records per bin (3966 forward,
+2794 adjoint,504 fluid,6256 solid),236600 total, all8category errors0. Frozen
+base/plus/minus trace/result local hashes match the actual FD-checker consumed
+inputs. Independent serial FD recomputation gives -106.02358956682345 versus
+new-helper integrated kernel -106.02359024964314: relative6.440261900046464e-9,
+below2e-4. Gravity error1.9984e-15 and time-shift identity.9999999999999994 pass.
+L3 physical outputs match the prior full PhaseD L3 pipeline exactly.
+
+Same-mesh exact packet/output equivalence plus unchanged compiled dependencies
+support inheriting the existing hash-bound NQ10 solid accuracy budget:
+field2.1952474713321954e-4,kernel1.450918716573929e-4 <1e-3.
+Prior PhaseD final-report SHA013273941560685863015e48aeef42daeada129b3174ff47217637f21e605a95
+is a report anchor linking the prior numerical evidence, not a raw NQ10 hash.
+No new cross-backend scientific-equivalence or discrepancy-cause claim.
+
+MATCHED PERFORMANCE AND ACCOUNTING
+Fresh native driver medians: generic7.788696483s,batched7.585382455s, saving
+.203314028s or2.61037297375% of elapsed time. Speed ratio1.026803398 is distinct
+from elapsed-time reduction. Three-run ranges do not overlap: generic
+7.781501814..7.800024017s,batched7.576651356..7.589408306s.
+Supervisor medians8.057737327s/7.878134965s are a separate accounting domain.
+Unchanged native YSpec refresh median4.306145970s; batched D/Y ratio1.76152469.
+The backends perform different work; these are contextual matched timings.
+
+One profile per D route: radial4.965903364->4.017802243 worker-s (19.0922% lower).
+Direct table access also reduces coefficient-row packing1.972437253->1.728386235
+worker-s and removes.004497936worker-s lookup materialization. GEMM observations
+19.213565570/19.224154517worker-s are essentially unchanged. The full-pipeline
+gain cannot be attributed solely to the radial named scope. Per-order callbacks
+and existing strain formulas remain in source; their individual residual costs
+were not instrumented. No further optimization is implied or performed.
+
+All raw profile rows have finite valid inclusive/exclusive times. Both profiles
+record35root/workspaces,32radial calls,147840GEMMs,35forward/32adjoint/3skips.
+Worker exclusive sums52.076479075/50.725495487s close to their roots exactly
+within floating rounding; master wall partitions7.813696619/7.596818263s close
+exactly. Profile driver observations7.814170005/7.597191790s are separate from
+native medians. Worker sums cannot be converted into pipeline wall savings;
+single profile observations cannot isolate instrumentation cost or fine causes.
+
+RESOURCES, FAILURE PRESERVATION, AND TERMINAL RECOVERY
+Build supervisor completed rc0, unchanged inputs, verified cleanup: peak6threads,
+2.2914GiB within8/32GiB. All13 numerical jobs plus FDchecker completed rc0,
+unchanged inputs, verified cleanup, sequential timestamps, peak9threads/2.1153GiB
+within20/16GiB.8total workers/inner1 and aggregate50 ceiling retained. Existing
+user-space watchdog is not kernel aggregate thread or memory accounting.
+
+Original terminal checker alone failedrc1 after all scientific gates: missing
+output-parent directory and live supervisor-state self-reference. Independently
+compared all276 before/after hashes: onlystate.json changed;275 others identical.
+Traceback/log hash matches the preserved failure receipt
+cdeb9075b9b6b792f288d11f0793fba6daa9c83b51a9723c6ce2d5cc917f8c36.
+The focused checker fix creates output parent and permits only that exact prior
+failure/reasons/state-hash transition, while retaining all scientific gates.
+
+Reviewed final retry checker SHA
+fbb6cf5d229754404df56d7a336b5a9dd117796691b363eddc209163848066d4;
+actual retry-plan SHA
+d9af22a9af300019c2e677d0aee3b03d945ab111d1a8f729a24b447b02914428.
+It ran in a fresh supervisor against finalized original closed-task state,
+completedrc0, inputs unchanged, cleanup verified, peak2threads/.0383GiB within
+4/8GiB. Earlier staging/path guard failures are preserved without numerical
+reruns. All scientific timing observations are from the original matched queue.
+
+Final Markdown and companion JSON are materially accurate and bounded after
+corrections distinguishing3values+3derivatives/per-mode strain contributions,
+report-anchor hashes, direct-index packing effects, worker/wall accounting,
+and the modest2.61% end-to-end gain. No remaining blocker in this substage.

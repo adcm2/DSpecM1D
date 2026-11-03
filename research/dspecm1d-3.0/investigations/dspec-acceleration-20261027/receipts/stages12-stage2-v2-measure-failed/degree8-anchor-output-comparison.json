@@ -1,0 +1,45 @@
+{
+  "anchor_result": {
+    "schedule_mode": "degree",
+    "workers": 8,
+    "frequency_workers": 1,
+    "solve_workers": 8,
+    "kernel_s": 40.9390908,
+    "elapsed_s": 52.250099309,
+    "tensor_packed_relative_l2": 5.954448952206202e-16,
+    "time_shift_adjoint_identity": 0.9999999999999997,
+    "gravity_max_abs_nd_error": 2.886579864025407e-15
+  },
+  "byte_exact_against_Stage1_N1": true,
+  "candidate_sha256": {
+    "parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+    "trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+    "spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+    "components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+    "nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+    "along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+    "along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+    "across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+    "across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9"
+  },
+  "reference_sha256": {
+    "parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+    "trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+    "spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+    "components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+    "nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+    "along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+    "along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+    "across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+    "across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9"
+  },
+  "failure_gate": {
+    "id": "degree8-anchor-vs-Stage1-N1",
+    "failure_reasons": [
+      "missing_outputs:checks.json"
+    ],
+    "checker_error": "ValueError: result does not identify the frequency schedule",
+    "campaign_status": "failed",
+    "later_jobs_started": false
+  }
+}

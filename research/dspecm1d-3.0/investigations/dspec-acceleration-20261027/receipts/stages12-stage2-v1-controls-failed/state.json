@@ -1,0 +1,65 @@
+{
+  "finished_unix": 1793450154.3725486,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/stages12-stage2-v1-scheduler-test/frequency-scheduler-test/frequency-scheduler-test"
+      ],
+      "command_sha256": "aebfd40cc161c032af6d93cbc8db131c12dddb258f9fb9c58401e3adcfc239dc",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-controls",
+      "elapsed_seconds": 0.36900147201959044,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          3861413,
+          48340447
+        ]
+      ],
+      "finished_unix": 1793450154.3704946,
+      "id": "scheduler-helper-test",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/stages12-stage2-v1-scheduler-test/frequency-scheduler-test/command.json": "a69ecf5efa5c180d6bbf2231823acc656ce634213f7d2160f9f156b24dd2da28",
+        "/space/adcm2/research/builds/stages12-stage2-v1-scheduler-test/frequency-scheduler-test/frequency-scheduler-test": "47303769639abfa50898e5f808a213d9788a3e4665eb727f896b56550603f2a2",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-scheduler-build/configs/stages12-stage2-v1-scheduler-build.json": "717f0d41480ea07db347dbbc3aca2fa5a9bff03895bc73ca802546da44c9bbcc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-scheduler-build-control-v1/continuation/stages12-stage2-scheduler-build-v1/build-frequency-scheduler-helper-test/build-result.json": "a71333b9c634c8128ca98a25e86496a6d7542ab5b46f6aec2b7919c187569cac",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/stages12-stage2-v1-scheduler-test/frequency-scheduler-test/command.json": "a69ecf5efa5c180d6bbf2231823acc656ce634213f7d2160f9f156b24dd2da28",
+        "/space/adcm2/research/builds/stages12-stage2-v1-scheduler-test/frequency-scheduler-test/frequency-scheduler-test": "47303769639abfa50898e5f808a213d9788a3e4665eb727f896b56550603f2a2",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v1-scheduler-build/configs/stages12-stage2-v1-scheduler-build.json": "717f0d41480ea07db347dbbc3aca2fa5a9bff03895bc73ca802546da44c9bbcc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-scheduler-build-control-v1/continuation/stages12-stage2-scheduler-build-v1/build-frequency-scheduler-helper-test/build-result.json": "a71333b9c634c8128ca98a25e86496a6d7542ab5b46f6aec2b7919c187569cac",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "8ac1f624b36d2a44ce9c6df444b02fbf9010fe544fa197fa39f2b5fdaf4c717b",
+      "outputs": [],
+      "outputs_sha256": {},
+      "peak_observed_rss_gib_userspace": 0.0222,
+      "peak_observed_threads": 2,
+      "returncode": -6,
+      "started_unix": 1793450153.998282,
+      "status": "failed",
+      "system_cpu_seconds_children": 0.004667999999999999,
+      "user_cpu_seconds_children": 0.00043099999999999996
+    }
+  ],
+  "plan_sha256": "1b6d4d87b1260492d7830ae5c6d8406533d14d29e3a303ae82a6187c410a416b",
+  "schema": 1,
+  "started_unix": 1793450153.9937258,
+  "status": "failed",
+  "task_id": "stages12-stage2-controls-v1",
+  "thread_cap": 20
+}

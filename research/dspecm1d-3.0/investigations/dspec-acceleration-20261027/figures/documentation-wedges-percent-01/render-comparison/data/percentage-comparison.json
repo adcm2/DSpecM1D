@@ -1,0 +1,142 @@
+{
+  "dspec_job": "dspec-l200",
+  "yspec_job": "yspec-l200",
+  "degree": 200,
+  "waveform_window_relative_l2": 2.3320305973477654e-05,
+  "timings": {
+    "DSpec": {
+      "backend": "dspec",
+      "degree": 200,
+      "nq": 10,
+      "refinement": 0.025,
+      "workers": 8,
+      "attenuation": true,
+      "epsilon_perturbation": 0,
+      "frequency_count": 35,
+      "first_bin": 7,
+      "last_bin": 41,
+      "fft_samples": 2048,
+      "fft_period_s": 4096,
+      "damping_si": 0.0020833333333333333,
+      "native_side_count": 293,
+      "along_angles": 135,
+      "across_angles": 19,
+      "gravity_max_abs_nd_error": 2.886579864025407e-15,
+      "time_shift_adjoint_identity": 0.9999999999999997,
+      "measurement_rate_norm": 1.8022564490035656e-16,
+      "integrated_profile_kernel": 0,
+      "forward_s": 10.6913727,
+      "measurement_s": 0.002650056,
+      "kernel_s": 40.659227846,
+      "tensor_packed_relative_l2": 5.954448952206202e-16,
+      "tensor_validation_s": 0.514160926,
+      "cache_bytes": 2907520000,
+      "elapsed_s": 51.883172808,
+      "kernel_parameter": "ln_vs_at_fixed_vp_density_and_effective_Q",
+      "kernel_units": "s m^-3",
+      "layout": "native-side-major then angle, float64",
+      "source_shell_contacts": false
+    },
+    "YSpec": {
+      "backend": "yspec",
+      "degree": 200,
+      "nq": 10,
+      "refinement": 0.025,
+      "workers": 8,
+      "attenuation": true,
+      "epsilon_perturbation": 0,
+      "frequency_count": 35,
+      "first_bin": 7,
+      "last_bin": 41,
+      "fft_samples": 2048,
+      "fft_period_s": 4096,
+      "damping_si": 0.0020833333333333333,
+      "native_side_count": 293,
+      "along_angles": 135,
+      "across_angles": 19,
+      "gravity_max_abs_nd_error": 2.886579864025407e-15,
+      "time_shift_adjoint_identity": 0.9999999999999997,
+      "measurement_rate_norm": 1.8022305245712562e-16,
+      "integrated_profile_kernel": 0,
+      "forward_s": 0.251983572,
+      "measurement_s": 0.00239707,
+      "kernel_s": 5.370850703,
+      "tensor_packed_relative_l2": 0,
+      "tensor_validation_s": 0,
+      "cache_bytes": 0,
+      "elapsed_s": 5.641430309,
+      "kernel_parameter": "ln_vs_at_fixed_vp_density_and_effective_Q",
+      "kernel_units": "s m^-3",
+      "layout": "native-side-major then angle, float64",
+      "source_shell_contacts": false
+    }
+  },
+  "resources": {
+    "DSpec": {
+      "peak_observed_threads": 9,
+      "peak_observed_rss_gib_userspace": 2.4258
+    },
+    "YSpec": {
+      "peak_observed_threads": 9,
+      "peak_observed_rss_gib_userspace": 0.4361
+    }
+  },
+  "sections": {
+    "along": {
+      "native_sides": 293,
+      "angles": 135,
+      "bulk_area_weighted_relative_l2": 2.2383710831230576e-05,
+      "bulk_point_relative_l2": 2.300343945585659e-05,
+      "bulk_cosine_similarity": 0.9999999997697663,
+      "shared_limit": 3.7798933940192316e-16,
+      "difference_own_limit": 8.185661457085874e-21,
+      "max_abs": {
+        "DSpec": 1.0457855842886983e-14,
+        "YSpec": 1.0457920438074167e-14,
+        "difference": 5.197428078326972e-15
+      },
+      "saturated_fraction": {
+        "DSpec": 0.070838073568449,
+        "YSpec": 0.07073694855264821,
+        "difference": 0.0008595626343066616
+      }
+    },
+    "across": {
+      "native_sides": 293,
+      "angles": 19,
+      "bulk_area_weighted_relative_l2": 3.379078933269254e-05,
+      "bulk_point_relative_l2": 3.719207346826251e-05,
+      "bulk_cosine_similarity": 0.9999999993546452,
+      "shared_limit": 1.872148225887787e-16,
+      "difference_own_limit": 9.503489388514707e-21,
+      "max_abs": {
+        "DSpec": 2.1758946383072554e-16,
+        "YSpec": 2.1759228217545398e-16,
+        "difference": 4.921051957545192e-17
+      },
+      "saturated_fraction": {
+        "DSpec": 0.007005568528830609,
+        "YSpec": 0.007005568528830609,
+        "difference": 0.0
+      }
+    }
+  },
+  "percentage_formula": "100*(DSpec-YSpec)/max(abs(DSpec))",
+  "denominator_scope": "Each section independently; every original unclipped native-side sample, radius>=3000km, including shallow and endpoint samples.",
+  "percentage_sections": {
+    "along": {
+      "dspec_max_abs_denominator_s_m3": 1.0457855842886983e-14,
+      "full_range_percent_limit": 49.69879252889162,
+      "bulk_zoom_percent_limit": 7.827284655729342e-05,
+      "bulk_zoom_clipped_fraction": 0.038275818480596635,
+      "full_range_clipped_fraction": 0.0
+    },
+    "across": {
+      "dspec_max_abs_denominator_s_m3": 2.1758946383072554e-16,
+      "full_range_percent_limit": 22.616223556548405,
+      "bulk_zoom_percent_limit": 0.0043676238827023255,
+      "bulk_zoom_clipped_fraction": 0.010418537812107059,
+      "full_range_clipped_fraction": 0.0
+    }
+  }
+}

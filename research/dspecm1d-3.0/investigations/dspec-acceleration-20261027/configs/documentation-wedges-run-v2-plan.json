@@ -1,0 +1,451 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control",
+  "thread_cap": 20,
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_WAIT_POLICY": "PASSIVE",
+    "OMP_DYNAMIC": "FALSE",
+    "MPLBACKEND": "Agg"
+  },
+  "jobs": [
+    {
+      "id": "audit-l3-t1",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "3",
+        "8",
+        "0.05",
+        "1",
+        "audit",
+        "0"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/prem.200"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 48
+    },
+    {
+      "id": "audit-l3-t8",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "3",
+        "8",
+        "0.05",
+        "8",
+        "audit",
+        "0"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/prem.200"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 48
+    },
+    {
+      "id": "audit-parallel-exact",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_doc_wedges.py",
+        "parity",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02",
+        "audit-l3-t1",
+        "audit-l3-t8",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_doc_wedges.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/audit-l3-t1/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/audit-l3-t8/data/result.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 8
+    },
+    {
+      "id": "audit-plus",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "dspec-forward",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "3",
+        "8",
+        "0.05",
+        "8",
+        "audit",
+        "1e-05"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/prem.200"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 48
+    },
+    {
+      "id": "audit-minus",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "dspec-forward",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "3",
+        "8",
+        "0.05",
+        "8",
+        "audit",
+        "-1e-05"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/prem.200"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 48
+    },
+    {
+      "id": "attenuation-finite-difference",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_doc_wedges.py",
+        "fd",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02",
+        "audit-l3-t8",
+        "audit-plus",
+        "audit-minus",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_doc_wedges.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/audit-l3-t8/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/audit-plus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/audit-minus/data/result.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 8
+    },
+    {
+      "id": "pilot-dspec-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "12",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/prem.200"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 48
+    },
+    {
+      "id": "pilot-yspec-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "yspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "12",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/prem.200"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 48
+    },
+    {
+      "id": "pilot-match",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_doc_wedges.py",
+        "pilot",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02",
+        "pilot-dspec-l12",
+        "pilot-yspec-l12",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_doc_wedges.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/pilot-dspec-l12/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/pilot-yspec-l12/data/result.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 8
+    },
+    {
+      "id": "dspec-l200",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "200",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/prem.200"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 48
+    },
+    {
+      "id": "yspec-l200",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "yspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "200",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/documentation-wedges-20261027-04/doc-native/doc-driver",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v4/candidates/documentation-wedges-v4/case/prem.200"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 48
+    },
+    {
+      "id": "render-comparison",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_doc_wedges.py",
+        "plot",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02",
+        "dspec-l200",
+        "yspec-l200",
+        "{JOB_DIR}/data"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_doc_wedges.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v2/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/dspec-l200/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-02/yspec-l200/data/result.json"
+      ],
+      "outputs": [
+        "data/along-common-scale.png",
+        "data/along-common-scale.pdf",
+        "data/along-residual-scale.png",
+        "data/along-residual-scale.pdf",
+        "data/across-common-scale.png",
+        "data/across-common-scale.pdf",
+        "data/across-residual-scale.png",
+        "data/across-residual-scale.pdf",
+        "data/waveform-comparison.png",
+        "data/waveform-comparison.pdf",
+        "data/comparison.json",
+        "data/figure-manifest.json"
+      ],
+      "timeout_seconds": 1200,
+      "memory_gib": 16
+    }
+  ]
+}

@@ -1,0 +1,211 @@
+{
+  "command": [
+    "investigations/dspec-sk-profile-20261026/physical-profile/global-gsh/physical_global_gsh-profiled-v1-frozen",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/PREM500",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/runs/gsh-v1-timing-l1536-r118/data",
+    "--lmax",
+    "1536",
+    "--nq",
+    "6",
+    "--radial-side-index",
+    "118",
+    "--radial-refinement",
+    "0.05",
+    "--qex",
+    "1",
+    "--frequency-bin",
+    "2",
+    "--reference",
+    "off",
+    "--max-memory-gib",
+    "8",
+    "--max-output-gib",
+    "4"
+  ],
+  "cpu": 3,
+  "threads": 1,
+  "timeout_s": 1200,
+  "address_space_limit_gb": 8,
+  "executable_sha256": "f82618693c2de5e4c6917733cde40303141fccb0af5ff1e7c5c4f2fa27783417",
+  "start_unix": 1793051516.4131064,
+  "cpu_index": 3,
+  "returncode": 0,
+  "wall_s": 1166.7809274540004,
+  "peak_rss_bytes": 1396891648,
+  "timedout": false,
+  "profiles": [
+    {
+      "solver": "global_gsh_probe",
+      "objective": -1,
+      "stages": {
+        "dynamic_H_assembly": {
+          "inclusive_s": 0.446995746,
+          "exclusive_s": 0.446995746,
+          "calls": 3073
+        },
+        "forward_substitution": {
+          "inclusive_s": 0.35955760000000003,
+          "exclusive_s": 0.001361561,
+          "calls": 3073
+        },
+        "frequency_workspace_prepare_and_modal_capture": {
+          "inclusive_s": 677.208479804,
+          "exclusive_s": 673.650347211,
+          "calls": 1
+        },
+        "full_weighted_HH_solve": {
+          "inclusive_s": 4.3027e-05,
+          "exclusive_s": 8.060000000000001e-07,
+          "calls": 1
+        },
+        "minimal_unit_basis_HH_solve": {
+          "inclusive_s": 0.217035622,
+          "exclusive_s": 0.001203477,
+          "calls": 3072
+        },
+        "modal_projection_source_lift_and_frequency_solve": {
+          "inclusive_s": 3.5581325930000003,
+          "exclusive_s": 0.004259758000000001,
+          "calls": 1
+        },
+        "packed_Wigner_d_table_build": {
+          "inclusive_s": 0.00069885,
+          "exclusive_s": 0.00069885,
+          "calls": 2
+        },
+        "packed_angular_coefficients_and_basis_build": {
+          "inclusive_s": 0.00017346600000000002,
+          "exclusive_s": 0.00017346600000000002,
+          "calls": 2
+        },
+        "pole_frame_sampling_total": {
+          "inclusive_s": 0.016814027000000002,
+          "exclusive_s": 1.0771e-05,
+          "calls": 1
+        },
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 0.013294463000000001,
+          "exclusive_s": 0.013294463000000001,
+          "calls": 2
+        },
+        "radial_l0_sampling_and_interpolation": {
+          "inclusive_s": 2.1839000000000002e-05,
+          "exclusive_s": 2.1839000000000002e-05,
+          "calls": 1
+        },
+        "radial_l0_source_and_adjoint_branch": {
+          "inclusive_s": 0.0008049130000000001,
+          "exclusive_s": 3.2676000000000004e-05,
+          "calls": 1
+        },
+        "receiver_basis_and_QR_reconstruction": {
+          "inclusive_s": 0.12448325600000001,
+          "exclusive_s": 0.12448325600000001,
+          "calls": 3072
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 0.006418104,
+          "exclusive_s": 0.0008725520000000001,
+          "calls": 1
+        },
+        "shared_forward_and_adjoint_solver": {
+          "inclusive_s": 3.089952298,
+          "exclusive_s": 0.108693573,
+          "calls": 3073
+        },
+        "solver_factorization_dispatch": {
+          "inclusive_s": 1.95762673,
+          "exclusive_s": 0.000652475,
+          "calls": 3073
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 0.010363313,
+          "exclusive_s": 0.0015493800000000002,
+          "calls": 1
+        },
+        "sparse_adjoint_solve_including_rhs_scaling": {
+          "inclusive_s": 0.215874366,
+          "exclusive_s": 0.215874366,
+          "calls": 3073
+        },
+        "sparse_equilibration_and_scaling": {
+          "inclusive_s": 0.253691071,
+          "exclusive_s": 0.253691071,
+          "calls": 3073
+        },
+        "sparse_factorization_total": {
+          "inclusive_s": 1.9569742550000002,
+          "exclusive_s": 0.005884872,
+          "calls": 3073
+        },
+        "sparse_forward_solve_including_rhs_scaling": {
+          "inclusive_s": 0.358196039,
+          "exclusive_s": 0.358196039,
+          "calls": 3073
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 1.3922101580000001,
+          "exclusive_s": 1.3922101580000001,
+          "calls": 3073
+        },
+        "sparse_symbolic_analysis": {
+          "inclusive_s": 0.30518815400000004,
+          "exclusive_s": 0.30518815400000004,
+          "calls": 3073
+        },
+        "spheroidal_source_lift_projection_and_solver": {
+          "inclusive_s": 3.287592973,
+          "exclusive_s": 0.29951002800000004,
+          "calls": 1536
+        },
+        "tensor_angular_gemm_complex_and_packing": {
+          "inclusive_s": 0.000192706,
+          "exclusive_s": 0.000192706,
+          "calls": 12
+        },
+        "toroidal_source_lift_projection_and_solver": {
+          "inclusive_s": 0.265474949,
+          "exclusive_s": 0.039894577,
+          "calls": 1536
+        }
+      },
+      "counters": {
+        "adjoint_rhs_columns": 4609,
+        "forward_rhs_columns": 9217,
+        "full_weighted_measurement_adjoint_components": 3,
+        "full_weighted_modal_adjoint_rhs_columns": 1,
+        "global_paraminfo_setup_skipped": 1,
+        "modal_degree_iterations": 1536,
+        "modal_lmax": 1536,
+        "modal_receiver_rhs_components": 3,
+        "packed_angular_coeff_cache_misses": 2,
+        "packed_wigner_cache_misses": 2,
+        "pole_only_nonradial_weighted_adjoint_route": 1,
+        "pole_only_spheroidal_global_harmonic_setup_skips": 1536,
+        "pole_only_spheroidal_weighted_rhs_columns_avoided": 2362368,
+        "pole_only_toroidal_global_harmonic_setup_skips": 1536,
+        "pole_only_toroidal_weighted_rhs_columns_avoided": 2362368,
+        "radial_coefficient_cache_misses": 2,
+        "receiver_basis_input_columns": 832512,
+        "receiver_basis_input_rows": 9216,
+        "receiver_basis_selected_columns": 4608,
+        "solver_degree": 2360832,
+        "solver_forward_rhs_columns": 9217,
+        "solver_unit_basis_rhs_columns": 4608,
+        "solver_weighted_adjoint_rhs_columns": 1,
+        "sparse_factorization_calls": 3073,
+        "sparse_matrix_nonzeros": 12706924,
+        "sparse_matrix_rows": 832814,
+        "tensor_complex_gemm_batches": 12,
+        "tensor_complex_gemm_k": 73704,
+        "tensor_complex_gemm_m": 12,
+        "tensor_complex_gemm_n": 12,
+        "true_forward_only_route": 0
+      }
+    }
+  ],
+  "output_files": {
+    "data/gsh_fields.bin": "8495a64982c542100ac7a077f477f94124209f84a23b3f92c0b1b6bbee291c42",
+    "data/result.json": "3cac1de29404da2f9eaa65b63620bbebb949544939ec3f914f806b716965bba6"
+  }
+}

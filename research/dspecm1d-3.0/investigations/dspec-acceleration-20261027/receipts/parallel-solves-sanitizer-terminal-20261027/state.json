@@ -1,0 +1,83 @@
+{
+  "finished_unix": 1793133388.5015924,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0-3",
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-sanitizer-run-v1/tools/check_parallel_solver_sanitizer.py",
+        "/space/adcm2/research/builds/kernel-parallel-solves-tsan-20261027-01/parallel-tsan/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "3",
+        "3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/parallel-solves-sanitizer-control/continuation/parallel-solves-sanitizer-01/tsan-l3-t3/audit"
+      ],
+      "command_sha256": "ab71f58adb404abb90f59bb08406900dbc93e0f2f812ad433431fc99e7696291",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-sanitizer-run-v1",
+      "elapsed_seconds": 0.5169342860172037,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2842625,
+          16663844
+        ],
+        [
+          2842626,
+          16663848
+        ]
+      ],
+      "finished_unix": 1793133388.4989495,
+      "id": "tsan-l3-t3",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/kernel-parallel-solves-tsan-20261027-01/parallel-tsan/physical-driver": "ff251daf025c9c86d87d6c6cd9bcb25d21f1f011c71b76f9efcde63ca469b761",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-sanitizer-run-v1/tools/check_parallel_solver_sanitizer.py": "51cce0889bae618c30237b7693851c4b55074eaf104ed59f2a257c2c90ea10c5",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/kernel-parallel-solves-tsan-20261027-01/parallel-tsan/physical-driver": "ff251daf025c9c86d87d6c6cd9bcb25d21f1f011c71b76f9efcde63ca469b761",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500": "ec9869508847eb6753cf0165f6176dd3eea1f03ac5717533ffb6dcfe09489685",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-sanitizer-run-v1/tools/check_parallel_solver_sanitizer.py": "51cce0889bae618c30237b7693851c4b55074eaf104ed59f2a257c2c90ea10c5",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "audit/checks.json",
+        "audit/stdout.log",
+        "audit/stderr.log"
+      ],
+      "outputs_sha256": {
+        "audit/checks.json": "a8fd88c7effb5e8dc8145dfae1d6ed62adb8f083f16410e83a704a2375aca20c",
+        "audit/stderr.log": "6e79fc9eac70a54f4fd455e290f55f816d2a5cb818dbc62fb906bf3f545db51d",
+        "audit/stdout.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "peak_observed_rss_gib_userspace": 0.0968,
+      "peak_observed_threads": 6,
+      "returncode": 1,
+      "started_unix": 1793133387.9627087,
+      "status": "failed",
+      "system_cpu_seconds_children": 0.074073,
+      "user_cpu_seconds_children": 0.21176599999999998
+    }
+  ],
+  "plan_sha256": "a52e563b8f82302f9e1b5d7300fb7d9ff0b1f965d7d7acdb8a2bfb895070467a",
+  "schema": 1,
+  "started_unix": 1793133387.9472053,
+  "status": "failed",
+  "task_id": "parallel-solves-sanitizer-01",
+  "thread_cap": 10
+}

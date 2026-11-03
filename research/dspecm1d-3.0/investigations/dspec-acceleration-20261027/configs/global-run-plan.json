@@ -1,0 +1,522 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-control",
+  "thread_cap": 12,
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "jobs": [
+    {
+      "id": "reference-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "4",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "global-w1-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "4-15",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-combined-02/combined-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "0,28,59,100,149,154,172,173",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "32"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-combined-02/combined-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-global-w1-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l3",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "global-w1-l3",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "global-w4-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "4-15",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-combined-02/combined-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "4",
+        "--global-radial-sides",
+        "0,28,59,100,149,154,172,173",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "32"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-combined-02/combined-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-global-w4-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l3",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "global-w4-l3",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "check-global-parallel-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "global-w1-l3",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "global-w4-l3",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--global-reference"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "reference-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "4",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/angular_grid.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "global-w1-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "4-15",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-combined-02/combined-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "1",
+        "--global-radial-sides",
+        "0,28,59,100,149,154,172,173",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "32"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-combined-02/combined-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-global-w1-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l12",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "global-w1-l12",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "global-w4-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=0",
+        "/usr/bin/taskset",
+        "-c",
+        "4-15",
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-combined-02/combined-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "12",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "off",
+        "--max-output-gib",
+        "8",
+        "--response-reuse",
+        "off",
+        "--response-record-spool",
+        "on",
+        "--response-spool-gib",
+        "128",
+        "--global-workers",
+        "4",
+        "--global-radial-sides",
+        "0,28,59,100,149,154,172,173",
+        "--global-max-radial-sides",
+        "8",
+        "--max-working-gib",
+        "32"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-acceleration-20261027-combined-02/combined-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/pole_response_spool.bin",
+        "data/kernel.bin",
+        "data/kernel.bin.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 64
+    },
+    {
+      "id": "check-global-w4-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "reference-l12",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "global-w4-l12",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    },
+    {
+      "id": "check-global-parallel-l12",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py",
+        "--reference-root",
+        "{TASK_DIR}",
+        "--reference-job",
+        "global-w1-l12",
+        "--candidate-root",
+        "{TASK_DIR}",
+        "--candidate-job",
+        "global-w4-l12",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--global-reference"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_pair.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/global-run-v1/tools/check_global_pair.py"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 300,
+      "memory_gib": 4
+    }
+  ]
+}

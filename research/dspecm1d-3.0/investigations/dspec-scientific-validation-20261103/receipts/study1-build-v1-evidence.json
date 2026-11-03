@@ -1,0 +1,341 @@
+{
+  "build_campaign": {
+    "build_model": "one direct compiler invocation per variant; sequential variants",
+    "build_root": "/space/adcm2/research/builds/dspec-science-study1-v1",
+    "environment_thread_limits": "all=1",
+    "finished_unix": 1793717015.7112875,
+    "schema": 2,
+    "started_unix": 1793716838.8995216,
+    "status": "completed",
+    "updated_unix": 1793717015.7111578,
+    "variants": [
+      {
+        "binary_sha256": "7688e40d870c23e06a04b6ec61d975f8524c6c2133421185b9ab82ead0679bbb",
+        "command_sha256": "95f09f15711c96d46f10d9cd55ca2ecf2f59c07c376be39efc401d854167a3a1",
+        "id": "dspec-timer-disabled",
+        "returncode": 0
+      },
+      {
+        "binary_sha256": "aa25902ec2af07a1ff72d6594a46c335d88fd1f927010a9ec88a87ca3bd9b2d8",
+        "command_sha256": "e52480d8e8c25a7ad8ce4fd32e4eb7247230c0f9e4e379264a2d6aea815a44bd",
+        "id": "dspec-timer-enabled",
+        "returncode": 0
+      }
+    ]
+  },
+  "build_result": null,
+  "command_receipts": {
+    "dspec-timer-disabled": {
+      "binary_sha256": "7688e40d870c23e06a04b6ec61d975f8524c6c2133421185b9ab82ead0679bbb",
+      "binary_sha256_observed": "7688e40d870c23e06a04b6ec61d975f8524c6c2133421185b9ab82ead0679bbb",
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec",
+        "-O3",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DNDEBUG",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-DGSHTRANS_HAVE_INTERPOLATION",
+        "-DDSFAST_DISABLE_PROFILE",
+        "-I/space/adcm2/research/projects/DSpecM1D",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "-DYSPEC_PHASE_E_PROFILE_DISABLED",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec/phase_d_driver.cpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "-DMATHPROFILE_DISABLED",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so",
+        "-Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled",
+        "-o",
+        "/space/adcm2/research/builds/dspec-science-study1-v1/dspec-timer-disabled/phase-d-driver",
+        "-lfftw3",
+        "-lfftw3f",
+        "-lfftw3l",
+        "-llapack",
+        "-lblas"
+      ],
+      "command_display": "/opt/gcc-13.2.0/bin/g++ -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec -O3 -DEIGEN_DONT_PARALLELIZE -DNDEBUG -std=gnu++23 -fopenmp -DGSHTRANS_HAVE_INTERPOLATION -DDSFAST_DISABLE_PROFILE -I/space/adcm2/research/projects/DSpecM1D -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include -isystem /space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3 -DYSPEC_PHASE_E_PROFILE_DISABLED /space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec/phase_d_driver.cpp -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src -DMATHPROFILE_DISABLED /space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so -Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled -o /space/adcm2/research/builds/dspec-science-study1-v1/dspec-timer-disabled/phase-d-driver -lfftw3 -lfftw3f -lfftw3l -llapack -lblas",
+      "command_json_sha256": "96b5b1692fcfdbc67f1e313dd9167dbce73eed18de2c15034eb6b90411dd273b",
+      "command_sha256": "95f09f15711c96d46f10d9cd55ca2ecf2f59c07c376be39efc401d854167a3a1",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec",
+      "finished_unix": 1793716923.724632,
+      "id": "dspec-timer-disabled",
+      "output": "/space/adcm2/research/builds/dspec-science-study1-v1/dspec-timer-disabled/phase-d-driver",
+      "returncode": 0,
+      "started_unix": 1793716838.9985669,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_text": "",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked_input_sha256": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec": "9e425d8f7212f6bfdb12d60365629b7e423448d5d02a8db6f3398318ea78e10b"
+      },
+      "tracked_input_sha256_after": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec": "9e425d8f7212f6bfdb12d60365629b7e423448d5d02a8db6f3398318ea78e10b"
+      },
+      "tracked_inputs_unchanged": true
+    },
+    "dspec-timer-enabled": {
+      "binary_sha256": "aa25902ec2af07a1ff72d6594a46c335d88fd1f927010a9ec88a87ca3bd9b2d8",
+      "binary_sha256_observed": "aa25902ec2af07a1ff72d6594a46c335d88fd1f927010a9ec88a87ca3bd9b2d8",
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec",
+        "-O3",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DNDEBUG",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-DGSHTRANS_HAVE_INTERPOLATION",
+        "-DDSFAST_DISABLE_PROFILE",
+        "-I/space/adcm2/research/projects/DSpecM1D",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "-DYSPEC_PHASE_E_PROFILE_DISABLED",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec/phase_d_driver.cpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so",
+        "-Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled",
+        "-o",
+        "/space/adcm2/research/builds/dspec-science-study1-v1/dspec-timer-enabled/phase-d-driver",
+        "-lfftw3",
+        "-lfftw3f",
+        "-lfftw3l",
+        "-llapack",
+        "-lblas"
+      ],
+      "command_display": "/opt/gcc-13.2.0/bin/g++ -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec -O3 -DEIGEN_DONT_PARALLELIZE -DNDEBUG -std=gnu++23 -fopenmp -DGSHTRANS_HAVE_INTERPOLATION -DDSFAST_DISABLE_PROFILE -I/space/adcm2/research/projects/DSpecM1D -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include -isystem /space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3 -DYSPEC_PHASE_E_PROFILE_DISABLED /space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec/phase_d_driver.cpp -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src /space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so -Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled -o /space/adcm2/research/builds/dspec-science-study1-v1/dspec-timer-enabled/phase-d-driver -lfftw3 -lfftw3f -lfftw3l -llapack -lblas",
+      "command_json_sha256": "554b522e13ba15a8416effe6564b6d40a7b77be00856155592878c7fdda9ff65",
+      "command_sha256": "e52480d8e8c25a7ad8ce4fd32e4eb7247230c0f9e4e379264a2d6aea815a44bd",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec",
+      "finished_unix": 1793717015.7071545,
+      "id": "dspec-timer-enabled",
+      "output": "/space/adcm2/research/builds/dspec-science-study1-v1/dspec-timer-enabled/phase-d-driver",
+      "returncode": 0,
+      "started_unix": 1793716923.808997,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_text": "",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked_input_sha256": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec": "9e425d8f7212f6bfdb12d60365629b7e423448d5d02a8db6f3398318ea78e10b"
+      },
+      "tracked_input_sha256_after": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/candidate/dspec": "9e425d8f7212f6bfdb12d60365629b7e423448d5d02a8db6f3398318ea78e10b"
+      },
+      "tracked_inputs_unchanged": true
+    }
+  },
+  "status": "completed",
+  "supervisor_state": {
+    "finished_unix": 1793717015.9771044,
+    "jobs": [
+      {
+        "cleanup": {
+          "proc_inspection_errors": [],
+          "reaped_pids": [],
+          "remaining": [],
+          "signal_log": [],
+          "unknown": [],
+          "verified_gone": true
+        },
+        "command": [
+          "/usr/bin/python3",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/configs/study1-build-v1.json",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/dspec-science-study1-v1-build-control/continuation/dspec-science-study1-v1-build/dspec-science-study1-v1-build/build-result.json"
+        ],
+        "command_sha256": "ee52fc1e982d94f78e5c840da7fa1cdb9e54fa06acfe98bf384873240cbd0afc",
+        "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1",
+        "elapsed_seconds": 177.14863762899768,
+        "failure_reasons": [],
+        "final_owned_processes": [
+          [
+            1070668,
+            75008928
+          ],
+          [
+            1070669,
+            75008932
+          ],
+          [
+            1070670,
+            75008947
+          ],
+          [
+            1070671,
+            75008947
+          ],
+          [
+            1071776,
+            75017345
+          ],
+          [
+            1071793,
+            75017389
+          ],
+          [
+            1071794,
+            75017390
+          ],
+          [
+            1071796,
+            75017428
+          ],
+          [
+            1071797,
+            75017428
+          ],
+          [
+            1072983,
+            75026541
+          ],
+          [
+            1073034,
+            75026587
+          ],
+          [
+            1073035,
+            75026588
+          ]
+        ],
+        "finished_unix": 1793717015.97487,
+        "id": "dspec-science-study1-v1-build",
+        "inputs_sha256_after": {
+          "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/configs/study1-build-v1.json": "b5372290f075a451dfecf97f9edeef25441b82870f8c3354dc9eec001417fda8",
+          "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+        },
+        "inputs_sha256_before": {
+          "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+          "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/scientific-inputs/dspec-science-study1-v1/configs/study1-build-v1.json": "b5372290f075a451dfecf97f9edeef25441b82870f8c3354dc9eec001417fda8",
+          "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+        },
+        "inputs_unchanged": true,
+        "log": "job.log",
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "outputs": [
+          "build-result.json"
+        ],
+        "outputs_sha256": {
+          "build-result.json": "a9d02409c8c46fd7e4451dd455b7de0f9957f928713e87e44c72ddb30b90102f"
+        },
+        "peak_observed_rss_gib_userspace": 2.5745,
+        "peak_observed_threads": 6,
+        "returncode": 0,
+        "started_unix": 1793716838.803439,
+        "status": "completed",
+        "system_cpu_seconds_children": 1.8418999999999999,
+        "updated_unix": 1793717013.9884026,
+        "user_cpu_seconds_children": 175.066306,
+        "watchdog": {
+          "aggregate_rss_gib_userspace": 2.5591,
+          "elapsed_seconds": 175.18,
+          "owned_processes": [
+            {
+              "pid": 1071797,
+              "starttime_ticks": 75017428,
+              "threads": 1
+            },
+            {
+              "pid": 1070666,
+              "starttime_ticks": 75008920,
+              "threads": 1
+            },
+            {
+              "pid": 1071796,
+              "starttime_ticks": 75017428,
+              "threads": 1
+            },
+            {
+              "pid": 1070668,
+              "starttime_ticks": 75008928,
+              "threads": 1
+            },
+            {
+              "pid": 1070669,
+              "starttime_ticks": 75008932,
+              "threads": 1
+            }
+          ],
+          "peak_observed_rss_gib_userspace": 2.5591,
+          "peak_observed_threads": 6,
+          "thread_cap": 8,
+          "thread_count_including_supervisor": 5
+        }
+      }
+    ],
+    "plan_sha256": "31eb960a56cb3cadb1f11e90e864848b8d1f99c2ed90e85c4ac3c6c2a9fc9ef2",
+    "schema": 1,
+    "started_unix": 1793716838.78197,
+    "status": "completed",
+    "task_id": "dspec-science-study1-v1-build",
+    "thread_cap": 8
+  }
+}

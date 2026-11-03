@@ -1,0 +1,91 @@
+{
+  "purpose": "Current-source Phase 2A reproducibility manifest for the corrected first-seismogram example; machine-local raw outputs are not published by this repository.",
+  "source_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+  "source_binary": {
+    "path": "/tmp/yspecpp-seismogram-audit-20261023/build/bin/yspec",
+    "sha256": "e4a081e015f90014f596c6a4f26a8bed59d1e784cb86288f70dd02685ec44af7",
+    "verification": "Matches all 222 tracked source files at the selected revision."
+  },
+  "model": {
+    "path_in_repository": "examples/prem.200",
+    "sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea"
+  },
+  "canonical_fixture": {
+    "path": "docs/site/examples/first-seismogram.json",
+    "sha256": "ce09532d22437c8e3266ff855f83dd05e039328bd2fe116522aa8ccf87ac7ab3"
+  },
+  "reference": {
+    "path": "DSpecM1D docs/site/assets/benchmarks/updates/figure2-yspecpp-summary-2026-10-20.json",
+    "sha256": "73284560dac2fab3314228aff17a04752a46a6d7d561ca82b81c633a2d5c44cf"
+  },
+  "raw_directory": "/tmp/yspecpp-phase2a-bolivia-20261023",
+  "thread_limits": {
+    "OMP_NUM_THREADS": 2,
+    "OMP_DYNAMIC": "FALSE",
+    "OPENBLAS_NUM_THREADS": 2,
+    "build_jobs": 2
+  },
+  "runs": [
+    {
+      "name": "L300 baseline",
+      "directory": "base60",
+      "wall_seconds": 52.73,
+      "input_sha256": "157a189282b441753ebfd6573b4bdfa4abf6a8ffc46ca5e07a48c0a2b19cba9a",
+      "trace": "bolivia.out.1",
+      "trace_sha256": "196c82b1f2ef926146fe5b32e219891374a4af632e75888e52353214f91d7021",
+      "rows": 18001,
+      "columns": 4,
+      "time_start_s": 0,
+      "time_end_s": 18000,
+      "time_step_s": 1
+    },
+    {
+      "name": "L450 degree refinement",
+      "directory": "l450full",
+      "wall_seconds": 101.80,
+      "input_sha256": "7ace6d1a79e0915e53e72aad0fc5b32c702195e55528fc8576e5dd3cc312f0fc",
+      "trace_sha256": "196c82b1f2ef926146fe5b32e219891374a4af632e75888e52353214f91d7021"
+    },
+    {
+      "name": "L600 degree refinement",
+      "directory": "l600",
+      "wall_seconds": 160.78,
+      "input_sha256": "128373e7a9d398e94420fc12c0c74e2d19ff3f35aa19849bae9259cfe7ffe082",
+      "trace_sha256": "196c82b1f2ef926146fe5b32e219891374a4af632e75888e52353214f91d7021"
+    },
+    {
+      "name": "solver tolerance 1e-6",
+      "directory": "tol1e6full",
+      "wall_seconds": 82.18,
+      "input_sha256": "60e47a4e5142c331dfd78145aa96b378f4ba94eb470c7c445049fcdafce3516a",
+      "trace_sha256": "1b6e3eba96e686e041bd032e2b2e340788864d1c48f68392292073dec3dd1765"
+    },
+    {
+      "name": "time step 0.5 s",
+      "directory": "dt05",
+      "wall_seconds": 48.78,
+      "input_sha256": "3e35c51f6d12ca5aeda83b98d4cc26afa33d0f7afa47e33b5ab1a55c2d3d12ab",
+      "trace_sha256": "eb3b08fdfb7e07dc83b72c84c9f805c69967808662a57972121567e807143c93"
+    },
+    {
+      "name": "joint tolerance 1e-6 and time step 0.5 s",
+      "directory": "joint",
+      "wall_seconds": 75.94,
+      "input_sha256": "63f3a5b24bc35e2bd198e2ddc76ee4c84b9b1ebdbcd7bc3ffafb92b28b410ad2",
+      "trace_sha256": "bcd94135a5eeb3f39cfe322032a5533e9f65e1fbfe11ba297f8d88e535f4b08a"
+    },
+    {
+      "name": "duration 600 min",
+      "directory": "duration600",
+      "wall_seconds": 99.83,
+      "input_sha256": "ee01cc25ceb7f9be7965347e33d9dfe02aa049aa72e9aa6be820455aa795d4d6",
+      "trace_sha256": "19c68e60965c25923de2824c2d8e032ab4eee0fca22b0182922b139cf0c7af71"
+    }
+  ],
+  "kernel_pilot": {
+    "directory": "kernel-pilot",
+    "wall_limit_seconds": 150,
+    "input_sha256": "665a10ad324189775666fcff46d88908e0f6491b9927b59a80a3df0f5e674bdb",
+    "result": "Timed out during radial-kernel frequency calculation after the forward seismogram completed; about 10 percent of 642 frequencies reported. No kernel artifact was accepted."
+  }
+}

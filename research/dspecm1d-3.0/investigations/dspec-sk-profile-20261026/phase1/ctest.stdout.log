@@ -1,0 +1,369 @@
+Internal ctest changing into directory: /home/adcm2/Documents/Research/Projects/DSpecM1D/build/3d-kernels-20261025/phase-c
+Test project /home/adcm2/Documents/Research/Projects/DSpecM1D/build/3d-kernels-20261025/phase-c
+        Start   1: InputParserTests.GetNextValueLineSkipsCommentsAndQuotes
+  1/178 Test   #1: InputParserTests.GetNextValueLineSkipsCommentsAndQuotes .....................................   Passed    0.02 sec
+        Start   2: InputParserTests.ReadRequiredScalarRejectsTrailingTokens
+  2/178 Test   #2: InputParserTests.ReadRequiredScalarRejectsTrailingTokens ....................................   Passed    0.01 sec
+        Start   3: InputParserTests.ReadRequiredLatLonParsesPair
+  3/178 Test   #3: InputParserTests.ReadRequiredLatLonParsesPair ...............................................   Passed    0.00 sec
+        Start   4: InputParserTests.InputParametersParsesKnownGoodFile
+  4/178 Test   #4: InputParserTests.InputParametersParsesKnownGoodFile .........................................   Passed    0.01 sec
+        Start   5: InputParserTests.InputParametersReadsOptionalCowlingCutoff
+  5/178 Test   #5: InputParserTests.InputParametersReadsOptionalCowlingCutoff ..................................   Passed    0.01 sec
+        Start   6: InputParserTests.InputParametersRejectsMalformedCowlingCutoff
+  6/178 Test   #6: InputParserTests.InputParametersRejectsMalformedCowlingCutoff ...............................   Passed    0.04 sec
+        Start   7: InputParserTests.InputParametersRejectsOutOfRangeLatitude
+  7/178 Test   #7: InputParserTests.InputParametersRejectsOutOfRangeLatitude ...................................   Passed    0.01 sec
+        Start   8: ReferenceSeriesIOTests.LoadYSpecTimeSeriesPadsAndTruncates
+  8/178 Test   #8: ReferenceSeriesIOTests.LoadYSpecTimeSeriesPadsAndTruncates ..................................   Passed    0.01 sec
+        Start   9: ReferenceSeriesIOTests.LoadSpecnmTimeSeriesParsesSemicolonFormat
+  9/178 Test   #9: ReferenceSeriesIOTests.LoadSpecnmTimeSeriesParsesSemicolonFormat ............................   Passed    0.00 sec
+        Start  10: ReferenceSeriesIOTests.LoadSpecnmTimeSeriesPadsShortInputs
+ 10/178 Test  #10: ReferenceSeriesIOTests.LoadSpecnmTimeSeriesPadsShortInputs ..................................   Passed    0.00 sec
+        Start  11: ReferenceSeriesIOTests.LoadMineosTimeSeriesAppliesScale
+ 11/178 Test  #11: ReferenceSeriesIOTests.LoadMineosTimeSeriesAppliesScale .....................................   Passed    0.01 sec
+        Start  12: ReferenceSeriesIOTests.LoadMineosTimeSeriesTruncatesToShortestComponent
+ 12/178 Test  #12: ReferenceSeriesIOTests.LoadMineosTimeSeriesTruncatesToShortestComponent .....................   Passed    0.01 sec
+        Start  13: ReferenceSeriesIOTests.LoadReferenceTimeSeriesBundlesYspecAndMineos
+ 13/178 Test  #13: ReferenceSeriesIOTests.LoadReferenceTimeSeriesBundlesYspecAndMineos .........................   Passed    0.01 sec
+        Start  14: ReferenceSeriesIOTests.LoadersReturnEmptyMatricesForZeroRequestedColumns
+ 14/178 Test  #14: ReferenceSeriesIOTests.LoadersReturnEmptyMatricesForZeroRequestedColumns ....................   Passed    0.01 sec
+        Start  15: SpecHelpersTests.ResolveModeFlagsHonorsModeTypeAndAngularRange
+ 15/178 Test  #15: SpecHelpersTests.ResolveModeFlagsHonorsModeTypeAndAngularRange ..............................   Passed    0.00 sec
+        Start  16: SpecHelpersTests.OutputFactorMatchesRequestedQuantity
+ 16/178 Test  #16: SpecHelpersTests.OutputFactorMatchesRequestedQuantity .......................................   Passed    0.00 sec
+        Start  17: SpecHelpersTests.SpecConstantsUsesReferencePeriod
+ 17/178 Test  #17: SpecHelpersTests.SpecConstantsUsesReferencePeriod ...........................................   Passed    0.00 sec
+        Start  18: SpecHelpersTests.FactorizeOrComputeChoosesExpectedPath
+ 18/178 Test  #18: SpecHelpersTests.FactorizeOrComputeChoosesExpectedPath ......................................   Passed    0.00 sec
+        Start  19: SpecHelpersTests.ComplexAttenuationMatchesIndependentRealOracle
+ 19/178 Test  #19: SpecHelpersTests.ComplexAttenuationMatchesIndependentRealOracle .............................   Passed    0.00 sec
+        Start  20: SpecHelpersTests.ComplexAttenuationHasPositiveAxisLimitAndReality
+ 20/178 Test  #20: SpecHelpersTests.ComplexAttenuationHasPositiveAxisLimitAndReality ...........................   Passed    0.00 sec
+        Start  21: SpecHelpersTests.ComplexAttenuationIsUnitScaleInvariant
+ 21/178 Test  #21: SpecHelpersTests.ComplexAttenuationIsUnitScaleInvariant .....................................   Passed    0.00 sec
+        Start  22: SpecHelpersTests.RealAttenuationOverloadRemainsSourceCompatible
+ 22/178 Test  #22: SpecHelpersTests.RealAttenuationOverloadRemainsSourceCompatible .............................   Passed    0.00 sec
+        Start  23: SpecHelpersTests.ComplexAttenuationRejectsInvalidDomainAndReference
+ 23/178 Test  #23: SpecHelpersTests.ComplexAttenuationRejectsInvalidDomainAndReference .........................   Passed    0.00 sec
+        Start  24: InputParametersNewTests.ResolvesAbsoluteModelPathAndBuildsContext
+ 24/178 Test  #24: InputParametersNewTests.ResolvesAbsoluteModelPathAndBuildsContext ...........................   Passed    0.03 sec
+        Start  25: InputParametersNewTests.NormFactorMatchesOutputTypeSelection
+ 25/178 Test  #25: InputParametersNewTests.NormFactorMatchesOutputTypeSelection ................................   Passed    0.01 sec
+        Start  26: InputParametersNewTests.SetterClampsToMinimumPositiveIntegers
+ 26/178 Test  #26: InputParametersNewTests.SetterClampsToMinimumPositiveIntegers ...............................   Passed    0.01 sec
+        Start  27: InputParametersNewTests.PreservesAnisotropicColumnsFromModelInputFile
+ 27/178 Test  #27: InputParametersNewTests.PreservesAnisotropicColumnsFromModelInputFile .......................   Passed    0.01 sec
+        Start  28: InputParametersNewTests.ModelInterpolantsSurviveOwnerCopyAndMove
+ 28/178 Test  #28: InputParametersNewTests.ModelInterpolantsSurviveOwnerCopyAndMove ............................   Passed    0.00 sec
+        Start  29: InputParametersNewTests.PlanetmodelFacadePreservesIsotropicEndpointsAndOwnership
+ 29/178 Test  #29: InputParametersNewTests.PlanetmodelFacadePreservesIsotropicEndpointsAndOwnership ............   Passed    0.01 sec
+        Start  30: InputParametersNewTests.PlanetmodelFacadeRejectsInvalidQAndHeaderShape
+ 30/178 Test  #30: InputParametersNewTests.PlanetmodelFacadeRejectsInvalidQAndHeaderShape ......................   Passed    0.03 sec
+        Start  31: PreferredSolverApiTests.InvalidAttenuationReferenceFailsBeforeSolverAndOffWorks
+ 31/178 Test  #31: PreferredSolverApiTests.InvalidAttenuationReferenceFailsBeforeSolverAndOffWorks .............   Passed    0.06 sec
+        Start  32: PreferredSolverApiTests.ComplexAttenuationAssemblyMatchesDirectMatrixOracle
+ 32/178 Test  #32: PreferredSolverApiTests.ComplexAttenuationAssemblyMatchesDirectMatrixOracle .................   Passed    0.04 sec
+        Start  33: PreferredSolverApiTests.ExactOceanBottomAllModeSingleAndMultiSolvesAreFinite
+ 33/178 Test  #33: PreferredSolverApiTests.ExactOceanBottomAllModeSingleAndMultiSolvesAreFinite ................   Passed    0.06 sec
+        Start  34: PreferredSolverApiTests.FluidOnlyToroidalReceiverFailsBeforeSolverLoops
+ 34/178 Test  #34: PreferredSolverApiTests.FluidOnlyToroidalReceiverFailsBeforeSolverLoops .....................   Passed    0.02 sec
+        Start  35: PreferredSolverApiTests.FluidOnlyRadialAndSpheroidalReceiversRemainUsable
+ 35/178 Test  #35: PreferredSolverApiTests.FluidOnlyRadialAndSpheroidalReceiversRemainUsable ...................   Passed    0.02 sec
+        Start  36: PreferredSolverApiTests.SpectraRunContextExposesWorkflowObjects
+ 36/178 Test  #36: PreferredSolverApiTests.SpectraRunContextExposesWorkflowObjects .............................   Passed    0.01 sec
+        Start  37: PreferredSolverApiTests.SemConstructorFromInputParametersNewUsesSettings
+ 37/178 Test  #37: PreferredSolverApiTests.SemConstructorFromInputParametersNewUsesSettings ....................   Passed    0.01 sec
+        Start  38: PreferredSolverApiTests.PreferredSolverOverloadsReturnStableShapes
+ 38/178 Test  #38: PreferredSolverApiTests.PreferredSolverOverloadsReturnStableShapes ..........................   Passed    0.01 sec
+        Start  39: PreferredSolverApiTests.StandaloneCowlingSpheroidalSolveOnPrem
+ 39/178 Test  #39: PreferredSolverApiTests.StandaloneCowlingSpheroidalSolveOnPrem ..............................   Passed    0.04 sec
+        Start  40: PreferredSolverApiTests.CowlingValidationCampaignOnPrem
+ 40/178 Test  #40: PreferredSolverApiTests.CowlingValidationCampaignOnPrem .....................................***Not Run (Disabled)   0.00 sec
+        Start  41: PreferredSolverApiTests.CowlingPerformanceOnPrem
+ 41/178 Test  #41: PreferredSolverApiTests.CowlingPerformanceOnPrem ............................................***Not Run (Disabled)   0.00 sec
+        Start  42: PreferredSolverApiTests.SingleSemCowlingCutoffSplitsFrequencyRegions
+ 42/178 Test  #42: PreferredSolverApiTests.SingleSemCowlingCutoffSplitsFrequencyRegions ........................   Passed    0.03 sec
+        Start  43: PreferredSolverApiTests.MixedCutoffRestartsHighDegreeTruncationCadence
+ 43/178 Test  #43: PreferredSolverApiTests.MixedCutoffRestartsHighDegreeTruncationCadence ......................   Passed    0.03 sec
+        Start  44: PreferredSolverApiTests.MultiSemCowlingCutoffUsesChunkRegions
+ 44/178 Test  #44: PreferredSolverApiTests.MultiSemCowlingCutoffUsesChunkRegions ...............................   Passed    0.08 sec
+        Start  45: PreferredSolverApiTests.MultiSemChunkAccumulationMatchesSingleSemAcrossDegrees
+ 45/178 Test  #45: PreferredSolverApiTests.MultiSemChunkAccumulationMatchesSingleSemAcrossDegrees ..............   Passed    0.22 sec
+        Start  46: PreferredSolverApiTests.LegacyMultiSemOverloadReturnsFiniteOutput
+ 46/178 Test  #46: PreferredSolverApiTests.LegacyMultiSemOverloadReturnsFiniteOutput ...........................   Passed    0.01 sec
+        Start  47: PreferredSolverApiTests.LegacySingleSemOverloadReturnsFiniteOutput
+ 47/178 Test  #47: PreferredSolverApiTests.LegacySingleSemOverloadReturnsFiniteOutput ..........................   Passed    0.01 sec
+        Start  48: OutputWriterTests.FrequencyWriterTruncatesToSmallestInput
+ 48/178 Test  #48: OutputWriterTests.FrequencyWriterTruncatesToSmallestInput ...................................   Passed    0.02 sec
+        Start  49: OutputWriterTests.ThreeWayFrequencyWriterIncludesAllReferenceBlocks
+ 49/178 Test  #49: OutputWriterTests.ThreeWayFrequencyWriterIncludesAllReferenceBlocks .........................   Passed    0.01 sec
+        Start  50: OutputWriterTests.FrequencyWriterThrowsWhenParentDirectoryIsMissing
+ 50/178 Test  #50: OutputWriterTests.FrequencyWriterThrowsWhenParentDirectoryIsMissing .........................   Passed    0.00 sec
+        Start  51: OutputWriterTests.FrequencyWriterConvenienceOverloadUsesInputParametersNew
+ 51/178 Test  #51: OutputWriterTests.FrequencyWriterConvenienceOverloadUsesInputParametersNew ..................   Passed    0.02 sec
+        Start  52: OutputWriterTests.ThreeWayFrequencyConvenienceOverloadUsesInputParametersNew
+ 52/178 Test  #52: OutputWriterTests.ThreeWayFrequencyConvenienceOverloadUsesInputParametersNew ................   Passed    0.02 sec
+        Start  53: OutputWriterTests.TimeWriterStopsAtRequestedOutputWindow
+ 53/178 Test  #53: OutputWriterTests.TimeWriterStopsAtRequestedOutputWindow ....................................   Passed    0.01 sec
+        Start  54: OutputWriterTests.TimeWriterTruncatesToShortestInputAndKeepsLayout
+ 54/178 Test  #54: OutputWriterTests.TimeWriterTruncatesToShortestInputAndKeepsLayout ..........................   Passed    0.01 sec
+        Start  55: OutputWriterTests.TimeWriterThrowsWhenParentDirectoryIsMissing
+ 55/178 Test  #55: OutputWriterTests.TimeWriterThrowsWhenParentDirectoryIsMissing ..............................   Passed    0.00 sec
+        Start  56: OutputWriterTests.TimeWriterConvenienceOverloadUsesInputParametersNew
+ 56/178 Test  #56: OutputWriterTests.TimeWriterConvenienceOverloadUsesInputParametersNew .......................   Passed    0.01 sec
+        Start  57: OutputWriterTests.TimeSeriesWriterWritesAllRows
+ 57/178 Test  #57: OutputWriterTests.TimeSeriesWriterWritesAllRows .............................................   Passed    0.01 sec
+        Start  58: SignalFilteringTests.RejectsInvalidPassCount
+ 58/178 Test  #58: SignalFilteringTests.RejectsInvalidPassCount ................................................   Passed    0.01 sec
+        Start  59: SignalFilteringTests.FilterOptionsExposeExpectedDefaults
+ 59/178 Test  #59: SignalFilteringTests.FilterOptionsExposeExpectedDefaults ....................................   Passed    0.00 sec
+        Start  60: SignalFilteringTests.ZeroFrequencyInputStaysZeroAcrossMultiplePasses
+ 60/178 Test  #60: SignalFilteringTests.ZeroFrequencyInputStaysZeroAcrossMultiplePasses ........................   Passed    0.01 sec
+        Start  61: SignalFilteringTests.RejectsFrequencyInputWithUnexpectedColumnCount
+ 61/178 Test  #61: SignalFilteringTests.RejectsFrequencyInputWithUnexpectedColumnCount .........................   Passed    0.00 sec
+        Start  62: SignalFilteringTests.RejectsTimeInputWithUnexpectedColumnCount
+ 62/178 Test  #62: SignalFilteringTests.RejectsTimeInputWithUnexpectedColumnCount ..............................   Passed    0.00 sec
+        Start  63: SignalFilteringTests.TimeInputPreservesDimensionsAndProducesFiniteOutput
+ 63/178 Test  #63: SignalFilteringTests.TimeInputPreservesDimensionsAndProducesFiniteOutput ....................   Passed    0.01 sec
+        Start  64: SignalFilteringTests.FrequencyInputPreservesDimensionsAndSupportsEnforceRealSignal
+ 64/178 Test  #64: SignalFilteringTests.FrequencyInputPreservesDimensionsAndSupportsEnforceRealSignal ..........   Passed    0.01 sec
+        Start  65: DependencyApiTests.GaussLobattoIntegratesItsExactPolynomialRange
+ 65/178 Test  #65: DependencyApiTests.GaussLobattoIntegratesItsExactPolynomialRange ............................   Passed    0.01 sec
+        Start  66: DependencyApiTests.LagrangeBasisPreservesValuesAndDerivatives
+ 66/178 Test  #66: DependencyApiTests.LagrangeBasisPreservesValuesAndDerivatives ...............................   Passed    0.00 sec
+        Start  67: DependencyApiTests.WignerKeepsSignedOrdersPolesAndHighDegreeFinite
+ 67/178 Test  #67: DependencyApiTests.WignerKeepsSignedOrdersPolesAndHighDegreeFinite ..........................   Passed    0.02 sec
+        Start  68: SEMComponentTests.LocalToGlobalMapsAreMonotonicOnMinimalModel
+ 68/178 Test  #68: SEMComponentTests.LocalToGlobalMapsAreMonotonicOnMinimalModel ...............................   Passed    0.01 sec
+        Start  69: SEMComponentTests.CowlingMapHasCompactSolidFluidSolidTopology
+ 69/178 Test  #69: SEMComponentTests.CowlingMapHasCompactSolidFluidSolidTopology ...............................   Passed    0.01 sec
+        Start  70: SEMComponentTests.CowlingMapHasExpectedAllSolidTopology
+ 70/178 Test  #70: SEMComponentTests.CowlingMapHasExpectedAllSolidTopology .....................................   Passed    0.01 sec
+        Start  71: SEMComponentTests.CowlingMapSharesSolidSolidMaterialBoundaries
+ 71/178 Test  #71: SEMComponentTests.CowlingMapSharesSolidSolidMaterialBoundaries ..............................   Passed    0.00 sec
+        Start  72: SEMComponentTests.CowlingMatricesHaveCompactSymmetricMassAndK2Layout
+ 72/178 Test  #72: SEMComponentTests.CowlingMatricesHaveCompactSymmetricMassAndK2Layout ........................   Passed    0.00 sec
+        Start  73: SEMComponentTests.CowlingStiffnessMatchesDirectWeakFormWithBackgroundGravity
+ 73/178 Test  #73: SEMComponentTests.CowlingStiffnessMatchesDirectWeakFormWithBackgroundGravity ................   Passed    0.00 sec
+        Start  74: SEMComponentTests.CowlingMatricesCoverLayeredFluidSolidMeshWithoutPotential
+ 74/178 Test  #74: SEMComponentTests.CowlingMatricesCoverLayeredFluidSolidMeshWithoutPotential .................   Passed    0.00 sec
+        Start  75: SEMComponentTests.ReceiverAndSourceElementsStayWithinMeshBounds
+ 75/178 Test  #75: SEMComponentTests.ReceiverAndSourceElementsStayWithinMeshBounds .............................   Passed    0.01 sec
+        Start  76: SEMComponentTests.ExactOceanBottomReceiverUsesSolidSide
+ 76/178 Test  #76: SEMComponentTests.ExactOceanBottomReceiverUsesSolidSide .....................................   Passed    0.01 sec
+        Start  77: SEMComponentTests.SourceCutInsideSolidBoundaryElementPreservesTopology
+ 77/178 Test  #77: SEMComponentTests.SourceCutInsideSolidBoundaryElementPreservesTopology ......................   Passed    0.01 sec
+        Start  78: SEMComponentTests.SpheroidalSourceLiftMatchesAssembledOperatorAwayFromTrace
+ 78/178 Test  #78: SEMComponentTests.SpheroidalSourceLiftMatchesAssembledOperatorAwayFromTrace .................   Passed    0.06 sec
+        Start  79: SEMComponentTests.SpheroidalLocalWeakFormScattersToProductionOperator
+ 79/178 Test  #79: SEMComponentTests.SpheroidalLocalWeakFormScattersToProductionOperator .......................   Passed    0.01 sec
+        Start  80: SEMComponentTests.SpheroidalSourceLiftRemainsFiniteAtDegreeThreeHundred
+ 80/178 Test  #80: SEMComponentTests.SpheroidalSourceLiftRemainsFiniteAtDegreeThreeHundred .....................   Passed    0.01 sec
+        Start  81: SEMComponentTests.SurfaceOceanCapsToroidalRangeAboveSolidSphere
+ 81/178 Test  #81: SEMComponentTests.SurfaceOceanCapsToroidalRangeAboveSolidSphere .............................   Passed    0.01 sec
+        Start  82: SEMComponentTests.FluidAndOutOfMeshReceiversFailBeforeAssembly
+ 82/178 Test  #82: SEMComponentTests.FluidAndOutOfMeshReceiversFailBeforeAssembly ..............................   Passed    0.02 sec
+        Start  83: SEMComponentTests.SystemMatricesExposeConsistentShapes
+ 83/178 Test  #83: SEMComponentTests.SystemMatricesExposeConsistentShapes ......................................   Passed    0.01 sec
+        Start  84: SEMComponentTests.ReceiverVectorsHaveExpectedDimensions
+ 84/178 Test  #84: SEMComponentTests.ReceiverVectorsHaveExpectedDimensions .....................................   Passed    0.01 sec
+        Start  85: SEMComponentTests.CowlingForcesAndReceiversReusePhysicalUVEntries
+ 85/178 Test  #85: SEMComponentTests.CowlingForcesAndReceiversReusePhysicalUVEntries ...........................   Passed    0.01 sec
+        Start  86: SEMComponentTests.CowlingStartIndicesPreserveTruncationAndCadence
+ 86/178 Test  #86: SEMComponentTests.CowlingStartIndicesPreserveTruncationAndCadence ...........................   Passed    0.01 sec
+        Start  87: MeshModelGravityTests.ConstantDensityMatchesAnalyticProfile
+ 87/178 Test  #87: MeshModelGravityTests.ConstantDensityMatchesAnalyticProfile .................................   Passed    0.01 sec
+        Start  88: MeshModelGravityTests.LinearDensityMatchesAnalyticProfile
+ 88/178 Test  #88: MeshModelGravityTests.LinearDensityMatchesAnalyticProfile ...................................   Passed    0.00 sec
+        Start  89: MeshModelGravityTests.DuplicatedInterfacePreservesEnclosedMass
+ 89/178 Test  #89: MeshModelGravityTests.DuplicatedInterfacePreservesEnclosedMass ..............................   Passed    0.00 sec
+        Start  90: MeshModelGravityTests.PremGllGravityQueriesStayInsideStrictFieldLayers
+ 90/178 Test  #90: MeshModelGravityTests.PremGllGravityQueriesStayInsideStrictFieldLayers ......................   Passed    0.01 sec
+        Start  91: WindowedDisplacementMapTests.ForwardAndAdjointMatchRealInnerProduct
+ 91/178 Test  #91: WindowedDisplacementMapTests.ForwardAndAdjointMatchRealInnerProduct .........................   Passed    0.00 sec
+        Start  92: FixedMeshAdjointTests.SolvesFullHermitianSystemForCompactColumns
+ 92/178 Test  #92: FixedMeshAdjointTests.SolvesFullHermitianSystemForCompactColumns ............................   Passed    0.01 sec
+        Start  93: SensitivityBoundaryTests.RejectUnconstructedSemAtPublicEntryPoints
+ 93/178 Test  #93: SensitivityBoundaryTests.RejectUnconstructedSemAtPublicEntryPoints ..........................   Passed    0.01 sec
+        Start  94: WindowedSensitivityEngineTests.ToroidalProjectionHasExactVerticalZeroAndHorizontalSignal
+ 94/178 Test  #94: WindowedSensitivityEngineTests.ToroidalProjectionHasExactVerticalZeroAndHorizontalSignal ....   Passed    0.01 sec
+        Start  95: WindowedSensitivityEngineTests.FixedMeshDirectionalDerivativesForIndependentModuli
+ 95/178 Test  #95: WindowedSensitivityEngineTests.FixedMeshDirectionalDerivativesForIndependentModuli ..........   Passed    0.86 sec
+        Start  96: WindowedSensitivityEngineTests.SourcePointDerivativeIncludesReceiverInsideLiftPatch
+ 96/178 Test  #96: WindowedSensitivityEngineTests.SourcePointDerivativeIncludesReceiverInsideLiftPatch .........   Passed    0.16 sec
+        Start  97: WindowedSensitivityEngineTests.DensityDirectionsIncludeGravityForAllModeFamilies
+ 97/178 Test  #97: WindowedSensitivityEngineTests.DensityDirectionsIncludeGravityForAllModeFamilies ............   Passed    0.07 sec
+        Start  98: WindowedSensitivityEngineTests.LocalizedSolidDensityDirectionIncludesOutsideGravityEffect
+ 98/178 Test  #98: WindowedSensitivityEngineTests.LocalizedSolidDensityDirectionIncludesOutsideGravityEffect ...   Passed    0.02 sec
+        Start  99: WindowedSensitivityEngineTests.FluidBulkDirectionsMatchEndToEndMeasurements
+ 99/178 Test  #99: WindowedSensitivityEngineTests.FluidBulkDirectionsMatchEndToEndMeasurements .................   Passed    0.07 sec
+        Start 100: WindowedSensitivityEngineTests.DensityTaylorRemainderIsSecondOrder
+100/178 Test #100: WindowedSensitivityEngineTests.DensityTaylorRemainderIsSecondOrder ..........................   Passed    0.03 sec
+        Start 101: WindowedSensitivityEngineTests.SecondOrderTaylorRemainderForFixedMesh
+101/178 Test #101: WindowedSensitivityEngineTests.SecondOrderTaylorRemainderForFixedMesh .......................   Passed    0.11 sec
+        Start 102: WindowedSensitivityEngineTests.SIOutputsAndKernelsAreInvariantToComputationalRescaling
+102/178 Test #102: WindowedSensitivityEngineTests.SIOutputsAndKernelsAreInvariantToComputationalRescaling ......   Passed    0.18 sec
+        Start 103: Windowed3DFieldEngineTests.ReconstructsRadialAndCoupledFieldsAtReceiversAndPoles
+103/178 Test #103: Windowed3DFieldEngineTests.ReconstructsRadialAndCoupledFieldsAtReceiversAndPoles ............   Passed    0.06 sec
+        Start 104: Windowed3DFieldEngineTests.PerOrderAdjointMatchesIndependentHermitianSolves
+104/178 Test #104: Windowed3DFieldEngineTests.PerOrderAdjointMatchesIndependentHermitianSolves .................   Passed    0.02 sec
+        Start 105: Windowed3DFieldEngineTests.CanonicalizesSIEndpointRoundTripsAndRejectsExteriorPoints
+105/178 Test #105: Windowed3DFieldEngineTests.CanonicalizesSIEndpointRoundTripsAndRejectsExteriorPoints ........   Passed    0.44 sec
+        Start 106: ModulusKernelTests.MatchIndependentWeakFormMatricesForAllFiveModuli
+106/178 Test #106: ModulusKernelTests.MatchIndependentWeakFormMatricesForAllFiveModuli .........................   Passed    0.01 sec
+        Start 107: ModulusKernelTests.ProductionOperatorDeltasMatchIndependentWeakForm
+107/178 Test #107: ModulusKernelTests.ProductionOperatorDeltasMatchIndependentWeakForm .........................   Passed    0.01 sec
+        Start 108: MaterialKernelTests.DensityGradientMatchesProductionOperatorForAllFamilies
+108/178 Test #108: MaterialKernelTests.DensityGradientMatchesProductionOperatorForAllFamilies ..................   Passed    0.02 sec
+        Start 109: MaterialKernelTests.FluidBulkKernelMatchesAPlusCPlusFProductionDelta
+109/178 Test #109: MaterialKernelTests.FluidBulkKernelMatchesAPlusCPlusFProductionDelta ........................   Passed    0.01 sec
+        Start 110: MaterialKernelTests.OneSidedPolynomialTransposeAndShellGravityResponse
+110/178 Test #110: MaterialKernelTests.OneSidedPolynomialTransposeAndShellGravityResponse ......................   Passed    0.01 sec
+        Start 111: Windowed3DKernelEngineTests.SpinCoefficientsMatchIndependentCartesianTIContractions
+111/178 Test #111: Windowed3DKernelEngineTests.SpinCoefficientsMatchIndependentCartesianTIContractions .........   Passed    0.00 sec
+        Start 112: Windowed3DKernelEngineTests.WeightedCenterIsAlgebraicAndPointAPIRejectsIt
+112/178 Test #112: Windowed3DKernelEngineTests.WeightedCenterIsAlgebraicAndPointAPIRejectsIt ...................   Passed    0.01 sec
+        Start 113: Windowed3DKernelEngineTests.ForwardOnlyReceiverMatchesWindowedEngineOnBothTraces
+113/178 Test #113: Windowed3DKernelEngineTests.ForwardOnlyReceiverMatchesWindowedEngineOnBothTraces ............   Passed    0.11 sec
+        Start 114: Windowed3DKernelEngineTests.MultipleReceiversShareSelectedRadialTrace
+114/178 Test #114: Windowed3DKernelEngineTests.MultipleReceiversShareSelectedRadialTrace .......................   Passed    0.16 sec
+        Start 115: Windowed3DKernelEngineTests.RejectsFrequencyWithMismatchedModelTimeScale
+115/178 Test #115: Windowed3DKernelEngineTests.RejectsFrequencyWithMismatchedModelTimeScale ....................   Passed    0.01 sec
+        Start 116: Windowed3DKernelEngineTests.CachedDualShellIntegralMatchesOneDimensionalContacts
+116/178 Test #116: Windowed3DKernelEngineTests.CachedDualShellIntegralMatchesOneDimensionalContacts ............   Passed    0.05 sec
+        Start 117: Windowed3DKernelEngineTests.AngularPointKernelsBridgeSolidAndFluidRadialSamples
+117/178 Test #117: Windowed3DKernelEngineTests.AngularPointKernelsBridgeSolidAndFluidRadialSamples .............   Passed    0.02 sec
+        Start 118: Windowed3DKernelEngineTests.SourceShellContactCoversEachModeFamilyAndL0
+118/178 Test #118: Windowed3DKernelEngineTests.SourceShellContactCoversEachModeFamilyAndL0 .....................   Passed    0.05 sec
+        Start 119: Windowed3DKernelEngineTests.RotationPreservesPointVolumeAndShellDensities
+119/178 Test #119: Windowed3DKernelEngineTests.RotationPreservesPointVolumeAndShellDensities ...................   Passed    0.03 sec
+        Start 120: Windowed3DKernelEngineTests.SourceProfileVolumeAndContactMatchFrozenFiniteDifferences
+120/178 Test #120: Windowed3DKernelEngineTests.SourceProfileVolumeAndContactMatchFrozenFiniteDifferences .......   Passed    1.04 sec
+        Start 121: LoveNumbersTests.LoadSumsCombineGeneralizedResponses
+121/178 Test #121: LoveNumbersTests.LoadSumsCombineGeneralizedResponses ........................................   Passed    0.01 sec
+        Start 122: LoveNumbersTests.PublicHeaderCalculatesOrderedDegreeRange
+122/178 Test #122: LoveNumbersTests.PublicHeaderCalculatesOrderedDegreeRange ...................................   Passed    0.00 sec
+        Start 123: LoveNumbersTests.MaximumDegreeZeroIsValid
+123/178 Test #123: LoveNumbersTests.MaximumDegreeZeroIsValid ...................................................   Passed    0.00 sec
+        Start 124: LoveNumbersTests.SupportedModelsReturnFiniteValues
+124/178 Test #124: LoveNumbersTests.SupportedModelsReturnFiniteValues ..........................................   Passed    0.02 sec
+        Start 125: LoveNumbersTests.RejectsInvalidConfigurationAndSurfaceFluid
+125/178 Test #125: LoveNumbersTests.RejectsInvalidConfigurationAndSurfaceFluid .................................   Passed    0.00 sec
+        Start 126: LoveNumbersTests.EnforcesMinimumPolynomialOrder
+126/178 Test #126: LoveNumbersTests.EnforcesMinimumPolynomialOrder .............................................   Passed    0.00 sec
+        Start 127: RadialStateTests.PolynomialOrderUsesOneMoreGllNode
+127/178 Test #127: RadialStateTests.PolynomialOrderUsesOneMoreGllNode ..........................................   Passed    0.01 sec
+        Start 128: RadialStateTests.MeshEndsAtSurfaceWithoutExteriorBall
+128/178 Test #128: RadialStateTests.MeshEndsAtSurfaceWithoutExteriorBall .......................................   Passed    0.00 sec
+        Start 129: RadialStateTests.SampledModelValuesAreFinite
+129/178 Test #129: RadialStateTests.SampledModelValuesAreFinite ................................................   Passed    0.00 sec
+        Start 130: RadialStateTests.HomogeneousSphereGravityIsAnalyticAtEveryNode
+130/178 Test #130: RadialStateTests.HomogeneousSphereGravityIsAnalyticAtEveryNode ..............................   Passed    0.01 sec
+        Start 131: RadialStateTests.ControlledSolidFluidSolidGravityIsAnalytic
+131/178 Test #131: RadialStateTests.ControlledSolidFluidSolidGravityIsAnalytic .................................   Passed    0.01 sec
+        Start 132: RadialStateTests.MinimumPolynomialOrderExactlyIntegratesCubicDensityGravity
+132/178 Test #132: RadialStateTests.MinimumPolynomialOrderExactlyIntegratesCubicDensityGravity .................   Passed    0.00 sec
+        Start 133: RadialStateTests.ControlledCentralFluidGravityIsAnalytic
+133/178 Test #133: RadialStateTests.ControlledCentralFluidGravityIsAnalytic ....................................   Passed    0.01 sec
+        Start 134: RadialStateTests.GravityIsContinuousAcrossEveryBoundary
+134/178 Test #134: RadialStateTests.GravityIsContinuousAcrossEveryBoundary .....................................   Passed    0.00 sec
+        Start 135: RadialStateTests.DensityDerivativeUsesElementLayerSpline
+135/178 Test #135: RadialStateTests.DensityDerivativeUsesElementLayerSpline ....................................   Passed    0.00 sec
+        Start 136: RadialStateTests.MaterialInterfaceUsesOneSidedDensityDerivatives
+136/178 Test #136: RadialStateTests.MaterialInterfaceUsesOneSidedDensityDerivatives ............................   Passed    0.00 sec
+        Start 137: RadialStateTests.RejectsSurfaceFluid
+137/178 Test #137: RadialStateTests.RejectsSurfaceFluid ........................................................   Passed    0.00 sec
+        Start 138: RadialStateTests.RejectsInvalidConfiguration
+138/178 Test #138: RadialStateTests.RejectsInvalidConfiguration ................................................   Passed    0.00 sec
+        Start 139: LoveDofMapTests.DegreeZeroInterleavesEveryNodeAndMatchesRadialSemMap
+139/178 Test #139: LoveDofMapTests.DegreeZeroInterleavesEveryNodeAndMatchesRadialSemMap ........................   Passed    0.15 sec
+        Start 140: LoveDofMapTests.DegreeZeroRetainsCentreFields
+140/178 Test #140: LoveDofMapTests.DegreeZeroRetainsCentreFields ...............................................   Passed    0.00 sec
+        Start 141: LoveDofMapTests.AllSolidDegreeTwoInterleavesEveryField
+141/178 Test #141: LoveDofMapTests.AllSolidDegreeTwoInterleavesEveryField ......................................   Passed    0.00 sec
+        Start 142: LoveDofMapTests.SolidCentreRetainsThreeIndependentFields
+142/178 Test #142: LoveDofMapTests.SolidCentreRetainsThreeIndependentFields ....................................   Passed    0.00 sec
+        Start 143: LoveDofMapTests.PotentialIsSharedAcrossEveryElementBoundary
+143/178 Test #143: LoveDofMapTests.PotentialIsSharedAcrossEveryElementBoundary .................................   Passed    0.00 sec
+        Start 144: LoveDofMapTests.DisplacementsAreSharedAcrossSolidBoundaries
+144/178 Test #144: LoveDofMapTests.DisplacementsAreSharedAcrossSolidBoundaries .................................   Passed    0.00 sec
+        Start 145: LoveDofMapTests.DisplacementsAreAbsentFromFluidElements
+145/178 Test #145: LoveDofMapTests.DisplacementsAreAbsentFromFluidElements .....................................   Passed    0.00 sec
+        Start 146: LoveDofMapTests.InterfacesKeepDisplacementsOnlyOnSolidSide
+146/178 Test #146: LoveDofMapTests.InterfacesKeepDisplacementsOnlyOnSolidSide ..................................   Passed    0.00 sec
+        Start 147: LoveDofMapTests.InternalFluidDimensionsMatchTopologyFormulas
+147/178 Test #147: LoveDofMapTests.InternalFluidDimensionsMatchTopologyFormulas ................................   Passed    0.00 sec
+        Start 148: LoveDofMapTests.DegreeOneOnlyOmitsSurfacePotential
+148/178 Test #148: LoveDofMapTests.DegreeOneOnlyOmitsSurfacePotential ..........................................   Passed    0.00 sec
+        Start 149: LoveDofMapTests.DegreeOneRetainsSurfaceDisplacements
+149/178 Test #149: LoveDofMapTests.DegreeOneRetainsSurfaceDisplacements ........................................   Passed    0.00 sec
+        Start 150: LoveDofMapTests.RejectsNegativeDegree
+150/178 Test #150: LoveDofMapTests.RejectsNegativeDegree .......................................................   Passed    0.00 sec
+        Start 151: StaticOperatorTests.MatchesIsotropicReference
+151/178 Test #151: StaticOperatorTests.MatchesIsotropicReference ...............................................   Passed    0.15 sec
+        Start 152: StaticOperatorTests.MatchesTransverselyIsotropicReference
+152/178 Test #152: StaticOperatorTests.MatchesTransverselyIsotropicReference ...................................   Passed    0.00 sec
+        Start 153: StaticOperatorTests.RetainsCentreFieldsAndMatchesSemOrdering
+153/178 Test #153: StaticOperatorTests.RetainsCentreFieldsAndMatchesSemOrdering ................................   Passed    0.00 sec
+        Start 154: StaticOperatorTests.RejectsNegativeDegree
+154/178 Test #154: StaticOperatorTests.RejectsNegativeDegree ...................................................   Passed    0.00 sec
+        Start 155: StaticFluidOperatorTests.InterfaceSignsUseFluidSideDensity
+155/178 Test #155: StaticFluidOperatorTests.InterfaceSignsUseFluidSideDensity ..................................   Passed    0.13 sec
+        Start 156: StaticFluidOperatorTests.NonconstantFluidBlockUsesPositiveDensityGradient
+156/178 Test #156: StaticFluidOperatorTests.NonconstantFluidBlockUsesPositiveDensityGradient ...................   Passed    0.01 sec
+        Start 157: StaticFluidOperatorTests.ConstantDensityCentralFluidIsFinite
+157/178 Test #157: StaticFluidOperatorTests.ConstantDensityCentralFluidIsFinite ................................   Passed    0.01 sec
+        Start 158: StaticFluidOperatorTests.InternalFluidMatricesAreCompleteAndSymmetric
+158/178 Test #158: StaticFluidOperatorTests.InternalFluidMatricesAreCompleteAndSymmetric .......................   Passed    0.00 sec
+        Start 159: StaticForcingTests.SurfaceLoadsHaveExpectedEntriesAndSigns
+159/178 Test #159: StaticForcingTests.SurfaceLoadsHaveExpectedEntriesAndSigns ..................................   Passed    0.15 sec
+        Start 160: StaticForcingTests.AllSolidTideMatchesIndependentAssembly
+160/178 Test #160: StaticForcingTests.AllSolidTideMatchesIndependentAssembly ...................................   Passed    0.01 sec
+        Start 161: StaticForcingTests.InternalFluidTideMatchesBothInterfaceOrientations
+161/178 Test #161: StaticForcingTests.InternalFluidTideMatchesBothInterfaceOrientations ........................   Passed    0.02 sec
+        Start 162: StaticSolveTests.OneFactorizationSolvesAllColumnsAndExtractsResults
+162/178 Test #162: StaticSolveTests.OneFactorizationSolvesAllColumnsAndExtractsResults .........................   Passed    0.04 sec
+        Start 163: StaticSolveTests.RejectsNegativeDegree
+163/178 Test #163: StaticSolveTests.RejectsNegativeDegree ......................................................   Passed    0.02 sec
+        Start 164: StaticRadialOperatorTests.MatchesRadialSemForSupportedModels
+164/178 Test #164: StaticRadialOperatorTests.MatchesRadialSemForSupportedModels ................................   Passed    0.18 sec
+        Start 165: StaticRadialOperatorTests.RetainsCentreFields
+165/178 Test #165: StaticRadialOperatorTests.RetainsCentreFields ...............................................   Passed    0.00 sec
+        Start 166: StaticRadialForcingTests.SurfaceLoadsAndZeroTideAreExact
+166/178 Test #166: StaticRadialForcingTests.SurfaceLoadsAndZeroTideAreExact ....................................   Passed    0.01 sec
+        Start 167: StaticRadialSolveTests.SolvesSupportedModels
+167/178 Test #167: StaticRadialSolveTests.SolvesSupportedModels ................................................   Passed    0.01 sec
+        Start 168: StaticDegreeOneOperatorTests.AllSolidMatricesMatchConstrainedSem
+168/178 Test #168: StaticDegreeOneOperatorTests.AllSolidMatricesMatchConstrainedSem ............................   Passed    0.13 sec
+        Start 169: StaticDegreeOneOperatorTests.RetainsCentreAndSurfaceFields
+169/178 Test #169: StaticDegreeOneOperatorTests.RetainsCentreAndSurfaceFields ..................................   Passed    0.00 sec
+        Start 170: StaticDegreeOneOperatorTests.InternalFluidMatricesHaveExpectedSizeAndSymmetry
+170/178 Test #170: StaticDegreeOneOperatorTests.InternalFluidMatricesHaveExpectedSizeAndSymmetry ...............   Passed    0.00 sec
+        Start 171: StaticDegreeOneForcingTests.SurfaceLoadsAndIndependentTidesAreCorrect
+171/178 Test #171: StaticDegreeOneForcingTests.SurfaceLoadsAndIndependentTidesAreCorrect .......................   Passed    0.00 sec
+        Start 172: StaticDegreeOneSolveTests.SolvesSupportedModels
+172/178 Test #172: StaticDegreeOneSolveTests.SolvesSupportedModels .............................................   Passed    0.01 sec
+        Start 173: LoveNumbersPublicPrivateTests.PublicResultsMatchPrivateSolves
+173/178 Test #173: LoveNumbersPublicPrivateTests.PublicResultsMatchPrivateSolves ...............................   Passed    0.01 sec
+        Start 174: LoveNumbersCliTests.ExplicitOptionsWriteFileAndMatchPublicResults
+174/178 Test #174: LoveNumbersCliTests.ExplicitOptionsWriteFileAndMatchPublicResults ...........................   Passed    0.03 sec
+        Start 175: LoveNumbersCliTests.DefaultsWriteStandardOutput
+175/178 Test #175: LoveNumbersCliTests.DefaultsWriteStandardOutput .............................................   Passed    0.02 sec
+        Start 176: LoveNumbersCliTests.InvalidArgumentsAndMissingModelFail
+176/178 Test #176: LoveNumbersCliTests.InvalidArgumentsAndMissingModelFail .....................................   Passed    0.03 sec
+        Start 177: LoveNumbersCliTests.RejectsUnderintegratedPolynomialOrders
+177/178 Test #177: LoveNumbersCliTests.RejectsUnderintegratedPolynomialOrders ..................................   Passed    0.02 sec
+        Start 178: LoveNumbersCliTests.SurfaceFluidIsRejectedClearly
+178/178 Test #178: LoveNumbersCliTests.SurfaceFluidIsRejectedClearly ...........................................   Passed    0.01 sec
+
+100% tests passed, 0 tests failed out of 176
+
+Label Time Summary:
+unit    =   6.30 sec*proc (178 tests)
+
+Total Test time (real) =   7.00 sec
+
+The following tests did not run:
+	 40 - PreferredSolverApiTests.CowlingValidationCampaignOnPrem (Disabled)
+	 41 - PreferredSolverApiTests.CowlingPerformanceOnPrem (Disabled)

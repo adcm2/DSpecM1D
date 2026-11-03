@@ -1,0 +1,40 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{alex-report}[2026/10/23 Alex's standard scientific report style]
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern,microtype}
+\RequirePackage[margin=19mm,top=17mm,bottom=18mm,headheight=14pt,headsep=7mm]{geometry}
+\RequirePackage{amsmath,amssymb,graphicx,booktabs,caption,float,xcolor,fancyhdr,titlesec}
+\RequirePackage[hyperfootnotes=false]{hyperref}
+\definecolor{accent}{HTML}{A12432}
+\definecolor{muted}{HTML}{53616C}
+\hypersetup{colorlinks=true,urlcolor=accent,linkcolor=accent,citecolor=accent}
+\captionsetup{font=small,labelfont=bf,labelsep=period,skip=5pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\intextsep}{9pt}
+\setlength{\textfloatsep}{9pt}
+\setlength{\abovedisplayskip}{7pt}
+\setlength{\belowdisplayskip}{7pt}
+\titleformat{\section}{\large\bfseries}{\thesection.}{.55em}{}
+\titlespacing*{\section}{0pt}{9pt}{6pt}
+\newcommand{\ReportProject}{Research report}
+\newcommand{\ReportKind}{Experiment report}
+\newcommand{\ReportDate}{\today}
+\newcommand{\ReportSetup}[3]{\renewcommand{\ReportProject}{#1}\renewcommand{\ReportKind}{#2}\renewcommand{\ReportDate}{#3}}
+\newcommand{\ReportTitle}[2]{{\LARGE\bfseries #1\par}\vspace{2pt}{\large #2\par}\vspace{5pt}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\itshape\ReportProject}
+\fancyhead[R]{\small\ReportKind}
+\fancyfoot[L]{\footnotesize\color{black}\ReportDate}
+\fancyfoot[R]{\footnotesize\color{black}\thepage}
+\renewcommand{\headrulewidth}{0.35pt}
+\makeatletter
+\renewcommand{\footnotesize}{\@setfontsize\footnotesize{8.5pt}{10.5pt}}
+\let\report@makefntext\@makefntext
+\renewcommand{\@makefntext}[1]{\report@makefntext{\color{black}\hypersetup{allcolors=black}#1}}
+\makeatother
+\renewcommand{\footnoterule}{\kern-3pt{\color{black}\hrule width .28\textwidth height .35pt}\kern2.65pt}
+\interfootnotelinepenalty=10000
+\setlength{\skip\footins}{10pt plus 2pt minus 1pt}
+\raggedbottom

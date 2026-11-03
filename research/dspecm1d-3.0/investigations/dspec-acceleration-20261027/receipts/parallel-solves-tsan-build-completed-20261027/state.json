@@ -1,0 +1,130 @@
+{
+  "finished_unix": 1793133310.0707247,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-tsan-v1/configs/parallel-solves-tsan-v1-build.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/parallel-solves-tsan-build-control/continuation/parallel-solves-tsan-build-01/build/build-result.json"
+      ],
+      "command_sha256": "8218edd16e370678e650e5550215ccc618a6abd05e54f5b4f75ff1042a3b5548",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-tsan-v1",
+      "elapsed_seconds": 51.81306799899903,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2840045,
+          16650871
+        ],
+        [
+          2840046,
+          16650874
+        ],
+        [
+          2840047,
+          16650885
+        ],
+        [
+          2840048,
+          16650886
+        ],
+        [
+          2841132,
+          16655952
+        ],
+        [
+          2841133,
+          16656000
+        ],
+        [
+          2841134,
+          16656000
+        ]
+      ],
+      "finished_unix": 1793133310.0686314,
+      "id": "build",
+      "inputs_sha256_after": {
+        "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-tsan-v1/configs/parallel-solves-tsan-v1-build.json": "abbf2da1f9a92ff0fe9ba84af8104cb1e5014c0fbbfacf51bde078fae5e5f459",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-tsan-v1/configs/parallel-solves-tsan-v1-build.json": "abbf2da1f9a92ff0fe9ba84af8104cb1e5014c0fbbfacf51bde078fae5e5f459",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "build-result.json"
+      ],
+      "outputs_sha256": {
+        "build-result.json": "451fc49b323da40c46e14bb3ba567297a85062be0df6b49064d0cc22c4b89e01"
+      },
+      "peak_observed_rss_gib_userspace": 2.3092,
+      "peak_observed_threads": 6,
+      "returncode": 0,
+      "started_unix": 1793133258.2335873,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.614444,
+      "updated_unix": 1793133309.281196,
+      "user_cpu_seconds_children": 50.909931,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0789,
+        "elapsed_seconds": 51.05,
+        "owned_processes": [
+          {
+            "pid": 2841132,
+            "starttime_ticks": 16655952,
+            "threads": 1
+          },
+          {
+            "pid": 2840045,
+            "starttime_ticks": 16650871,
+            "threads": 1
+          },
+          {
+            "pid": 2840047,
+            "starttime_ticks": 16650885,
+            "threads": 1
+          },
+          {
+            "pid": 2840046,
+            "starttime_ticks": 16650874,
+            "threads": 1
+          },
+          {
+            "pid": 2840043,
+            "starttime_ticks": 16650863,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.3092,
+        "peak_observed_threads": 5,
+        "thread_cap": 8,
+        "thread_count_including_supervisor": 5
+      }
+    }
+  ],
+  "plan_sha256": "613dbacad6e7b07d9fd7f880591426b47a60bcf0d42b02cf74f4ec26cc677c94",
+  "schema": 1,
+  "started_unix": 1793133258.2104132,
+  "status": "completed",
+  "task_id": "parallel-solves-tsan-build-01",
+  "thread_cap": 8
+}

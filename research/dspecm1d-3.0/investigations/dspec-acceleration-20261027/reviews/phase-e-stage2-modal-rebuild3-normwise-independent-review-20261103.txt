@@ -1,0 +1,23 @@
+PHASE E STAGE 2 MODAL — NORMWISE IDENTITY AUDIT CORRECTION
+Date: 2026-11-03
+Disposition: FOCUSED VALIDATION SOURCE / CHECKER / REBUILD CONFIG PASS. Numerical/performance acceptance remains pending actual corrected-audit evidence.
+
+Observed failure and reason for audit-definition correction
+Named preserved rebuild2 job.log SHA b4b6fbb65fc68b72d6da3e6201656afadc4caf03235c94dabf13939fd2da9461 was independently read. At bin33/R0/degree0 both new and unchanged legacy scalar dual ratios are exactly1.0142585919841719e-11, raw difference7.6403122862080569e-6 and scalar denominator753290.3686092007. Operator, physical forward/adjoint, basis and independent probe forward/adjoint equivalence errors at that key are exactly0. Thus the old scalar audit failed for the baseline as well as the candidate; it did not establish an operator or solution discrepancy. Original failed producer has unchanged inputs and verified cleanup; previous failures remain preserved.
+
+For delta=|y^H(Hx)-(H^Hy)^Hx|, the reviewed identity gate is now delta/(||H||F ||x||2 ||y||2)<=1e-11 separately for candidate and reference. This homogeneous normwise operator-identity test avoids division by a cancellation-sensitive scalar response, has no arbitrary floor, and requires exact zero delta when the norm product is zero. The named failing reference factors yield denominator1.3736797822258236e14 and ratio5.561931088356109e-20. This is an explicit CHANGE OF AUDIT DEFINITION; no claim is made that the original scalar1e-11 gate passed. Parent authorized this bounded validation-only correction after named evidence. The physical solver, accepted LU/backend, operator/solution/probe1e-11 equivalence tests and true H/H-Hermitian backward-error1e-11 gates are unchanged.
+
+Source/checker review
+Only validation diagnostics/identity gating and its CSV bookkeeping change. Original scalar quotient, absolute delta and scalar denominator remain recorded/recomputed as diagnostics. Actual candidate H/probe norms, both normwise products and ratios are emitted. The90 unique-column Python schema exactly matches the C++ CSV header/value mapping. Finite/nonnegative checks remain on all terms; checker independently multiplies norm factors, recomputes scalar diagnostics and normwise ratios, gates the recomputed normwise quantities themselves, and excludes original scalar diagnostics from threshold gating. All previous physical/zero-class/family coverage/probe/backward-error checks remain. The direct-adjoint route correctly records absent basis RHS as exact-zero classes; physical S/T weighted adjoints and independent H-Hermitian probes remain positive coverage.
+
+Meaningful local checker smoke checks (not scientific validation) accept a valid normwise proof with a scalar diagnostic above1e-11 and exact-zero classes, and reject a false normwise denominator, over-limit normwise ratio and NaN norm factor. Python syntax and exact90-column C++ schema agree. Rebuild3 build config/plan are byte-equivalent JSON to rebuild2 after root-token normalization only; fresh cwd/script/input/build/control paths align, pinned dependencies/flags and build8thread/32GiB limits unchanged.
+
+Release only the exact minimal reviewed build payload after fresh-root/member/hash/external-input guards. Fresh producer/standalone-checker plans must bind corrected source/binaries and90-column checker before numerics. Timing remains blocked until the corrected all-bin audit succeeds. Final report must candidly disclose original scalar failure and changed normwise definition, preserve old diagnostics, and retain cold-cache timing/workers-versus-wall distinctions. Stop after authorized modal substage; no later optimization authorized.
+
+Sealed SHA-256
+deaf1677837f116719fe5ef3e87b9d8baa95ca0ba400be9529447b7f10fe9770  candidates/phase-e-stage2-modal-v1/dspec/engine_headers/SensitivityKernels.h
+bf95c980c40a9ee549045040c6d8426de790c75ec2ad70e7028eb0c5d71adbcf  candidates/phase-e-stage2-modal-v1/dspec/engine_headers/Windowed3DFields.h
+734c347858491c6a85b75a2314bb23a42365d84ea01f28d4f800e8c526d60337  candidates/phase-e-stage2-modal-v1/dspec/phase_d_driver.cpp
+926cc7c6b0e974a0a16929b3c6e310fa62cd08990fdd98859872dd17fcd68098  tools/check_phase_e_stage2_modal.py
+24caa19ebcc3844e95a742383b412df15bba1a1685e307a8a7a1da2eab4535e5  configs/phase-e-stage2-modal-v1-rebuild3-build.json
+611a04cf8ff55806867ec93c2af18859d5dc71d41e84d92fb563b05373cf4bf5  configs/phase-e-stage2-modal-v1-rebuild3-build-plan.json

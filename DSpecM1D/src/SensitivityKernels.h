@@ -147,6 +147,8 @@ struct FrequencyAdjointFields {
  * for all compact RHS columns and its Hermitian transpose. Full SEM matrices
  * are used; no turning-point truncation or frequency-to-frequency reuse occurs.
  */
+class Windowed3DFieldEngine;
+
 class FixedMeshAdjointSolver {
 public:
   using Complex = std::complex<double>;
@@ -235,6 +237,33 @@ public:
   }
 
 private:
+  friend class Windowed3DFieldEngine;
+
+  /** Keep the original weighted RHS width while reusing its factorization for a basis. */
+  static void solveAdjointFrequencyWithSupplementalBasis(
+      const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+      Complex z, const Eigen::MatrixXcd &rightHandSides,
+      const Eigen::MatrixXcd &basisRightHandSides,
+      Eigen::MatrixXcd &fields, Eigen::MatrixXcd &basisFields) {
+    if (rightHandSides.rows() == 0 || rightHandSides.cols() == 0 ||
+        !rightHandSides.allFinite() || basisRightHandSides.rows() == 0 ||
+        basisRightHandSides.cols() == 0 || !basisRightHandSides.allFinite())
+      throw std::invalid_argument("Adjoint right-hand sides must be nonempty and finite.");
+    SparseComplex h = systemMatrix(sem, family, degree, z);
+    if (h.rows() != rightHandSides.rows() || h.rows() != basisRightHandSides.rows())
+      throw std::invalid_argument("Adjoint right-hand sides do not match the selected SEM operator.");
+    Solver solver;
+    solver.compute(h);
+    if (solver.info() != Eigen::Success)
+      throw std::runtime_error("Adjoint SEM factorization failed.");
+    fields = solver.solveAdjoint(rightHandSides);
+    if (solver.info() != Eigen::Success || !fields.allFinite())
+      throw std::runtime_error("Hermitian-adjoint SEM solve failed or returned non-finite fields.");
+    basisFields = solver.solveAdjoint(basisRightHandSides);
+    if (solver.info() != Eigen::Success || !basisFields.allFinite())
+      throw std::runtime_error("Hermitian-adjoint basis solve failed or returned non-finite fields.");
+  }
+
   static SparseComplex systemMatrix(const Full1D::SEM &sem,
                                     SensitivitySolveFamily family, int degree,
                                     Complex z) {

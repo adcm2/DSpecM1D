@@ -1,0 +1,96 @@
+Bounded C2/B diagnostic repair plan — Sol,2026-10-31
+Current C core PASS: reviews/phase-c-final-independent-review-20261031.txt.
+Packet-side comparison remediation pending. Preserve validated two-pass C as
+independent oracle; native22.5004s is slower than historical16.8176s, RSS1.637GiB.
+User resumed B→C→complete-pipeline work; original C explicitly allows a
+preweighted complex-contraction scheme only with its own proof. Parent approves
+this exact bounded follow-up. Luna may implement now; no further approval wait.
+
+1. Fresh scope
+Create candidates/phase-c2-preweighted-v1 from receipt-bound C source, bundle the
+endpoint-mapper correction before build. Add phase_c2_driver.cpp/narrow helper,
+unique configs/checker and a small B-side diagnostic replay mode if needed.
+Reuse direct H^H solver, Phase A/common reconstruction, measurement/FFT and
+complex lnVs expression. No general cache/checkpoint framework or new backend.
+Do not mutate compiled/accepted B/C trees. Log every code change promptly in
+candidate and campaign implementation_status.md.
+
+2. Exact weighting convention
+Define P[k]=adjoint.weight[k]*adjoint.force[k]. Current actual receiver weights
+are direction*conj(P[k]), with conj(fz) already in the pole forcing. Solve unit
+direction weights once, then prove:
+ RHS_actual=conj(P)*RHS_unit;
+ adjoint_actual/strain_actual=conj(P)*adjoint_unit/strain_unit;
+ complex Hermitian lnVs contraction_actual=P*C_unit.
+Retain every existing material/attenuation/unit/fz/frame/lift/fixed-vp/rho/Q
+factor in kernelVsComplex. Do not divide by P or project to real before scaling.
+
+3. One combined pass, bounded products only
+NQ10/h.025/full gravity/full domain,L200,eight total workers/inner1. For all35
+frequencies factor once, solve forward plus unit-direction adjoint as applicable,
+reconstruct293one-sided native samples on135/19angles and retain ONLY C_unit
+per requested lnVs cell plus35receiver spectra. Destroy worker modal fields
+after contraction. Full complex table is25,268,320bytes (45122×35×16), not a
+whole-field/factor cache. Construct full35waveform/measurement/actual P afterward;
+ordered-real-reduce P[k]*C_unit[k] into final kernels.
+
+4. Exact static-zero support
+YSpec frequency weight2df is NOT the static zero filter: taper is inside force.
+Use unchanged MakeTaper/TaperValue at grid.Frequency(k), expected exact zeros
+7,8,41. Retain those forward solves; skip only justified unit-adjoint/reconstruction/
+contraction work. After actual P is available assert its exact zero set matches
+static support. No threshold or cancellation test. Prove skip on/off full outputs.
+
+5. Validation before adoption
+Separate validation from timing. Use actual own-waveform P to compare unit and
+weighted RHS/solutions/modes/complex strains/products at9,25,40 on identical
+operators/sides. Recomputing these3bins for the oracle is allowed only in the
+validation control; normal C2 stays one pass. Reuse numerical equivalence gates,
+keep fluid subgroup/tagged-dual diagnostics and isotropic l0 handling. Compare
+full35waveform,measurement/adjoint source and summed kernels against preserved
+two-pass C AND accepted F8a on exact grid. Compute NEW C2 L3/NQ8/.05/91-angle
+smooth-profile kernel against frozen +/- traces: existing2e-4 FD and1e-10
+gravity/time-shift gates. Require native/profile and exact-skip parity. Preserve
+failures and correct actual failures only; no invented scientific error budget.
+
+6. Endpoint mapper and B repair
+Prefer candidate ELR/EUR matching reference localNode0/9 at EVERY aligned
+endpoint. Only noncoincident artificial old boundaries may fall back to a
+same-material containing element; source/material breaks never cross sides.
+First COUNT affected coincident-q0 B rows using saved common/mesh metadata,
+without solves. If any, mark old side-accuracy tables superseded where affected;
+run corrected9/25/40 full/restricted diagnostics for SAME4NQ5/6 nominal/finer
+meshes and identical frozen accepted weights/operator policy/common locations.
+Use a narrow replay mode loading frozen weights; do NOT rerun35-bin waveforms
+or timing campaigns. Refresh side/truncation/omission/self-refinement summaries;
+preserve all old data. No masks or physical cause/singularity investigation.
+
+Saved-metadata count is now complete (no solves): bin9 has4466q0 locations;
+affected NQ5nominal308,NQ5finer2618,NQ6nominal308,NQ6finer0, identical for full/
+restricted, all bulk and none source/material-interface. Evidence:
+receipts/phase-b-q0-mapper-impact-20261031.json. Execute bounded corrected
+3-bin full/restricted replay for the three affected meshes. The same4mesh
+keyed tables may reuse the original NQ6finer full/restricted3-bin rows as the
+unchanged negative control ONLY after binding original hashes,exact location/
+forcing/mesh metadata and zero mapper-impact count. Record receipt-backed reuse
+explicitly, not as a new run. Otherwise replay NQ6finer too. Load hash-bound
+Phase A/accepted Stage2 trace adjoint_source
+and MakeAdjointSpectrum weights directly; no35-bin waveform pass. Select mesh
+from original FULL retained grid's highest complex bin41 (not diagnostic bin40),
+preserving h,h/2 and70/132/53/96elements. Reuse original B rank-basis forcing and
+restricted-operator policy so the change isolates endpoint mapping. Preserve
+original35-bin waveform/cost receipts and old tables as superseded where affected.
+
+7. Timing/review/stop
+New phase names: combined_forward_unit_adjoint_reconstruction_contraction,
+measurement_and_actual_adjoint_spectrum,weighted_complex_product_reduction,IO,
+setup,total. Combined-pass wall is NOT pure-forward. Profile factors,assembly,
+substitutions,radial prep,reconstruction/contraction; distinguish master wall,
+worker sums and inclusive/exclusive overlap. Oracles are separate from timing.
+One bounded C2 source/run-plan review and one results review; then final matched
+reference native timing/report review, reusing unchanged candidate runs when
+workload/diagnostics match. All builds/numerics Tunya nohup,existing transport/
+supervisor,cap8build/cap20numeric,32/16GiB,eight workers/inner1,<=50aggregate.
+Recheck resources; user-space watchdog is not kernel aggregate accounting.
+No production/discrepancy work,YSpec rerun,new figures,global volumes,deletion,
+commit or push. Stop after independent final report review before integration.

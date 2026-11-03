@@ -1,0 +1,74 @@
+{
+  "scope": "Investigation only; native runs alternate solvers, three independent processes per case, one thread. Timed outputs saved losslessly. No convergence sweep.",
+  "repos": {
+    "DSpecM1D": {
+      "path": "/home/adcm2/Documents/Research/Projects/DSpecM1D",
+      "head": "a778b13b22dca9709e1f96604b62925707654e5d",
+      "dirty_paths": "M DSpecM1D/src/SensitivityKernels.h\n M DSpecM1D/src/Windowed3DFields.h\n M implementation_status.md\n M tests/test_sensitivity_kernels.cpp\n?? validation/phase0/",
+      "tracked_diff_sha256": "713b0b861d8cde4c3f617155af50e939a3a09dc1ec45983a18e42e1ad48f702f",
+      "untracked_file_sha256": {
+        "validation/phase0/2026-10-19/README.md": "f1b4206e790df0c84c074349e0507018989d41c18de01bdc7cea9247ea47c35e",
+        "validation/phase0/2026-10-19/artifact_manifest.json": "5ef4b12b5229c9cc78e9766cac1577f9889554107f16f6750ac624afdb756fb1",
+        "validation/phase0/2026-10-19/baseline.json": "649da4b976e317ab316a95a6147e4586aa384284a87b6ece040b774a7ef50b4e",
+        "validation/phase0/2026-10-19/branch_inventory.json": "0bbb014fdc61205f5e31f68f97f222ce11f490f665f74306f6446782a331cfea",
+        "validation/phase0/2026-10-19/conventions.md": "b978dddcfa4536d032bf660b15d97d41287b3d73f626daaac9fa1da1bc3a33c9",
+        "validation/phase0/2026-10-19/numerical_summary.json": "a25be4afc9ad8825417df4d80b7dd2772674ce81876356fd2d222c88cdd1ae94",
+        "validation/phase0/2026-10-19/source_manifest.json": "7d162c7d15eb983f2e4e469b5a72509b391b9e7c47b12b132409c5e4de27fa91"
+      }
+    },
+    "YSpecpp": {
+      "path": "/home/adcm2/Documents/Research/Projects/YSpecpp",
+      "head": "280eab0200495391539c0f97e62f978083c307bc",
+      "dirty_paths": "",
+      "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "untracked_file_sha256": {}
+    }
+  },
+  "compiler": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "uname": "Linux earth-dalab-01.esc.private.cam.ac.uk 7.0.0-38-generic #38~24.04.4-Ubuntu SMP PREEMPT_DYNAMIC Mon Sep 14 16:37:11 UTC 2 x86_64 x86_64 x86_64 GNU/Linux\n",
+  "executables": {
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/current": "5d0bace4d7d8ca766cc5cd70992c6894324eb839082aeba3702374d6460eb689",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/yspec_instrumented": "90d8a27f72e13699e157e3a867dfb2cb1c5e078becd210010b13547b3ba073f1",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/instrumented": "9dd1c36368c5260078d39cd63c6fef9efc7ded2f1d3225b903134a623532797f",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/bin/chunk_probe": "af7c0cdd6a9f59e867ad36ee2571ec7cdf713b5f5a5552c66fdb280d06c92526"
+  },
+  "yspec_native_executable": {
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/yspec_kernel_timing": "9613782bc49ee3d2a5950520c48f6dad37a1067cd7fd252be3dced60f452db83"
+  },
+  "inputs": {
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck": "63bedc3e12811707ecf087c38f13a81b5de27643026e63f354239efd24340501",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/small-05/samples.csv": "868ec5662bb8aeaee243a09208416b8ab442df243e7e256374fe339858a7f365",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-examples-phase12/comparison-illustration-12-02/samples.csv": "13a52c807bf8a06f5f01482b4f0b280eae8d16ae4702809948daafe01edb6c51"
+  },
+  "source_hashes_initial": {
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/Windowed3DFields.h": "f198d53490aa405b4f2086f846347ae377a35583d28c8160c0142f8680de3d53",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/SensitivityKernels.h": "c67dea113088037a518e3deff16b20aefea3e523a056aa4ec2b7685af28d1cbb",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/Windowed3DKernels.h": "d0c26e76a0aaf4ed65dfa82af4830573f8284ed85c500c4697a56528d0125c2d",
+    "/home/adcm2/Documents/Research/Projects/YSpecpp/src/SampledKernels.cpp": "13436b8421f9441ad96073e18cd19c3981e2c64a48bdf22ae8f19bc091fad06e"
+  },
+  "tracked_profile_inputs_unchanged": true,
+  "thread_environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "dependency_revisions": {
+    "build-dspec/numericconcepts": "e03a2889d43a03660d0879f46dda1406d90c9517",
+    "build-dspec/interpolation": "d5a1711ca6a89fc8ad8148fe13212398fe569bc0",
+    "build-dspec/fftwpp": "cb152c0e85f3822493c2d9e85a56307ac7b4f1c0",
+    "build-dspec/gaussquad": "7d4786d192f68077cd99a34dcdf1379ed1eeac9a",
+    "build-dspec/gshtrans": "8dd116df8df4222fe9b10a40c7213d34f2a274fb",
+    "build-dspec/planetmodel": "35be4ee54b3d84df1483e647878c5446a886c90b",
+    "build-yspecpp/numericconcepts": "e03a2889d43a03660d0879f46dda1406d90c9517",
+    "build-yspecpp/interpolation": "d5a1711ca6a89fc8ad8148fe13212398fe569bc0",
+    "build-yspecpp/fftwpp": "cb152c0e85f3822493c2d9e85a56307ac7b4f1c0",
+    "build-yspecpp/gaussquad": "7d4786d192f68077cd99a34dcdf1379ed1eeac9a",
+    "build-yspecpp/gshtrans": "8dd116df8df4222fe9b10a40c7213d34f2a274fb",
+    "build-yspecpp/planetmodel": "fa6e230fde25152d40f27d9839de44c4f3182a24"
+  },
+  "instrumentation_notes": "Nested scopes overlap. Normalize DSpec one-objective profiles by one API call and YSpec profiles by two calls (first plus warm). Native timing tables use first calls only; DSpec two-objective times sum two scalar calls, YSpec batches two. Fine timer overhead is not subtracted.",
+  "sampling_profiler_note": "gprofng collected only 0.101 s of accounted CPU for about 10 s process wall time in this sandbox. Treat its symbol list only as corroboration; quantitative findings use scoped steady-clock measurements."
+}

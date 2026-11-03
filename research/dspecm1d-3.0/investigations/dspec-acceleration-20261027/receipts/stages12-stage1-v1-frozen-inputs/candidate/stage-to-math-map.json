@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "candidate": "stages12-stage1-profile-v1",
+  "purpose": "Instrumentation-only coverage map for the documentation-wedges-v9 physical pipeline. No source formula, output, cache policy, solve scheduling, or sample grid is changed.",
+  "pipeline_boundary": {
+    "scope": "profile_pipeline_wall",
+    "begins": "After command validation, empty output creation and thread initialization; before input/deck/grid/model setup.",
+    "ends": "After the existing result.json scientific output is closed and kernel-output scope is stopped, before profile.json serialization and Root MATHPROFILE serialization.",
+    "unchanged_result_timing": "result.json elapsed_s keeps the existing seconds(start) semantics; external process wall includes report/root serialization and destruction."
+  },
+  "snapshot_groups": [
+    "setup",
+    "initial_frequency_workspace_and_capture",
+    "measurement_and_initial_output",
+    "kernel_production_excluding_isolated_diagnostics",
+    "kernel_output_and_result_io"
+  ],
+  "diagnostic_isolation": {
+    "parent_scope": "driver_tensor_vs_packed_diagnostic_validation",
+    "method": "Profile build snapshots cumulative entries and counters immediately before and after each diagnostic after all called work has joined. Delta is removed from the kernel production group and emitted separately. Snapshot overhead is separately reported. Native build compiles out all snapshots."
+  },
+  "execution_domains": {
+    "master_wall": "Scope entries from the calling/master thread. Their exclusive durations form the wall partition.",
+    "worker_elapsed_sum": "Entries under parallel_worker.* are summed worker elapsed durations and overlap modal_degree_parallel_region_wall; never add them to master wall."
+  },
+  "timing_rule": "Inclusive scopes overlap descendants and are never summed. Use exclusive values for the wall partition. Worker elapsed sums are not wall or CPU time.",
+  "driver_scopes": {
+    "driver_input_and_grid_setup": "Input parse, model and frequency setup, source setup, SEM and sampling setup through caches/plans.",
+    "driver_model_deck_and_common_material_setup": "Model deck read and common material adapter construction.",
+    "driver_frequency_grid_setup": "Existing frequency grid construction.",
+    "driver_sem_constructor_mesh_static_matrices_and_model_setup": "Combined Full1D::SEM constructor work; no finer constructor hook exists.",
+    "driver_parameters_file_io_and_input_parameters": "Parameter-file write and InputParameters construction.",
+    "driver_native_side_sampling_and_gravity_audit": "Existing native side construction and gravity consistency audit.",
+    "driver_section_sampling_and_receiver_construction": "Section/angular sampling, sample-node adapters, receiver direction and receiver point construction.",
+    "driver_result_cache_and_sampling_plan_initialisation": "Result arrays, batch response cache, dispersion closure, and later plan-vector allocation.",
+    "driver_initial_frequency_workspace_and_forward_capture": "Existing sequential initial frequencies, workspace and packed receiver sampling, response capture and component scatter.",
+    "driver_measurement_fft_window_adjoint_and_diagnostic_construction": "Existing measure() calculation; result.json measurement_s remains unchanged.",
+    "driver_initial_trace_spectrum_components_and_nodes_io": "Trace, spectrum, components and node files.",
+    "driver_kernel_adjoint_spectrum_and_plan_setup": "Kernel adjoint spectrum plus sampling-plan vector.",
+    "driver_kernel_frequency_weights_and_workspace": "Per-frequency weights and workspace preparation.",
+    "driver_section_points_construction": "Existing per-section point vector construction; values are not hoisted.",
+    "driver_tensor_sampling_call": "Enclosing driver call to tensor sampling; child engine entries provide the detailed breakdown.",
+    "driver_tensor_vs_packed_diagnostic_validation": "Diagnostic packed reference samples and tensor-versus-packed comparison; separately snapshot-isolated.",
+    "kernel_fused_material_evaluation_weak_form_contraction_frequency_accumulation": "One exact bucket for model material evaluation, kernelVs weak-form expression, and values += accumulation; intentionally not split."
+  },
+  "engine_scopes": {
+    "frequency_workspace_prepare_and_modal_capture": "Frequency workspace, modal solve orchestration and returned blocks.",
+    "modal_projection_source_lift_and_frequency_solve": "Enclosing modal source/lift, receiver projection, and per-degree solve work.",
+    "spheroidal_source_treatment_and_lift": "Source treatment and lift construction for spheroidal family.",
+    "toroidal_source_treatment_and_lift": "Source treatment and lift construction for toroidal family.",
+    "spheroidal_receiver_basis_assembly_and_qr": "Receiver row basis, including existing QR helper.",
+    "toroidal_receiver_basis_assembly_and_qr": "Receiver row basis, including existing QR helper.",
+    "modal_response_copy_and_capture": "Copies returned frequency-modal matrices into workspace-owned blocks; bytes from existing matrix extents.",
+    "workspace_synthesis_vector_construction": "Workspace source/receiver synthesis vectors and their existing matrix products.",
+    "modal_degree_parallel_region_wall": "Master wall around the existing OpenMP launch through join.",
+    "modal_degree_worker_profile_merge": "Worker profile data merge after join.",
+    "modal_degree_ordered_result_collection": "Existing degree-ordered result collection after join.",
+    "packed_to_compact_kernel_sample_copy": "Copies existing packed kernel result fields into compact result objects.",
+    "tensor_sampling_total": "Tensor route total with existing semantic grid, angular basis, record capture, packing, GEMM and scatter children."
+  },
+  "solver_scopes": {
+    "sparse_forward_eigen_solve": "Pure Eigen forward substitution.",
+    "sparse_adjoint_eigen_solve": "Pure Eigen adjoint substitution.",
+    "sparse_forward_rhs_scaling": "Existing row scaling of forward RHS.",
+    "sparse_adjoint_rhs_scaling": "Existing row scaling of adjoint RHS.",
+    "sparse_forward_result_unscaling_and_validation": "Existing output unscaling and finite validation.",
+    "sparse_adjoint_result_unscaling_and_validation": "Existing output unscaling and finite validation.",
+    "batch_response_cache_get_or_compute": "Cache inclusive scope; not a cache-only cost.",
+    "batch_cache_locked_hit_signature_validation": "Locked signature check on existing hit.",
+    "batch_response_cache_miss_admission_signatures_and_copies": "Existing miss signatures/admission and returned response copies.",
+    "batch_weighted_rhs_basis_projection_and_reconstruction_check": "Weighted RHS basis projection and reconstruction validation.",
+    "batch_weighted_adjoint_response_matrix_product": "Weighted response matrix product."
+  },
+  "existing_engine_detail": [
+    "tensor grid semantic key and cache lookup",
+    "cold frame geometry and Wigner build",
+    "real/complex basis construction and lookup/fill",
+    "record capture",
+    "packing and permutation",
+    "actual DGEMM/ZGEMM",
+    "phase/spin scatter",
+    "radial l0 interpolation/scatter",
+    "receiver projection",
+    "solver assembly/factorization/forward/weighted/unit-basis solves"
+  ],
+  "counter_notes": {
+    "kernel_point_samples": "Profile-only count of points in each existing fused contraction batch.",
+    "kernel_fluid_point_samples": "Profile-only fluid point count per fused batch.",
+    "batch_response_cache_return_copy_bytes": "Bytes from extant forward and unit-adjoint matrix extents copied into returned results.",
+    "modal_response_capture_copy_bytes": "Sum of existing modal matrix extents copied into workspace ownership.",
+    "packed_to_compact_kernel_sample_copy_bytes": "Count from compact sample object size times returned sample count; nominal copied object bytes."
+  },
+  "unclassified_rule": "All profile entries and counters remain visible. Unknown scope names are labeled unclassified rather than omitted."
+}

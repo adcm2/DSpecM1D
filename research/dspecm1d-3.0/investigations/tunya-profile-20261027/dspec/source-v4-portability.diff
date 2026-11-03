@@ -1,0 +1,20 @@
+--- source-v4-frozen/engine_headers/SensitivityKernels.h
++++ source-v4-tunya/engine_headers/SensitivityKernels.h
+@@ -16,12 +16,12 @@
+ #include "../solvers/solver_backends.hpp"
+ #include "../solvers/batch_response_cache.hpp"
+ 
+-#include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/SEM/SEM.h"
++#include <DSpecM1D/src/SEM/SEM.h>
+ #include "../profile_equilibrated_sparse_lu.hpp"
+-#include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/ParamInfo.h"
+-#include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/SpecHelpers.h"
+-#include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/frequency_info/FreqFull.h"
+-#include "/home/adcm2/Documents/Research/Projects/DSpecM1D/DSpecM1D/src/frequency_info/PostprocessFunctions.h"
++#include <DSpecM1D/src/ParamInfo.h>
++#include <DSpecM1D/src/SpecHelpers.h>
++#include <DSpecM1D/src/frequency_info/FreqFull.h>
++#include <DSpecM1D/src/frequency_info/PostprocessFunctions.h>
+ 
+ namespace SPARSESPEC {
+ 

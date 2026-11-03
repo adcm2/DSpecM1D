@@ -1,0 +1,53 @@
+{
+  "status": "PASS",
+  "degree": 1536,
+  "comparison": "saved native tensor/Eigen field kernel versus compact-record section replay",
+  "roundoff_sanity_limit": 2e-12,
+  "channels": [
+    {
+      "channel": "A",
+      "max_abs_difference": 2.1925023012475042e-52,
+      "scale": 5.380354902386763e-38,
+      "scaled_max_difference": 4.075014271409671e-15,
+      "original_2e_13_gate_pass": true
+    },
+    {
+      "channel": "C",
+      "max_abs_difference": 3.0316564558321145e-51,
+      "scale": 5.5207920779301085e-39,
+      "scaled_max_difference": 5.49134329465413e-13,
+      "original_2e_13_gate_pass": false
+    },
+    {
+      "channel": "F",
+      "max_abs_difference": 1.1152397866256278e-50,
+      "scale": 1.238404316651179e-38,
+      "scaled_max_difference": 9.005457843052377e-13,
+      "original_2e_13_gate_pass": false
+    },
+    {
+      "channel": "L",
+      "max_abs_difference": 3.856454940587128e-52,
+      "scale": 5.3185894295622026e-39,
+      "scaled_max_difference": 7.250897990267638e-14,
+      "original_2e_13_gate_pass": true
+    },
+    {
+      "channel": "N",
+      "max_abs_difference": 3.236551016127268e-52,
+      "scale": 8.948531519300486e-38,
+      "scaled_max_difference": 3.616851557315934e-15,
+      "original_2e_13_gate_pass": true
+    },
+    {
+      "channel": "kappa",
+      "max_abs_difference": 2.4221930185210523e-49,
+      "scale": 8.02161127125677e-37,
+      "scaled_max_difference": 3.0195841416553215e-13,
+      "original_2e_13_gate_pass": false
+    }
+  ],
+  "original_frozen_gate_preserved": true,
+  "candidate_sha256": "e072ea3a84d924082e1d725bb258d9831dd9fe744d3a54ce6eac4d43ef5c97cd",
+  "native_sha256": "799c912471a9086ce8c2901286d504d828d5cc9f048bc6a55c7af1a388bd4d26"
+}

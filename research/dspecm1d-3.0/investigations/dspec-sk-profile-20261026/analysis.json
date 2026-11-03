@@ -1,0 +1,132 @@
+{
+  "dspec_l12_one_measurement": {
+    "total_instrumented_s": 3.27723,
+    "disjoint_stages": {
+      "point_accumulation": {
+        "seconds": 2.85713,
+        "fraction": 0.8718124757798508
+      },
+      "interpolation": {
+        "seconds": 0.109946,
+        "fraction": 0.033548454029775146
+      },
+      "geometry_grouping": {
+        "seconds": 0.0645067,
+        "fraction": 0.019683299615834104
+      },
+      "angular_tables": {
+        "seconds": 0.008692,
+        "fraction": 0.0026522398488967817
+      },
+      "prepare_workspace": {
+        "seconds": 0.125415,
+        "fraction": 0.038268598786170026
+      },
+      "point_contraction": {
+        "seconds": 0.00548539,
+        "fraction": 0.001673788534829719
+      },
+      "other": {
+        "seconds": 0.10605490999999967,
+        "fraction": 0.03236114340464345
+      }
+    }
+  },
+  "logical_counts": {
+    "degree12_nonradial_contributions_per_point_per_frequency": 188,
+    "degree12_point_exponentials_three_bins_including_receiver": 42702132,
+    "radial_trace_count": 56,
+    "unique_physical_radii": 52,
+    "angular_locations": 1352,
+    "full_field_sample_bytes": 536
+  },
+  "native_timings": [
+    {
+      "degree": 3,
+      "measurements": 1,
+      "dspec": {
+        "median_s": 0.122446058,
+        "min_s": 0.121796154,
+        "max_s": 0.122845578
+      },
+      "yspec": {
+        "median_s": 0.024165025,
+        "min_s": 0.023511053,
+        "max_s": 0.034679152
+      },
+      "dspec_over_yspec": 5.067077646309077
+    },
+    {
+      "degree": 3,
+      "measurements": 2,
+      "dspec": {
+        "median_s": 0.24349226699999998,
+        "min_s": 0.24287201,
+        "max_s": 0.287837543
+      },
+      "yspec": {
+        "median_s": 0.035647839,
+        "min_s": 0.029228014,
+        "max_s": 0.035733322
+      },
+      "dspec_over_yspec": 6.830491660378066
+    },
+    {
+      "degree": 12,
+      "measurements": 1,
+      "dspec": {
+        "median_s": 3.393052176,
+        "min_s": 2.877157369,
+        "max_s": 3.470241174
+      },
+      "yspec": {
+        "median_s": 0.213945193,
+        "min_s": 0.209254979,
+        "max_s": 0.256301408
+      },
+      "dspec_over_yspec": 15.859445722624859
+    },
+    {
+      "degree": 12,
+      "measurements": 2,
+      "dspec": {
+        "median_s": 6.339380792,
+        "min_s": 6.046641612,
+        "max_s": 7.053218789
+      },
+      "yspec": {
+        "median_s": 0.266335436,
+        "min_s": 0.265425472,
+        "max_s": 0.323483494
+      },
+      "dspec_over_yspec": 23.802243093179687
+    }
+  ],
+  "chunk_diagnostic": {
+    "prepare_s": 0.040324245,
+    "points": 75712,
+    "sample_bytes": 536,
+    "runs": [
+      {
+        "chunk": 75712,
+        "seconds": 1.187366087,
+        "max_diff_over_peak": 0
+      },
+      {
+        "chunk": 4096,
+        "seconds": 1.164017021,
+        "max_diff_over_peak": 0
+      },
+      {
+        "chunk": 256,
+        "seconds": 1.3478466,
+        "max_diff_over_peak": 0
+      },
+      {
+        "chunk": 75712,
+        "seconds": 1.160536112,
+        "max_diff_over_peak": 0
+      }
+    ]
+  }
+}

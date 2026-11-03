@@ -1,0 +1,126 @@
+{
+  "remote_task": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-plot-control/continuation/phase-b-plot-02",
+  "degree": 384,
+  "verified_completed_jobs": {
+    "render-v2-l384": {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "8-9",
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-plot-v2/tools/check_render_phase_b_v2.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/slices-l384/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/prepare/data/geometry.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/validate-l384/checks.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-plot-control/continuation/phase-b-plot-02/render-v2-l384/data"
+      ],
+      "command_sha256": "cb82c7267c5ee85a77e42bb0186536b8176422faa1739b0278ad1d1bda375090",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-plot-v2",
+      "elapsed_seconds": 27.638813398982165,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2763171,
+          16292763
+        ]
+      ],
+      "finished_unix": 1793129705.0172417,
+      "id": "render-v2-l384",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data/result.json": "99273e11a980baf09bb56bcfb5c637996a7e79c520b505d6f39acafc1b06c34c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data/trace.csv": "c2fec88a3447b981d3cc8be4829bf8a4b66b345f79a9ee2878ebe50bf96f6fe6",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-plot-v2/tools/check_phase_b.py": "0ad149d8e1684b58b481c0ade387a3471a3fae61a6cc29a6355fb479a7d03287",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-plot-v2/tools/check_render_phase_b_v2.py": "0c2fbb7a8a054bd8710f65f187a18959bc97175b1c96e8bc6da9ab43fa9b60b2",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/prepare/data/geometry.json": "db75ba730e352b723405891b2b870ebf7febf0efcbcf91f0c8d94e3a0279c8cf",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data/section.bin": "57195ac967e0910a620582cdef3bd0c585f36ce4fd534d9682c2992d70866b48",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data/section.json": "7de4aad90367c1faf7b97e95ec99654dc4c0855ce773a40fd6425d3c744c5e13",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data/section_angles.csv": "9651fa88a3d0761aced66295ee10cc6bce1867ac7e5b820e98a796bbd327b37f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data/section_radial_sides.csv": "6658de4aed7895b6d5022bf7e4e61c581ca6dac380fd3cfd5ad259003c498d5e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/slices-l384/data/slices.bin": "d72c16f546b1d3e240bcc434261e599ea71baf1a3e7f291a5137f276ffa84821",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/slices-l384/data/slices.bin.json": "7e620388ed99f487826df568e693f1dbdbbbe24a662a0ccfcccd58760d27e3d9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/validate-l384/checks.json": "745fd4a3e66df6a924c3950765d49b92d0076d635f549080eaae612cb9eb1ba3",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data/result.json": "99273e11a980baf09bb56bcfb5c637996a7e79c520b505d6f39acafc1b06c34c",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-global-threads-control/continuation/accel-global-threads-run-01/global-generated-t32-l384/data/trace.csv": "c2fec88a3447b981d3cc8be4829bf8a4b66b345f79a9ee2878ebe50bf96f6fe6",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-plot-v2/tools/check_phase_b.py": "0ad149d8e1684b58b481c0ade387a3471a3fae61a6cc29a6355fb479a7d03287",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-b-plot-v2/tools/check_render_phase_b_v2.py": "0c2fbb7a8a054bd8710f65f187a18959bc97175b1c96e8bc6da9ab43fa9b60b2",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-control/continuation/phase-b-controls-01/prepare/data/geometry.json": "db75ba730e352b723405891b2b870ebf7febf0efcbcf91f0c8d94e3a0279c8cf",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data/section.bin": "57195ac967e0910a620582cdef3bd0c585f36ce4fd534d9682c2992d70866b48",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data/section.json": "7de4aad90367c1faf7b97e95ec99654dc4c0855ce773a40fd6425d3c744c5e13",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data/section_angles.csv": "9651fa88a3d0761aced66295ee10cc6bce1867ac7e5b820e98a796bbd327b37f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/section-l384/data/section_radial_sides.csv": "6658de4aed7895b6d5022bf7e4e61c581ca6dac380fd3cfd5ad259003c498d5e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/slices-l384/data/slices.bin": "d72c16f546b1d3e240bcc434261e599ea71baf1a3e7f291a5137f276ffa84821",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/slices-l384/data/slices.bin.json": "7e620388ed99f487826df568e693f1dbdbbbe24a662a0ccfcccd58760d27e3d9",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-figures-control/continuation/phase-b-figures-01/validate-l384/checks.json": "745fd4a3e66df6a924c3950765d49b92d0076d635f549080eaae612cb9eb1ba3",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "31797f68aadf86164533f6e7acbecda61e80e03214f2566caa54b9941bbe5582",
+      "outputs": [
+        "data/section-l384.png",
+        "data/section-l384.pdf",
+        "data/section-zoom-l384.png",
+        "data/section-zoom-l384.pdf",
+        "data/depth-slices-l384.png",
+        "data/depth-slices-l384.pdf",
+        "data/waveform-filter-l384.png",
+        "data/waveform-filter-l384.pdf",
+        "data/figure-manifest.json"
+      ],
+      "outputs_sha256": {
+        "data/depth-slices-l384.pdf": "208bd5eddaa567ed1798ab1053b8c062ee9e98c9821293ac9716dc5993b0bfb6",
+        "data/depth-slices-l384.png": "1f0cfd008fb0317ddd6096da8d24a29c3ae013000b9062d25fde1f3166ac2540",
+        "data/figure-manifest.json": "7e59daec3fa39bd02854bc8ef7bf6741f4e7890a95f0581f3b25088940cfa587",
+        "data/section-l384.pdf": "0a55c9dc1600e3245962505f9a2ae7527c2666c77c1561ec5f713e50d83ff46a",
+        "data/section-l384.png": "2d8a018539b4b380002719f8277baaf8176d23408cdd7720eb007b86e085bdde",
+        "data/section-zoom-l384.pdf": "290bb9376d2d34a5252c4579cd834a5a0681932a40b43acd90d5d2dd68313a60",
+        "data/section-zoom-l384.png": "a1ca0c106d1e352ea5d6e524e47097cafea5bb9d737dc28c31cb95d3e75c5fd3",
+        "data/waveform-filter-l384.pdf": "d58f7d238568a8cfd1408277b810c661f805bf8c7be28dd0446ac2144840d097",
+        "data/waveform-filter-l384.png": "41ca0d9e8df6bc66241fe24dea80cefdff1e438cf2d939783d3e3f67880fd30a"
+      },
+      "peak_observed_rss_gib_userspace": 2.1267,
+      "peak_observed_threads": 3,
+      "returncode": 0,
+      "started_unix": 1793129677.1528857,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.902899,
+      "updated_unix": 1793129703.898307,
+      "user_cpu_seconds_children": 25.305996,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 2.1267,
+        "elapsed_seconds": 26.74,
+        "owned_processes": [
+          {
+            "pid": 2763169,
+            "starttime_ticks": 16292736,
+            "threads": 1
+          },
+          {
+            "pid": 2763171,
+            "starttime_ticks": 16292763,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.1267,
+        "peak_observed_threads": 3,
+        "thread_cap": 4,
+        "thread_count_including_supervisor": 2
+      }
+    }
+  }
+}

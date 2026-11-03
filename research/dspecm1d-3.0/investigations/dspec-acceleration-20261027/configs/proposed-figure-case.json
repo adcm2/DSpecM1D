@@ -1,0 +1,88 @@
+{
+  "status": "Phase B scope narrowed by Alex to great-circle sections only; completed sections retained; unfinished radius-slice and dependent plot queues stopping with files preserved",
+  "observable": "0.5*dt*sum(Hann1000-1200 * filtered_vertical_displacement_m^2)",
+  "source": {
+    "latitude_deg": 10,
+    "longitude_deg": 20,
+    "depth_m": 50000
+  },
+  "receiver": {
+    "latitude_deg": 45,
+    "longitude_deg": 75,
+    "depth_m": 3000
+  },
+  "frequency_filter_hz": {
+    "flat": [
+      0,
+      0.008
+    ],
+    "cosine_rolloff": [
+      0.008,
+      0.01
+    ]
+  },
+  "time": {
+    "dt_s": 5,
+    "duration_s": 3600,
+    "fft_samples": 1024,
+    "fft_period_s": 5120,
+    "window_s": [
+      1000,
+      1200
+    ]
+  },
+  "model": "PREM500",
+  "sem": {
+    "nq": 6,
+    "radial_refinement": 0.05,
+    "radial_sides": "all179positive native element-node sides; interface sides retained"
+  },
+  "candidate_degrees": [
+    384,
+    1536
+  ],
+  "degree_convergence_claim": false,
+  "section": {
+    "geometry": "great circle through source and receiver, source at along-section zero",
+    "kernel_bandwidth": "2L",
+    "full_circle_sample_count": "4L+1 (1537 at L384,6145 at L1536)"
+  },
+  "depth_slices": [],
+  "channels": [
+    "A",
+    "C",
+    "F",
+    "L",
+    "N",
+    "kappa"
+  ],
+  "figure_colour_scale": "signed K/max(abs(K)) with normalization explicit per panel; retain raw values alongside",
+  "source_shell_contacts_included": false,
+  "receiver_lifts_or_sobolev_gradient_required": false,
+  "figure_computation_route": "Native pole-frame tensor/Eigen great-circle sections; no latitude-surface optimisation implementation authorised",
+  "execution": {
+    "host": "Tunya",
+    "nohup": true,
+    "maximum_total_threads": 50,
+    "preserve_all_existing_evidence": true,
+    "profile_one_figure_block_before_full_execution": true
+  },
+  "full179_side_global_volume": "EXCLUDED; constant-radius surfaces also no longer needed",
+  "solver_policy": {
+    "solver": "DSpecM1D",
+    "run_yspec": false,
+    "existing_yspec_results": "read-only historical context; no new YSpec calculations in Phase B"
+  },
+  "angular_cache_policy": {
+    "wigner_values": "generated",
+    "stored_wigner_enabled": false,
+    "reason": "User preference: avoid full Stored Wigner table and its observed276.8GiB peak memory; retain existing benchmark evidence."
+  },
+  "validation_policy": {
+    "new_calculations": "DSpec-only bounded self-consistency and native/reference comparisons",
+    "original_method_comparison": "Original DSpec pointwise/native angular synthesis versus new DSpec global GSH/FFT synthesis; independent of YSpec",
+    "global_original_route_threshold": 2e-13,
+    "global_original_route_status": "Original frozen gate result retained; Alex regards the 3\u20134e-13 discrepancy as floating-point roundoff and permits figure phase.",
+    "initial_figures": "use validated native path; do not make YSpec reruns or receiver lifts prerequisites"
+  }
+}

@@ -1,0 +1,339 @@
+{
+  "command": [
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/yspec/v5/build/v5/instrumented/physical-yspec",
+    "kernel",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/data/models/PREM500",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/validation_inputs/dspec-l3-baseline-721.csv",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/runs/dspec-kernel-gate-l3-full-native-pole/data/radial_nodes.csv",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/physical-profile/runs/yspec-v5profile-kernel-gate-l3-full-native/data",
+    "3",
+    "1e-9",
+    "0.25",
+    "--include-dc",
+    "--fft-padding",
+    "1",
+    "--nodes-per-element",
+    "6"
+  ],
+  "cpu": 3,
+  "threads": 1,
+  "timeout_s": 600,
+  "address_space_limit_gb": 8,
+  "executable_sha256": "de1553ed5b5271fbc60fb11e227e280d409b9e1aafa3121bb47eaecb67caf9b6",
+  "start_unix": 1793051481.901845,
+  "cpu_index": 3,
+  "returncode": 0,
+  "wall_s": 2.910530717000256,
+  "peak_rss_bytes": 16863232,
+  "timedout": false,
+  "profiles": [
+    {
+      "solver": "YSpecpp.physical_kernel",
+      "objective": 0,
+      "stages": {
+        "angular.generalized_legendre_table_population": {
+          "inclusive_s": 0.010408467000000001,
+          "exclusive_s": 0.0013788420000000001,
+          "calls": 208
+        },
+        "angular.spin_legendre_table_population": {
+          "inclusive_s": 0.001218586,
+          "exclusive_s": 0.001218586,
+          "calls": 208
+        },
+        "angular.wigner_function_table_build": {
+          "inclusive_s": 0.0078110390000000005,
+          "exclusive_s": 0.0078110390000000005,
+          "calls": 208
+        },
+        "api.ComputeSampledKernels": {
+          "inclusive_s": 5.634605239000001,
+          "exclusive_s": 0.001427682,
+          "calls": 2
+        },
+        "io.output_angle_block_write": {
+          "inclusive_s": 0.00017003800000000001,
+          "exclusive_s": 0.00017003800000000001,
+          "calls": 2
+        },
+        "io.output_fsync": {
+          "inclusive_s": 0.0017291000000000001,
+          "exclusive_s": 0.0017291000000000001,
+          "calls": 1
+        },
+        "io.scratch_block_read": {
+          "inclusive_s": 0.006473757,
+          "exclusive_s": 0.006473757,
+          "calls": 104
+        },
+        "io.scratch_block_read_for_transform": {
+          "inclusive_s": 6.532100000000001e-05,
+          "exclusive_s": 6.532100000000001e-05,
+          "calls": 2
+        },
+        "io.scratch_block_write": {
+          "inclusive_s": 0.003891975,
+          "exclusive_s": 0.003891975,
+          "calls": 104
+        },
+        "io.scratch_cleanup_after_verified_output": {
+          "inclusive_s": 0.000102788,
+          "exclusive_s": 0.000102788,
+          "calls": 1
+        },
+        "io.scratch_fsync": {
+          "inclusive_s": 0.003697351,
+          "exclusive_s": 0.003697351,
+          "calls": 1
+        },
+        "kernel.angular_block_batch": {
+          "inclusive_s": 0.9446064940000001,
+          "exclusive_s": 0.165827675,
+          "calls": 104
+        },
+        "kernel.angular_harmonic_synthesis.adjoint": {
+          "inclusive_s": 0.222810737,
+          "exclusive_s": 0.222810737,
+          "calls": 847028
+        },
+        "kernel.angular_harmonic_synthesis.source": {
+          "inclusive_s": 0.35306879300000005,
+          "exclusive_s": 0.35306879300000005,
+          "calls": 847028
+        },
+        "kernel.elastic_energy_pair_contraction": {
+          "inclusive_s": 0.042594319000000005,
+          "exclusive_s": 0.042594319000000005,
+          "calls": 847028
+        },
+        "kernel.frequency_block_accumulation_copy": {
+          "inclusive_s": 0.021255803,
+          "exclusive_s": 0.0027327700000000003,
+          "calls": 104
+        },
+        "kernel.measurement_frequency_basis_weights": {
+          "inclusive_s": 1.8074e-05,
+          "exclusive_s": 1.8074e-05,
+          "calls": 52
+        },
+        "kernel.modulus_dispersion_frequency_weights": {
+          "inclusive_s": 0.000261989,
+          "exclusive_s": 0.000261989,
+          "calls": 52
+        },
+        "kernel.objective_weight_and_parameter_products": {
+          "inclusive_s": 0.054414441,
+          "exclusive_s": 0.054414441,
+          "calls": 847028
+        },
+        "kernel.output_block_parameter_transform": {
+          "inclusive_s": 0.001566162,
+          "exclusive_s": 0.001566162,
+          "calls": 2
+        },
+        "kernel.output_streamed_parameter_transform": {
+          "inclusive_s": 0.007817919000000001,
+          "exclusive_s": 0.00048715900000000003,
+          "calls": 1
+        },
+        "kernel.relative_spin_rotation": {
+          "inclusive_s": 0.074226259,
+          "exclusive_s": 0.074226259,
+          "calls": 1694056
+        },
+        "kernel.scratch_block_accumulation": {
+          "inclusive_s": 0.008157301,
+          "exclusive_s": 0.008157301,
+          "calls": 104
+        },
+        "physical_case_total": {
+          "inclusive_s": 2.819075029,
+          "exclusive_s": 0.00011019600000000001,
+          "calls": 1
+        },
+        "radial.bvp_up_down_integration_and_matching": {
+          "inclusive_s": 1.8249300030000002,
+          "exclusive_s": 0.015851408,
+          "calls": 364
+        },
+        "radial.coefficient_combine_and_strain_recovery": {
+          "inclusive_s": 0.021647523000000002,
+          "exclusive_s": 0.021647523000000002,
+          "calls": 208
+        },
+        "radial.context_material_frequency": {
+          "inclusive_s": 3.612e-05,
+          "exclusive_s": 3.612e-05,
+          "calls": 208
+        },
+        "radial.determinant_jumps_matching_and_response_transport": {
+          "inclusive_s": 1.35384821,
+          "exclusive_s": 0.08657194300000001,
+          "calls": 364
+        },
+        "radial.initial_conditions_and_downward_integration": {
+          "inclusive_s": 0.010987876,
+          "exclusive_s": 0.010987876,
+          "calls": 364
+        },
+        "radial.initial_conditions_and_upward_integration": {
+          "inclusive_s": 0.444242509,
+          "exclusive_s": 0.444242509,
+          "calls": 364
+        },
+        "radial.radial_physical_variable_recovery": {
+          "inclusive_s": 0.001052077,
+          "exclusive_s": 0.001052077,
+          "calls": 52
+        },
+        "radial.radial_response_family": {
+          "inclusive_s": 0.025501915,
+          "exclusive_s": 9.5284e-05,
+          "calls": 52
+        },
+        "radial.solve_radial_family": {
+          "inclusive_s": 0.025529818000000003,
+          "exclusive_s": 2.7903e-05,
+          "calls": 52
+        },
+        "radial.solve_toroidal_and_spheroidal_families": {
+          "inclusive_s": 1.8150941500000002,
+          "exclusive_s": 0.000122235,
+          "calls": 156
+        },
+        "radial.spheroidal_b_vector_transport": {
+          "inclusive_s": 1.2672762670000002,
+          "exclusive_s": 1.2672762670000002,
+          "calls": 55208
+        },
+        "radial.spheroidal_physical_variable_recovery": {
+          "inclusive_s": 0.008994849000000001,
+          "exclusive_s": 0.008994849000000001,
+          "calls": 156
+        },
+        "radial.spheroidal_response_family": {
+          "inclusive_s": 1.7753234210000002,
+          "exclusive_s": 0.002437294,
+          "calls": 156
+        },
+        "radial.toroidal_physical_variable_recovery": {
+          "inclusive_s": 0.002771878,
+          "exclusive_s": 0.002771878,
+          "calls": 156
+        },
+        "radial.toroidal_response_family": {
+          "inclusive_s": 0.039648494,
+          "exclusive_s": 0.00019244500000000002,
+          "calls": 156
+        },
+        "setup.construct_kernel_solver": {
+          "inclusive_s": 3.2885e-05,
+          "exclusive_s": 3.2885e-05,
+          "calls": 1
+        },
+        "setup.disk_backed_accumulator": {
+          "inclusive_s": 3.6511e-05,
+          "exclusive_s": 3.6511e-05,
+          "calls": 1
+        },
+        "setup.frequency_sampling_grid": {
+          "inclusive_s": 5.7e-08,
+          "exclusive_s": 5.7e-08,
+          "calls": 1
+        },
+        "setup.frozen_measurement_and_sample_grid": {
+          "inclusive_s": 0.0006982300000000001,
+          "exclusive_s": 0.0006982300000000001,
+          "calls": 1
+        },
+        "setup.map_adjoint_receiver_depths": {
+          "inclusive_s": 5.0000000000000004e-08,
+          "exclusive_s": 5.0000000000000004e-08,
+          "calls": 1
+        },
+        "setup.measurement_adjoint_spectra_and_weights": {
+          "inclusive_s": 0.000113955,
+          "exclusive_s": 0.000113955,
+          "calls": 1
+        },
+        "setup.measurement_direction_basis": {
+          "inclusive_s": 6.71e-07,
+          "exclusive_s": 6.71e-07,
+          "calls": 1
+        },
+        "setup.merge_sample_nodes": {
+          "inclusive_s": 2.9173000000000003e-05,
+          "exclusive_s": 2.9173000000000003e-05,
+          "calls": 1
+        },
+        "setup.model_calculation_source_receiver_grid": {
+          "inclusive_s": 0.000958643,
+          "exclusive_s": 0.000958643,
+          "calls": 1
+        },
+        "setup.sampled_node_materials_and_phases": {
+          "inclusive_s": 2.5694e-05,
+          "exclusive_s": 2.5694e-05,
+          "calls": 1
+        },
+        "setup.source_receiver_frame_geometry": {
+          "inclusive_s": 5.3516e-05,
+          "exclusive_s": 5.3516e-05,
+          "calls": 1
+        },
+        "setup.validate_measurements_and_source": {
+          "inclusive_s": 3.836e-06,
+          "exclusive_s": 3.836e-06,
+          "calls": 1
+        },
+        "source_weights.forward_moment_force_rhs": {
+          "inclusive_s": 0.00025495600000000003,
+          "exclusive_s": 0.00025495600000000003,
+          "calls": 208
+        },
+        "source_weights.receiver_unit_force_rhs": {
+          "inclusive_s": 0.000316887,
+          "exclusive_s": 0.000316887,
+          "calls": 208
+        }
+      },
+      "counters": {
+        "adjoint_strain_coefficients": 33904,
+        "angular_degree_order_component_macs": 162629376,
+        "angular_phase_timer_reads": 10164336,
+        "angular_synthesis_evaluations": 1694056,
+        "angular_table_degree_extent_sum": 416,
+        "angular_table_points": 9464,
+        "angular_tables_built": 208,
+        "b_vector_transport_intervals": 55208,
+        "degree_frequency_pairs": 208,
+        "elastic_energy_pair_contractions": 4235140,
+        "forward_source_rhs_directions": 208,
+        "forward_strain_coefficients": 33904,
+        "frequency_bins_active": 52,
+        "generalized_legendre_table_degrees": 832,
+        "generalized_legendre_table_orders": 832,
+        "material_frequency_weight_vectors": 8476,
+        "measurement_basis_modulus_combinations": 4235140,
+        "nonradial_degree_solves": 156,
+        "openmp_threads_in_region": 1,
+        "radial_degree_solves": 52,
+        "radial_family_solves": 52,
+        "radial_response_basis_combinations": 67808,
+        "radial_sample_nodes": 33904,
+        "receiver_degree_weight_sets": 208,
+        "receiver_unit_rhs_directions": 208,
+        "relative_spin_rotations": 847028,
+        "source_degree_weight_sets": 208,
+        "spheroidal_family_solves": 156,
+        "toroidal_family_solves": 156,
+        "wigner_table_angles": 9464,
+        "wigner_table_max_degree": 624
+      }
+    }
+  ],
+  "output_files": {
+    "data/kernels.bin": "c098fa4b0671bf7ce6e958a85e1fa85740944ec0bff2d4dc208fa3b9eaabf91d",
+    "data/result.json": "683ae69be72c4c6f766e5d7384a026ce418c9d1ac894ec7893c787688d1976ac"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "model": "prem.200.fic",
+  "attenuation": false,
+  "gravity": "none",
+  "output": {
+    "prefix": "out",
+    "quantity": "velocity",
+    "potential_and_tilt_corrections": false
+  },
+  "degrees": {
+    "min": 0,
+    "max": 100
+  },
+  "frequencies_mHz": {
+    "min": 0.2,
+    "max": 8.0
+  },
+  "time_series": {
+    "length_min": 60.0,
+    "time_step_s": 20.0
+  },
+  "filter_mHz": [0.5, 1.0, 7.0, 8.0],
+  "sources": [
+    {
+      "depth_km": 10.0,
+      "latitude": -20.0,
+      "longitude": 170.0,
+      "moment_tensor_Nm": {
+        "rr": 4.22e+17,
+        "rt": 3.08e+17,
+        "rp": 6.99e+17,
+        "tt": -2.976e+18,
+        "tp": 6.54e+17,
+        "pp": 2.55e+18
+      }
+    }
+  ],
+  "receivers": {
+    "depth_km": 50.0,
+    "locations": [
+      [0.0, 0.0],
+      [45.0, 45.0],
+      [-60.0, -100.0]
+    ]
+  }
+}

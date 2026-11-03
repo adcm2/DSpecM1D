@@ -1,0 +1,14 @@
+Angular actual build evidence independent review — 2026-11-03
+Reviewer: Sol6.1 high /root/radial_review
+Disposition: PASS. Numerical launch still requires exact run/checker/minimal-payload gates and fresh shared-resource admission.
+
+Evidence SHA-256 dd5edb758835c57bfeed45df4ced0ef0e9b6318e0a1b2fbc13d88170e4670b2b
+Native binary SHA-256 d7ffb6cbd3138b922831915906c91fb199e7a17adf103131572318ad1e2631aa
+Source archive SHA-256 e7ef14c65c8768e0a1474cf531d232206db78c71c36f5872a69dfb81ac58e733
+Source manifest SHA-256 e27a1ad79c37fd13c8b6f1a8cdc3d415ce0d3a240e8db92ea4fe4979c5c7e018
+
+Independently rehashed exact23 safe regular source-archive members: allsizes/hashes match manifest AND currentlocalbytes, no extra payload. Actual single compiler argv/cwd equals sealed ee567build config exactly after OUTPUT substitution. Compiler rc0/stderr empty;13 tracked before/after entries stable and all12 shared external path/hash entries equal acceptedStudy2. Actual observed binary hash matches compiler receipt and above. Build supervisor completed cleanly in96.7805984489s with inputs unchanged,no failures,cleanup verified; observed6threads/2.5246GiB within8/32 userspace limits.
+
+Kernel admission/launch receipt independently inspected: actualMainPID1283785 in dspec-science-angular-v1-build.service, direct child of registered dspecscienceangular20261103.slice,32GiB childMemoryMax/12tasks/swap0/CPU8squota, guardian inventory live/unfrozen/accounted, zero memorymax/OOM events, observedCPUprogress792704000ns. Terminal separate slice MemoryMax40GB/12tasks/swap0/CPU8s persists,TasksCurrent0,MainPID0/serviceinactive/cleanup. Slice observed memorypeak2,667,933,696B; no max/oom/oom_kill/oom_group_kill events. Postexit collected service properties are unset/default; they do not replace the verified live child-cap receipt or indicate an active unlimited service. Fresh terminal sharedguard is MONITORING/valid; guardian source/forecast/admission are recorded. Watchdog RSS and kernel accounting are distinct measures.
+
+No scientific result or cutoff acceptance follows from successful build. Preserve current source/binary and source/build/resource receipts. Exact producer/checker gate is pending correction of already-reported checker runtime/denominator issues. No further build or optimization is needed unless an actual reviewed source change occurs.

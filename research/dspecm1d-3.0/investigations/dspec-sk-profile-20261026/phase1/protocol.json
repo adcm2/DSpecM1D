@@ -1,0 +1,23 @@
+{
+  "authorization": "User: do phase 1",
+  "scope": [
+    "DSpecM1D/src/Windowed3DFields.h",
+    "DSpecM1D/src/Windowed3DKernels.h",
+    "tests/test_sensitivity_kernels.cpp",
+    "implementation_status.md"
+  ],
+  "constraints": [
+    "standard checkout; preserve accepted dirty changes and validation/phase0",
+    "no batching, factorization changes, receiver enrichment, convergence sweep, high-degree repair, commit or push",
+    "one numerical thread and no more than two compiler jobs overall",
+    "bounded caches, exact resolved radial element/radius keys, unmodified physics and source contact"
+  ],
+  "performance_gate": "at least 3x lmax12 one-objective matched native median, one thread, same grid/bins/compiler; report degree3 and memory",
+  "numerical_gates": {
+    "displacement_and_forward_strain_relative_norm": 1e-12,
+    "adjoint_strain_relative_norm": 1e-09,
+    "kernel_pointwise_scaled": 1e-10,
+    "other_limits": "unchanged existing accepted metrics and limits"
+  },
+  "review_sequence": "Luna High implementation, fresh Luna High independent review, then short Sol High review"
+}

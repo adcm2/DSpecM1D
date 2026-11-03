@@ -1,0 +1,1661 @@
+[
+  {
+    "degree": 12,
+    "bins": 3,
+    "objectives": 1,
+    "contacts": 0,
+    "repeat": 0,
+    "solver": "dspec",
+    "mode": "original",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/fast/fast_driver-v6",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-dspec-original/data",
+      "12",
+      "3",
+      "1",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "env": {
+      "SK_BINS": "3",
+      "DSFAST_CONTACTS": "0",
+      "DSFAST_BATCH_RESPONSES": "0",
+      "DSFAST_FORWARD_FIELDS": "0",
+      "DSFAST_NATIVE_DERIVATIVE": "physical"
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.983619384542592e-16,
+      "max_kernel_pointwise_scaled_error": 4.406577972098072e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.263760934
+      ],
+      "reference_s": [
+        0.708806928
+      ],
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.00064045,
+          "modal_solve_and_basis": 0.09933932200000001,
+          "packed_sampling": 0.154433457,
+          "final_kernel_contraction": 0.002837172,
+          "source_contact": 6.493e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": false,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 0,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 33528992,
+      "tensor_grid_hits": 2,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 4,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 22,
+      "tensor_basis_misses": 14,
+      "tensor_angular_payload_bytes_estimate": 26769120,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "profiles": [],
+    "peak_current_executable_hwm_bytes": 87920640,
+    "wall_s": 1.066600472000573,
+    "output_sha256": "448d8f60f3b3bbd2c84a4b08831c4efd57d4c9e9a7adc3700140929b411a049a",
+    "original_equivalence": null,
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-dspec-original/data"
+  },
+  {
+    "degree": 12,
+    "bins": 3,
+    "objectives": 1,
+    "contacts": 0,
+    "repeat": 0,
+    "solver": "dspec",
+    "mode": "native",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profile-disabled-v2",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-dspec-native/data",
+      "12",
+      "3",
+      "1",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "env": {
+      "SK_BINS": "3",
+      "DSFAST_CONTACTS": "0",
+      "DSFAST_BATCH_RESPONSES": "0",
+      "DSFAST_FORWARD_FIELDS": "0",
+      "DSFAST_NATIVE_DERIVATIVE": "physical"
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.983619384542592e-16,
+      "max_kernel_pointwise_scaled_error": 4.406577972098072e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.251470329
+      ],
+      "reference_s": [
+        0.705292271
+      ],
+      "candidate_call_wall_s": [
+        0.251628585
+      ],
+      "reference_validation_compare_s": [
+        0.003089782
+      ],
+      "binary_array_export_s": [
+        0.011795276
+      ],
+      "main_setup_s": 0.058767874,
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000676352,
+          "modal_solve_and_basis": 0.103083701,
+          "packed_sampling": 0.138658058,
+          "final_kernel_contraction": 0.002868382,
+          "source_contact": 6.683e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": false,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 0,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 33528992,
+      "tensor_grid_hits": 2,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 4,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 22,
+      "tensor_basis_misses": 14,
+      "tensor_angular_payload_bytes_estimate": 26769120,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "profiles": [],
+    "peak_current_executable_hwm_bytes": 87887872,
+    "wall_s": 1.064890262001427,
+    "output_sha256": "448d8f60f3b3bbd2c84a4b08831c4efd57d4c9e9a7adc3700140929b411a049a",
+    "original_equivalence": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-dspec-native/data"
+  },
+  {
+    "degree": 12,
+    "bins": 3,
+    "objectives": 1,
+    "contacts": 0,
+    "repeat": 0,
+    "solver": "dspec",
+    "mode": "profile",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profiled-v2",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-dspec-profile/data",
+      "12",
+      "3",
+      "1",
+      "tensor",
+      "direct",
+      "equilibrated"
+    ],
+    "env": {
+      "SK_BINS": "3",
+      "DSFAST_CONTACTS": "0",
+      "DSFAST_BATCH_RESPONSES": "0",
+      "DSFAST_FORWARD_FIELDS": "0",
+      "DSFAST_NATIVE_DERIVATIVE": "physical"
+    },
+    "metrics": {
+      "degree": 12,
+      "frequency_bins": 3,
+      "objectives": 1,
+      "backend": "tensor",
+      "radial_mode": "direct",
+      "solver_backend": "equilibrated",
+      "sample_count": 75712,
+      "max_field_relative_error": 0,
+      "max_kernel_l2_relative_error": 6.983619384542592e-16,
+      "max_kernel_pointwise_scaled_error": 4.406577972098072e-14,
+      "max_contact_relative_error": 0,
+      "max_objective_relative_error": 0,
+      "arrays": {
+        "candidate": "arrays_candidate.bin",
+        "reference": "arrays_reference.bin",
+        "each_objective_order": "raw_complex_matrix,processed_complex_matrix,kernel_count,kernels[A,C,F,L,N,kappa],contact_count,contacts[A,C,F,L,N],objective"
+      },
+      "coordinates": "coordinates.bin: u64 count then radius_m,theta_rad,phi_rad,i32 element per point",
+      "frames": {
+        "axis_vectors_global_xyz": [
+          "theta",
+          "east",
+          "radial"
+        ],
+        "source": [
+          [
+            0.16317591116653482,
+            0.0593911746138847,
+            -0.984807753012208
+          ],
+          [
+            -0.3420201433256687,
+            0.9396926207859084,
+            0
+          ],
+          [
+            0.9254165783983234,
+            0.33682408883346515,
+            0.17364817766693033
+          ]
+        ],
+        "receivers": [
+          [
+            [
+              4.329780281177466e-17,
+              0.7071067811865475,
+              -0.7071067811865476
+            ],
+            [
+              -1,
+              6.123233995736766e-17,
+              0
+            ],
+            [
+              4.329780281177467e-17,
+              0.7071067811865476,
+              0.7071067811865475
+            ]
+          ]
+        ]
+      },
+      "packet": {
+        "file": "solver_packet.bin",
+        "magic": "DSFASTPK",
+        "schema": 1,
+        "endianness": "little",
+        "record_order": "objective,bin,point_samples,pole_radial_coefficients,modal_blocks",
+        "record_header": "u32 objective,u32 bin,u64 point_count,u32 modal_block_count,u32 pole_coefficient_count",
+        "point_value_order": "radius_m,theta_rad,phi_rad,element,forward_strain[rr,trace,+1,-1,+2,-2],adjoint_strain[same]",
+        "pole_coeff_order": "u64 synthesisSet,bool adjoint,i32 element,f64 radiusModel,frame_axes[3x3],u64 count,(i32 m,i32 l,6 complex raw strain)[]",
+        "matrix_order": "row_major_complex_interleaved_f64",
+        "modal_matrix_order": "forward,adjoint,sourceLift,sourceCoefficients,modeReceiver",
+        "azimuthal_phase": "exp(+i*m*phi)",
+        "angular_convention": "GSHTrans Wigner d^l_{n,m}, unnormalized solver convention; direct samples are global-frame values"
+      },
+      "candidate_s": [
+        0.24925215
+      ],
+      "reference_s": [
+        0.692085404
+      ],
+      "candidate_call_wall_s": [
+        0.249675645
+      ],
+      "reference_validation_compare_s": [
+        0.003373058
+      ],
+      "binary_array_export_s": [
+        0.011913705
+      ],
+      "main_setup_s": 0.06033769,
+      "candidate_stage_s": [
+        {
+          "measurement_adjoint": 0.000644937,
+          "modal_solve_and_basis": 0.10037364700000001,
+          "packed_sampling": 0.139277049,
+          "final_kernel_contraction": 0.002820726,
+          "source_contact": 6.841e-06
+        }
+      ],
+      "packet_export_enabled": false,
+      "modal_export_enabled": true,
+      "batch_responses_enabled": false,
+      "batch_cache_entries": 0,
+      "batch_cache_bytes": 0,
+      "batch_cache_hits": 0,
+      "batch_cache_misses": 0,
+      "batch_max_basis_reconstruction_relative": 0,
+      "forward_tensor_fields_enabled": false,
+      "forward_tensor_cache_entries": 0,
+      "forward_tensor_cache_hits": 0,
+      "forward_tensor_cache_misses": 0,
+      "forward_tensor_cache_admission_skips": 0,
+      "forward_tensor_cache_retained_payload_bytes_estimate": 0,
+      "forward_tensor_cache_retained_payload_limit_bytes": 134217728,
+      "sampling_plan_bytes_estimate": 33528992,
+      "tensor_grid_hits": 2,
+      "tensor_grid_misses": 1,
+      "tensor_grid_payload_bytes_estimate": 6699616,
+      "tensor_plan_hits": 4,
+      "tensor_plan_misses": 2,
+      "tensor_basis_hits": 22,
+      "tensor_basis_misses": 14,
+      "tensor_angular_payload_bytes_estimate": 26769120,
+      "contacts_enabled": false,
+      "rstrain_bridge_enabled": false,
+      "acceptance": {
+        "field_limit": 1e-12,
+        "kernel_l2_limit": 1e-12,
+        "pointwise_scaled_limit": 1e-10,
+        "contact_limit": 1e-12,
+        "objective_limit": 1e-12
+      }
+    },
+    "profiles": [
+      {
+        "solver": "dspec_setup",
+        "objective": -1,
+        "stages": {
+          "SEM_mesh_and_matrix_setup": {
+            "inclusive_s": 0.0019437660000000002,
+            "exclusive_s": 0.0019437660000000002,
+            "calls": 1
+          },
+          "input_parameters_model_and_frequency_initialization": {
+            "inclusive_s": 0.00013722700000000002,
+            "exclusive_s": 0.00013722700000000002,
+            "calls": 1
+          },
+          "parameter_file_generation": {
+            "inclusive_s": 6.3693e-05,
+            "exclusive_s": 6.3693e-05,
+            "calls": 1
+          },
+          "result_stream_creation_and_coordinate_export": {
+            "inclusive_s": 0.004359031,
+            "exclusive_s": 0.004359031,
+            "calls": 1
+          },
+          "sample_CSV_read": {
+            "inclusive_s": 0.053733302000000004,
+            "exclusive_s": 0.053733302000000004,
+            "calls": 1
+          },
+          "setup_all": {
+            "inclusive_s": 0.060330819,
+            "exclusive_s": 9.2742e-05,
+            "calls": 1
+          },
+          "stream_packet_and_cache_bookkeeping": {
+            "inclusive_s": 1.058e-06,
+            "exclusive_s": 1.058e-06,
+            "calls": 1
+          }
+        },
+        "counters": {},
+        "accounting_root": "setup_all",
+        "exclusive_sum_s": 0.060330819,
+        "closure_error_s": 0.0
+      },
+      {
+        "solver": "dspec",
+        "objective": 0,
+        "stages": {
+          "Pforward_fft_and_window": {
+            "inclusive_s": 9.4597e-05,
+            "exclusive_s": 9.4597e-05,
+            "calls": 1
+          },
+          "actual_ZGEMM_complex": {
+            "inclusive_s": 0.020843657,
+            "exclusive_s": 0.020843657,
+            "calls": 2196
+          },
+          "candidate_api_including_local_cleanup": {
+            "inclusive_s": 0.24940160900000002,
+            "exclusive_s": 1.195e-06,
+            "calls": 1
+          },
+          "candidate_body": {
+            "inclusive_s": 0.24940041400000001,
+            "exclusive_s": 0.006191686,
+            "calls": 1
+          },
+          "dynamic_H_assembly": {
+            "inclusive_s": 0.009760261000000001,
+            "exclusive_s": 0.009760261000000001,
+            "calls": 75
+          },
+          "final_frequency_objective_accumulation": {
+            "inclusive_s": 7.830000000000001e-07,
+            "exclusive_s": 7.830000000000001e-07,
+            "calls": 1
+          },
+          "forward_angular_cache_lookup": {
+            "inclusive_s": 9.5e-08,
+            "exclusive_s": 9.5e-08,
+            "calls": 3
+          },
+          "forward_substitution": {
+            "inclusive_s": 0.006422124,
+            "exclusive_s": 2.4641e-05,
+            "calls": 75
+          },
+          "frequency_workspace_and_modal_solve": {
+            "inclusive_s": 0.10037269800000001,
+            "exclusive_s": 2.989e-06,
+            "calls": 3
+          },
+          "frequency_workspace_prepare_and_modal_capture": {
+            "inclusive_s": 0.100369709,
+            "exclusive_s": 0.002808259,
+            "calls": 3
+          },
+          "full_weighted_HH_solve": {
+            "inclusive_s": 0.022392152000000002,
+            "exclusive_s": 1.8457e-05,
+            "calls": 75
+          },
+          "measurement_adjoint": {
+            "inclusive_s": 0.0006442970000000001,
+            "exclusive_s": 0.0006442970000000001,
+            "calls": 1
+          },
+          "minimal_unit_basis_HH_solve": {
+            "inclusive_s": 0.003653162,
+            "exclusive_s": 9.353e-06,
+            "calls": 72
+          },
+          "modal_projection_source_lift_and_frequency_solve": {
+            "inclusive_s": 0.09756145000000001,
+            "exclusive_s": 7.3494e-05,
+            "calls": 3
+          },
+          "packed_Wigner_d_table_build": {
+            "inclusive_s": 2.1727e-05,
+            "exclusive_s": 2.1727e-05,
+            "calls": 4
+          },
+          "packed_angular_coefficients_and_basis_build": {
+            "inclusive_s": 5.58e-06,
+            "exclusive_s": 5.58e-06,
+            "calls": 4
+          },
+          "point_kernel_contraction_and_scatter": {
+            "inclusive_s": 0.0028159020000000003,
+            "exclusive_s": 0.0028159020000000003,
+            "calls": 3
+          },
+          "pole_frame_sampling_total": {
+            "inclusive_s": 0.011606203,
+            "exclusive_s": 0.00014974200000000002,
+            "calls": 6
+          },
+          "radial_interpolation_and_strain_numerator_build": {
+            "inclusive_s": 0.007214787,
+            "exclusive_s": 0.007214787,
+            "calls": 342
+          },
+          "radial_l0_sampling_and_interpolation": {
+            "inclusive_s": 0.000197922,
+            "exclusive_s": 0.000197922,
+            "calls": 6
+          },
+          "radial_l0_source_and_adjoint_branch": {
+            "inclusive_s": 0.0018238290000000001,
+            "exclusive_s": 7.093300000000001e-05,
+            "calls": 3
+          },
+          "receiver_basis_and_QR_reconstruction": {
+            "inclusive_s": 0.0021068320000000003,
+            "exclusive_s": 0.0021068320000000003,
+            "calls": 75
+          },
+          "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+            "inclusive_s": 0.004758445,
+            "exclusive_s": 0.001231399,
+            "calls": 6
+          },
+          "receiver_suffix_and_frequency_scatter": {
+            "inclusive_s": 3.92e-07,
+            "exclusive_s": 3.92e-07,
+            "calls": 3
+          },
+          "shared_forward_and_adjoint_solver": {
+            "inclusive_s": 0.084392218,
+            "exclusive_s": 0.001568168,
+            "calls": 75
+          },
+          "solver_factorization_dispatch": {
+            "inclusive_s": 0.040596351,
+            "exclusive_s": 1.1188e-05,
+            "calls": 75
+          },
+          "source_contact_separate_case": {
+            "inclusive_s": 4.734e-06,
+            "exclusive_s": 4.734e-06,
+            "calls": 3
+          },
+          "source_frame_geometry_phase_spin_rotation_and_scatter": {
+            "inclusive_s": 0.0065000940000000005,
+            "exclusive_s": 0.001407224,
+            "calls": 6
+          },
+          "sparse_adjoint_solve_including_rhs_scaling": {
+            "inclusive_s": 0.026017504,
+            "exclusive_s": 0.026017504,
+            "calls": 147
+          },
+          "sparse_equilibration_and_scaling": {
+            "inclusive_s": 0.005079772000000001,
+            "exclusive_s": 0.005079772000000001,
+            "calls": 75
+          },
+          "sparse_factorization_total": {
+            "inclusive_s": 0.040585163,
+            "exclusive_s": 0.00010355100000000001,
+            "calls": 75
+          },
+          "sparse_forward_solve_including_rhs_scaling": {
+            "inclusive_s": 0.006397483000000001,
+            "exclusive_s": 0.006397483000000001,
+            "calls": 75
+          },
+          "sparse_numerical_factorization": {
+            "inclusive_s": 0.029389481000000002,
+            "exclusive_s": 0.029389481000000002,
+            "calls": 75
+          },
+          "sparse_symbolic_analysis": {
+            "inclusive_s": 0.006012359,
+            "exclusive_s": 0.006012359,
+            "calls": 75
+          },
+          "spheroidal_source_lift_projection_and_solver": {
+            "inclusive_s": 0.08385049600000001,
+            "exclusive_s": 0.008866978000000001,
+            "calls": 36
+          },
+          "tensor_angular_gemm_complex_and_packing": {
+            "inclusive_s": 0.037160606000000006,
+            "exclusive_s": 0.016316949,
+            "calls": 2196
+          },
+          "tensor_coefficient_packing_and_key_reorder": {
+            "inclusive_s": 0.060945169,
+            "exclusive_s": 0.025162385000000002,
+            "calls": 36
+          },
+          "tensor_grid_semantic_plan_and_sampling": {
+            "inclusive_s": 0.13927523,
+            "exclusive_s": 9.203e-06,
+            "calls": 3
+          },
+          "tensor_phase_spin_rotation_and_scatter": {
+            "inclusive_s": 0.023876696000000003,
+            "exclusive_s": 0.023876696000000003,
+            "calls": 6
+          },
+          "tensor_sampling_total": {
+            "inclusive_s": 0.13926602700000001,
+            "exclusive_s": 0.042837959,
+            "calls": 3
+          },
+          "toroidal_source_lift_projection_and_solver": {
+            "inclusive_s": 0.011813631000000002,
+            "exclusive_s": 0.0020509950000000003,
+            "calls": 36
+          }
+        },
+        "counters": {
+          "adjoint_rhs_columns": 1119,
+          "forward_angular_cache_misses": 3,
+          "forward_rhs_columns": 219,
+          "frequency_bin_iterations": 3,
+          "frequency_bins": 3,
+          "full_weighted_measurement_adjoint_components": 9,
+          "full_weighted_modal_adjoint_rhs_columns": 1011,
+          "modal_degree_iterations": 36,
+          "modal_lmax": 36,
+          "modal_receiver_rhs_components": 9,
+          "objective_count": 1,
+          "packed_angular_coeff_cache_hits": 8,
+          "packed_angular_coeff_cache_misses": 4,
+          "packed_wigner_cache_hits": 8,
+          "packed_wigner_cache_misses": 4,
+          "radial_coefficient_cache_misses": 342,
+          "receiver_basis_input_columns": 28500,
+          "receiver_basis_input_rows": 225,
+          "receiver_basis_selected_columns": 111,
+          "receiver_count": 1,
+          "solver_degree": 468,
+          "solver_forward_rhs_columns": 219,
+          "solver_unit_basis_rhs_columns": 108,
+          "solver_weighted_adjoint_rhs_columns": 1011,
+          "sparse_factorization_calls": 75,
+          "sparse_matrix_nonzeros": 524280,
+          "sparse_matrix_rows": 28500,
+          "tensor_angular_plan_cache_hits": 4,
+          "tensor_angular_plan_cache_misses": 2,
+          "tensor_basis_cache_hits": 22,
+          "tensor_basis_cache_misses": 14,
+          "tensor_complex_gemm_batches": 2196,
+          "tensor_complex_gemm_k": 101016,
+          "tensor_complex_gemm_m": 196740,
+          "tensor_complex_gemm_n": 4068,
+          "tensor_grid_cache_hits": 2,
+          "tensor_grid_cache_misses": 1,
+          "tensor_receiver_suffix_count": 3,
+          "tensor_volume_point_count": 227136,
+          "volume_point_count": 75712,
+          "zgemm_calls": 2196
+        },
+        "accounting_root": "candidate_api_including_local_cleanup",
+        "exclusive_sum_s": 0.24940160900000002,
+        "closure_error_s": 0.0
+      }
+    ],
+    "peak_current_executable_hwm_bytes": 88006656,
+    "wall_s": 1.0435752999983379,
+    "output_sha256": "448d8f60f3b3bbd2c84a4b08831c4efd57d4c9e9a7adc3700140929b411a049a",
+    "original_equivalence": {
+      "objectives": [
+        {
+          "objective": 0,
+          "checks": {
+            "raw": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "processed": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            },
+            "kernel_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "kernel_kappa": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-10,
+              "passed": true
+            },
+            "contact_A": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_C": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_F": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_L": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "contact_N": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": 1e-12,
+              "passed": true
+            },
+            "objective": {
+              "relative_L2": 0.0,
+              "max_scaled_pointwise": 0.0,
+              "L2_limit": 1e-12,
+              "pointwise_limit": null,
+              "passed": true
+            }
+          },
+          "passed": true
+        }
+      ],
+      "passed": true
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-dspec-profile/data"
+  },
+  {
+    "degree": 12,
+    "bins": 3,
+    "objectives": 1,
+    "contacts": 0,
+    "repeat": 0,
+    "solver": "yspec",
+    "mode": "original",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/yspec-audit",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-yspec-original/data",
+      "12",
+      "1",
+      "1",
+      "1352"
+    ],
+    "env": {
+      "SK_BINS": "3",
+      "DSFAST_CONTACTS": "0",
+      "DSFAST_BATCH_RESPONSES": "0",
+      "DSFAST_FORWARD_FIELDS": "0",
+      "DSFAST_NATIVE_DERIVATIVE": "physical"
+    },
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.051552008,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.282342392
+      ],
+      "first_workload_api_s": 0.282342392,
+      "first_model_to_arrays_s": 0.3338944,
+      "calculation_s": 0.3338944,
+      "end_to_end_s": 0.740691782,
+      "peak_rss_bytes": 22282240,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_first_bin": 1,
+          "solver_last_bin": 3,
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profiles": [],
+    "peak_current_executable_hwm_bytes": 18853888,
+    "wall_s": 0.9970625840032881,
+    "output_sha256": "a4cb4d165a763c3459f44645f7b537a398a5f3a2532a6959a37de6a39ae2b855",
+    "original_equivalence": null,
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-yspec-original/data"
+  },
+  {
+    "degree": 12,
+    "bins": 3,
+    "objectives": 1,
+    "contacts": 0,
+    "repeat": 0,
+    "solver": "yspec",
+    "mode": "native",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/yspec/build/native/yspec-math-profile",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-yspec-native/data",
+      "12",
+      "1",
+      "1",
+      "1352"
+    ],
+    "env": {
+      "SK_BINS": "3",
+      "DSFAST_CONTACTS": "0",
+      "DSFAST_BATCH_RESPONSES": "0",
+      "DSFAST_FORWARD_FIELDS": "0",
+      "DSFAST_NATIVE_DERIVATIVE": "physical"
+    },
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.049497544,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.276675235
+      ],
+      "first_workload_api_s": 0.276675235,
+      "first_model_to_arrays_s": 0.326172779,
+      "calculation_s": 0.326172779,
+      "end_to_end_s": 0.733235518,
+      "peak_rss_bytes": 22798336,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_first_bin": 1,
+          "solver_last_bin": 3,
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profiles": [],
+    "peak_current_executable_hwm_bytes": 18890752,
+    "wall_s": 0.9400521099996695,
+    "output_sha256": "a4cb4d165a763c3459f44645f7b537a398a5f3a2532a6959a37de6a39ae2b855",
+    "original_equivalence": {
+      "byte_identical": true,
+      "passed": true
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-yspec-native/data"
+  },
+  {
+    "degree": 12,
+    "bins": 3,
+    "objectives": 1,
+    "contacts": 0,
+    "repeat": 0,
+    "solver": "yspec",
+    "mode": "profile",
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/yspec/build/instrumented/yspec-math-profile",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-yspec-profile/data",
+      "12",
+      "1",
+      "1",
+      "1352"
+    ],
+    "env": {
+      "SK_BINS": "3",
+      "DSFAST_CONTACTS": "0",
+      "DSFAST_BATCH_RESPONSES": "0",
+      "DSFAST_FORWARD_FIELDS": "0",
+      "DSFAST_NATIVE_DERIVATIVE": "physical"
+    },
+    "metrics": {
+      "solver": "YSpecpp",
+      "api": "ComputeSampledKernels",
+      "lmax": 12,
+      "measurements": 1,
+      "repeats": 1,
+      "point_count": 75712,
+      "warmup_batches": 0,
+      "warmup_api_calls": 0,
+      "setup_s": 0.043924446,
+      "warmup_batch_s": 0,
+      "api_s": [
+        0.315224985
+      ],
+      "first_workload_api_s": 0.315224985,
+      "first_model_to_arrays_s": 0.359149431,
+      "calculation_s": 0.359149431,
+      "end_to_end_s": 0.761248477,
+      "peak_rss_bytes": 54988800,
+      "config": {
+        "frequency_grid": {
+          "nt": 128,
+          "dt_s": 20,
+          "df_hz": 0.000390625,
+          "epsilon_s_inv": 0.002777777777777778,
+          "solver_first_bin": 1,
+          "solver_last_bin": 3,
+          "band_hz": [
+            0.0001,
+            0.0008
+          ],
+          "degrees_inclusive": [
+            0,
+            12
+          ]
+        },
+        "physics": {
+          "gravity": "full",
+          "attenuation": false,
+          "physical_G": 6.6723e-11
+        },
+        "source": {
+          "geocentric_latitude_deg": 10,
+          "longitude_deg": 20,
+          "depth_m": 50000,
+          "moment_tensor_Nm": [
+            1e+19,
+            2e+18,
+            -3e+18,
+            -5e+18,
+            4e+18,
+            -5e+18
+          ]
+        },
+        "receiver": {
+          "geocentric_latitude_deg": 45,
+          "longitude_deg": 90,
+          "depth_m": 3000
+        },
+        "window": {
+          "type": "Hann",
+          "first_sample": 0,
+          "last_sample": 90,
+          "nt": 128
+        },
+        "objective": {
+          "names": [
+            {
+              "name": "J_Z",
+              "component": "Z",
+              "q_nonzero": {
+                "bin_1": [
+                  0.7,
+                  0.2
+                ],
+                "bin_2": [
+                  -0.25,
+                  0.45
+                ]
+              }
+            }
+          ]
+        },
+        "angular_node_count": 1352,
+        "radial_node_count": 56
+      }
+    },
+    "profiles": [
+      {
+        "solver": "YSpecpp.frontend_setup",
+        "objective": 1,
+        "stages": {
+          "frontend.model_sampling_configuration_and_input_setup": {
+            "inclusive_s": 0.043809096000000006,
+            "exclusive_s": 0.043809096000000006,
+            "calls": 1
+          }
+        },
+        "counters": {},
+        "accounting_root": "frontend.model_sampling_configuration_and_input_setup",
+        "exclusive_sum_s": 0.043809096000000006,
+        "closure_error_s": 0.0
+      },
+      {
+        "solver": "YSpecpp.ComputeSampledKernels",
+        "objective": 1,
+        "stages": {
+          "angular.generalized_legendre_table_population": {
+            "inclusive_s": 0.012990752000000001,
+            "exclusive_s": 0.001513288,
+            "calls": 132
+          },
+          "angular.spin_legendre_table_population": {
+            "inclusive_s": 0.001958491,
+            "exclusive_s": 0.001958491,
+            "calls": 132
+          },
+          "angular.wigner_function_table_build": {
+            "inclusive_s": 0.009518973,
+            "exclusive_s": 0.009518973,
+            "calls": 132
+          },
+          "api.ComputeSampledKernels": {
+            "inclusive_s": 0.31494080700000004,
+            "exclusive_s": 0.0019720930000000003,
+            "calls": 1
+          },
+          "kernel.angular_block_batch": {
+            "inclusive_s": 0.20479939600000002,
+            "exclusive_s": 0.024363008000000002,
+            "calls": 66
+          },
+          "kernel.angular_harmonic_synthesis.adjoint": {
+            "inclusive_s": 0.053099770000000004,
+            "exclusive_s": 0.053099770000000004,
+            "calls": 227136
+          },
+          "kernel.angular_harmonic_synthesis.source": {
+            "inclusive_s": 0.083447512,
+            "exclusive_s": 0.083447512,
+            "calls": 227136
+          },
+          "kernel.elastic_energy_pair_contraction": {
+            "inclusive_s": 0.0069919150000000005,
+            "exclusive_s": 0.0069919150000000005,
+            "calls": 227136
+          },
+          "kernel.frequency_block_accumulation_copy": {
+            "inclusive_s": 0.0016751390000000002,
+            "exclusive_s": 0.0016751390000000002,
+            "calls": 66
+          },
+          "kernel.measurement_frequency_basis_weights": {
+            "inclusive_s": 9.090000000000001e-07,
+            "exclusive_s": 9.090000000000001e-07,
+            "calls": 3
+          },
+          "kernel.modulus_dispersion_frequency_weights": {
+            "inclusive_s": 3.841e-06,
+            "exclusive_s": 3.841e-06,
+            "calls": 3
+          },
+          "kernel.objective_weight_and_parameter_products": {
+            "inclusive_s": 0.008436289000000001,
+            "exclusive_s": 0.008436289000000001,
+            "calls": 227136
+          },
+          "kernel.relative_spin_rotation": {
+            "inclusive_s": 0.013795011000000001,
+            "exclusive_s": 0.013795011000000001,
+            "calls": 454272
+          },
+          "output.parameter_transform_scaling_and_construction": {
+            "inclusive_s": 0.006179186000000001,
+            "exclusive_s": 0.006179186000000001,
+            "calls": 1
+          },
+          "radial.bvp_up_down_integration_and_matching": {
+            "inclusive_s": 0.100187252,
+            "exclusive_s": 0.000172,
+            "calls": 75
+          },
+          "radial.coefficient_combine_and_strain_recovery": {
+            "inclusive_s": 0.000828507,
+            "exclusive_s": 0.000828507,
+            "calls": 39
+          },
+          "radial.context_material_frequency": {
+            "inclusive_s": 3.2680000000000003e-06,
+            "exclusive_s": 3.2680000000000003e-06,
+            "calls": 39
+          },
+          "radial.determinant_jumps_matching_and_response_transport": {
+            "inclusive_s": 0.046456721,
+            "exclusive_s": 0.004176481,
+            "calls": 75
+          },
+          "radial.initial_conditions_and_downward_integration": {
+            "inclusive_s": 0.000421608,
+            "exclusive_s": 0.000421608,
+            "calls": 75
+          },
+          "radial.initial_conditions_and_upward_integration": {
+            "inclusive_s": 0.053136923,
+            "exclusive_s": 0.053136923,
+            "calls": 75
+          },
+          "radial.radial_physical_variable_recovery": {
+            "inclusive_s": 8.811000000000001e-06,
+            "exclusive_s": 8.811000000000001e-06,
+            "calls": 3
+          },
+          "radial.radial_response_family": {
+            "inclusive_s": 0.000380231,
+            "exclusive_s": 6.165e-06,
+            "calls": 3
+          },
+          "radial.solve_radial_family": {
+            "inclusive_s": 0.000383614,
+            "exclusive_s": 3.383e-06,
+            "calls": 3
+          },
+          "radial.solve_toroidal_and_spheroidal_families": {
+            "inclusive_s": 0.10038723100000001,
+            "exclusive_s": 1.0437e-05,
+            "calls": 36
+          },
+          "radial.spheroidal_b_vector_transport": {
+            "inclusive_s": 0.042280240000000004,
+            "exclusive_s": 0.042280240000000004,
+            "calls": 4068
+          },
+          "radial.spheroidal_physical_variable_recovery": {
+            "inclusive_s": 0.000382692,
+            "exclusive_s": 0.000382692,
+            "calls": 36
+          },
+          "radial.spheroidal_response_family": {
+            "inclusive_s": 0.095316944,
+            "exclusive_s": 6.4096e-05,
+            "calls": 36
+          },
+          "radial.toroidal_physical_variable_recovery": {
+            "inclusive_s": 9.431700000000001e-05,
+            "exclusive_s": 9.431700000000001e-05,
+            "calls": 36
+          },
+          "radial.toroidal_response_family": {
+            "inclusive_s": 0.00505985,
+            "exclusive_s": 1.3692e-05,
+            "calls": 36
+          },
+          "setup.construct_kernel_solver": {
+            "inclusive_s": 3.882e-06,
+            "exclusive_s": 3.882e-06,
+            "calls": 1
+          },
+          "setup.frequency_sampling_grid": {
+            "inclusive_s": 8.6e-08,
+            "exclusive_s": 8.6e-08,
+            "calls": 1
+          },
+          "setup.map_adjoint_receiver_depths": {
+            "inclusive_s": 2.6e-08,
+            "exclusive_s": 2.6e-08,
+            "calls": 1
+          },
+          "setup.measurement_adjoint_spectra_and_weights": {
+            "inclusive_s": 7.176e-06,
+            "exclusive_s": 7.176e-06,
+            "calls": 1
+          },
+          "setup.measurement_direction_basis": {
+            "inclusive_s": 4.3800000000000003e-07,
+            "exclusive_s": 4.3800000000000003e-07,
+            "calls": 1
+          },
+          "setup.merge_sample_nodes": {
+            "inclusive_s": 7.508000000000001e-06,
+            "exclusive_s": 7.508000000000001e-06,
+            "calls": 1
+          },
+          "setup.sampled_node_materials_and_phases": {
+            "inclusive_s": 7.826000000000001e-06,
+            "exclusive_s": 7.826000000000001e-06,
+            "calls": 1
+          },
+          "setup.source_receiver_frame_geometry": {
+            "inclusive_s": 0.000329065,
+            "exclusive_s": 0.000329065,
+            "calls": 1
+          },
+          "setup.validate_measurements_and_source": {
+            "inclusive_s": 3.4030000000000003e-06,
+            "exclusive_s": 3.4030000000000003e-06,
+            "calls": 1
+          },
+          "source_weights.forward_moment_force_rhs": {
+            "inclusive_s": 9.91e-06,
+            "exclusive_s": 9.91e-06,
+            "calls": 39
+          },
+          "source_weights.receiver_unit_force_rhs": {
+            "inclusive_s": 1.3442000000000001e-05,
+            "exclusive_s": 1.3442000000000001e-05,
+            "calls": 39
+          }
+        },
+        "counters": {
+          "adjoint_strain_coefficients": 2028,
+          "angular_degree_order_component_macs": 141732864,
+          "angular_phase_timer_reads": 2725632,
+          "angular_synthesis_evaluations": 454272,
+          "angular_table_degree_extent_sum": 858,
+          "angular_table_points": 8112,
+          "angular_tables_built": 132,
+          "b_vector_transport_intervals": 4068,
+          "computed_elastic_parameter_channels": 8,
+          "degree_frequency_pairs": 39,
+          "elastic_energy_pair_contractions": 1135680,
+          "forward_source_rhs_directions": 39,
+          "forward_strain_coefficients": 2028,
+          "frequency_bins_active": 3,
+          "generalized_legendre_table_degrees": 1716,
+          "generalized_legendre_table_orders": 528,
+          "material_frequency_weight_vectors": 156,
+          "measurement_basis_modulus_combinations": 1135680,
+          "nonradial_degree_solves": 36,
+          "openmp_threads_in_region": 1,
+          "radial_degree_solves": 3,
+          "radial_family_solves": 3,
+          "radial_material_complexification_samples": 481137,
+          "radial_response_basis_combinations": 4056,
+          "radial_sample_nodes": 2028,
+          "receiver_degree_weight_sets": 39,
+          "receiver_unit_rhs_directions": 39,
+          "relative_spin_rotations": 227136,
+          "returned_parameter_channels": 8,
+          "rk_adaptive_intervals": 8631,
+          "rk_attempted_steps": 78751,
+          "rk_rhs_evaluations": 481137,
+          "rk_scalar_equation_rhs_evaluations": 8849406,
+          "source_degree_weight_sets": 39,
+          "spheroidal_family_solves": 36,
+          "toroidal_family_solves": 36,
+          "wigner_table_angles": 8112,
+          "wigner_table_max_degree": 1584
+        },
+        "accounting_root": "api.ComputeSampledKernels",
+        "exclusive_sum_s": 0.31494080700000004,
+        "closure_error_s": 0.0
+      },
+      {
+        "solver": "YSpecpp.frontend_export",
+        "objective": 1,
+        "stages": {
+          "frontend.sampled_kernel_csv_export": {
+            "inclusive_s": 0.40205944800000004,
+            "exclusive_s": 0.40205944800000004,
+            "calls": 1
+          }
+        },
+        "counters": {},
+        "accounting_root": "frontend.sampled_kernel_csv_export",
+        "exclusive_sum_s": 0.40205944800000004,
+        "closure_error_s": 0.0
+      }
+    ],
+    "peak_current_executable_hwm_bytes": 19095552,
+    "wall_s": 0.9694613739993656,
+    "output_sha256": "a4cb4d165a763c3459f44645f7b537a398a5f3a2532a6959a37de6a39ae2b855",
+    "original_equivalence": {
+      "byte_identical": true,
+      "passed": true
+    },
+    "data": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/math-profile/pilot-01/l12-f3-m1-c0-r0-yspec-profile/data"
+  }
+]

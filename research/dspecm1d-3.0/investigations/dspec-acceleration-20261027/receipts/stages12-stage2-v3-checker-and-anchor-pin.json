@@ -1,0 +1,57 @@
+{
+  "plan_addendum_sha256": "1fec3435988108d9000b6ccc17c06b317fc13e41cef98c64ef181f614a5f604d",
+  "v2_plan_sha256": "2d55f080675fe62b17864fce817977d9aa4a015647bc42c9e40e027128408540",
+  "v2_campaign_state_sha256": "04263e91b455e0650ce44fd95e60d4dfb0e3dc1d7a902f77b3011a6441d0b87e",
+  "v2_campaign_status": "failed",
+  "v2_jobs": [
+    {
+      "id": "degree8-anchor",
+      "status": "completed",
+      "returncode": 0,
+      "inputs_unchanged": true,
+      "cleanup_verified_gone": true
+    },
+    {
+      "id": "degree8-anchor-vs-Stage1-N1",
+      "status": "failed",
+      "returncode": 1,
+      "inputs_unchanged": true,
+      "cleanup_verified_gone": true
+    }
+  ],
+  "anchor_verified_job_state_sha256": "04263e91b455e0650ce44fd95e60d4dfb0e3dc1d7a902f77b3011a6441d0b87e",
+  "anchor_verified_output_and_log_sha256": {
+    "data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+    "data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+    "data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+    "data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+    "data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+    "data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+    "data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+    "data/result.json": "737a0d15c75997891ec9d201a6dc91b0cc898a0e7651c5e7c954a8740408fea1",
+    "data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+    "data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+    "job.log": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498"
+  },
+  "anchor_result_expectation": {
+    "schedule_mode": "degree",
+    "workers": 8,
+    "solve_workers": 8,
+    "frequency_workers": 1,
+    "kernel_timing_semantics": "legacy degree kernel_s excludes tensor validation",
+    "kernel_parallel_pass_wall_s": 0,
+    "reduction_wall_s": 0,
+    "diagnostic_worker_elapsed_s": 0,
+    "frequency_contribution_buffer_bytes": 0
+  },
+  "actual_anchor_cli_validation": "pass",
+  "actual_anchor_data_output_comparison": "byte-exact across all 9 scientific files to Stage1 N1",
+  "checker_regression_tests": {
+    "count": 17,
+    "status": "passed",
+    "stdout": ""
+  },
+  "checker_sha256": "21fc923b3d38febc02fad3f3f0497f84b4b5711de053e61c855a323167bc3ef1",
+  "test_sha256": "f220b4412c816657b3bea8e8563e029ca4fda87f01832fdac7a5a7412226b206",
+  "runtime_candidate_unchanged": true
+}

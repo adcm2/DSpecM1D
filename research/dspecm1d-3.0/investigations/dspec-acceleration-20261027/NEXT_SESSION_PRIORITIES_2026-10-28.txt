@@ -1,0 +1,99 @@
+DSpecM1D — priorities for Wednesday 28 October 2026
+Recorded at Alex's explicit request on 27 October 2026 (Europe/London).
+
+1. FINISH ACCELERATION — FIRST PRIORITY
+Alex is not satisfied with current performance. Do not present the earlier
+solve-only acceleration as completion of end-to-end kernel optimisation.
+Current matched documentation case: DSpec 51.883 s versus YSpec 5.641 s.
+DSpec's 10.691 s initial stage also captures unit-adjoint responses, so its label
+must not imply pure forward-solve timing. Kernel phase 40.659 s; extra validation
+0.514 s. Existing 8 workers cover degree-parallel solves, whereas synthesis and
+contraction are still serial and frequencies sequential. YSpec parallelises
+whole frequency tasks.
+
+- Profile every component on this exact physical case: model/mesh setup,
+  matrix/source assembly, factorisation, forward substitution, unit/weighted
+  adjoints, cache access/copies, radial reconstruction, angular basis setup,
+  synthesis, contractions, frequency accumulation, and I/O. Report exclusive
+  wall times separately from summed worker time and overlapping scopes.
+- Parallelise complete frequency tasks with independent workspaces and safe,
+  deterministic reductions. Begin with 8 total workers and serial inner solves;
+  do not nest 8 frequency workers with 8 solve workers. Audit shared caches,
+  scratch storage, profiling, library threading and exception handling.
+- Remove avoidable field/sampling construction and copies. Assess bounded
+  batching/fused contractions and repeated radial recovery; use measurements
+  to choose changes rather than assuming each proposed optimisation wins.
+- Keep memory bounded. Large retained Wigner tables were rejected; do not
+  revive a huge stored/global-volume approach.
+- Validate against frozen outputs and finite differences, and demonstrate
+  full-pipeline gains on a matched workload, not only a faster solve stage.
+  Reuse the verified YSpec baseline initially; avoid another long YSpec campaign.
+- Return an honest component comparison and remaining bottlenecks. Integrate
+  accepted changes into the normal library/caller path in an approved phase;
+  currently accepted candidates and fixes remain isolated, not production edits.
+
+2. INVESTIGATE SOURCE AND RECEIVER DISCREPANCIES — SECOND PRIORITY
+Raw along-path maximum residual is 49.6988% of max|DSpec|. It is NEAR THE SOURCE:
+depth 29.5 km, radius 6341.5 km, along-distance 0.447761 degrees (receiver at 60 degrees),
+element 44/node 9/layer 9. DSpec 5.26049236e-15 versus YSpec 1.04579204e-14 s m^-3.
+Other large samples occur on that one side of the source-depth SEM boundary.
+This suggests source-depth reconstruction/lift/contact handling, but the cause
+has NOT been established. Do not attribute the 50% maximum to the receiver.
+
+- Compare both one-sided traces at the source-depth boundary, nearby radii and
+  angles, source-element selection, source lifts/contact terms and radial
+  derivatives; distinguish a single trace/shell artefact from a volume error.
+- Independently locate and diagnose receiver-side extrema and verify rock/fluid
+  interface sides and receiver forcing/reconstruction conventions.
+- Preserve raw unmasked data and report source/receiver/shallow regions
+  separately from the bulk. Small bulk residuals are not a global error bound.
+- David's Sobolev/receiver-singularity formalism remains deferred. Diagnose the
+  existing implementation first; do not make that formalism a figure prerequisite.
+
+OTHER OPEN ITEMS WE DISCUSSED
+A. Convergence: the L200 documentation example is an illustration, not a degree
+   or radial-resolution convergence certificate. Later establish waveform,
+   measurement and bulk great-circle-kernel convergence. The original physical
+   observable was windowed vertical-displacement energy, 1000-1200s/0-10mHz;
+   the documentation figure is a DIFFERENT observable: transverse-velocity
+   traveltime, 1000-1200s/2-10mHz. Keep those case labels distinct.
+B. Integration and regression: retain the corrected vertical/north/east adapter
+   convention and canonical native-radius key fix; ensure final library callers
+   use the accepted acceleration path rather than only an isolated benchmark.
+C. Figure scope: great-circle sections, including along-path and midpoint-cross
+   sections. Constant-radius maps and full global volumes are not current goals.
+   Preserve native SEM sides and angular sampling tied to complete kernel
+   bandwidth. Latitude-tiled depth maps are deferred with the map work.
+D. Reporting: percentage residual=100*(DSpec-YSpec)/max(abs(DSpec)), independently
+   per full section. Distinguish full-range from bulk-colour-zoom displays and
+   from bulk relative-L2 errors. Preserve normalisation/clipping/provenance.
+E. Earlier original-method/global reconstruction gate: preserve its historical
+   ~3-4e-13 discrepancy versus2e-13 criterion. Alex considers this likely floating
+   point and it is not a plotting blocker; do not relabel the old failed gate.
+
+ALREADY DONE — DO NOT REPEAT WITHOUT A REASON
+Corrected documentation case waveforms match to 0.002332% in-window; bulk kernels
+match to 0.002238% along and 0.003379% across, with disclosed masks. Low-degree
+attenuated finite difference passed 6.44e-9; serial/8worker audit byte-exact;
+tensor-versus-packed native-side check 5.95e-16. DSpec original vector/spin
+rotations agree with direct global reconstruction; the apparent rotation issue
+was the adapter north sign. Native endpoint lookup's three zero rows were fixed.
+Percentage PDF/PNG figures have been saved and byte-verified on the laptop.
+
+OPERATING BOUNDARIES
+Use Tunya for numerical work. Keep builds/calculations detached with nohup,
+aggregate <=50 threads; begin with 8 workers. Preserve existing files, failed trials,
+raw outputs and receipts; no deletions. Record each approved code change in
+implementation_status.md. Finish the approved phase and return timings and
+validation before starting another phase. This note launches no work or schedule.
+
+EVIDENCE LOCATORS
+Local campaign:
+/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-acceleration-20261027
+Local labelled figures:
+/home/adcm2/Documents/Research/Projects/DSpecM1D/plotting/outputs/sensitivity-kernels/2026-10-27_yspec-documentation-case_L200_2-10mHz_1000-1200s
+Remote accepted documentation numerical task:
+/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05
+Key evidence: analyses/documentation-wedges-acceptance.json,
+analyses/parallel-solves-timings-20261027.json, implementation_status.md,
+candidates/documentation-wedges-v9 and figures/documentation-wedges-percent-01.

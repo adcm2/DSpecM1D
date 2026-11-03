@@ -1,0 +1,76 @@
+Phase E Stage 2 angular substage — independent source/build review
+Sol 6.1 high — 2026-11-03
+
+SOURCE AND BUILD CONFIGURATION: PASS on the exact seals below.
+The isolated Tunya two-variant build may proceed after minimal allowlist,
+staging/provenance and fresh resource checks. Numerical launch still requires
+the separate exact run/checker gate. Stop before subsequent optimization.
+
+Compared fresh phase-e-stage2-angular-v1/dspec against final validated radial
+candidate: only phase_d_batched_reconstruction.hpp and phase_d_driver.cpp code
+differ; implementation_status.md changes are the required contemporaneous log.
+Windowed3DFields.h remains the validated c3a9a7e6...f05f6340 bytes. No SEM,
+solver, source, radial normalization, projection, contraction, or public source
+change. Both angular benchmark routes must force the current batched radial
+route; historical radial timings are context only.
+
+The complete old complex angular branch remains selectable as legacy-complex,
+including its original16-angle/32-radius tiles and full l0-frame work. The new
+real-Legendre branch packs Re/Im coefficients once per frame/group/m and reuses
+them across64-angle/32-radius tiles. It performs ordinary real degree sums and
+applies the existing complex m-phase and spin/frame rotation afterwards. There
+is no conjugation. rr/h share spin0 weights and one node-interleaved GEMM row
+block; other components remain distinct. Reviewed rowStart/rowCount/scatter
+indices, matrix strides, frame/m addition order and existing zero m>l/pole
+entries. The stale outer component loop that initially doubled rr/h was removed
+before this gate; each shared block is now computed and scattered exactly once.
+
+The receiver-free adjoint frame specialization is structural, not numerical
+pruning: solveFrequencyModes emits Radial degree0; only its explicit visitor
+emits adjoint receiver=-1,m0, while every receiver synthesisSet=rec+1 emits a
+nonnegative receiver. A new packet invariant rejects any other family/degree/m
+in that reserved frame. Thus only degree0,m0,spin0 rr/h contribute there. The
+new route retains the actual stored Legendre degree-zero value and cached phase
+factor, preserving normalization and the common fluid/sink path. The legacy
+route does not take the specialization.
+
+Production angular working memory is conservatively checked <=32MiB/worker:
+retained geometry/phase cache, full one-frequency forward+adjoint angle/node
+strain accumulators, two-component full-node Re/Im coefficient arrays, real
+Legendre/product tiles, Wigner scratch and2MiB Eigen packing reserve. The bound
+covers simultaneously live objects; no solved-field history is added. Scalar
+and legacy-oracle diagnostic sample retention is separate from this production
+working-memory bound and must stay within the numerical job resource cap.
+
+The driver uses an explicit per-call angular override to obtain legacy fields
+on the SAME frequency workspace and batched radial data/cache. It never mutates
+the process environment inside parallel workers. The all-bin angular oracle
+requires skip-zero OFF, compares forward/adjoint strain and complex products
+per physical section, rejects nonfinite/negative errors and nonpositive reference
+norms, and emits a distinct proof CSV. Independent old scalar comparison remains
+available. Route/oracle metadata was added for selected NQ6 and actual-new-helper
+L3/NQ8 validation; final checker must verify actual profile calls and coverage.
+
+Timer lifetimes reviewed: real coefficient, GEMM-pair and scatter child scopes
+close before the angular parent; material scope stops before parent on early
+return. Existing radial timer child-before-parent correction is preserved.
+
+Build config is exactly the validated radial compiler configuration after only
+angular candidate/stage/build root normalization. It preserves explicit pinned
+Stage1 timer-disabled YSpec DSO, RPATH and private headers, O3/GCC13.2/Eigen
+single-thread settings. Native disables mathprofile; enabled variant measures D
+only. Build plan retains8threads/32GiB and sequential variants through existing
+receipt/supervisor code. Minimal payload only; broad old-review globs forbidden.
+
+SHA256 seals:
+phase_d_batched_reconstruction.hpp
+55c7e1d69bc5ed3a3afb6b1c2da5b2fa89cc4cc4035381f9b78030cee6562185
+phase_d_driver.cpp
+6d8fa63372a2497ecdb816c03ae2169e796506720b588f1e31639d1250ccf493
+configs/phase-e-stage2-angular-v1-build.json
+25130f8b45566010b71327dfd7b1b893ea43b58cca715302ce06d0dc3bbd83dd
+configs/phase-e-stage2-angular-v1-build-plan.json
+b252914d8f1387ebb4b353ec1cbee87f6006f2439ced3d4235b64cbb77df78bc
+
+No numerical accuracy or speedup claim is certified by source inspection.
+Any changed sealed source/config needs only a focused delta review.

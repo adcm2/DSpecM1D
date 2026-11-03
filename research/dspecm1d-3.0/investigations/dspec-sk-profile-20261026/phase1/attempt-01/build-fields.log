@@ -1,0 +1,7 @@
+/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-reconstruction-pole-frames-20261026/fields.cpp: In function ‘int main(int, char**)’:
+/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-reconstruction-pole-frames-20261026/fields.cpp:28:69: warning: narrowing conversion of ‘(3.14159265358979323851e+0l - ((long double)((double)thetaS)))’ from ‘long double’ to ‘double’ [-Wnarrowing]
+   28 |     std::vector<std::array<double,2>> angles{{thetaS,phiS},{EIGEN_PI-thetaS,phiS+EIGEN_PI},{0.,.3},{EIGEN_PI,1.2},{EIGEN_PI/3,65.*EIGEN_PI/180.},{.73,1.17},{std::nextafter(.73,1.),1.17}};
+      |                                                                     ^
+/home/adcm2/Documents/Research/Projects/DSpecM1D/build/kernel-reconstruction-pole-frames-20261026/fields.cpp:28:81: warning: narrowing conversion of ‘(((long double)((double)phiS)) + 3.14159265358979323851e+0l)’ from ‘long double’ to ‘double’ [-Wnarrowing]
+   28 |     std::vector<std::array<double,2>> angles{{thetaS,phiS},{EIGEN_PI-thetaS,phiS+EIGEN_PI},{0.,.3},{EIGEN_PI,1.2},{EIGEN_PI/3,65.*EIGEN_PI/180.},{.73,1.17},{std::nextafter(.73,1.),1.17}};
+      |                                                                                 ^

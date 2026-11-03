@@ -1,0 +1,37 @@
+{
+  "build": {
+    "build_root": "/space/adcm2/research/builds/stages12-stage2-v1",
+    "variants": {
+      "doc-native": {
+        "binary": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-acceleration-20261027/receipts/stages12-stage2-v1-build-completed/doc-native/doc-driver",
+        "binary_sha256": "bce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab",
+        "command_sha256": "4b0ef69a7d57bd263ab94ca4685386016fc0358c1cc3d45add25d9bc1a77e9f2"
+      },
+      "doc-profile": {
+        "binary": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-acceleration-20261027/receipts/stages12-stage2-v1-build-completed/doc-profile/doc-driver",
+        "binary_sha256": "50414d5639fe5432c6d7aeb9f86fa93987bda31c2f9cfea21452c79aa372c99f",
+        "command_sha256": "5c85b37dbc58c5eafae4999f8ad3020fd64bf7abb03caf23bc682b0073196f48"
+      }
+    }
+  },
+  "candidate": {
+    "added_files": [
+      "frequency_scheduler.hpp",
+      "frequency_scheduler_test.cpp"
+    ],
+    "baseline_file_count": 20,
+    "baseline_manifest_sha256": "f9e29601f520c253f618f2d7ca386adcf3263e785401ccc4e1ec2bc7267fe7c4",
+    "modified_baseline_files": [
+      "doc_driver.cpp",
+      "implementation_status.md",
+      "profile.hpp",
+      "stage-to-math-map.json"
+    ]
+  },
+  "source_contract": {
+    "frequency_contribution_reduction": "ascending k, section, angle, native node",
+    "kernel_formula_sha256": "99687637e94756b9342cb758570a5e165d3fea087bd674dd53532e753412e295",
+    "measurement_function_sha256": "7b5aa2a57fb90d4ea858159bdcda5312524bb9d687127683e673a185183cce34",
+    "shared_response_cache_passes": 2
+  }
+}

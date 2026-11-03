@@ -253,6 +253,12 @@ TEST(Windowed3DFieldEngineTests, ReconstructsRadialAndCoupledFieldsAtReceiversAn
           sem,source,parameters,z,adjointWeights);
       const auto ownedCount=workspace.modalBlocks().size();
       const auto all=workspace.sample(points);
+      const auto compactKernel=workspace.sampleForKernels(points,points.size());
+      SPARSESPEC::Windowed3DFieldEngine::SamplingPlanCache fullPlanCache;
+      fullPlanCache.bytes=SPARSESPEC::Windowed3DFieldEngine::SamplingPlanCache::byteBudget;
+      const auto cacheFallback=workspace.sampleForKernels(points,points.size(),&fullPlanCache);
+      const auto global=SPARSESPEC::Windowed3DFieldEngine::sampleModalBlocks(
+          sem,parameters,z,workspace.modalBlocks(),points);
       const std::vector<SPARSESPEC::Field3DPoint> first(points.begin(),points.begin()+3);
       const std::vector<SPARSESPEC::Field3DPoint> second(points.begin()+3,points.end());
       const auto left=workspace.sample(first),right=workspace.sample(second);
@@ -266,6 +272,114 @@ TEST(Windowed3DFieldEngineTests, ReconstructsRadialAndCoupledFieldsAtReceiversAn
                    Eigen::Map<const Eigen::VectorXcd>(chunk.adjointDualDisplacement.data(),3)).norm(),1e-12);
         EXPECT_LT(std::abs(all[i].forwardRawStrain.radialPlus-chunk.forwardRawStrain.radialPlus),1e-12);
         EXPECT_LT(std::abs(all[i].forwardRawStrain.horizontalMinus-chunk.forwardRawStrain.horizontalMinus),1e-12);
+      }
+      const auto flatten=[](const SPARSESPEC::Field3DSample &sample){
+        std::vector<std::complex<double>> values;
+        const auto append=[&](const auto &field){
+          values.insert(values.end(),field.begin(),field.end());
+        };
+        const auto appendStrain=[&](const SPARSESPEC::SpinStrainField &field){
+          values.insert(values.end(),{field.rr,field.horizontalTrace,field.radialPlus,
+              field.radialMinus,field.horizontalPlus,field.horizontalMinus});
+        };
+        append(sample.forwardRawDisplacement);
+        append(sample.observableForwardDisplacementSpectrumMetreSeconds);
+        append(sample.adjointDualDisplacement);
+        appendStrain(sample.forwardRawStrain);appendStrain(sample.adjointDualStrain);
+        appendStrain(sample.rScaledForwardStrainMetres);
+        appendStrain(sample.rScaledAdjointDualStrainMetres);
+        return values;
+      };
+      const auto compare=[&](const auto &actual,const auto &expected){
+        ASSERT_EQ(actual.size(),expected.size());
+        for(std::size_t j=0;j<actual.size();++j)
+          EXPECT_LE(std::abs(actual[j]-expected[j]),1e-12*std::max({
+              std::abs(actual[j]),std::abs(expected[j]),1e-30})) << "field " << j;
+      };
+      const auto compareGroup=[&](const auto &actual,const auto &expected,
+                                  std::size_t begin,std::size_t count){
+        Eigen::VectorXcd a(count),b(count);
+        for(std::size_t j=0;j<count;++j){a[j]=actual[begin+j];b[j]=expected[begin+j];}
+        EXPECT_LE((a-b).norm(),1e-12*std::max({a.norm(),b.norm(),1e-30})) << "field group " << begin;
+      };
+      ASSERT_EQ(compactKernel.size(),all.size());
+      ASSERT_EQ(cacheFallback.size(),compactKernel.size());
+      EXPECT_LE(fullPlanCache.bytes,SPARSESPEC::Windowed3DFieldEngine::SamplingPlanCache::byteBudget);
+      EXPECT_TRUE(fullPlanCache.radialWeights.empty());
+      EXPECT_TRUE(fullPlanCache.pointAngles.empty());
+      EXPECT_TRUE(fullPlanCache.angularTables.empty());
+      for(std::size_t i=0;i<all.size();++i){
+        EXPECT_EQ(compactKernel[i].radialElement,all[i].radialElement);
+        EXPECT_EQ(compactKernel[i].fluid,all[i].fluid);
+        const auto strainValues=[](const SPARSESPEC::SpinStrainField &field){
+          return std::array<std::complex<double>,6>{field.rr,field.horizontalTrace,
+              field.radialPlus,field.radialMinus,field.horizontalPlus,field.horizontalMinus};
+        };
+        for(const auto &[actual,expected]:{
+            std::pair{strainValues(compactKernel[i].forwardRawStrain),strainValues(all[i].forwardRawStrain)},
+            std::pair{strainValues(compactKernel[i].adjointDualStrain),strainValues(all[i].adjointDualStrain)}})
+          for(std::size_t c=0;c<actual.size();++c)
+            EXPECT_LE(std::abs(actual[c]-expected[c]),1e-12*std::max({
+                std::abs(actual[c]),std::abs(expected[c]),1e-30}));
+        EXPECT_EQ(compactKernel[i].forwardRawDisplacement,(std::array<std::complex<double>,3>{}));
+        const auto expectedForward=strainValues(compactKernel[i].forwardRawStrain);
+        const auto actualForward=strainValues(cacheFallback[i].forwardRawStrain);
+        const auto expectedAdjoint=strainValues(compactKernel[i].adjointDualStrain);
+        const auto actualAdjoint=strainValues(cacheFallback[i].adjointDualStrain);
+        for(std::size_t c=0;c<6;++c){
+          EXPECT_EQ(actualForward[c],expectedForward[c]);
+          EXPECT_EQ(actualAdjoint[c],expectedAdjoint[c]);
+        }
+      }
+      for(std::size_t i=0;i<all.size();++i){
+        const auto compactValues=flatten(all[i]),globalValues=flatten(global[i]);
+        compareGroup(compactValues,globalValues,0,3);
+        compareGroup(compactValues,globalValues,3,3);
+        compareGroup(compactValues,globalValues,6,3);
+        compareGroup(compactValues,globalValues,9,6);
+        compareGroup(compactValues,globalValues,15,6);
+        compareGroup(compactValues,globalValues,21,6);
+        compareGroup(compactValues,globalValues,27,6);
+        const auto single=workspace.sample({points[i]});
+        ASSERT_EQ(single.size(),1u);
+        compare(flatten(all[i]),flatten(single.front()));
+      }
+      auto reversedPoints=points;
+      std::reverse(reversedPoints.begin(),reversedPoints.end());
+      const auto reversed=workspace.sample(reversedPoints);
+      ASSERT_EQ(reversed.size(),all.size());
+      for(std::size_t i=0;i<all.size();++i)
+        compare(flatten(all[i]),flatten(reversed[all.size()-1-i]));
+
+      std::vector<SPARSESPEC::Field3DPoint> angularChunks;
+      angularChunks.reserve(70);
+      for(int i=0;i<67;++i){
+        auto point=points[3];
+        point.thetaRadians=EIGEN_PI*(i+0.25)/68.0;
+        point.phiRadians=0.17*i;
+        angularChunks.push_back(point);
+      }
+      auto sharedTheta=points[3];
+      sharedTheta.thetaRadians=0.73;
+      angularChunks.push_back(sharedTheta);
+      sharedTheta.phiRadians=2.31;
+      angularChunks.push_back(sharedTheta);
+      auto closeTheta=sharedTheta;
+      closeTheta.thetaRadians=std::nextafter(sharedTheta.thetaRadians,EIGEN_PI);
+      angularChunks.push_back(closeTheta);
+      auto northPole=points[3];northPole.thetaRadians=0.0;
+      auto southPole=points[3];southPole.thetaRadians=EIGEN_PI;
+      angularChunks.push_back(northPole);angularChunks.push_back(southPole);
+      const auto angularFields=workspace.sample(angularChunks);
+      ASSERT_EQ(angularFields.size(),angularChunks.size());
+      auto permutedAngular=angularChunks;
+      std::reverse(permutedAngular.begin(),permutedAngular.end());
+      const auto permutedFields=workspace.sample(permutedAngular);
+      for(std::size_t i=0;i<angularFields.size();++i){
+        const auto single=workspace.sample({angularChunks[i]});
+        ASSERT_EQ(single.size(),1u);
+        compare(flatten(angularFields[i]),flatten(single.front()));
+        compare(flatten(angularFields[i]),flatten(permutedFields[angularFields.size()-1-i]));
       }
     }
     ASSERT_EQ(fields.size(), points.size());
@@ -1973,6 +2087,63 @@ TEST(Windowed3DKernelEngineTests, MultipleReceiversShareSelectedRadialTrace) {
     ASSERT_EQ(receiverSamples.size(),3u);
     EXPECT_EQ(receiverSamples[1].radialElement,receiverElements.front());
     EXPECT_EQ(receiverSamples[2].radialElement,receiverElements.front());
+  }
+}
+
+TEST(Windowed3DKernelEngineTests, ColocatedFramesKeepFrequencyLocalAdjointCoefficientsSeparate) {
+  EarthModels::EarthConstants<double> norm;
+  auto model=EarthModels::ModelInput<double>(DSpecMTest::modelPath().string(),norm);
+  auto source=makeSensitivitySource(30.0,15.0,110.0);
+  Full1D::SEM sem(model,0.01,4,2,source);
+  const auto frequency=makeSensitivityFrequency(model.TimeNorm());
+  const auto window=sensitivityWindow(frequency);
+  constexpr int bin=3;
+  const double depthKm=3.0,radians=static_cast<double>(EIGEN_PI)/180.0;
+  const std::pair<double,double> colocated{15.0,110.0};
+  auto paired=makeMultiReceiverSensitivityParameters(4,depthKm,{colocated,colocated});
+  auto first=makeMultiReceiverSensitivityParameters(4,depthKm,{colocated});
+  auto second=makeMultiReceiverSensitivityParameters(4,depthKm,{colocated});
+  Eigen::MatrixXcd pairedWeights=Eigen::MatrixXcd::Zero(6,frequency.nt()/2+1);
+  Eigen::MatrixXcd firstWeights=Eigen::MatrixXcd::Zero(3,frequency.nt()/2+1);
+  Eigen::MatrixXcd secondWeights=Eigen::MatrixXcd::Zero(3,frequency.nt()/2+1);
+  pairedWeights(0,bin)={0.7,0.2};pairedWeights(2,bin)={-0.11,0.23};
+  pairedWeights(3,bin)={-0.23,0.11};pairedWeights(5,bin)={0.17,-0.09};
+  firstWeights.col(bin)=pairedWeights.block(0,bin,3,1);
+  secondWeights.col(bin)=pairedWeights.block(3,bin,3,1);
+  const auto radius=(sem.mesh().PR()-1000.0*depthKm/sem.lengthScaleMetres())*
+      sem.lengthScaleMetres();
+  const auto sourceElement=sem.sourceElement(source);
+  const std::vector<SPARSESPEC::Field3DPoint> points{
+      {radius,0.81,1.42},
+      {sem.sourceRadius()*sem.lengthScaleMetres(),0.74,2.1,sourceElement},
+      {sem.sourceRadius()*sem.lengthScaleMetres(),0.74,2.1,sourceElement-1}};
+  const auto sample=[&](InputParameters &parameters,const Eigen::MatrixXcd &weights){
+    const auto adjoint=SPARSESPEC::WindowedDisplacementMap(
+        frequency,sem.lengthScaleMetres(),window).adjoint(weights).col(bin);
+    auto workspace=SPARSESPEC::Windowed3DFieldEngine::prepareFrequencyWorkspace(
+        sem,source,parameters,frequency.w().at(bin)+
+            std::complex<double>(0.0,-frequency.ep()),adjoint);
+    const auto once=workspace.sample(points);
+    const auto cached=workspace.sample(points);
+    for(std::size_t p=0;p<once.size();++p)
+      EXPECT_EQ(once[p].adjointDualStrain.rr,cached[p].adjointDualStrain.rr);
+    return once;
+  };
+  const auto combined=sample(paired,pairedWeights);
+  const auto a=sample(first,firstWeights),b=sample(second,secondWeights);
+  ASSERT_EQ(combined.size(),a.size());ASSERT_EQ(a.size(),b.size());
+  const auto values=[](const SPARSESPEC::SpinStrainField &f){
+    return std::array<std::complex<double>,6>{f.rr,f.horizontalTrace,f.radialPlus,
+        f.radialMinus,f.horizontalPlus,f.horizontalMinus};
+  };
+  for(std::size_t p=0;p<combined.size();++p){
+    const auto actual=values(combined[p].adjointDualStrain);
+    const auto firstValue=values(a[p].adjointDualStrain);
+    const auto secondValue=values(b[p].adjointDualStrain);
+    for(std::size_t c=0;c<actual.size();++c)
+      EXPECT_LE(std::abs(actual[c]-firstValue[c]-secondValue[c]),1e-12*
+          std::max({std::abs(actual[c]),std::abs(firstValue[c]+secondValue[c]),1e-30}))
+          << "sample=" << p << " component=" << c;
   }
 }
 

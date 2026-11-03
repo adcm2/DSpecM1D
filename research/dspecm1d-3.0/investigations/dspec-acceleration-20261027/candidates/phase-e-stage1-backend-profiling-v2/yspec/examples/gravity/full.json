@@ -1,0 +1,60 @@
+{
+  "model": "../prem.200",
+  "attenuation": true,
+  "gravity": "full",
+  "output": {
+    "quantity": "displacement",
+    "prefix": "full"
+  },
+  "degrees": {
+    "min": 0,
+    "max": 2000
+  },
+  "frequencies_mHz": {
+    "min": 0.1,
+    "max": 3.0
+  },
+  "time_series": {
+    "length_min": 300.0,
+    "time_step_s": 30.0
+  },
+  "filter_mHz": [
+    0.1,
+    0.2,
+    2.5,
+    3.0
+  ],
+  "sources": [
+    {
+      "depth_km": 647.1,
+      "latitude": -13.909919806613164,
+      "longitude": -67.25,
+      "moment_tensor_Nm": {
+        "rr": -7.59e+20,
+        "rt": -2.5e+21,
+        "rp": 4.2e+19,
+        "tt": 7.75e+20,
+        "tp": -2.48e+20,
+        "pp": -1.6e+19
+      }
+    }
+  ],
+  "solver": {
+    "tolerance": 1e-05
+  },
+  "receivers": {
+    "depth_km": 3.0,
+    "profile": {
+      "from": [
+        -13.909919806613164,
+        -67.25
+      ],
+      "azimuth_deg": 9.3523214497609,
+      "distances_deg": [
+        60.0,
+        60.0
+      ],
+      "count": 1
+    }
+  }
+}

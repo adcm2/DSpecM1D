@@ -1,0 +1,82 @@
+Stage 1 profiling independent review — Sol 6.1 high — 2026-10-31
+
+SOURCE/BUILD GATE: PASS. Run/checker gate remains separate; no Stage 2 authorization.
+Reviewed instrumentation-only phase-e-stage1-backend-profiling-v1 YSpec/DSpec
+sources and five sequential variants in the fresh build root. Luna owns execution.
+
+Pinned YSpec archive commit 280eab0200495391539c0f97e62f978083c307bc;
+archive SHA256 6cb81f5fe1c71a799def806f3107f27630f5a4419f38936fdcb7cfa6272ca11d.
+Independent archive reconstruction matches original library receipt tree hashes:
+src 26f29edb53e94fda4859f3bb962b49b33cd3c8da8e1d3433a3037a6c7608e692;
+YSpec headers eb023ebfd0953a9b60d5be3b4d7c652ff320f573755b4cbd4913ca3118615853.
+Original formulas, traversal and OpenMP scheduling are retained. The unrelated
+historical profiler is not the source of these measurements.
+
+Recorder: fixed TLS scope stack/counters; delta-only merge once per work item;
+caller setup entries preserved; exact parent-children delta reports master-worker
+root overlap; fixed per-thread bin coverage; final merge after joins. Enabled and
+disabled DSOs are isolated. Disabled Scope/WorkItem compile away inline. D native
+and D profile link disabled YSpec; dedicated YSpec-profile driver links enabled
+YSpec. D fine scopes cover coefficient packing, tile weights, GEMM, scatter and
+material/contraction work without changing arithmetic. Worker elapsed sums overlap
+across workers; root bridge also overlaps caller API wall. Never add these as wall.
+
+Build config SHA256 a987cea976369c2551f2592341f1d0cfa60df431abb570f96e3ad7e373fd4657
+Build plan SHA256 3dfb2ae30958b2c4a6113f94b3173f2fa5f4313e39304bf29d6b49a0dd922c8f
+Recorder cpp SHA256 603a36f12ee362e89821d393f65ad0565f2a60c1eeb4a2bb3c48b506d6f1620e
+D driver SHA256 6f962f200fb3b3dd345036ec3aee03bd94233b2a00f9d9f5bf07df33682d73ef
+D batching SHA256 d1e53c358b1ab5ffe3094234ef746fa57250af95d9dd8f19a76a105c1eb5baf6
+Build cap8 threads/32GiB, detached Tunya, preserve failures and receipts.
+
+Required run gate: three fresh same-source disabled controls/backend plus one
+enabled profile/backend, sequential and quiet; exact selected Phase D workload,
+same-backend output gates and Phase D anchors, full bin/thread coverage, scope
+closure and explicit unscoped driver residual. Report native spread and profile
+overhead separately from scientific timing. YSpec computes eight elastic
+intermediates and requests Velocities (rho,vp,vs,qkappa,qmu before density removal),
+then driver selects vs; record actual returned names, channels and solver options.
+Cross-backend raw kernel differences remain diagnostic, not an accuracy gate.
+
+RUN GATE: PASS after two specified checker-only corrections (no further review
+cycle): unwrap metadata['profile'] for YSpec scope-accounting fields, and require
+DSpec emitted forward/unit-adjoint/skip counters 35/32/3. Reviewed run plan SHA
+bd5e983bfea91ae3ffa3eb4c9e424c04da4d9822519c3c02b764fa35e6d698a7;
+reviewed checker predecessor SHA
+7b4d0f6022f03586a32d71ce01cace285fdb427a77445c0252cff937734e48ed.
+Owner must bind final corrected checker hash before staging. Fixed external
+build root and backend-specific output declarations reviewed. Commands preserve
+three disabled runs plus one enabled run per backend, reserved CPU16-23, D8/1,
+Y CLI8/library1, sequential numerical jobs with caps20/16GiB. Output gates cover
+all physical channels and full raw arrays at1e-11 vs each backend's Phase D
+anchor, with exact shared grids. Scope gates and native spread/overhead accounting
+are bounded and appropriate. First output_io is nested in driver_setup: caller
+exclusive sum plus exact root bridge is unique caller coverage; driver elapsed
+minus coverage is an explicitly unscoped residual, not a full wall attribution.
+Launch only after reviewed build terminal success and fresh resource preflight.
+Final checker SHA256 44095eb7785df315a0443f0c43e24581297aaa57d9fc484f6c60960a39bc6e94:
+specified wrapper/count corrections independently re-read; unconditional checker
+and run-plan PASS on that revision (build/preflight conditions still apply).
+Staging correction reviewed: stage_phase_e_run.py admits only exact earlier-job
+declared outputs as absent, requires external files now, preserves shared helpers.
+Helper SHA256 6f63c51f6ad7e80b7605afed67d15f4018a9b359a1e63cd56c4464a89e011220.
+Stopped validation-v1 preflight is preserved; no numerical job launched there.
+Final path-only plan correction case/prem.200 and fresh validation-v2 root:
+SHA256 3fbdbfb9078f7d3bbd8c3fc0eebce54add403637b2f8f07cd30d2d352c89847f.
+Same checker hash above; staging/run PASS on these final hashes.
+
+Observed enabled-profile failure supersedes v1 source gate for completion:
+radialModes parent was explicitly stopped before new radialInterpolationAndStrain
+child, violating MathProfile's LIFO invariant. Native timers compile away, hence
+native controls did not expose it. Owner's diagnosis independently confirmed;
+reviewer missed this in the initial source gate. Focused correction approved in
+fresh E-v2: stop child first, then parent. No numerical/formula/order change.
+Other added D helper scope lifetimes re-read; no additional ordering defect found.
+Preserve v1 source/build/task and rerun fresh same-source disabled controls plus
+enabled profiles after corrected D rebuild. Unchanged YSpec DSOs may be reused
+with exact receipts/hashes. Existing numerical/checker scope remains authorized.
+V2 source diff confirmed exactly that two-stop reversal. Three D driver variants
+reuse v1 YSpec DSOs; corrected rpath matches their actual v1 directories.
+V2 build-config SHA256 5e8d2c8ef2abf7cdbfc87f1f6d85d4e804474015ec065e86f4d29f24835d6af1;
+V2 build-plan SHA256 a3a8135c1683f58ce36d4cecf5246065ad5115578c70d4acfcd0d1b615228e69.
+Focused v2 source/build PASS. Equivalent run plan may update only fresh
+task/build/stage paths and external build-plan hash, retaining approved matrix.

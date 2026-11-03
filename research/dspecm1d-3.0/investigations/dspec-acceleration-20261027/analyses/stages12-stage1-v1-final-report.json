@@ -1,0 +1,67 @@
+{
+  "status": "stage1_complete",
+  "accepted_source": {
+    "remote_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage1-v1/candidates/stages12-stage1-profile-v1",
+    "local_exact_extract": "receipts/stages12-stage1-v1-frozen-inputs/candidate",
+    "archive_sha256": "52fccc457361e1fc8b1e865f05738f93a04e933f2725ac24169f59770de3ad63",
+    "tree_sha256": "17609c812f316d91bc22ca058460bc6c19c483e9dbfd8d666000dc746bda5daf"
+  },
+  "build_validation": "receipts/stages12-stage1-v1-build-validation.json",
+  "controls": {
+    "snapshot": "receipts/stages12-stage1-v3-controls-completed/",
+    "state_sha256": "6a15ec61056c4511d2e9dc3bbd66c690df3f2a62c8f9cd7dbbcd211a919dbdfa",
+    "jobs": 12,
+    "all_pass": true
+  },
+  "measurements": {
+    "snapshot": "receipts/stages12-stage1-v3-measure-completed/",
+    "state_sha256": "34bbfa86c05e749e1efe293b2cd26b289487e5ed164da5e79a2f3f45304e4316",
+    "jobs": 10,
+    "all_pass": true,
+    "native_runs": [
+      {
+        "run": "N1-native-L200",
+        "result_elapsed_s": 51.840044503,
+        "supervisor_elapsed_seconds": 52.48097145598149,
+        "kernel_s": 40.678408821,
+        "peak_rss_gib_userspace": 2.4242,
+        "peak_threads": 9
+      },
+      {
+        "run": "N2-native-L200",
+        "result_elapsed_s": 51.832922741,
+        "supervisor_elapsed_seconds": 52.39479140000185,
+        "kernel_s": 40.663871973,
+        "peak_rss_gib_userspace": 2.4272,
+        "peak_threads": 9
+      },
+      {
+        "run": "N3-native-L200",
+        "result_elapsed_s": 52.140116475,
+        "supervisor_elapsed_seconds": 52.73058440699242,
+        "kernel_s": 40.896136167,
+        "peak_rss_gib_userspace": 2.4237,
+        "peak_threads": 9
+      }
+    ],
+    "native_result_elapsed_min_median_max_s": [
+      51.832922741,
+      51.840044503,
+      52.140116475
+    ],
+    "max_native_rss_gib_userspace": 2.4272,
+    "max_native_threads": 9
+  },
+  "profile_packet": "receipts/stages12-stage1-v3-profile-packet/",
+  "profile_raw_csv": "analyses/stages12-stage1-v1-profile-raw-rows.csv",
+  "counter_raw_csv": "analyses/stages12-stage1-v1-profile-raw-counters.csv",
+  "component_map": "analyses/stages12-stage1-v1-scope-component-map.json",
+  "profile_counters": {
+    "sparse_factorization_calls_total": 14070,
+    "initial_response_cache_misses": 14000,
+    "kernel_response_cache_hits": 14000,
+    "radial_l0_bypass_counter_events": 70
+  },
+  "finite_difference_relative_error": 6.4402631063599945e-09,
+  "stage2_implementation_started": false
+}

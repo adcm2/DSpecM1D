@@ -1,0 +1,78 @@
+name: Documentation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'YSpec/**'
+      - 'src/**'
+      - 'app/**'
+      - 'examples/**'
+      - 'tests/**'
+      - 'README.md'
+      - 'CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'pyproject.toml'
+      - 'python/**'
+      - 'docs/**'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    paths:
+      - 'YSpec/**'
+      - 'src/**'
+      - 'app/**'
+      - 'examples/**'
+      - 'tests/**'
+      - 'README.md'
+      - 'CMakeLists.txt'
+      - 'CMakePresets.json'
+      - 'pyproject.toml'
+      - 'python/**'
+      - 'docs/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  manual-api:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install documentation tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y doxygen python3
+      - name: Build the manual and strict API
+        run: python3 docs/tools/build_docs.py --output build/docs-ci
+      - name: Check manual links, assets, anchors, fixtures and API pages
+        run: python3 docs/tools/check_docs.py build/docs-ci/site
+
+  examples:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install the verified example toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake g++-13 libfftw3-dev libnetcdf-dev python3-dev python3-venv
+      - name: Configure a Release/OpenMP build
+        run: |
+          cmake -S . -B build/docs-examples \
+            -DCMAKE_CXX_COMPILER=g++-13 \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DYSPEC_BUILD_TESTS=ON
+      - name: Build the documented programs and library example
+        run: cmake --build build/docs-examples --target yspec yspec-snapshot yspec-kernels library_example --parallel 2
+      - name: Run the library example
+        run: OMP_NUM_THREADS=2 ctest --test-dir build/docs-examples -R '^example.library$' --output-on-failure
+      - name: Install the exact source-built Python package and test dependencies
+        run: |
+          python3 -m venv build/docs-python
+          CMAKE_BUILD_PARALLEL_LEVEL=2 OMP_NUM_THREADS=2 \
+            build/docs-python/bin/python -m pip install -e '.[plot,test]'
+      - name: Run the Python package tests
+        run: OMP_NUM_THREADS=2 build/docs-python/bin/python -m pytest python/tests
+      - name: Run C++, Python, plotting and NetCDF documentation fixtures
+        run: python3 docs/tools/check_examples.py --build build/docs-examples --python build/docs-python/bin/python

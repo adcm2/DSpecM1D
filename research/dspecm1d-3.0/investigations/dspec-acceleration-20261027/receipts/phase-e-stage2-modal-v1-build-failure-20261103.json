@@ -1,0 +1,249 @@
+{
+  "build_failure": {
+    "build_campaign": {
+      "build_model": "one direct compiler invocation per variant; sequential variants",
+      "build_root": "/space/adcm2/research/builds/phase-e-stage2-modal-v1",
+      "environment_thread_limits": "all=1",
+      "schema": 2,
+      "started_unix": 1793709262.463901,
+      "status": "failed",
+      "updated_unix": 1793709290.8995078,
+      "variants": [
+        {
+          "binary_sha256": null,
+          "command_sha256": "e8a4c7a1b963caab5c7a051eba7aefb51b0b3cc3a4119761a197bfd47313cc48",
+          "id": "dspec-timer-disabled",
+          "returncode": 1
+        }
+      ]
+    },
+    "build_root_inventory": [
+      "build_campaign.json",
+      "dspec-timer-disabled",
+      "dspec-timer-disabled/command.json",
+      "dspec-timer-disabled/stdout.log",
+      "dspec-timer-disabled/stderr.log"
+    ],
+    "command_disabled": {
+      "binary_sha256": null,
+      "command": [
+        "/opt/gcc-13.2.0/bin/g++",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec",
+        "-O3",
+        "-DEIGEN_DONT_PARALLELIZE",
+        "-DNDEBUG",
+        "-std=gnu++23",
+        "-fopenmp",
+        "-DGSHTRANS_HAVE_INTERPOLATION",
+        "-DDSFAST_DISABLE_PROFILE",
+        "-I/space/adcm2/research/projects/DSpecM1D",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include",
+        "-isystem",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3",
+        "-DYSPEC_PHASE_E_PROFILE_DISABLED",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec/phase_d_driver.cpp",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec",
+        "-I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src",
+        "-DMATHPROFILE_DISABLED",
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so",
+        "-Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled",
+        "-o",
+        "/space/adcm2/research/builds/phase-e-stage2-modal-v1/dspec-timer-disabled/phase-d-driver",
+        "-lfftw3",
+        "-lfftw3f",
+        "-lfftw3l",
+        "-llapack",
+        "-lblas"
+      ],
+      "command_display": "/opt/gcc-13.2.0/bin/g++ -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec -O3 -DEIGEN_DONT_PARALLELIZE -DNDEBUG -std=gnu++23 -fopenmp -DGSHTRANS_HAVE_INTERPOLATION -DDSFAST_DISABLE_PROFILE -I/space/adcm2/research/projects/DSpecM1D -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include -isystem /space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3 -DYSPEC_PHASE_E_PROFILE_DISABLED /space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec/phase_d_driver.cpp -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec -I/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src -DMATHPROFILE_DISABLED /space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so -Wl,-rpath,/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled -o /space/adcm2/research/builds/phase-e-stage2-modal-v1/dspec-timer-disabled/phase-d-driver -lfftw3 -lfftw3f -lfftw3l -llapack -lblas",
+      "command_sha256": "e8a4c7a1b963caab5c7a051eba7aefb51b0b3cc3a4119761a197bfd47313cc48",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec",
+      "finished_unix": 1793709290.8989167,
+      "id": "dspec-timer-disabled",
+      "output": "/space/adcm2/research/builds/phase-e-stage2-modal-v1/dspec-timer-disabled/phase-d-driver",
+      "returncode": 1,
+      "started_unix": 1793709262.5698853,
+      "stderr_sha256": "00cef70c4dc2645c13b2273e1e8a607c0045eff38a50d5286583773b8262d681",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "tracked_input_sha256": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec": "5384f4ecbfc9954c3f34e1f7302d342b5c25de312226f633a26b610bac03da54",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf"
+      },
+      "tracked_input_sha256_after": {
+        "/space/adcm2/research/builds/phase-e-stage1-backend-profiling-v1/yspec-timer-disabled/libyspec-doc.so": "9224a655ba4fcbe9dc153a5f0c233f46c741741f0fa1d08629117e477df5e738",
+        "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+        "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec": "52db1a11a44020d1c8a6df0d6bfb645a88f57ac98be1056a14e9444bbe6c98a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/YSpec/PhaseEProfile.hpp": "f0f6d3b1605305133fdf39c3f0b8b59f277e3f0dc0d17f73d2f40fe09c1a5fb8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage1-backend-profiling-v2/candidates/phase-e-stage1-backend-profiling-v2/yspec/src": "3eebaadea8ee87a49de21036f3b2d2aaac7909011b9ab0339d13785f98a00ddc",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec": "5384f4ecbfc9954c3f34e1f7302d342b5c25de312226f633a26b610bac03da54",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf"
+      },
+      "tracked_inputs_unchanged": true
+    },
+    "file_sha256": {
+      "build_campaign": "cbca20c90ca6aca89dd544f8fbaf833d92474256ee00206ac391bc2b8b23b09a",
+      "command_disabled": "fed3f91a7582eaba308871c21e19b4d55514eab19bc424411b255459a63bb8a5",
+      "job_log": "5c29b86318b1ad086d8dceceedbd9aff588b3da3386bea9fbbcaa768a5a3cea0",
+      "stderr": "00cef70c4dc2645c13b2273e1e8a607c0045eff38a50d5286583773b8262d681",
+      "stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "supervisor_state": "14d11f13ed1e301b5035b6d87f74411b18acfebb1351a92e5d42258870e589b2"
+    },
+    "job_log": "Traceback (most recent call last):\n  File \"/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py\", line 9, in <module>\n    subprocess.run([sys.executable, str(tool), str(config)], check=True)\n  File \"/usr/lib/python3.11/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['/usr/bin/python3', '/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py', '/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/configs/phase-e-stage2-modal-v1-build.json']' returned non-zero exit status 1.\n",
+    "stderr": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec/phase_d_driver.cpp: In lambda function:\n/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec/phase_d_driver.cpp:588:17: error: redeclaration of \u2018const int bin\u2019\n  588 |       const int bin=grid.First()+static_cast<int>(k);\n      |                 ^~~\n/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/candidates/phase-e-stage2-modal-v1/dspec/phase_d_driver.cpp:586:38: note: \u2018const int bin\u2019 previously declared here\n  586 |       auto z=grid.Omega(k);const int bin=grid.First()+static_cast<int>(k);auto workspace=SPARSESPEC::Windowed3DFieldEngine::prepareFrequencyWorkspace(sem,source,parameters,z,unitWeights,nullptr,true,skipUnitAdjoint,nullptr,solveWorkers,dispersion(z),modalOperatorCache,bin);\n      |                                      ^~~\n",
+    "stdout": "",
+    "supervisor_state": {
+      "finished_unix": 1793709291.3505547,
+      "jobs": [
+        {
+          "cleanup": {
+            "proc_inspection_errors": [],
+            "reaped_pids": [],
+            "remaining": [],
+            "signal_log": [],
+            "unknown": [],
+            "verified_gone": true
+          },
+          "command": [
+            "/usr/bin/python3",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/configs/phase-e-stage2-modal-v1-build.json",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-e-stage2-modal-v1-build-control/continuation/phase-e-stage2-modal-v1-build/phase-e-stage2-modal-v1-build/build-result.json"
+          ],
+          "command_sha256": "c90d94214a8e7c77aa3d67aee5d2974e7052eb5fac632f1fd03bc9eb635a74b2",
+          "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1",
+          "elapsed_seconds": 28.96326919400599,
+          "failure_reasons": [
+            "missing_outputs:build-result.json"
+          ],
+          "final_owned_processes": [
+            [
+              895951,
+              74251283
+            ],
+            [
+              895952,
+              74251288
+            ],
+            [
+              895955,
+              74251304
+            ],
+            [
+              895956,
+              74251304
+            ]
+          ],
+          "finished_unix": 1793709291.3473632,
+          "id": "phase-e-stage2-modal-v1-build",
+          "inputs_sha256_after": {
+            "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/configs/phase-e-stage2-modal-v1-build.json": "2c76621e722b457fd8dca55f79c53e6727f55230fcf33a27b137c97c8bfd5a6f",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+            "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+          },
+          "inputs_sha256_before": {
+            "/opt/gcc-13.2.0/bin/g++": "bfc6ccfb19c4de2ab8e06e5c281bedac4c93eda932212e2a4f46119a4e316d75",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-e-stage2-modal-v1/configs/phase-e-stage2-modal-v1-build.json": "2c76621e722b457fd8dca55f79c53e6727f55230fcf33a27b137c97c8bfd5a6f",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/build_receipt.py": "da7d4702ca43b64bd896decc64099a66e639a07dbc9a537f5d02278c378c14e6",
+            "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3/tools/build_campaign.py": "b78efc6620215680c0cd2ebdd3de3ec086c8d4dae97e24ebdbac0f640f8ed8b7",
+            "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+          },
+          "inputs_unchanged": true,
+          "log": "job.log",
+          "log_sha256": "5c29b86318b1ad086d8dceceedbd9aff588b3da3386bea9fbbcaa768a5a3cea0",
+          "outputs": [
+            "build-result.json"
+          ],
+          "outputs_sha256": {},
+          "peak_observed_rss_gib_userspace": 1.83,
+          "peak_observed_threads": 5,
+          "returncode": 1,
+          "started_unix": 1793709262.3597813,
+          "status": "failed",
+          "system_cpu_seconds_children": 0.569107,
+          "updated_unix": 1793709289.530986,
+          "user_cpu_seconds_children": 27.985462,
+          "watchdog": {
+            "aggregate_rss_gib_userspace": 1.6782,
+            "elapsed_seconds": 27.17,
+            "owned_processes": [
+              {
+                "pid": 895952,
+                "starttime_ticks": 74251288,
+                "threads": 1
+              },
+              {
+                "pid": 895956,
+                "starttime_ticks": 74251304,
+                "threads": 1
+              },
+              {
+                "pid": 895955,
+                "starttime_ticks": 74251304,
+                "threads": 1
+              },
+              {
+                "pid": 895949,
+                "starttime_ticks": 74251275,
+                "threads": 1
+              },
+              {
+                "pid": 895951,
+                "starttime_ticks": 74251283,
+                "threads": 1
+              }
+            ],
+            "peak_observed_rss_gib_userspace": 1.6782,
+            "peak_observed_threads": 5,
+            "thread_cap": 8,
+            "thread_count_including_supervisor": 5
+          }
+        }
+      ],
+      "plan_sha256": "615967b45ca79a8fc62e8bfc65e8888cc0cf0c22a21c2f77b89da977575e50c5",
+      "schema": 1,
+      "started_unix": 1793709262.337056,
+      "status": "failed",
+      "task_id": "phase-e-stage2-modal-v1-build",
+      "thread_cap": 8
+    }
+  },
+  "preflight_attempts": [
+    {
+      "attempt": 1,
+      "result": "local import failed: ssh_transport not on sys.path; no SSH action or remote side effect"
+    },
+    {
+      "attempt": 2,
+      "result": "read-only remote preflight exited 1 because grep found no active processes; later successful preflight confirmed fresh roots and quiet process state"
+    },
+    {
+      "attempt": 3,
+      "result": "staging verifier did not produce receipt; subsequent inspection showed remote stage contained only archive and manifest, no extraction/preflight file or build root"
+    }
+  ]
+}

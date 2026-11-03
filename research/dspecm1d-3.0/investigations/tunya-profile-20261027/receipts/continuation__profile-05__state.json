@@ -1,0 +1,67 @@
+{
+  "finished_unix": 1793092052.1230726,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v7/tools-v4/qualification_checks_control.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-04",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-05/qualification-checks/qualification.json"
+      ],
+      "command_sha256": "b913073b71cf4f446756429b05953d0bd3f7cfa2d30af6f225620b2cd66679f5",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v7",
+      "elapsed_seconds": 1.2672857819998171,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2041301,
+          12530132
+        ]
+      ],
+      "finished_unix": 1793092052.1210916,
+      "id": "qualification-checks",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v7/tools-v4/qualification_checks_control.py": "b835467dd487ae13c650ea69dd88154677a823c8dc7cdd6944e4c561d67c986b",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v7/tools/qualification_checks.py": "3af8a351c66aadd1bcc86a2cc04e303f0cdde27a4aba4b634cede871139901a7",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-04/state.json": "df6095eb0d4915939e6492cbee8a5e9650748bc30dfe153307c81d00403209bd",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v7/tools-v4/qualification_checks_control.py": "b835467dd487ae13c650ea69dd88154677a823c8dc7cdd6944e4c561d67c986b",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v7/tools/qualification_checks.py": "3af8a351c66aadd1bcc86a2cc04e303f0cdde27a4aba4b634cede871139901a7",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-04/state.json": "df6095eb0d4915939e6492cbee8a5e9650748bc30dfe153307c81d00403209bd",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "59c35bd4e4b9c51f074fa33a8364a9782e9b30b3ed9f3e53b61d529f456b4d85",
+      "outputs": [
+        "qualification.json"
+      ],
+      "outputs_sha256": {
+        "qualification.json": "ab3550c797744be092ba970fca0267a4db35b2178bde33884a0e4a739a6c3068"
+      },
+      "peak_observed_rss_gib_userspace": 0.057,
+      "peak_observed_threads": 2,
+      "returncode": 1,
+      "started_unix": 1793092050.8429518,
+      "status": "failed",
+      "system_cpu_seconds_children": 0.14054999999999998,
+      "user_cpu_seconds_children": 0.20132899999999998
+    }
+  ],
+  "plan_sha256": "76610964e9ff92c6026e449a2977cadf36d8cbe93a1d6416fe984121e2f90aa6",
+  "schema": 1,
+  "started_unix": 1793092050.8313012,
+  "status": "failed",
+  "task_id": "profile-05",
+  "thread_cap": 50
+}

@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "collected_utc": "2026-10-31 12:07:14 UTC",
+  "scope": "Stage 2 preflight read-only; no production worktree edits",
+  "transport": {
+    "config_path": "/tmp/ccdsm-tunya-20261027/ssh_config",
+    "host_checking": "StrictHostKeyChecking=yes",
+    "known_hosts": [
+      "/home/adcm2/.ssh/known_hosts",
+      "/home/adcm2/.step/ssh/known_hosts"
+    ],
+    "route": [
+      "ssh-west.esc.cam.ac.uk",
+      "tunya via ProxyJump ssh-west"
+    ],
+    "user_ssh_state_modified": false
+  },
+  "source_worktrees": {
+    "DSpecM1D": {
+      "head": "a778b13b22dca9709e1f96604b62925707654e5d",
+      "dirty": [
+        "DSpecM1D/src/SensitivityKernels.h",
+        "DSpecM1D/src/Windowed3DFields.h",
+        "DSpecM1D/src/Windowed3DKernels.h",
+        "implementation_status.md",
+        "tests/test_sensitivity_kernels.cpp",
+        "validation/phase0/"
+      ],
+      "preserved": true
+    },
+    "YSpecpp": {
+      "head": "280eab0200495391539c0f97e62f978083c307bc",
+      "dirty": []
+    }
+  },
+  "current_tracked_dependency_sha256": {
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9": "c1fdce8d7e89dfd2cf0705268818e892cba6ff7fc3c3a62ab0f2b8a8f58a304d",
+    "/space/adcm2/research/projects/DSpecM1D/DSpecM1D": "06bf110dfe7691c5f311a933157523e5b4546f34134038307a7917c733068ea8",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/numericconcepts/include": "cd8f874d886a47cb89864fa739392936076b8aafaabe2dd82406ad976e5d0096",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/fftwpp": "d6ed41f835aa44edd7952e2c2e8f1fbb80f49e4cefd7b93277deb2cace8489b5",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gaussquad": "b554b36e9832c65e2c1c43eadfaf4d5e48add121db43bcc5b5926a156636af8f",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/interpolation/include": "0ea2c712d7a0fa2ac169272b73cb0593ef04c2f314a29de600622237556b707f",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/gshtrans": "04ecaaafa43b03022ba1c7ca277fc83c3804bbad2409cc22ed54085860386417",
+    "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/bootstrap/dependencies/planetmodel-dspec/cpp/include": "363c310d71e1e4ed19daa0118aa9c07b49aab58a125c409117b6691ae4368abf",
+    "/space/adcm2/research/projects/CCDSM/deps/toolchain/eigen/include/eigen3": "6d67d4cbc351e6f66d12298110d0e63188bb3b1b66d70c1c27a37390ef8809ba",
+    "/space/adcm2/research/projects/YSpecpp/src": "26f29edb53e94fda4859f3bb962b49b33cd3c8da8e1d3433a3037a6c7608e692",
+    "/space/adcm2/research/projects/YSpecpp/YSpec": "eb023ebfd0953a9b60d5be3b4d7c652ff320f573755b4cbd4913ca3118615853",
+    "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f"
+  },
+  "current_hashes_match_original_v9_receipt": true,
+  "accepted_stage1_source": {
+    "local_exact_extract": "receipts/stages12-stage1-v1-frozen-inputs/candidate",
+    "archive_sha256": "52fccc457361e1fc8b1e865f05738f93a04e933f2725ac24169f59770de3ad63",
+    "tree_sha256": "17609c812f316d91bc22ca058460bc6c19c483e9dbfd8d666000dc746bda5daf",
+    "doc_driver_sha256": "465e2203e39e55820ac17555737a6e07ebe7f90ba696c38356387c0dc2f10256",
+    "profile_sha256": "ece6b2df5b8ed5b7d97de732ff619bb09d9482c35b99fccf756d5be3a9991724"
+  },
+  "stage1_final_evidence": {
+    "report_sha256": "6ca425bf3bde6cdc681580a080a3eb77fe4b809ff9a4b9b3a1a13694847bd685",
+    "controls_state_sha256": "6a15ec61056c4511d2e9dc3bbd66c690df3f2a62c8f9cd7dbbcd211a919dbdfa",
+    "measure_state_sha256": "34bbfa86c05e749e1efe293b2cd26b289487e5ed164da5e79a2f3f45304e4316",
+    "controls_all_pass": true,
+    "measurements_all_pass": true
+  },
+  "fresh_resource_check": {
+    "matching_adcm2_campaign_build_doc_driver_processes": 0,
+    "requested_affinity_cpus": [
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23
+    ],
+    "available_affinity_cpus": "0-127",
+    "aggregate_thread_limit": 50,
+    "status": "available; recheck immediately before every detached launch"
+  },
+  "actual_build_dependencies": {
+    "yspec_library_path": "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+    "yspec_library_sha256": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f"
+  },
+  "stage2_candidate_baseline": {
+    "path": "candidates/stages12-stage2-frequency-v1",
+    "file_count": 20,
+    "manifest_path": "analyses/stages12-stage2-v1-baseline-candidate-sha256.json",
+    "manifest_sha256": "f9e29601f520c253f618f2d7ca386adcf3263e785401ccc4e1ec2bc7267fe7c4"
+  },
+  "status": "preflight pass; Stage 2 code changes not yet started"
+}

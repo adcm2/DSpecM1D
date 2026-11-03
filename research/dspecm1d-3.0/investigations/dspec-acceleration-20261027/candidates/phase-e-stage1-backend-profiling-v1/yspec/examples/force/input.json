@@ -1,0 +1,18 @@
+{
+  "model": "../prem.200",
+  "gravity": "full",
+  "output": { "prefix": "force", "quantity": "displacement" },
+  "degrees": { "max": 300 },
+  "frequencies_mHz": { "min": 0.2, "max": 15 },
+  "time_series": { "length_min": 60, "time_step_s": 4 },
+  "filter_mHz": [2, 4, 12, 15],
+  "sources": [
+    { "depth_km": 5, "latitude": 36.87, "longitude": 35.58,
+      "force_N": { "t": -1e11 } }
+  ],
+  "receivers": {
+    "depth_km": 3,
+    "profile": { "from": [36.87, 35.58], "azimuth_deg": 30,
+                 "distances_deg": [10, 90], "count": 17 }
+  }
+}

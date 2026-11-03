@@ -1,0 +1,17 @@
+STUDY1 SOURCE/BUILD — FINAL METADATA ADDENDUM
+Date: 2026-11-03
+Disposition: CURRENT SOURCE / BUILD CONFIG PASS. Release exact minimal build package after independent member-byte check and existing fresh/hash/quiet guards. Numerical run/checker and actual saved Study1/Study2 acceptance remain separate gates.
+
+Only two metadata edits differ from source review9281f7e81cba719f79d5acc9c5a79cccd71202de9b170630dccd24728cdfccb3: result.json now exports yspec_radial_solver_tolerance from in.calculation.solver.tolerance; inherited optional frozen-weight provenance text changes from 'frozen accepted Phase A waveform adjoint source' to 'frozen supplied baseline waveform adjoint source'. Reversing exactly those two text edits reproduces prior driver03e9acbe5f8c285dfa92da3deddf386c183a29239de91126b77142b865bf2970 byte-for-byte. Actual pinned Calculation.hpp defines SolverOptions::tolerance and Calculation::solver, so field API valid. No setting, math, solve, grid, trace or output value changed; only labels/metadata.
+
+Original source/input geometry/build/operation review remains fully applicable. Freeze C++ now through build; any later actual fix requires a focused delta. Exact probe-v2 geometry independently regenerated, compiled local include closure unchanged. Build8/32 and numerical20/16/eightfrequencyworkers-innerone/aggregate50 boundaries unchanged; no scientific inference follows from this gate.
+
+FD queue checkpoint: active C2 code rejects optional frozenKernelWeights. Planned +/-FULLFORWARD jobs should use '-' for driver frozen-trace override; the FD checker freezes the unperturbed functional/reference/normalization EXTERNALLY against those perturbed traces. No guard removal or +/-self-derived changing functional is authorized. This is a run/checker contract, not an additional source change.
+
+Current sealed SHA-256
+9a92e019e85d4a7e6a15bc585a0f97e5e174b969c6d7f3f474e18a2e040f19cb  candidate/dspec/phase_d_driver.cpp
+b5372290f075a451dfecf97f9edeef25441b82870f8c3354dc9eec001417fda8  configs/study1-build-v1.json
+31eb960a56cb3cadb1f11e90e864848b8d1f99c2ed90e85c4ac3c6c2a9fc9ef2  configs/study1-build-v1-plan.json
+6d86f30da2649753dfcc345199f73e57e0e15843cecd7e5d925aaf61421c6446  operations/build_stage.py
+015cafa05d9548cea461b9d7745ad182f18678f7d2d066e2a7725ca469fec293  data/study1-fixed-probes-v2.csv
+3606009a293240d14bc90660ee8cd3d8b87983badb2b23eb21b881ddc7a4323f  data/study1-fixed-probes-v2.json

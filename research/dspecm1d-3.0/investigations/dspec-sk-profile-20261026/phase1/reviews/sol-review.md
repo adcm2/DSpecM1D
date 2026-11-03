@@ -1,0 +1,20 @@
+# Fresh Sol High final review — DSpecM1D Phase 1
+
+**PASS. No required changes. Ready to close the approved Phase 1 checkpoint, then stop for user approval before any later phase.**
+
+Reviewed the final numerical sources independently against the pre-phase sources, approved report plan and protocol, then checked Luna's independent review. The three current numerical source hashes match `after-implementation-v2.json` and the supplied review identities. `git diff --check` passes. All 362 protected tracked files and all seven Phase 0 files match `protected_files.json`, including the existing dirty `SensitivityKernels.h`. No source edits, commits, pushes, additional agents or new numerical campaigns were performed by this review.
+
+The reconstruction preserves the existing strain formulas and normalization (`Windowed3DFields.h:545–582`), exact resolved element/radius interpolation and owning-element source lift (`311–351`, `898–944`), fluid/toroidal exclusions (`938–939`), and the separate radial/center path. Combining spheroidal/toroidal modal values before the shared linear strain formula is sound. Degree sums use the existing real Wigner values, then apply the physical order phase and spin rotation (`962–1054`); I found no sign or conjugation error. Full-field sampling and algebraic weighted-center behavior remain available. The P-map and frequency prefactors are preserved (`Windowed3DKernels.h:92–104`, `122–129`). Contacts continue to use the full global modal blocks (`157–180`).
+
+The frequency coefficient cache is owned by one frequency workspace; source and distinct receiver synthesis sets cannot alias even with coincident frames (`Windowed3DFields.h:926–984`, `1140–1167`, `1210–1215`). The cross-bin plan is local to one high-level evaluation, with exact geometry/frame/angular/radial keys and bounded cache admission (`773–887`, `898–924`; `Windowed3DKernels.h:99–114`). Cache exhaustion recomputes values. Receiver displacement is sampled once per bin; volume points are handled in 4096-point blocks. This meets the approved compact-path intent.
+
+Validation independently performed during this review:
+
+- Ran the current focused `Windowed3D*` tests with numerical thread variables set to one: **14/14 passed** (1.22 s). This includes full/compact parity, one-sided and fluid behavior, center handling, colocation/duplicate-receiver separation, P-map matching and existing source/contact regression checks.
+- Recomputed comparisons directly from saved compressed arrays: global full-field relative norm **2.416e-16**; contacts **numerically identical**; all **30** old/new kernel groups have maximum relative L2 **2.211e-15** and scaled pointwise error **1.423e-13**, preserving the frozen limits.
+- Recomputed medians and deterministic-repeat checks from all recorded native timing runs: degree-12 one-objective **3.1495 → 0.6391 s (4.93x)**, exceeding the 3x gate; two scalar objectives **7.0829 → 1.5685 s (4.52x)**. Degree-3 improvements are **2.65x/2.47x**. Recorded YSpec first-call medians and its batched two-objective treatment are identified correctly.
+- Inspected the saved 177-enabled-test CTest result (two pre-existing disabled diagnostics), all four matched YSpec gates, full-plane old/new evidence, and the separate bounded regular/source-local Born baseline. All recorded gates pass; no tolerance relaxation was found in the phase delta.
+
+One nonblocking limitation remains as Luna described: `sampleForKernels` first holds full `Field3DSample` scratch and then copies compact records (`Windowed3DFields.h:1118–1127`). The 4096-point high-level blocks bound that scratch, but the two 32 MiB cache budgets are admission budgets, not aggregate-memory caps. The status text states this accurately. Sampled peak RSS is useful evidence only; the lmax-12 one-objective after-run peak was about 47.1 MB versus 71.5 MB before.
+
+This pass establishes the approved regression/performance checkpoint. It does not establish convergence, arbitrary receiver-neighborhood accuracy, high-degree repair, batching or a hard process-memory ceiling.

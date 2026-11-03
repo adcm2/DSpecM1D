@@ -1,0 +1,109 @@
+{
+  "degree": 12,
+  "frequency_bins": 3,
+  "measurements": 1,
+  "repeat": 1,
+  "cpu": 0,
+  "command": [
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/bin/yspec-audit",
+    "/home/adcm2/Documents/Research/Projects/DSpecM1D/tutorials/sensitivity_kernels_3d/homogeneous_shell_3d.deck",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/sample-grids/l12-a1352.csv",
+    "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/yspec-audit-01/l12-f3-m1-r1/data",
+    "12",
+    "1",
+    "1",
+    "1352"
+  ],
+  "env": {
+    "SK_BINS": "3"
+  },
+  "metrics": {
+    "solver": "YSpecpp",
+    "api": "ComputeSampledKernels",
+    "lmax": 12,
+    "measurements": 1,
+    "repeats": 1,
+    "point_count": 75712,
+    "warmup_batches": 0,
+    "warmup_api_calls": 0,
+    "setup_s": 0.049719793,
+    "warmup_batch_s": 0,
+    "api_s": [
+      0.283233477
+    ],
+    "first_workload_api_s": 0.283233477,
+    "first_model_to_arrays_s": 0.33295327,
+    "calculation_s": 0.33295327,
+    "end_to_end_s": 0.748069134,
+    "peak_rss_bytes": 18804736,
+    "config": {
+      "frequency_grid": {
+        "nt": 128,
+        "dt_s": 20,
+        "df_hz": 0.000390625,
+        "epsilon_s_inv": 0.002777777777777778,
+        "solver_first_bin": 1,
+        "solver_last_bin": 3,
+        "band_hz": [
+          0.0001,
+          0.0008
+        ],
+        "degrees_inclusive": [
+          0,
+          12
+        ]
+      },
+      "physics": {
+        "gravity": "full",
+        "attenuation": false,
+        "physical_G": 6.6723e-11
+      },
+      "source": {
+        "geocentric_latitude_deg": 10,
+        "longitude_deg": 20,
+        "depth_m": 50000,
+        "moment_tensor_Nm": [
+          1e+19,
+          2e+18,
+          -3e+18,
+          -5e+18,
+          4e+18,
+          -5e+18
+        ]
+      },
+      "receiver": {
+        "geocentric_latitude_deg": 45,
+        "longitude_deg": 90,
+        "depth_m": 3000
+      },
+      "window": {
+        "type": "Hann",
+        "first_sample": 0,
+        "last_sample": 90,
+        "nt": 128
+      },
+      "objective": {
+        "names": [
+          {
+            "name": "J_Z",
+            "component": "Z",
+            "q_nonzero": {
+              "bin_1": [
+                0.7,
+                0.2
+              ],
+              "bin_2": [
+                -0.25,
+                0.45
+              ]
+            }
+          }
+        ]
+      },
+      "angular_node_count": 1352,
+      "radial_node_count": 56
+    }
+  },
+  "sha256": "a4cb4d165a763c3459f44645f7b537a398a5f3a2532a6959a37de6a39ae2b855",
+  "output": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/algorithm-audit/yspec-audit-01/l12-f3-m1-r1/data"
+}

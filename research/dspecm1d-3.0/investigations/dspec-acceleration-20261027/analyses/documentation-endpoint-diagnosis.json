@@ -1,0 +1,28 @@
+{
+  "source": "hash-verified run-04 radial arrays on Tunya; all originals preserved",
+  "run_04_snapshot_archive_sha256": "3d5ec0b960d9e68725ea6d0ebf958a860870bd695f13de42e0ba00b54564cc2d",
+  "zero_dspec_rows": [
+    {
+      "element": 30,
+      "node": 9,
+      "radius_km": 4690.7692307692305
+    },
+    {
+      "element": 31,
+      "node": 9,
+      "radius_km": 4842.307692307693
+    },
+    {
+      "element": 32,
+      "node": 0,
+      "radius_km": 4842.307692307693
+    }
+  ],
+  "interior_only_area_weighted_relative_l2": {
+    "along": 2.2344901581947057e-05,
+    "across": 3.364130011145035e-05
+  },
+  "cause": "Tensor layout keyed raw SI/model radius bits; captured nonradial coefficients keyed validated boundary-snapped radius bits. Missing map entries silently yielded zero strain. Element identities must remain distinct across coincident radial sides.",
+  "fix": "v9 canonicalSamplingRadius for tensor and reserved radial l=0 keys; boundary snapping identical to field sampler; no averaging or point removal",
+  "regression": "Compare tensor and packed strain across every native radial side for selected angles, first two frequencies (cold/warm angular plans). Preserve independent finite differences, serial/parallel exact parity, and cross-solver comparison."
+}

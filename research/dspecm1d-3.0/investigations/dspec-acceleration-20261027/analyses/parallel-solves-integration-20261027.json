@@ -1,0 +1,43 @@
+{
+  "status": "validated",
+  "scope": "parallel forward/unit-adjoint and weighted-workspace preparation for the pole-frame kernel path; figure phase not started",
+  "candidate_local": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-acceleration-20261027/candidates/parallel-solves-v1",
+  "candidate_remote": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/parallel-solves-v1/candidates/parallel-solves-v1",
+  "native_binary_remote": "/space/adcm2/research/builds/kernel-parallel-solves-20261027-01/parallel-native/physical-driver",
+  "profiled_binary_remote": "/space/adcm2/research/builds/kernel-parallel-solves-20261027-01/parallel-profiled/physical-driver",
+  "recommended_initial_solve_threads": 8,
+  "tested_requested_solve_threads": [
+    1,
+    2,
+    8,
+    16,
+    32
+  ],
+  "library_api": "Windowed3DFieldEngine::prepareFrequencyWorkspace(..., basisReconstructionRelative, solveThreads)",
+  "driver_option": [
+    "--solve-threads",
+    "8"
+  ],
+  "environment": {
+    "OMP_NUM_THREADS": "1",
+    "OMP_THREAD_LIMIT": "8",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_WAIT_POLICY": "PASSIVE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1"
+  },
+  "launch_policy": "existing nohup/identity-aware userspace supervisor; total research thread cap50",
+  "production_checkout_modified": false,
+  "prior_evidence_preserved": true,
+  "scientific_comparisons_byte_exact": 13,
+  "cache_native_and_tsan_stress_passed": true,
+  "full_process_tsan_clean_not_claimed": true,
+  "full_process_tsan_reason": "minimal correct OpenMP implicit-barrier control and serial-solver parallel GSH setup also flagged; fully serial control passed",
+  "high_degree_profiled_serial_s": 314.277791727,
+  "high_degree_profiled_eight_threads_s": 193.513561217,
+  "high_degree_native_32_threads_s": 202.0489721,
+  "timing_scope": "physical vertical-displacement energy 1000-1200s, 0-10mHz; kernel timing is64 sampled angles x179 positive native SEM sides, not a full great-circle section",
+  "generic_api_default_threads": 1,
+  "full_global_order_visitor_parallel_route_supported": false
+}

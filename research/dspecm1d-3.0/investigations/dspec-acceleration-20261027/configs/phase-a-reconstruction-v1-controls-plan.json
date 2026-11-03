@@ -1,0 +1,533 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls",
+  "thread_cap": 20,
+  "external_campaigns": [
+    {
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/configs/phase-a-reconstruction-v1-build-plan.json",
+      "plan_sha256": "3b214bd94b5de0eee7690886fe8f581da5e45b72597c437b8e1747d837ed429c",
+      "task_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v1-build-control/continuation/phase-a-v1-build"
+    },
+    {
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v3-measure/configs/stages12-stage2-v3-measure-plan.json",
+      "plan_sha256": "3e12a9b32f7026e7a15a6f69b9b5951c78fcb4e8425165fa04911b36e57de55d",
+      "task_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3"
+    },
+    {
+      "plan_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/stages12-stage2-v2-controls/configs/stages12-stage2-v2-controls-plan.json",
+      "plan_sha256": "63f25db859443aba8f3fd0453474109477e6d8c7967d652889b596bd23c2d385",
+      "task_path": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2"
+    }
+  ],
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "OMP_NUM_THREADS": "1",
+    "OMP_THREAD_LIMIT": "8",
+    "OMP_DYNAMIC": "FALSE",
+    "OMP_WAIT_POLICY": "PASSIVE",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "BLIS_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "DSPEC_SYMBOLIC_REUSE": "1"
+  },
+  "jobs": [
+    {
+      "id": "phase-a-source-scope-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "candidate",
+        "--candidate",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    },
+    {
+      "id": "phase-a-build-receipt-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "build",
+        "--build-result",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v1-build-control/continuation/phase-a-v1-build/phase-a-three-variant-build/build-result.json",
+        "--build-config",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/configs/phase-a-reconstruction-v1-build.json",
+        "--build-root",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v1-build-control/continuation/phase-a-v1-build/phase-a-three-variant-build/build-result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/configs/phase-a-reconstruction-v1-build.json",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-native/phase-a-driver",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-tiny/phase-a-contract-test",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-native/command.json",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/command.json",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-tiny/command.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    },
+    {
+      "id": "phase-a-tiny-contract-test",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-tiny/phase-a-contract-test"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-tiny/phase-a-contract-test",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-tiny/command.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v1-build-control/continuation/phase-a-v1-build/phase-a-three-variant-build/build-result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/configs/phase-a-reconstruction-v1-build.json"
+      ],
+      "outputs": [],
+      "timeout_seconds": 60,
+      "memory_gib": 2
+    },
+    {
+      "id": "A1-native-accepted-adjoint-radial-packets",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "a1",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "200",
+        "10",
+        "0.025",
+        "1",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/result.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/command.json",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/prem.200",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/result.json"
+      ],
+      "outputs": [
+        "data/parameters.txt",
+        "data/active_bins.csv",
+        "data/packet-metadata.json",
+        "data/radial-bin9.bin",
+        "data/reference-bin9.bin",
+        "data/radial-bin25.bin",
+        "data/reference-bin25.bin",
+        "data/radial-bin40.bin",
+        "data/reference-bin40.bin"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 16
+    },
+    {
+      "id": "A1-packet-and-frozen-weight-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "a1",
+        "--data-dir",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/trace.csv=cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/result.json=7635cc1e3e9bff0f1b08acc4b8e14898a0949622ca70bb35b2b95c88d7e858ac",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/active_bins.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/packet-metadata.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin9.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin9.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin25.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin25.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin40.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin40.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/result.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    },
+    {
+      "id": "A2-native-same-packet-reconstruction-replay",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-native/phase-a-driver",
+        "a2",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin9.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin9.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin25.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin25.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin40.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin40.bin"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-native/phase-a-driver",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-native/command.json",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/prem.200",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin9.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin25.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/radial-bin40.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin9.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin25.bin",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A1-native-accepted-adjoint-radial-packets/data/reference-bin40.bin"
+      ],
+      "outputs": [
+        "data/a2-summary.json",
+        "data/a2-field-comparison.csv",
+        "data/a2-kernel-products.csv"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 8
+    },
+    {
+      "id": "A2-field-kernel-and-timing-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "a2",
+        "--data-dir",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A2-native-same-packet-reconstruction-replay/data",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A2-native-same-packet-reconstruction-replay/data/a2-summary.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A2-native-same-packet-reconstruction-replay/data/a2-field-comparison.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A2-native-same-packet-reconstruction-replay/data/a2-kernel-products.csv"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    },
+    {
+      "id": "A3-native-L3-central-fd-kernel",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-native/phase-a-driver",
+        "a3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/result.json",
+        "3",
+        "8",
+        "0.05",
+        "1"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-native/phase-a-driver",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-native/command.json",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/prem.200",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/result.json"
+      ],
+      "outputs": [
+        "data/a3-summary.json",
+        "data/parameters.txt"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 8
+    },
+    {
+      "id": "A3-frozen-fixture-fd-and-case-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "a3",
+        "--data-dir",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A3-native-L3-central-fd-kernel/data",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/trace.csv=18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/result.json=33ed912e82a414ba5e2b299dd46e0c6fe84f398b0fe929e6f12b9ec5984d2e09",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/trace.csv=c32507217b9000ca4d8726dc8271c25cfa463820a67aeb130135b24dc5735e07",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/result.json=dbe007b24c3998f77cb972614a845e2399f6f85c122829c2a9611da5ae0257a2",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/trace.csv=84c05591a2a3ee8352c38965802c7795de9b9e253714466aadd33d67c894b20e",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/result.json=de6afd8a5766217d11b06074bc048cbd455e788e558901047f757be91ddb06ea",
+        "--output",
+        "{JOB_DIR}/checks.json",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/state.json=16d879978fee1682770fc9eda9485a9199d9ad2d8b186d6081e62799a0c5094e",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/state.json=de20dac701fd1e641b93dac3a93e0d87cb3f75de7a5be72de2ea8b9b44f537ca"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A3-native-L3-central-fd-kernel/data/a3-summary.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-native-L3-audit/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-plus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/trace.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/F8-forward-minus/data/result.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/state.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-control-v2/continuation/stages12-stage2-controls-v2/state.json"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    },
+    {
+      "id": "A4-profiled-true-forward-only-35bin-control",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "a4",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/components.csv",
+        "200",
+        "10",
+        "0.025",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/command.json",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/prem.200",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/components.csv"
+      ],
+      "outputs": [
+        "data/a4-summary.json",
+        "data/a4-profile.json",
+        "data/a4-components.csv",
+        "data/parameters.txt"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 16
+    },
+    {
+      "id": "A4-forward-route-counter-and-parity-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "a4",
+        "--data-dir",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A4-profiled-true-forward-only-35bin-control/data",
+        "--input-sha256",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/components.csv=da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A4-profiled-true-forward-only-35bin-control/data/a4-summary.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A4-profiled-true-forward-only-35bin-control/data/a4-profile.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A4-profiled-true-forward-only-35bin-control/data/a4-components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/stages12-stage2-measure-control-v3/continuation/stages12-stage2-measure-v3/F8a-native-L200/data/components.csv"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    },
+    {
+      "id": "A5-profiled-standard-forward-two-submodes",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/env",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "OMP_DYNAMIC=FALSE",
+        "OMP_WAIT_POLICY=PASSIVE",
+        "OPENBLAS_NUM_THREADS=1",
+        "MKL_NUM_THREADS=1",
+        "BLIS_NUM_THREADS=1",
+        "VECLIB_MAXIMUM_THREADS=1",
+        "NUMEXPR_NUM_THREADS=1",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "a5",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "{JOB_DIR}/data",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A4-profiled-true-forward-only-35bin-control/data/a4-components.csv",
+        "200",
+        "10",
+        "0.025",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/phase-a-driver",
+        "/space/adcm2/research/builds/phase-a-reconstruction-v1/phase-a-profile/command.json",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-build/candidates/phase-a-reconstruction-v1/case/prem.200",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A4-profiled-true-forward-only-35bin-control/data/a4-components.csv"
+      ],
+      "outputs": [
+        "data/a5-summary.json",
+        "data/a5-untruncated-profile.json",
+        "data/a5-truncated-profile.json",
+        "data/a5-untruncated-components.csv",
+        "data/a5-truncated-components.csv",
+        "data/a5-untruncated-cut-indices.csv",
+        "data/a5-truncated-cut-indices.csv",
+        "data/parameters.txt"
+      ],
+      "timeout_seconds": 600,
+      "memory_gib": 16
+    },
+    {
+      "id": "A5-standard-policy-cut-index-profile-and-parity-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "a5",
+        "--data-dir",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A5-profiled-standard-forward-two-submodes/data",
+        "--output",
+        "{JOB_DIR}/checks.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/phase-a-reconstruction-v1-controls-v2/tools/check_phase_a.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A5-profiled-standard-forward-two-submodes/data/a5-summary.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-profile.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A5-profiled-standard-forward-two-submodes/data/a5-truncated-profile.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A5-profiled-standard-forward-two-submodes/data/a5-truncated-components.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-cut-indices.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v2-controls/continuation/phase-a-v2-controls/A5-profiled-standard-forward-two-submodes/data/a5-truncated-cut-indices.csv"
+      ],
+      "outputs": [
+        "checks.json"
+      ],
+      "timeout_seconds": 120,
+      "memory_gib": 4
+    }
+  ]
+}

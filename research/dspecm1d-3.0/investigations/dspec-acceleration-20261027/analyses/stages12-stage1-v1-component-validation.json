@@ -1,0 +1,821 @@
+{
+  "schema": 1,
+  "status": "partial_stage1_packet_while_N2_N3_running",
+  "source_candidate_archive_sha256": "52fccc457361e1fc8b1e865f05738f93a04e933f2725ac24169f59770de3ad63",
+  "build_validation_path": "receipts/stages12-stage1-v1-build-validation.json",
+  "controls_receipt_path": "receipts/stages12-stage1-v3-controls-completed/",
+  "controls_state_sha256": "6a15ec61056c4511d2e9dc3bbd66c690df3f2a62c8f9cd7dbbcd211a919dbdfa",
+  "measurement_task": "stages12-stage1-measure-v3",
+  "measurement_state_sha256_at_profile_capture": "820abb3d43fffe30d996f26f45152b96323c9a9ade778afc89e741676623a496",
+  "profile_path": "investigations/dspec-acceleration-20261027/receipts/stages12-stage1-v3-profile-packet/P1-profile-L200/data/profile.json",
+  "profile_sha256": "f84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81",
+  "analysis_scope_map_path": "investigations/dspec-acceleration-20261027/analyses/stages12-stage1-v1-scope-component-map.json",
+  "analysis_scope_map_sha256": "1639270792d11a9c1cbf47cb489737c3da825d7fec8bff2424fa62d505c594ca",
+  "measurement_results": {
+    "N1-native-L200": {
+      "elapsed_s": 51.840044503,
+      "forward_s": 10.62643516,
+      "measurement_s": 0.002670245,
+      "kernel_s": 40.678408821,
+      "tensor_validation_s": 0.515909075,
+      "workers": 8,
+      "across_angles": 19,
+      "supervisor_elapsed_seconds": 52.48097145598149
+    },
+    "P1-profile-L200": {
+      "elapsed_s": 52.164914599,
+      "forward_s": 10.706378212,
+      "measurement_s": 0.002583946,
+      "kernel_s": 40.920608015,
+      "tensor_validation_s": 0.518276328,
+      "workers": 8,
+      "across_angles": 19,
+      "supervisor_elapsed_seconds": 52.83154502505204
+    }
+  },
+  "profile_accounting": {
+    "rows": 150,
+    "counters": 100,
+    "snapshot_overhead_s": 0.001496908,
+    "wall_partition": {
+      "profile_pipeline_wall_s": 52.164586220000004,
+      "master_exclusive_partition_s": 52.164586220000004,
+      "residual_s": 0,
+      "tolerance_s": 0.05216458622,
+      "worker_elapsed_excluded": true
+    },
+    "phase_domain_exclusive_sums": [
+      {
+        "phase": "diagnostic_tensor_validation",
+        "execution_domain": "master_wall",
+        "exclusive_sum_s": 0.518270469
+      },
+      {
+        "phase": "initial_frequency_workspace_and_capture",
+        "execution_domain": "master_wall",
+        "exclusive_sum_s": 10.706211622999998
+      },
+      {
+        "phase": "initial_frequency_workspace_and_capture",
+        "execution_domain": "worker_elapsed_sum",
+        "exclusive_sum_s": 62.254115956
+      },
+      {
+        "phase": "kernel_output_and_result_io",
+        "execution_domain": "master_wall",
+        "exclusive_sum_s": 0.001548906
+      },
+      {
+        "phase": "kernel_production_excluding_isolated_diagnostics",
+        "execution_domain": "master_wall",
+        "exclusive_sum_s": 40.920613874000004
+      },
+      {
+        "phase": "kernel_production_excluding_isolated_diagnostics",
+        "execution_domain": "worker_elapsed_sum",
+        "exclusive_sum_s": 15.793055655
+      },
+      {
+        "phase": "measurement_and_initial_output",
+        "execution_domain": "master_wall",
+        "exclusive_sum_s": 0.006387869000000001
+      },
+      {
+        "phase": "profile_pipeline_total",
+        "execution_domain": "master_wall",
+        "exclusive_sum_s": 0.0005714110000000001
+      },
+      {
+        "phase": "setup",
+        "execution_domain": "master_wall",
+        "exclusive_sum_s": 0.010982068000000001
+      }
+    ],
+    "kernel_master_top_exclusive_rows": [
+      {
+        "scope_name": "tensor_angular_gemm_complex_and_packing",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "tensor_angular_synthesis",
+        "inclusive_s": 21.861581938,
+        "exclusive_s": 21.861581938,
+        "calls": 231980,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "radial_interpolation_and_strain_numerator_build",
+        "analysis_component": "radial_sampling_reconstruction",
+        "raw_runtime_label": "radial_sampling_reconstruction",
+        "inclusive_s": 9.926801854,
+        "exclusive_s": 9.926801854,
+        "calls": 20510,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "source_frame_geometry_phase_spin_rotation_and_scatter",
+        "analysis_component": "source_receiver_frame_geometry_rotation_scatter",
+        "raw_runtime_label": "output_io",
+        "inclusive_s": 8.821923083,
+        "exclusive_s": 2.3598451060000003,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "modal_degree_parallel_region_wall",
+        "analysis_component": "parallel_degree_region_wall",
+        "raw_runtime_label": "output_io",
+        "inclusive_s": 2.143164745,
+        "exclusive_s": 2.143164745,
+        "calls": 35,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "receiver_frame_geometry_phase_spin_rotation_and_scatter",
+        "analysis_component": "source_receiver_frame_geometry_rotation_scatter",
+        "raw_runtime_label": "output_io",
+        "inclusive_s": 5.302880737000001,
+        "exclusive_s": 1.5090453940000002,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "workspace_synthesis_vector_construction",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "tensor_angular_synthesis",
+        "inclusive_s": 1.14760016,
+        "exclusive_s": 0.8928822000000001,
+        "calls": 35,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "tensor_coefficient_packing_and_key_reorder",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "tensor_angular_synthesis",
+        "inclusive_s": 22.455780169,
+        "exclusive_s": 0.879114288,
+        "calls": 840,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "tensor_phase_spin_rotation_and_scatter",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "tensor_angular_synthesis",
+        "inclusive_s": 0.32550602900000003,
+        "exclusive_s": 0.32550602900000003,
+        "calls": 140,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "receiver_basis_mix_and_unit_adjoint_projection",
+        "analysis_component": "receiver_basis_projection",
+        "raw_runtime_label": "receiver_basis_projection",
+        "inclusive_s": 0.252446477,
+        "exclusive_s": 0.252446477,
+        "calls": 14000,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "tensor_coefficient_layout_dedup_and_permutation_build",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "tensor_angular_synthesis",
+        "inclusive_s": 0.16127538600000002,
+        "exclusive_s": 0.16127538600000002,
+        "calls": 140,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "driver_kernel_pipeline_including_diagnostics",
+        "analysis_component": "diagnostic_validation",
+        "raw_runtime_label": "diagnostic",
+        "inclusive_s": 41.438884343000005,
+        "exclusive_s": 0.09153762700000001,
+        "calls": 1,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "tensor_radial_l0_scatter",
+        "analysis_component": "radial_sampling_reconstruction",
+        "raw_runtime_label": "radial_sampling_reconstruction",
+        "inclusive_s": 0.08736782700000001,
+        "exclusive_s": 0.08736782700000001,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "kernel_fused_material_evaluation_weak_form_contraction_frequency_accumulation",
+        "analysis_component": "material_evaluation_weak_form_contraction_accumulation",
+        "raw_runtime_label": "material_evaluation_weak_form_contraction_accumulation",
+        "inclusive_s": 0.0872287,
+        "exclusive_s": 0.0872287,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "tensor_sampling_total",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "tensor_angular_synthesis",
+        "inclusive_s": 37.353388802000005,
+        "exclusive_s": 0.061011799000000005,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "tensor_result_allocation_and_volume_tagging",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "tensor_angular_synthesis",
+        "inclusive_s": 0.037915835,
+        "exclusive_s": 0.037915835,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "tensor_complex_basis_cold_fill_and_cache",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "sampling_plan_or_basis_cache",
+        "inclusive_s": 0.034803118,
+        "exclusive_s": 0.034803118,
+        "calls": 20,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "sparse_numerical_factorization",
+        "analysis_component": "modal_solver",
+        "raw_runtime_label": "modal_solver",
+        "inclusive_s": 0.033820032,
+        "exclusive_s": 0.033820032,
+        "calls": 35,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "radial_l0_sampling_and_interpolation",
+        "analysis_component": "radial_sampling_reconstruction",
+        "raw_runtime_label": "radial_sampling_reconstruction",
+        "inclusive_s": 0.029019338000000002,
+        "exclusive_s": 0.029019338000000002,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "tensor_grid_semantic_key_build_and_lookup",
+        "analysis_component": "tensor_angular_synthesis",
+        "raw_runtime_label": "sampling_plan_or_basis_cache",
+        "inclusive_s": 0.028707649000000002,
+        "exclusive_s": 0.028707649000000002,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      },
+      {
+        "scope_name": "pole_frame_sampling_total",
+        "analysis_component": "unclassified_by_scope_name",
+        "raw_runtime_label": "unclassified",
+        "inclusive_s": 14.175786226000001,
+        "exclusive_s": 0.021963068000000002,
+        "calls": 70,
+        "phase": "kernel_production_excluding_isolated_diagnostics"
+      }
+    ],
+    "top_worker_elapsed_rows": {
+      "initial_frequency_workspace_and_capture": [
+        {
+          "scope_name": "parallel_worker.sparse_numerical_factorization",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 20.256287475,
+          "exclusive_s": 20.256287475,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.dynamic_H_assembly",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "unclassified",
+          "inclusive_s": 16.798450964,
+          "exclusive_s": 16.798450964,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.spheroidal_receiver_basis_assembly_and_qr",
+          "analysis_component": "receiver_basis_projection",
+          "raw_runtime_label": "receiver_basis_projection",
+          "inclusive_s": 7.356128643000001,
+          "exclusive_s": 6.202400752,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_equilibration_and_scaling",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 5.287420050000001,
+          "exclusive_s": 5.287420050000001,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_forward_eigen_solve",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 4.350382339,
+          "exclusive_s": 4.350382339,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_adjoint_eigen_solve",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 2.7500196700000004,
+          "exclusive_s": 2.7500196700000004,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.shared_forward_and_adjoint_solver",
+          "analysis_component": "unclassified_by_scope_name",
+          "raw_runtime_label": "unclassified",
+          "inclusive_s": 52.313205530000005,
+          "exclusive_s": 2.02027742,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.receiver_basis_and_QR_reconstruction",
+          "analysis_component": "receiver_basis_projection",
+          "raw_runtime_label": "receiver_basis_projection",
+          "inclusive_s": 1.324185323,
+          "exclusive_s": 1.324185323,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.spheroidal_source_lift_projection_and_solver",
+          "analysis_component": "source_projection_solver_wrapper_remainder",
+          "raw_runtime_label": "output_io",
+          "inclusive_s": 58.67835525,
+          "exclusive_s": 0.6862342100000001,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.spheroidal_source_treatment_and_lift",
+          "analysis_component": "source_treatment_and_lift",
+          "raw_runtime_label": "unclassified",
+          "inclusive_s": 0.624561562,
+          "exclusive_s": 0.624561562,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.batch_response_cache_miss_admission_signatures_and_copies",
+          "analysis_component": "batch_response_cache",
+          "raw_runtime_label": "sampling_plan_or_basis_cache",
+          "inclusive_s": 0.324705144,
+          "exclusive_s": 0.324705144,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.toroidal_receiver_basis_assembly_and_qr",
+          "analysis_component": "receiver_basis_projection",
+          "raw_runtime_label": "receiver_basis_projection",
+          "inclusive_s": 0.441429234,
+          "exclusive_s": 0.27097180200000004,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.batch_response_cache_get_or_compute",
+          "analysis_component": "batch_response_cache",
+          "raw_runtime_label": "sampling_plan_or_basis_cache",
+          "inclusive_s": 52.93633295,
+          "exclusive_s": 0.26876519000000004,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.toroidal_source_treatment_and_lift",
+          "analysis_component": "source_treatment_and_lift",
+          "raw_runtime_label": "unclassified",
+          "inclusive_s": 0.16131030300000002,
+          "exclusive_s": 0.16131030300000002,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_forward_result_unscaling_and_validation",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 0.146846425,
+          "exclusive_s": 0.146846425,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_factorization_total",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 25.668163528,
+          "exclusive_s": 0.119759715,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_forward_rhs_scaling",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 0.099893387,
+          "exclusive_s": 0.099893387,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_forward_rhs_validation",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 0.086782827,
+          "exclusive_s": 0.086782827,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_forward_result_validation",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 0.080143381,
+          "exclusive_s": 0.080143381,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.sparse_adjoint_result_unscaling_and_validation",
+          "analysis_component": "modal_solver",
+          "raw_runtime_label": "modal_solver",
+          "inclusive_s": 0.077123341,
+          "exclusive_s": 0.077123341,
+          "calls": 14000
+        }
+      ],
+      "kernel_production_excluding_isolated_diagnostics": [
+        {
+          "scope_name": "parallel_worker.batch_response_cache_get_or_compute",
+          "analysis_component": "batch_response_cache",
+          "raw_runtime_label": "sampling_plan_or_basis_cache",
+          "inclusive_s": 7.1184197540000005,
+          "exclusive_s": 5.650251548,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.spheroidal_receiver_basis_assembly_and_qr",
+          "analysis_component": "receiver_basis_projection",
+          "raw_runtime_label": "receiver_basis_projection",
+          "inclusive_s": 6.323200612000001,
+          "exclusive_s": 4.480768659000001,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.receiver_basis_and_QR_reconstruction",
+          "analysis_component": "receiver_basis_projection",
+          "raw_runtime_label": "receiver_basis_projection",
+          "inclusive_s": 2.072696817,
+          "exclusive_s": 2.072696817,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.spheroidal_source_treatment_and_lift",
+          "analysis_component": "source_treatment_and_lift",
+          "raw_runtime_label": "unclassified",
+          "inclusive_s": 0.986986652,
+          "exclusive_s": 0.986986652,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.batch_cache_locked_hit_signature_validation",
+          "analysis_component": "batch_response_cache",
+          "raw_runtime_label": "sampling_plan_or_basis_cache",
+          "inclusive_s": 0.838201281,
+          "exclusive_s": 0.838201281,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.batch_cache_locked_hit_response_return_copies",
+          "analysis_component": "batch_response_cache",
+          "raw_runtime_label": "sampling_plan_or_basis_cache",
+          "inclusive_s": 0.5781575090000001,
+          "exclusive_s": 0.5781575090000001,
+          "calls": 14000
+        },
+        {
+          "scope_name": "parallel_worker.toroidal_receiver_basis_assembly_and_qr",
+          "analysis_component": "receiver_basis_projection",
+          "raw_runtime_label": "receiver_basis_projection",
+          "inclusive_s": 0.665706565,
+          "exclusive_s": 0.435441701,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.spheroidal_source_lift_projection_and_solver",
+          "analysis_component": "source_projection_solver_wrapper_remainder",
+          "raw_runtime_label": "output_io",
+          "inclusive_s": 11.564892145,
+          "exclusive_s": 0.424957387,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.toroidal_source_treatment_and_lift",
+          "analysis_component": "source_treatment_and_lift",
+          "raw_runtime_label": "unclassified",
+          "inclusive_s": 0.21280457100000003,
+          "exclusive_s": 0.21280457100000003,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.toroidal_source_lift_projection_and_solver",
+          "analysis_component": "source_projection_solver_wrapper_remainder",
+          "raw_runtime_label": "output_io",
+          "inclusive_s": 4.22816351,
+          "exclusive_s": 0.060980114,
+          "calls": 7000
+        },
+        {
+          "scope_name": "parallel_worker.batch_cache_locked_initial_lookup",
+          "analysis_component": "batch_response_cache",
+          "raw_runtime_label": "sampling_plan_or_basis_cache",
+          "inclusive_s": 1.468168206,
+          "exclusive_s": 0.051809416000000004,
+          "calls": 14000
+        }
+      ]
+    }
+  },
+  "controls_results": {
+    "C1-native-L3-w1": {
+      "elapsed_s": 0.937333531,
+      "forward_s": 0.475019336,
+      "measurement_s": 0.002416727,
+      "kernel_s": 0.44271006,
+      "tensor_validation_s": 0.006915065,
+      "workers": 1
+    },
+    "C2-native-L3-w8": {
+      "elapsed_s": 0.655480428,
+      "forward_s": 0.203486707,
+      "measurement_s": 0.0023712,
+      "kernel_s": 0.43313994499999997,
+      "tensor_validation_s": 0.006914633,
+      "workers": 8
+    },
+    "C3-profile-L3-w8": {
+      "elapsed_s": 0.700719902,
+      "forward_s": 0.206073728,
+      "measurement_s": 0.002423688,
+      "kernel_s": 0.472973891,
+      "tensor_validation_s": 0.008475146999999999,
+      "workers": 8
+    },
+    "C4-forward-plus": {
+      "elapsed_s": 0.214887658,
+      "forward_s": 0.203096255,
+      "measurement_s": 0.002370218,
+      "kernel_s": 1.9e-07,
+      "tensor_validation_s": 0,
+      "workers": 8
+    },
+    "C5-forward-minus": {
+      "elapsed_s": 0.214882912,
+      "forward_s": 0.202951731,
+      "measurement_s": 0.002417779,
+      "kernel_s": 2.8e-07,
+      "tensor_validation_s": 0,
+      "workers": 8
+    }
+  },
+  "controls_gates": {
+    "candidate-scope-gate": {
+      "status": "pass",
+      "checks": {
+        "baseline_scope": {
+          "baseline_files": 20,
+          "changed_files": [
+            "doc_driver.cpp",
+            "engine_headers/Windowed3DFields.h",
+            "implementation_status.md",
+            "profile.hpp",
+            "profile_equilibrated_sparse_lu.hpp",
+            "solvers/batch_response_cache.hpp",
+            "stage-to-math-map.json"
+          ],
+          "manifest_sha256": "embedded-in-checker"
+        }
+      }
+    },
+    "C1-vs-frozen-L3-w1": {
+      "status": "pass",
+      "checks": {
+        "scientific_parity": {
+          "byte_exact_scientific_files": [
+            "parameters.txt",
+            "trace.csv",
+            "spectrum.csv",
+            "components.csv",
+            "nodes.csv",
+            "along.bin",
+            "along-angles.csv"
+          ],
+          "candidate_job": "C1-native-L3-w1",
+          "candidate_verified_artifact_sha256": {
+            "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+            "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+            "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+            "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+            "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+            "data/result.json": "2577c722d332c7c0c51ed0539201cddf343ea564f6c88a44030c50978726a8be",
+            "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+            "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+            "job.log": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498"
+          },
+          "candidate_verified_state_sha256": "71b3e47dd83429591d81e7e4a058e041450533aa1abd5fd4bc972310e079de17",
+          "candidate_workers": 1,
+          "reference_job": "audit-l3-t1",
+          "reference_verified_artifact_sha256": {
+            "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+            "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+            "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+            "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+            "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+            "data/result.json": "c6269c36bf1a275439cca9f7349c9237398cab491ae2604c372e845dc1c7fdac",
+            "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+            "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+            "job.log": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498"
+          },
+          "reference_verified_state_sha256": "1756c9555849ff49dd9caf8d209727658db9b23fc4fd326b17658f3aeca5a0b4",
+          "reference_workers": 1,
+          "scientific_metadata_identical": true
+        }
+      }
+    },
+    "C2-vs-C1": {
+      "status": "pass",
+      "checks": {
+        "scientific_parity": {
+          "byte_exact_scientific_files": [
+            "parameters.txt",
+            "trace.csv",
+            "spectrum.csv",
+            "components.csv",
+            "nodes.csv",
+            "along.bin",
+            "along-angles.csv"
+          ],
+          "candidate_job": "C2-native-L3-w8",
+          "candidate_verified_artifact_sha256": {
+            "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+            "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+            "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+            "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+            "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+            "data/result.json": "5f5975788e34f273d13b31a9d1b091ed99df8fbb27e063611cf6700af839969e",
+            "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+            "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+            "job.log": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498"
+          },
+          "candidate_verified_state_sha256": "426e2b0b7df6c75976f15d5c82ee910d438b90f7348dff7ccb9a6ce017be59f8",
+          "candidate_workers": 8,
+          "reference_job": "C1-native-L3-w1",
+          "reference_verified_artifact_sha256": {
+            "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+            "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+            "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+            "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+            "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+            "data/result.json": "2577c722d332c7c0c51ed0539201cddf343ea564f6c88a44030c50978726a8be",
+            "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+            "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+            "job.log": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498"
+          },
+          "reference_verified_state_sha256": "426e2b0b7df6c75976f15d5c82ee910d438b90f7348dff7ccb9a6ce017be59f8",
+          "reference_workers": 1,
+          "scientific_metadata_identical": true
+        }
+      }
+    },
+    "C2-vs-frozen-L3-w8": {
+      "status": "pass",
+      "checks": {
+        "scientific_parity": {
+          "byte_exact_scientific_files": [
+            "parameters.txt",
+            "trace.csv",
+            "spectrum.csv",
+            "components.csv",
+            "nodes.csv",
+            "along.bin",
+            "along-angles.csv"
+          ],
+          "candidate_job": "C2-native-L3-w8",
+          "candidate_verified_artifact_sha256": {
+            "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+            "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+            "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+            "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+            "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+            "data/result.json": "5f5975788e34f273d13b31a9d1b091ed99df8fbb27e063611cf6700af839969e",
+            "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+            "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+            "job.log": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498"
+          },
+          "candidate_verified_state_sha256": "d6d77210fbd805898c5d649d324a705e79eeeb39c6915aeaf3c092aeed0f5056",
+          "candidate_workers": 8,
+          "reference_job": "audit-l3-t8",
+          "reference_verified_artifact_sha256": {
+            "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+            "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+            "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+            "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+            "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+            "data/result.json": "b4762d73cf097a128c26685c1229162b564c41b6db64fe9397c64da467d23669",
+            "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+            "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+            "job.log": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498"
+          },
+          "reference_verified_state_sha256": "1756c9555849ff49dd9caf8d209727658db9b23fc4fd326b17658f3aeca5a0b4",
+          "reference_workers": 8,
+          "scientific_metadata_identical": true
+        }
+      }
+    },
+    "C3-profile-accounting-gate": {
+      "status": "pass",
+      "checks": {
+        "profile_accounting": {
+          "master_exclusive_partition_s": 0.700319024,
+          "pipeline_wall_s": 0.700319024,
+          "profile_counters": 99,
+          "profile_rows": 150,
+          "wall_residual_s": 0.0,
+          "wall_tolerance_s": 0.01
+        },
+        "profile_sha256": "27d35d9e7ffeb964468bd65d6c8ae5dc3b9f82e475fe79859deb88ca1728e734"
+      }
+    },
+    "C3-vs-C2": {
+      "status": "pass",
+      "checks": {
+        "scientific_parity": {
+          "byte_exact_scientific_files": [
+            "parameters.txt",
+            "trace.csv",
+            "spectrum.csv",
+            "components.csv",
+            "nodes.csv",
+            "along.bin",
+            "along-angles.csv"
+          ],
+          "candidate_job": "C3-profile-L3-w8",
+          "candidate_verified_artifact_sha256": {
+            "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+            "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+            "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+            "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+            "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+            "data/profile.json": "27d35d9e7ffeb964468bd65d6c8ae5dc3b9f82e475fe79859deb88ca1728e734",
+            "data/result.json": "23cf4381f7630915b3bc556de6db5e3bd7d317ba683aa8e10c71d8a47af4b5b8",
+            "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+            "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+            "job.log": "bd9ab93192a909adfb5ae3e605bbf23ee745fe75e3b7b793c192410d0e6d2df4"
+          },
+          "candidate_verified_state_sha256": "f958df1092a90a1aac5050ac23cdc9af13bc5369725b152dfcdd04a04b46041d",
+          "candidate_workers": 8,
+          "reference_job": "C2-native-L3-w8",
+          "reference_verified_artifact_sha256": {
+            "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+            "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+            "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+            "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+            "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+            "data/result.json": "5f5975788e34f273d13b31a9d1b091ed99df8fbb27e063611cf6700af839969e",
+            "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+            "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd",
+            "job.log": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498"
+          },
+          "reference_verified_state_sha256": "f958df1092a90a1aac5050ac23cdc9af13bc5369725b152dfcdd04a04b46041d",
+          "reference_workers": 8,
+          "scientific_metadata_identical": true
+        }
+      }
+    },
+    "C6-finite-difference-gate": {
+      "status": "PASS",
+      "checks": null
+    }
+  },
+  "finite_difference_gate": {
+    "status": "PASS",
+    "finite_difference_seconds": -106.02358956682346,
+    "integrated_kernel_seconds": -106.02359024964328,
+    "relative_error": 6.4402631063599945e-09,
+    "limit": 0.0002,
+    "perturbation": "ln(vs) smooth sin^2 bump, radius5300-5800km; fixedvp/rho/effectiveQ; source/receiver support excluded",
+    "jobs": [
+      "C2-native-L3-w8",
+      "C4-forward-plus",
+      "C5-forward-minus"
+    ]
+  },
+  "interpretation_limits": [
+    "P1 and N1 are single observations; timing differences are descriptive, not an accepted repeat mean.",
+    "worker_elapsed_sum rows overlap parallel degree wall and must not be added to master wall or interpreted as CPU time.",
+    "Runtime logical_component labels are preserved but known scope names can collide with the broad substring `io`; use the separate explicit scope-name component map.",
+    "Measurement gate includes three native L200 repeats and one profiled L200 run; N2/N3 are still in progress at this packet snapshot."
+  ],
+  "raw_profile_rows_csv": {
+    "path": "investigations/dspec-acceleration-20261027/analyses/stages12-stage1-v1-profile-raw-rows.csv",
+    "sha256": "ccba721ffe6362e3bac0b9ea967f61530677fa93beac39db94c6830e502dced9",
+    "rows": 150
+  },
+  "raw_profile_counters_csv": {
+    "path": "investigations/dspec-acceleration-20261027/analyses/stages12-stage1-v1-profile-raw-counters.csv",
+    "sha256": "fef36dbd527849ffbaa3e37e03a4f81adf41c0207d60852e1c6809b62038424b",
+    "rows": 100
+  }
+}

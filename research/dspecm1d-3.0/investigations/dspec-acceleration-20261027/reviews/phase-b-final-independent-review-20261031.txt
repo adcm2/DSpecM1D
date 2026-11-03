@@ -1,0 +1,106 @@
+Phase B final independent review — Sol,2026-10-31
+PASS for the bounded measured investigation. Release C using original
+NQ10/refinement.025/full-domain fallback. No lower-NQ or truncation promotion.
+No reviewer implementation edit, build or numerical solve was performed;
+review read source, plans and preserved Tunya artifacts/receipt metadata.
+
+Provenance independently checked read-only on Tunya
+- Numerical task phase-b-fixed-mesh-v1-fixed-mesh-03 has12 successful numerical
+  jobs, all rc0, unchanged inputs and cleanup verified. Its overall state is
+  FAILED solely because the later original summary checker had a KeyError for
+  an omitted-region count label. Exact state SHA256:
+  be4a5949f8c5caa0a8122d110b283eec7483b344b66741b97dc4d2e8d3d787ac.
+- Corrected checker-only task phase-b-fixed-mesh-check-01 completed rc0,
+  unchanged inputs/verified cleanup; no numerical rerun. State SHA256:
+  79117308001ef3bb6edd4f363ebbcd2a3fbd6da04ced0aead61536480eda87a2.
+  All120 checker input bindings to original numerical outputs match those
+  numerical receipt hashes. Prefix/key correction matches actual worker-counter
+  names and retains positive omission/HH coverage checks.
+- Directly read summary49,300,939bytes, SHA256
+  a603ca8d79d9e34668aa56cc805b5db764fb0d885f4c08d58d613b6cbe3dd13e
+  at checker task/summarize-preserved-phase-b-numerical-outputs/phase-b-summary.json.
+  Large raw CSVs/profile/summary remain preserved remotely, not claimed local.
+
+Mesh evidence
+NQ5 nominal/finer: h=.0160104490042484/.0080052245021242,
+70/132elements,199/363requested native sides.
+NQ6 nominal/finer: h=.022615360324768855/.011307680162384428,
+53/96elements,189/322requested native sides.
+The standard parsed relerr/highest-complex-frequency recipe and fixed source-
+aligned SEM are recorded. All35 forward bins and1201 waveform samples retained.
+Self-refinement receiver-spectrum relativeL2 is9.6153554773e-6(NQ5) and
+3.1603091048e-6(NQ6). Against frozen NQ10, nominal/finer deviations are
+9.4244336043e-6/3.5499799617e-7(NQ5),
+3.1984692450e-6/1.7956851042e-7(NQ6).
+Time-shift identities differ from1 by at most4e-16.
+
+Waveform agreement does not certify spatial fields or kernels. Common-location
+direct polynomial/derivative samples preserve45122physical one-sided locations
+per active bin across both sections. Explicit source/interface/receiver/bulk
+and fluid groups are retained. For example NQ5 bin9 source self-refinement is
+1.1106866791e-3 in complex adjoint strain and3.1244960137e-3 in point kernel
+product; NQ6 bin9 source values are2.3040237499e-6 and3.8502774830e-6.
+NQ6 bulk product self-refinement reaches1.0781095930e-4 at bin25.
+These are descriptive three-bin diagnostics, not complete frequency-summed
+continuous-accuracy certification; NQ10 is a reference, not established truth.
+
+Truncation evidence and rejection of adoption
+Actual principal P H P^T and solveAdjoint controls ran with full gravity,
+dual forcing support, exact per-family/degree/bin cut/radius maps and explicit
+zero-extension boundary interpretation. Positive omitted DOFs demonstrate a
+nontrivial attempted policy. Each row has14000kernel-pass H^H calls; this total
+also includes low-degree full-domain cases and must not be mislabeled14000
+nontrivially truncated solves. Residual counters are1e-15-quantized bounds.
+Initial35-bin waveform is deliberately full-domain; active-bin receiver CSVs
+come from actual kernel workspaces and are the proper truncation controls.
+Their receiver relativeL2 deviations range from3.21e-11 to3.47e-10.
+
+Affected labels mean below at least one applicable family/degree cut, excluding
+toroidal cuts on fluid rows; they do not mean the total field physically zero.
+At bin9, solid bulk affected-sample product changes are6.09e-5(NQ5nominal),
+9.87e-5(NQ5finer),6.33e-5(NQ6nominal),7.89e-5(NQ6finer). These exceed the tiny
+receiver-spectrum increments. Fluid-interface adjoint subgroup deviations remain
+visible, including0.7231(NQ6nominal) and0.7354(NQ6finer) for the pooled outside-
+cut bin9 group. Fluid Vs products remain zero. No root cause, universal subset
+roundoff agreement or physical SI-strain interpretation follows. Section-only
+or affected+unaffected aggregates are different populations and must be labeled.
+
+No scientific accuracy budget was agreed, so these results do not authorize
+lower-NQ/truncated adoption. Retaining full NQ10 for C isolates algorithmic
+equivalence without hiding these measured mesh/truncation tradeoffs.
+
+Cost/resource limits
+Full controls use inherited response-cache hits; restricted kernel controls
+deliberately bypass that cache and recompute factors. Their12–19s vs25–34s
+instrumented totals are different work boundaries and establish no truncation
+speedup. Preserve assembly/factor/substitution/reconstruction/I/O profiles and
+actual counts. Own dspec-forward controls still include unit-basis capture,
+so they are not pure-forward timings. Native full-pipeline speed remains future.
+All12numerical jobs used at most5.9545GiB/9observed threads, within16GiB/cap20;
+eight solve workers/inner1, detached Tunya nohup, buildcap8 and aggregate<=50
+policy retained. USER_SPACE_SESSION_WATCHDOG is user-space observed enforcement,
+not kernel aggregate accounting. Failed build/checker attempts remain preserved.
+
+B is complete as an isolated investigation. Proceed to authorized C direct-
+direction adjoint/shared reconstruction/bounded two-pass/exact-zero skip work,
+then matched complete-pipeline validation. Production integration, discrepancy
+work, new figures, deletion, commits and pushes remain outside authorization.
+
+Subsequent C review finding: the common-location mapper preferred the inner
+containing element for a reference q0 at a coincident artificial boundary,
+because endpoint-side preservation was limited to physical breaks. Reviewer
+missed this case in the earlier B mapping review. Native-grid waveforms/kernel
+outputs and source/material side handling remain valid, but common-side accuracy
+tables are superseded WHERE this mapping affected rows. Fresh C2 will first count
+affected saved B rows and, if present, replay only corrected9/25/40 full/restricted
+side diagnostics on the same4meshes/frozen weights. Preserve original35-bin
+waveform/cost evidence; do not claim old mis-mapped comparisons are correct or
+interpret their differences as physical causes. No lower-NQ/truncation adoption
+is approved. See plans/phase-c2-preweighted-contraction-plan-20261031.txt.
+
+Impact count now established without solves at receipts/phase-b-q0-mapper-
+impact-20261031.json: affected q0 rows out of4466 are308(NQ5nominal),
+2618(NQ5finer),308(NQ6nominal),0(NQ6finer), identical full/restricted. All
+affected rows are bulk; source/material-interface groups are unaffected by this
+mapper defect. Corrected3-bin replay and refreshed bulk/self-refinement/omission
+tables remain pending. Original35-bin waveform/cost evidence stays valid.

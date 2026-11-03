@@ -1,0 +1,56 @@
+Next implementation phase for approval: NQ6 + batched angular reconstruction
+Planning only. B/C2 are complete; no new implementation or execution is started.
+Approval requested for the bounded phase below, not merely further planning.
+
+1. Isolated changes
+Seed candidates/phase-d-nq6-batched-v1 from frozen validated C2. Likely files:
+phase_d_driver.cpp, phase_d_batched_reconstruction.hpp, copied
+phase_c_reconstruction.hpp, narrow mesh-selection helper, unique configs and
+check_phase_d_accuracy.py. Preserve C2 source/binaries as oracle; retain direct
+H^H, preweighted complex products, full gravity and exact zero-bin semantics.
+Log every code change immediately in candidate/campaign implementation_status.md.
+
+2. Selectable accuracy and fixed mesh
+Expose one requested relative-accuracy control, default1e-3 (0.1%), and report
+requested versus achieved errors and selected h. Keep its meaning distinct from
+legacy InputParameters.relative_error=1e-5 and the mesh step. Begin NQ6 at the
+standard source-aligned nominal h=.022615360324768855; reduce only as needed
+through .9h then .8h, stopping at the first passing mesh. At most3mesh candidates,
+one fixed source-aligned mesh per complete35-bin case, highest complex frequency
+including damping. Validate the requested1e-3 setting now; do not imply all other
+user-selected tolerances have been certified. NQ10 is reference, not a mandatory
+execution setting. If none passes, report the measured limit before expanding.
+
+3. Accuracy proof separate from batching proof
+Evaluate complete35-frequency-summed lnVs kernels at the same physical one-sided
+reference locations/angles. Obtain candidate radial values AND derivatives
+directly from its SEM polynomials with explicit source/interface/endpoint side;
+no smoothing or interpolated kernels. Compare solid forward/adjoint complex
+fields and full35 summed kernels against frozen C2, grouped by section and
+source/receiver/bulk/material interface, with relativeL2<requested target (1e-3
+here) and visible absolute errors/reference norms. Stream bounded validation data;
+preserve fluid diagnostic
+conventions separately. Use each mesh's own complete waveform/measurement/P.
+Compare scalar versus batched reconstruction on identical mesh/data at1e-11;
+retain existing FD/time-shift/gravity and exact7/8/41 skip controls.
+
+4. Remove angular scalar repetition
+Target the measured43.4% worker-exclusive angular hotspot: replace repeated
+angle-outer/radius-inner201-degree scalar sums/map lookups/phase evaluation with
+small radius/angle tiles and single-threaded Eigen matrix products. Precompute
+only required angular phase/rotation weights, hoist lookups, fuse contraction,
+and release tile temporaries. Explicit per-worker temporary bound (start<=32MiB).
+No giant Wigner tables, new backend, nested threads, or solved-field history.
+
+5. Bounded validation/timing and stop
+One NQ10 full35 reference-validation pass if saved fields are insufficient;
+at most3 NQ6 full35 accuracy controls, then selected-mesh scalar/batched proof
+and oracle-off native/profile complete-pipeline timings. Reuse matching outputs.
+One focused source review and one results review, fixes only for actual failures.
+Fresh matched native DSpec comparison; report wall/memory/work fairly. Historical
+YSpec5.641s is not a fresh same-date target. Include in this approval at most one
+matched YSpec refresh, only if needed for the current fair comparison; no sweep.
+All builds/numerics detached on Tunya:8total frequency workers,inner/library1,
+<=50aggregate threads,cap20numeric/8build,16/32GiB,existing watchdog/receipts.
+Preserve failures/status/hashes. No production,discrepancy work,new figures,
+deletion,commit or push. Stop after the independent result review and report.

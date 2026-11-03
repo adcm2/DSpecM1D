@@ -1,0 +1,85 @@
+{
+  "source_checkout": "/home/adcm2/Documents/Research/Projects/YSpecpp",
+  "source_commit": "280eab0200495391539c0f97e62f978083c307bc",
+  "source_tree_status": "clean at inspection",
+  "api": "YSpec::ComputeSampledKernels",
+  "root_scopes": {
+    "api.ComputeSampledKernels": "The complete sampled-kernel API call, including its local cleanup before return.",
+    "frontend.model_sampling_configuration_and_input_setup": "Read the model, resolve the frequency grid, construct source/receiver and angular/radial sample inputs. Timed separately in the copied audit frontend.",
+    "frontend.sampled_kernel_csv_export": "Serialize actual returned sampled-kernel arrays to the existing kernels.csv schema. Timed separately from numerical work."
+  },
+  "stages": {
+    "setup": [
+      "setup.validate_measurements_and_source",
+      "setup.frequency_sampling_grid",
+      "setup.merge_sample_nodes",
+      "setup.construct_kernel_solver",
+      "setup.map_adjoint_receiver_depths",
+      "setup.source_receiver_frame_geometry",
+      "setup.measurement_direction_basis",
+      "setup.measurement_adjoint_spectra_and_weights",
+      "setup.sampled_node_materials_and_phases"
+    ],
+    "radial": [
+      "radial.context_material_frequency",
+      "radial.radial_response_family",
+      "radial.toroidal_response_family",
+      "radial.spheroidal_response_family",
+      "radial.bvp_up_down_integration_and_matching",
+      "radial.initial_conditions_and_upward_integration",
+      "radial.initial_conditions_and_downward_integration",
+      "radial.determinant_jumps_matching_and_response_transport",
+      "radial.spheroidal_b_vector_transport",
+      "radial.radial_physical_variable_recovery",
+      "radial.toroidal_physical_variable_recovery",
+      "radial.spheroidal_physical_variable_recovery",
+      "radial.coefficient_combine_and_strain_recovery"
+    ],
+    "angular_and_kernel": [
+      "angular.wigner_function_table_build",
+      "angular.spin_legendre_table_population",
+      "angular.generalized_legendre_table_population",
+      "kernel.angular_block_batch",
+      "kernel.angular_harmonic_synthesis.source",
+      "kernel.angular_harmonic_synthesis.adjoint",
+      "kernel.relative_spin_rotation",
+      "kernel.elastic_energy_pair_contraction",
+      "kernel.objective_weight_and_parameter_products",
+      "kernel.measurement_frequency_basis_weights",
+      "kernel.modulus_dispersion_frequency_weights",
+      "kernel.frequency_block_accumulation_copy"
+    ],
+    "output": [
+      "output.parameter_transform_scaling_and_construction"
+    ]
+  },
+  "counters": {
+    "frequency_bins_active": "Frequency indices with any nonzero measurement adjoint spectrum.",
+    "degree_frequency_pairs": "Active degree-frequency pairs with a response solve.",
+    "radial_family_solves": "l=0 radial response-family solves.",
+    "toroidal_family_solves": "l>0 toroidal response-family solves.",
+    "spheroidal_family_solves": "l>0 spheroidal response-family solves.",
+    "rk_fixed_step_intervals": "Non-adaptive Runge-Kutta integration intervals.",
+    "rk_attempted_steps": "Accepted fixed steps plus adaptive trial steps.",
+    "rk_rhs_evaluations": "Calls of the Runge-Kutta right-hand-side callback, including batched b-vector callbacks.",
+    "rk_scalar_equation_rhs_evaluations": "Callback evaluations times the number of complex state components integrated.",
+    "radial_material_complexification_samples": "RHS callback count; each radial or b-vector callback materializes its frequency-dependent layer material once.",
+    "b_vector_transport_intervals": "Spheroidal b-vector transport intervals.",
+    "radial_sample_nodes": "Node solves across active degree-frequency pairs.",
+    "forward_source_rhs_directions": "Forward source pole-weight direction sets.",
+    "receiver_unit_rhs_directions": "Independent unit receiver force directions represented by the measurement basis.",
+    "angular_degree_order_component_macs": "Complex coefficient times real generalized-Legendre multiply-accumulate terms in forward and adjoint angular evaluations.",
+    "angular_table_degree_extent_sum": "Sum of lmax+1 over constructed forward and receiver generalized-Legendre tables.",
+    "relative_spin_rotations": "Per-node/place receiver-basis relative-frame spin rotations.",
+    "elastic_energy_pair_contractions": "Per-node/place/basis five-modulus strain-energy pair products.",
+    "angular_phase_timer_reads": "Raw steady-clock reads inside the original fused point loop; phase times are accumulated locally and committed once per angular block.",
+    "measurement_basis_modulus_combinations": "Exact number of active measurement/basis/five-modulus combinations observed in the existing fused contraction loop; no separate activity scan."
+  },
+  "accounting": {
+    "sum_rule": "Use exclusive times only; inclusive parent and child times overlap and are not additive.",
+    "unassigned": "The API root exclusive residual is retained and must not be relabeled as a mathematical stage.",
+    "timer_granularity": "Coarse stages use API, response-family, frequency-degree, or angular-block scopes. Inside the original fused node/place loop, raw timestamp intervals are accumulated in local integers and committed once per block; no maps, profiler scopes, or new work buffers are created per point. The disabled-hook clone executes the same source with stamp/elapsed/addChild compiled as no-ops. Instrumented timing includes timestamp-read cost; angular_phase_timer_reads records its call count, and native-versus-instrumented timing controls bound aggregate overhead.",
+    "threading": "The instrumented API verifies that the OpenMP team has exactly one thread so the shared thread-local profiler remains valid."
+  },
+  "comparability_limit": "ComputeSampledKernels returns sampled volumetric kernels. It constructs measurement adjoint spectra and receiver unit-force fields for the kernel, but it does not return the DSpec forward/receiver spectra, time-series postprocessing, or an objective value. Do not describe these as missing YSpec work or perform extra unrequested solves."
+}

@@ -1,0 +1,88 @@
+Phase E Stage 2 radial first substage — independent run/checker review
+Sol 6.1 high — 2026-11-03
+
+LOCAL TECHNICAL RUN-PLAN AND CHECKER REVIEW: PASS.
+Execution remains blocked by automatic approval review of the Tunya private
+source transfer and remote filesystem/build actions. This technical gate does
+not override that rejection. No remote transfer, build, or numerical job has
+been performed for this substage. No new accuracy or speedup result exists.
+
+Exact seals:
+configs/phase-e-stage2-radial-v1-run-plan.json
+0006e78bb4a9443de4fab28c062e6e509d5e6742a99885aa5313c220b58c2fe2
+tools/check_phase_e_stage2_radial.py
+14419a8622b5d22d05383da012225fadb043f649acc05cff02e051cd029db772
+tools/check_phase_d_fd.py (unchanged existing frozen-L3 checker)
+2c732e7a1adf517782983c880eb07befdea8d4dac75c242ff180cd7d21ce28ea
+
+The 15-job sequential plan contains 13 numerical invocations and two checkers:
+one L200/NQ6 all-35-bin same-workspace radial/strain/field/product audit with
+exact-zero skips disabled; three interleaved generic/batched native timing
+pairs; one profile observation per route; three immutable Stage 1 native YSpec
+context refreshes; and one new-helper L3/NQ8/h=.05/157-side audit against the
+unchanged frozen central-difference traces. L3 uses the generic-NQ new native
+helper, not a fallback, and has its own all-35-bin radial proof inventory.
+
+All D invocations reference the fresh Stage 2 build root in commands and
+declared inputs; YSpec deliberately references the immutable Stage 1 native
+driver and disabled DSO. External build-plan hash matches its approved seal.
+Selected mesh h=.02035382429229197, scale .9, 208 one-sided sides, 135+19 angles,
+35 bins7..41, eight total frequency workers and one inner numerical thread are
+retained. Timed/profile D paths keep 35 forward/32 active adjoints/3 zero skips.
+Their scientific oracles are disabled. Plan-wide environment pins radial
+oracle=0 and native Dref/J; diagnostic commands explicitly enable the oracle.
+L3 remains one worker and preserves its frozen source/measurement/FD workload.
+
+The checker gates route/mesh/worker/gravity/time-shift metadata, complete keyed
+radial packet proof and finite nonnegative 1e-11 value/derivative/role/fluid/
+solid/strain errors, full35 two-section same-workspace field/product proof,
+complete final CSV and kernel-array parity to frozen same-backend anchors,
+same-source timing-pair parity, and actual-new-helper L3 FD<=2e-4. It uses the
+prior full Phase D L3 pipeline as geometry/array anchor, retaining the earlier
+F8 base/plus/minus traces for the independent FD checker. This avoids demanding
+geometry files that the older F8 driver never produced.
+
+Prior NQ10-bounded accuracy is inherited through exact same-mesh equivalence,
+not reasserted from cross-backend diagnostics. The plan's accuracy-anchor SHA
+013273941560685863015e48aeef42daeada129b3174ff47217637f21e605a95
+matches the existing Phase D final JSON, including solid field2.195247471e-4
+and full35 solid kernel1.450918717e-4. No mass field-history recapture is needed.
+
+Native/profile driver elapsed, supervisor elapsed, and worker elapsed remain
+separate. Raw selected-phase profile rows must have finite valid inclusive/
+exclusive times, positive fine scopes, 32 radial calls, 147840 angular GEMMs,
+35 forward calls,32 adjoints,3 skips, worker/root closure and master-wall
+partition closure. The baseline retains its lookup-materialization scope;
+the direct-index route removes that work. One profile per route is an
+observation; it cannot by itself separate timer cost from run variation.
+
+Preceding job receipts must be completed rc0, inputs unchanged, failure-free,
+and verified cleaned up; observed numerical caps are20 threads/16 GiB.
+Eight total workers/inner1, sequential invocation and the aggregate50-thread
+ceiling remain required. The existing user-space session watchdog is not
+kernel aggregate accounting. Terminal checker completion and its own receipt
+must still be inspected after execution; the checker cannot certify itself.
+
+Run tools/config are assigned the fresh validation staging root
+acceleration-inputs/phase-e-stage2-radial-v1-validation-v1; source/build inputs
+remain under acceleration-inputs/phase-e-stage2-radial-v1. This avoids exclusive
+directory/archive collisions. Generated input dependency inspection finds no
+unresolved earlier-job output, and all checker script/plan command paths are
+declared inputs. All external inputs still require live existence/hash checks
+after explicit authorization. Python compilation and JSON/static path checks
+pass; this is not a numerical checker run.
+
+Minimal build payload allowlist: PASS. Manifest
+receipts/phase-e-stage2-radial-v1-build-allowlist-20261103.json
+SHA d9255065ffdfa558e916cf6f944dd8df01d6bb5eff6ff5e33067b6aa7c0d442a.
+Archive SHA bebafd6dd7a98c02526b634e68928398be658310ca2d5950770e008ec30472c4,
+115979 bytes,23 regular members. Independently verified archive hashes/current
+local bytes and exact recursive active local include closure:18 source/header
+members,2 case files,2 build configs, and current source/build review. No
+caches, tests, unused drivers, unrelated reviews, or historical reference prose
+are included. Existing generic broad-glob staging helpers must not recreate a
+larger payload. The separate minimal validation payload remains to be checked
+against the seals above; no source rereview is needed if bytes are unchanged.
+
+Stop after this radial substage's executed results and final report review.
+No angular/solver optimization or production/discrepancy work is released.

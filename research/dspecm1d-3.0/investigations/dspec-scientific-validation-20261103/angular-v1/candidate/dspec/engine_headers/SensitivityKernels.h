@@ -1,0 +1,1882 @@
+#include "profile.hpp"
+#include "../profile.hpp"
+#ifndef DSPECM1D_SENSITIVITY_KERNELS_H
+#define DSPECM1D_SENSITIVITY_KERNELS_H
+
+#include <Eigen/Core>
+#include <Eigen/Sparse>
+#include <Eigen/SparseLU>
+#include <algorithm>
+#include <array>
+#include <atomic>
+#include <bit>
+#include <cmath>
+#include <complex>
+#include <cstdint>
+#include <cstdlib>
+#include <fstream>
+#include <iomanip>
+#include <limits>
+#include <memory>
+#include <mutex>
+#include <sstream>
+#include <unordered_map>
+#include <stdexcept>
+#include <string>
+#include <vector>
+#include "../solvers/solver_backends.hpp"
+#include "../solvers/batch_response_cache.hpp"
+
+#include <DSpecM1D/src/SEM/SEM.h>
+#include <DSpecM1D/src/StartElement.h>
+#include "../profile_equilibrated_sparse_lu.hpp"
+#include <DSpecM1D/src/ParamInfo.h>
+#include <DSpecM1D/src/SpecHelpers.h>
+#include <DSpecM1D/src/frequency_info/FreqFull.h>
+#include <DSpecM1D/src/frequency_info/PostprocessFunctions.h>
+
+namespace SPARSESPEC {
+
+/**
+ * @brief Real time-window measurement map from raw displacement spectra to SI.
+ *
+ * Input spectra are nondimensional displacement on the complete nonnegative
+ * FFT grid. Damping is removed once, before the fixed time window; output is
+ * the dt_SI-scaled real-to-complex transform.
+ */
+class WindowedDisplacementMap {
+public:
+  using Complex = std::complex<double>;
+  using ComplexMatrix = Eigen::MatrixXcd;
+
+  WindowedDisplacementMap(const SpectraSolver::FreqFull &frequency,
+                          double lengthScaleMetres,
+                          const Eigen::VectorXd &timeWindow)
+      : frequency_(frequency), lengthScale_(lengthScaleMetres),
+        window_(timeWindow) {
+    if (!(std::isfinite(lengthScale_) && lengthScale_ > 0.0))
+      throw std::invalid_argument("Displacement length scale must be positive and finite.");
+    if (frequency_.nt() < 2 || !(std::isfinite(frequency_.dt()) && frequency_.dt() > 0.0) ||
+        !(std::isfinite(frequency_.df()) && frequency_.df() > 0.0) ||
+        !(std::isfinite(frequency_.timeNorm()) && frequency_.timeNorm() > 0.0) ||
+        !std::isfinite(frequency_.ep()))
+      throw std::invalid_argument("FreqFull must contain a finite, initialized FFT grid.");
+    if (window_.size() != frequency_.nt() || !window_.allFinite())
+      throw std::invalid_argument("Time window must be finite and match FreqFull::nt().");
+  }
+
+  int frequencyCount() const { return frequency_.nt() / 2 + 1; }
+  double lengthScaleMetres() const { return lengthScale_; }
+  const Eigen::VectorXd &timeWindow() const { return window_; }
+
+  ComplexMatrix forward(const ComplexMatrix &nondimensionalDisplacement) const {
+    requireShape(nondimensionalDisplacement.cols() == frequencyCount(),
+                 "Displacement spectrum has the wrong FFT-bin count.");
+    requireShape(nondimensionalDisplacement.allFinite(),
+                 "Displacement spectrum must be finite.");
+    ComplexMatrix projected=nondimensionalDisplacement;
+    projectRealEndpoints(projected);
+    ComplexMatrix output(nondimensionalDisplacement.rows(), frequencyCount());
+    for (Eigen::Index row = 0; row < nondimensionalDisplacement.rows(); ++row) {
+      Eigen::MatrixXcd one(1, frequencyCount());
+      one.row(0) = projected.row(row);
+      Eigen::MatrixXd time = processfunctions::freq2time(one, frequency_);
+      time.row(0) *= lengthScale_;
+      time.row(0).array() *= window_.transpose().array();
+      output.row(row) = processfunctions::rawtime2freq(
+          time, frequency_.nt(), frequency_.dt() * frequency_.timeNorm());
+    }
+    projectRealEndpoints(output);
+    requireShape(output.allFinite(),
+                 "Windowed displacement map produced non-finite values.");
+    return output;
+  }
+
+  /** Apply P* under Re(x^dagger y), including DC and Nyquist weights. */
+  ComplexMatrix adjoint(const ComplexMatrix &measurementWeights) const {
+    requireShape(measurementWeights.cols() == frequencyCount(),
+                 "Measurement weights have the wrong FFT-bin count.");
+    requireShape(measurementWeights.allFinite(),
+                 "Measurement weights must be finite.");
+    const int nt = frequency_.nt();
+    const double dtSI = frequency_.dt() * frequency_.timeNorm();
+    Eigen::VectorXd damping(nt);
+    for (int i = 0; i < nt; ++i)
+      damping[i] = std::exp(frequency_.ep() * frequency_.dt() * i);
+    Eigen::VectorXd eta = Eigen::VectorXd::Constant(frequencyCount(), 2.0);
+    eta[0] = 1.0;
+    if (nt % 2 == 0)
+      eta[frequencyCount() - 1] = 1.0;
+
+    ComplexMatrix result(measurementWeights.rows(), frequencyCount());
+    for (Eigen::Index row = 0; row < measurementWeights.rows(); ++row) {
+      Eigen::MatrixXcd q(1, frequencyCount());
+      q.row(0) = measurementWeights.row(row).array() / eta.transpose().array();
+      projectRealEndpoints(q);
+      Eigen::MatrixXd time = processfunctions::rawfreq2time(q, nt);
+      time.row(0) *= dtSI;
+      time.row(0).array() *= damping.transpose().array() * window_.transpose().array();
+      Eigen::MatrixXcd spectrum = processfunctions::rawtime2freq(time, nt, 1.0);
+      result.row(row) = lengthScale_ * frequency_.df() *
+                        (spectrum.row(0).array() * eta.transpose().array());
+    }
+    projectRealEndpoints(result);
+    requireShape(result.allFinite(), "Measurement adjoint produced non-finite values.");
+    return result;
+  }
+
+private:
+  void projectRealEndpoints(ComplexMatrix &spectrum) const {
+    if (spectrum.cols() == 0) return;
+    spectrum.col(0) = spectrum.col(0).real().cast<Complex>();
+    if (frequency_.nt() % 2 == 0 && spectrum.cols() > 1)
+      spectrum.col(spectrum.cols() - 1) = spectrum.col(spectrum.cols() - 1).real().cast<Complex>();
+  }
+  static void requireShape(bool condition, const char *message) {
+    if (!condition)
+      throw std::invalid_argument(message);
+  }
+  SpectraSolver::FreqFull frequency_;
+  double lengthScale_;
+  Eigen::VectorXd window_;
+};
+
+enum class SensitivitySolveFamily { Radial, Spheroidal, Toroidal };
+
+/** Bounded, case-owned cache of the exact real SEM stiffness, mass, and
+ * attenuation matrices used by one-frequency modal operators. SEM accessors
+ * return matrices by value, so retaining each result once per family/degree
+ * avoids reconstructing those degree-dependent components for every FFT bin.
+ * Components and CSC maps are immutable after construction; each worker owns
+ * a separate complex numeric-H scratch matrix for each cached key. */
+class ModalOperatorComponentCache {
+public:
+  using Complex = std::complex<double>;
+  using RealSparse = Eigen::SparseMatrix<double>;
+  using ComplexSparse = Eigen::SparseMatrix<Complex>;
+  static constexpr std::size_t SharedLimitBytes = 256u * 1024u * 1024u;
+  static constexpr std::size_t WorkerLimitBytes = 32u * 1024u * 1024u;
+
+  struct Pattern {
+    std::vector<int> outer;
+    std::vector<int> inner;
+    std::vector<int> stiffnessSlots;
+    std::vector<int> massSlots;
+    std::vector<int> attenuationSlots;
+  };
+  struct Entry {
+    RealSparse stiffness;
+    RealSparse mass;
+    RealSparse attenuation;
+    Pattern withoutAttenuation;
+    Pattern withAttenuation;
+    Eigen::Index rows = 0;
+    Eigen::Index cols = 0;
+  };
+
+  ModalOperatorComponentCache(Full1D::SEM &sem, int lmax,
+                              bool includeRadial, bool includeSpheroidal,
+                              bool includeToroidal) : semIdentity_(&sem) {
+    if (lmax < 0 || lmax > sem.maxDegree())
+      throw std::invalid_argument("modal component cache degree range is invalid");
+    const std::size_t expected = (includeRadial ? 1u : 0u) +
+        (includeSpheroidal ? static_cast<std::size_t>(lmax) : 0u) +
+        (includeToroidal ? static_cast<std::size_t>(lmax) : 0u);
+    entries_.reserve(expected);
+    retainedBytes_ = entries_.bucket_count() * sizeof(void *);
+    if (includeRadial) add(sem, SensitivitySolveFamily::Radial, 0);
+    for (int degree = 1; degree <= lmax; ++degree) {
+      if (includeSpheroidal)
+        add(sem, SensitivitySolveFamily::Spheroidal, degree);
+      if (includeToroidal)
+        add(sem, SensitivitySolveFamily::Toroidal, degree);
+    }
+    if (entries_.size() != expected)
+      throw std::logic_error("modal component cache entry inventory differs");
+  }
+
+  ModalOperatorComponentCache(const ModalOperatorComponentCache &) = delete;
+  ModalOperatorComponentCache &operator=(const ModalOperatorComponentCache &) = delete;
+
+  const Entry &entry(SensitivitySolveFamily family, int degree) const {
+    const auto it = entries_.find(key(family, degree));
+    if (it == entries_.end())
+      throw std::out_of_range("modal operator component cache key is absent");
+    return it->second;
+  }
+  std::size_t retainedBytes() const noexcept { return retainedBytes_; }
+  std::size_t entryCount() const noexcept { return entries_.size(); }
+  bool owns(const Full1D::SEM &sem) const noexcept { return semIdentity_==&sem; }
+  static std::size_t workerScratchHighWaterBytes() noexcept {
+    return workerHighWater().load(std::memory_order_relaxed);
+  }
+
+  const ComplexSparse &assemble(SensitivitySolveFamily family, int degree,
+                                Complex z, Complex dispersion) const {
+    const std::uint32_t k = key(family, degree);
+    const Entry &e = entry(family, degree);
+    const bool activeAttenuation = dispersion != Complex{};
+    const Pattern &p = activeAttenuation ? e.withAttenuation : e.withoutAttenuation;
+    auto &scratch = workerScratch();
+    if (scratch.cacheId != cacheId_) {
+      ComplexSparse empty;scratch.matrix.swap(empty);
+      scratch.cacheId = cacheId_;
+      scratch.bytes = 0;
+      scratch.activeKey=std::numeric_limits<std::uint64_t>::max();
+    }
+    const std::uint64_t activeKey=(static_cast<std::uint64_t>(k)<<1)|(activeAttenuation?1u:0u);
+    if (scratch.activeKey != activeKey) {
+      {ComplexSparse empty;scratch.matrix.swap(empty);}
+      scratch.bytes=0;
+      const std::size_t need = sparseBytes(p) + p.inner.size()*sizeof(Complex) +
+          sizeof(ComplexSparse) + 4u * sizeof(void *);
+      if (need > WorkerLimitBytes)
+        throw std::length_error("per-worker modal H scratch exceeds 32 MiB cap");
+      ComplexSparse h(e.rows, e.cols);
+      h.reserve(static_cast<Eigen::Index>(p.inner.size()));
+      for (Eigen::Index col = 0; col < e.cols; ++col)
+        for (int slot = p.outer[static_cast<std::size_t>(col)];
+             slot < p.outer[static_cast<std::size_t>(col + 1)]; ++slot)
+          h.insert(p.inner[static_cast<std::size_t>(slot)], col) = Complex{};
+      h.makeCompressed();
+      if (!samePattern(h, p))
+        throw std::runtime_error("cached modal union pattern differs from numeric H pattern");
+      const std::size_t actualBytes=static_cast<std::size_t>(h.data().allocatedSize())*
+          (sizeof(Complex)+sizeof(int))+static_cast<std::size_t>(h.outerSize()+1)*sizeof(int)+
+          sizeof(ComplexSparse)+4u*sizeof(void *);
+      if(actualBytes>WorkerLimitBytes)
+        throw std::length_error("actual per-worker modal H allocation exceeds 32 MiB cap");
+      scratch.matrix=std::move(h);
+      scratch.activeKey=activeKey;
+      scratch.bytes=actualBytes;
+      auto &high=workerHighWater();std::size_t old=high.load(std::memory_order_relaxed);
+      while(old<actualBytes&&!high.compare_exchange_weak(old,actualBytes,std::memory_order_relaxed)){}
+    }
+    ComplexSparse &h = scratch.matrix;
+    auto *values = h.valuePtr();
+    if(h.nonZeros()>0)std::fill(values, values + h.nonZeros(), Complex{});
+    const Complex zSquared = z * z;
+    for (Eigen::Index i = 0; i < e.stiffness.nonZeros(); ++i)
+      values[p.stiffnessSlots[static_cast<std::size_t>(i)]] = Complex(e.stiffness.valuePtr()[i]);
+    for (Eigen::Index i = 0; i < e.mass.nonZeros(); ++i)
+      values[p.massSlots[static_cast<std::size_t>(i)]] -=
+          zSquared * Complex(e.mass.valuePtr()[i]);
+    if (activeAttenuation)
+      for (Eigen::Index i = 0; i < e.attenuation.nonZeros(); ++i)
+        values[p.attenuationSlots[static_cast<std::size_t>(i)]] +=
+            dispersion * Complex(e.attenuation.valuePtr()[i]);
+    for (Eigen::Index i = 0; i < h.nonZeros(); ++i)
+      if (!std::isfinite(values[i].real()) || !std::isfinite(values[i].imag()))
+        throw std::invalid_argument("cached modal operator contains a non-finite value");
+    return h;
+  }
+
+private:
+  struct WorkerScratch {
+    std::uint64_t cacheId = 0;
+    std::uint64_t activeKey = std::numeric_limits<std::uint64_t>::max();
+    std::size_t bytes = 0;
+    ComplexSparse matrix;
+  };
+  static WorkerScratch &workerScratch() {
+    static thread_local WorkerScratch scratch;
+    return scratch;
+  }
+  static std::atomic<std::size_t> &workerHighWater() {
+    static std::atomic<std::size_t> high{0};return high;
+  }
+  static std::uint32_t key(SensitivitySolveFamily family, int degree) {
+    if (degree < 0 || degree > 0x3fffffff)
+      throw std::invalid_argument("modal operator degree cannot be encoded");
+    return (static_cast<std::uint32_t>(family) << 30) |
+        static_cast<std::uint32_t>(degree);
+  }
+  static std::size_t sparseBytes(const Pattern &p) noexcept {
+    return (p.outer.capacity() + p.inner.capacity()) * sizeof(int);
+  }
+  static std::size_t realSparseBytes(const RealSparse &m) noexcept {
+    return static_cast<std::size_t>(m.data().allocatedSize()) * (sizeof(double) + sizeof(int)) +
+        static_cast<std::size_t>(m.outerSize() + 1) * sizeof(int);
+  }
+  static bool samePattern(const ComplexSparse &m, const Pattern &p) {
+    if (m.nonZeros() != static_cast<Eigen::Index>(p.inner.size()) ||
+        m.outerSize() + 1 != static_cast<Eigen::Index>(p.outer.size())) return false;
+    return std::equal(p.outer.begin(), p.outer.end(), m.outerIndexPtr()) &&
+        std::equal(p.inner.begin(), p.inner.end(), m.innerIndexPtr());
+  }
+  static Pattern buildPattern(const Entry &e, bool includeAttenuation) {
+    Pattern p;
+    p.outer.reserve(static_cast<std::size_t>(e.cols) + 1u);
+    p.inner.reserve(static_cast<std::size_t>(e.stiffness.nonZeros() + e.mass.nonZeros() +
+        (includeAttenuation ? e.attenuation.nonZeros() : 0)));
+    p.stiffnessSlots.resize(static_cast<std::size_t>(e.stiffness.nonZeros()), -1);
+    p.massSlots.resize(static_cast<std::size_t>(e.mass.nonZeros()), -1);
+    if (includeAttenuation)
+      p.attenuationSlots.resize(static_cast<std::size_t>(e.attenuation.nonZeros()), -1);
+    p.outer.push_back(0);
+    std::size_t ki = 0, mi = 0, ai = 0;
+    for (int col = 0; col < e.stiffness.outerSize(); ++col) {
+      RealSparse::InnerIterator k(e.stiffness, col), m(e.mass, col), a(e.attenuation, col);
+      while (k || m || (includeAttenuation && a)) {
+        int row = std::numeric_limits<int>::max();
+        if (k) row = std::min(row, static_cast<int>(k.row()));
+        if (m) row = std::min(row, static_cast<int>(m.row()));
+        if (includeAttenuation && a) row = std::min(row, static_cast<int>(a.row()));
+        const int slot = static_cast<int>(p.inner.size());
+        p.inner.push_back(row);
+        if (k && static_cast<int>(k.row()) == row) { p.stiffnessSlots[ki++] = slot; ++k; }
+        if (m && static_cast<int>(m.row()) == row) { p.massSlots[mi++] = slot; ++m; }
+        if (includeAttenuation && a && static_cast<int>(a.row()) == row) {
+          p.attenuationSlots[ai++] = slot; ++a;
+        }
+      }
+      p.outer.push_back(static_cast<int>(p.inner.size()));
+    }
+    if (ki != p.stiffnessSlots.size() || mi != p.massSlots.size() ||
+        (includeAttenuation && ai != p.attenuationSlots.size()))
+      throw std::logic_error("modal component union map is incomplete");
+    return p;
+  }
+  static std::uint64_t nextCacheId() {
+    static std::atomic<std::uint64_t> next{1};
+    const auto id = next.fetch_add(1, std::memory_order_relaxed);
+    if (id == 0) throw std::overflow_error("modal component cache id overflow");
+    return id;
+  }
+  static Entry buildEntry(Full1D::SEM &sem, SensitivitySolveFamily family,
+                          int degree) {
+    Entry e;
+    switch (family) {
+    case SensitivitySolveFamily::Radial:
+      if (degree != 0) throw std::invalid_argument("radial cache degree must be zero");
+      e.stiffness = sem.hR(); e.mass = sem.pR(); e.attenuation = sem.hRa(); break;
+    case SensitivitySolveFamily::Spheroidal:
+      e.stiffness = sem.hS(degree); e.mass = sem.pS(degree); e.attenuation = sem.hSa(degree); break;
+    case SensitivitySolveFamily::Toroidal:
+      e.stiffness = sem.hTk(degree); e.mass = sem.pTk(degree); e.attenuation = sem.hTa(degree); break;
+    }
+    e.rows = e.stiffness.rows(); e.cols = e.stiffness.cols();
+    if (e.rows <= 0 || e.rows != e.cols || e.mass.rows() != e.rows ||
+        e.mass.cols() != e.cols || e.attenuation.rows() != e.rows ||
+        e.attenuation.cols() != e.cols)
+      throw std::invalid_argument("modal component matrices have inconsistent dimensions");
+    e.stiffness.makeCompressed(); e.mass.makeCompressed(); e.attenuation.makeCompressed();
+    e.withoutAttenuation = buildPattern(e, false);
+    e.withAttenuation = buildPattern(e, true);
+    return e;
+  }
+  std::size_t entryBytes(const Entry &e) const noexcept {
+    const auto patternBytes=[](const Pattern &p) {
+      return (p.outer.capacity()+p.inner.capacity()+p.stiffnessSlots.capacity()+
+          p.massSlots.capacity()+p.attenuationSlots.capacity())*sizeof(int);
+    };
+    return realSparseBytes(e.stiffness)+realSparseBytes(e.mass)+realSparseBytes(e.attenuation)+
+        patternBytes(e.withoutAttenuation)+patternBytes(e.withAttenuation)+
+        sizeof(Entry)+sizeof(std::pair<const std::uint32_t,Entry>)+4u*sizeof(void *);
+  }
+  void add(Full1D::SEM &sem, SensitivitySolveFamily family, int degree) {
+    Entry e=buildEntry(sem,family,degree);
+    const std::size_t need=entryBytes(e);
+    const std::size_t bucketBytes=entries_.bucket_count()*sizeof(void *);
+    if (need > SharedLimitBytes || retainedBytes_ > SharedLimitBytes-need ||
+        bucketBytes > SharedLimitBytes-retainedBytes_-need)
+      throw std::length_error("shared modal component cache exceeds 256 MiB cap");
+    entries_.emplace(key(family,degree),std::move(e));
+    retainedBytes_ += need;
+  }
+
+  std::unordered_map<std::uint32_t, Entry> entries_;
+  std::size_t retainedBytes_ = 0;
+  const std::uint64_t cacheId_ = nextCacheId();
+  const Full1D::SEM *semIdentity_;
+};
+
+namespace sensitivity_detail {
+inline void requireConstructedSEM(const Full1D::SEM &sem) {
+  if (sem.mesh().NE() == 0 || sem.mesh().NN() < 2)
+    throw std::invalid_argument("SEM must be constructed before sensitivity operations.");
+}
+inline void requireMatchingTimeScale(const Full1D::SEM &sem,
+                                     const SpectraSolver::FreqFull &frequency) {
+  const double timeScale=sem.timeScaleSeconds();
+  if(!(std::isfinite(timeScale)&&timeScale>0.0))
+    throw std::invalid_argument("SEM time scale must be positive and finite.");
+  const double relativeError=std::abs(frequency.timeNorm()-timeScale)/std::abs(timeScale);
+  if(!(std::isfinite(relativeError)&&relativeError<1e-12))
+    throw std::invalid_argument("FreqFull and SEM must use the same model time scale.");
+}
+} // namespace sensitivity_detail
+
+/** Full-mesh fields for a compact multi-column source and its Hermitian adjoint. */
+struct FrequencyAdjointFields {
+  Eigen::MatrixXcd forward;
+  Eigen::MatrixXcd adjoint;
+  Eigen::MatrixXcd output;
+  double objective = 0.0;
+};
+
+/**
+ * @brief Fixed-mesh elastic solve for a scalar weighted displacement objective.
+ *
+ * The receiver map has shape (output rows, SEM dofs), and weights has shape
+ * (output rows, compact source columns). The same sparse factorization is used
+ * for all compact RHS columns and its Hermitian transpose. Full SEM matrices
+ * are used; no turning-point truncation or frequency-to-frequency reuse occurs.
+ */
+class Windowed3DFieldEngine;
+
+class FixedMeshAdjointSolver {
+public:
+  using Complex = std::complex<double>;
+  using SparseComplex = Eigen::SparseMatrix<Complex>;
+  using Solver = EquilibratedSparseLU<Complex>;
+
+  class ScopedModalOperatorContext {
+  public:
+    ScopedModalOperatorContext(std::shared_ptr<const ModalOperatorComponentCache> cache,
+                               int frequencyBin)
+        : previousCache_(activeModalCache()), previousBin_(activeModalBin()) {
+      activeModalCache()=std::move(cache);
+      activeModalBin()=frequencyBin;
+    }
+    ~ScopedModalOperatorContext(){activeModalCache()=std::move(previousCache_);activeModalBin()=previousBin_;}
+    ScopedModalOperatorContext(const ScopedModalOperatorContext&)=delete;
+    ScopedModalOperatorContext& operator=(const ScopedModalOperatorContext&)=delete;
+  private:
+    std::shared_ptr<const ModalOperatorComponentCache> previousCache_;
+    int previousBin_;
+  };
+
+  struct RestrictionRequest { bool enabled=false; int sourceElement=-1; int receiverElement=-1; };
+  static RestrictionRequest &restrictionRequest() {
+    static thread_local RestrictionRequest request;
+    return request;
+  }
+  class ScopedRestrictionRequest {
+  public:
+    ScopedRestrictionRequest(bool enabled,int sourceElement,int receiverElement)
+        : previous_(restrictionRequest()) {
+      restrictionRequest()={enabled,sourceElement,receiverElement};
+    }
+    ~ScopedRestrictionRequest(){restrictionRequest()=previous_;}
+    ScopedRestrictionRequest(const ScopedRestrictionRequest&)=delete;
+    ScopedRestrictionRequest& operator=(const ScopedRestrictionRequest&)=delete;
+  private: RestrictionRequest previous_;
+  };
+
+  static int diagnosticBackend() noexcept { return selectedBackend(); }
+
+  static std::string modalAssemblyRoute() {
+    const char *value=std::getenv("DSPEC_MODAL_OPERATOR_ROUTE");
+    if(!value||std::string(value)=="legacy")return "legacy";
+    if(std::string(value)=="cached-union")return "cached-union";
+    throw std::invalid_argument("DSPEC_MODAL_OPERATOR_ROUTE must be legacy or cached-union");
+  }
+  static bool modalOperatorOracleEnabled() noexcept {
+    const char *value=std::getenv("DSPEC_MODAL_OPERATOR_ORACLE");
+    return value&&value[0]=='1'&&value[1]=='\0';
+  }
+  static std::shared_ptr<const ModalOperatorComponentCache> &activeModalCache() {
+    static thread_local std::shared_ptr<const ModalOperatorComponentCache> cache;
+    return cache;
+  }
+  static int &activeModalBin() { static thread_local int bin=-1; return bin; }
+
+  static void setDiagnosticBackend(int backend) {
+    if(backend<0||backend>3)throw std::invalid_argument("Unknown diagnostic solver backend.");
+    selectedBackend()=backend;
+  }
+
+  static FrequencyAdjointFields solveFrequency(
+      const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+      Complex z, const Eigen::MatrixXcd &compactRhs,
+      const Eigen::MatrixXcd &receiverMap,
+      const Eigen::MatrixXcd &measurementWeights) {
+    sensitivity_detail::requireConstructedSEM(sem);
+    if (compactRhs.rows() == 0 || compactRhs.cols() == 0 ||
+        !compactRhs.allFinite())
+      throw std::invalid_argument("Compact source RHS must be nonempty and finite.");
+    if (receiverMap.rows() == 0 || receiverMap.cols() != compactRhs.rows() ||
+        !receiverMap.allFinite())
+      throw std::invalid_argument("Receiver map dimensions or values are invalid.");
+    if (measurementWeights.rows() != receiverMap.rows() ||
+        measurementWeights.cols() != compactRhs.cols() ||
+        !measurementWeights.allFinite())
+      throw std::invalid_argument("Measurement weight dimensions or values are invalid.");
+
+    SparseComplex h;{auditprofile::Scope t("system_matrix");h=systemMatrix(sem,family,degree,z);}
+    if (h.rows() != compactRhs.rows() || h.cols() != compactRhs.rows())
+      throw std::invalid_argument("Source columns do not match the selected SEM operator.");
+    Eigen::MatrixXcd displacementReceiver =
+        outputFactor(0, z, Complex(0.0, 1.0)) * receiverMap;
+
+    Solver forwardSolver;
+    forwardSolver.compute(h);
+    if (forwardSolver.info() != Eigen::Success)
+      throw std::runtime_error("Forward SEM factorization failed.");
+    FrequencyAdjointFields result;
+    result.forward = forwardSolver.solve(compactRhs);
+    if (forwardSolver.info() != Eigen::Success || !result.forward.allFinite())
+      throw std::runtime_error("Forward SEM solve failed or returned non-finite fields.");
+    result.output = displacementReceiver * result.forward;
+    if (!result.output.allFinite())
+      throw std::runtime_error("Displacement receiver map returned non-finite values.");
+
+    const Eigen::MatrixXcd receiverRhs = displacementReceiver.adjoint() * measurementWeights;
+    result.adjoint = forwardSolver.solveAdjoint(receiverRhs);
+    if (forwardSolver.info() != Eigen::Success || !result.adjoint.allFinite())
+      throw std::runtime_error("Hermitian-adjoint SEM solve failed or returned non-finite fields.");
+    result.objective = (measurementWeights.conjugate().cwiseProduct(result.output)).sum().real();
+    if (!std::isfinite(result.objective))
+      throw std::runtime_error("Displacement objective is non-finite.");
+    return result;
+  }
+
+  static Eigen::MatrixXcd solveForwardFrequency(
+      const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+      Complex z, const Eigen::MatrixXcd &compactRhs) {
+    if (!compactRhs.allFinite() || compactRhs.rows() == 0 || compactRhs.cols() == 0)
+      throw std::invalid_argument("Compact source RHS must be nonempty and finite.");
+    SparseComplex h;{auditprofile::Scope t("system_matrix");h=systemMatrix(sem,family,degree,z);}
+    if (h.rows() != compactRhs.rows())
+      throw std::invalid_argument("Source columns do not match the selected SEM operator.");
+    Solver solver;
+    {auditprofile::Scope t("factorization");solver.compute(h);}
+    Eigen::MatrixXcd fields;{auditprofile::Scope t("forward_substitution");fields=solver.solve(compactRhs);}
+    if (solver.info() != Eigen::Success || !fields.allFinite())
+      throw std::runtime_error("Forward SEM solve failed or returned non-finite fields.");
+    return fields;
+  }
+
+  /** Solve explicit Hermitian-adjoint right-hand sides for one degree. */
+  static Eigen::MatrixXcd solveAdjointFrequency(
+      const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+      Complex z, const Eigen::MatrixXcd &rightHandSides) {
+    if (rightHandSides.rows() == 0 || rightHandSides.cols() == 0 ||
+        !rightHandSides.allFinite())
+      throw std::invalid_argument("Adjoint right-hand sides must be nonempty and finite.");
+    SparseComplex h;{auditprofile::Scope t("system_matrix");h=systemMatrix(sem,family,degree,z);}
+    if (h.rows() != rightHandSides.rows())
+      throw std::invalid_argument("Adjoint right-hand sides do not match the selected SEM operator.");
+    Solver solver;
+    {auditprofile::Scope t("factorization");solver.compute(h);}
+    if (solver.info() != Eigen::Success)
+      throw std::runtime_error("Adjoint SEM factorization failed.");
+    Eigen::MatrixXcd fields;{auditprofile::Scope t("adjoint_substitution");fields=solver.solveAdjoint(rightHandSides);}
+    if (solver.info() != Eigen::Success || !fields.allFinite())
+      throw std::runtime_error("Hermitian-adjoint SEM solve failed or returned non-finite fields.");
+    return fields;
+  }
+
+  /** Share one equilibrated sparse factor across forward, weighted-adjoint,
+   * and optional unit-basis adjoint right-hand sides for this exact operator. */
+  static void solveForwardAdjointFrequency(
+      const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+      Complex z, const Eigen::MatrixXcd &forwardRhs,
+      const Eigen::MatrixXcd &adjointRhs, const Eigen::MatrixXcd &basisRhs,
+      Eigen::MatrixXcd &forward, Eigen::MatrixXcd &adjoint,
+      Eigen::MatrixXcd &basisAdjoint,Complex dispersion=Complex{}) {
+    mathprofile::Scope solve("shared_forward_and_adjoint_solver");
+    mathprofile::count("solver_degree",static_cast<std::uint64_t>(degree));
+    mathprofile::count("solver_forward_rhs_columns",static_cast<std::uint64_t>(forwardRhs.cols()));
+    mathprofile::count("solver_weighted_adjoint_rhs_columns",static_cast<std::uint64_t>(adjointRhs.cols()));
+    mathprofile::count("solver_unit_basis_rhs_columns",static_cast<std::uint64_t>(basisRhs.cols()));
+    const auto run=[&](auto &solver,auto factorize){
+      solveForwardAdjointFrequencyWithBackend(sem,family,degree,z,forwardRhs,
+          adjointRhs,basisRhs,solver,factorize,forward,adjoint,basisAdjoint,dispersion);
+    };
+    switch(selectedBackend()){
+    case 0:{
+      if(symbolicReuseEnabled()){
+        auto &solver=symbolicSolverFor(family);
+        run(solver,[](Solver &s,const SparseComplex &h){s.factorize(h);});
+      }else{
+        Solver solver;run(solver,[](Solver &s,const SparseComplex &h){s.compute(h);});
+      }
+      break;
+    }
+    case 1:{dssolver::EquilibratedGeneralBandLU solver;run(solver,[](auto &s,const SparseComplex &h){s.compute(h);});break;}
+    case 2:{dssolver::EquilibratedNaturalSparseLU solver;run(solver,[](auto &s,const SparseComplex &h){s.compute(h);});break;}
+    case 3:{
+      dssolver::ExactStaticCondensation<> solver;
+      const auto elements=family==SensitivitySolveFamily::Radial?dssolver::radialElements(sem):
+          family==SensitivitySolveFamily::Spheroidal?dssolver::spheroidalElements(sem):
+          dssolver::toroidalElements(sem);
+      run(solver,[&](auto &s,const SparseComplex &h){s.compute(h,elements);});break;
+    }
+    default:throw std::logic_error("Invalid solver backend selection.");
+    }
+  }
+
+  /** Opt-in exact-pattern reuse for the accepted COLAMD SparseLU backend.
+   * Each worker retains at most its latest factor per solve family; numerical
+   * factors and equilibration are refreshed on every call. */
+  static bool symbolicReuseEnabled() noexcept {
+    const char *value=std::getenv("DSPEC_SYMBOLIC_REUSE");
+    return value&&value[0]=='1'&&value[1]=='\0';
+  }
+
+  static Solver &symbolicSolverFor(SensitivitySolveFamily family) {
+    std::size_t index=0;
+    if(family==SensitivitySolveFamily::Radial)index=0;
+    else if(family==SensitivitySolveFamily::Spheroidal)index=1;
+    else if(family==SensitivitySolveFamily::Toroidal)index=2;
+    else throw std::invalid_argument("unknown family for symbolic SparseLU reuse");
+    static thread_local std::array<std::unique_ptr<Solver>,3> solvers;
+    if(!solvers[index])solvers[index]=std::make_unique<Solver>();
+    return *solvers[index];
+  }
+
+  /** Generic injection point for audit solver backends. `factorize` may call
+   * compute(H) or compute(H, partition); solve and solveAdjoint must preserve
+   * the full sparse operator's forward and Hermitian-adjoint semantics. */
+  template<class SolverBackend,class Factorize>
+  static void solveForwardAdjointFrequencyWithBackend(
+      const Full1D::SEM &sem,SensitivitySolveFamily family,int degree,Complex z,
+      const Eigen::MatrixXcd &forwardRhs,const Eigen::MatrixXcd &adjointRhs,
+      const Eigen::MatrixXcd &basisRhs,SolverBackend &solver,Factorize factorize,
+      Eigen::MatrixXcd &forward,Eigen::MatrixXcd &adjoint,
+      Eigen::MatrixXcd &basisAdjoint,Complex dispersion=Complex{}) {
+    const bool hasWeightedAdjoint=adjointRhs.size()!=0 && adjointRhs.squaredNorm()!=0.0;
+    if (adjointRhs.size()!=0 && !hasWeightedAdjoint)
+      mathprofile::count("zero_weighted_adjoint_rhs_skips");
+    if (forwardRhs.rows() == 0 || forwardRhs.cols() == 0 ||
+        (hasWeightedAdjoint&&(adjointRhs.rows() == 0 || adjointRhs.cols() == 0)) ||
+        !forwardRhs.allFinite() || !adjointRhs.allFinite() ||
+        (basisRhs.size() != 0 && (basisRhs.rows() != (hasWeightedAdjoint?adjointRhs.rows():forwardRhs.rows()) ||
+                                  basisRhs.cols() == 0 || !basisRhs.allFinite())))
+      throw std::invalid_argument("Shared forward/adjoint right-hand sides are invalid.");
+    SparseComplex legacyH;
+    const SparseComplex *operatorPointer=nullptr;
+    const std::string modalRoute=modalAssemblyRoute();
+    if(modalRoute=="cached-union"){
+      const auto cache=activeModalCache();
+      if(!cache)throw std::logic_error("cached-union modal route lacks its case-owned component cache");
+      {mathprofile::Scope t("dynamic_H_assembly");operatorPointer=&cache->assemble(family,degree,z,dispersion);}
+      mathprofile::count("modal_operator_cached_union_calls");
+    }else{
+      if(modalRoute!="legacy")throw std::invalid_argument("unknown DSPEC_MODAL_OPERATOR_ROUTE");
+      {mathprofile::Scope t("dynamic_H_assembly");legacyH=systemMatrix(sem,family,degree,z,dispersion);}
+      operatorPointer=&legacyH;
+      mathprofile::count("modal_operator_legacy_calls");
+    }
+    const SparseComplex &h=*operatorPointer;
+    const bool oracle=modalOperatorOracleEnabled();
+    if(oracle&&(modalRoute!="cached-union"||activeModalBin()<0))
+      throw std::invalid_argument("modal operator oracle requires cached-union route and an explicit frequency bin");
+    if (h.rows() != forwardRhs.rows() || (hasWeightedAdjoint&&h.rows() != adjointRhs.rows()) ||
+        (basisRhs.size()!=0&&h.rows()!=basisRhs.rows()))
+      throw std::invalid_argument("Shared right-hand sides do not match the selected SEM operator.");
+    if(restrictionRequest().enabled){
+      if(modalRoute=="cached-union")
+        throw std::invalid_argument("cached-union modal route does not support restricted-domain solves");
+      if(diagnosticBackend()!=0)
+        throw std::runtime_error("Phase B restricted controls require accepted full sparse backend 0.");
+      const Eigen::Index fullRows=h.rows();
+      const Eigen::Index low=restrictedStartIndex(
+          sem,family,degree,z,forwardRhs,adjointRhs,basisRhs);
+      const std::string audit=auditPrefix(family,degree,z);
+      const auto auditCount=[&](const char *suffix,std::uint64_t value){
+        const std::string key=audit+suffix;mathprofile::count(key.c_str(),value);
+      };
+      auditCount("_full_dofs",static_cast<std::uint64_t>(fullRows));
+      auditCount("_cut_dof",static_cast<std::uint64_t>(low));
+      auditCount("_retained_dofs",static_cast<std::uint64_t>(fullRows-low));
+      if(low>0){
+        std::uint64_t crossingNnz=0;long double crossingNorm2=0.0;
+        for(Eigen::Index col=0;col<h.outerSize();++col)
+          for(SparseComplex::InnerIterator it(h,static_cast<int>(col));it;++it)
+            if((it.row()<low)!=(it.col()<low)){++crossingNnz;crossingNorm2+=std::norm(it.value());}
+        const auto full=h;
+        SparseComplex restricted=principalRestriction(full,low);
+        const auto restrictRhs=[&](const Eigen::MatrixXcd &rhs){
+          return rhs.size()?Eigen::MatrixXcd(rhs.middleRows(low,fullRows-low)):
+                            Eigen::MatrixXcd(0,0);
+        };
+        const Eigen::MatrixXcd fwdRhs=restrictRhs(forwardRhs);
+        const Eigen::MatrixXcd adjRhs=restrictRhs(adjointRhs);
+        const Eigen::MatrixXcd basRhs=restrictRhs(basisRhs);
+        mathprofile::count("phase_b_restriction_full_dofs",static_cast<std::uint64_t>(fullRows));
+        mathprofile::count("phase_b_restriction_retained_dofs",static_cast<std::uint64_t>(restricted.rows()));
+        mathprofile::count("phase_b_restriction_omitted_dofs",static_cast<std::uint64_t>(low));
+        mathprofile::count("phase_b_restriction_lower_dof_index",static_cast<std::uint64_t>(low));
+        mathprofile::count("phase_b_restriction_principal_boundary_zero_extension",1);
+        mathprofile::count("phase_b_restriction_crossing_operator_nnz",crossingNnz);
+        mathprofile::count("phase_b_restriction_crossing_operator_norm_scaled_1e12",
+            static_cast<std::uint64_t>(std::min<long double>(1e15,std::sqrt(crossingNorm2)*1e12L)));
+        auditCount("_crossing_nnz",crossingNnz);
+        auditCount("_crossing_norm_scaled_1e12",
+            static_cast<std::uint64_t>(std::min<long double>(1e15,std::sqrt(crossingNorm2)*1e12L)));
+        {mathprofile::Scope t("solver_factorization_dispatch");factorize(solver,restricted);}
+        Eigen::MatrixXcd fwdLocal;
+        {mathprofile::Scope t("forward_substitution");fwdLocal=solver.solve(fwdRhs);}
+        if(!fwdLocal.allFinite())throw std::runtime_error("Restricted forward SEM solve failed.");
+        Eigen::MatrixXcd adjLocal=Eigen::MatrixXcd::Zero(restricted.rows(),0);
+        if(hasWeightedAdjoint){
+          {mathprofile::Scope t("full_weighted_HH_solve");adjLocal=solver.solveAdjoint(adjRhs);}
+          if(!adjLocal.allFinite())throw std::runtime_error("Restricted Hermitian-adjoint SEM solve failed.");
+        }else if(adjointRhs.size())adjLocal=Eigen::MatrixXcd::Zero(restricted.rows(),adjRhs.cols());
+        Eigen::MatrixXcd basisLocal=Eigen::MatrixXcd::Zero(restricted.rows(),0);
+        if(basRhs.size()){
+          {mathprofile::Scope t("minimal_unit_basis_HH_solve");basisLocal=solver.solveAdjoint(basRhs);}
+          if(!basisLocal.allFinite())throw std::runtime_error("Restricted unit-basis Hermitian-adjoint solve failed.");
+        }
+        forward=Eigen::MatrixXcd::Zero(fullRows,fwdLocal.cols());forward.bottomRows(fwdLocal.rows())=fwdLocal;
+        adjoint=Eigen::MatrixXcd::Zero(fullRows,adjLocal.cols());if(adjLocal.size())adjoint.bottomRows(adjLocal.rows())=adjLocal;
+        basisAdjoint=Eigen::MatrixXcd::Zero(fullRows,basisLocal.cols());if(basisLocal.size())basisAdjoint.bottomRows(basisLocal.rows())=basisLocal;
+        const double fwdResidual=(restricted*fwdLocal-fwdRhs).norm()/std::max(fwdRhs.norm(),1e-300);
+        const Eigen::MatrixXcd &auditAdjoint=hasWeightedAdjoint?adjLocal:basisLocal;
+        const Eigen::MatrixXcd &auditAdjointRhs=hasWeightedAdjoint?adjRhs:basRhs;
+        const double adjResidual=auditAdjoint.size()?
+            (restricted.adjoint()*auditAdjoint-auditAdjointRhs).norm()/std::max(auditAdjointRhs.norm(),1e-300):0.0;
+        const Eigen::MatrixXcd lhs=auditAdjoint.size()?auditAdjoint.adjoint()*(restricted*fwdLocal):Eigen::MatrixXcd(0,0);
+        const Eigen::MatrixXcd rhs=auditAdjoint.size()?(restricted.adjoint()*auditAdjoint).adjoint()*fwdLocal:Eigen::MatrixXcd(0,0);
+        const double dualError=(lhs-rhs).norm()/std::max({lhs.norm(),rhs.norm(),1e-300});
+        if(!std::isfinite(fwdResidual)||!std::isfinite(adjResidual)||!std::isfinite(dualError))
+          throw std::runtime_error("Restricted solve residual or Hermitian identity is non-finite.");
+        mathprofile::count("phase_b_restriction_forward_residual_scaled_1e15",
+            static_cast<std::uint64_t>(std::min(1e15,fwdResidual*1e15)));
+        mathprofile::count("phase_b_restriction_adjoint_residual_scaled_1e15",
+            static_cast<std::uint64_t>(std::min(1e15,adjResidual*1e15)));
+        mathprofile::count("phase_b_restriction_HH_identity_error_scaled_1e15",
+            static_cast<std::uint64_t>(std::min(1e15,dualError*1e15)));
+        auditCount("_forward_residual_scaled_1e15",
+            static_cast<std::uint64_t>(std::min(1e15,fwdResidual*1e15)));
+        auditCount("_adjoint_residual_scaled_1e15",
+            static_cast<std::uint64_t>(std::min(1e15,adjResidual*1e15)));
+        auditCount("_complex_HH_identity_error_scaled_1e15",
+            static_cast<std::uint64_t>(std::min(1e15,dualError*1e15)));
+        return;
+      }
+    }
+    {mathprofile::Scope t("solver_factorization_dispatch");factorize(solver,h);}
+    {mathprofile::Scope t("forward_substitution");forward = solver.solve(forwardRhs);}
+    if (!forward.allFinite())
+      throw std::runtime_error("Shared forward SEM solve failed.");
+    if(hasWeightedAdjoint){
+      {mathprofile::Scope t("full_weighted_HH_solve");adjoint = solver.solveAdjoint(adjointRhs);}
+      if (!adjoint.allFinite())
+        throw std::runtime_error("Shared Hermitian-adjoint SEM solve failed.");
+    }else if (adjointRhs.size()!=0) adjoint=Eigen::MatrixXcd::Zero(h.rows(),adjointRhs.cols());
+    else adjoint.resize(h.rows(),0);
+    if (basisRhs.size() != 0) {
+      {mathprofile::Scope t("minimal_unit_basis_HH_solve");basisAdjoint = solver.solveAdjoint(basisRhs);}
+      if (!basisAdjoint.allFinite())
+        throw std::runtime_error("Shared unit-basis adjoint solve failed.");
+    } else {
+      basisAdjoint.resize(h.rows(), 0);
+    }
+    if(oracle){
+      if(modalRoute!="cached-union"||selectedBackend()!=0||restrictionRequest().enabled)
+        throw std::invalid_argument("modal operator oracle requires cached-union, accepted COLAMD, and full domain");
+      SparseComplex referenceH=systemMatrix(sem,family,degree,z,dispersion);
+      if(referenceH.rows()!=h.rows()||referenceH.cols()!=h.cols()||
+         referenceH.nonZeros()!=h.nonZeros()||
+         !std::equal(referenceH.outerIndexPtr(),referenceH.outerIndexPtr()+referenceH.outerSize()+1,h.outerIndexPtr())||
+         !std::equal(referenceH.innerIndexPtr(),referenceH.innerIndexPtr()+referenceH.nonZeros(),h.innerIndexPtr()))
+        throw std::runtime_error("cached and legacy modal operator CSC patterns differ");
+      SparseComplex difference=h-referenceH;
+      const double hNorm=referenceH.norm(),hError=difference.norm();
+      double maxAbs=0.0;
+      for(Eigen::Index i=0;i<difference.nonZeros();++i)maxAbs=std::max(maxAbs,std::abs(difference.valuePtr()[i]));
+      const double hRelative=hNorm>0.0?hError/hNorm:std::numeric_limits<double>::quiet_NaN();
+      Solver referenceSolver;referenceSolver.compute(referenceH);
+      if(referenceSolver.info()!=Eigen::Success)throw std::runtime_error("legacy modal oracle factorization failed");
+      const Eigen::MatrixXcd referenceForward=referenceSolver.solve(forwardRhs);
+      if(!referenceForward.allFinite())throw std::runtime_error("legacy modal oracle forward solve is non-finite");
+      const double forwardReferenceNorm=referenceForward.norm();
+      const double forwardAbs=(forward-referenceForward).norm();
+      const bool forwardZero=forwardReferenceNorm==0.0;
+      if(forwardZero&&(forwardAbs!=0.0||forward.norm()!=0.0))
+        throw std::runtime_error("zero physical forward solution was not preserved exactly");
+      const double forwardRelative=forwardZero?0.0:forwardAbs/forwardReferenceNorm;
+      Eigen::MatrixXcd referenceAdjoint=Eigen::MatrixXcd::Zero(h.rows(),adjointRhs.cols());
+      if(hasWeightedAdjoint)referenceAdjoint=referenceSolver.solveAdjoint(adjointRhs);
+      if(!referenceAdjoint.allFinite())throw std::runtime_error("legacy modal oracle adjoint solve is non-finite");
+      const double adjointReferenceNorm=referenceAdjoint.norm();
+      const double adjointAbs=(adjoint-referenceAdjoint).norm();
+      const bool adjointZero=adjointReferenceNorm==0.0;
+      if(adjointZero&&(adjointAbs!=0.0||adjoint.norm()!=0.0))
+        throw std::runtime_error("zero physical adjoint solution was not preserved exactly");
+      const double adjointRelative=adjointZero?0.0:adjointAbs/adjointReferenceNorm;
+      Eigen::MatrixXcd referenceBasisAdjoint=Eigen::MatrixXcd::Zero(h.rows(),basisRhs.cols());
+      if(basisRhs.size())referenceBasisAdjoint=referenceSolver.solveAdjoint(basisRhs);
+      if(!referenceBasisAdjoint.allFinite())throw std::runtime_error("legacy modal oracle basis-adjoint solve is non-finite");
+      const double basisReferenceNorm=referenceBasisAdjoint.norm(),basisAbs=(basisAdjoint-referenceBasisAdjoint).norm();
+      const bool basisZero=basisReferenceNorm==0.0;
+      if(basisZero&&(basisAbs!=0.0||basisAdjoint.norm()!=0.0))
+        throw std::runtime_error("zero receiver-basis adjoint solution was not preserved exactly");
+      const double basisRelative=basisZero?0.0:basisAbs/basisReferenceNorm;
+      Eigen::MatrixXcd probe(h.rows(),1);
+      for(Eigen::Index row=0;row<h.rows();++row)
+        probe(row,0)=Complex(1.0+0.01*static_cast<double>((row+degree+activeModalBin())%17),
+                             0.125+0.005*static_cast<double>((row+2*degree+activeModalBin())%13));
+      const auto probeForward=solver.solve(probe);
+      const auto referenceProbeForward=referenceSolver.solve(probe);
+      const auto probeAdjoint=solver.solveAdjoint(probe);
+      const auto referenceProbeAdjoint=referenceSolver.solveAdjoint(probe);
+      if(!probeForward.allFinite()||!referenceProbeForward.allFinite()||
+         !probeAdjoint.allFinite()||!referenceProbeAdjoint.allFinite())
+        throw std::runtime_error("independent modal probe solve is non-finite");
+      const double probeForwardNorm=referenceProbeForward.norm(),probeAdjointNorm=referenceProbeAdjoint.norm();
+      const double probeForwardAbs=(probeForward-referenceProbeForward).norm();
+      const double probeAdjointAbs=(probeAdjoint-referenceProbeAdjoint).norm();
+      const double probeForwardRelative=probeForwardAbs/probeForwardNorm;
+      const double probeAdjointRelative=probeAdjointAbs/probeAdjointNorm;
+      struct Residual { double first=0.0,second=0.0,hxNorm=0.0,rhsNorm=0.0,denominator=0.0; };
+      const auto residual=[&](const SparseComplex &matrix,const Eigen::MatrixXcd &x,const Eigen::MatrixXcd &rhs){
+        const double raw=(matrix*x-rhs).norm();
+        const double hxNorm=matrix.norm()*x.norm(),rhsNorm=rhs.norm(),denominator=hxNorm+rhsNorm;
+        return Residual{raw,denominator>0.0?raw/denominator:(raw==0.0?0.0:std::numeric_limits<double>::infinity()),hxNorm,rhsNorm,denominator};
+      };
+      const SparseComplex hAdjoint=h.adjoint(),referenceHAdjoint=referenceH.adjoint();
+      const auto fr=residual(h,probeForward,probe),afr=residual(hAdjoint,probeAdjoint,probe);
+      const auto rfr=residual(referenceH,referenceProbeForward,probe),rar=residual(referenceHAdjoint,referenceProbeAdjoint,probe);
+      const auto physicalForwardResidual=residual(h,forward,forwardRhs);
+      const auto referencePhysicalForwardResidual=residual(referenceH,referenceForward,forwardRhs);
+      const auto physicalAdjointResidual=hasWeightedAdjoint?
+          residual(hAdjoint,adjoint,adjointRhs):Residual{};
+      const auto referencePhysicalAdjointResidual=hasWeightedAdjoint?
+          residual(referenceHAdjoint,referenceAdjoint,adjointRhs):Residual{};
+      const auto basisAdjointResidual=basisRhs.size()?residual(hAdjoint,basisAdjoint,basisRhs):Residual{};
+      const auto referenceBasisAdjointResidual=basisRhs.size()?residual(referenceHAdjoint,referenceBasisAdjoint,basisRhs):Residual{};
+      struct DualDiagnostic { double error=0.0,scalarDenominator=0.0,scalarRelative=0.0,normwiseDenominator=0.0,normwiseRelative=0.0; };
+      const auto dual=[](const SparseComplex &matrix,const Eigen::MatrixXcd &x,const Eigen::MatrixXcd &y){
+        const double error=std::abs((y.adjoint()*(matrix*x))(0,0)-((matrix.adjoint()*y).adjoint()*x)(0,0));
+        const double lhs=std::abs((y.adjoint()*(matrix*x))(0,0)),rhs=std::abs(((matrix.adjoint()*y).adjoint()*x)(0,0));
+        const double scalarDenom=std::max(lhs,rhs),normwiseDenom=matrix.norm()*x.norm()*y.norm();
+        return DualDiagnostic{error,scalarDenom,scalarDenom>0.0?error/scalarDenom:(error==0.0?0.0:std::numeric_limits<double>::infinity()),
+            normwiseDenom,normwiseDenom>0.0?error/normwiseDenom:(error==0.0?0.0:std::numeric_limits<double>::infinity())};
+      };
+      const auto di=dual(h,probeForward,probeAdjoint),rdi=dual(referenceH,referenceProbeForward,referenceProbeAdjoint);
+      const double rawValues[]={hNorm,hError,maxAbs,forwardReferenceNorm,forwardAbs,adjointReferenceNorm,adjointAbs,basisReferenceNorm,basisAbs,probeForwardNorm,probeAdjointNorm,probeForwardAbs,probeAdjointAbs,physicalForwardResidual.first,referencePhysicalForwardResidual.first,physicalAdjointResidual.first,referencePhysicalAdjointResidual.first,basisAdjointResidual.first,referenceBasisAdjointResidual.first,fr.first,afr.first,rfr.first,rar.first,di.error,rdi.error,di.scalarDenominator,rdi.scalarDenominator,di.scalarRelative,rdi.scalarRelative,di.normwiseDenominator,rdi.normwiseDenominator,di.normwiseRelative,rdi.normwiseRelative,h.norm(),probeForward.norm(),probeAdjoint.norm(),physicalForwardResidual.hxNorm,physicalForwardResidual.rhsNorm,physicalForwardResidual.denominator,referencePhysicalForwardResidual.hxNorm,referencePhysicalForwardResidual.rhsNorm,referencePhysicalForwardResidual.denominator,physicalAdjointResidual.hxNorm,physicalAdjointResidual.rhsNorm,physicalAdjointResidual.denominator,referencePhysicalAdjointResidual.hxNorm,referencePhysicalAdjointResidual.rhsNorm,referencePhysicalAdjointResidual.denominator,basisAdjointResidual.hxNorm,basisAdjointResidual.rhsNorm,basisAdjointResidual.denominator,referenceBasisAdjointResidual.hxNorm,referenceBasisAdjointResidual.rhsNorm,referenceBasisAdjointResidual.denominator,fr.hxNorm,fr.rhsNorm,fr.denominator,rfr.hxNorm,rfr.rhsNorm,rfr.denominator,afr.hxNorm,afr.rhsNorm,afr.denominator,rar.hxNorm,rar.rhsNorm,rar.denominator};
+      for(double value:rawValues)if(!std::isfinite(value)||value<0.0)
+        throw std::runtime_error("modal oracle raw norm or absolute error is non-finite or negative");
+      if(!(hNorm>0.0&&probeForwardNorm>0.0&&probeAdjointNorm>0.0))
+        throw std::runtime_error("modal operator or independent probe reference norm is not positive");
+      const double metrics[]={hRelative,forwardRelative,adjointRelative,basisRelative,probeForwardRelative,probeAdjointRelative,fr.second,afr.second,rfr.second,rar.second,di.normwiseRelative,rdi.normwiseRelative,physicalForwardResidual.second,referencePhysicalForwardResidual.second,physicalAdjointResidual.second,referencePhysicalAdjointResidual.second,basisAdjointResidual.second,referenceBasisAdjointResidual.second};
+      const char *metricNames[]={"operator_relative","physical_forward_relative","physical_adjoint_relative","basis_adjoint_relative","probe_forward_relative","probe_adjoint_relative","probe_forward_backward_error","probe_adjoint_backward_error","reference_probe_forward_backward_error","reference_probe_adjoint_backward_error","new_dual_normwise_relative","reference_dual_normwise_relative","physical_forward_backward_error","reference_physical_forward_backward_error","physical_adjoint_backward_error","reference_physical_adjoint_backward_error","basis_adjoint_backward_error","reference_basis_adjoint_backward_error"};
+      const double metricNumerators[]={hError,forwardAbs,adjointAbs,basisAbs,probeForwardAbs,probeAdjointAbs,fr.first,afr.first,rfr.first,rar.first,di.error,rdi.error,physicalForwardResidual.first,referencePhysicalForwardResidual.first,physicalAdjointResidual.first,referencePhysicalAdjointResidual.first,basisAdjointResidual.first,referenceBasisAdjointResidual.first};
+      const double metricDenominators[]={hNorm,forwardReferenceNorm,adjointReferenceNorm,basisReferenceNorm,probeForwardNorm,probeAdjointNorm,fr.denominator,afr.denominator,rfr.denominator,rar.denominator,di.normwiseDenominator,rdi.normwiseDenominator,physicalForwardResidual.denominator,referencePhysicalForwardResidual.denominator,physicalAdjointResidual.denominator,referencePhysicalAdjointResidual.denominator,basisAdjointResidual.denominator,referenceBasisAdjointResidual.denominator};
+      for(std::size_t i=0;i<sizeof(metrics)/sizeof(metrics[0]);++i)if(!std::isfinite(metrics[i])||metrics[i]<0.0||metrics[i]>1e-11){
+        std::ostringstream message;message<<std::setprecision(17)<<"modal operator oracle exceeded unchanged 1e-11 normwise gate: bin="<<activeModalBin()<<", family="<<static_cast<int>(family)<<", degree="<<degree<<", metric="<<metricNames[i]<<", value="<<metrics[i]<<", raw_error="<<metricNumerators[i]<<", denominator="<<metricDenominators[i]<<", operator_ref_norm="<<hNorm<<", physical_forward_ref_norm="<<forwardReferenceNorm<<", physical_adjoint_ref_norm="<<adjointReferenceNorm<<", probe_forward_ref_norm="<<probeForwardNorm<<", probe_adjoint_ref_norm="<<probeAdjointNorm<<", operator_relative="<<hRelative<<", physical_forward_relative="<<forwardRelative<<", physical_adjoint_relative="<<adjointRelative<<", basis_adjoint_relative="<<basisRelative<<", probe_forward_relative="<<probeForwardRelative<<", probe_adjoint_relative="<<probeAdjointRelative<<", new_dual_scalar_relative="<<di.scalarRelative<<", new_dual_scalar_error="<<di.error<<", new_dual_scalar_denominator="<<di.scalarDenominator<<", new_dual_normwise_relative="<<di.normwiseRelative<<", new_dual_normwise_denominator="<<di.normwiseDenominator<<", reference_dual_scalar_relative="<<rdi.scalarRelative<<", reference_dual_scalar_error="<<rdi.error<<", reference_dual_scalar_denominator="<<rdi.scalarDenominator<<", reference_dual_normwise_relative="<<rdi.normwiseRelative<<", reference_dual_normwise_denominator="<<rdi.normwiseDenominator<<", new_h_frobenius_norm="<<h.norm()<<", new_probe_forward_norm="<<probeForward.norm()<<", new_probe_adjoint_norm="<<probeAdjoint.norm();
+        throw std::runtime_error(message.str());
+      }
+      if(!std::isfinite(maxAbs)||maxAbs<0.0)throw std::runtime_error("modal operator maximum absolute error is invalid");
+      static std::mutex outputMutex;static bool outputInitialized=false;
+      const char *path=std::getenv("DSFAST_MODAL_OPERATOR_ORACLE_PATH");
+      if(!path||!*path)throw std::runtime_error("modal operator oracle output path is required");
+      std::lock_guard<std::mutex> lock(outputMutex);
+      std::ofstream output(path,outputInitialized?std::ios::app:std::ios::trunc);
+      if(!output)throw std::runtime_error("cannot open modal operator oracle output");
+      if(!outputInitialized){output<<"bin,family,degree,rows,nnz,operator_ref_norm,operator_abs_l2,operator_rel_l2,operator_max_abs,forward_ref_norm,forward_abs_l2,forward_rel_l2,forward_zero,adjoint_ref_norm,adjoint_abs_l2,adjoint_rel_l2,adjoint_zero,basis_adjoint_ref_norm,basis_adjoint_abs_l2,basis_adjoint_rel_l2,basis_adjoint_zero,probe_forward_ref_norm,probe_forward_abs_l2,probe_forward_rel_l2,probe_adjoint_ref_norm,probe_adjoint_abs_l2,probe_adjoint_rel_l2,physical_new_forward_raw_residual,physical_new_forward_backward_error,physical_ref_forward_raw_residual,physical_ref_forward_backward_error,physical_new_adjoint_raw_residual,physical_new_adjoint_backward_error,physical_ref_adjoint_raw_residual,physical_ref_adjoint_backward_error,basis_new_adjoint_raw_residual,basis_new_adjoint_backward_error,basis_ref_adjoint_raw_residual,basis_ref_adjoint_backward_error,probe_new_forward_raw_residual,probe_new_forward_backward_error,probe_ref_forward_raw_residual,probe_ref_forward_backward_error,probe_new_adjoint_raw_residual,probe_new_adjoint_backward_error,probe_ref_adjoint_raw_residual,probe_ref_adjoint_backward_error,physical_new_forward_h_times_x_norm,physical_new_forward_rhs_norm,physical_new_forward_backward_denominator,physical_ref_forward_h_times_x_norm,physical_ref_forward_rhs_norm,physical_ref_forward_backward_denominator,physical_new_adjoint_h_times_x_norm,physical_new_adjoint_rhs_norm,physical_new_adjoint_backward_denominator,physical_ref_adjoint_h_times_x_norm,physical_ref_adjoint_rhs_norm,physical_ref_adjoint_backward_denominator,basis_new_adjoint_h_times_x_norm,basis_new_adjoint_rhs_norm,basis_new_adjoint_backward_denominator,basis_ref_adjoint_h_times_x_norm,basis_ref_adjoint_rhs_norm,basis_ref_adjoint_backward_denominator,probe_new_forward_h_times_x_norm,probe_new_forward_rhs_norm,probe_new_forward_backward_denominator,probe_ref_forward_h_times_x_norm,probe_ref_forward_rhs_norm,probe_ref_forward_backward_denominator,probe_new_adjoint_h_times_x_norm,probe_new_adjoint_rhs_norm,probe_new_adjoint_backward_denominator,probe_ref_adjoint_h_times_x_norm,probe_ref_adjoint_rhs_norm,probe_ref_adjoint_backward_denominator,new_dual_abs_error,new_dual_scalar_relative_diagnostic,ref_dual_abs_error,ref_dual_scalar_relative_diagnostic,new_dual_scalar_denominator,ref_dual_scalar_denominator,new_h_frobenius_norm,new_probe_forward_norm,new_probe_adjoint_norm,new_dual_normwise_denominator,ref_dual_normwise_denominator,new_dual_normwise_relative,ref_dual_normwise_relative\n";outputInitialized=true;}
+      output<<std::setprecision(17)<<activeModalBin()<<','<<static_cast<int>(family)<<','<<degree<<','<<h.rows()<<','<<h.nonZeros()<<','<<hNorm<<','<<hError<<','<<hRelative<<','<<maxAbs<<','<<forwardReferenceNorm<<','<<forwardAbs<<','<<forwardRelative<<','<<(forwardZero?1:0)<<','<<adjointReferenceNorm<<','<<adjointAbs<<','<<adjointRelative<<','<<(adjointZero?1:0)<<','<<basisReferenceNorm<<','<<basisAbs<<','<<basisRelative<<','<<(basisZero?1:0)<<','<<probeForwardNorm<<','<<probeForwardAbs<<','<<probeForwardRelative<<','<<probeAdjointNorm<<','<<probeAdjointAbs<<','<<probeAdjointRelative<<','<<physicalForwardResidual.first<<','<<physicalForwardResidual.second<<','<<referencePhysicalForwardResidual.first<<','<<referencePhysicalForwardResidual.second<<','<<physicalAdjointResidual.first<<','<<physicalAdjointResidual.second<<','<<referencePhysicalAdjointResidual.first<<','<<referencePhysicalAdjointResidual.second<<','<<basisAdjointResidual.first<<','<<basisAdjointResidual.second<<','<<referenceBasisAdjointResidual.first<<','<<referenceBasisAdjointResidual.second<<','<<fr.first<<','<<fr.second<<','<<rfr.first<<','<<rfr.second<<','<<afr.first<<','<<afr.second<<','<<rar.first<<','<<rar.second<<','<<physicalForwardResidual.hxNorm<<','<<physicalForwardResidual.rhsNorm<<','<<physicalForwardResidual.denominator<<','<<referencePhysicalForwardResidual.hxNorm<<','<<referencePhysicalForwardResidual.rhsNorm<<','<<referencePhysicalForwardResidual.denominator<<','<<physicalAdjointResidual.hxNorm<<','<<physicalAdjointResidual.rhsNorm<<','<<physicalAdjointResidual.denominator<<','<<referencePhysicalAdjointResidual.hxNorm<<','<<referencePhysicalAdjointResidual.rhsNorm<<','<<referencePhysicalAdjointResidual.denominator<<','<<basisAdjointResidual.hxNorm<<','<<basisAdjointResidual.rhsNorm<<','<<basisAdjointResidual.denominator<<','<<referenceBasisAdjointResidual.hxNorm<<','<<referenceBasisAdjointResidual.rhsNorm<<','<<referenceBasisAdjointResidual.denominator<<','<<fr.hxNorm<<','<<fr.rhsNorm<<','<<fr.denominator<<','<<rfr.hxNorm<<','<<rfr.rhsNorm<<','<<rfr.denominator<<','<<afr.hxNorm<<','<<afr.rhsNorm<<','<<afr.denominator<<','<<rar.hxNorm<<','<<rar.rhsNorm<<','<<rar.denominator<<','<<di.error<<','<<di.scalarRelative<<','<<rdi.error<<','<<rdi.scalarRelative<<','<<di.scalarDenominator<<','<<rdi.scalarDenominator<<','<<h.norm()<<','<<probeForward.norm()<<','<<probeAdjoint.norm()<<','<<di.normwiseDenominator<<','<<rdi.normwiseDenominator<<','<<di.normwiseRelative<<','<<rdi.normwiseRelative<<'\n';
+      if(!output)throw std::runtime_error("failed writing modal operator oracle row");
+    }
+  }
+
+  static SparseComplex actualSystemMatrix(const Full1D::SEM &sem,
+      SensitivitySolveFamily family,int degree,Complex z,Complex dispersion=Complex{}) {
+    return systemMatrix(sem,family,degree,z,dispersion);
+  }
+
+private:
+  friend class Windowed3DFieldEngine;
+
+  static int &selectedBackend(){static thread_local int backend=0;return backend;}
+
+  static std::string auditPrefix(SensitivitySolveFamily family,int degree,Complex z) {
+    const char *familyName=family==SensitivitySolveFamily::Radial?"radial":
+        family==SensitivitySolveFamily::Spheroidal?"spheroidal":"toroidal";
+    const auto real=std::bit_cast<std::uint64_t>(z.real());
+    const auto imag=std::bit_cast<std::uint64_t>(z.imag());
+    static constexpr char digits[]="0123456789abcdef";
+    const auto hex=[](std::uint64_t value){
+      std::string out(16,'0');
+      for(int i=15;i>=0;--i){out[static_cast<std::size_t>(i)]=digits[value&0xfu];value>>=4;}
+      return out;
+    };
+    return std::string("phase_b_solve_")+familyName+"_l"+std::to_string(degree)+
+        "_zr"+hex(real)+"_zi"+hex(imag);
+  }
+
+  static Eigen::Index restrictedStartIndex(const Full1D::SEM &sem,
+      SensitivitySolveFamily family,int degree,Complex z,
+      const Eigen::MatrixXcd &forwardRhs,const Eigen::MatrixXcd &adjointRhs,
+      const Eigen::MatrixXcd &basisRhs) {
+    const auto request=restrictionRequest();
+    if(request.sourceElement<0||request.receiverElement<0)
+      throw std::invalid_argument("Phase B restricted solve lacks source/receiver element indices.");
+    int startElement=0;
+    if(family==SensitivitySolveFamily::Toroidal){
+      const int source=SpectralTools::startElementTor(const_cast<Full1D::SEM&>(sem),degree,z.real(),request.sourceElement);
+      const int receiver=SpectralTools::startElementTor(const_cast<Full1D::SEM&>(sem),degree,z.real(),request.receiverElement);
+      startElement=std::min(source,receiver);
+    }else if(family==SensitivitySolveFamily::Spheroidal){
+      const int source=SpectralTools::startElementSph(const_cast<Full1D::SEM&>(sem),degree,z.real(),request.sourceElement);
+      const int receiver=SpectralTools::startElementSph(const_cast<Full1D::SEM&>(sem),degree,z.real(),request.receiverElement);
+      startElement=std::min(source,receiver);
+    }
+    Eigen::Index low=family==SensitivitySolveFamily::Toroidal?
+        sem.ltgT(startElement,0):family==SensitivitySolveFamily::Spheroidal?
+        sem.ltgS(0,startElement,0):0;
+    const auto contained=[&](const Eigen::MatrixXcd &rhs){
+      if(!rhs.size())return true;
+      for(Eigen::Index row=0;row<rhs.rows();++row)
+        if(row<low&&rhs.row(row).squaredNorm()!=0.0)return false;
+      return true;
+    };
+    // A source or receiver RHS touching the omitted region forces a full-domain solve.
+    if(!contained(forwardRhs)||!contained(adjointRhs)||!contained(basisRhs))low=0;
+    const std::string audit=auditPrefix(family,degree,z);
+    const std::string cutElementKey=audit+"_actual_cut_element";
+    const std::string cutCallsKey=audit+"_actual_cut_element_calls";
+    mathprofile::count(cutElementKey.c_str(),static_cast<std::uint64_t>(low>0?startElement:0));
+    mathprofile::count(cutCallsKey.c_str());
+    mathprofile::count("phase_b_restriction_source_receiver_support_contained",low>0?1:0);
+    mathprofile::count("phase_b_restriction_source_element",static_cast<std::uint64_t>(request.sourceElement));
+    mathprofile::count("phase_b_restriction_receiver_element",static_cast<std::uint64_t>(request.receiverElement));
+    mathprofile::count("phase_b_restriction_cut_element",static_cast<std::uint64_t>(startElement));
+    return low;
+  }
+
+  static SparseComplex principalRestriction(const SparseComplex &full,Eigen::Index low) {
+    if(low<0||low>=full.rows()||full.rows()!=full.cols())
+      throw std::invalid_argument("Invalid Phase B principal restriction interval.");
+    std::vector<Eigen::Triplet<Complex>> entries;
+    for(Eigen::Index col=low;col<full.outerSize();++col)
+      for(SparseComplex::InnerIterator it(full,static_cast<int>(col));it;++it)
+        if(it.row()>=low)entries.emplace_back(it.row()-low,it.col()-low,it.value());
+    SparseComplex restricted(full.rows()-low,full.cols()-low);
+    restricted.setFromTriplets(entries.begin(),entries.end());restricted.makeCompressed();
+    return restricted;
+  }
+
+  /** Keep the original weighted RHS width while reusing its factorization for a basis. */
+  static void solveAdjointFrequencyWithSupplementalBasis(
+      const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+      Complex z, const Eigen::MatrixXcd &rightHandSides,
+      const Eigen::MatrixXcd &basisRightHandSides,
+      Eigen::MatrixXcd &fields, Eigen::MatrixXcd &basisFields) {
+    if (rightHandSides.rows() == 0 || rightHandSides.cols() == 0 ||
+        !rightHandSides.allFinite() || basisRightHandSides.rows() == 0 ||
+        basisRightHandSides.cols() == 0 || !basisRightHandSides.allFinite())
+      throw std::invalid_argument("Adjoint right-hand sides must be nonempty and finite.");
+    SparseComplex h;{auditprofile::Scope t("system_matrix");h=systemMatrix(sem,family,degree,z);}
+    if (h.rows() != rightHandSides.rows() || h.rows() != basisRightHandSides.rows())
+      throw std::invalid_argument("Adjoint right-hand sides do not match the selected SEM operator.");
+    Solver solver;
+    {auditprofile::Scope t("factorization");solver.compute(h);}
+    if (solver.info() != Eigen::Success)
+      throw std::runtime_error("Adjoint SEM factorization failed.");
+    {auditprofile::Scope t("adjoint_global_substitution");fields=solver.solveAdjoint(rightHandSides);}
+    if (solver.info() != Eigen::Success || !fields.allFinite())
+      throw std::runtime_error("Hermitian-adjoint SEM solve failed or returned non-finite fields.");
+    {auditprofile::Scope t("adjoint_basis_substitution");basisFields=solver.solveAdjoint(basisRightHandSides);}
+    if (solver.info() != Eigen::Success || !basisFields.allFinite())
+      throw std::runtime_error("Hermitian-adjoint basis solve failed or returned non-finite fields.");
+  }
+
+  static SparseComplex systemMatrix(const Full1D::SEM &sem,
+                                    SensitivitySolveFamily family, int degree,
+                                    Complex z,Complex dispersion=Complex{}) {
+    sensitivity_detail::requireConstructedSEM(sem);
+    if (!std::isfinite(z.real()) || !std::isfinite(z.imag()) || z == Complex{})
+      throw std::invalid_argument("Complex frequency must be finite and nonzero.");
+    if (degree < 0 || degree > sem.maxDegree() ||
+        (family != SensitivitySolveFamily::Radial && degree < 1))
+      throw std::invalid_argument("Mode degree is invalid for the requested family or SEM.");
+    Eigen::SparseMatrix<double> hReal, pReal;
+    switch (family) {
+    case SensitivitySolveFamily::Radial:
+      if (degree != 0)
+        throw std::invalid_argument("Radial modes require degree zero.");
+      hReal = sem.hR(); pReal = sem.pR(); break;
+    case SensitivitySolveFamily::Spheroidal:
+      hReal = sem.hS(degree); pReal = sem.pS(degree); break;
+    case SensitivitySolveFamily::Toroidal:
+      hReal = sem.hTk(degree); pReal = sem.pTk(degree); break;
+    }
+    if (hReal.rows() != hReal.cols() || pReal.rows() != hReal.rows() ||
+        pReal.cols() != hReal.cols())
+      throw std::invalid_argument("Selected SEM stiffness and mass matrices are inconsistent.");
+    SparseComplex h = hReal.cast<Complex>() - z * z * pReal.cast<Complex>();
+    if(dispersion!=Complex{}){
+      Eigen::SparseMatrix<double> attenuation;
+      switch(family){
+      case SensitivitySolveFamily::Radial:attenuation=sem.hRa();break;
+      case SensitivitySolveFamily::Spheroidal:attenuation=sem.hSa(degree);break;
+      case SensitivitySolveFamily::Toroidal:attenuation=sem.hTa(degree);break;
+      }
+      h+=dispersion*attenuation.cast<Complex>();
+    }
+    h.makeCompressed();
+    for (int col = 0; col < h.outerSize(); ++col)
+      for (SparseComplex::InnerIterator it(h, col); it; ++it)
+        if (!std::isfinite(it.value().real()) || !std::isfinite(it.value().imag()))
+          throw std::invalid_argument("Selected SEM operator contains non-finite values.");
+    return h;
+  }
+
+};
+
+/** Five absolute-SI elastic modulus integrands on the fixed SEM GLL mesh. */
+struct ModulusKernelSamples {
+  Eigen::MatrixXd A, C, F, L, N;
+  Eigen::MatrixXd radiusMetres;
+  Eigen::MatrixXd drWeightsMetres;
+  Eigen::ArrayXX<bool> solid;
+  std::vector<int> layer;
+  std::string units = "objective per Pa per metre; multiply by drWeightsMetres and delta modulus in Pa";
+};
+
+/** Density and fluid bulk integrands on one-sided, element-local GLL samples. */
+struct MaterialKernelSamples {
+  Eigen::MatrixXd bulkModulusPa;
+  Eigen::MatrixXd densityKgPerM3;
+  Eigen::MatrixXd radiusMetres;
+  Eigen::MatrixXd drWeightsMetres;
+  Eigen::ArrayXX<bool> fluid;
+  std::vector<int> layer;
+  std::string bulkUnits = "objective per Pa per metre; fluid kappa perturbs A=C=F equally";
+  std::string densityUnits = "objective per (kg/m^3) per metre; fixed moduli and geometry";
+  std::string densityRepresentation =
+      "independent one-sided element-local GLL samples; polynomial per element";
+};
+
+/** Integrated source-contact contribution, in objective per pascal. */
+struct ModulusSourcePointTerms { double A = 0.0, C = 0.0, F = 0.0, L = 0.0, N = 0.0; };
+
+namespace sensitivity_detail {
+inline Eigen::MatrixXd derivativeMatrix(const Full1D::SEM &sem) {
+  const auto &mesh = sem.mesh();
+  // RadialMesh currently exposes its read-only quadrature through a
+  // non-const accessor. This cast is limited to that const-preserving read.
+  const auto gll = const_cast<EarthMesh::RadialMesh &>(mesh).GLL();
+  auto basis = Interpolation::LagrangeBasis(gll.Points());
+  Eigen::MatrixXd derivative(mesh.NN(), mesh.NN());
+  for (int i = 0; i < mesh.NN(); ++i)
+    for (int j = 0; j < mesh.NN(); ++j)
+      derivative(i, j) = basis.template Evaluate<1>(j, gll.X(i));
+  return derivative;
+}
+
+inline std::complex<double> inner(const Eigen::MatrixXcd &test,
+                                  const Eigen::MatrixXcd &field) {
+  return (test.conjugate().cwiseProduct(field)).sum();
+}
+
+inline void validateFields(const Full1D::SEM &sem,
+                           const FrequencyAdjointFields &fields,
+                           int expectedDofs) {
+  if (fields.forward.rows() != expectedDofs ||
+      fields.adjoint.rows() != expectedDofs ||
+      fields.forward.cols() == 0 ||
+      fields.forward.cols() != fields.adjoint.cols() ||
+      !fields.forward.allFinite() || !fields.adjoint.allFinite())
+    throw std::invalid_argument("Forward/adjoint fields do not match the selected SEM family.");
+  if (!(std::isfinite(sem.lengthScaleMetres()) && sem.lengthScaleMetres() > 0.0 &&
+        std::isfinite(sem.pressureScalePascals()) && sem.pressureScalePascals() > 0.0))
+    throw std::invalid_argument("SEM SI length and pressure scales must be positive and finite.");
+}
+} // namespace sensitivity_detail
+
+/**
+ * Return one-sided element-local modulus integrands and dr quadrature weights.
+ * Fluid samples are explicitly marked unsupported and carry structural zeros.
+ */
+inline ModulusKernelSamples modulusKernelSamples(
+    const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+    const FrequencyAdjointFields &fields,
+    const Eigen::MatrixXcd *elementLocalLift = nullptr,
+    int liftElement = -1) {
+  sensitivity_detail::requireConstructedSEM(sem);
+  const auto &mesh = sem.mesh();
+  const int ne = mesh.NE(), nq = mesh.NN();
+  if (degree < 0 || degree > sem.maxDegree() ||
+      (family == SensitivitySolveFamily::Radial && degree != 0) ||
+      (family != SensitivitySolveFamily::Radial && degree < 1))
+    throw std::invalid_argument("Degree does not match the requested sensitivity family or SEM.");
+  int dofs = 0;
+  if (family == SensitivitySolveFamily::Radial)
+    dofs = static_cast<int>(sem.pR().rows());
+  else if (family == SensitivitySolveFamily::Spheroidal)
+    dofs = static_cast<int>(sem.pS(degree).rows());
+  else
+    dofs = static_cast<int>(sem.pTk(degree).rows());
+  sensitivity_detail::validateFields(sem, fields, dofs);
+
+  ModulusKernelSamples result;
+  result.A = Eigen::MatrixXd::Zero(ne, nq);
+  result.C = Eigen::MatrixXd::Zero(ne, nq);
+  result.F = Eigen::MatrixXd::Zero(ne, nq);
+  result.L = Eigen::MatrixXd::Zero(ne, nq);
+  result.N = Eigen::MatrixXd::Zero(ne, nq);
+  result.radiusMetres.resize(ne, nq);
+  result.drWeightsMetres.resize(ne, nq);
+  result.solid.resize(ne, nq);
+  result.layer.resize(ne);
+  const double lengthScale = sem.lengthScaleMetres();
+  const double modulusScale = sem.pressureScalePascals();
+  const double integrandScale = 1.0 / (lengthScale * modulusScale);
+  const Eigen::MatrixXd D = sensitivity_detail::derivativeMatrix(sem);
+  const double lambda = static_cast<double>(degree) * (degree + 1.0);
+
+  for (int e = 0; e < ne; ++e) {
+    result.layer[e] = mesh.LayerNumber(e);
+    const double jacobian = 0.5 * mesh.EW(e);
+    const bool isSolid = !sem.elementIsFluid(e);
+    for (int i = 0; i < nq; ++i) {
+      result.radiusMetres(e, i) = mesh.NodeRadius(e, i) * lengthScale;
+      result.drWeightsMetres(e, i) = jacobian *
+          const_cast<EarthMesh::RadialMesh &>(mesh).GLL().W(i) * lengthScale;
+      result.solid(e, i) = isSolid;
+    }
+    if (!isSolid || (family == SensitivitySolveFamily::Toroidal &&
+                     (e < sem.el() || e >= sem.eu())))
+      continue;
+    Eigen::MatrixXcd u(nq, fields.forward.cols()), ua(nq, fields.adjoint.cols());
+    Eigen::MatrixXcd v = Eigen::MatrixXcd::Zero(nq, fields.forward.cols());
+    Eigen::MatrixXcd va = Eigen::MatrixXcd::Zero(nq, fields.adjoint.cols());
+    for (int i = 0; i < nq; ++i) {
+      if (family == SensitivitySolveFamily::Radial) {
+        auto index = sem.ltgR(0, e, i);
+        u.row(i) = fields.forward.row(index);
+        ua.row(i) = fields.adjoint.row(index);
+        if (elementLocalLift && e == liftElement)
+          u.row(i) += elementLocalLift->row(index);
+      } else if (family == SensitivitySolveFamily::Spheroidal) {
+        auto ui = sem.ltgS(0, e, i), vi = sem.ltgS(1, e, i);
+        u.row(i) = fields.forward.row(ui);
+        ua.row(i) = fields.adjoint.row(ui);
+        v.row(i) = fields.forward.row(vi);
+        va.row(i) = fields.adjoint.row(vi);
+        if (elementLocalLift && e == liftElement) {
+          u.row(i) += elementLocalLift->row(ui);
+          v.row(i) += elementLocalLift->row(vi);
+        }
+      } else {
+        auto wi = sem.ltgT(e, i);
+        u.row(i) = fields.forward.row(wi);
+        ua.row(i) = fields.adjoint.row(wi);
+        if (elementLocalLift && e == liftElement)
+          u.row(i) += elementLocalLift->row(wi);
+      }
+    }
+    const Eigen::MatrixXcd du = (2.0 / mesh.EW(e)) * D.cast<std::complex<double>>() * u;
+    const Eigen::MatrixXcd dua = (2.0 / mesh.EW(e)) * D.cast<std::complex<double>>() * ua;
+    const Eigen::MatrixXcd dv = (2.0 / mesh.EW(e)) * D.cast<std::complex<double>>() * v;
+    const Eigen::MatrixXcd dva = (2.0 / mesh.EW(e)) * D.cast<std::complex<double>>() * va;
+    const Eigen::MatrixXcd T = 2.0 * u - lambda * v;
+    const Eigen::MatrixXcd Ta = 2.0 * ua - lambda * va;
+    const Eigen::MatrixXcd S = [&] {
+      Eigen::MatrixXcd value(nq, fields.forward.cols());
+      for (int i = 0; i < nq; ++i)
+        value.row(i) = mesh.NodeRadius(e, i) * dv.row(i) + u.row(i) - v.row(i);
+      return value;
+    }();
+    const Eigen::MatrixXcd Sa = [&] {
+      Eigen::MatrixXcd value(nq, fields.adjoint.cols());
+      for (int i = 0; i < nq; ++i)
+        value.row(i) = mesh.NodeRadius(e, i) * dva.row(i) + ua.row(i) - va.row(i);
+      return value;
+    }();
+    for (int i = 0; i < nq; ++i) {
+      const double r = mesh.NodeRadius(e, i);
+
+      if (family == SensitivitySolveFamily::Toroidal) {
+        Eigen::MatrixXcd strain = r * du.row(i).eval() - u.row(i).eval();
+        Eigen::MatrixXcd strainA = r * dua.row(i).eval() - ua.row(i).eval();
+        result.L(e, i) = -integrandScale * lambda *
+                         sensitivity_detail::inner(strainA, strain).real();
+        result.N(e, i) = -integrandScale * lambda * (lambda - 2.0) *
+                         sensitivity_detail::inner(ua.row(i), u.row(i)).real();
+      } else {
+        Eigen::MatrixXcd dUi = du.row(i), dUai = dua.row(i);
+        Eigen::MatrixXcd Ti = T.row(i), Tai = Ta.row(i);
+        Eigen::MatrixXcd Si = S.row(i), Sai = Sa.row(i);
+        const auto cTerm = r * r * sensitivity_detail::inner(dUai, dUi);
+        const auto fTerm = r * (sensitivity_detail::inner(Tai, dUi) +
+                                sensitivity_detail::inner(dUai, Ti));
+        const auto aTerm = sensitivity_detail::inner(Tai, Ti);
+        const auto nTerm = -2.0 * (
+            2.0 * sensitivity_detail::inner(ua.row(i), u.row(i)) -
+            lambda * (sensitivity_detail::inner(ua.row(i), v.row(i)) +
+                      sensitivity_detail::inner(va.row(i), u.row(i))) +
+            lambda * sensitivity_detail::inner(va.row(i), v.row(i)));
+        const auto lTerm = lambda * sensitivity_detail::inner(Sai, Si);
+        result.C(e, i) = -integrandScale * cTerm.real();
+        result.F(e, i) = -integrandScale * fTerm.real();
+        result.A(e, i) = -integrandScale * aTerm.real();
+        result.N(e, i) = -integrandScale * nTerm.real();
+        result.L(e, i) = -integrandScale * lTerm.real();
+      }
+    }
+  }
+  if (!result.A.allFinite() || !result.C.allFinite() || !result.F.allFinite() ||
+      !result.L.allFinite() || !result.N.allFinite())
+    throw std::runtime_error("Modulus kernel integrands contain non-finite values.");
+  return result;
+}
+
+/** Return fluid bulk and complete fixed-modulus density kernels. */
+inline MaterialKernelSamples materialKernelSamples(
+    const Full1D::SEM &sem, SensitivitySolveFamily family, int degree,
+    std::complex<double> z, const FrequencyAdjointFields &fields,
+    const Eigen::MatrixXcd *elementLocalLift = nullptr,
+    int liftElement = -1) {
+  sensitivity_detail::requireConstructedSEM(sem);
+  const auto &mesh = sem.mesh();
+  const int ne = mesh.NE(), nq = mesh.NN();
+  if (degree < 0 || degree > sem.maxDegree() ||
+      (family == SensitivitySolveFamily::Radial && degree != 0) ||
+      (family != SensitivitySolveFamily::Radial && degree < 1) ||
+      !std::isfinite(z.real()) || !std::isfinite(z.imag()) || z == std::complex<double>{})
+    throw std::invalid_argument("Degree or frequency does not match material sensitivity family.");
+  const int dofs = family == SensitivitySolveFamily::Radial ? sem.pR().rows() :
+      family == SensitivitySolveFamily::Spheroidal ? sem.pS(degree).rows() : sem.pTk(degree).rows();
+  sensitivity_detail::validateFields(sem, fields, dofs);
+  const double length = sem.lengthScaleMetres(), pressure = sem.pressureScalePascals();
+  const double time = sem.timeScaleSeconds();
+  const double densityScale = pressure * time * time / (length * length);
+  if (!(std::isfinite(densityScale) && densityScale > 0.0))
+    throw std::invalid_argument("SEM SI density scale must be positive and finite.");
+  const auto gll = const_cast<EarthMesh::RadialMesh &>(mesh).GLL();
+  const auto basis = Interpolation::LagrangeBasis(gll.Points());
+  const Eigen::MatrixXd D = sensitivity_detail::derivativeMatrix(sem);
+  const double lambda = static_cast<double>(degree) * (degree + 1.0);
+  const double grav = sem.gravityCoefficient();
+  MaterialKernelSamples out;
+  out.bulkModulusPa = Eigen::MatrixXd::Zero(ne, nq);
+  out.densityKgPerM3 = Eigen::MatrixXd::Zero(ne, nq);
+  out.radiusMetres.resize(ne, nq); out.drWeightsMetres.resize(ne, nq);
+  out.fluid.resize(ne, nq); out.layer.resize(ne);
+  Eigen::MatrixXd gravityLoads = Eigen::MatrixXd::Zero(ne, nq);
+  Eigen::MatrixXd densityGradient = Eigen::MatrixXd::Zero(ne, nq);
+  const double modelDensityPerSI = 1.0 / (length * densityScale);
+  for (int e = 0; e < ne; ++e) {
+    out.layer[e] = mesh.LayerNumber(e);
+    const double jac = 0.5 * mesh.EW(e);
+    const bool isFluid = sem.elementIsFluid(e);
+    for (int i = 0; i < nq; ++i) {
+      out.radiusMetres(e, i) = mesh.NodeRadius(e, i) * length;
+      out.drWeightsMetres(e, i) = jac * gll.W(i) * length;
+      out.fluid(e, i) = isFluid;
+    }
+    if (family == SensitivitySolveFamily::Toroidal && (e < sem.el() || e >= sem.eu())) continue;
+    Eigen::MatrixXcd u(nq, fields.forward.cols()), ua(nq, fields.adjoint.cols());
+    Eigen::MatrixXcd v = Eigen::MatrixXcd::Zero(nq, fields.forward.cols());
+    Eigen::MatrixXcd va = Eigen::MatrixXcd::Zero(nq, fields.adjoint.cols());
+    Eigen::MatrixXcd phi = Eigen::MatrixXcd::Zero(nq, fields.forward.cols());
+    Eigen::MatrixXcd phia = Eigen::MatrixXcd::Zero(nq, fields.adjoint.cols());
+    for (int i = 0; i < nq; ++i) {
+      if (family == SensitivitySolveFamily::Radial) {
+        auto iu = sem.ltgR(0, e, i), ip = sem.ltgR(1, e, i);
+        u.row(i) = fields.forward.row(iu); ua.row(i) = fields.adjoint.row(iu);
+        phi.row(i) = fields.forward.row(ip); phia.row(i) = fields.adjoint.row(ip);
+        if (elementLocalLift && e == liftElement) {
+          u.row(i) += elementLocalLift->row(iu);
+          phi.row(i) += elementLocalLift->row(ip);
+        }
+      } else if (family == SensitivitySolveFamily::Spheroidal) {
+        auto iu = sem.ltgS(0, e, i), iv = sem.ltgS(1, e, i), ip = sem.ltgS(2, e, i);
+        u.row(i) = fields.forward.row(iu); ua.row(i) = fields.adjoint.row(iu);
+        v.row(i) = fields.forward.row(iv); va.row(i) = fields.adjoint.row(iv);
+        phi.row(i) = fields.forward.row(ip); phia.row(i) = fields.adjoint.row(ip);
+        if (elementLocalLift && e == liftElement) {
+          u.row(i) += elementLocalLift->row(iu);
+          v.row(i) += elementLocalLift->row(iv);
+          phi.row(i) += elementLocalLift->row(ip);
+        }
+      } else {
+        auto iw = sem.ltgT(e, i); u.row(i) = fields.forward.row(iw); ua.row(i) = fields.adjoint.row(iw);
+        if (elementLocalLift && e == liftElement)
+          u.row(i) += elementLocalLift->row(iw);
+      }
+    }
+    const Eigen::MatrixXcd du = (2.0 / mesh.EW(e)) * D.cast<std::complex<double>>() * u;
+    const Eigen::MatrixXcd dua = (2.0 / mesh.EW(e)) * D.cast<std::complex<double>>() * ua;
+    const Eigen::MatrixXcd dphi = (2.0 / mesh.EW(e)) * D.cast<std::complex<double>>() * phi;
+    const Eigen::MatrixXcd dphia = (2.0 / mesh.EW(e)) * D.cast<std::complex<double>>() * phia;
+    for (int i = 0; i < nq; ++i) {
+      const double r = mesh.NodeRadius(e, i), qweight = jac * gll.W(i);
+      const auto uu = sensitivity_detail::inner(ua.row(i), u.row(i));
+      const auto uv = sensitivity_detail::inner(ua.row(i), v.row(i)) +
+                      sensitivity_detail::inner(va.row(i), u.row(i));
+      const auto vv = sensitivity_detail::inner(va.row(i), v.row(i));
+      if (isFluid && family != SensitivitySolveFamily::Toroidal) {
+        if (family == SensitivitySolveFamily::Radial) {
+          const auto a = 4.0 * uu;
+          const auto c = r * r * sensitivity_detail::inner(dua.row(i), du.row(i));
+          const auto f = r * (sensitivity_detail::inner(2.0 * ua.row(i), du.row(i)) +
+                              sensitivity_detail::inner(dua.row(i), 2.0 * u.row(i)));
+          out.bulkModulusPa(e, i) = -(a + c + f).real() / (length * pressure);
+        } else {
+          const Eigen::MatrixXcd T = 2.0 * u.row(i).eval() - lambda * v.row(i).eval();
+          const Eigen::MatrixXcd Ta = 2.0 * ua.row(i).eval() - lambda * va.row(i).eval();
+          const auto kappa = sensitivity_detail::inner(Ta, T) +
+              r * (sensitivity_detail::inner(Ta, du.row(i)) + sensitivity_detail::inner(dua.row(i), T)) +
+              r * r * sensitivity_detail::inner(dua.row(i), du.row(i));
+          out.bulkModulusPa(e, i) = -kappa.real() / (length * pressure);
+        }
+      }
+      double local = 0.0;
+      if (family == SensitivitySolveFamily::Toroidal) {
+        local = (-z * z * lambda * r * r * uu).real();
+      } else {
+        const double rho = sem.meshModel().Density(e, i), g = sem.meshModel().Gravity(e, i);
+        const double eightPiG = 8.0 * static_cast<double>(EIGEN_PI) * grav * rho * r * r;
+        const auto explicitGravity = (eightPiG - 4.0 * g * r) * uu +
+            lambda * g * r * uv + r * r * (sensitivity_detail::inner(dphia.row(i), u.row(i)) +
+            sensitivity_detail::inner(ua.row(i), dphi.row(i))) + lambda * r *
+            (sensitivity_detail::inner(phia.row(i), v.row(i)) + sensitivity_detail::inner(va.row(i), phi.row(i)));
+        const auto inertia = -z * z * r * r * (uu + lambda * vv);
+        local = (explicitGravity + inertia).real();
+        gravityLoads(e, i) = qweight * (4.0 * rho * r * uu.real() - lambda * rho * r * uv.real());
+      }
+      densityGradient(e, i) = -qweight * local;
+    }
+  }
+  // Transpose production gravity with a reverse element/node cumulative sum.
+  // Its traversal follows MeshModel's cumulative element endpoints exactly.
+  auto pointLoad = [&](int e, int i) {
+    const double r = mesh.NodeRadius(e, i);
+    return r > 0.0 ? gravityLoads(e, i) *
+        4.0 * static_cast<double>(EIGEN_PI) * grav / (r * r) : 0.0;
+  };
+  double above = 0.0;
+  for (int e = ne - 1; e >= 0; --e) {
+    const double lo = mesh.ELR(e), hi = mesh.EUR(e);
+    const auto &knots = sem.meshModel().DensityKnots(e);
+    for (int seg = nq - 2; seg >= 0; --seg) {
+      const double a = mesh.NodeRadius(e, seg), b = mesh.NodeRadius(e, seg + 1);
+      above += pointLoad(e, seg + 1);
+      double left = a;
+      auto integrate = [&](double right) {
+        const double half = 0.5 * (right - left);
+        for (int q = 0; q < nq; ++q) {
+          const double s = std::lerp(left, right, 0.5 * (gll.X(q) + 1.0));
+          const double weight = half * gll.W(q) * above * s * s;
+          const double x = 2.0 * (s - lo) / (hi - lo) - 1.0;
+          for (int j = 0; j < nq; ++j)
+            densityGradient(e, j) += weight * basis.Evaluate(j, x);
+        }
+        left = right;
+      };
+      for (double knot : knots) {
+        if (knot > left && knot < b) integrate(knot);
+      }
+      integrate(b);
+    }
+    above += pointLoad(e, 0);
+  }
+  for (int e = 0; e < ne; ++e) for (int i = 0; i < nq; ++i) {
+    const double nodalWeight = 0.5 * mesh.EW(e) * gll.W(i);
+    out.densityKgPerM3(e, i) = densityGradient(e, i) / nodalWeight * modelDensityPerSI;
+  }
+  if (!out.bulkModulusPa.allFinite() || !out.densityKgPerM3.allFinite())
+    throw std::runtime_error("Material kernel integrands contain non-finite values.");
+  return out;
+}
+
+struct WindowedSensitivityResult {
+  Eigen::MatrixXcd rawDisplacementSpectrum;
+  Eigen::MatrixXcd processedSISpectrum;
+  double objective = 0.0;
+  int firstSolvedBin = 0;
+  int endSolvedBin = 0;
+  ModulusKernelSamples kernels;
+  MaterialKernelSamples materialKernels;
+  ModulusSourcePointTerms sourcePointKernels;
+};
+
+/**
+ * @brief End-to-end fixed-source, fixed-receiver windowed displacement gradient.
+ *
+ * `weightsSI` is a complex matrix over (vertical,north,east) receiver rows and
+ * the full RFFT grid. `firstBin:endBin` bounds all forward and adjoint solves;
+ * all other raw bins are exactly zero. Each mode/bin receives a fresh sparse
+ * factorization on the full elastic SEM mesh.
+ */
+class WindowedSensitivityEngine {
+  struct Projection {
+    SensitivitySolveFamily family;
+    int degree;
+    Eigen::MatrixXcd rhs;
+    Eigen::MatrixXcd receiver;
+    Eigen::MatrixXcd sourceCoefficients;
+    Eigen::MatrixXcd sourceLift;
+    Eigen::MatrixXcd directSourceOutput;
+    int sourceElement = -1;
+    int outputRows;
+  };
+
+public:
+  static WindowedSensitivityResult evaluate(
+      Full1D::SEM &sem, SourceInfo::EarthquakeCMT &source,
+      InputParameters &parameters, const SpectraSolver::FreqFull &frequency,
+      const Eigen::VectorXd &timeWindow, const Eigen::MatrixXcd &weightsSI,
+      int firstBin, int endBin) {
+    sensitivity_detail::requireConstructedSEM(sem);
+    if (!sem.sourceMatches(source))
+      throw std::invalid_argument(
+          "Windowed sensitivities require an SEM aligned to the current source; construct it with the source-aware overload.");
+    if (parameters.attenuation())
+      throw std::invalid_argument("Sensitivity kernels do not support attenuation.");
+    if (parameters.cowlingFrequencyMhz() != 0.0 || parameters.gravitation() != 2)
+      throw std::invalid_argument("Sensitivity kernels require full-gravity elastic formulation.");
+    if (parameters.output_type() != 0)
+      throw std::invalid_argument("Sensitivity kernels support displacement output only.");
+    if (parameters.num_receivers() <= 0)
+      throw std::invalid_argument("Sensitivity kernels require at least one receiver.");
+    if (parameters.lmin() < 0 || parameters.lmax() < parameters.lmin() ||
+        parameters.lmax() > sem.maxDegree())
+      throw std::invalid_argument("Sensitivity degree range is invalid for the constructed SEM.");
+    const double timeScale = sem.timeScaleSeconds();
+    if (!(std::isfinite(timeScale) && timeScale > 0.0))
+      throw std::invalid_argument("SEM time scale must be positive and finite.");
+    const double timeScaleError =
+        std::abs(frequency.timeNorm() - timeScale) / std::abs(timeScale);
+    if (!(std::isfinite(timeScaleError) && timeScaleError < 1e-12))
+      throw std::invalid_argument("FreqFull and SEM must use the same model time scale.");
+    if (weightsSI.rows() != 3 * parameters.num_receivers() ||
+        weightsSI.cols() != frequency.nt() / 2 + 1 || !weightsSI.allFinite())
+      throw std::invalid_argument("Sensitivity weights must be finite on all receiver components and FFT bins.");
+    if (firstBin < 0 || endBin > weightsSI.cols() || firstBin >= endBin)
+      throw std::invalid_argument("Sensitivity solved frequency interval is invalid.");
+    if (!(std::isfinite(sem.lengthScaleMetres()) && sem.lengthScaleMetres() > 0.0 &&
+          std::isfinite(sem.pressureScalePascals()) && sem.pressureScalePascals() > 0.0))
+      throw std::invalid_argument("SEM SI length and stress scales must be positive and finite.");
+
+    const int lmax = parameters.lmax();
+    const auto flags = resolveModeFlags(parameters.type(), parameters.lmin(), lmax);
+    if (!flags.inc_rad && !flags.inc_sph && !flags.inc_tor)
+      throw std::invalid_argument("Sensitivity mode selection contains no supported mode family.");
+    WindowedDisplacementMap measurement(frequency, sem.lengthScaleMetres(), timeWindow);
+
+    WindowedSensitivityResult result;
+    result.firstSolvedBin = firstBin;
+    result.endSolvedBin = endBin;
+    result.rawDisplacementSpectrum = Eigen::MatrixXcd::Zero(
+        weightsSI.rows(), weightsSI.cols());
+    result.kernels = emptySamples(sem);
+    result.materialKernels = emptyMaterialSamples(sem);
+
+    const auto w = frequency.w();
+    const Complex ieps(0.0, -frequency.ep());
+    forEachProjection(sem, source, parameters, lmax, flags,
+                      [&](const Projection &projection) {
+      for (int bin = firstBin; bin < endBin; ++bin) {
+        const Complex z = w.at(bin) + ieps;
+        Projection sourceProjection = projection;
+        if (sourceProjection.family == SensitivitySolveFamily::Spheroidal) {
+          const auto treatment = sem.sourceTreatedSpheroidal(
+              source, sourceProjection.degree, z);
+          sourceProjection.rhs = treatment.force;
+          sourceProjection.sourceLift = treatment.lift;
+          sourceProjection.sourceElement = treatment.sourceElement;
+          sourceProjection.directSourceOutput = sem.sourceLiftReceiver(
+              parameters, sourceProjection.degree, treatment.lift,
+              treatment.sourceElement, false);
+        } else if (sourceProjection.family == SensitivitySolveFamily::Radial) {
+          const auto treatment = sem.sourceTreatedRadial(source, z);
+          sourceProjection.rhs = treatment.force;
+          sourceProjection.sourceLift = treatment.lift;
+          sourceProjection.sourceElement = treatment.sourceElement;
+          sourceProjection.directSourceOutput = sem.sourceLiftReceiverRadial(
+              parameters, treatment.lift, treatment.sourceElement);
+        } else {
+          const auto treatment = sem.sourceTreatedToroidal(
+              source, sourceProjection.degree, z);
+          sourceProjection.rhs = treatment.force;
+          sourceProjection.sourceLift = treatment.lift;
+          sourceProjection.sourceElement = treatment.sourceElement;
+          sourceProjection.directSourceOutput = sem.sourceLiftReceiverToroidal(
+              parameters, sourceProjection.degree, treatment.lift,
+              treatment.sourceElement);
+        }
+        const auto forward = FixedMeshAdjointSolver::solveForwardFrequency(
+            sem, sourceProjection.family, sourceProjection.degree, z, sourceProjection.rhs);
+        addProjectionOutput(result.rawDisplacementSpectrum, bin, sourceProjection,
+                            forward, z);
+      }
+    });
+    result.processedSISpectrum = measurement.forward(result.rawDisplacementSpectrum);
+    result.objective = weightsSI.conjugate().cwiseProduct(
+                           result.processedSISpectrum).sum().real();
+    Eigen::MatrixXcd adjointWeights = measurement.adjoint(weightsSI);
+    if (firstBin > 0)
+      adjointWeights.leftCols(firstBin).setZero();
+    if (endBin < adjointWeights.cols())
+      adjointWeights.rightCols(adjointWeights.cols() - endBin).setZero();
+
+    forEachProjection(sem, source, parameters, lmax, flags,
+                      [&](const Projection &projection) {
+      for (int bin = firstBin; bin < endBin; ++bin) {
+        const Complex z = w.at(bin) + ieps;
+        Projection sourceProjection = projection;
+        if (sourceProjection.family == SensitivitySolveFamily::Spheroidal) {
+          const auto treatment = sem.sourceTreatedSpheroidal(
+              source, sourceProjection.degree, z);
+          sourceProjection.rhs = treatment.force;
+          sourceProjection.sourceLift = treatment.lift;
+          sourceProjection.sourceElement = treatment.sourceElement;
+          sourceProjection.directSourceOutput = sem.sourceLiftReceiver(
+              parameters, sourceProjection.degree, treatment.lift,
+              treatment.sourceElement, false);
+        } else if (sourceProjection.family == SensitivitySolveFamily::Radial) {
+          const auto treatment = sem.sourceTreatedRadial(source, z);
+          sourceProjection.rhs = treatment.force;
+          sourceProjection.sourceLift = treatment.lift;
+          sourceProjection.sourceElement = treatment.sourceElement;
+          sourceProjection.directSourceOutput = sem.sourceLiftReceiverRadial(
+              parameters, treatment.lift, treatment.sourceElement);
+        } else {
+          const auto treatment = sem.sourceTreatedToroidal(
+              source, sourceProjection.degree, z);
+          sourceProjection.rhs = treatment.force;
+          sourceProjection.sourceLift = treatment.lift;
+          sourceProjection.sourceElement = treatment.sourceElement;
+          sourceProjection.directSourceOutput = sem.sourceLiftReceiverToroidal(
+              parameters, sourceProjection.degree, treatment.lift,
+              treatment.sourceElement);
+        }
+        const auto modeWeights = compactWeights(sourceProjection, adjointWeights.col(bin));
+        const auto fields = FixedMeshAdjointSolver::solveFrequency(
+            sem, sourceProjection.family, sourceProjection.degree, z, sourceProjection.rhs,
+            sourceProjection.receiver, modeWeights);
+        if (sourceProjection.family == SensitivitySolveFamily::Spheroidal)
+          addSpheroidalSourcePointKernels(
+              result.sourcePointKernels, sem, parameters, sourceProjection,
+              z, fields, modeWeights);
+        else if (sourceProjection.family == SensitivitySolveFamily::Radial)
+          addRadialSourcePointKernels(result.sourcePointKernels, sem, parameters,
+                                      sourceProjection, z, fields, modeWeights);
+        else
+          addToroidalSourcePointKernels(result.sourcePointKernels, sem, parameters,
+                                        sourceProjection, z, fields, modeWeights);
+        addModulusKernelSamples(
+            result.kernels,
+            modulusKernelSamples(sem, sourceProjection.family, sourceProjection.degree,
+                fields, sourceProjection.sourceLift.size() ?
+                    &sourceProjection.sourceLift : nullptr,
+                sourceProjection.sourceElement));
+        addMaterialKernelSamples(result.materialKernels,
+            materialKernelSamples(sem, sourceProjection.family, sourceProjection.degree,
+                z, fields, sourceProjection.sourceLift.size() ?
+                    &sourceProjection.sourceLift : nullptr,
+                sourceProjection.sourceElement));
+      }
+    });
+    return result;
+  }
+
+private:
+  using Complex = std::complex<double>;
+
+  static void addSpheroidalSourcePointKernels(
+      ModulusSourcePointTerms &sum, Full1D::SEM &sem,
+      InputParameters &parameters, const Projection &projection, Complex z,
+      const FrequencyAdjointFields &fields,
+      const Eigen::MatrixXcd &modeWeights) {
+    const int degree = projection.degree, e = projection.sourceElement;
+    const int nq = sem.mesh().NN(), u = sem.ltgS(0, e, 0), v = sem.ltgS(1, e, 0);
+    const double r = sem.sourceRadius();
+    const double lambda = static_cast<double>(degree) * (degree + 1.0);
+    const auto &model = sem.meshModel();
+    const double C = model.C(e, 0), F = model.F(e, 0), L = model.L(e, 0);
+    const Complex jU = projection.sourceLift(u, 0);
+    const Complex jV = projection.sourceLift(v, 2);
+    Eigen::MatrixXcd deltaLiftC = Eigen::MatrixXcd::Zero(
+        projection.sourceLift.rows(), projection.sourceLift.cols());
+    Eigen::MatrixXcd deltaLiftL = Eigen::MatrixXcd::Zero(
+        projection.sourceLift.rows(), projection.sourceLift.cols());
+    Eigen::MatrixXcd deltaC = Eigen::MatrixXcd::Zero(
+        projection.sourceLift.rows(), projection.sourceLift.cols());
+    Eigen::MatrixXcd deltaF = deltaC;
+    deltaLiftC(u, 0) = -jU / C;
+    deltaC(u, 0) = 2.0 * r * F * jU / C;
+    deltaC(v, 0) = -lambda * r * F * jU / C;
+    deltaF(u, 0) = -2.0 * r * jU;
+    deltaF(v, 0) = lambda * r * jU;
+    deltaLiftL(v, 2) = -jV / L;
+    Eigen::MatrixXcd localDeltaLift = Eigen::MatrixXcd::Zero(3 * nq, 4);
+    Eigen::MatrixXcd localAdjoint = localDeltaLift;
+    for (int field = 0; field < 3; ++field)
+      for (int i = 0; i < nq; ++i) {
+        const int index = sem.ltgS(field, e, i);
+        localDeltaLift.row(field * nq + i) = deltaLiftC.row(index);
+        localAdjoint.row(field * nq + i) = fields.adjoint.row(index);
+      }
+    const Eigen::MatrixXcd localOperator =
+        Full1D::source_treatment_detail::spheroidalElementOperator(
+            sem, e, degree, z, {}, false);
+    const auto contraction = [&](const Eigen::MatrixXcd &pointLoad,
+                                 const Eigen::MatrixXcd &globalLiftVariation) {
+      Eigen::MatrixXcd localLiftVariation(3 * nq, globalLiftVariation.cols());
+      for (int field = 0; field < 3; ++field)
+        for (int i = 0; i < nq; ++i)
+          localLiftVariation.row(field * nq + i) =
+              globalLiftVariation.row(sem.ltgS(field, e, i));
+      const auto residual = localOperator * localLiftVariation;
+      const double weak = sensitivity_detail::inner(fields.adjoint, pointLoad).real() -
+                          sensitivity_detail::inner(localAdjoint, residual).real();
+      const auto direct = sem.sourceLiftReceiver(
+          parameters, degree, globalLiftVariation, e, false);
+      const Complex factor = outputFactor(0, z, Complex(0.0, 1.0));
+      return weak + (modeWeights.conjugate().cwiseProduct(factor * direct)).sum().real();
+    };
+    const double scale = 1.0 / sem.pressureScalePascals();
+    sum.C += scale * contraction(deltaC, deltaLiftC);
+    sum.F += scale * contraction(deltaF, Eigen::MatrixXcd::Zero(
+        deltaLiftC.rows(), deltaLiftC.cols()));
+    sum.L += scale * contraction(Eigen::MatrixXcd::Zero(
+        deltaLiftC.rows(), deltaLiftC.cols()), deltaLiftL);
+  }
+
+  static void addRadialSourcePointKernels(
+      ModulusSourcePointTerms &sum, Full1D::SEM &sem,
+      InputParameters &parameters, const Projection &projection, Complex z,
+      const FrequencyAdjointFields &fields,
+      const Eigen::MatrixXcd &modeWeights) {
+    const int e = projection.sourceElement, nq = sem.mesh().NN();
+    const int u = sem.ltgR(0, e, 0);
+    const double r = sem.sourceRadius(), C = sem.meshModel().C(e, 0);
+    const double F = sem.meshModel().F(e, 0);
+    const Complex j = projection.sourceLift(u, 0);
+    Eigen::MatrixXcd deltaLiftC = Eigen::MatrixXcd::Zero(
+        projection.sourceLift.rows(), 1);
+    Eigen::MatrixXcd deltaC = deltaLiftC, deltaF = deltaLiftC;
+    deltaLiftC(u, 0) = -j / C;
+    deltaC(u, 0) = 2.0 * r * F * j / C;
+    deltaF(u, 0) = -2.0 * r * j;
+    Eigen::MatrixXcd localAdjoint(2 * nq, 1), localDeltaLift(2 * nq, 1);
+    for (int field = 0; field < 2; ++field)
+      for (int i = 0; i < nq; ++i) {
+        const int index = sem.ltgR(field, e, i);
+        localAdjoint(field * nq + i, 0) = fields.adjoint(index, 0);
+        localDeltaLift(field * nq + i, 0) = deltaLiftC(index, 0);
+      }
+    const auto localOperator = Full1D::source_treatment_detail::
+        radialElementOperator(sem, e, z);
+    const Complex factor = outputFactor(0, z, Complex(0.0, 1.0));
+    const double scale = 1.0 / sem.pressureScalePascals();
+    const auto contract = [&](const Eigen::MatrixXcd &pointLoad,
+                              const Eigen::MatrixXcd &globalLift) {
+      Eigen::MatrixXcd localLift(2 * nq, globalLift.cols());
+      for (int field = 0; field < 2; ++field)
+        for (int i = 0; i < nq; ++i)
+          localLift.row(field * nq + i) =
+              globalLift.row(sem.ltgR(field, e, i));
+      const auto direct = sem.sourceLiftReceiverRadial(
+          parameters, globalLift, e);
+      return sensitivity_detail::inner(fields.adjoint, pointLoad).real() -
+             sensitivity_detail::inner(localAdjoint, localOperator * localLift).real() +
+             (modeWeights.conjugate().cwiseProduct(factor * direct)).sum().real();
+    };
+    sum.C += scale * contract(deltaC, deltaLiftC);
+    sum.F += scale * contract(deltaF,
+        Eigen::MatrixXcd::Zero(deltaLiftC.rows(), 1));
+  }
+
+  static void addToroidalSourcePointKernels(
+      ModulusSourcePointTerms &sum, Full1D::SEM &sem,
+      InputParameters &parameters, const Projection &projection, Complex z,
+      const FrequencyAdjointFields &fields,
+      const Eigen::MatrixXcd &modeWeights) {
+    const int e = projection.sourceElement, nq = sem.mesh().NN();
+    const int source = sem.ltgT(e, 0);
+    const double L = sem.meshModel().L(e, 0);
+    const Complex j = projection.sourceLift(source, 0);
+    Eigen::MatrixXcd deltaLift = Eigen::MatrixXcd::Zero(
+        projection.sourceLift.rows(), projection.sourceLift.cols());
+    deltaLift(source, 0) = -j / L;
+    Eigen::MatrixXcd localAdjoint(nq, fields.adjoint.cols());
+    Eigen::MatrixXcd localLift(nq, deltaLift.cols());
+    for (int i = 0; i < nq; ++i) {
+      const int index = sem.ltgT(e, i);
+      localAdjoint.row(i) = fields.adjoint.row(index);
+      localLift.row(i) = deltaLift.row(index);
+    }
+    const auto localOperator = Full1D::source_treatment_detail::
+        toroidalElementOperator(sem, e, projection.degree, z);
+    const auto direct = sem.sourceLiftReceiverToroidal(
+        parameters, projection.degree, deltaLift, e);
+    const Complex factor = outputFactor(0, z, Complex(0.0, 1.0));
+    const double point = -sensitivity_detail::inner(
+        localAdjoint, localOperator * localLift).real() +
+        (modeWeights.conjugate().cwiseProduct(factor * direct)).sum().real();
+    sum.L += point / sem.pressureScalePascals();
+  }
+
+  static void addModulusKernelSamples(ModulusKernelSamples &sum,
+                                      const ModulusKernelSamples &term) {
+    if (sum.A.size() == 0) {
+      sum = term;
+      return;
+    }
+    if (sum.A.rows() != term.A.rows() || sum.A.cols() != term.A.cols() ||
+        sum.layer != term.layer || (sum.solid != term.solid).any() ||
+        !(sum.radiusMetres.array() == term.radiusMetres.array()).all() ||
+        !(sum.drWeightsMetres.array() == term.drWeightsMetres.array()).all())
+      throw std::invalid_argument("Cannot sum sensitivity samples from different SEM meshes.");
+    sum.A += term.A; sum.C += term.C; sum.F += term.F;
+    sum.L += term.L; sum.N += term.N;
+  }
+
+  static ModulusKernelSamples emptySamples(const Full1D::SEM &sem) {
+    ModulusKernelSamples out;
+    const auto &mesh = sem.mesh();
+    out.A = Eigen::MatrixXd::Zero(mesh.NE(), mesh.NN());
+    out.C = Eigen::MatrixXd::Zero(mesh.NE(), mesh.NN());
+    out.F = Eigen::MatrixXd::Zero(mesh.NE(), mesh.NN());
+    out.L = Eigen::MatrixXd::Zero(mesh.NE(), mesh.NN());
+    out.N = Eigen::MatrixXd::Zero(mesh.NE(), mesh.NN());
+    out.radiusMetres.resize(mesh.NE(), mesh.NN());
+    out.drWeightsMetres.resize(mesh.NE(), mesh.NN());
+    out.solid.resize(mesh.NE(), mesh.NN());
+    out.layer.resize(mesh.NE());
+    for (int e = 0; e < mesh.NE(); ++e) {
+      out.layer[e] = mesh.LayerNumber(e);
+      for (int i = 0; i < mesh.NN(); ++i) {
+        out.radiusMetres(e, i) = mesh.NodeRadius(e, i) * sem.lengthScaleMetres();
+        out.drWeightsMetres(e, i) = 0.5 * mesh.EW(e) *
+            const_cast<EarthMesh::RadialMesh &>(mesh).GLL().W(i) * sem.lengthScaleMetres();
+        out.solid(e, i) = !sem.elementIsFluid(e);
+      }
+    }
+    return out;
+  }
+
+  static MaterialKernelSamples emptyMaterialSamples(const Full1D::SEM &sem) {
+    MaterialKernelSamples out;
+    const auto &mesh = sem.mesh();
+    out.bulkModulusPa = Eigen::MatrixXd::Zero(mesh.NE(), mesh.NN());
+    out.densityKgPerM3 = Eigen::MatrixXd::Zero(mesh.NE(), mesh.NN());
+    out.radiusMetres.resize(mesh.NE(), mesh.NN());
+    out.drWeightsMetres.resize(mesh.NE(), mesh.NN());
+    out.fluid.resize(mesh.NE(), mesh.NN());
+    out.layer.resize(mesh.NE());
+    for (int e = 0; e < mesh.NE(); ++e) {
+      out.layer[e] = mesh.LayerNumber(e);
+      for (int i = 0; i < mesh.NN(); ++i) {
+        out.radiusMetres(e, i) = mesh.NodeRadius(e, i) * sem.lengthScaleMetres();
+        out.drWeightsMetres(e, i) = 0.5 * mesh.EW(e) *
+            const_cast<EarthMesh::RadialMesh &>(mesh).GLL().W(i) * sem.lengthScaleMetres();
+        out.fluid(e, i) = sem.elementIsFluid(e);
+      }
+    }
+    return out;
+  }
+
+  static void addMaterialKernelSamples(MaterialKernelSamples &sum,
+                                       const MaterialKernelSamples &term) {
+    if (sum.bulkModulusPa.rows() != term.bulkModulusPa.rows() ||
+        sum.bulkModulusPa.cols() != term.bulkModulusPa.cols() ||
+        sum.layer != term.layer || (sum.fluid != term.fluid).any() ||
+        !(sum.radiusMetres.array() == term.radiusMetres.array()).all() ||
+        !(sum.drWeightsMetres.array() == term.drWeightsMetres.array()).all())
+      throw std::invalid_argument("Cannot sum material samples from different SEM meshes.");
+    sum.bulkModulusPa += term.bulkModulusPa;
+    sum.densityKgPerM3 += term.densityKgPerM3;
+  }
+
+  static Eigen::MatrixXcd embedReceiver(const Full1D::SEM &sem,
+                                       const Eigen::MatrixXcd &local,
+                                       std::size_t low, int dofs) {
+    if (low + local.cols() > dofs)
+      throw std::invalid_argument("Existing receiver slice exceeds the SEM operator.");
+    Eigen::MatrixXcd full = Eigen::MatrixXcd::Zero(local.rows(), dofs);
+    full.block(0, low, local.rows(), local.cols()) = local;
+    return full;
+  }
+
+  template <class Callback>
+  static void forEachProjection(
+      Full1D::SEM &sem, SourceInfo::EarthquakeCMT &source,
+      InputParameters &parameters, int lmax, SPARSESPEC::ModeFlags flags,
+      Callback &&callback) {
+    const int nrec = parameters.num_receivers();
+    const int outputRows = 3 * nrec;
+    const int nq = sem.mesh().NN();
+    const int firstDegree = std::max(1, parameters.lmin());
+    if (flags.inc_rad) {
+      Projection p;
+      p.family = SensitivitySolveFamily::Radial; p.degree = 0;
+      p.rhs = sem.calculateForceR(source);
+      p.directSourceOutput = Eigen::MatrixXcd::Zero(outputRows, p.rhs.cols());
+      p.outputRows = outputRows;
+      p.sourceCoefficients = Eigen::MatrixXcd::Ones(outputRows, 1);
+      p.receiver = Eigen::MatrixXcd::Zero(outputRows, p.rhs.rows());
+      for (int r = 0; r < nrec; ++r)
+        p.receiver.row(3 * r) = sem.rvZR(parameters, r).transpose();
+      callback(p);
+    }
+    ParamInfo angular(parameters, lmax);
+    for (int degree = firstDegree; degree <= parameters.lmax(); ++degree) {
+      if (flags.inc_sph) {
+        Projection p;
+        p.family = SensitivitySolveFamily::Spheroidal; p.degree = degree;
+        p.rhs = sem.calculateForceAll(source, degree, false);
+        const Eigen::MatrixXcd sourceCoefficients =
+            sem.calculateForceCoefficients(source, degree);
+        const auto recElems = sem.receiverElements(parameters, false);
+        const auto low = sem.ltgS(0, recElems.front(), 0);
+        p.receiver = embedReceiver(sem, sem.rvBaseFull(parameters, degree, false),
+                                   low, static_cast<int>(sem.hS(degree).rows()));
+        p.sourceCoefficients = angular.rvFullSph(degree) * sourceCoefficients;
+        p.outputRows = outputRows;
+        callback(p);
+      }
+      if (flags.inc_tor) {
+        Projection p;
+        p.family = SensitivitySolveFamily::Toroidal; p.degree = degree;
+        p.rhs = sem.calculateForceAllT(source, degree);
+        p.sourceLift = Eigen::MatrixXcd::Zero(p.rhs.rows(), p.rhs.cols());
+        p.directSourceOutput = Eigen::MatrixXcd::Zero(outputRows, p.rhs.cols());
+        const Eigen::MatrixXcd sourceCoefficients =
+            sem.calculateForceCoefficientsT(source, degree);
+        const auto recElems = sem.receiverElements(parameters, true);
+        const auto low = sem.ltgT(recElems.front(), 0);
+        const auto local = sem.rvBaseFullT(parameters, degree);
+        p.receiver = embedReceiver(sem, local, low,
+                                   static_cast<int>(sem.hTk(degree).rows()));
+        p.sourceCoefficients = angular.rvFullTor(degree) * sourceCoefficients;
+        p.outputRows = outputRows;
+        callback(p);
+      }
+    }
+  }
+
+  static Eigen::MatrixXcd compactWeights(const Projection &p,
+                                         const Eigen::VectorXcd &q) {
+    if (q.size() != p.outputRows || p.sourceCoefficients.rows() != p.outputRows)
+      throw std::invalid_argument("Compact observation map has inconsistent rows.");
+    Eigen::MatrixXcd weights(p.outputRows, p.rhs.cols());
+    for (int row = 0; row < p.outputRows; ++row)
+      for (Eigen::Index col = 0; col < p.rhs.cols(); ++col)
+        weights(row, col) = q[row] * std::conj(p.sourceCoefficients(row, col));
+    return weights;
+  }
+
+  static void addProjectionOutput(Eigen::MatrixXcd &spectrum, int bin,
+                                  const Projection &p,
+                                  const Eigen::MatrixXcd &forward,
+                                  Complex z) {
+    const Complex factor = outputFactor(0, z, Complex(0.0, 1.0));
+    if (p.receiver.rows() != p.outputRows || p.receiver.cols() != forward.rows() ||
+        p.sourceCoefficients.rows() != p.outputRows ||
+        p.sourceCoefficients.cols() != forward.cols())
+      throw std::invalid_argument("Compact forward/receiver maps have inconsistent dimensions.");
+    Eigen::MatrixXcd base = p.receiver * forward;
+    if (p.directSourceOutput.size() != 0)
+      base += p.directSourceOutput;
+    spectrum.col(bin) += factor *
+        (p.sourceCoefficients.cwiseProduct(base)).rowwise().sum();
+  }
+
+};
+
+} // namespace SPARSESPEC
+
+#endif // DSPECM1D_SENSITIVITY_KERNELS_H

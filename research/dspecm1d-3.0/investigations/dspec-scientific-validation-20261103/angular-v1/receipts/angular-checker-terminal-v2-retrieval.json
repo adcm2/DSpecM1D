@@ -1,0 +1,91 @@
+{
+  "all_member_hashes_verified": true,
+  "archive_bytes": 143724,
+  "archive_manifest_sha256": "de33f67dc09ba2dd9c170a9a21259665ddd39b08965a6a276b8cb53633f1d596",
+  "archive_sha256": "b3a9ac919df95772eab279d6feef6defc5146402e368dfdaa4ed926ed5773eb1",
+  "checker_elapsed_seconds": 3.094591569970362,
+  "checker_job_log_sha256": "4170f045766da7852954ba12e551d1f0788add7ed5fc20417d00e7ed6c66dffe",
+  "checker_launch_receipt_sha256": "f7e9e54854a91d8701acc0553ec2929cbe6e56725ab8e0a4b7316aa1b8875ed1",
+  "checker_plan_sha256": "584f9c947da3aa9a26dd1285c9664e44725b2a0bdeca41884565fad322535f62",
+  "checker_report_sha256": "c9a162ad9dd4d05b86a0e7b8515e427f10ba18ee7d23510e9c6af695c789892c",
+  "checker_returncode": 0,
+  "checker_state_sha256": "13addeafd3b18488a0db91ebc0ba41e4b80d556de4af25ecb0c4b8120d194176",
+  "checker_status": "completed",
+  "cleanup_verified_gone": true,
+  "executed_checker_sha256": "9fff18710bc7b221f389d422f045a5d887f28ce92b34e515f7c2d5b13995ffe7",
+  "executed_helper_sha256": "610271198745973b654f2154395bde7aac7b034ca39cd47b0238837d3a982c17",
+  "failure_reasons": [],
+  "inputs_unchanged": true,
+  "local_evidence_root": "investigations/dspec-scientific-validation-20261103/angular-v1/evidence/checker-terminal-v2",
+  "peak_rss_gib_userspace": 0.0663,
+  "peak_threads": 2,
+  "producer_snapshot_sha256": "35ac18a3b42d13c3ae2f524004bda3a8fcbffe32414bfb7e34ed19b127ef603f",
+  "radial_control_pass": {
+    "nq6_vs_nq10": false,
+    "nq6_vs_nq8": false,
+    "nq8_vs_nq10": false
+  },
+  "remote_mutations": false,
+  "schema": "angular-checker-terminal-retrieval-v1",
+  "scientific_acceptance": {
+    "dspec": {
+      "400": {
+        "angular_metrics_pass": false,
+        "certification_note": "DSpec certification also requires all L800 NQ6/8/10 radial comparisons to pass",
+        "certified": false,
+        "criterion": "every metric in each required comparison <=0.001, no denominator floors",
+        "dspec_radial_controls_pass": false,
+        "passes": false,
+        "required_comparison_sets": [
+          "400_vs_800",
+          "400_to_600",
+          "600_to_800"
+        ],
+        "successive_increment_count": 2
+      },
+      "600": {
+        "angular_metrics_pass": false,
+        "certification_note": "DSpec certification also requires all L800 NQ6/8/10 radial comparisons to pass",
+        "certified": false,
+        "criterion": "every metric in each required comparison <=0.001, no denominator floors",
+        "dspec_radial_controls_pass": false,
+        "passes": false,
+        "required_comparison_sets": [
+          "600_vs_800",
+          "600_to_800"
+        ],
+        "successive_increment_count": 1
+      }
+    },
+    "yspec": {
+      "400": {
+        "angular_metrics_pass": false,
+        "certification_note": "YSpec angular criteria are reported separately; DSpec radial controls do not alter this backend result",
+        "certified": false,
+        "criterion": "every metric in each required comparison <=0.001, no denominator floors",
+        "dspec_radial_controls_pass": false,
+        "passes": false,
+        "required_comparison_sets": [
+          "400_vs_800",
+          "400_to_600",
+          "600_to_800"
+        ],
+        "successive_increment_count": 2
+      },
+      "600": {
+        "angular_metrics_pass": false,
+        "certification_note": "YSpec angular criteria are reported separately; DSpec radial controls do not alter this backend result",
+        "certified": false,
+        "criterion": "every metric in each required comparison <=0.001, no denominator floors",
+        "dspec_radial_controls_pass": false,
+        "passes": false,
+        "required_comparison_sets": [
+          "600_vs_800",
+          "600_to_800"
+        ],
+        "successive_increment_count": 1
+      }
+    }
+  },
+  "verified_members": 8
+}

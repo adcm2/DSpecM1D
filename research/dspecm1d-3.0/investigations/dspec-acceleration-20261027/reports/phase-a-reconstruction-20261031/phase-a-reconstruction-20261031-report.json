@@ -1,0 +1,343 @@
+{
+  "report_id": "phase-a-reconstruction-20261031",
+  "status": "accepted_phase_a_stop_before_phase_b",
+  "case": {
+    "scope": "fixed-mesh Phase A reconstruction validation",
+    "case_family": "transverse-velocity traveltime",
+    "distinction": "This is not the earlier vertical-displacement physical-energy campaign.",
+    "truncation_order": 200,
+    "quadrature_order": 10,
+    "refinement": 0.025,
+    "active_bins": [
+      9,
+      25,
+      40
+    ],
+    "native_sides": 293,
+    "sections": {
+      "along": 135,
+      "across": 19
+    },
+    "attenuation": "attenuated PREM",
+    "gravity": "full gravity",
+    "frequency_bins": [
+      7,
+      41
+    ],
+    "frequency_bin_count": 35,
+    "sample_interval_s": 2,
+    "packet_bins_are_subset": true,
+    "measurement_window_s": [
+      1000,
+      1200
+    ],
+    "fft_samples": 2048,
+    "fft_period_s": 4096,
+    "damping_decay_efolds": 5,
+    "damping_duration_s": 2400,
+    "filter_mhz": [
+      2,
+      4,
+      8,
+      10
+    ]
+  },
+  "campaign": {
+    "build_root": "/space/adcm2/research/builds/phase-a-reconstruction-v1",
+    "build_task": "receipts/phase-a-v1-build-completed",
+    "build_receipt_state_sha256": "03f9e98c0977ca38ddf675097f11239d8f4c0a1757252caa50b9dd679ab5806b",
+    "build_archive_sha256": "dee8c66caf395961445e8c900c0d13e9b8846ddb21d9c6611f44634b70605986",
+    "driver_sha256": "301b9bbc9825a9f6b21a30fcfea48b24c7b5c857fc5d98af44d1e9bbb6626ce9",
+    "binaries_sha256": {
+      "native": "514bef2e13bff9d84a08e540b821babe261fb3eaa3d24a7e0421d0755f77db85",
+      "profile": "f6d52ca5439a560cedf0083a2241993784b477c37eeb7e191791593a6c3a7020",
+      "tiny": "2b7953f08c70ff419622688d29799485b6a6dc0ee146d9972bae2424f58ca0db"
+    },
+    "v4_task": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v4-controls/continuation/phase-a-v4-controls",
+    "v4_plan_sha256": "cc2f19668977cc0fbbb1f1f11895e6beb36fab94f9dcb6f3791816212b28e80f",
+    "v4_terminal_state_sha256": "15d723f4e25ff1ede30b32b185abd6ec353b061ce8d361d3040236ee370a9d72",
+    "v4_archive_sha256": "ad505565a633f2570b540ec867db24f932fb000d106905a403b0c3220e0be586",
+    "v4_jobs": [
+      {
+        "name": "A4-v3-receipt-and-corrected-parity-gate",
+        "return_code": 0,
+        "elapsed_s": 2.249142
+      },
+      {
+        "name": "A5-profiled-standard-forward-two-submodes",
+        "return_code": 0,
+        "elapsed_s": 8.73226
+      },
+      {
+        "name": "A5-standard-policy-cut-index-profile-and-parity-gate",
+        "return_code": 0,
+        "elapsed_s": 0.489267
+      }
+    ],
+    "remote_verification": "All 10 output artifacts and 3 logs hash-verified; all 3 jobs rc0, unchanged inputs, cleanup verified.",
+    "preserved_failed_campaigns": {
+      "v2_setup_failure": "Supervisor failed before job creation while fingerprinting a directory input; no numerical job started.",
+      "v3_checker_failure": {
+        "state_sha256": "e44abdaddc02aa9675407fa85a8a22b9cc8b47499fe94fe24d65089eca9f759f",
+        "archive_sha256": "f150990b27f498cefde8784c8f1e0088a49809841ba58f980cc65197e2c6fe11",
+        "reason": "A4 numerical process succeeded; checker rejected an absent optional counter that represents zero. A5 did not start. Corrected v4 requalified A4 by receipt and did not rerun A1-A4."
+      }
+    },
+    "frozen_build_input_candidate_tree_sha256": "4c94847f0a46ed96fe166165cc993ee349e9ec0ad0531fd564f89bd58bd49b4e",
+    "post_build_candidate_status_log_sha256": "198a88b6f7e93f60cd1bdeaa413c056dfd39472604b19abd491fa9fefce73d7c",
+    "candidate_status_post_build_change": "Completion/status entry only; frozen compiled input is the archived build receipt, not the mutable candidate directory after this log append."
+  },
+  "results": {
+    "A1": {
+      "elapsed_s": 13.2383,
+      "gate_s": 6.9418,
+      "active_bins": [
+        9,
+        25,
+        40
+      ],
+      "radial_packet_bytes_per_bin": 58893064,
+      "reference_packet_bytes_per_bin": 14439104,
+      "gravity_max_abs_nondimensional_error": 2.886579864025407e-15,
+      "delay_identity": 0.9999999999999997,
+      "rate_norm": 1.802256449e-16,
+      "weight_norms": {
+        "9": 770141229229.185,
+        "25": 643235902201630.4,
+        "40": 34324890088897.832
+      },
+      "active_bins_csv_sha256": "6ff255905f35e6b080d048377a4401fd8a6e6f076436bd0035ddf80611b5fe02",
+      "packet_metadata_sha256": "50ca3e67678af47850c05b084e88086550e2db45a2ef6b7bf73e6ab57a502d9f",
+      "binary_variant": "profile"
+    },
+    "A2": {
+      "elapsed_s": 16.987,
+      "gate_s": 34.7239,
+      "reference_records": 270732,
+      "approved_aggregate_gate": "Each (bin, section, role) group pools projected solid and fluid rows.",
+      "field_relative_l2_max": {
+        "packed_reference_vs_common": 8.505903090392443e-16,
+        "same_packet_ds_vs_common": 9.118944614230606e-16,
+        "gate": 1e-11
+      },
+      "kernel_products_relative_l2_max": {
+        "packed_reference_vs_common": 2.054531445898654e-15,
+        "same_packet_ds_vs_common": 1.7309226047167256e-15
+      },
+      "along_fluid_adjoint_diagnostics_tagged_hermitian_dual_convention": {
+        "relative_l2_by_bin": {
+          "9": 0.03108487023731168,
+          "25": 0.002669903090728604,
+          "40": 0.006054374174577871
+        },
+        "max_abs_by_bin": {
+          "9": 0.05885846278264353,
+          "25": 3.769963879045428,
+          "40": 0.1504294605397048
+        },
+        "physical_si_strain": false,
+        "fluid_kernel_vs_contribution": 0,
+        "clarification": "Per-fluid ratios are not separately thresholded; those fluid rows are included in pooled solid-plus-fluid aggregate groups.",
+        "separately_thresholded": false,
+        "rows_included_in_pooled_acceptance": true
+      },
+      "post_radial_harness_timing_s": {
+        "packet_read_io": 0.078811081,
+        "radial_strain_table_preparation": 0.287858805,
+        "immutable_angular_table_geometry_build": 0.157647811,
+        "old_ds_complex_eigen_replay_harness": 3.870912928,
+        "common_degree_inner_replay_harness": 3.35086289,
+        "packed_reference_comparison_and_projection": 8.448396862,
+        "kernel_product_check": 0.384220042
+      },
+      "timing_scope_caveat": "Replay includes map lookup, dispatch, and output collection; excludes solve/capture/full pipeline; not production tensor-kernel timing.",
+      "summary_sha256": "615d52fbb24bb1f4ccb7d111a5b645f3ece67d5fe1d0790505d8280bf731fb15",
+      "kernel_products_csv_sha256": "29c27932ee4dcd1e11391ff21337d47cfae13071b7f22287c8424e591a7d4beb",
+      "field_comparison_csv": "remote-only raw artifact; full comparison rows not included in the local snapshot",
+      "reconstruction_scope": "Consumes unchanged DS modal radial bytes captured in A1; reconstructs six-spin degree-inner fields; does not rerun the YSpec ODE.",
+      "retained_conventions": [
+        "Hermitian-dual H^H",
+        "kernel Vs",
+        "one-sided lift"
+      ]
+    },
+    "A3": {
+      "job_elapsed_s": 1.3919,
+      "gate_s": 0.3119,
+      "grid": "L3, NQ8, refinement 0.05; exact 7 x 13 Gauss-Legendre angular grid (91 angles)",
+      "finite_difference": -106.02358956682346,
+      "common_reconstruction": -106.0235902496433,
+      "frozen_ds": -106.02359024964328,
+      "finite_difference_relative_difference": 6.440263374429668e-09,
+      "existing_gate": 0.0002,
+      "common_vs_frozen_ds_relative_difference": 2.6806967547016854e-16,
+      "gravity_max_abs_nondimensional_error": 1.9984014443252818e-15,
+      "frozen_time_shift_identity": 0.9999999999999994,
+      "summary_sha256": "cde8d06d971fe361cb6e85918f7f626d3b8da0474984193f9113446e8a025060"
+    },
+    "A4": {
+      "supervisor_elapsed_s": 7.031853,
+      "driver_elapsed_s": 6.738440032,
+      "bins": 35,
+      "true_forward_route_calls": 35,
+      "forward_rhs_columns": 42035,
+      "sparse_factorizations": 14035,
+      "unit_and_weighted_adjoint_rhs_columns": 0,
+      "receiver_qr_scopes": 0,
+      "receiver_relative_l2": 0,
+      "receiver_max_abs": 0,
+      "profile_sha256": "20152405a56c126d927c928636d3b4beee05af99a331a0478730cd01aca3f030",
+      "components_csv_sha256": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+      "summary_sha256": "dcba16d9dad1df3d97053ef842cd5a28a5f913d63d52fab141d4fb9433a6f06d",
+      "parallel_workers": 8,
+      "parallel_domain": "frequency-parallel"
+    },
+    "A5": {
+      "workers": 8,
+      "decomposition": "standard degree-parallel, distinct from A4 frequency-parallel",
+      "nskip": 10,
+      "submodes": {
+        "untruncated": {
+          "instrumented_elapsed_s": 5.810655743,
+          "receiver_relative_l2_vs_a4": 3.852305455167019e-14,
+          "receiver_max_abs": 1.1101242534447035e-19,
+          "factorizations": 14035,
+          "forward_rhs_columns": 42035,
+          "adjoint_rhs_columns": 0
+        },
+        "existing_truncated_control": {
+          "instrumented_elapsed_s": 2.534416402,
+          "receiver_relative_l2_vs_a4": 6.583748037733575e-11,
+          "receiver_max_abs": 3.478010427127744e-16,
+          "factorizations": 14035,
+          "forward_rhs_columns": 42035,
+          "adjoint_rhs_columns": 0,
+          "adopted": false
+        }
+      },
+      "cut_index_rows_per_mode": 14035,
+      "cut_index_keys_unique": true,
+      "elapsed_includes_cut_capture_allocation": true,
+      "elapsed_includes_cut_csv_serialization": false,
+      "master_region_wall_s": {
+        "untruncated": {
+          "radial": 0.058447919,
+          "toroidal": 0.366799303,
+          "spheroidal": 5.383774316
+        },
+        "truncated": {
+          "radial": 0.027383698,
+          "toroidal": 0.198314432,
+          "spheroidal": 2.307765341
+        }
+      },
+      "worker_region_elapsed_sum_s_across_8_workers": {
+        "untruncated": {
+          "radial": 0.37915527,
+          "toroidal": 2.911753013,
+          "spheroidal": 43.069683599
+        },
+        "truncated": {
+          "radial": 0.218652416,
+          "toroidal": 1.586154703,
+          "spheroidal": 18.461695385
+        },
+        "meaning": "Summed worker elapsed durations, not CPU seconds or master wall time; inclusive nested child rows overlap and must not be summed into a total."
+      },
+      "top_worker_exclusive_child_scope_elapsed_sum_s": {
+        "factorization": {
+          "untruncated": 23.464193618,
+          "truncated": 9.864073263
+        },
+        "forward_solve": {
+          "untruncated": 6.483968938,
+          "truncated": 2.526026476
+        },
+        "spheroidal_dynamic_operator_assembly": {
+          "untruncated": 6.158802724,
+          "truncated": 2.604959716
+        },
+        "equilibration_and_scaling": {
+          "untruncated": 5.989374496,
+          "truncated": 2.600666563
+        }
+      },
+      "summary_sha256": "5f1beaaa394fc5f2bb0721a8e896cc0f8e08160c29548707e1299abb481bcb15",
+      "gate_sha256": "d3bfb3a4fb0ce81083a91fffb3b1c2ef2bfc85c5257a2911b8bae58815a59ffd",
+      "profile_sha256": {
+        "untruncated": "e0bde585e38adf780219ed47e44bc89a3bb928b1fb97395b9499fbef382d1bd8",
+        "truncated": "c3ae6c691b686afe9235fff13df0840563ca6bfa74fadadd67dc9636825de974"
+      },
+      "components_csv_sha256": {
+        "untruncated": "265c5493c3e0abc8cc9546d87482d218cd174d4e599347772d8b52a36fe01c58",
+        "truncated": "8adc1d9f5b698853e71dfe8f724c7f6f6a4952dadfe5a2977e0f6b8230034add"
+      },
+      "cut_indices_csv_sha256": {
+        "untruncated": "a98d17380b2abefacbfd6dc287ff2fab19c5a5c436481050f377d4a60fa2753a",
+        "truncated": "0c23f33235011e06b27d06c8222482cdb20ce6179ac124ae634c52fc1dcf5455"
+      }
+    }
+  },
+  "resources": {
+    "build_peak_rss_gib": 2.2575,
+    "build_peak_threads": 6,
+    "build_elapsed_s": 151.176509,
+    "numerical_peak_threads": 9,
+    "numerical_peak_rss_gib_by_job": {
+      "A1": 0.4541,
+      "A2": 0.3808,
+      "A3": 0.0419,
+      "A4": 0.5659,
+      "A5": 0.1419
+    },
+    "execution": "Tunya jobs launched with nohup",
+    "configured_caps": {
+      "numerical_threads_per_job": 20,
+      "build_threads_per_job": 8,
+      "aggregate_threads": 50,
+      "solver_workers": 8,
+      "inner_eigen_and_library_threads": 1,
+      "a1_a3_inner_work": "serial",
+      "max_parallel_forward_workers": 8
+    },
+    "enforcement": "USER_SPACE_SESSION_WATCHDOG",
+    "enforcement_note": "User-space watchdog; not kernel aggregate accounting."
+  },
+  "limitations": [
+    "A2 timings are post-radial harness timings, not production tensor timing or end-to-end speedup.",
+    "Separate along-fluid/adjoint subset ratios are diagnostics and are not independently thresholded; all fluid rows remain included in the approved pooled aggregate acceptance. They are reported in tagged Hermitian-dual strain convention, not physical SI strain.",
+    "A4 and A5 use different parallel decompositions and instrumented builds; their elapsed times are not a like-for-like speed comparison.",
+    "The existing truncated A5 policy is a control only and was not adopted.",
+    "No Phase B work or production integration was performed.",
+    "No new-backend equivalence claim is made."
+  ],
+  "source_files_sha256": {
+    "candidates/phase-a-reconstruction-v1/phase_a_driver.cpp": "301b9bbc9825a9f6b21a30fcfea48b24c7b5c857fc5d98af44d1e9bbb6626ce9",
+    "candidates/phase-a-reconstruction-v1/phase_a_reconstruction.hpp": "3644be9b75ce439e7f2e94c06850cdf81e96f0d832bfe77aba376c88c7911fbb",
+    "candidates/phase-a-reconstruction-v1/phase_a_standard_forward.hpp": "2c33797e91eac442feedbc54ae37adb82ebeb5ebb816b262cd5d3094c1b3296c",
+    "candidates/phase-a-reconstruction-v1/phase_a_contract_test.cpp": "32d02e53dd7d9e034ee774d8fe469f981957b2c9c3cde2faa09b402122405beb",
+    "candidates/phase-a-reconstruction-v1/engine_headers/Windowed3DFields.h": "5ad3ea5197d0b2880b56c9a4292bcdec67983d3e412638e18004bc2c2c7745e7"
+  },
+  "artifact_paths": {
+    "A1_active_bins_csv": "receipts/phase-a-v3-controls-failed/A1-native-accepted-adjoint-radial-packets/data/active_bins.csv",
+    "A1_packet_metadata_json": "receipts/phase-a-v3-controls-failed/A1-native-accepted-adjoint-radial-packets/data/packet-metadata.json",
+    "A2_summary_json": "receipts/phase-a-v3-controls-failed/A2-native-same-packet-reconstruction-replay/data/a2-summary.json",
+    "A2_kernel_products_csv": "receipts/phase-a-v3-controls-failed/A2-native-same-packet-reconstruction-replay/data/a2-kernel-products.csv",
+    "A2_field_comparison_csv": "remote-only raw artifact in v3 task; not present in collected local snapshot",
+    "A3_summary_json": "receipts/phase-a-v3-controls-failed/A3-native-L3-central-fd-kernel/data/a3-summary.json",
+    "A4_summary_json": "receipts/phase-a-v3-controls-failed/A4-profiled-true-forward-only-35bin-control/data/a4-summary.json",
+    "A4_profile_json": "receipts/phase-a-v3-controls-failed/A4-profiled-true-forward-only-35bin-control/data/a4-profile.json",
+    "A4_components_csv": "receipts/phase-a-v3-controls-failed/A4-profiled-true-forward-only-35bin-control/data/a4-components.csv",
+    "A5_summary_json": "receipts/phase-a-v4-controls-completed/A5-profiled-standard-forward-two-submodes/data/a5-summary.json",
+    "A5_untruncated_profile_json": "receipts/phase-a-v4-controls-completed/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-profile.json",
+    "A5_truncated_profile_json": "receipts/phase-a-v4-controls-completed/A5-profiled-standard-forward-two-submodes/data/a5-truncated-profile.json",
+    "A5_untruncated_components_csv": "receipts/phase-a-v4-controls-completed/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-components.csv",
+    "A5_truncated_components_csv": "receipts/phase-a-v4-controls-completed/A5-profiled-standard-forward-two-submodes/data/a5-truncated-components.csv",
+    "A5_untruncated_cut_indices_csv": "receipts/phase-a-v4-controls-completed/A5-profiled-standard-forward-two-submodes/data/a5-untruncated-cut-indices.csv",
+    "A5_truncated_cut_indices_csv": "receipts/phase-a-v4-controls-completed/A5-profiled-standard-forward-two-submodes/data/a5-truncated-cut-indices.csv",
+    "v4_snapshot_verification": "receipts/phase-a-v4-controls-completed/snapshot-verification.json",
+    "v4_campaign_state": "receipts/phase-a-v4-controls-completed/state.json",
+    "v3_campaign_state": "receipts/phase-a-v3-controls-failed/state.json",
+    "build_receipt_state": "receipts/phase-a-v1-build-completed/state.json"
+  }
+}

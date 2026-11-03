@@ -1,0 +1,48 @@
+Angular L400/L600/L800 study — independent AFTER-results review, 2026-11-03
+Reviewer: Sol6.1 high /root/radial_review
+
+Disposition: PASS for execution, artifact integrity, independent numerical recomputation and the bounded scientific conclusion below. The predeclared 0.1% operational convergence criteria FAIL: no angular cutoff is certified, and the high-L DSpec radial reference condition also fails. This is a completed, informative negative convergence study, not a 0.1% accuracy certificate. Final report claims still require their separate review.
+
+Exact evidence:
+Producer plan 33ebc8c0e9012a3239d78c7d9271bf985488b7d23ac75de03f4d8baf4e1d0207
+Accepted native binary d7ffb6cbd3138b922831915906c91fb199e7a17adf103131572318ad1e2631aa
+Producer raw archive 1597b8ead895e101f126b60fcc7fee952e5cde13cac9d984e9dd3bd385f10779
+Producer completed state and immutable snapshot 35ac18a3b42d13c3ae2f524004bda3a8fcbffe32414bfb7e34ed19b127ef603f
+Finalization receipt 12ddb034f14719eabc7e6462ed9205e85b2a7a7fcd06e6fca051b2ec58efaa63
+Terminal plan 584f9c947da3aa9a26dd1285c9664e44725b2a0bdeca41884565fad322535f62
+Executed checker 9fff18710bc7b221f389d422f045a5d887f28ce92b34e515f7c2d5b13995ffe7
+Executed helper 610271198745973b654f2154395bde7aac7b034ca39cd47b0238837d3a982c17
+Terminal archive b3a9ac919df95772eab279d6feef6defc5146402e368dfdaa4ed926ed5773eb1
+Terminal manifest de33f67dc09ba2dd9c170a9a21259665ddd39b08965a6a276b8cb53633f1d596
+Terminal state 13addeafd3b18488a0db91ebc0ba41e4b80d556de4af25ecb0c4b8120d194176
+Checker report c9a162ad9dd4d05b86a0e7b8515e427f10ba18ee7d23510e9c6af695c789892c
+Independent primary metrics reviews/angular-independent-raw-metrics-20261103.json 0e03770ade5be6a3da38e17e4a6434d4896506def848909ae1c41814eeee36f5
+Independent supplementary metrics reviews/angular-independent-supplementary-metrics-20261103.json cd5764633dddbb08967e4864a3555a5ef3c0f324f8ca759dc0ddf7364d19dfc8
+
+Execution and provenance:
+All142 producer manifest files independently rehashed by this reviewer:132 declared data outputs,8 logs and2 identical completed-state copies. All eight exact planned jobs completed rc0, unchanged input maps before/after, no failure reasons and verified cleanup. The separate checker completed rc0 with all241 own input hashes identical before/after, clean cleanup, one hash-verified report and log. All8 terminal manifest members, executed script/helper/plan bytes and immutable producer snapshot independently rehashed. Required waveform/N/P/far-cohort/depth L2/max ratios independently recomputed without importing the checker match its report to floating-point rounding. All16 raw native section arrays were independently scanned finite. All168 fixed probes,32 computed unit-adjoint bins and3 explicitly skipped bins7/8/41 remain covered; skipped values are placeholders, not physical zero field evidence. Selected raw strain snapshots are only bins9/25, not an all-frequency field proof.
+The earlier package destination mismatch, six duplicate noncanonical declarations and two wrong external build paths were caught before NUM; old files/failed receipts remain preserved. Terminal-v2 corrects only the two actual build paths. Exclusive recovery preserves the staged prior config/tools. Later raw-collector path/list failures did not rerun or modify physical jobs/checker. No numerical tolerance or acceptance criterion was changed after results.
+
+Measured angular behavior (percent; higher cutoff is reference):
+DSpec increment         tapered waveform   normalization   P band L2   far89 kernel L2
+300 -> 400             0.346494           0.548047        0.319306    170.041821
+400 -> 600             0.123635           0.190783        0.111046    168.475473
+600 -> 800             0.251811           0.385135        0.225454    137.884259
+400 versus 800         0.128427           0.195087        0.114180     78.362329
+The waveform norm is exactly ||w*(u_lower-u_higher)||2/||w*u_higher||2 over the frozen101-point measurement window; unweighted99-point/whole-trace diagnostics are separate. For600->800 the far89 reference norm is8.583442258074245e-14, raw L2 difference1.183521575505845e-13, reference maximum5.574729210948395e-14 and maximum difference7.753693672784962e-14; thus large relative changes are accompanied by explicit absolute scales, not denominator floors. All eight depth strata and cohort-maximum scales are retained, including failures.
+YSpec independently shows essentially the same angular instability:600->800 tapered waveform0.251844%, normalization0.385184%, P0.225483%, far89 kernel137.855382%. Its radial ODE tolerance is fixed1e-7; its SEM h/NQ labels describe output sampling, not its ODE discretization. DSpec and YSpec agreement at the same cutoff does not establish cutoff convergence.
+L400 fails its two successive higher increments and comparison to800. L600 also fails its measured increment and would lack two higher increments even if that metric passed. L800 is an endpoint, not a certified reference cutoff. No monotone tail/extrapolation or universal cutoff follows.
+
+High-L radial condition:
+At L800, NQ6->10 tapered waveform0.0000635358%, normalization0.0000107165% and P0.0000621279% are small, but far89 kernels change0.787197% and the50km stratum L2 changes2.112261%. NQ8->10 aggregate far89 L2 is0.0383698%, yet the REQUIRED50km stratum L2 is0.187392% and its max scale0.185817%, both exceeding0.1%. Its raw stratum reference norm8.21775145510004e-15 and raw error1.5399427247178344e-17 remain available. All6->8,6->10,8->10 named-metric control flags are false. Therefore the precise predeclared contingency requiring ALL8->10 metrics to pass is NOT triggered; no L400/L600 NQ10 extension or mixed-order angular ladder is authorized by these results. Earlier low-L NQ10 comparison evidence cannot be silently inherited at L800 for this pointwise cohort.
+
+Attribution and diagnostics:
+Keeping DSpec P800 fixed gives600->800 far89 change137.835946%, versus native own-P137.884259%. The observed large product change persists when weights are fixed; this is a counterfactual from DSpec unit products, not YSpec unit-field evidence or a full causal decomposition.
+Same-L800 DSpec versus YSpec far89 diagnostic error (YSpec reference) improves from0.788058% at NQ6 to0.0387090% at NQ8 and0.00104297% at NQ10. This supports radial-order sensitivity in DSpec samples but is not a replacement for the failed independent NQ8->10 stratum criterion, nor proof of either method's exact continuum solution.
+Receiver-spectrum increments are additive output tails; DSpec600->800 full35-bin relative spectrum increment is30.404819%, whereas the tapered-window waveform change is0.251811%. The filter and time window strongly affect what contribution is operationally relevant. Unit-product differences are quadratic complete-cutoff changes with cross terms. Bins9/25 far89 strain-vector comparisons also remain large; these are finite component samples, not H1 energy norms.
+All sparse68/10 section raw extrema, near-source/receiver points, source-shell traces and material-interface traces remain diagnostics. The28 YSpec source-shell traces lack the matched artificial-split one-sided contract and remain unexposed in fixed probes. Radial source-shell distributions can affect all angular positions, even outside exclusion balls; do not relabel those as ordinary off-source interior samples. The primary89-point cohort excludes them. No finite ladder proves divergence to infinity, absence of all implementation errors, global pointwise boundedness, a full3D kernel norm or H1 convergence. The independently valid high-L weak/3D directional action remains an explicitly pre-result unsupported API gap; no section/probe sum substitutes for it.
+
+Resources and boundary:
+Actual producer launch receipt510d8107bf090d27c98c75fd6657103f860106af77fb4bf784f5d18fe5b3f94f independently verified PID1379322/start76374873, registered16GiB/12-task/swap0/CPU800% service under separate40GB slice, fresh valid armed MONITORING guardian and zero OOM/max events. Eight job user-space peaks are9 threads, at most6.7937GiB RSS (NQ10), within the20-thread watchdog/16GiB job limits; these are user-space observations, not global kernel peak measurements. Actual checker launch receipt7fa80aada5f7a0a584f062e3d3fc5dd511fd0dfde56d56d91e6cb898b26ad2cd proves separate8GiB/12-task service; own peak2 threads/.0663GiB and clean terminal receipts verified. Shared900GB policy/825pause/875urgent registration remains unchanged.
+Maximum formula-derived geometry27,564,576B (<32MiB), combined cache/temporary44,811,512B including12,848B Wigner recurrence tables (<64MiB), separate all-bin section products15,156,960B (<32MiB) at actual347 sides. These counters are accounting formulas, not a claim of measured allocator peak or total RSS.
+Stop after the exact eight-job ladder. The bounded study is valid evidence of non-stabilization under the stated criteria for this2/4/8/10mHz filter and1000..1200s/40s-taper window. It does not establish a cutoff for other frequency bands/windows. No additional physical jobs, solver/source/normalization changes, optimization or production integration are approved by this review.

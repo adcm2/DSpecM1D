@@ -1,0 +1,52 @@
+Phase A v4 A4 regate — targeted Sol6.1-high review,2026-10-31
+Read-only source/receipt audit. No tests/builds/calculations invoked by reviewer.
+
+Zero-counter semantics PASS
+Frozen source increments full_weighted_modal_adjoint_rhs_columns only inside
+branches skipped by forwardOnly=true. The actual A4 call uses true,true and
+therefore legitimately omits this counter. A checker default of0 for THIS absent
+counter is correct; nonzero values must still fail. Keep true_forward_only_route
+35, actual forward RHS work, explicit unit/weighted zero, finite/schema/spectrum
+gates and forbidden HH/receiver-QR scope checks. No engine/physics/binary change.
+Existing unit fixture should cover omitted-zero and explicit1-rejection in the
+same test. No additional numerical/test-process inventory required.
+
+Completed A4 reuse qualification PASS — fresh Tunya read
+Prior root:
+ /space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-a-v3-controls/continuation/phase-a-v3-controls
+Failed terminal state SHA:
+ e44abdaddc02aa9675407fa85a8a22b9cc8b47499fe94fe24d65089eca9f759f
+Plan SHA15259c318cc8c0770e3ac31736e05d6906e795fb165565e18a3c437335eed42c.
+Exact11jobs: source-scope,build-receipt,tiny,A1,A1gate,A2,A2gate,A3,A3gate,A4,
+A4gate. First10 completedrc0; last checker failedrc1. No A5 job started.
+
+Specific reusable job A4-profiled-true-forward-only-35bin-control completedrc0,
+inputs_before=after,inputs_unchanged=true,cleanup verified_gone, no failure reasons.
+Command SHA7fbcf676204cb29fa31e0ddccaa652f7dbd54fd0fbb8ebef7737ff726cbd478c.
+Profile binary SHA f6d52ca5439a560cedf0083a2241993784b477c37eeb7e191791593a6c3a7020
+command receipt SHA c0205ef7b769a4a053e9cf7c0566bc126646b9b189ac35dc538127fec78d28c5.
+Shared library/case/model/accepted reference hashes match approved inputs.
+All four actual output hashes and actual numerical log hash match state:
+ components da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a
+ profile20152405a56c126d927c928636d3b4beee05af99a331a0478730cd01aca3f030
+ summarydcba16d9dad1df3d97053ef842cd5a28a5f913d63d52fab141d4fb9433a6f06d
+ parameterse9b01ee3330a6fbfd869547ef1800b2ad65cf0838056f8e0611b9602af28d614
+ numerical log4e279b23c61a5b2c09da615ac680db130d4d7baddd8311eb72ccd30dac0f0f41.
+Components hash is byte-identical to accepted F8a output. Actual raw counters:
+true_forward35,forward RHS42035,unit0,weighted0,full-weighted-modal absent.
+
+Failed checker inputs also unchanged and cleanup verified_gone. Its actual log
+SHA9e77a6cd1c52db643a7975248bc1808bfb689fe7032a2e25dd40197bd058a81f
+matches state and shows only ValueError:A4 profiler call/RHS counters failed.
+Thus the scientific process completed and later checking alone failed.
+
+Continuation boundary
+Fresh v4 must pin this exact failed state/plan/successful A4 receipt+artifacts/
+failure log and retain the exact stopped-at-next-checker job inventory. Reuse
+only this specifically qualified completed A4 process; preserve failedv3 state
+and logs. Keep global external-campaign completed-status rules unchanged.
+Read-only corrected A4 regate must pass before the original remaining A5
+numerical batch/two declared submodes and its gate. No A1–A4 numerical rerun,
+rebuild, source change, extra scientific submode or extra benchmark. Parent
+reviews final v4 pins/resources and owns release; this is not global permission
+to reuse arbitrary outputs of a failed campaign.

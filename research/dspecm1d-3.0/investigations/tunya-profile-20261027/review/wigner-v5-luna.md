@@ -1,0 +1,28 @@
+# Independent fresh Luna review: DSpec Wigner optimization v5
+
+**Scope:** read-only review of the exact `source-v4-frozen` → `source-v5-frozen` delta, source/build manifests, pole receiver identity and signs, angular-cache byte estimates, and added profiling scopes. No source edits, builds, or numerical/Earth runs were performed.
+
+## Decision
+
+I found no source-level blocker in the narrow v5 patch. It preserves v4 and is ready to transfer to the authorized Tunya build, numeric-validation, and profiling phase. This is a **conditional implementation review**, not a numerical-equivalence pass or a speedup claim: no DSpec v5 numeric gate exists yet.
+
+Both frozen source manifests and the v5 binary manifest pass `sha256sum -c`; the two v5 binaries named by that manifest are present. The v4 source manifest also verifies. The recorded v5 command vectors build both profiled and `MATHPROFILE_DISABLED` variants from `source-v5-frozen`, with one OpenMP and OpenBLAS thread; this review did not rerun those commands. See `dspec/freeze-v5-build.json`, `dspec/source-v5-frozen.sha256`, and `dspec/freeze-v5.sha256`.
+
+## Source findings
+
+The source diff is confined to `engine_headers/Windowed3DFields.h`: it replaces the angular-memory estimate at actual Wigner allocation/cache sites, introduces separate Wigner and coefficient payload estimates, replaces the per-call pole Wigner construction with a closed form, and adds three nested receiver setup/mixing timers. No other source file differs between the frozen v4 and v5 trees.
+
+At `source-v5-frozen/engine_headers/Windowed3DFields.h:539-556`, the receiver identity is consistent with the existing accessor at `:454-457`: GSHTrans returns the normalized `sqrt((2l+1)/(4π)) d^l_{n,m}(θ) exp(i m φ)` convention, and at θ=φ=0, `d^l_{n,m}=δ_nm`. The new `norm` and `m=-1,0,+1` indicators therefore reproduce `n=0,-1,+1`, respectively. The spheroidal and toroidal component combinations at `:550-553` are unchanged from v4 `:539-542`, including the `-i` in the spheroidal third component and `+i` in the toroidal second component. Degree zero correctly reduces to one column, with zero tangential components.
+
+The cache count at `:436-452` now uses the actual `mMax=min(2,L)` and `nMax=min(2,L)` bounds, summing `GSHIndices<All>(L,mMax,n).Size()` over stored `n` blocks. That matches the double payload allocated by `GSHTrans::Wigner` for each angle; the additional `2*nMax+1` `size_t` offsets account for its per-angle offset table. The coefficient-table estimate matches its allocated dense vector, including padded zero slots. The 32 MiB sampling-plan counter and byte-cap checks account for payload estimates, not allocator/map/shared-pointer overhead or whole-process peak RSS. The existing header comment and result metadata correctly avoid calling this a process-memory estimate. At very high L, the one-angle minimum can exceed the 32 MiB chunk target; that target is not a hard allocation ceiling, so report actual chunk dimensions and memory evidence in the profiling phase.
+
+The new scopes at `:1912-1924` separate receiver closed-form materialization, local weight construction, and basis mixing/unit-adjoint projection. They are in the constructor loop over receivers and pole blocks, outside point-sampling loops. `stage-to-math-map.json` was not updated with these three names, so add those mappings or explicitly document their absence in the run summary for clear audit interpretation. This is a reporting gap, not a numerical blocker.
+
+## Required gates before claiming v5 equivalence or performance
+
+1. **Pole identity micro-gate:** compare the v4 Wigner path and v5 closed form for both spheroidal and toroidal families, degrees 0–3 and representative larger degrees (including the intended high-degree test point), every receiver column, all three components. Require finite results; matching diagonal normalization to within 8 ulps; and forbidden pole entries no larger than `5e-15` times the maximum basis entry in the v4 route. Check the complex phase/sign entries individually, not only norms.
+2. **Full L=3 end-to-end gate:** from identical frozen inputs and settings, compare v4 and v5 forward spectra, complete native-grid kernel/contact outputs where enabled, energy and `q·P(B raw)/(2E)` checks, and metadata/layout. Require every output finite and matching dimensions/layout. For nonzero arrays, use `max_abs(v5-v4)/max_abs(v4) <= 5e-13`; for zero or near-zero arrays, additionally require `max_abs(v5-v4) <= 5e-14 * max(1, max_abs(v4))`. Require the energy-adjoint identity to meet the already accepted scale-aware tolerance, rather than relaxing it for v5.
+3. **Profile instrumentation parity:** under the same executable inputs, compare profiled and `MATHPROFILE_DISABLED` numerical output bytes exactly. Confirm all three new scope call counts are expected and their times are nested/accounted without being added twice to total time. Record the new scope names in the stage map or run metadata.
+4. **Bounded high-degree validation only after gates 1–3 pass:** run the authorized L=128/384/1536 probes with full resource preflight, then serial same-CPU native/profile controls for any performance comparison. Preserve per-run command, hashes, stdout/stderr, memory and disk evidence. Do not infer physical angular convergence or advertise a speedup from the low-degree parity gate or code inspection.
+
+**Current blocker:** no v5 numeric outputs or parity evidence are saved, so high-degree execution and performance claims must wait for gates 1–3. This does not block transferring the frozen implementation to Tunya for that validation. The existing `physical-profile/CHECKPOINT.md:23-27,63` states the same order and limits.

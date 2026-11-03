@@ -1,0 +1,1827 @@
+{
+  "verdict": "PASS for completed bounded execution and internal parity; original-global scientific gate remains FAIL",
+  "issues": [],
+  "integrity": {
+    "global": {
+      "state_sha256": "17c15c06b5cce5905a96c7c5df9618ad97dbd6233e2cc5e707a7d8451652513a",
+      "manifest_state_hash_match": true,
+      "locally_verified_files": 78,
+      "uncollected_binary_payloads": [
+        "global-generated-t32-l3/data/kernel.bin",
+        "global-generated-t32-l3/data/pole_response_spool.bin",
+        "global-stored-t32-l3/data/kernel.bin",
+        "global-stored-t32-l3/data/pole_response_spool.bin",
+        "global-generated-t32-l12/data/kernel.bin",
+        "global-generated-t32-l12/data/pole_response_spool.bin",
+        "global-stored-t32-l12/data/kernel.bin",
+        "global-stored-t32-l12/data/pole_response_spool.bin",
+        "global-generated-t32-l128/data/kernel.bin",
+        "global-generated-t32-l128/data/pole_response_spool.bin",
+        "global-stored-t32-l128/data/kernel.bin",
+        "global-stored-t32-l128/data/pole_response_spool.bin",
+        "global-generated-t32-l384/data/kernel.bin",
+        "global-generated-t32-l384/data/pole_response_spool.bin",
+        "global-stored-t32-l384/data/kernel.bin",
+        "global-stored-t32-l384/data/pole_response_spool.bin",
+        "global-generated-t32-l1536/data/kernel.bin",
+        "global-generated-t32-l1536/data/pole_response_spool.bin",
+        "global-stored-t32-l1536/data/kernel.bin",
+        "global-stored-t32-l1536/data/pole_response_spool.bin"
+      ],
+      "hash_mismatches": [],
+      "job_count": 19,
+      "status": "completed",
+      "thread_cap": 40
+    },
+    "post": {
+      "state_sha256": "748773b9126b3ed6c57ae371892ea9380ebc67cc8b455c681cede742197b8f6d",
+      "manifest_state_hash_match": true,
+      "locally_verified_files": 53,
+      "uncollected_binary_payloads": [
+        "paired-v4-l128/data/kernel_probe.bin",
+        "paired-v5-l128/data/kernel_probe.bin",
+        "paired-v4-l384/data/kernel_probe.bin",
+        "paired-v5-l384/data/kernel_probe.bin"
+      ],
+      "hash_mismatches": [],
+      "job_count": 10,
+      "status": "completed",
+      "thread_cap": 4
+    }
+  },
+  "internal_exact_gates": [
+    {
+      "job": "check-global-generated-t32-l3",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 8,
+          "selected_side_indices": [
+            0,
+            28,
+            59,
+            100,
+            149,
+            154,
+            172,
+            173
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 8,
+          "selected_side_indices": [
+            0,
+            28,
+            59,
+            100,
+            149,
+            154,
+            172,
+            173
+          ]
+        }
+      ]
+    },
+    {
+      "job": "check-global-stored-t32-l3",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 8,
+          "selected_side_indices": [
+            0,
+            28,
+            59,
+            100,
+            149,
+            154,
+            172,
+            173
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "stored",
+          "selected_side_count": 8,
+          "selected_side_indices": [
+            0,
+            28,
+            59,
+            100,
+            149,
+            154,
+            172,
+            173
+          ]
+        }
+      ]
+    },
+    {
+      "job": "check-global-generated-t32-l12",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 8,
+          "selected_side_indices": [
+            0,
+            28,
+            59,
+            100,
+            149,
+            154,
+            172,
+            173
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 8,
+          "selected_side_indices": [
+            0,
+            28,
+            59,
+            100,
+            149,
+            154,
+            172,
+            173
+          ]
+        }
+      ]
+    },
+    {
+      "job": "check-global-stored-t32-l12",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 8,
+          "selected_side_indices": [
+            0,
+            28,
+            59,
+            100,
+            149,
+            154,
+            172,
+            173
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "stored",
+          "selected_side_count": 8,
+          "selected_side_indices": [
+            0,
+            28,
+            59,
+            100,
+            149,
+            154,
+            172,
+            173
+          ]
+        }
+      ]
+    },
+    {
+      "job": "check-global-generated-t32-l128",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 2,
+          "selected_side_indices": [
+            59,
+            100
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 2,
+          "selected_side_indices": [
+            59,
+            100
+          ]
+        }
+      ]
+    },
+    {
+      "job": "check-global-stored-t32-l128",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 2,
+          "selected_side_indices": [
+            59,
+            100
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "stored",
+          "selected_side_count": 2,
+          "selected_side_indices": [
+            59,
+            100
+          ]
+        }
+      ]
+    },
+    {
+      "job": "check-global-generated-t32-l384",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 2,
+          "selected_side_indices": [
+            59,
+            100
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 2,
+          "selected_side_indices": [
+            59,
+            100
+          ]
+        }
+      ]
+    },
+    {
+      "job": "check-global-stored-t32-l384",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 2,
+          "selected_side_indices": [
+            59,
+            100
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "stored",
+          "selected_side_count": 2,
+          "selected_side_indices": [
+            59,
+            100
+          ]
+        }
+      ]
+    },
+    {
+      "job": "check-global-stored-t32-l1536",
+      "passed": true,
+      "byte_exact_files": {
+        "trace.csv": true,
+        "spectrum.csv": true,
+        "kernel.bin": true
+      },
+      "numeric_max_abs_difference": 0.0,
+      "energy_qdot_exact": {
+        "energy_m2_s": true,
+        "energy_adjoint_qdotp": true
+      },
+      "invocations": [
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "generated",
+          "selected_side_count": 1,
+          "selected_side_indices": [
+            59
+          ]
+        },
+        {
+          "requested_workers": 1,
+          "actual_workers": 1,
+          "storage_mode": "stored",
+          "selected_side_count": 1,
+          "selected_side_indices": [
+            59
+          ]
+        }
+      ]
+    }
+  ],
+  "paired_exact_gates": [
+    {
+      "job": "check-paired-v4-l128",
+      "passed": true
+    },
+    {
+      "job": "check-paired-v4-l384",
+      "passed": true
+    },
+    {
+      "job": "check-paired-v5-l128",
+      "passed": true
+    },
+    {
+      "job": "check-paired-v5-l384",
+      "passed": true
+    }
+  ],
+  "global_rows": [
+    {
+      "job": "global-generated-t32-l3",
+      "degree": 3,
+      "storage": "generated",
+      "side_indices": [
+        0,
+        28,
+        59,
+        100,
+        149,
+        154,
+        172,
+        173
+      ],
+      "angular_points_per_side": 91,
+      "wall_s": 21.938508660998195,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 0.0369,
+      "spool_bytes": 25053951,
+      "shared_wigner_table_bytes": 0,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 0.683862104,
+        "worker_execution_wall_s": 17.644848359,
+        "frequency_side_transforms_executed": 416,
+        "frequency_side_exact_zero_mixing_skipped": 8,
+        "transform_channels_executed": 3432,
+        "fluid_exact_zero_channels_skipped": 1560,
+        "total_wall_s": 19.013124001,
+        "worker_elapsed_sum_s": 17.640115915,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.0956535430000001,
+          "coefficient_rotation_layout": 0.023281758999999996,
+          "gsh_inverse_fft": 17.51703145099999,
+          "point_kernel_contractions": 0.001878418,
+          "frequency_accumulation": 0.00018226699999999998,
+          "output_writes": 0.0006308399999999999
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 17.640115915,
+            "spool_reads_s": 0.0956535430000001,
+            "coefficient_rotation_layout_s": 0.023281758999999996,
+            "gsh_inverse_fft_s": 17.51703145099999,
+            "point_kernel_contractions_s": 0.001878418,
+            "transform_channels_executed": 3432,
+            "fluid_exact_zero_channels_skipped": 1560,
+            "frequency_accumulation_s": 0.00018226699999999998,
+            "output_writes_s": 0.0006308399999999999
+          }
+        ]
+      },
+      "serial_grid_setup_s": 0.683862104,
+      "consumer_total_s": 19.013124001,
+      "consumer_setup_worker_coverage_gap_s": 0.6844135380000012,
+      "worker_stage_coverage_gap_s": 0.0014576370000085603,
+      "profile_exclusive_closure_residual_s": -3.552713678800501e-15,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 21.688752701000002,
+          "exclusive_s": 19.023050666,
+          "calls": 1
+        },
+        "pole_frame_sampling_total": {
+          "inclusive_s": 1.9962810380000002,
+          "exclusive_s": 0.575156721,
+          "calls": 159
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 0.606851967,
+          "exclusive_s": 0.38064609200000005,
+          "calls": 159
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 0.642761843,
+          "exclusive_s": 0.37659482600000005,
+          "calls": 159
+        },
+        "packed_Wigner_d_table_build": {
+          "inclusive_s": 0.327239701,
+          "exclusive_s": 0.327239701,
+          "calls": 318
+        },
+        "radial_l0_sampling_and_interpolation": {
+          "inclusive_s": 0.171510507,
+          "exclusive_s": 0.171510507,
+          "calls": 159
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 0.168957253,
+          "exclusive_s": 0.168957253,
+          "calls": 371
+        },
+        "radial_l0_source_and_adjoint_branch": {
+          "inclusive_s": 0.175069772,
+          "exclusive_s": 0.142516054,
+          "calls": 53
+        }
+      }
+    },
+    {
+      "job": "global-stored-t32-l3",
+      "degree": 3,
+      "storage": "stored",
+      "side_indices": [
+        0,
+        28,
+        59,
+        100,
+        149,
+        154,
+        172,
+        173
+      ],
+      "angular_points_per_side": 91,
+      "wall_s": 12.205139388999669,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 0.0373,
+      "spool_bytes": 25053951,
+      "shared_wigner_table_bytes": 3920,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 0.69885913,
+        "worker_execution_wall_s": 5.814050929,
+        "frequency_side_transforms_executed": 416,
+        "frequency_side_exact_zero_mixing_skipped": 8,
+        "transform_channels_executed": 3432,
+        "fluid_exact_zero_channels_skipped": 1560,
+        "total_wall_s": 7.210823448,
+        "worker_elapsed_sum_s": 5.813609619,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.06114966899999999,
+          "coefficient_rotation_layout": 0.08709779099999986,
+          "gsh_inverse_fft": 5.662773699999997,
+          "point_kernel_contractions": 0.0012871390000000005,
+          "frequency_accumulation": 0.0001265549999999991,
+          "output_writes": 0.000225604
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 5.813609619,
+            "spool_reads_s": 0.06114966899999999,
+            "coefficient_rotation_layout_s": 0.08709779099999986,
+            "gsh_inverse_fft_s": 5.662773699999997,
+            "point_kernel_contractions_s": 0.0012871390000000005,
+            "transform_channels_executed": 3432,
+            "fluid_exact_zero_channels_skipped": 1560,
+            "frequency_accumulation_s": 0.0001265549999999991,
+            "output_writes_s": 0.000225604
+          }
+        ]
+      },
+      "serial_grid_setup_s": 0.69885913,
+      "consumer_total_s": 7.210823448,
+      "consumer_setup_worker_coverage_gap_s": 0.697913389,
+      "worker_stage_coverage_gap_s": 0.0009491610000029738,
+      "profile_exclusive_closure_residual_s": 0.0,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 11.875852709,
+          "exclusive_s": 7.22561866,
+          "calls": 1
+        },
+        "packed_Wigner_d_table_build": {
+          "inclusive_s": 1.23780521,
+          "exclusive_s": 1.23780521,
+          "calls": 318
+        },
+        "radial_l0_sampling_and_interpolation": {
+          "inclusive_s": 0.577629414,
+          "exclusive_s": 0.577629414,
+          "calls": 159
+        },
+        "pole_frame_sampling_total": {
+          "inclusive_s": 3.286860551,
+          "exclusive_s": 0.565640857,
+          "calls": 159
+        },
+        "radial_l0_source_and_adjoint_branch": {
+          "inclusive_s": 0.5723171340000001,
+          "exclusive_s": 0.5374428880000001,
+          "calls": 53
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 1.125242276,
+          "exclusive_s": 0.372975121,
+          "calls": 159
+        },
+        "tensor_cold_frame_geometry_and_wigner_build": {
+          "inclusive_s": 0.370430486,
+          "exclusive_s": 0.370430486,
+          "calls": 106
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 1.0183480040000001,
+          "exclusive_s": 0.36852206200000004,
+          "calls": 159
+        }
+      }
+    },
+    {
+      "job": "global-generated-t32-l12",
+      "degree": 12,
+      "storage": "generated",
+      "side_indices": [
+        0,
+        28,
+        59,
+        100,
+        149,
+        154,
+        172,
+        173
+      ],
+      "angular_points_per_side": 1225,
+      "wall_s": 27.510067376017105,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 0.0452,
+      "spool_bytes": 96092607,
+      "shared_wigner_table_bytes": 0,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 0.788083709,
+        "worker_execution_wall_s": 17.970145392,
+        "frequency_side_transforms_executed": 416,
+        "frequency_side_exact_zero_mixing_skipped": 8,
+        "transform_channels_executed": 3432,
+        "fluid_exact_zero_channels_skipped": 1560,
+        "total_wall_s": 19.479578566,
+        "worker_elapsed_sum_s": 17.965939613,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.10832662599999998,
+          "coefficient_rotation_layout": 0.07217882400000009,
+          "gsh_inverse_fft": 17.764055129999992,
+          "point_kernel_contractions": 0.014771845999999993,
+          "frequency_accumulation": 0.0021650229999999977,
+          "output_writes": 0.0019786590000000002
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 17.965939613,
+            "spool_reads_s": 0.10832662599999998,
+            "coefficient_rotation_layout_s": 0.07217882400000009,
+            "gsh_inverse_fft_s": 17.764055129999992,
+            "point_kernel_contractions_s": 0.014771845999999993,
+            "transform_channels_executed": 3432,
+            "fluid_exact_zero_channels_skipped": 1560,
+            "frequency_accumulation_s": 0.0021650229999999977,
+            "output_writes_s": 0.0019786590000000002
+          }
+        ]
+      },
+      "serial_grid_setup_s": 0.788083709,
+      "consumer_total_s": 19.479578566,
+      "consumer_setup_worker_coverage_gap_s": 0.721349465000003,
+      "worker_stage_coverage_gap_s": 0.002463505000008581,
+      "profile_exclusive_closure_residual_s": 3.552713678800501e-15,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 27.196031283,
+          "exclusive_s": 19.490862194,
+          "calls": 1
+        },
+        "packed_Wigner_d_table_build": {
+          "inclusive_s": 1.741426919,
+          "exclusive_s": 1.741426919,
+          "calls": 318
+        },
+        "radial_l0_sampling_and_interpolation": {
+          "inclusive_s": 0.8460133590000001,
+          "exclusive_s": 0.8460133590000001,
+          "calls": 159
+        },
+        "pole_frame_sampling_total": {
+          "inclusive_s": 4.983335649000001,
+          "exclusive_s": 0.657536655,
+          "calls": 159
+        },
+        "radial_l0_source_and_adjoint_branch": {
+          "inclusive_s": 0.6578388110000001,
+          "exclusive_s": 0.614577824,
+          "calls": 53
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 0.6105169930000001,
+          "exclusive_s": 0.6105169930000001,
+          "calls": 1325
+        },
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 0.6083227210000001,
+          "exclusive_s": 0.6083227210000001,
+          "calls": 18974
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 1.805290316,
+          "exclusive_s": 0.575532264,
+          "calls": 159
+        }
+      }
+    },
+    {
+      "job": "global-stored-t32-l12",
+      "degree": 12,
+      "storage": "stored",
+      "side_indices": [
+        0,
+        28,
+        59,
+        100,
+        149,
+        154,
+        172,
+        173
+      ],
+      "angular_points_per_side": 1225,
+      "wall_s": 21.936852309998358,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 0.0452,
+      "spool_bytes": 96092607,
+      "shared_wigner_table_bytes": 167000,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 0.702168313,
+        "worker_execution_wall_s": 13.478108468,
+        "frequency_side_transforms_executed": 416,
+        "frequency_side_exact_zero_mixing_skipped": 8,
+        "transform_channels_executed": 3432,
+        "fluid_exact_zero_channels_skipped": 1560,
+        "total_wall_s": 14.882817181,
+        "worker_elapsed_sum_s": 13.477602393,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.09482955100000004,
+          "coefficient_rotation_layout": 0.08219824399999986,
+          "gsh_inverse_fft": 13.281428455000002,
+          "point_kernel_contractions": 0.014143162999999993,
+          "frequency_accumulation": 0.0015391879999999997,
+          "output_writes": 0.0018830869999999997
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 13.477602393,
+            "spool_reads_s": 0.09482955100000004,
+            "coefficient_rotation_layout_s": 0.08219824399999986,
+            "gsh_inverse_fft_s": 13.281428455000002,
+            "point_kernel_contractions_s": 0.014143162999999993,
+            "transform_channels_executed": 3432,
+            "fluid_exact_zero_channels_skipped": 1560,
+            "frequency_accumulation_s": 0.0015391879999999997,
+            "output_writes_s": 0.0018830869999999997
+          }
+        ]
+      },
+      "serial_grid_setup_s": 0.702168313,
+      "consumer_total_s": 14.882817181,
+      "consumer_setup_worker_coverage_gap_s": 0.7025404000000002,
+      "worker_stage_coverage_gap_s": 0.0015807049999985168,
+      "profile_exclusive_closure_residual_s": 0.0,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 21.692848221000002,
+          "exclusive_s": 14.892743386000001,
+          "calls": 1
+        },
+        "packed_Wigner_d_table_build": {
+          "inclusive_s": 1.325003541,
+          "exclusive_s": 1.325003541,
+          "calls": 318
+        },
+        "radial_l0_sampling_and_interpolation": {
+          "inclusive_s": 0.7161417600000001,
+          "exclusive_s": 0.7161417600000001,
+          "calls": 159
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 0.685909215,
+          "exclusive_s": 0.685909215,
+          "calls": 1325
+        },
+        "pole_frame_sampling_total": {
+          "inclusive_s": 4.306746512,
+          "exclusive_s": 0.6133184340000001,
+          "calls": 159
+        },
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 0.588611407,
+          "exclusive_s": 0.588611407,
+          "calls": 18974
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 1.54679842,
+          "exclusive_s": 0.5374049510000001,
+          "calls": 159
+        },
+        "radial_l0_source_and_adjoint_branch": {
+          "inclusive_s": 0.5167194700000001,
+          "exclusive_s": 0.48162106200000004,
+          "calls": 53
+        }
+      }
+    },
+    {
+      "job": "global-generated-t32-l128",
+      "degree": 128,
+      "storage": "generated",
+      "side_indices": [
+        59,
+        100
+      ],
+      "angular_points_per_side": 133640,
+      "wall_s": 31.967635078995954,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 0.1902,
+      "spool_bytes": 1011701951,
+      "shared_wigner_table_bytes": 0,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 1.1529065,
+        "worker_execution_wall_s": 3.26200639,
+        "frequency_side_transforms_executed": 104,
+        "frequency_side_exact_zero_mixing_skipped": 2,
+        "transform_channels_executed": 728,
+        "fluid_exact_zero_channels_skipped": 520,
+        "total_wall_s": 5.950081193,
+        "worker_elapsed_sum_s": 3.261394337,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.06831195400000001,
+          "coefficient_rotation_layout": 0.40255097899999986,
+          "gsh_inverse_fft": 2.0773749340000003,
+          "point_kernel_contractions": 0.49414712,
+          "frequency_accumulation": 0.040078151,
+          "output_writes": 0.031307564999999996
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 3.261394337,
+            "spool_reads_s": 0.06831195400000001,
+            "coefficient_rotation_layout_s": 0.40255097899999986,
+            "gsh_inverse_fft_s": 2.0773749340000003,
+            "point_kernel_contractions_s": 0.49414712,
+            "transform_channels_executed": 728,
+            "fluid_exact_zero_channels_skipped": 520,
+            "frequency_accumulation_s": 0.040078151,
+            "output_writes_s": 0.031307564999999996
+          }
+        ]
+      },
+      "serial_grid_setup_s": 1.1529065,
+      "consumer_total_s": 5.950081193,
+      "consumer_setup_worker_coverage_gap_s": 1.5351683029999998,
+      "worker_stage_coverage_gap_s": 0.1476236339999999,
+      "profile_exclusive_closure_residual_s": 0.0,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 31.584806431,
+          "exclusive_s": 5.959899296000001,
+          "calls": 1
+        },
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 5.390160746,
+          "exclusive_s": 5.390160746,
+          "calls": 18974
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 4.810477175,
+          "exclusive_s": 4.810477175,
+          "calls": 13621
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 7.054585984,
+          "exclusive_s": 3.250209452,
+          "calls": 159
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 4.506710148000001,
+          "exclusive_s": 2.036892741,
+          "calls": 159
+        },
+        "dynamic_H_assembly": {
+          "inclusive_s": 1.335635232,
+          "exclusive_s": 1.335635232,
+          "calls": 13621
+        },
+        "sparse_forward_solve_including_rhs_scaling": {
+          "inclusive_s": 1.219031126,
+          "exclusive_s": 1.219031126,
+          "calls": 13621
+        },
+        "sparse_symbolic_analysis": {
+          "inclusive_s": 1.0257065650000001,
+          "exclusive_s": 1.0257065650000001,
+          "calls": 13621
+        }
+      }
+    },
+    {
+      "job": "global-stored-t32-l128",
+      "degree": 128,
+      "storage": "stored",
+      "side_indices": [
+        59,
+        100
+      ],
+      "angular_points_per_side": 133640,
+      "wall_s": 30.423811073997058,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 0.3416,
+      "spool_bytes": 1011701951,
+      "shared_wigner_table_bytes": 171048920,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 0.817652163,
+        "worker_execution_wall_s": 2.461474195,
+        "frequency_side_transforms_executed": 104,
+        "frequency_side_exact_zero_mixing_skipped": 2,
+        "transform_channels_executed": 728,
+        "fluid_exact_zero_channels_skipped": 520,
+        "total_wall_s": 4.2259426,
+        "worker_elapsed_sum_s": 2.460951636,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.06353577,
+          "coefficient_rotation_layout": 0.34555880500000014,
+          "gsh_inverse_fft": 1.3811233130000007,
+          "point_kernel_contractions": 0.47788598000000027,
+          "frequency_accumulation": 0.03389098399999999,
+          "output_writes": 0.031866527000000006
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 2.460951636,
+            "spool_reads_s": 0.06353577,
+            "coefficient_rotation_layout_s": 0.34555880500000014,
+            "gsh_inverse_fft_s": 1.3811233130000007,
+            "point_kernel_contractions_s": 0.47788598000000027,
+            "transform_channels_executed": 728,
+            "fluid_exact_zero_channels_skipped": 520,
+            "frequency_accumulation_s": 0.03389098399999999,
+            "output_writes_s": 0.031866527000000006
+          }
+        ]
+      },
+      "serial_grid_setup_s": 0.817652163,
+      "consumer_total_s": 4.2259426,
+      "consumer_setup_worker_coverage_gap_s": 0.9468162419999997,
+      "worker_stage_coverage_gap_s": 0.12709025699999899,
+      "profile_exclusive_closure_residual_s": 0.0,
+      "profile_top_exclusive": {
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 5.45014247,
+          "exclusive_s": 5.45014247,
+          "calls": 18974
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 4.8192710210000005,
+          "exclusive_s": 4.8192710210000005,
+          "calls": 13621
+        },
+        "physical_case_total": {
+          "inclusive_s": 30.033578452,
+          "exclusive_s": 4.239666585,
+          "calls": 1
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 7.120569302000001,
+          "exclusive_s": 3.246678584,
+          "calls": 159
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 4.5184210270000005,
+          "exclusive_s": 2.0416183400000003,
+          "calls": 159
+        },
+        "dynamic_H_assembly": {
+          "inclusive_s": 1.340353987,
+          "exclusive_s": 1.340353987,
+          "calls": 13621
+        },
+        "sparse_forward_solve_including_rhs_scaling": {
+          "inclusive_s": 1.222623924,
+          "exclusive_s": 1.222623924,
+          "calls": 13621
+        },
+        "sparse_symbolic_analysis": {
+          "inclusive_s": 1.0283107390000001,
+          "exclusive_s": 1.0283107390000001,
+          "calls": 13621
+        }
+      }
+    },
+    {
+      "job": "global-generated-t32-l384",
+      "degree": 384,
+      "storage": "generated",
+      "side_indices": [
+        59,
+        100
+      ],
+      "angular_points_per_side": 1184260,
+      "wall_s": 104.86804494200624,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 0.7436,
+      "spool_bytes": 3032357055,
+      "shared_wigner_table_bytes": 0,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 4.916537142,
+        "worker_execution_wall_s": 24.928501862,
+        "frequency_side_transforms_executed": 104,
+        "frequency_side_exact_zero_mixing_skipped": 2,
+        "transform_channels_executed": 728,
+        "fluid_exact_zero_channels_skipped": 520,
+        "total_wall_s": 34.78489314,
+        "worker_elapsed_sum_s": 24.924250444000002,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.2029898169999999,
+          "coefficient_rotation_layout": 3.560915532999999,
+          "gsh_inverse_fft": 15.737991238999996,
+          "point_kernel_contractions": 4.457791799999999,
+          "frequency_accumulation": 0.3483806189999999,
+          "output_writes": 0.276620353
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 24.924250444000002,
+            "spool_reads_s": 0.2029898169999999,
+            "coefficient_rotation_layout_s": 3.560915532999999,
+            "gsh_inverse_fft_s": 15.737991238999996,
+            "point_kernel_contractions_s": 4.457791799999999,
+            "transform_channels_executed": 728,
+            "fluid_exact_zero_channels_skipped": 520,
+            "frequency_accumulation_s": 0.3483806189999999,
+            "output_writes_s": 0.276620353
+          }
+        ]
+      },
+      "serial_grid_setup_s": 4.916537142,
+      "consumer_total_s": 34.78489314,
+      "consumer_setup_worker_coverage_gap_s": 4.939854136000001,
+      "worker_stage_coverage_gap_s": 0.33956108300000665,
+      "profile_exclusive_closure_residual_s": 0.0,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 104.56369566800001,
+          "exclusive_s": 34.796490465000005,
+          "calls": 1
+        },
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 16.296716814,
+          "exclusive_s": 16.296716814,
+          "calls": 18974
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 13.546803788,
+          "exclusive_s": 13.546803788,
+          "calls": 40757
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 19.855355542,
+          "exclusive_s": 8.980151419,
+          "calls": 159
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 11.754767959,
+          "exclusive_s": 5.357790896,
+          "calls": 159
+        },
+        "dynamic_H_assembly": {
+          "inclusive_s": 4.038299380000001,
+          "exclusive_s": 4.038299380000001,
+          "calls": 40757
+        },
+        "sparse_forward_solve_including_rhs_scaling": {
+          "inclusive_s": 3.582302192,
+          "exclusive_s": 3.582302192,
+          "calls": 40757
+        },
+        "sparse_symbolic_analysis": {
+          "inclusive_s": 3.059876553,
+          "exclusive_s": 3.059876553,
+          "calls": 40757
+        }
+      }
+    },
+    {
+      "job": "global-stored-t32-l384",
+      "degree": 384,
+      "storage": "stored",
+      "side_indices": [
+        59,
+        100
+      ],
+      "angular_points_per_side": 1184260,
+      "wall_s": 100.43264031797298,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 4.9272,
+      "spool_bytes": 3032357055,
+      "shared_wigner_table_bytes": 4559339480,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 5.21059199,
+        "worker_execution_wall_s": 20.046516789,
+        "frequency_side_transforms_executed": 104,
+        "frequency_side_exact_zero_mixing_skipped": 2,
+        "transform_channels_executed": 728,
+        "fluid_exact_zero_channels_skipped": 520,
+        "total_wall_s": 29.391777116,
+        "worker_elapsed_sum_s": 20.045005836999998,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.199226757,
+          "coefficient_rotation_layout": 3.8905635469999993,
+          "gsh_inverse_fft": 11.004401388,
+          "point_kernel_contractions": 3.8949508999999987,
+          "frequency_accumulation": 0.35254768900000016,
+          "output_writes": 0.276031602
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 20.045005836999998,
+            "spool_reads_s": 0.199226757,
+            "coefficient_rotation_layout_s": 3.8905635469999993,
+            "gsh_inverse_fft_s": 11.004401388,
+            "point_kernel_contractions_s": 3.8949508999999987,
+            "transform_channels_executed": 728,
+            "fluid_exact_zero_channels_skipped": 520,
+            "frequency_accumulation_s": 0.35254768900000016,
+            "output_writes_s": 0.276031602
+          }
+        ]
+      },
+      "serial_grid_setup_s": 5.21059199,
+      "consumer_total_s": 29.391777116,
+      "consumer_setup_worker_coverage_gap_s": 4.134668337000001,
+      "worker_stage_coverage_gap_s": 0.42728395399999997,
+      "profile_exclusive_closure_residual_s": 0.0,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 100.098835058,
+          "exclusive_s": 29.423296584000003,
+          "calls": 1
+        },
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 16.453723369000002,
+          "exclusive_s": 16.453723369000002,
+          "calls": 18974
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 13.510352330000002,
+          "exclusive_s": 13.510352330000002,
+          "calls": 40757
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 20.233970314,
+          "exclusive_s": 9.007943359,
+          "calls": 159
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 11.981018492,
+          "exclusive_s": 5.3097405030000004,
+          "calls": 159
+        },
+        "dynamic_H_assembly": {
+          "inclusive_s": 3.9961835750000003,
+          "exclusive_s": 3.9961835750000003,
+          "calls": 40757
+        },
+        "sparse_forward_solve_including_rhs_scaling": {
+          "inclusive_s": 3.584956453,
+          "exclusive_s": 3.584956453,
+          "calls": 40757
+        },
+        "sparse_symbolic_analysis": {
+          "inclusive_s": 3.05876054,
+          "exclusive_s": 3.05876054,
+          "calls": 40757
+        }
+      }
+    },
+    {
+      "job": "global-generated-t32-l1536",
+      "degree": 1536,
+      "storage": "generated",
+      "side_indices": [
+        59
+      ],
+      "angular_points_per_side": 18929680,
+      "wall_s": 509.2334584459895,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 6.8598,
+      "spool_bytes": 12125305023,
+      "shared_wigner_table_bytes": 0,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 4.124653019,
+        "worker_execution_wall_s": 226.380822451,
+        "frequency_side_transforms_executed": 52,
+        "frequency_side_exact_zero_mixing_skipped": 1,
+        "transform_channels_executed": 104,
+        "fluid_exact_zero_channels_skipped": 520,
+        "total_wall_s": 235.023090448,
+        "worker_elapsed_sum_s": 226.375416843,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.36822629100000004,
+          "coefficient_rotation_layout": 22.185430582,
+          "gsh_inverse_fft": 168.18711052400005,
+          "point_kernel_contractions": 28.67723343000001,
+          "frequency_accumulation": 2.7811660430000003,
+          "output_writes": 2.86474907
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 226.375416843,
+            "spool_reads_s": 0.36822629100000004,
+            "coefficient_rotation_layout_s": 22.185430582,
+            "gsh_inverse_fft_s": 168.18711052400005,
+            "point_kernel_contractions_s": 28.67723343000001,
+            "transform_channels_executed": 104,
+            "fluid_exact_zero_channels_skipped": 520,
+            "frequency_accumulation_s": 2.7811660430000003,
+            "output_writes_s": 2.86474907
+          }
+        ]
+      },
+      "serial_grid_setup_s": 4.124653019,
+      "consumer_total_s": 235.023090448,
+      "consumer_setup_worker_coverage_gap_s": 4.517614978000012,
+      "worker_stage_coverage_gap_s": 1.311500902999967,
+      "profile_exclusive_closure_residual_s": 0.0,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 508.870825516,
+          "exclusive_s": 235.05026084600001,
+          "calls": 1
+        },
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 69.636530195,
+          "exclusive_s": 69.636530195,
+          "calls": 18974
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 51.155162505,
+          "exclusive_s": 51.155162505,
+          "calls": 162869
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 82.168876147,
+          "exclusive_s": 36.320529866,
+          "calls": 159
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 45.863736662,
+          "exclusive_s": 20.268996989,
+          "calls": 159
+        },
+        "dynamic_H_assembly": {
+          "inclusive_s": 15.920012367000002,
+          "exclusive_s": 15.920012367000002,
+          "calls": 162869
+        },
+        "sparse_forward_solve_including_rhs_scaling": {
+          "inclusive_s": 14.162117502000001,
+          "exclusive_s": 14.162117502000001,
+          "calls": 162869
+        },
+        "sparse_symbolic_analysis": {
+          "inclusive_s": 12.182537551000001,
+          "exclusive_s": 12.182537551000001,
+          "calls": 162869
+        }
+      }
+    },
+    {
+      "job": "global-stored-t32-l1536",
+      "degree": 1536,
+      "storage": "stored",
+      "side_indices": [
+        59
+      ],
+      "angular_points_per_side": 18929680,
+      "wall_s": 483.6681161460001,
+      "peak_threads": 34,
+      "peak_rss_gib_userspace": 276.7871,
+      "spool_bytes": 12125305023,
+      "shared_wigner_table_bytes": 290382151640,
+      "consumer_timings": {
+        "serial_grid_and_context_setup_wall_s": 40.600084289,
+        "worker_execution_wall_s": 161.319529682,
+        "frequency_side_transforms_executed": 52,
+        "frequency_side_exact_zero_mixing_skipped": 1,
+        "transform_channels_executed": 104,
+        "fluid_exact_zero_channels_skipped": 520,
+        "total_wall_s": 206.644792777,
+        "worker_elapsed_sum_s": 161.312968393,
+        "worker_stage_elapsed_sums": {
+          "spool_reads": 0.356154714,
+          "coefficient_rotation_layout": 22.184948541999994,
+          "gsh_inverse_fft": 103.136548975,
+          "point_kernel_contractions": 28.689352525999993,
+          "frequency_accumulation": 2.71620158,
+          "output_writes": 2.938103682
+        },
+        "workers": [
+          {
+            "side_elapsed_s": 161.312968393,
+            "spool_reads_s": 0.356154714,
+            "coefficient_rotation_layout_s": 22.184948541999994,
+            "gsh_inverse_fft_s": 103.136548975,
+            "point_kernel_contractions_s": 28.689352525999993,
+            "transform_channels_executed": 104,
+            "fluid_exact_zero_channels_skipped": 520,
+            "frequency_accumulation_s": 2.71620158,
+            "output_writes_s": 2.938103682
+          }
+        ]
+      },
+      "serial_grid_setup_s": 40.600084289,
+      "consumer_total_s": 206.644792777,
+      "consumer_setup_worker_coverage_gap_s": 4.725178806000002,
+      "worker_stage_coverage_gap_s": 1.2916583740000362,
+      "profile_exclusive_closure_residual_s": 0.0,
+      "profile_top_exclusive": {
+        "physical_case_total": {
+          "inclusive_s": 483.360232325,
+          "exclusive_s": 207.893374447,
+          "calls": 1
+        },
+        "radial_interpolation_and_strain_numerator_build": {
+          "inclusive_s": 70.55281141,
+          "exclusive_s": 70.55281141,
+          "calls": 18974
+        },
+        "sparse_numerical_factorization": {
+          "inclusive_s": 50.945017777000004,
+          "exclusive_s": 50.945017777000004,
+          "calls": 162869
+        },
+        "source_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 83.764652876,
+          "exclusive_s": 37.332623264000006,
+          "calls": 159
+        },
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": {
+          "inclusive_s": 46.095397039000005,
+          "exclusive_s": 20.548664317,
+          "calls": 159
+        },
+        "dynamic_H_assembly": {
+          "inclusive_s": 15.857510547,
+          "exclusive_s": 15.857510547,
+          "calls": 162869
+        },
+        "sparse_forward_solve_including_rhs_scaling": {
+          "inclusive_s": 14.112682632,
+          "exclusive_s": 14.112682632,
+          "calls": 162869
+        },
+        "sparse_symbolic_analysis": {
+          "inclusive_s": 12.175386777,
+          "exclusive_s": 12.175386777,
+          "calls": 162869
+        }
+      }
+    }
+  ],
+  "paired_rows": [
+    {
+      "degree": 128,
+      "v4_s": 26.912079717003508,
+      "v5_s": 29.867697075998876,
+      "v5_slowdown_percent": 10.982493326697295,
+      "counter_differences": {},
+      "exclusive_stage_v5_minus_v4_s": {
+        "parameter_file_generation": -4.197000000000001e-06,
+        "tensor_result_allocation_and_volume_tagging": 0.0003179840000000003,
+        "dynamic_H_assembly": 1.1438227779999999,
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": -0.0034762139999999775,
+        "physical_energy_adjoint_all_output_bins": -2.8212000000000115e-05,
+        "tensor_sampling_total": -0.0012857130000000008,
+        "tensor_angular_plan_key_build_and_lookup": -4.452000000000004e-06,
+        "full_weighted_HH_solve": -9.19999999999998e-07,
+        "input_parameters_model_and_frequency_initialization": -1.5994000000000078e-05,
+        "forward_substitution": 0.00048670400000000013,
+        "batch_response_cache_get_or_compute": 0.010688326000000026,
+        "modal_projection_source_lift_and_frequency_solve": 0.00012406599999999907,
+        "pointwise_strain_rotation_kernel_contraction": 0.00027157099999999997,
+        "kernel_frequency_sum_write": 0.0011092970000000004,
+        "solver_factorization_dispatch": 0.0001690699999999999,
+        "kernel_grid_and_radial_metadata_write": -1.8248000000000006e-05,
+        "sparse_adjoint_solve_including_rhs_scaling": 0.004190057999999941,
+        "tensor_representative_and_coefficient_record_capture": -3.853199999999987e-05,
+        "packed_angular_coefficients_and_basis_build": -0.000193562,
+        "dspec_setup": -1.1709999999999995e-06,
+        "kernel_frequency_sum_read": 0.001023485000000001,
+        "spheroidal_source_lift_projection_and_solver": 0.01120951399999992,
+        "tensor_radial_l0_scatter": -0.0007250060000000003,
+        "sparse_forward_solve_including_rhs_scaling": 0.014932283000000046,
+        "pole_frame_sampling_total": -0.0009346510000000016,
+        "sparse_symbolic_analysis": -2.463999999999982e-06,
+        "tensor_coefficient_layout_dedup_and_permutation_build": 0.0003149060000000037,
+        "tensor_complex_basis_cold_fill_and_cache": -0.0001091100000000008,
+        "toroidal_source_lift_projection_and_solver": -0.070572824,
+        "harmonic_synthesis_native_node_sampling": -2.421100000000001e-05,
+        "tensor_complex_basis_cache_lookup": 4.8742000000000056e-05,
+        "tensor_angular_gemm_complex_and_packing": 0.07190438299999968,
+        "kernel_result_file_open_and_zero_initialization": 0.000778121,
+        "frequency_workspace_modal_solve_and_adjoint_construction": 4.3300000000000077e-07,
+        "packed_Wigner_d_table_build": -6.313799999999991e-05,
+        "receiver_basis_and_QR_reconstruction": 0.0015901940000000447,
+        "shared_forward_and_adjoint_solver": 0.411603879,
+        "frequency_workspace_prepare_and_modal_capture": 0.09885230700000003,
+        "measurement_filter_and_inverse_fft": -8.102000000000283e-06,
+        "tensor_cold_frame_geometry_and_wigner_build": 0.000459915,
+        "radial_l0_source_and_adjoint_branch": -0.0002903669999999997,
+        "tensor_grid_cold_layout_map_build": -5.962900000000006e-05,
+        "sparse_equilibration_and_scaling": 0.532492024,
+        "tensor_phase_spin_rotation_and_scatter": 0.00047752400000000694,
+        "receiver_basis_mix_and_unit_adjoint_projection": 0.0006824109999999939,
+        "baseline_forward_with_bounded_response_capture": 2.735e-06,
+        "receiver_local_weight_materialization": 1.5498000000000074e-05,
+        "physical_result_and_spectrum_csv": -1.592399999999995e-05,
+        "tensor_complex_basis_key_construction": 0.00027315499999999975,
+        "forward_frequency_bin": 0.004839975000000003,
+        "SEM_mesh_and_matrix_setup": -0.00012350399999999997,
+        "trace_csv_write": -1.9348999999999885e-05,
+        "radial_interpolation_and_strain_numerator_build": 0.0750192460000001,
+        "minimal_unit_basis_HH_solve": 0.0006480920000000003,
+        "radial_l0_sampling_and_interpolation": -0.0012722050000000002,
+        "tensor_coefficient_packing_and_key_reorder": -0.0014709219999999856,
+        "sparse_factorization_total": 0.004659743000000004,
+        "sparse_numerical_factorization": 0.5495926229999997,
+        "native_radial_trace_metadata_write": 6.819200000000001e-05,
+        "receiver_at_pole_closed_form": 1.211000000000094e-06,
+        "tensor_grid_semantic_key_build_and_lookup": -2.683700000000004e-05,
+        "source_frame_geometry_phase_spin_rotation_and_scatter": 0.024516702999999973,
+        "windowed_energy_evaluation": -4.0100000000000016e-07,
+        "physical_case_total": -0.004236681000000006
+      }
+    },
+    {
+      "degree": 384,
+      "v4_s": 80.84736838602112,
+      "v5_s": 86.12240128198755,
+      "v5_slowdown_percent": 6.524681014698941,
+      "counter_differences": {},
+      "exclusive_stage_v5_minus_v4_s": {
+        "parameter_file_generation": -3.2999999999999176e-07,
+        "tensor_result_allocation_and_volume_tagging": 0.075556673,
+        "dynamic_H_assembly": 3.193279041,
+        "receiver_frame_geometry_phase_spin_rotation_and_scatter": -0.01510128799999988,
+        "physical_energy_adjoint_all_output_bins": 0.00010394499999999982,
+        "tensor_sampling_total": 0.035170052,
+        "tensor_angular_plan_key_build_and_lookup": 5.9166999999999944e-05,
+        "full_weighted_HH_solve": 2.488999999999996e-06,
+        "input_parameters_model_and_frequency_initialization": 1.4993000000000038e-05,
+        "forward_substitution": 0.0012252189999999996,
+        "batch_response_cache_get_or_compute": 0.06956618599999997,
+        "modal_projection_source_lift_and_frequency_solve": -0.004661226999999997,
+        "pointwise_strain_rotation_kernel_contraction": 8.794500000000073e-05,
+        "kernel_frequency_sum_write": -0.0007239220000000001,
+        "solver_factorization_dispatch": 0.00010047099999999955,
+        "kernel_grid_and_radial_metadata_write": -7.040999999999948e-06,
+        "sparse_adjoint_solve_including_rhs_scaling": -0.013888809000000002,
+        "tensor_representative_and_coefficient_record_capture": 4.3152999999999985e-05,
+        "packed_angular_coefficients_and_basis_build": -4.7843000000000104e-05,
+        "dspec_setup": 1.6899999999999957e-07,
+        "kernel_frequency_sum_read": -0.002200749000000002,
+        "spheroidal_source_lift_projection_and_solver": -2.061272924,
+        "tensor_radial_l0_scatter": 0.004458026000000004,
+        "sparse_forward_solve_including_rhs_scaling": 0.018406740000000088,
+        "pole_frame_sampling_total": 0.0005445050000000007,
+        "sparse_symbolic_analysis": 9.324000000000008e-06,
+        "tensor_coefficient_layout_dedup_and_permutation_build": 0.000866140999999987,
+        "tensor_complex_basis_cold_fill_and_cache": 0.0028945390000000015,
+        "toroidal_source_lift_projection_and_solver": -0.6263276379999999,
+        "harmonic_synthesis_native_node_sampling": 2.8690000000000025e-06,
+        "tensor_complex_basis_cache_lookup": 9.711000000000008e-05,
+        "tensor_angular_gemm_complex_and_packing": -0.005704010000000537,
+        "kernel_result_file_open_and_zero_initialization": 0.000810899,
+        "frequency_workspace_modal_solve_and_adjoint_construction": -5.931999999999997e-06,
+        "packed_Wigner_d_table_build": -8.597799999999871e-05,
+        "receiver_basis_and_QR_reconstruction": -0.0018613389999999619,
+        "shared_forward_and_adjoint_solver": 1.0755200660000002,
+        "frequency_workspace_prepare_and_modal_capture": 0.3117760949999999,
+        "measurement_filter_and_inverse_fft": 0.00017858499999999977,
+        "tensor_cold_frame_geometry_and_wigner_build": -0.0007504510000000009,
+        "radial_l0_source_and_adjoint_branch": 0.0026115400000000007,
+        "tensor_grid_cold_layout_map_build": 0.0003581229999999997,
+        "sparse_equilibration_and_scaling": 1.2498449649999999,
+        "tensor_phase_spin_rotation_and_scatter": 0.03756124400000002,
+        "receiver_basis_mix_and_unit_adjoint_projection": 0.013371679000000025,
+        "baseline_forward_with_bounded_response_capture": -1.0297e-05,
+        "receiver_local_weight_materialization": -6.43700000000063e-06,
+        "physical_result_and_spectrum_csv": 0.00010595799999999996,
+        "tensor_complex_basis_key_construction": 0.00037403399999999965,
+        "forward_frequency_bin": 0.02341025899999999,
+        "SEM_mesh_and_matrix_setup": 1.2698999999999697e-05,
+        "trace_csv_write": 2.332500000000004e-05,
+        "radial_interpolation_and_strain_numerator_build": 0.18420685999999975,
+        "minimal_unit_basis_HH_solve": 0.0020131939999999994,
+        "radial_l0_sampling_and_interpolation": 0.0005751550000000008,
+        "tensor_coefficient_packing_and_key_reorder": 0.016550120999999973,
+        "sparse_factorization_total": 0.01455935600000001,
+        "sparse_numerical_factorization": 1.4857024159999987,
+        "native_radial_trace_metadata_write": -1.3720000000000268e-06,
+        "receiver_at_pole_closed_form": -1.989999999999978e-05,
+        "tensor_grid_semantic_key_build_and_lookup": 7.365499999999886e-05,
+        "source_frame_geometry_phase_spin_rotation_and_scatter": 0.04430813500000008,
+        "windowed_energy_evaluation": -1.6899999999999989e-07,
+        "physical_case_total": 0.04392257800000002
+      }
+    }
+  ],
+  "exclusive_closure": [
+    {
+      "job": "global-generated-t32-l3",
+      "residual_s": -3.552713678800501e-15
+    },
+    {
+      "job": "global-stored-t32-l3",
+      "residual_s": 0.0
+    },
+    {
+      "job": "global-generated-t32-l12",
+      "residual_s": 3.552713678800501e-15
+    },
+    {
+      "job": "global-stored-t32-l12",
+      "residual_s": 0.0
+    },
+    {
+      "job": "global-generated-t32-l128",
+      "residual_s": 0.0
+    },
+    {
+      "job": "global-stored-t32-l128",
+      "residual_s": 0.0
+    },
+    {
+      "job": "global-generated-t32-l384",
+      "residual_s": 0.0
+    },
+    {
+      "job": "global-stored-t32-l384",
+      "residual_s": 0.0
+    },
+    {
+      "job": "global-generated-t32-l1536",
+      "residual_s": 0.0
+    },
+    {
+      "job": "global-stored-t32-l1536",
+      "residual_s": 0.0
+    },
+    {
+      "job": "final-v5-l3",
+      "residual_s": 0.0
+    },
+    {
+      "job": "final-v5-l12",
+      "residual_s": 0.0
+    },
+    {
+      "job": "final-v5-l128",
+      "residual_s": 0.0
+    },
+    {
+      "job": "final-v5-l384",
+      "residual_s": 0.0
+    },
+    {
+      "job": "final-v5-l1536",
+      "residual_s": 0.0
+    },
+    {
+      "job": "paired-v4-l128",
+      "residual_s": 0.0
+    },
+    {
+      "job": "paired-v5-l128",
+      "residual_s": 0.0
+    },
+    {
+      "job": "paired-v4-l384",
+      "residual_s": 0.0
+    },
+    {
+      "job": "paired-v5-l384",
+      "residual_s": 0.0
+    }
+  ],
+  "original_global_controls": [
+    {
+      "degree": 3,
+      "status": "FAIL",
+      "tolerance": 2e-13,
+      "failed_comparisons": [
+        {
+          "artifact": "kernel.bin",
+          "channel": "L",
+          "scaled_max_difference": 4.33581956805191e-13
+        },
+        {
+          "artifact": "kernel.bin",
+          "channel": "kappa",
+          "scaled_max_difference": 3.2439013276566395e-13
+        }
+      ]
+    },
+    {
+      "degree": 12,
+      "status": "FAIL",
+      "tolerance": 2e-13,
+      "failed_comparisons": [
+        {
+          "artifact": "kernel.bin",
+          "channel": "L",
+          "scaled_max_difference": 3.3382064966958926e-13
+        },
+        {
+          "artifact": "kernel.bin",
+          "channel": "kappa",
+          "scaled_max_difference": 3.0984869435298053e-13
+        }
+      ]
+    }
+  ],
+  "resolution_summary": {
+    "status": "DESCRIPTIVE_COMPARISON",
+    "acceptance_gate": null,
+    "interpretation": "Approximate bilinear interpolation along the specified great-circle section; descriptive only and not a convergence certificate.",
+    "degrees": {
+      "coarse": 128,
+      "fine": 384
+    },
+    "traces": {
+      "59": {
+        "native_identity": [
+          10,
+          0
+        ],
+        "radius_m": 2915375,
+        "fluid": true,
+        "channels": [
+          {
+            "channel": "A",
+            "max_abs_difference": 0.0,
+            "max_scaled_difference": 0.0,
+            "norm_scaled_l2_difference": 0.0,
+            "scale_max_abs": 0.0,
+            "scale_max_l2": 0.0,
+            "structural_zero": true
+          },
+          {
+            "channel": "C",
+            "max_abs_difference": 0.0,
+            "max_scaled_difference": 0.0,
+            "norm_scaled_l2_difference": 0.0,
+            "scale_max_abs": 0.0,
+            "scale_max_l2": 0.0,
+            "structural_zero": true
+          },
+          {
+            "channel": "F",
+            "max_abs_difference": 0.0,
+            "max_scaled_difference": 0.0,
+            "norm_scaled_l2_difference": 0.0,
+            "scale_max_abs": 0.0,
+            "scale_max_l2": 0.0,
+            "structural_zero": true
+          },
+          {
+            "channel": "L",
+            "max_abs_difference": 0.0,
+            "max_scaled_difference": 0.0,
+            "norm_scaled_l2_difference": 0.0,
+            "scale_max_abs": 0.0,
+            "scale_max_l2": 0.0,
+            "structural_zero": true
+          },
+          {
+            "channel": "N",
+            "max_abs_difference": 0.0,
+            "max_scaled_difference": 0.0,
+            "norm_scaled_l2_difference": 0.0,
+            "scale_max_abs": 0.0,
+            "scale_max_l2": 0.0,
+            "structural_zero": true
+          },
+          {
+            "channel": "kappa",
+            "max_abs_difference": 2.1330334170826356e-41,
+            "max_scaled_difference": 0.08223415719292844,
+            "norm_scaled_l2_difference": 0.08660499716940272,
+            "scale_max_abs": 2.5938533206807906e-40,
+            "scale_max_l2": 2.7753117938506127e-39,
+            "structural_zero": false
+          }
+        ]
+      },
+      "100": {
+        "native_identity": [
+          16,
+          5
+        ],
+        "radius_m": 4755714.285714286,
+        "fluid": false,
+        "channels": [
+          {
+            "channel": "A",
+            "max_abs_difference": 1.9109838861958224e-40,
+            "max_scaled_difference": 0.14863905633449867,
+            "norm_scaled_l2_difference": 0.15659776862680835,
+            "scale_max_abs": 1.2856539413808756e-39,
+            "scale_max_l2": 1.5682608953388032e-38,
+            "structural_zero": false
+          },
+          {
+            "channel": "C",
+            "max_abs_difference": 2.0571360927915874e-40,
+            "max_scaled_difference": 0.17654344895387286,
+            "norm_scaled_l2_difference": 0.16625027231562745,
+            "scale_max_abs": 1.1652293557089588e-39,
+            "scale_max_l2": 1.6154375721201192e-38,
+            "structural_zero": false
+          },
+          {
+            "channel": "F",
+            "max_abs_difference": 3.981427645249983e-40,
+            "max_scaled_difference": 0.16175179859616226,
+            "norm_scaled_l2_difference": 0.1637626579532942,
+            "scale_max_abs": 2.4614425804254685e-39,
+            "scale_max_l2": 3.069031666747196e-38,
+            "structural_zero": false
+          },
+          {
+            "channel": "L",
+            "max_abs_difference": 7.672706863170792e-40,
+            "max_scaled_difference": 0.10853486634767719,
+            "norm_scaled_l2_difference": 0.09957990645844766,
+            "scale_max_abs": 7.06934750220476e-39,
+            "scale_max_l2": 9.582814512249116e-38,
+            "structural_zero": false
+          },
+          {
+            "channel": "N",
+            "max_abs_difference": 7.385559962181359e-41,
+            "max_scaled_difference": 0.08294898368444859,
+            "norm_scaled_l2_difference": 0.08925512362406014,
+            "scale_max_abs": 8.90373773629009e-40,
+            "scale_max_l2": 7.560841950122528e-39,
+            "structural_zero": false
+          },
+          {
+            "channel": "kappa",
+            "max_abs_difference": 0.0,
+            "max_scaled_difference": 0.0,
+            "norm_scaled_l2_difference": 0.0,
+            "scale_max_abs": 0.0,
+            "scale_max_l2": 0.0,
+            "structural_zero": true
+          }
+        ]
+      }
+    },
+    "theta_grid_sources": {
+      "l128": {
+        "job": "reference-l128",
+        "sha256": "cdc2033e38fd74a07f61d971c60c8c5822c5bd0660fa1f573ecebda6ee362197"
+      },
+      "l384": {
+        "job": "reference-l384",
+        "sha256": "b78d4e8b4444b3de146db80d9b0798b8eebcb9a03f1cfcded8f06a164ffb8fab"
+      }
+    },
+    "kernel_sources": {
+      "l128": {
+        "job": "global-generated-w1-l128",
+        "sha256": "9eb3a4e3f66ec24ab831576f12d39ff8eea41510de3710c8c395c4072d4d73f3"
+      },
+      "l384": {
+        "job": "global-generated-w1-l384",
+        "sha256": "47f0e1201e96a54c4a6aaa96cba1e4925db2c195f62b5de9947bb05fbf1cbf82"
+      }
+    }
+  },
+  "resolution_path_summary": {
+    "arc_distance_deg": 58.519662870962605,
+    "input_points": 720,
+    "included_points": 596,
+    "endpoint_mask_deg": 5.0,
+    "first_kept_distance_deg": 5.046201805284675,
+    "last_kept_distance_to_receiver_deg": 5.046201805284673
+  },
+  "global_finished_unix": 1793120014.146357,
+  "first_isolated_repeat_started_unix": 1793120021.0479767
+}

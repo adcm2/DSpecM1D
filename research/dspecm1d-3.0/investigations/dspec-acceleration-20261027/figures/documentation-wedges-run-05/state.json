@@ -1,0 +1,1076 @@
+{
+  "finished_unix": 1793137910.8492818,
+  "jobs": [
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-l3-t1/data",
+        "3",
+        "8",
+        "0.05",
+        "1",
+        "audit",
+        "0"
+      ],
+      "command_sha256": "b6453817a86670421acd75f798447cce4a83d5d1cf413153e91dbf2cd3234988",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 1.2188010399986524,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925734,
+          17108108
+        ]
+      ],
+      "finished_unix": 1793137831.840184,
+      "id": "audit-l3-t1",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/components.csv"
+      ],
+      "outputs_sha256": {
+        "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+        "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+        "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+        "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+        "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+        "data/result.json": "c6269c36bf1a275439cca9f7349c9237398cab491ae2604c372e845dc1c7fdac",
+        "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+        "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd"
+      },
+      "peak_observed_rss_gib_userspace": 0.0643,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793137830.6088648,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.127415,
+      "user_cpu_seconds_children": 0.840146
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-l3-t8/data",
+        "3",
+        "8",
+        "0.05",
+        "8",
+        "audit",
+        "0"
+      ],
+      "command_sha256": "e1e1c12db8830801c5c770275e9e880fccf320b5c44f682784603009fbc2bfdb",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 0.9479784609866329,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925815,
+          17108233
+        ]
+      ],
+      "finished_unix": 1793137832.8139205,
+      "id": "audit-l3-t8",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/components.csv"
+      ],
+      "outputs_sha256": {
+        "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+        "data/along.bin": "1efaa6ac71010b67e9f43d88141ae3f6fc39436d5a5bc83248450f32340da70e",
+        "data/components.csv": "d5be29a2f5f923ce6ff42ab969968c7d61155f718fc783071d662982ac218540",
+        "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+        "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+        "data/result.json": "b4762d73cf097a128c26685c1229162b564c41b6db64fe9397c64da467d23669",
+        "data/spectrum.csv": "1690bef84b14b9b1cd2fa113441c587aa5572917f451b357077de9d401fffa12",
+        "data/trace.csv": "18993ec7e7fdf12584bb7b86fb9e11462f171be706c2ac755e9983564970e3cd"
+      },
+      "peak_observed_rss_gib_userspace": 0.0715,
+      "peak_observed_threads": 4,
+      "returncode": 0,
+      "started_unix": 1793137831.852598,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.20889799999999997,
+      "user_cpu_seconds_children": 0.8192069999999999
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py",
+        "parity",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05",
+        "audit-l3-t1",
+        "audit-l3-t8",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-parallel-exact/checks.json"
+      ],
+      "command_sha256": "1ca3c1dce3145f139ebf4fff7752ce508bdd73ac4a489d18f1332d4bc6663ef7",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 1.2917734200018458,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925821,
+          17108330
+        ]
+      ],
+      "finished_unix": 1793137834.128569,
+      "id": "audit-parallel-exact",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py": "02477a6c4236040a468e2ccc1a48a3b77c5f91b7523d43d5a763ff9981eb066e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-l3-t1/data/result.json": "c6269c36bf1a275439cca9f7349c9237398cab491ae2604c372e845dc1c7fdac",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-l3-t8/data/result.json": "b4762d73cf097a128c26685c1229162b564c41b6db64fe9397c64da467d23669",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py": "02477a6c4236040a468e2ccc1a48a3b77c5f91b7523d43d5a763ff9981eb066e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-l3-t1/data/result.json": "c6269c36bf1a275439cca9f7349c9237398cab491ae2604c372e845dc1c7fdac",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-l3-t8/data/result.json": "b4762d73cf097a128c26685c1229162b564c41b6db64fe9397c64da467d23669",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "55258764a3c399435d3f439f21f8c5af6eff4a81ace3e524679fca3434ad7da5"
+      },
+      "peak_observed_rss_gib_userspace": 0.0486,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793137832.8254197,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.09798000000000001,
+      "user_cpu_seconds_children": 0.14484000000000008
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver",
+        "dspec-forward",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-plus/data",
+        "3",
+        "8",
+        "0.05",
+        "8",
+        "audit",
+        "1e-05"
+      ],
+      "command_sha256": "a8a75b41ead5e69b36cfe57b328c7737fdd61ed1e8a4476b04183c4eba7bea5a",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 0.4978351030149497,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925833,
+          17108462
+        ]
+      ],
+      "finished_unix": 1793137834.6518807,
+      "id": "audit-plus",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/components.csv"
+      ],
+      "outputs_sha256": {
+        "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+        "data/along.bin": "2c8d1d5b14c85fe825c43908102704a2b3f8da8ee210a40224baccc18a4a2f8b",
+        "data/components.csv": "07b8c1634e138aca6c9965d8f3edaa0b480565e4bc41f2122a57be21e991d79c",
+        "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+        "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+        "data/result.json": "011534718da5ee5385346407a2e8647cfacfc63cc21880889507064e8f482cb5",
+        "data/spectrum.csv": "7d0760e4492bd1db761ef76928ca6a4ab0027a0cc034e3476b8bb87b553b0ce1",
+        "data/trace.csv": "c32507217b9000ca4d8726dc8271c25cfa463820a67aeb130135b24dc5735e07"
+      },
+      "peak_observed_rss_gib_userspace": 0.0571,
+      "peak_observed_threads": 4,
+      "returncode": 0,
+      "started_unix": 1793137834.141143,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.16301399999999994,
+      "user_cpu_seconds_children": 0.36678199999999994
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver",
+        "dspec-forward",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-minus/data",
+        "3",
+        "8",
+        "0.05",
+        "8",
+        "audit",
+        "-1e-05"
+      ],
+      "command_sha256": "90616f3dfecff6dd182ed37f78f619caade0d9fc4b54f5ab4188b6ee5ace4c9b",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 0.5006148320098873,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925877,
+          17108514
+        ]
+      ],
+      "finished_unix": 1793137835.177699,
+      "id": "audit-minus",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/components.csv"
+      ],
+      "outputs_sha256": {
+        "data/along-angles.csv": "f48048dd1cb0478b336d1a5e0bf37531d0d4929228daa627daf54cb172798a59",
+        "data/along.bin": "2c8d1d5b14c85fe825c43908102704a2b3f8da8ee210a40224baccc18a4a2f8b",
+        "data/components.csv": "14c62e665ce045d9c5d27b5f373ba61db1866e8faf169bcfcfddf369f5a130d0",
+        "data/nodes.csv": "310eb0d92e2f7ff5238d317b10be6f7a5dfe1ec3aa81919cc8918c4d175ec8d9",
+        "data/parameters.txt": "55cfa9bb0f719072d19f9a95444c220c2b78b55aeb4625260ad23036b9491a04",
+        "data/result.json": "08e34b34c8108da51c87dc7bd437d26e4af5abe85af23ae93971c596d551eaef",
+        "data/spectrum.csv": "de71f72998c8a9718b8854a049d29242fa5595f39c8467d402649fd6ead2e0f0",
+        "data/trace.csv": "84c05591a2a3ee8352c38965802c7795de9b9e253714466aadd33d67c894b20e"
+      },
+      "peak_observed_rss_gib_userspace": 0.0616,
+      "peak_observed_threads": 4,
+      "returncode": 0,
+      "started_unix": 1793137834.6640024,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.12864200000000003,
+      "user_cpu_seconds_children": 0.4020060000000001
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py",
+        "fd",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05",
+        "audit-l3-t8",
+        "audit-plus",
+        "audit-minus",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/attenuation-finite-difference/checks.json"
+      ],
+      "command_sha256": "af8fad36fd0a2d968f8bd6a5c95a580cfaab3f2210448631b7792316f35014f4",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 1.3034835380094592,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925892,
+          17108568
+        ]
+      ],
+      "finished_unix": 1793137836.517258,
+      "id": "attenuation-finite-difference",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py": "02477a6c4236040a468e2ccc1a48a3b77c5f91b7523d43d5a763ff9981eb066e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-l3-t8/data/result.json": "b4762d73cf097a128c26685c1229162b564c41b6db64fe9397c64da467d23669",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-minus/data/result.json": "08e34b34c8108da51c87dc7bd437d26e4af5abe85af23ae93971c596d551eaef",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-plus/data/result.json": "011534718da5ee5385346407a2e8647cfacfc63cc21880889507064e8f482cb5",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py": "02477a6c4236040a468e2ccc1a48a3b77c5f91b7523d43d5a763ff9981eb066e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-l3-t8/data/result.json": "b4762d73cf097a128c26685c1229162b564c41b6db64fe9397c64da467d23669",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-minus/data/result.json": "08e34b34c8108da51c87dc7bd437d26e4af5abe85af23ae93971c596d551eaef",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/audit-plus/data/result.json": "011534718da5ee5385346407a2e8647cfacfc63cc21880889507064e8f482cb5",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "a8fed6f0a6756d04c54a730a726b825eaa6927644c6e124e6f33146c2ea43eb5"
+      },
+      "peak_observed_rss_gib_userspace": 0.0499,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793137835.1901486,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.08518199999999998,
+      "user_cpu_seconds_children": 0.17036499999999988
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/pilot-dspec-l12/data",
+        "12",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "command_sha256": "906991678a069064c3083230fce73a3f042e8ed06167875665cc256516270f24",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 2.8487412280228455,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925899,
+          17108700
+        ]
+      ],
+      "finished_unix": 1793137839.3923259,
+      "id": "pilot-dspec-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv",
+        "data/components.csv"
+      ],
+      "outputs_sha256": {
+        "data/across-angles.csv": "732c05a13dec6e73ea7182b9bf7105d06a0a3d63cc8d11dc7794d2abb0d28223",
+        "data/across.bin": "ca51c3211042eabc9604b8d254037de6fe1395df562f381c8b09222984bba51a",
+        "data/along-angles.csv": "f70c6af87c268e9269da899fc12797f2e29a4ab48ec986bdc42d1a8ba818d634",
+        "data/along.bin": "e126466706e095e356f0cee5128be60fbc9b53c472f345f9d62bf9162631424a",
+        "data/components.csv": "6e17ef61d49a4b11179c3e1eeb26c9f76e37ac58261cead380843b8595d1add9",
+        "data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "data/parameters.txt": "fcbec13b69c4ff5ff2650d029fac159cb683eb1bc4988023840115bc3bf09fff",
+        "data/result.json": "6c43367e69d52540af54205f762bc6b84708887a72243951971652db6e2c31ce",
+        "data/spectrum.csv": "87340ef3830332668d1aceed2d9bead373555fa6ba03491c6515f9759afd9a25",
+        "data/trace.csv": "67e4dbaaa8e48dcc06a3c54762fa4f57a18001c9d2600fcfc815c88893a47f34"
+      },
+      "peak_observed_rss_gib_userspace": 0.2287,
+      "peak_observed_threads": 9,
+      "returncode": 0,
+      "started_unix": 1793137836.5302145,
+      "status": "completed",
+      "system_cpu_seconds_children": 1.0812430000000002,
+      "updated_unix": 1793137838.5530822,
+      "user_cpu_seconds_children": 5.918380999999999,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.2277,
+        "elapsed_seconds": 2.02,
+        "owned_processes": [
+          {
+            "pid": 2925732,
+            "starttime_ticks": 17108102,
+            "threads": 1
+          },
+          {
+            "pid": 2925899,
+            "starttime_ticks": 17108700,
+            "threads": 8
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.2287,
+        "peak_observed_threads": 9,
+        "thread_cap": 20,
+        "thread_count_including_supervisor": 9
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver",
+        "yspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/pilot-yspec-l12/data",
+        "12",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "command_sha256": "4dc4adc6373ac5e64124732073f051652f368a0c066a926dd2e40f0de8c86918",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 0.6384681839845143,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925946,
+          17108988
+        ]
+      ],
+      "finished_unix": 1793137840.058148,
+      "id": "pilot-yspec-l12",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "da7f1b89d366280a2c5a7609f312641effb75572e79020cfebf45919e7b88d26",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv",
+        "data/components.csv"
+      ],
+      "outputs_sha256": {
+        "data/across-angles.csv": "732c05a13dec6e73ea7182b9bf7105d06a0a3d63cc8d11dc7794d2abb0d28223",
+        "data/across.bin": "dc973ccba21c0a533afe6a0c36fd666801c06cdb83598fd068d651a9cc4e3c67",
+        "data/along-angles.csv": "f70c6af87c268e9269da899fc12797f2e29a4ab48ec986bdc42d1a8ba818d634",
+        "data/along.bin": "047289175e2fb4f993c567590bc604bbbbe0d8cce5498bc7936a0b8251401947",
+        "data/components.csv": "b83fd31e1bbc14324e8e038ebd2e5e210f8835bc92dbc071de01b1a18a8271d3",
+        "data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "data/parameters.txt": "fcbec13b69c4ff5ff2650d029fac159cb683eb1bc4988023840115bc3bf09fff",
+        "data/result.json": "4d6e20945b578e9933bdbeb6218e1f5700a44fac10119c649495922e5f8fce3f",
+        "data/spectrum.csv": "b94e24a453d85b302b5c4b282095da486f7ac0aeacd12fcd933ef12998cdfeb9",
+        "data/trace.csv": "52ac9a31879a2a232512e73a10afb11ee1e99fc3ac7346a3e3e5a8a9e69d1686"
+      },
+      "peak_observed_rss_gib_userspace": 0.0683,
+      "peak_observed_threads": 9,
+      "returncode": 0,
+      "started_unix": 1793137839.4057047,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.055671999999999944,
+      "user_cpu_seconds_children": 2.6643030000000003
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py",
+        "pilot",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05",
+        "pilot-dspec-l12",
+        "pilot-yspec-l12",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/pilot-match/checks.json"
+      ],
+      "command_sha256": "f0cb3fd911da971a34d3feefaac5b91b053452c8620ea8895ec2a4c7dac83abf",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 1.1546708579990081,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925954,
+          17109055
+        ]
+      ],
+      "finished_unix": 1793137841.2384315,
+      "id": "pilot-match",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py": "02477a6c4236040a468e2ccc1a48a3b77c5f91b7523d43d5a763ff9981eb066e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/pilot-dspec-l12/data/result.json": "6c43367e69d52540af54205f762bc6b84708887a72243951971652db6e2c31ce",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/pilot-yspec-l12/data/result.json": "4d6e20945b578e9933bdbeb6218e1f5700a44fac10119c649495922e5f8fce3f",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py": "02477a6c4236040a468e2ccc1a48a3b77c5f91b7523d43d5a763ff9981eb066e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/pilot-dspec-l12/data/result.json": "6c43367e69d52540af54205f762bc6b84708887a72243951971652db6e2c31ce",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/pilot-yspec-l12/data/result.json": "4d6e20945b578e9933bdbeb6218e1f5700a44fac10119c649495922e5f8fce3f",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "checks.json"
+      ],
+      "outputs_sha256": {
+        "checks.json": "92970b3381443b4db9ad21160fbf9225205085167c3f8127c88a096b08e2e523"
+      },
+      "peak_observed_rss_gib_userspace": 0.0511,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793137840.0707471,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.09831699999999999,
+      "user_cpu_seconds_children": 0.15976500000000016
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver",
+        "dspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data",
+        "200",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "command_sha256": "89301c4edbf6cb8d8ca48794063d9c82a490b8d82f68ea7abaf85dadeccbb1bd",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 52.436253059015144,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2925955,
+          17109173
+        ]
+      ],
+      "finished_unix": 1793137893.7043664,
+      "id": "dspec-l200",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "827dcfe51bc5b5ba1536624c2166658719be9079b4d4c2f354e2f6d37e5d5498",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv",
+        "data/components.csv"
+      ],
+      "outputs_sha256": {
+        "data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "data/across.bin": "d4b5ce135c628e064501889fc1877e7f2c97d188190c04070fc78ba645155ec5",
+        "data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "data/along.bin": "63e8bff3bad2e6355f6bb1a008643d078d98e76bed173742287059e398c391b0",
+        "data/components.csv": "da0d126fc55859cce225b9deb2e8b1df9b5e37216c0c088bef6d58578430987a",
+        "data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "data/result.json": "5d475122a3801fab53af7542ffb0a9ba02385e5a07e88a3b9c6ddf6db10a1c9a",
+        "data/spectrum.csv": "ef011a7221810cf40caa345e1a3488f0f3b0a23529fba94f32668ab5919a2796",
+        "data/trace.csv": "cfd3cd7ec2a86a12102263e00b450d110f7442c586ac3abb704761cf2be5fb21"
+      },
+      "peak_observed_rss_gib_userspace": 2.4258,
+      "peak_observed_threads": 9,
+      "returncode": 0,
+      "started_unix": 1793137841.252213,
+      "status": "completed",
+      "system_cpu_seconds_children": 13.17643,
+      "updated_unix": 1793137892.726661,
+      "user_cpu_seconds_children": 100.506727,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 2.4258,
+        "elapsed_seconds": 51.47,
+        "owned_processes": [
+          {
+            "pid": 2925732,
+            "starttime_ticks": 17108102,
+            "threads": 1
+          },
+          {
+            "pid": 2925955,
+            "starttime_ticks": 17109173,
+            "threads": 8
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 2.4258,
+        "peak_observed_threads": 9,
+        "thread_cap": 20,
+        "thread_count_including_supervisor": 9
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/env",
+        "DSPEC_SYMBOLIC_REUSE=1",
+        "OMP_NUM_THREADS=1",
+        "OMP_THREAD_LIMIT=8",
+        "/usr/bin/taskset",
+        "-c",
+        "16-23",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver",
+        "yspec",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/yspec-l200/data",
+        "200",
+        "10",
+        "0.025",
+        "8",
+        "sections",
+        "0"
+      ],
+      "command_sha256": "568b4fa7ae29c0905f562a6304028e85aa67dabb421e3ea06e5ba956bc3ee3c2",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 5.90018277199124,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2926599,
+          17114419
+        ]
+      ],
+      "finished_unix": 1793137899.6339066,
+      "id": "yspec-l200",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/builds/documentation-wedges-20261027-01/yspec-library/libyspec-doc.so": "f891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f",
+        "/space/adcm2/research/builds/documentation-wedges-20261027-09/doc-native/doc-driver": "f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-v9/candidates/documentation-wedges-v9/case/prem.200": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+        "/usr/bin/env": "615c46b39130a04a08da04163542ce7ce1164fa4b35408efb43aac0a8a9f7ae5",
+        "/usr/bin/taskset": "42e38b38d3926bb1ad156ed0ec0c485d33c8819cf1c3088cd6ec79ae13b8fbc6"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "da7f1b89d366280a2c5a7609f312641effb75572e79020cfebf45919e7b88d26",
+      "outputs": [
+        "data/parameters.txt",
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/nodes.csv",
+        "data/along.bin",
+        "data/along-angles.csv",
+        "data/across.bin",
+        "data/across-angles.csv",
+        "data/components.csv"
+      ],
+      "outputs_sha256": {
+        "data/across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+        "data/across.bin": "b9fb467d02572e793a98ac6997add8c04dc0659ff2f657b47cf85d1a1e0905af",
+        "data/along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+        "data/along.bin": "9748230eb42dfa21aab57deff67da34e364c03d87d990a25d6146397352c00ad",
+        "data/components.csv": "1fa455bdf312501b60979f709a167b6d14c4a12c1f0b12b8c5425ebbda69f3d5",
+        "data/nodes.csv": "d101eb196489a62faa44ebb51ca5af1a6c50e3a03f99e2713e839869121820b4",
+        "data/parameters.txt": "9812b70d5b8e0709640637d281cba057b4b75da592516fceb9f46935e5c6d5b9",
+        "data/result.json": "6fd71d38041b2c1175cd2de49d7a6431ccdea2b369e54ed6d0c3713b37558160",
+        "data/spectrum.csv": "363fa9465b8032741f0cb28fa2cb662c1f33628adcfa237462d0c8096c986d5a",
+        "data/trace.csv": "dfa3ae4b54d33bc6ce6176acd92e31fefc377428a9c610ae42d611546d1eb81d"
+      },
+      "peak_observed_rss_gib_userspace": 0.4361,
+      "peak_observed_threads": 9,
+      "returncode": 0,
+      "started_unix": 1793137893.7180493,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.43579400000000135,
+      "updated_unix": 1793137897.8527112,
+      "user_cpu_seconds_children": 43.079615000000004,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.4057,
+        "elapsed_seconds": 4.13,
+        "owned_processes": [
+          {
+            "pid": 2925732,
+            "starttime_ticks": 17108102,
+            "threads": 1
+          },
+          {
+            "pid": 2926599,
+            "starttime_ticks": 17114419,
+            "threads": 8
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.4361,
+        "peak_observed_threads": 9,
+        "thread_cap": 20,
+        "thread_count_including_supervisor": 9
+      }
+    },
+    {
+      "cleanup": {
+        "proc_inspection_errors": [],
+        "reaped_pids": [],
+        "remaining": [],
+        "signal_log": [],
+        "unknown": [],
+        "verified_gone": true
+      },
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py",
+        "plot",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05",
+        "dspec-l200",
+        "yspec-l200",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/render-comparison/data"
+      ],
+      "command_sha256": "8650beb6db88806e7c9840bd5c33b05da1a86b9c24207c01ecffae05d2ec8474",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5",
+      "elapsed_seconds": 11.177248502994189,
+      "failure_reasons": [],
+      "final_owned_processes": [
+        [
+          2926621,
+          17115012
+        ]
+      ],
+      "finished_unix": 1793137910.8454537,
+      "id": "render-comparison",
+      "inputs_sha256_after": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py": "02477a6c4236040a468e2ccc1a48a3b77c5f91b7523d43d5a763ff9981eb066e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/result.json": "5d475122a3801fab53af7542ffb0a9ba02385e5a07e88a3b9c6ddf6db10a1c9a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/yspec-l200/data/result.json": "6fd71d38041b2c1175cd2de49d7a6431ccdea2b369e54ed6d0c3713b37558160",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_sha256_before": {
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_doc_wedges.py": "02477a6c4236040a468e2ccc1a48a3b77c5f91b7523d43d5a763ff9981eb066e",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/acceleration-inputs/documentation-wedges-run-v5/tools/check_pair.py": "6f4d72e7da0489b6b3d0b6fd1d5c15d7ba3b7e6179a14ef453b7e8ccb762e646",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/dspec-l200/data/result.json": "5d475122a3801fab53af7542ffb0a9ba02385e5a07e88a3b9c6ddf6db10a1c9a",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/documentation-wedges-control/continuation/documentation-wedges-run-05/yspec-l200/data/result.json": "6fd71d38041b2c1175cd2de49d7a6431ccdea2b369e54ed6d0c3713b37558160",
+        "/usr/bin/python3.11": "9bee109da0dce17a7c9eeaca9f420cc6770a9fe143b9382d73bd22fe59b21a5f"
+      },
+      "inputs_unchanged": true,
+      "log": "job.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "outputs": [
+        "data/along-common-scale.png",
+        "data/along-common-scale.pdf",
+        "data/along-residual-scale.png",
+        "data/along-residual-scale.pdf",
+        "data/across-common-scale.png",
+        "data/across-common-scale.pdf",
+        "data/across-residual-scale.png",
+        "data/across-residual-scale.pdf",
+        "data/waveform-comparison.png",
+        "data/waveform-comparison.pdf",
+        "data/comparison.json",
+        "data/figure-manifest.json"
+      ],
+      "outputs_sha256": {
+        "data/across-common-scale.pdf": "8f7db6b23d7c311a8f2552a915a43e541a8f7b2e56ccdf5869fe35b0c22fd7ac",
+        "data/across-common-scale.png": "abdbf547827a2d617f3858e306446be33f58333dd6006e33d547b9693c5986dc",
+        "data/across-residual-scale.pdf": "29d9c373247bed7a3c7a58e8c49132c32bfbcbf868be5be756c63296ff3fb9ff",
+        "data/across-residual-scale.png": "36799dbf50e39796b523084687fa6791ca908002e46c1ccdf64223ae01c21d5f",
+        "data/along-common-scale.pdf": "a9a6eb54103e434d9e1fe619de8668807f47dc3aeab77f4a945380e87e757669",
+        "data/along-common-scale.png": "13471f9986fa4b459b73f0733d6ae519b9fc6d8182a945f478e0653c56f3adad",
+        "data/along-residual-scale.pdf": "6d4aadeca1b481dfb4a5138f5212db2c436bb049d9cdcfb4a89d440bf3aa1e14",
+        "data/along-residual-scale.png": "dc27567d3a94262bb071622cd3558d4d44f6e2d6543794124d97dbab9b7786d5",
+        "data/comparison.json": "bfcf973cb48cfd0857ffda1d046e982739eed692c501d8e9be37133d660a4ba1",
+        "data/figure-manifest.json": "d1c89eed7ec05c66a1a886679d1949aa34f0e79e66193b4322fb67bce9f8f469",
+        "data/waveform-comparison.pdf": "8715d304495b59ab497d48c1e15f9a80826aafba89bb4163cc31d9fd2cea9f85",
+        "data/waveform-comparison.png": "1500ce10a00530f2dc0649561b88bc1070b71ddf4857ebeb720bc086db38d709"
+      },
+      "peak_observed_rss_gib_userspace": 0.3378,
+      "peak_observed_threads": 2,
+      "returncode": 0,
+      "started_unix": 1793137899.6482844,
+      "status": "completed",
+      "system_cpu_seconds_children": 0.3401609999999984,
+      "updated_unix": 1793137910.0778284,
+      "user_cpu_seconds_children": 9.708596,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.3378,
+        "elapsed_seconds": 10.43,
+        "owned_processes": [
+          {
+            "pid": 2926621,
+            "starttime_ticks": 17115012,
+            "threads": 1
+          },
+          {
+            "pid": 2925732,
+            "starttime_ticks": 17108102,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.3378,
+        "peak_observed_threads": 2,
+        "thread_cap": 20,
+        "thread_count_including_supervisor": 2
+      }
+    }
+  ],
+  "plan_sha256": "e577b77b025950e6f4980b94e203f1b191addc04cfac7d64bc682fc9fbb4a10c",
+  "schema": 1,
+  "started_unix": 1793137830.5963185,
+  "status": "completed",
+  "task_id": "documentation-wedges-run-05",
+  "thread_cap": 20
+}

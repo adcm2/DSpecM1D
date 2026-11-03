@@ -1,0 +1,84 @@
+{
+  "status": "pass",
+  "selected_mesh_accuracy_receipt": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-d-nq6-batched-v1-validation-refine09/continuation/phase-d-nq6-refine09-run-v1/phase-d-nq6-09-accuracy-check/data/phase-d-accuracy-check.json",
+  "same_grid_scalar_vs_batched_relative_l2_by_channel": {
+    "trace_velocity": 0.0,
+    "trace_rate": 0.0,
+    "trace_adjoint_source": 0.0,
+    "spectrum_complex": 0.0,
+    "component_up": 0.0,
+    "component_north": 0.0,
+    "component_east": 0.0,
+    "along.bin": 2.2219762284600107e-15,
+    "across.bin": 1.5275249054008521e-15
+  },
+  "same_grid_profile_vs_native_relative_l2_by_channel": {
+    "trace_velocity": 0.0,
+    "trace_rate": 0.0,
+    "trace_adjoint_source": 0.0,
+    "spectrum_complex": 0.0,
+    "component_up": 0.0,
+    "component_north": 0.0,
+    "component_east": 0.0,
+    "along.bin": 0.0,
+    "across.bin": 0.0
+  },
+  "same_grid_v2_batched_vs_validated_v1_relative_l2_by_channel": {
+    "trace_velocity": 0.0,
+    "trace_rate": 0.0,
+    "trace_adjoint_source": 0.0,
+    "spectrum_complex": 0.0,
+    "component_up": 0.0,
+    "component_north": 0.0,
+    "component_east": 0.0,
+    "along.bin": 0.0,
+    "across.bin": 0.0
+  },
+  "exact_zero_bins": [
+    7,
+    8,
+    41
+  ],
+  "combined_pass_work_counts": {
+    "phase_c2_forward_spectrum_frequency_calls": 35,
+    "phase_c2_unit_adjoint_frequency_calls": 32,
+    "phase_c2_exact_zero_unit_adjoint_skips": 3
+  },
+  "combined_pass_frequency_workspace_preparations_all_forward_bins": 35,
+  "profiled_tiled_angular_scope_calls": 32,
+  "profiled_tiled_angular_worker_elapsed_sum_s_overlapping_not_master_wall": 21.917293929000003,
+  "timings": {
+    "batched_native_driver_s": 7.766392611,
+    "scalar_native_driver_s": 9.322228251,
+    "batched_profile_driver_s": 7.724436636,
+    "yspec_driver_s": 4.298666802
+  },
+  "yspec_backend_output_relative_l2_diagnostics_only_by_channel": {
+    "trace_velocity": 1.710416170311816e-05,
+    "trace_rate": 1.4775997262305649e-05,
+    "trace_adjoint_source": 1.2452158798197172e-05,
+    "spectrum_complex": 1.4031548371495058e-05,
+    "component_up": 4.182980223894244e-05,
+    "component_north": 1.4789781959328428e-05,
+    "component_east": 1.7549396929845472e-05
+  },
+  "yspec_native_array_diagnostics_only": {
+    "along.bin": {
+      "expected_float64_values": 28080,
+      "relative_l2_to_dspec_diagnostic_only": 0.12273754168521266
+    },
+    "across.bin": {
+      "expected_float64_values": 3952,
+      "relative_l2_to_dspec_diagnostic_only": 0.03676498322746794
+    }
+  },
+  "grid_sha256": {
+    "nodes.csv": "c3d571917d5693c3c359cc646052b7600c613322985b760c715abf3807b1c2ef",
+    "along-angles.csv": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+    "across-angles.csv": "4b51527b7a675e09fb51b643bd4bd09673697d1e30f00ce553caf9c5d28b5fd9",
+    "frequency-grid.csv": "0fd798827a84ddaab25963dee64efaeb10c09b66120b08b178f51f60737cafc8",
+    "mesh-elements.csv": "a848ce01f4cc9bbc6ef93f43d1a8a0ce09817710522bc0645a0f67fc031e2add"
+  },
+  "sampling_gate": "exact byte-equal nodes, angle lists, frequency grid and mesh elements across all four jobs",
+  "worker_note": "DSpec uses frequency_workers=8/solve_workers=1; YSpec explicitly unsets DSPEC_FREQUENCY_WORKERS and uses CLI workers=8 with OMP_NUM_THREADS=1/OMP_THREAD_LIMIT=8; both plan command and result metadata are checked."
+}

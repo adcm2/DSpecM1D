@@ -1,0 +1,265 @@
+{
+  "inputs": {
+    "study2-v1/evidence/producer-raw-v1/l200-dspec-sparse-bridge/data/nodes.csv": {
+      "sha256": "c3d571917d5693c3c359cc646052b7600c613322985b760c715abf3807b1c2ef",
+      "bytes": 9300
+    },
+    "study2-v1/evidence/producer-raw-v1/l200-dspec-sparse-bridge/data/along-angles.csv": {
+      "sha256": "e0d0944d12da8aa603e087c38d7bb4b0fff8ed8436c58e2c762268161e132489",
+      "bytes": 4272
+    },
+    "study2-v1/evidence/producer-raw-v1/l200-dspec-sparse-bridge/data/along.bin": {
+      "sha256": "7f0f28d9446e34260e4e40643a1a8f88dcd55a6eb7d55505618f9cb83c52ca60",
+      "bytes": 113152
+    },
+    "study2-v1/reference/study1-yspec-tight-l200/nodes.csv": {
+      "sha256": "c3d571917d5693c3c359cc646052b7600c613322985b760c715abf3807b1c2ef",
+      "bytes": 9300
+    },
+    "study2-v1/reference/study1-yspec-tight-l200/along-angles.csv": {
+      "sha256": "4365828599b3358c6d3502ebb32402d982dcc58114b29268a6e2356d619a313c",
+      "bytes": 8427
+    },
+    "study2-v1/reference/study1-yspec-tight-l200/along.bin": {
+      "sha256": "5829f0f9a9c308e4e5f985c9e016a58d8bd6c1e9cb7c57031555085de828be5e",
+      "bytes": 224640
+    },
+    "study2-v1/evidence/producer-raw-v1/l300-dspec/data/nodes.csv": {
+      "sha256": "c3d571917d5693c3c359cc646052b7600c613322985b760c715abf3807b1c2ef",
+      "bytes": 9300
+    },
+    "study2-v1/evidence/producer-raw-v1/l300-dspec/data/along-angles.csv": {
+      "sha256": "e0d0944d12da8aa603e087c38d7bb4b0fff8ed8436c58e2c762268161e132489",
+      "bytes": 4272
+    },
+    "study2-v1/evidence/producer-raw-v1/l300-dspec/data/along.bin": {
+      "sha256": "88ff512bafc7a2d5f2a5e1f1f1cfc9b7b71f68fac197baea3e880044a467b0cb",
+      "bytes": 113152
+    },
+    "study2-v1/evidence/producer-raw-v1/l300-yspec-tight/data/nodes.csv": {
+      "sha256": "c3d571917d5693c3c359cc646052b7600c613322985b760c715abf3807b1c2ef",
+      "bytes": 9300
+    },
+    "study2-v1/evidence/producer-raw-v1/l300-yspec-tight/data/along-angles.csv": {
+      "sha256": "e0d0944d12da8aa603e087c38d7bb4b0fff8ed8436c58e2c762268161e132489",
+      "bytes": 4272
+    },
+    "study2-v1/evidence/producer-raw-v1/l300-yspec-tight/data/along.bin": {
+      "sha256": "13acc1d52e6aa9cd2facfeaa8c1ac33cedba9459ec30e5a4c338f6f2b511bd09",
+      "bytes": 113152
+    },
+    "study2-v1/evidence/producer-raw-v1/l200-dspec-sparse-bridge/data/fixed-probe-kernel.csv": {
+      "sha256": "cfee1f3bc08a1e696eaa27a096634004c5c74d1c230cbaa0ba46995cb254992b",
+      "bytes": 40646
+    },
+    "study2-v1/evidence/producer-raw-v1/l300-dspec/data/fixed-probe-kernel.csv": {
+      "sha256": "de4dfd219e2ac0c4e77fc703201332bc4a751aca23ab5a71466c1767834792b0",
+      "bytes": 40603
+    }
+  },
+  "plot_semantics": {
+    "data": "saved along-path great-circle native sections; physical solve degrees 200/300",
+    "angular_sampling": "68 saved angles at both cutoffs; not enough to certify full angular bandwidth",
+    "radial_extent_m": [
+      3022952.9061119016,
+      6371000
+    ],
+    "full_radial_operator_retained": true,
+    "interpolation": "Gouraud display interpolation within SEM elements; interfaces and duplicate traces never averaged",
+    "L200_yspec_mapping": "exact matching subset of saved 135 angles to DSpec's 68; tolerance 1e-12 degrees",
+    "color": "symmetric-log, no clipping, shared physical kernel range across L200/L300",
+    "raw_difference": "includes unmatched source-shell radial trace convention; not a matched-trace error everywhere",
+    "percentage_difference": "100*(D-Y)/max_section(abs(D)), separately at each cutoff; no pointwise division or denominator floor",
+    "percentage_color_scale": {
+      "type": "linear",
+      "backend_limits_percent": [
+        -40.0,
+        40.0
+      ],
+      "cutoff_limits_percent": [
+        -350.0,
+        350.0
+      ]
+    },
+    "standalone_zoom_scales": {
+      "type": "linear",
+      "backend_limits_percent": [
+        -0.01,
+        0.01
+      ],
+      "cutoff_limits_percent": [
+        -10,
+        10
+      ],
+      "saturation": "both colorbar extensions and full-data peak labelled; values not removed"
+    },
+    "cutoff_percentage_difference": "100*(D300-D200)/max_section(abs(D200))",
+    "source_contact_terms_included": false
+  },
+  "stats": {
+    "L200-D": {
+      "minimum": -5.123802934903919e-15,
+      "maximum": 2.339685154875772e-15,
+      "nonfinite": 0,
+      "display_clipped_values": 0
+    },
+    "L200-Y": {
+      "minimum": -5.123800677228684e-15,
+      "maximum": 1.8962409201627925e-15,
+      "nonfinite": 0,
+      "display_clipped_values": 0
+    },
+    "L200-diff": {
+      "minimum": -1.6157259930929207e-15,
+      "maximum": 1.3957206035217453e-15,
+      "nonfinite": 0,
+      "display_clipped_values": 0,
+      "percent_denominator": 5.123802934903919e-15,
+      "minimum_percent": -31.53372628924533,
+      "maximum_percent": 27.23993528349696
+    },
+    "L300-D": {
+      "minimum": -1.6164826730336968e-14,
+      "maximum": 1.785764919607466e-14,
+      "nonfinite": 0,
+      "display_clipped_values": 0
+    },
+    "L300-Y": {
+      "minimum": -1.5572580198530254e-14,
+      "maximum": 1.7857618320655507e-14,
+      "nonfinite": 0,
+      "display_clipped_values": 0
+    },
+    "L300-diff": {
+      "minimum": -2.2093614003076867e-15,
+      "maximum": 2.7565572723961055e-15,
+      "nonfinite": 0,
+      "display_clipped_values": 0,
+      "percent_denominator": 1.785764919607466e-14,
+      "minimum_percent": -12.372073031837433,
+      "maximum_percent": 15.43628302991881
+    }
+  },
+  "outputs": {
+    "kernel-difference-L200-linear-zoom.png": {
+      "sha256": "08ebbccc1445953cf01c3b9b8882f07b4b92a52654b7f5045796d2589ac14043",
+      "bytes": 236835
+    },
+    "kernel-difference-L200-linear-zoom.svg": {
+      "sha256": "dc962f1bc8371cb10a1152961570372a672ebef101acc7d4bd6098c5844b899b",
+      "bytes": 114791
+    },
+    "kernel-difference-L200-linear.png": {
+      "sha256": "69befc0c7b1cb5c994726e3060a93552bcccede6ec8e5560090f593368e04262",
+      "bytes": 201316
+    },
+    "kernel-difference-L200-linear.svg": {
+      "sha256": "b0281e70062787532bae211ddcbc8e15d304a1a2d00e159364f7d2c9b1b0f636",
+      "bytes": 96408
+    },
+    "kernel-difference-L300-linear-zoom.png": {
+      "sha256": "2fb2d6d17fa1aae03a3dcff1f17c6b1e1904b60836dda7a4bac0fb4e8d729f47",
+      "bytes": 223660
+    },
+    "kernel-difference-L300-linear-zoom.svg": {
+      "sha256": "0ef2f35725ee79614007a0ae61e771538f4d80f6938e6d3ced17e231cf870e8c",
+      "bytes": 106947
+    },
+    "kernel-difference-L300-linear.png": {
+      "sha256": "60f090629a3d5643a025c768ea22bb37d86ab3b9c062cd41fe9be876a0d00331",
+      "bytes": 201570
+    },
+    "kernel-difference-L300-linear.svg": {
+      "sha256": "a0e8af3ea7033b25cabda0ca3710e14aa260b21e8667df98379a694d6aa9c0c9",
+      "bytes": 96376
+    },
+    "kernel-difference-cutoff-linear-zoom.png": {
+      "sha256": "ed83ee15da97d9f0f9c59623d245b36f2626691649ffa7b3bde923299ae590d1",
+      "bytes": 172706
+    },
+    "kernel-difference-cutoff-linear-zoom.svg": {
+      "sha256": "799cc315870d69e1f9c6622ad4b6149958c72cc0467c058edd7bcebb27c91bc3",
+      "bytes": 73302
+    },
+    "kernel-difference-cutoff-linear.png": {
+      "sha256": "a6bb848c5ac5a024dbc6bc2b474a286275e56de2156417bd34ff349f5c901cba",
+      "bytes": 143900
+    },
+    "kernel-difference-cutoff-linear.svg": {
+      "sha256": "9adf523c94c546c9d217860f27290e8f32dd6ab308dfc9f12762df5c5c39962c",
+      "bytes": 56030
+    },
+    "kernel-wedge-L200-percent-linear.png": {
+      "sha256": "76835adf6efb65d20e0506d055db8deee5adc2f0afed1ff5ab477dc545027c62",
+      "bytes": 563026
+    },
+    "kernel-wedge-L200-percent-linear.svg": {
+      "sha256": "0e5b0d6e5018ff7cb1bbe87eaf412e75cd82c3cdd3e2c33dd40af4d45b0c797a",
+      "bytes": 322872
+    },
+    "kernel-wedge-L200-percent.png": {
+      "sha256": "0619f56302444f73781aa2572513412261ccd92ae2a34041256dd7b65509f9ca",
+      "bytes": 576945
+    },
+    "kernel-wedge-L200-percent.svg": {
+      "sha256": "5de58d3f0fc155bcbbaf0e6562d23801498d92e02d16c9c198636b7b41731c76",
+      "bytes": 340627
+    },
+    "kernel-wedge-L200.png": {
+      "sha256": "2f485ac6cc24e635d031853861906986d9a7e3cf397d16879da386fd65ca4145",
+      "bytes": 622076
+    },
+    "kernel-wedge-L200.svg": {
+      "sha256": "dcdb3fe39911fed96123f75a7fc9eab4407041e13d82f0fc81609c85e608c0b5",
+      "bytes": 370467
+    },
+    "kernel-wedge-L300-percent-linear.png": {
+      "sha256": "ad5380454d9b5889cabd82953f87a131bb755a13f7cfdb43f890ed843f10ee8d",
+      "bytes": 561236
+    },
+    "kernel-wedge-L300-percent-linear.svg": {
+      "sha256": "b2dfea8a14be15ded74b9a8e821d482d6f9bce04c90e53a6602e5a0d70a55d44",
+      "bytes": 320712
+    },
+    "kernel-wedge-L300-percent.png": {
+      "sha256": "139dccbc48421cfb64f6c8af97f30329491bae7f73e701154d0fd8e7610f1ccd",
+      "bytes": 561115
+    },
+    "kernel-wedge-L300-percent.svg": {
+      "sha256": "b5747ee0c1c858d6e27ae4c9f4ccc18483ed013d5a04717b09583325e6fd8ee9",
+      "bytes": 331587
+    },
+    "kernel-wedge-L300.png": {
+      "sha256": "238935248d03ec0b68232541c70a49f39cfe4f091bd9e821808f785278f9c8d0",
+      "bytes": 626507
+    },
+    "kernel-wedge-L300.svg": {
+      "sha256": "ed79b766ccc2a631fb84045953b92596185353ae6701400385d261db318d6035",
+      "bytes": 373819
+    },
+    "kernel-wedge-cutoff-change-percent-linear.png": {
+      "sha256": "2ca68a29d4a95b7ecdbbe13c25da289966c8c2f08a04f377b6d4d971f425710a",
+      "bytes": 526357
+    },
+    "kernel-wedge-cutoff-change-percent-linear.svg": {
+      "sha256": "9b4758876b0d2d344986209d2c271c016cf40024a7f42ca07715815ff9bc2b00",
+      "bytes": 295184
+    },
+    "kernel-wedge-cutoff-change-percent.png": {
+      "sha256": "148f5052df8befe164642b7ad585434ff5037111b8f341722091aa0872787311",
+      "bytes": 627402
+    },
+    "kernel-wedge-cutoff-change-percent.svg": {
+      "sha256": "fe97373173bf3bf4f650563a7c979f534f2523d6e42c668cb9cca3ca210f1d62",
+      "bytes": 378729
+    },
+    "kernel-wedge-cutoff-change.png": {
+      "sha256": "e1f9dabe26a7bb8e95a994a96ea5d8870b683755725c9e97f853fb99688c7d5a",
+      "bytes": 542827
+    },
+    "kernel-wedge-cutoff-change.svg": {
+      "sha256": "a23594239aabea80d260da6f6c0cce8078dfbc1d820ca72ee1cc4119ab4163a5",
+      "bytes": 327401
+    }
+  }
+}

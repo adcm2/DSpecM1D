@@ -1,0 +1,400 @@
+DSpecM1D / YSpecpp                                                                                        Acceleration phase A
+
+
+Sensitivity-kernel acceleration
+Timings, validation and remaining limits on Tunya
+The approved acceleration campaign is complete. The latest native candidate reduces the degree-1536
+unprofiled runtime from 536.442 to 313.361 seconds (41.6%), with byte-identical scientific outputs. The
+previous accelerated candidate remains faster at degrees 128 and 384. Global synthesis/storage/threading
+checks pass internally, but its frozen comparison against the original synthesis route still fails. No
+sensitivity-kernel figures or requested high-degree complete 179-side global volume were generated.
+
+1. Fixed experiment and comparison domains
+
+The observable is windowed vertical-displacement energy,
+
+                                                  ∆t X
+                                            E=         H1000–1200 (tj ) uz (tj )2 .
+                                                  2 j
+
+The PREM500 model uses a source at 10◦ N, 20◦ E, depth 50 km, and receiver at 45◦ N, 75◦ E, depth 3
+km. The nominal band is 0–10 mHz, flat to 8 mHz and tapered to 10 mHz. Sampling is 5 s, record
+duration 3600 s, FFT length 1024 and period 5120 s; damping is 5/3600 s−1 . There are 52 physical bins
+including DC, plus one zero-weight guard bin in response capture. The SEM uses six GLL points per
+element and radial refinement 0.05, with 179 positive native element/node sides. Both sides of interfaces
+remain distinct. Contacts are off; source-shell contact contributions are omitted.
+At high degree the native DSpec/YSpec comparison uses the same 64-angle, 179-side diagnostic,
+not a complete global volume. Global diagnostics use the complete product-bandwidth grid, with
+nθ = 2L + 1 and nϕ = FastFFTSize(4L + 1), on eight sides at low degree, two at L = 128, 384, and one
+fluid side at L = 1536. Global timings must not be compared to YSpec’s 64-angle timing as if their
+output domains matched.1
+
+2. Native timings and individually measured changes
+
+                      L        Original (s)    Candidate v4 (s)       Candidate v5 (s)       v5 reduction
+                      128           41.856                 26.912                 29.868             28.6%
+                      384          123.951                 80.847                 86.122             30.5%
+                      1536         532.984                370.683                314.663             41.0%
+
+
+All entries above are instrumented process wall times. Degrees 128 and 384 use the isolated paired
+reruns for v4/v5; degree 1536 uses the accepted full component runs. At 1536 the unprofiled v4/v5 runs
+take 369.677/313.361 s and agree byte-for-byte with their instrumented builds. Native outputs also
+match the original production route through a verified hash chain, despite the matched-response control
+having a different baseline capture setting.
+At 128 and 384, v5 is respectively 11.0% and 6.5% slower than v4 in the isolated repeats. The regression
+is concentrated in dynamic assembly, scaling and numerical LU, with identical work counters. Its
+underlying compiler/allocation/cache cause has not been established. The low-degree result cannot be
+attributed solely to earlier overlapping work.
+The retained changes are shared coefficient-label layouts/permutations, nonradial response reuse, exact-
+pattern symbolic reuse with fresh numerical LU, and removal of two unused full-order zero adjoint
+matrices. The radial L = 0 weighted solve is retained to preserve the frozen numerical result. The
+separate native-node recovery prototype was rejected: at 1536 it took 414.657 s versus 400.374 s for
+packing alone, and increased the recovery component from 64.631 to 78.965 s.
+
+
+   1
+    Timings are individual observed runs on the same Tunya host, not statistical estimates or comparisons at matched local-kernel
+accuracy. Inclusive profiler scopes overlap; only exclusive entries may be summed. All stages at every measured degree are retained
+in the accompanying JSON and CSV.
+
+
+27 October 2026                                                                                                                  1
+DSpecM1D / YSpecpp                                                                             Acceleration phase A
+
+
+The last two-line allocation removal avoids about 2.15 TB of cumulative zero-fill traffic in the pole-only
+cached route at degree 1536. The source/solver exclusive remainders fall by 64.529 s; the observed net
+wall saving is 56.021 s. It is retained for its measured high-degree benefit, with its low-degree regression
+disclosed.
+
+           Exclusive component, L = 1536                           Original (s)       v4 (s)      v5 (s)
+           Coefficient packing/reorder                                    134.740      2.607       2.716
+           Layout deduplication                                                 0      0.548       0.548
+           Dynamic matrix assembly                                         31.828     16.116      16.276
+           Numerical LU                                                    98.255     50.591      52.777
+           Symbolic analysis                                               23.257   2.79e-04    2.88e-04
+           Equilibration/scaling                                           23.019     11.223      11.769
+           Forward back-solves                                             27.815     14.158      14.122
+           Adjoint back-solves                                              8.955      9.196       9.071
+           Native strain/derivative recovery                               64.612     64.962      66.655
+           Angular Eigen multiplication                                    64.685     63.747      63.930
+           Receiver basis/QR                                                5.581     11.880      11.706
+           Spheroidal source/solver remainder                              12.757     75.805      21.302
+           Toroidal source/solver remainder                                 1.984     12.744       2.718
+           Final pointwise products                                         0.009      0.010       0.010
+
+
+The historical recovery timer still contains “interpolation” in its name. At native SEM nodes, the
+sampling plan selects the node and applies cached Dref /J derivative weights to the current modal
+displacement fields. It does not require arbitrary off-grid radial output. Gathering modal values,
+applying these weights, constructing strains and allocating small coefficient records remain real work.
+The rejected stack-allocation prototype did not implement a successful fully batched derivative/recovery
+algorithm.
+At degree 1536, factorisations fall from 322665 to 162921; only 3 symbolic analyses are performed, with
+162918 reuses. Nonradial response capture has 162816 misses and 159744 later hits; 105 radial bypass
+calls retain the original solve. Logical retained response storage is 10.901 GiB within the 32 GiB budget,
+and observed profiled-native peak RSS is 8.736 GiB. There is no cache fallback.
+
+3. YSpec comparison at the same native diagnostic points
+
+                         L      Original DSpec (s)   YSpec waveform (s)    YSpec kernel (s)
+                         128                41.866               16.843               77.177
+                         384               122.825               85.677              321.047
+                         1536              536.442             1061.726             3338.354
+
+
+These are the saved unprofiled profile-06 results. YSpec’s independent waveform run is separate; its
+kernel diagnostic uses the frozen shared DSpec measurement baseline. Their times are not added
+and presented as a measured end-to-end YSpec run. DSpec’s kernel timing includes its own baseline.
+The latest unprofiled DSpec degree-1536 result is 313.361 s, compared with the saved YSpec kernel
+diagnostic’s 3338.354 s, subject to these methodology and scientific limitations.
+
+                  YSpec exclusive component, L = 1536                                      Seconds
+                  Upward integration                                                       1005.270
+                  Downward integration                                                       57.929
+                  Spheroidal b-vector transport                                            2195.872
+                  Matching/response transport                                                12.050
+                  Coefficient/strain recovery                                                11.706
+                  Source angular synthesis                                                   37.409
+                  Adjoint angular synthesis                                                  22.449
+                  Elastic contraction                                                         0.081
+                  Parameter/objective products                                                0.099
+
+
+27 October 2026                                                                                                   2
+DSpecM1D / YSpecpp                                                                        Acceleration phase A
+
+
+YSpec’s cost is dominated by radial integration and b-vector transport, while the accelerated DSpec
+cost is shared between sparse solves, native strain recovery and angular synthesis. Final contractions
+are small in both native diagnostics. This is a comparison of the configured algorithms and tolerances,
+not proof of equal local-kernel accuracy.
+
+4. Global synthesis: complete angular grids on selected sides
+
+                             L   Wigner mode    Sides    Wall (s)   Peak RSS (GiB)
+                           128   generated           2    31.968             0.190
+                           128   stored              2    30.424             0.342
+                           384   generated           2   104.868             0.744
+                           384   stored              2   100.433             4.927
+                          1536   generated           1   509.233             6.860
+                          1536   stored              1   483.668           276.787
+
+
+All runs request one outer worker and 32 inner GSH threads, with other numerical-library thread limits
+controlled. The maximum observed resident count is 34 including the supervisor. The source releases
+the main-thread OpenMP pool after grid construction and before the worker team is formed; runtime
+cleanup succeeds. The global cap is 40 and the waiting follow-up cap is 4, keeping the configured
+aggregate below 50. Supervision is userspace observation/enforcement, not kernel aggregate accounting.
+Threading is harmful on the tiny cases: Generated degree-3/12 runs rise from 3.502/5.242 s serial to
+21.939/27.510 s with 32 threads. Keep those cases serial. At degree 384, the serial Generated/Stored
+runs took 259.723/173.746 s; the 32-thread versions take 104.868/100.433 s. There is no completed serial
+degree-1536 reference: its earlier unfinished run was deliberately stopped and preserved at 1952.070 s.
+Do not infer a 32-fold speedup or turn that partial duration into a completed benchmark.
+The degree-1536 Stored table is about 270.44 GiB; observed total peak RSS is 276.787 GiB, versus 6.860
+GiB Generated. Stored saves only 25.565 s (5.0%) in this one-fluid-side end-to-end case. Generated is
+the sensible default for the initial bounded outputs; many-side cache amortisation remains a separate
+measured decision. Both modes spool 11.293 GiB of modal records for all native sides, while the one-side
+kernel output is 0.846 GiB.
+
+         Degree-1536 wall decomposition                                   Generated (s)     Stored (s)
+         Grid/context setup                                                       4.125        40.600
+         Spool reads                                                              0.368         0.356
+         Coefficient rotation/layout                                             22.185        22.185
+         Inverse GSH/FFT                                                        168.187       103.137
+         Pointwise contractions                                                  28.677        28.689
+         Frequency accumulation                                                   2.781         2.716
+         Output writes                                                            2.865         2.938
+         Worker residual                                                          1.312         1.292
+         Worker scheduling/wall difference                                        0.005         0.007
+         Consumer preflight/cleanup/other residual                                4.518         4.725
+         Total consumer                                                         235.023       206.645
+         Process outside consumer                                               274.210       277.023
+         Process wall                                                           509.233       483.668
+
+
+The manual consumer timings are a separate timing layer from MATHPROFILE and must not be
+added to its already-inclusive consumer coverage. Residuals are explicit: roughly 4.5–4.7 s outside
+setup/worker intervals and 1.3 s inside each worker remain unclassified. MATHPROFILE root exclusive
+sums close, but that does not imply every manual sub-operation is individually instrumented. The GSH
+backend here is the library’s Loop plus FFT implementation, not a new external-BLAS GEMM; the
+native tensor route uses Eigen internal multiplication.
+The consumer accumulates matching-frequency products side-by-side and writes each completed side
+once. It skips the exact-zero guard mixing and ten of twelve structurally zero fluid transforms. It does
+
+27 October 2026                                                                                              3
+DSpecM1D / YSpecpp                                                                                          Acceleration phase A
+
+
+not sum the two wavefields independently over frequency before multiplying them: that would change
+the kernel. Dense cross-degree precontraction instead introduces O(L2 ) coupling and loses the low-rank
+frequency advantage when L greatly exceeds the 52 active bins. Approximate compression would require
+a new error budget.
+
+5. Validation, unresolved discrepancies and resolution
+
+All 17 final-native jobs and 11 native comparison reports pass; all 19 global jobs and nine internal exact
+comparisons pass; the post-analysis queue’s four additional paired exact checks pass. Native and global
+scientific-array comparisons are byte-exact where reported, work counters are unchanged by the final
+allocation fix, recorded inputs remain unchanged and process cleanup is verified. At degree 1536 the
+energy is 8.5734206967 × 10−10 m2 s and the q · p versus 2E relative residual is 6.03 × 10−16 .
+Global scientific promotion remains held. The original-direct versus global comparison at degrees
+3 and 12 exceeds the frozen 2 × 10−13 threshold in the L and fluid-bulk channels (roughly 3.1–4.3 × 10−13
+scaled differences). Internal threading/storage parity does not clear this separate gate, and no tolerance
+was relaxed. These differences are distinct from the inherited DSpec/YSpec discrepancies: at 1536 the
+saved solid-channel scaled differences include about 42.8% in C, 34.1% in F and 15.6% in L on the
+diagnostic points. The fixed-degree waveform agreement is much better (relative L2 ≈ 4.64 × 10−5 ,
+energy difference ≈ 2.68 × 10−5 ). Neither proves local-kernel agreement.2
+The bounded resolution comparison uses a 720-point source-to-receiver great-circle arc, a 5-degree
+angular exclusion at each endpoint, and approximate bilinear angular interpolation on two native sides.
+There is no radial interpolation. Between degrees 128 and 384, max-scaled differences are 8.22% for the
+selected fluid bulk trace and 8.29–17.65% across active solid channels; norm-scaled differences are 8.66%
+and 8.93–16.63%. This does not establish convergence. The earlier degree-384 to 1536 energy difference
+is about 2.93% relative to the degree-1536 value (2.84% relative to degree 384), so those degrees must
+remain labelled exploratory.
+
+6. Decision and next approved boundary
+
+Use the validated native route for initial exploratory sections and depth slices, retaining raw values,
+one-sided interfaces, contact omissions and explicit scales. At low degree v4 is currently faster; v5 has
+the demonstrated large-degree gain. The global route remains experimental until its original-route
+numerical gate is resolved. Its complete 179-side, degree-1536 output would occupy approximately
+151.47 GiB; that requested high-degree full volume has not been materialised in this phase.
+The proposed figure configuration keeps the same source, receiver, window and band, with kernel-
+bandwidth-derived section sampling (4L + 1 points around the full great circle) and selected native
+depths near 96.446, 600 and 1019.368 km. Degree 384/1536 panels must be exploratory. Receiver lifts,
+Sobolev/Riesz gradients and receiver-point peak convergence remain deferred, as requested; they are
+not prerequisites for the initial figures.
+After figures, the largest remaining native targets are genuine batched SEM recovery, angular synthesis
+and numerical LU. A vertical-receiver adjoint specialisation is a plausible further reduction, but has not
+been implemented or validated here. The low-degree assembly/scaling/LU regression needs a bounded
+compiler/memory investigation if further acceleration is requested. No additional optimisation campaign
+or figure generation starts automatically.
+
+
+
+
+   2
+     The high-degree native samples occupy only the first 64 angular points of the relevant rule; these discrepancies are descriptive,
+not a representative global error norm. Native/interface identities are matched without radial interpolation.
+
+
+27 October 2026                                                                                                                     4
+DSpecM1D / YSpecpp                                                                      Acceleration phase A
+
+
+A. Complete degree-1536 native exclusive component table
+All entries below are exclusive seconds; zero denotes no entry under that scope name, not proof that
+corresponding work costs zero. Historical scope names are retained. Calls are for v5. Inclusive timings
+and all other measured degrees remain in the accompanying machine-readable files.
+
+    Scope                                                         Original        v4         v5     Calls
+    SEM_mesh_and_matrix_setup                                        0.003      0.003      0.003        1
+    baseline_forward_receiver_only                                1.07e-04          0          0        –
+    baseline_forward_with_bounded_response_capture                       0   1.58e-04   1.32e-04        1
+    batch_response_cache_get_or_compute                                  0      3.362      3.518   322560
+    dspec_setup                                                   1.21e-05   1.68e-05   1.12e-05        1
+    dynamic_H_assembly                                              31.828     16.116     16.276   162921
+    forward_frequency_bin                                            0.702      0.705      0.751       53
+    forward_substitution                                             0.118      0.050      0.050   162921
+    frequency_workspace_modal_solve_and_adjoint_construction      1.29e-04   1.10e-04   1.43e-04       52
+    frequency_workspace_prepare_and_modal_capture                   11.231     10.001     11.006      105
+    full_weighted_HH_solve                                        3.02e-05   4.41e-05   5.44e-05       52
+    harmonic_synthesis_native_node_sampling                       1.59e-04   8.91e-05   1.19e-04       52
+    input_parameters_model_and_frequency_initialization              0.002      0.002      0.002        1
+    kernel_frequency_sum_read                                        0.019      0.021      0.021       52
+    kernel_frequency_sum_write                                       0.010      0.010      0.011       52
+    kernel_grid_and_radial_metadata_write                            0.003      0.004      0.003        1
+    kernel_result_file_open_and_zero_initialization               7.08e-04   6.36e-04      0.001        1
+    measurement_filter_and_inverse_fft                               0.002      0.002      0.003        1
+    minimal_unit_basis_HH_solve                                      0.062      0.049      0.046   162816
+    modal_projection_source_lift_and_frequency_solve                 0.356      0.317      0.213      105
+    native_radial_trace_metadata_write                            6.38e-04   5.91e-04   6.29e-04        1
+    packed_Wigner_d_table_build                                      0.023      0.033      0.033      108
+    packed_angular_coefficients_and_basis_build                      0.010      0.014      0.013      108
+    parameter_file_generation                                     2.11e-04   2.17e-04   2.21e-04        1
+    physical_case_total                                              0.638      0.933      1.138        1
+    physical_energy_adjoint_all_output_bins                          0.002      0.002      0.003        1
+    physical_result_and_spectrum_csv                              1.76e-04   6.31e-04      0.003        1
+    pointwise_strain_rotation_kernel_contraction                     0.009      0.010      0.010       52
+    pole_frame_sampling_total                                        0.010      0.012      0.012      105
+    radial_interpolation_and_strain_numerator_build                 64.612     64.962     66.655    18722
+    radial_l0_sampling_and_interpolation                             0.012      0.019      0.015      105
+    radial_l0_source_and_adjoint_branch                              0.004      0.056      0.074      105
+    receiver_at_pole_closed_form                                     0.012      0.025      0.025   322560
+    receiver_basis_and_QR_reconstruction                             5.581     11.880     11.706   325632
+    receiver_basis_mix_and_unit_adjoint_projection                   1.078      3.310      3.406   322560
+    receiver_frame_geometry_phase_spin_rotation_and_scatter          4.088      4.000      4.050      105
+    receiver_local_weight_materialization                            0.012      0.024      0.025   322560
+    shared_forward_and_adjoint_solver                                2.632      1.287      1.341   162921
+    solver_factorization_dispatch                                    0.059      0.031      0.031   162921
+    source_frame_geometry_phase_spin_rotation_and_scatter            7.977      6.424      7.821      105
+    sparse_adjoint_solve_including_rhs_scaling                       8.955      9.196      9.071   162868
+    sparse_equilibration_and_scaling                                23.019     11.223     11.769   162921
+    sparse_factorization_total                                       0.469      0.384      0.376   162921
+    sparse_forward_solve_including_rhs_scaling                      27.815     14.158     14.122   162921
+    sparse_numerical_factorization                                  98.255     50.591     52.777   162921
+    sparse_symbolic_analysis                                        23.257   2.79e-04   2.88e-04        3
+    spheroidal_source_lift_projection_and_solver                    12.757     75.805     21.302   161280
+    tensor_angular_gemm_complex_and_packing                         64.685     63.747     63.930    91740
+    tensor_angular_plan_key_build_and_lookup                      4.09e-04   4.40e-04   4.90e-04      104
+    tensor_coefficient_layout_dedup_and_permutation_build                0      0.548      0.548      104
+    tensor_coefficient_packing_and_key_reorder                     134.740      2.607      2.716      624
+    tensor_cold_frame_geometry_and_wigner_build                      0.772      0.696      0.734       53
+    tensor_complex_basis_cache_lookup                                0.003      0.003      0.003      624
+    tensor_complex_basis_cold_fill_and_cache                         4.421      4.316      4.474      521
+    tensor_complex_basis_key_construction                            0.019      0.018      0.019      624
+    tensor_grid_cold_layout_map_build                                0.001      0.003      0.004        1
+    tensor_grid_semantic_key_build_and_lookup                        0.010      0.009      0.009       52
+    tensor_phase_spin_rotation_and_scatter                           0.093      0.266      0.358      104
+    tensor_radial_l0_scatter                                         0.031      0.050      0.069       52
+    tensor_representative_and_coefficient_record_capture          8.74e-04      0.001      0.001       52
+    tensor_result_allocation_and_volume_tagging                      0.025      0.013      0.013       52
+    tensor_sampling_total                                            0.331      0.028      0.396       52
+    toroidal_source_lift_projection_and_solver                       1.984     12.744      2.718   161280
+    trace_csv_write                                                  0.001      0.002      0.003        1
+    windowed_energy_evaluation                                    4.91e-07   6.21e-07   6.31e-07        1
+
+
+
+
+27 October 2026                                                                                             5
+DSpecM1D / YSpecpp                                                                    Acceleration phase A
+
+
+B. Complete degree-1536 YSpec kernel components
+
+     Scope                                                                       Exclusive (s)     Calls
+     angular.generalized_legendre_table_population                                      0.787        104
+     angular.spin_legendre_table_population                                             0.426        104
+     angular.wigner_function_table_build                                                1.591        104
+     api.ComputeSampledKernels                                                       2.09e-05          1
+     api.ComputeSampledKernelsImpl                                                      0.382          1
+     io.output_angle_block_write                                                     1.77e-04          1
+     io.output_fsync                                                                    0.005          1
+     io.scratch_block_read                                                              0.022         52
+     io.scratch_block_read_for_transform                                             2.31e-04          1
+     io.scratch_block_write                                                             0.014         52
+     io.scratch_cleanup_after_verified_output                                        1.64e-04          1
+     io.scratch_fsync                                                                   0.005          1
+     kernel.angular_block_batch                                                         0.345         52
+     kernel.angular_harmonic_synthesis.adjoint                                         22.449     595712
+     kernel.angular_harmonic_synthesis.source                                          37.409     595712
+     kernel.elastic_energy_pair_contraction                                             0.081     595712
+     kernel.frequency_block_accumulation_copy                                           0.002         52
+     kernel.measurement_frequency_basis_weights                                      1.76e-05         52
+     kernel.modulus_dispersion_frequency_weights                                     3.02e-04         52
+     kernel.objective_weight_and_parameter_products                                     0.099     595712
+     kernel.output_block_parameter_transform                                         9.75e-04          1
+     kernel.output_streamed_parameter_transform                                      3.84e-04          1
+     kernel.relative_spin_rotation                                                      0.092    1191424
+     kernel.scratch_block_accumulation                                                  0.009         52
+     physical_case_total                                                             2.32e-04          1
+     radial.bvp_up_down_integration_and_matching                                        1.598     159796
+     radial.coefficient_combine_and_strain_recovery                                    11.706      79924
+     radial.context_material_frequency                                                  0.012      79924
+     radial.determinant_jumps_matching_and_response_transport                          12.050     159796
+     radial.initial_conditions_and_downward_integration                                57.929     159796
+     radial.initial_conditions_and_upward_integration                                1005.270     159796
+     radial.radial_physical_variable_recovery                                           0.001         52
+     radial.radial_response_family                                                   1.36e-04         52
+     radial.solve_radial_family                                                      5.41e-05         52
+     radial.solve_toroidal_and_spheroidal_families                                      0.037      79872
+     radial.spheroidal_b_vector_transport                                            2195.872    7468046
+     radial.spheroidal_physical_variable_recovery                                       5.604      79872
+     radial.spheroidal_response_family                                                  0.802      79872
+     radial.toroidal_physical_variable_recovery                                         1.355      79872
+     radial.toroidal_response_family                                                    0.085      79872
+     setup.construct_kernel_solver                                                   4.17e-05          1
+     setup.disk_backed_accumulator                                                   3.27e-04          1
+     setup.frequency_sampling_grid                                                   7.00e-08          1
+     setup.frozen_measurement_and_sample_grid                                           0.389          1
+     setup.map_adjoint_receiver_depths                                               4.00e-08          1
+     setup.measurement_adjoint_spectra_and_weights                                   1.08e-04          1
+     setup.measurement_direction_basis                                               3.16e-06          1
+     setup.merge_sample_nodes                                                        3.40e-05          1
+     setup.model_calculation_source_receiver_grid                                       0.001          1
+     setup.sampled_node_materials_and_phases                                         1.58e-05          1
+     setup.source_receiver_frame_geometry                                            3.44e-05          1
+     setup.validate_measurements_and_source                                          3.46e-06          1
+     source_weights.forward_moment_force_rhs                                            0.051      79924
+     source_weights.receiver_unit_force_rhs                                             0.064      79924
+
+
+
+C. Saved evidence and provenance
+
+The report data are derived from saved receipts, not rerun solvers. The independent final review qualifies
+execution/internal parity as passing and retains the separate global scientific failure. Its local rehash
+covers the collected small files; large kernel/spool payloads remain on Tunya, bound through verified
+remote artifact digests and comparison receipts. No production research checkout, existing evidence,
+commit or remote branch was changed by the acceleration phase.
+Companion files: analyses/phase-a-final-comparison.json contains all source datasets and input
+SHA-256 values; analyses/phase-a-all-profile-components.csv retains every inclusive/exclusive
+profiler row at all measured degrees. review/phase-a-final-evidence-review.md states the indepen-
+dent audit limits. Proposed figure settings are in configs/proposed-figure-case.json. All paths
+are relative to the acceleration investigation folder.
+
+27 October 2026                                                                                            6
+

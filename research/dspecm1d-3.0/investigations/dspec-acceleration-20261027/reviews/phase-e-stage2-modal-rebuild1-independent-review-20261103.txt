@@ -1,0 +1,15 @@
+PHASE E STAGE 2 MODAL — FOCUSED REBUILD 1 REVIEW
+Date: 2026-11-03
+Disposition: SOURCE DELTA / REBUILD CONFIG PASS.
+
+The original source/build gate remains valid except for the following exact compile repair. Compared with the sealed original 23-file archive, the driver change removes only the second duplicate const int bin declaration in the active C2 frequency lambda; the earlier identical declaration before prepareFrequencyWorkspace remains in scope. No algorithm, timing boundary, oracle, or scientific setting changes. Original compile failure and its command/input/resource evidence are preserved in receipts/phase-e-stage2-modal-v1-build-failure-20261103.json.
+
+Fresh rebuild1 compile config differs from the original only in stage/build roots. Rebuild plan changes task/control/stage/config roots consistently, including job cwd after focused correction. Accepted compiler flags, pinned YSpec DSO/private headers and all other dependencies are unchanged. Resource budget remains 8 threads / 32 GiB. Release only the exact reviewed minimal payload to fresh roots after member/path/external-input guards; preserve the failed original stage/build/control. Numerical run/checker acceptance is still pending and separate.
+
+Sealed SHA-256
+734c347858491c6a85b75a2314bb23a42365d84ea01f28d4f800e8c526d60337  candidates/phase-e-stage2-modal-v1/dspec/phase_d_driver.cpp
+b8b43b15ab1d928ac501a49519655a375aa7d36c75aefdf344af10910d934d9e  configs/phase-e-stage2-modal-v1-rebuild1-build.json
+d08cc3b43336387125399c67a03c1253a51053edb89b78876c61b7404a9ec2e5  configs/phase-e-stage2-modal-v1-rebuild1-build-plan.json
+4d42624b374b5a2224593c36c97e947018e2a171e26de23d6b084cbff9377024  receipts/phase-e-stage2-modal-v1-build-failure-20261103.json
+
+Unchanged header seals: SensitivityKernels.h be85e101ff8fbc907407c3e0490c4b138619840eac42db4b609e64d66a8c6fa1; Windowed3DFields.h bf95c980c40a9ee549045040c6d8426de790c75ec2ad70e7028eb0c5d71adbcf. Original gate review SHA3520dbb8750e88f5b8e41a0834e91370caf4ef82f04a9a94d36c2faf7acd1c83. No numerical or performance result is claimed by this gate.

@@ -1,0 +1,111 @@
+Phase B execution plan — 2026-10-31, Sol independent planning/review
+User explicitly authorizes B only. Luna is sole implementation/execution owner.
+
+1. Exact isolated scope and reuse
+Create candidates/phase-b-fixed-mesh-v1 from the archived compiled Phase A
+candidate in receipts/phase-a-v1-build-completed, or verify every copied runtime
+file against that receipt. Preserve A and all failed/dirty evidence. Add
+phase_b_driver.cpp and phase_b_controls.hpp; narrowly extend copied
+engine_headers/SensitivityKernels.h and/or Windowed3DFields.h only for direct
+common-side evaluation and restricted solves. Reuse phase_a_contract.hpp,
+phase_a_reconstruction.hpp, A measurement/FFT functions, existing rank-basis
+receiver adjoint projection, and existing profiling. Do not change adjoint
+direction algorithm, cache policy, zero-bin schedule, production or YSpec.
+Add configs/phase-b-fixed-mesh-v1-build.json, its supervised build/run plans,
+tools/check_phase_b_fixed_mesh.py and bounded reports/phase-b-fixed-mesh-20261031/
+outputs (preserve the unrelated existing check_phase_b.py).
+Use existing stage_reviewed_build.py, stage_phase_b_run.py, build_campaign.py,
+SSH transport and supervise_campaign.py; no framework rewrite. Promptly append
+candidate and campaign implementation_status.md for every code change.
+
+2. Four configurations, exactly one SEM per configuration for all frequencies
+Rows: NQ5 nominal, NQ5 finer, NQ6 nominal, NQ6 finer. Read the accepted
+InputParameters.relative_error() value from the generated A-format parameters
+and record its actual value (do not mistake A's mesh step .025 for relerr).
+With zmax = grid.Omega(34), use omega_ref = abs(zmax) in the same normalized
+units as standard vecW, conservatively including damping. The pinned standard
+FullSpecMultiSem.h recipe is
+ h_nom = min(pow(100*relative_error,1/(NQ-1)) *
+             (0.78*1000/TimeNorm*2*pi) / omega_ref, 0.05).
+Use source-aware SEM(model,h_nom,NQ,L200,source); finer uses h_nom/2 with the
+same source/material knot recipe. Both source interface sides must survive.
+Record relerr, TimeNorm, zmax complex, omega_ref, h, actual element radii/layers,
+element count, family DOF counts, native-side count and source/receiver support.
+No extra reference solve: reuse hash-bound frozen NQ10/.025 A reference data.
+Do not call NQ10 continuous truth. If accepted relative_error cannot be mapped
+unambiguously, stop mesh selection and report that concrete gap.
+
+3. Queue within those four rows
+One instrumented build (one tiny contract executable only if required), then
+one sequential supervised numerical batch per row. Each row computes all 35
+untruncated forward spectra, waveform, traveltime normalization/measurement,
+and its own waveform-derived adjoint spectrum. For spatial field/kernel
+comparisons use identical frozen accepted measurement-adjoint weights at bins
+9,25,40; report own-weight changes separately. The three active-bin batches
+contain paired untruncated/truncated solves on identical fixed SEMs/forcing.
+No independent repeated timing campaign, no YSpec rerun and no new figure.
+Parallelize eight total solve workers only; inner Eigen/library threads one.
+
+4. Common physical locations and meaningful split errors
+Read exact frozen A 293 native radial-side records (r >= 3000 km) retaining
+radius, material/layer, left/right source/interface side and original ordering.
+Map each to its containing candidate element of the SAME material/side. At an
+exact boundary choose by the reference side, never nearest radius. Evaluate
+candidate nodal displacement Lagrange polynomials and their analytic radial
+derivatives at that reference radius, then apply unchanged A modal-to-strain
+and Hermitian-dual conventions; do not interpolate already formed strains
+across a source/interface. Source lift/contact terms use their existing exact
+one-sided definition. Off-node fluid pressure/material derivative formulas
+must likewise be evaluated at the actual common radius in that material.
+Retain 135 along/19 across angles and all complex forward/adjoint channels.
+Compare NQ5/NQ6 nominal vs own finer and both against frozen NQ10; report
+bulk, material-interface, source-side and receiver-location values separately,
+including per-fluid diagnostics and zero fluid Vs kernels. Receiver forcing
+radius is an explicit extra direct-evaluation diagnostic if not in the 293.
+No masks/smoothing or singularity investigation. Native-grid output remains
+the intended workflow; common-location output is only a validation control.
+
+5. Truncation: actual operator, dual safe, no silent omitted-domain claim
+Start with pinned startElementTor/Sph source-aware policy for each degree/bin.
+Also compute receiver-force-aware cutoff; take the deeper retained domain
+(minimum starting element), retain every nonzero source/receiver RHS support
+and lift, and respect each family's solid/fluid limits. Use the identical
+retained index set P for forward H_R=P H P^T and its adjoint H_R^H; solveAdjoint
+must conjugate the actual restricted full-gravity operator, including boundary
+rows/potential DOFs, not a transpose-only substitute. Record cutoff and DOFs
+for each family/degree/bin, exact retained-index policy and boundary treatment.
+Full gravity is mandatory; no Cowling branch. If the standard cutoff cannot
+justify removing gravitational DOFs/boundary treatment, retain those DOFs or
+fall back to the full domain and record that B found no safe reduction.
+Check restricted adjoint identity/residual and source/receiver RHS containment.
+At bins 9,25,40 compare spectra, complex forward/adjoint strains, kernel Vs
+products, cutoff trace/traction where defined, and omitted-domain untruncated
+fields/products. Padded zero storage is allowed only as explicitly labeled
+truncated approximation compared with untruncated omitted-domain values; it
+must never be advertised as validated physical zero. Extend/deepen cut on
+actual failure (or conservatively retain full requested sample domain); do
+not invent a mesh/truncation tolerance. If omitted errors remain unvalidated,
+recommend untruncated operation and report policy control as unaccepted.
+
+6. Evidence, review and stop
+Preflight Tunya resources/current campaign processes. All builds and numerical
+work use Tunya nohup through existing supervised detached transport; numerical
+cap20, build cap8, aggregate <=50, existing 32 GiB build/16 GiB solve limits
+unless a lower appropriate existing job limit is reused. Do not raise limits.
+USER_SPACE_SESSION_WATCHDOG is observed user-space enforcement, not kernel
+aggregate accounting. Immutable input lists contain individual files. Build
+binaries live under /space/adcm2/research/builds/phase-b-fixed-mesh-v1.
+One bounded source/plan review before run; one bounded final results review.
+Record setup, assembly, factors, forward/adjoint substitutions, radial prep,
+reconstruction/contraction, I/O, total; distinguish instrumented/native,
+master wall/summed worker elapsed and overlapping inclusive/exclusive scopes.
+Existing 1e-11 applies only same-data reconstruction; 2e-4 only discrete FD.
+No new continuous-accuracy gate. Report tradeoffs, validation limits and a
+provisional mesh/truncation recommendation; do not auto-promote. Retain hashes,
+raw errors/costs, supervised resource/cleanup receipts and all failed attempts.
+STOP before C, production integration, commits, pushes or deletion.
+
+Elapsed target risk flagged before implementation: the new direct off-node
+one-sided derivative evaluator and genuinely restricted full-gravity H^H
+boundary contract are not present in A. Source/review/correction work for these
+may exceed 20 minutes even though the numerical batches themselves are short.

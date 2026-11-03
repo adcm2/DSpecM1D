@@ -1,0 +1,42 @@
+{
+  "utc": "2026-10-27T09:11:54.567850+00:00",
+  "pid": 2045526,
+  "ppid": 1,
+  "session": 2045526,
+  "status": "running",
+  "jobs": [
+    {
+      "id": "qualification-checks",
+      "status": "completed",
+      "elapsed_seconds": 1.470527872996172,
+      "failure_reasons": [],
+      "watchdog": null
+    },
+    {
+      "id": "dsv4-native-l128",
+      "status": "running",
+      "elapsed_seconds": null,
+      "failure_reasons": null,
+      "watchdog": {
+        "aggregate_rss_gib_userspace": 0.0365,
+        "elapsed_seconds": 10.41,
+        "owned_processes": [
+          {
+            "pid": 2045546,
+            "starttime_ticks": 12555388,
+            "threads": 1
+          },
+          {
+            "pid": 2045526,
+            "starttime_ticks": 12555232,
+            "threads": 1
+          }
+        ],
+        "peak_observed_rss_gib_userspace": 0.0462,
+        "peak_observed_threads": 2,
+        "thread_cap": 50,
+        "thread_count_including_supervisor": 2
+      }
+    }
+  ]
+}

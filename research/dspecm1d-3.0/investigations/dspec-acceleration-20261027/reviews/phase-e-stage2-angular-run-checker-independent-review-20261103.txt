@@ -1,0 +1,87 @@
+Phase E Stage 2 angular substage — independent run/checker review
+Sol 6.1 high — 2026-11-03
+
+EXACT PRODUCER RUN PLAN, STANDALONE CHECKER PLAN, AND CHECKER: PASS.
+Source/build gate and actual two-variant build/dependency evidence also PASS.
+Authorized numerical queue may proceed after exact minimal validation bundle
+and current resource/path checks. No next optimization is released.
+
+Sealed producer plan configs/phase-e-stage2-angular-v1-run-plan.json
+aaacd4c78b480e7c904026b3f1322e9e05433e6c7c1c93e337e104202e4a4889
+Sealed standalone plan configs/phase-e-stage2-angular-terminal-check-plan.json
+04063825729c0d49a19689bdf77e5e9da70fe835e7400130ead477efb8dc1685
+Sealed checker tools/check_phase_e_stage2_angular.py
+0ecba504c25f4ad1cf17ec815699b89a1a57a4f84e157d59675f5b1c7dc08e9d
+Unchanged FD checker tools/check_phase_d_fd.py
+2c732e7a1adf517782983c880eb07befdea8d4dac75c242ff180cd7d21ce28ea
+
+Producer task has14 sequential jobs:13 numerical invocations and the existing
+FD checker. The selected all35 L200/NQ6 audit compares old complex angular vs
+real-Legendre fields/products on the SAME workspace and batched radial data,
+with a separate independent scalar oracle and the existing radial packet
+oracle. It disables exact-zero skips;70 rows must cover35bins x2sections with
+finite positive reference norms and errors<=1e-11. The frozen L3/NQ8/h=.05 audit
+uses the actual new route,35bins xONEsection/91angles,157native sides, one
+frequency worker, skip-zero OFF; its angular proof, frozen FD<=2e-4, gravity and
+time-shift controls are required. No NQ8 fallback is presented as new evidence.
+
+Three interleaved native legacy/real pairs and one profile per route retain
+current batched radial reconstruction in BOTH controls. Native/profile oracles
+are disabled;35forward/32activeadjoint/3exact skips retained. Legacy angular
+keeps16x32 complex work; selected real route64x32, shared spin0 rows, real degree
+sums and exact l0 specialization. Three fresh unchanged Stage1-v2 native YSpec
+context observations explicitly unset DSPEC_FREQUENCY_WORKERS and keep8CLI
+workers/inner1. The historical radial/YSpec observations are context only.
+
+Selected metadata gates cover L200/NQ6/h=.02035382429229197,208physical sides,
+135+19angles,35bins7..41, batched radial, native Dref/J,8frequencyworkers/inner1,
+gravity/time-shift, expected oracle/skip states and32MiB angular working bound.
+All trace/spectrum/component channels, full kernel arrays and exact grids are
+compared to the actual final validated radial native reference dspec-batched-2,
+and same-source pairs. The prior PhaseD final-report/NQ10 anchor is pinned to
+013273941560685863015e48aeef42daeada129b3174ff47217637f21e605a95.
+Physical solid accuracy1e-3 can be inherited only after tight new field/output
+parity and unchanged SEM/source/dependency evidence; cross-backend discrepancies
+remain diagnostics, not accuracy gates.
+
+Profiles gate raw finite inclusive/exclusive times, worker/root and master-wall
+closure,35root/workspace calls,32radial calls,35forward/32adjoint/3skips. Legacy
+has147840 complex GEMM scope/product calls and no new route counters. Real has
+27552 scope calls enclosing TWO real products each (55104 actual products),
+1312 coefficient packing calls,32material batches, and no legacy-route calls.
+Route markers must be32. Driver elapsed, supervisor wall and worker sums are
+separate; product counts and one-run profiles are not wall speed forecasts.
+
+The standalone terminal checker runs ONLY after producer completion. It reads
+an immutable producer-final-state.json outside its own supervisor state, and
+verifies that snapshot's plan_sha256 against supplied producer-plan bytes.
+External-campaign guard binds that exact producer plan/hash and task path.
+All producer receipts must be completedrc0, inputs unchanged, failure-free,
+cleanup verified, within20threads/16GiB. Checker output parent is created.
+Its own successful lifecycle/input/cleanup receipt must be inspected externally.
+This avoids the previous live-state argv-hashing and missing-parent failures.
+
+Static dependency review: all242 declared producer outputs are present in the
+288 standalone inputs; no duplicates or unresolved prior-output dependency.
+All numerical cwd/case/prem paths use the build-source stage, while checker
+paths/plans use the fresh distinct validation stage. Authoritative stage paths,
+binary inputs and command paths agree. External input existence/hashes must be
+checked before launch; final-state snapshot is created after writer completion.
+Python compilation and JSON/static closure checks pass.
+
+Build allowlist independently verified23regular members, exact18active local
+include closure plus2casefiles,2configs,current source/build review. Archive
+b844db2feb496390703d4f59e64bdbbcb558eb8bf5c175cd6928bce5c237afd2;
+manifestb64eed6033f431f03f24d253bae0c7bde84cf05e84390e28956c2398b08fcc8a.
+Actual compiler argv matches approved config; both rc0,13 tracked before/after
+maps stable, all12 shared external dependency paths identical to final radial
+build for both variants. Disabled binary
+45b834873ef6efd53dee81c7508ea79ea9a27a69d612ea44793cd5a01a9962bc;
+enabled0502c44b27afdcc04d87899fb02d1e32a2a81f113b8211a0bb5d37f8b6128e28.
+Build supervisor completedrc0, inputs unchanged, verified cleanup; peak6threads/
+2.369GiB in156.7096s, within8/32GiB. Pre-extraction launcher failures preserved.
+
+Numerics retain8totalworkers/inner1, quiet sequential jobs,20thread/16GiB caps
+and aggregate50thread ceiling. Standalone checker4threads/8GiB. User-space
+watchdog is not kernel aggregate accounting. Final numerical/timing/report
+review remains required; no speedup or scientific completion is yet asserted.

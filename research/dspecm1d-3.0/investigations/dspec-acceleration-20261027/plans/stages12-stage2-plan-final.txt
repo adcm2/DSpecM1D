@@ -1,0 +1,352 @@
+DSpecM1D Stage2 whole-frequency parallel scheduling — FINAL PLAN
+2026-10-31, requested Sol6.1-high planner; planning/source inspection only.
+RELEASE GATE: parent must verify completed Stage1 N2/N3 and final Stage1
+aggregate/input-hash/cleanup/parity receipts BEFORE Luna implementation begins.
+No further user permission is implied by this mechanical prerequisite. This final
+plan implements only already-approved Stage2 scope; no Stage3 release.
+
+1. Scope and dependencies
+
+Stage2 changes scheduling and ownership only, on the exact Stage1 documentation
+case. No copy/construction removal, loop fusion, new cache policy, skipped or
+reduced frequency work, mathematical reformulation, source/receiver discrepancy
+investigation, convergence campaign or production integration. Keep all Stage1
+instrumentation and fixed physics/outputs. Luna-high agents alone implement,
+review/build/execute; planner does not. Report the accepted Stage1+2 results to
+the user before any Stage3 action, even if Stage2 speedup disappoints.
+
+Stage1 accepted P1 accounting/parity and all12 low-degree controls support this
+plan. N1 elapsed51.840044503s, P1 elapsed52.164914599s, observed profile overhead
+0.62668% against N1; retain instrumentation. N2/N3/final receipt are the explicit
+release prerequisite above, not evidence claimed complete here. Accepted source
+is receipts/stages12-stage1-v1-frozen-inputs/candidate ONLY. Never seed Stage2
+from mutable candidates/stages12-stage1-profile-v1 (unbuilt cache guard/log drift).
+Use original v9 and accepted Stage1 degree8 outputs/timings separately. Reuse
+verified YSpec frozen evidence; no new YSpec execution. Section7 binds evidence.
+
+2. Intended implementation and exact dependency ordering
+
+Retain original CLI/route as default degree-parallel baseline. Add an explicit
+bounded frequency scheduling opt-in (e.g. DSPEC_FREQUENCY_WORKERS=1..8) with
+result metadata distinguishing frequency_workers and solve_workers. Legacy
+workers argument retains its current meaning unless opt-in is present; reject
+frequency>1 combined with solve>1. New frequency1 route uses the same scheduler
+logic as frequency8 with inner solves1, providing a scheduler serial control.
+Do not reinterpret an8worker baseline invocation silently. Existing yspec route
+remains untouched; new opt-in limited to dspec and dspec-forward controls.
+
+Keep the two-pass algorithm, including the existing cache's unit-adjoint capture:
+  A. Construct model/SEM/source/parameters/samplings on parent exactly once.
+  B. Parallel35 complete initial-frequency tasks, each prepares its own workspace
+     with solveThreads=1, captures forward+unit adjoints through the SAME stable
+     BatchResponseCache, samples receiver, writes only components[k]/raw[k].
+  C. Join every task, inspect error slots; only if all succeed perform unchanged
+     serial measure()/FFT/window/normalization/adjoint-spectrum construction.
+     No kernel task runs until the complete waveform and adjoint are available.
+  D. Parallel35 complete kernel-frequency tasks, using already-populated response
+     cache, task-local weights/workspace/points/fields, persistent private plans,
+     original within-frequency section/order and first2bin validation behaviour.
+     Each writes its own per-frequency section contribution buffers and metrics.
+  E. Join, check errors/validation, then parent reduces contributions in strictly
+     original increasing k order, for each original side/angle address. No worker
+     ever adds into shared values. Serial I/O and integral audit follow unchanged.
+
+Use OpenMP one outer region/pass and schedule(static); exactly8total numerical
+workers maximum, solveThreads=1, Eigen and library pools1. Set Eigen/OpenMP global
+settings before regions, never mutate process-global thread settings in workers.
+Do not make thread-local root-per-frequency dumps to stderr. Preserve worker
+backend selection by copying/restoring selected diagnostic backend in each worker,
+as existing degree scheduler does; symbolic factor state is already thread_local.
+Use one indexed result/error slot per frequency, not shared push_back. A local
+workspace is destroyed by its owning worker before that worker handles next task.
+
+For exact accumulation, contribution[k][section][side*angles+angle] is a plain
+assignment of existing kernelVs result. Parent starts original values at+0.0 and
+performs the original += in increasing k, retaining exact per-point arithmetic
+sequence; no OpenMP reductions, pairwise sums or thread-order sums. Preserve
+original material lookup/contraction expression/order, including fluid zeros.
+35*293*(135+19)*8=12,634,160bytes (~12.05MiB) contribution storage is bounded and
+small compared with existing~2.9GB response cache. Do not retain volume fields.
+Use checked dimensions/overflow bounds for the allowed exact case and L3 audit.
+
+Return no partial scientific success if a task fails. Catch each task's exception
+into its indexed exception_ptr, allow already-dispatched work to complete, join,
+then rethrow the lowest-frequency failure with pass/bin context on parent. Avoid
+early-stop flags that unpredictably skip frequencies or alter successful-run work.
+Parent alone emits deterministic progress/log messages after each joined pass;
+small progress buffering is scheduler support, not numerical work removal.
+
+3. Ownership/thread-safety audit and release requirements
+
+Pinned remote call-tree audit is recorded in companion
+stages12-stage2-thread-safety-audit-draft.txt, with full-file/function-span SHA256
+and final receipt-binding supplement. Source and dependency binding in section7
+supersedes its earlier pending/provisional notes. No shared lazy mutation found
+on inspected selected routes. The exact frozen Stage1 profile.hpp/doc_driver.cpp
+match the inspected versions; status/cache differences in the mutable draft are
+excluded. Re-audit the final Stage2 delta before build, without re-opening scope.
+
+Shared lifetime table:
+  SEM: construct fully once, retain one stable address through both passes, no
+    move/rebuild/reinitialization while tasks exist. Existing solver methods use
+    read-only mesh/matrices and local return allocations on inspected routes,
+    despite non-const signatures. Audit exact sourceTreatedRadial/Spheroidal/
+    Toroidal, receiverElements, rvBaseFull/T, rvZR, sourceMatches/sourceElement,
+    calculateForceRedCoefficients/T, hS/hTk/systemMatrix, interpolation and mesh
+    getter call trees for lazy writes/statics. If any mutation exists, stop and
+    surface the precise gap; do not clone SEM per task, change cache keys or add
+    a broad mutex around full frequency work as an unmeasured fallback.
+  SourceInfo/EarthquakeCMT,InputParameters,CommonModel,model,grid,source frame,
+    nodes/samplings/receiver/direction: immutable shared inputs. Source methods
+    inspected return computed scalars; receiver/projection methods allocate local
+    vectors/matrices. YSpec Layer::operator() const reads polynomial coefficients
+    and returns Material by value on inspected local source. Confirm pinned
+    Segment lookup has no shared cursor and all workers avoid model/parser/FFT
+    mutation. Existing shared-model operator calls remain in worker contraction.
+  BatchResponseCache: keep original locked implementation and original entry/byte
+    limits, single stable cache object shared by both passes. Every key uses the
+    same &sem, family, degree, z and dispersion. getOrCompute holds mutex for
+    signature validation/copies, unlocks for local compute, then locks admission;
+    accessors/deriveWeightedAdjoint are locked. Do not change these semantics.
+    Unique frequency/family/degree ownership prevents same-key concurrent misses.
+    No clear(), move or destroy until joins. Stage2 must preserve miss/hit totals
+    and stored response count/bytes; kernel nonradial pass must hit, not recompute.
+  SamplingPlanCache: NOT thread safe. Its maps/counters/bytes and nested
+    TensorAngularPlan basis maps are mutable; shared_ptr payloads make shallow
+    copies unsafe. Create independent empty per-worker/per-section plans once,
+    keep them for that worker's frequencies within kernel pass, and destroy after
+    join. Do not clone pointer graphs from a warm shared plan. Cold builds repeat
+    up to number of workers; disclose this unavoidable ownership cost explicitly,
+    not as a cache-policy optimisation. Per-frequency fresh plans are forbidden
+    because they discard the existing cross-frequency reuse unnecessarily.
+  Workspace/PoleCoefficientCache/fields/points/records/coefficients/GSH Wigner:
+    task-private; no sharing the mutable frequencyCoefficientCache_. Tensor
+    local plan-owned Wigner and real/complex bases independent across workers.
+    Audit pinned GSH/Interpolation internals for global lazy caches/static scratch;
+    owned object alone does not establish thread safety. Do not add giant tables.
+  Solver factors/backend: existing thread_local factors and backend. Serial
+    degree iteration inside each frequency retains family order. Numerical
+    factor/RHS counts unchanged; symbolic analysis/reuse counts can differ with
+    new worker task history and must be reported rather than forced equal.
+  Profiling: auditprofile stays disabled; mathprofile thread_local WorkerCapture
+    and separate output slots, merge on parent after joins. Never share maps,
+    active scope stacks or snapshots. Existing mergeWorker prefixes are for
+    degree workers; avoid silently labeling frequency workers as degree workers.
+  Results/I/O/FFTW helpers: indexed unique task slots; no shared stream/file writes
+    or parent cumulative validation max/duration writes in workers. Per-task
+    diagnostics reduced deterministically after join; serial measurement/FFTs.
+
+Measured Stage1 full L200 invariants:14000nonradial response misses in initial pass and14000hits in kernel pass,
+14000cache entries,70radial cache-bypass solves, hence14070numeric factorizations.
+Forward/unit/weighted RHS-column counts must match Stage1 measured values exactly;
+do not assume weighted HH happens simply because an adjoint exists (zero RHS
+skip and pole-only projection are distinct). No promise that symbolic counts
+match degree8, because thread-local symbolic history changes with scheduling.
+No factorization cache change or cross-frequency numerical factor reuse.
+
+4. Exact implementation file scope
+
+New immutable candidates/stages12-stage2-frequency-v1 copied ONLY from
+receipts/stages12-stage1-v1-frozen-inputs/candidate, all20files plus exact original
+case/dependencies. Preserve predecessors and do not copy the unbuilt cache guard.
+Runtime edits expected ONLY doc_driver.cpp and profile.hpp (frequency-domain
+worker merge/metadata if needed). Prefer driver-local scheduler helper/header
+frequency_scheduler.hpp for bounded execution/exception testing. No planned
+change to solvers/BatchResponseCache/SEM/Windowed3DFields math or sampling routes.
+Add candidate frequency_scheduler_test.cpp for the actual helper's tiny failure/
+ordering tests; no production fault switches. Additive configs/
+stages12-stage2-v1-{build.json,build-plan.json,controls-plan.json,measure-plan.json},
+tools/check_stages12_stage2.py and tools/test_check_stages12_stage2.py,
+copied stage-to-math-map.json/status, campaign implementation_status.md updates
+after each change, reviews/analyses/receipts/manifests with unique stage2 prefix.
+No operator/supervisor rewrites or production checkout changes, commits or pushes.
+
+5. Required tests/gates and bounded queue
+
+Review before build: ownership/call-tree proof, diff excludes numerical edits,
+inner solve count1 enforced, no nested region/shared +=, work/byte bounds, paths
+and prior evidence hashes stable. Meaningful tiny scheduler tests must exercise
+out-of-order task completion with deterministic collection, exceptions on multiple
+bins selecting lowest failed bin after join, and an injected cache callback
+failure/capacity failure propagating without deadlock or partial success. No
+fault-injection controls in physical production run; small test harness only.
+
+Three sequential build variants: two physical drivers (native/profile), plus
+small frequency-scheduler-test executable using the actual scheduling helper.
+Physical drivers have same frozen source/settings except profile flag; auditprofile
+disabled both. Reuse hashed YSpec lib/dependencies and Stage1 flags. Each physical
+build2400s/32GiB; tiny test build300s/4GiB; cap8, no concurrent builds. Execute
+scheduler test first in controls plan, timeout60s/memory2GiB.
+Controls beforeL200, each600s/8GiB numerical and120s/4GiB checks:
+  native L3,nq8,.05,audit,epsilon0 frequency1/inner1;
+  native same frequency8/inner1;
+  profile same frequency8/inner1;
+  native dspec-forward same frequency8 epsilon+1e-5 and-1e-5;
+  byte exact parity against accepted Stage1 low-degree outputs, native/profile,
+    frequency1/8; original FD2e-4 gate, tensor/packed<=1e-11, gravity/time identity.
+No extra L12 campaign: first matched fullL200 frequency1/frequency8 validates
+both sections before later timing repeats are released.
+
+L200 measurement queue: three matched repetitions each of new native
+frequency1/inner1 and native frequency8/inner1 (alternate), one new profile8 run,
+plus one fresh untouched accepted Stage1 degree8 native anchor to disclose host
+drift. Eight numerical jobs total, each600s/16GiB initially, no concurrent jobs.
+Order: degree8anchor,F1a,F8a,P8,F1b,F8b,F1c,F8c; each dependent on preceding
+validation gates. Exactly eight numerical jobs, no sweeps or automatic retries.
+If N2/N3 reveal substantial noise or errors, halt at release gate and report;
+do not expand the measurement queue autonomously. Exact scientific files compared to Stage1/v9 and frequency1/8, preserving
+all unmasked one-sided output. Byte identity is the intended gate. If it fails,
+halt and locate first mismatch, saved per-bin evidence and operation-order cause;
+do not relax a tolerance after seeing the answer. Any justified fixed alternative
+gate requires separate review/final plan revision before rerun.
+
+Native comparison: medians/min/max, frequency1->frequency8 speedup, new frequency8
+versus Stage1 degree8 accepted repeats, and fresh degree8 anchor host context.
+Report initial forward+unit capture, measurement, kernel incl ordered reduction,
+setup, I/O, diagnostics, total and peak RSS/cache/plan/contribution bytes. Profile
+parallel pass wall is distinct from sum of frequency-worker exclusive durations;
+parent reduction has its own serial wall bucket. Replace substring component
+classification with explicit audited scope-name mapping: Stage1 raw values are
+valid, but its broad "io" match mislabels region/rotation/projection. Preserve
+raw names/rows and expose unmapped scopes; classification is reporting only. Inner degree-worker timers must
+be absent. Stage1 factor/RHS/cache invariants must match; mutable-plan cold/hit
+counts may differ because of private ownership and must be disclosed. Profile
+overhead compared against matching native frequency8, not a speedup.
+
+5a. Stage1 profiler carryover and frequency-route timing semantics
+
+Read-only inspection of current stages12-stage1-profile-v1/profile.hpp and
+doc_driver.cpp confirms Scope::stop() is idempotent and enforces LIFO; Snapshot
+copies thread_local entries/counters; difference checks monotonically increasing
+maps; WorkerCapture preserves/restores the master active stack and isolates maps.
+Exact frozen profile.hpp/doc_driver.cpp hashes are pinned in section7.
+
+Stage2 capture requirements: exactly one WorkerCapture per worker per outer pass,
+fresh empty WorkerData slots for each pass; close every task-local Scope before
+capture destruction. No Root in a frequency task. Preserve parent open scopes
+on master; join before any parent snapshot or merge. Label merged records
+frequency_worker.* and teach emitter/checker explicit execution-domain recognition;
+current Stage1 parallel_worker.* alone must not cause frequency rows to enter
+master-wall partition. Prefix/counter schema changes are reporting support only.
+
+Stage1 shared diagnosticTotals,profileSnapshotOverheadSeconds,tensorReferenceError,
+tensorValidationSeconds and phaseSnapshots may be updated ONLY by parent.
+Frequency tasks instead own per-bin diagnostics snapshots/error/duration/overhead;
+snapshot/difference only their TLS maps. Parent combines indexed results after
+join, in bin order. Diagnostic snapshots cover closed diagnostic child scopes;
+open frequency/parallel umbrellas remain labeled raw inclusive scopes. Subtract
+diagnostic worker scopes only from worker-production subtotals, then show the
+diagnostic worker subtotal separately. Never turn those worker subtotals into
+master wall or remove overlapping worker durations from any wall interval.
+
+For frequency route, kernel_s is the measured kernel pipeline wall INCLUDING
+diagnostics and ordered reduction; add explicit kernel_timing_semantics metadata
+and kernel_parallel_pass_wall_s including diagnostic work, plus reduction_wall_s.
+tensor_validation_s on that route, if retained for compatibility, is labeled
+summed worker elapsed, not additive wall; also expose diagnostic_worker_elapsed_s.
+NEVER retain current kernelSeconds=parallel_wall-tensorValidationSeconds when
+tensorValidationSeconds becomes a sum across frequency workers. Diagnostics can
+overlap other workers' production; subtracting that sum invents a wall estimate.
+Preserve original degree-route legacy kernel_s subtraction/label explicitly.
+Do not move diagnostics to another pass or prewarm caches to isolate their wall.
+Native and profile timing comparison always uses full elapsed_s/process wall;
+component comparisons use labeled inclusive kernel wall on both routes.
+Raw diagnostics-inclusive umbrellas retain inclusive diagnostic durations, while
+exclusive scope partitions remain additive within their execution domain.
+
+6. Resources, receipts, stop and finalization
+
+Same existing hashed exclusive staging/build/run operators and nohup supervisor;
+fresh stage2 roots/IDs, no overwrites/deletes, verify source/dependency/HEAD/status
+against accepted Stage1 provenance before build. Strict known-host/auth boundaries.
+Check other campaigns first, aggregate<=50threads; numerical8workers with cap20,
+build cap8, no concurrent campaigns unless parent demonstrates aggregate margin.
+Use accepted CPU16–23 affinity/settings; pools1, OMP_THREAD_LIMIT8, dynamicFALSE,
+passive wait; no8x8 nesting. Private plans upper bound2*8*32MiB plus8private
+512MiB coefficient budgets and~2.9GBresponse cache require actual RSS evidence;
+16GiB watchdog initial cap, stop on violation, no resource increase silently.
+USER_SPACE_SESSION_WATCHDOG is not kernel aggregate accounting; retain observed
+peak threads/RSS, input/output/binary hashes, launch/complete/cleanup receipts.
+
+Halt on dependency drift, unproved shared mutation, failed prerequisite/bytes/
+counters/accounting/FD/resource/cleanup, or exception; retain all evidence and
+return failure. No progression to Stage3 or physical-case modification.
+
+7. Actual Stage1 evidence, fixed invariants and source bindings
+
+A=campaign root. Formal preflight receipts/stages12-stage1-v1-preflight.json
+SHA2568476c5508cacd433cff9c936e80e13d6b88701f75b195a874777e9bdc5c1be74
+confirms12original-v9 dependency/source tree hashes unchanged, original v9 binary
+f983da9a5c6638608753dc50bddbac1a97810ce84322f657496dce6056099753,
+YSpec shared libf891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f,
+case fixture7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0,
+PREM4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea.
+Preflight HEAD/dirty state preserved. Recheck fingerprints/resource availability
+immediately before Stage2 staging/launch; do not reset/rewrite source worktrees.
+
+Authoritative frozen source: receipts/stages12-stage1-v1-frozen-inputs/candidate;
+its frozen-inputs.json binds archiveSHA
+52fccc457361e1fc8b1e865f05738f93a04e933f2725ac24169f59770de3ad63
+and manifestSHA4beba8e2931b128bf3a593812b45f177e89a0244a285e894e132a4340587e5fd.
+Relevant exact frozen runtime SHA256:
+  profile.hpp ece6b2df5b8ed5b7d97de732ff619bb09d9482c35b99fccf756d5be3a9991724
+  doc_driver.cpp 465e2203e39e55820ac17555737a6e07ebe7f90ba696c38356387c0dc2f10256
+  Windowed3DFields.h 4d9f3d2b4f6fb6540b89a0bc74d7f6d1ee2e47f2cb2bcaa21b36624a6ba0f432
+  SensitivityKernels.h 2fa57eb58a5d937aaae592a0711999f84fae505a12e1936d0958d995850e6b8c
+  batch_response_cache.hpp 576c80b7d342fbe1f9e41fe667e6a1db94d59825c85364cc0cf06e806ccb7750
+
+P1 receipt packet: receipts/stages12-stage1-v3-profile-packet/packet.json
+SHA20d09a2cc7cee34fd28955f4a81356ba25ccb95fb82781d18d5a846753e885aa;
+P1-profile-L200/data/profile.json
+SHAf84f54999ba9f4383fa5b942e65a7ee63b27f370780cb72bffc1e2ae8c23bb81.
+All published P1 accounting/parity/frozen gates pass; pipeline wall52.164586220s,
+exclusive partition same, residual0,150rows/100counters. P1 overall52.164914599s,
+N1native51.840044503s; P1 peak2.4226GiB,N1peak2.4242GiB,9observedthreads each.
+Stage1 controls parent reports all12completed/pass, FD6.440263106e-9; final
+aggregate must bind their completed receipts as the Stage2 release prerequisite.
+P1 packet task-state was still running at capture: it is not an N2/N3 completion
+receipt. Parent must verify final Stage1 status/inputs/cleanup and all4L200 output
+gates before releasing implementation; do not infer completion from P1 alone.
+
+Scope-name evidence (do not use faulty substring logical_component labels):
+  production serial complex Eigen synthesis/packing21.861581938s exclusive;
+  radial interpolation/strain numerator9.926801854s;
+  initial degree-region wall8.087119032s; kernel degree-region wall2.143164745s;
+  source frame geometry/phase/spin/scatter2.359845106s exclusive;
+  receiver frame counterpart1.509045394s;
+  workspace vector construction1.727299660s initial +0.892882200s kernel;
+  fused material/contraction/accumulation0.087228700s.
+Thus whole-frequency scheduling targets the actual serial synthesis/radial work.
+No Stage3 removal/fusion is justified now. "gemm" wrapper scope is Eigen
+DotBackend::Eigen=2 on this case, not measured CBLAS ZGEMM; do not relabel it
+OpenBLAS time or switch backend. Keep precisely the existing Eigen route.
+
+Measured counter invariants, separated by pass:
+  initial numeric factorizations14035; kernel35; total14070;
+  initial forward RHS columns42035; kernel35; total42070;
+  initial unit-basis HH RHS columns21000; kernel0;
+  requested weighted RHS columns35eachpass, but radial zero-weight skips must
+    remain (requests are not evidence of performed nonzero weighted HH solves);
+  nonradial cache misses14000initial/hits14000kernel, entries14000,
+    retained accounting bytes2907520000;
+  initial symbolic analyses17/reuses14018; kernel reuses35 (degree8history).
+Stage2 compare all logical factor/RHS/cache work invariants exactly; aggregate
+counts include serial radial and merged frequencyworker entries without double
+counting. Symbolic history is allowed to differ and must be disclosed (e.g.
+frequency8workers own all3families, unlike degree8's parentradial+workerS/T).
+Sampling-plan hit/miss counts may differ solely from independent worker ownership;
+no changes to entry budgets/admission rules or frequencyCoefficientCache lifetime.
+
+8. Completion deliverables and mandatory user report boundary
+
+Save analyses/stages12-stage2-v1-{validation.json,components.json,components.csv,
+summary.txt}, immutable source/dependency/command/binary/output manifests,
+reviews, build/control/measurement/cleanup receipts and code-change status logs.
+Include1vs8frequency timing range/medians, Stage1 degree8 comparison+freshanchor,
+source audit/test results, exact scientific parity, FD/native-side gates, all
+counter invariants, profile domain closure, inclusive diagnostic semantics, peak
+RSS/thread/plan/cache/contribution storage and any failed preserved evidence.
+Report honest speedup or absence of it on complete workload. If eight-frequency
+scheduling does not help, stop and explain measured costs; no worker-count sweep,
+copy removal or cache redesign is included. Parent reports Stage1+2 results to
+user and waits for explicit next-phase approval before any Stage3 change.

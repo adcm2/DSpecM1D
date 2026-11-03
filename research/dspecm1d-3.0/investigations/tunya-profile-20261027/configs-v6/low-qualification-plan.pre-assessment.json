@@ -1,0 +1,376 @@
+{
+  "campaign_root": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya",
+  "thread_cap": 50,
+  "environment": {
+    "LD_LIBRARY_PATH": "/opt/gcc-13.2.0/lib64",
+    "LD_PRELOAD": "",
+    "DSPEC_PROFILE_FTZ": "0",
+    "PYTHONDONTWRITEBYTECODE": "1"
+  },
+  "jobs": [
+    {
+      "id": "receiver-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-receiver-v2/receiver-gate-v2/receiver-gate"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-receiver-v2/receiver-gate-v2/receiver-gate"
+      ],
+      "outputs": [],
+      "timeout_seconds": 3600,
+      "memory_gib": 24
+    },
+    {
+      "id": "analytic-control-receiver-gate",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-analytic-control/analytic-control-receiver-gate/receiver-gate"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-analytic-control/analytic-control-receiver-gate/receiver-gate"
+      ],
+      "outputs": [],
+      "timeout_seconds": 3600,
+      "memory_gib": 24
+    },
+    {
+      "id": "dsv4-native-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv4-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv4-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "dsv4-profiled-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv4-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv4-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "dsv6-native-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "dsv6-profiled-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/dsv6-profiled/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "dsv4-analytic-control-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-analytic-control/dsv4-analytic-control-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{JOB_DIR}/data",
+        "kernel",
+        "--lmax",
+        "3",
+        "--nq",
+        "6",
+        "--radial-refinement",
+        "0.05",
+        "--radial-traces",
+        "0",
+        "--dc",
+        "include",
+        "--contacts",
+        "off",
+        "--pole-only",
+        "on",
+        "--forward-only",
+        "on",
+        "--max-output-gib",
+        "8"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-analytic-control/dsv4-analytic-control-native/physical-driver",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/trace.csv",
+        "data/spectrum.csv",
+        "data/radial_nodes.csv",
+        "data/kernel_radial_nodes.csv",
+        "data/kernel.bin",
+        "data/kernel_domain.json"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "baseline-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/python3",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v5/tools/prefix_trace.py",
+        "{TASK_DIR}/dsv6-native-l3/data/trace.csv",
+        "{JOB_DIR}/baseline.csv",
+        "{JOB_DIR}/baseline.json"
+      ],
+      "inputs": [
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v5/tools/prefix_trace.py",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-04/dsv6-native-l3/data/trace.csv"
+      ],
+      "outputs": [
+        "baseline.csv",
+        "baseline.json"
+      ],
+      "timeout_seconds": 60,
+      "memory_gib": 1
+    },
+    {
+      "id": "ysv6-native-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/ysv6-native/physical-yspec",
+        "kernel",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{TASK_DIR}/baseline-l3/baseline.csv",
+        "{TASK_DIR}/dsv6-native-l3/data/radial_nodes.csv",
+        "{JOB_DIR}/data",
+        "3",
+        "1e-9",
+        "0.125",
+        "--include-dc",
+        "--fft-padding",
+        "1",
+        "--nodes-per-element",
+        "6",
+        "--kernel-memory-budget-mib",
+        "8192",
+        "--kernel-disk-budget-mib",
+        "8192"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/ysv6-native/physical-yspec",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-04/baseline-l3/baseline.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-04/dsv6-native-l3/data/radial_nodes.csv"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/kernels.bin"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    },
+    {
+      "id": "ysv6-profiled-l3",
+      "cwd": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation-inputs/v3",
+      "command": [
+        "/usr/bin/taskset",
+        "-c",
+        "0",
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/ysv6-profiled/physical-yspec",
+        "kernel",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "{TASK_DIR}/baseline-l3/baseline.csv",
+        "{TASK_DIR}/dsv6-native-l3/data/radial_nodes.csv",
+        "{JOB_DIR}/data",
+        "3",
+        "1e-9",
+        "0.125",
+        "--include-dc",
+        "--fft-padding",
+        "1",
+        "--nodes-per-element",
+        "6",
+        "--kernel-memory-budget-mib",
+        "8192",
+        "--kernel-disk-budget-mib",
+        "8192"
+      ],
+      "inputs": [
+        "/space/adcm2/research/builds/kernel-profile-20261027-03/ysv6-profiled/physical-yspec",
+        "/space/adcm2/research/projects/DSpecM1D/data/models/PREM500",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-04/baseline-l3/baseline.csv",
+        "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/continuation/profile-04/dsv6-native-l3/data/radial_nodes.csv"
+      ],
+      "outputs": [
+        "data/result.json",
+        "data/kernels.bin"
+      ],
+      "timeout_seconds": 7200,
+      "memory_gib": 24
+    }
+  ],
+  "measurement_note": "One numerical thread, serial jobs, CPU 0. Degree>3 kernels use 64-angle diagnostics only, never a full global kernel claim. YSpec forward waveform and kernel timings remain separate.",
+  "gate_revision_note": "Receiver gatev2 uses independent analytic longdouble oracle with unchanged strict new8ULP/exactzero controls; old recurrence normdrift retained asdiagnostic. Failedprofile01 preserved. Other six solverbinaries and physical paritygates unchanged.",
+  "baseline_format_note": "The adapter copies original first721rows through3600s;1024-rowFFTtrace remains. RemovedHannweights mustzero andEfull=Eprefix exactly; all scientific solver binaries/gates unchanged. Profile02 failure and directdiagnostic retained. New supervisor v3 preserves pipe tails."
+}

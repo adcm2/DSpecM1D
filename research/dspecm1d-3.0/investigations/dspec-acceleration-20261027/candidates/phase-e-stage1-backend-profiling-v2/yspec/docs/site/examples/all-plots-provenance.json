@@ -1,0 +1,1233 @@
+{
+  "purpose": "Source-owned provenance and status for all 21 distinct documentation plot outputs; render success is not scientific convergence.",
+  "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+  "tracked_site_assets_are_uncommitted": true,
+  "rendered_count": 21,
+  "pending_current_source_render_count": 0,
+  "figures": [
+    {
+      "id": "cross-section/up.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/cross-section/run.sh"
+      ],
+      "runner": "examples/cross-section/run.sh",
+      "command": "plot snapshot snapshot.json --component up -o up.png",
+      "input_hashes": {
+        "examples/cross-section/snapshot.json": "3bc1462dd6f5814fa03d6a0d0df08fe549b268bb7aa7f77f22f5bbbf1f722a26"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/snapshots.py",
+      "plotter_sha256": "18eca6fc97639f8fd0d4554ce679b4ceca609cde6e09a50444d868712d37a6f7",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md; PR5 P2 fixes uncommitted on 26e9ae1",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-pr5-p2-fixes-20261023/phase2c/cross-up.png",
+        "sha256": "cc174f61c4265382170c4af6c59684e1eeb3e8b191323c8f6f0a53702d333361",
+        "render_input": {
+          "path": "/tmp/yspecpp-phase2c-runs-20261023/cross-section/input.json",
+          "sha256": "3bc1462dd6f5814fa03d6a0d0df08fe549b268bb7aa7f77f22f5bbbf1f722a26",
+          "note": "Saved-output rendering input with the model and output paths resolved in the evidence directory; no numerical samples were recomputed."
+        }
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/cross-section",
+        "files": {
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.1": "6bfd30367b29237c5529bfbfe96f9fe6ab4d16eeb3fcba8deaf600e17a12f477",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.2": "37ea53a74aefaba92cdbd0f205945f3e09e72f6b53539ec939290cab53eb27fe",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.3": "219c76dbf925896224c0dc84d19537b26896ef584cdda625f7e3016adce0d544",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.4": "69b02a0b8dd267d19cf7e77f89039bee54af1e1155d15b9a3dc7295e497dde21",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.5": "d08252429717519564aa575922db954afacb2f8a2428eee5f59aa690a1ad24b6",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.6": "66e90f63d080680cc636d222b0a1a4c21f28f813d8980b3744b2c1ae8c4185f2"
+        },
+        "note": "Current-source six-time cross-section output; saved sample interpolation is disclosed, and missing radial data stays split at interfaces. PR5 P2 renderer retained exact interface samples on solver-selected sides; saved snapshots were unchanged."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "corrected",
+      "phase1_finding": "Current-source six-time cross-section output; saved sample interpolation is disclosed, and missing radial data stays split at interfaces."
+    },
+    {
+      "id": "cross-section/away.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/cross-section/run.sh"
+      ],
+      "runner": "examples/cross-section/run.sh",
+      "command": "plot snapshot snapshot.json --component away -o away.png",
+      "input_hashes": {
+        "examples/cross-section/snapshot.json": "3bc1462dd6f5814fa03d6a0d0df08fe549b268bb7aa7f77f22f5bbbf1f722a26"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/snapshots.py",
+      "plotter_sha256": "18eca6fc97639f8fd0d4554ce679b4ceca609cde6e09a50444d868712d37a6f7",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md; PR5 P2 fixes uncommitted on 26e9ae1",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-pr5-p2-fixes-20261023/phase2c/cross-away.png",
+        "sha256": "7b5127189d8d28dcb0e97b70e20fc8e3ad693b70655f17e662c51679cd97de0d",
+        "render_input": {
+          "path": "/tmp/yspecpp-phase2c-runs-20261023/cross-section/input.json",
+          "sha256": "3bc1462dd6f5814fa03d6a0d0df08fe549b268bb7aa7f77f22f5bbbf1f722a26",
+          "note": "Saved-output rendering input with the model and output paths resolved in the evidence directory; no numerical samples were recomputed."
+        }
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/cross-section",
+        "files": {
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.1": "6bfd30367b29237c5529bfbfe96f9fe6ab4d16eeb3fcba8deaf600e17a12f477",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.2": "37ea53a74aefaba92cdbd0f205945f3e09e72f6b53539ec939290cab53eb27fe",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.3": "219c76dbf925896224c0dc84d19537b26896ef584cdda625f7e3016adce0d544",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.4": "69b02a0b8dd267d19cf7e77f89039bee54af1e1155d15b9a3dc7295e497dde21",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.5": "d08252429717519564aa575922db954afacb2f8a2428eee5f59aa690a1ad24b6",
+          "/tmp/yspecpp-phase2c-runs-20261023/cross-section/section.6": "66e90f63d080680cc636d222b0a1a4c21f28f813d8980b3744b2c1ae8c4185f2"
+        },
+        "note": "Current-source six-time cross-section output; saved sample interpolation is disclosed, and missing radial data stays split at interfaces. PR5 P2 renderer retained exact interface samples on solver-selected sides; saved snapshots were unchanged."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "corrected",
+      "phase1_finding": "Current-source six-time cross-section output; saved sample interpolation is disclosed, and missing radial data stays split at interfaces."
+    },
+    {
+      "id": "depths/depths.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/depths/run.sh"
+      ],
+      "runner": "examples/depths/run.sh",
+      "command": "plot traces input.json --components ZRT -o depths.png",
+      "input_hashes": {
+        "examples/depths/input.json": "efaa1358195b729668c74278cd719951c315dd3da71e43ec052a6d8d94bb171b"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/seismograms.py",
+      "plotter_sha256": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/depths.png",
+        "sha256": "6f172d5941e4214b0995871663aed403a7cf1ff26e89d36d59a34339581d08b1"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/depths",
+        "files": {
+          "depths.1": "38d5c7c1b1053d7dc3ff5a9b3469612f3a6ea43f535aa81c6f3aa91301922496",
+          "depths.2": "4ea7fbf0bcc3470657fa12ae8cad2687284fe422c32ffba4b8b96df37b795a70",
+          "depths.3": "db2c0ed600de978891d429e80910f9afe45f3537b6f85ff360edb721ff8e28d1",
+          "depths.4": "9afd3bd51549a6e0ea3ceb074a79abd1aa6ea6b1d19e815acb305e5401a00b6c",
+          "depths.5": "deffd21891da663396803920d58ade964425d60c9fc77de3911956d1b3c3f89b",
+          "depths.6": "121881768aea955238775427f079ec0e1adc2c0284ecf002d216581b77693227",
+          "depths.receivers": "77388c128a4ae8da037e73f0a1fc5df1d8c80fe9e9400c1262dc996ce913124c"
+        },
+        "note": "Six-depth 300-minute displacement set; each receiver row has compatible-unit shared component scale."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "corrected",
+      "phase1_finding": "Regenerated six-depth Z/R/T plot with compatible-unit shared component scales within each receiver row and explicit units."
+    },
+    {
+      "id": "force/vertical.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/force/run.sh"
+      ],
+      "runner": "examples/force/run.sh",
+      "command": "plot section input.json --component Z -o vertical.png",
+      "input_hashes": {
+        "examples/force/input.json": "e514d4f6f920ff5a44304ebf50d74f0350eb9d2957c2e906415816a4bc23ccc4"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/seismograms.py",
+      "plotter_sha256": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/force-vertical.png",
+        "sha256": "8c4c8739c0d52b69b0d3165620fd524f90f26150805829373b0fc1af3ba168fd"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/handoff/yspecpp-all-plots-audit-2026-10-23/runs/force",
+        "files": {
+          "result.1": "3affe3bed3084b2272303be94eb2882f4279fa87c03ed78d3ed3ce0eb6e4c4ff",
+          "result.10": "35032b242567f85d3cafd1ed293544915a568bf5485f571b42b3ceff7a3b84de",
+          "result.11": "bda895bfadc56e8fc84344803f7adf4599d0f47fb625d463d1243482aba3fc51",
+          "result.12": "99883aa36ad88af01f4d0d7a75bfb147768a6e3bbafc8c3cf3daeaebe0e7def0",
+          "result.13": "d031e9fe07711ef85d00c17292d231e1072fef83ad0d98cdf949cc5a9b173a49",
+          "result.14": "c04d262404d121ce94c0fd8450e3a15596ac5e8a6eb55954cf11f19f19989909",
+          "result.15": "4a5908ea439c961a583f8503ce9179ad52de1e7a37350d8ff07c6af37de536a3",
+          "result.16": "f004bc572a342a35504014a6ebad8351fac55367242ed9c3b22eefc55eeb7124",
+          "result.17": "f678df97fae5eeb252e9e349b794eb0204bf52b9039758e3058ad6398d267098",
+          "result.2": "b80ff1663c3b13c57f9db292f6a2502759fedeb4179d789d52099c852d37179d",
+          "result.3": "0518524cf7672e9e94b561fd5bfcabca850e83cfbcd532b749892d9c990f88ea",
+          "result.4": "5a1e2e67c6f8b8fa999aeadfc89c9dcf6d7456c0174b74c7b4d6ba011a237da8",
+          "result.5": "1e363fa1e1474847096af46cce2235a3d817ca3bc7b520ba47f475df1253c8a8",
+          "result.6": "2998d0b04ab7370111ff7f40d4145f390150b0810145242e921f8b89849597a6",
+          "result.7": "512ca9cc188dc0ce20d309658ad15104380bf48c6f92c8af13233f04f7b047d1",
+          "result.8": "3008b23805eff32d72ca6f426e7d1eafdf9f89512e78b54312aee19ce0f796a1",
+          "result.9": "b2a6e50a77e62e426e782a65577d52adb63354afe86dd1f38da200e9b0063bdb",
+          "result.receivers": "57c4070b01fb21ec8f1709833dfebdf4f29712945b461c2b53902874249aeda7"
+        },
+        "note": "Phase 1 raw output reused because the force fixture is unchanged; convergence unresolved."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "unresolved",
+      "phase1_finding": "Rendering and individual peak-normalization caption verified. Numerical convergence for the shallow 5 km force source is not established."
+    },
+    {
+      "id": "force/transverse.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/force/run.sh"
+      ],
+      "runner": "examples/force/run.sh",
+      "command": "plot section input.json --component T -o transverse.png",
+      "input_hashes": {
+        "examples/force/input.json": "e514d4f6f920ff5a44304ebf50d74f0350eb9d2957c2e906415816a4bc23ccc4"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/seismograms.py",
+      "plotter_sha256": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/force-transverse.png",
+        "sha256": "f3e9f39a0f494c0c631bcc5118eaa9a63e1dd71b7362d668dc14ea069f294268"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/handoff/yspecpp-all-plots-audit-2026-10-23/runs/force",
+        "files": {
+          "result.1": "3affe3bed3084b2272303be94eb2882f4279fa87c03ed78d3ed3ce0eb6e4c4ff",
+          "result.10": "35032b242567f85d3cafd1ed293544915a568bf5485f571b42b3ceff7a3b84de",
+          "result.11": "bda895bfadc56e8fc84344803f7adf4599d0f47fb625d463d1243482aba3fc51",
+          "result.12": "99883aa36ad88af01f4d0d7a75bfb147768a6e3bbafc8c3cf3daeaebe0e7def0",
+          "result.13": "d031e9fe07711ef85d00c17292d231e1072fef83ad0d98cdf949cc5a9b173a49",
+          "result.14": "c04d262404d121ce94c0fd8450e3a15596ac5e8a6eb55954cf11f19f19989909",
+          "result.15": "4a5908ea439c961a583f8503ce9179ad52de1e7a37350d8ff07c6af37de536a3",
+          "result.16": "f004bc572a342a35504014a6ebad8351fac55367242ed9c3b22eefc55eeb7124",
+          "result.17": "f678df97fae5eeb252e9e349b794eb0204bf52b9039758e3058ad6398d267098",
+          "result.2": "b80ff1663c3b13c57f9db292f6a2502759fedeb4179d789d52099c852d37179d",
+          "result.3": "0518524cf7672e9e94b561fd5bfcabca850e83cfbcd532b749892d9c990f88ea",
+          "result.4": "5a1e2e67c6f8b8fa999aeadfc89c9dcf6d7456c0174b74c7b4d6ba011a237da8",
+          "result.5": "1e363fa1e1474847096af46cce2235a3d817ca3bc7b520ba47f475df1253c8a8",
+          "result.6": "2998d0b04ab7370111ff7f40d4145f390150b0810145242e921f8b89849597a6",
+          "result.7": "512ca9cc188dc0ce20d309658ad15104380bf48c6f92c8af13233f04f7b047d1",
+          "result.8": "3008b23805eff32d72ca6f426e7d1eafdf9f89512e78b54312aee19ce0f796a1",
+          "result.9": "b2a6e50a77e62e426e782a65577d52adb63354afe86dd1f38da200e9b0063bdb",
+          "result.receivers": "57c4070b01fb21ec8f1709833dfebdf4f29712945b461c2b53902874249aeda7"
+        },
+        "note": "Phase 1 raw output reused because the force fixture is unchanged; convergence unresolved."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "unresolved",
+      "phase1_finding": "Rendering/rotation and normalization notice verified; no numerical convergence claim."
+    },
+    {
+      "id": "gravity/gravity.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/gravity/run.sh"
+      ],
+      "runner": "examples/gravity/run.sh",
+      "command": "plot compare none.json cowling.json full.json --labels none Cowling full    --component Z -o gravity.png",
+      "input_hashes": {
+        "examples/gravity/none.json": "070a8315492d94dfa1626f7f57daf6c4f11d5bce6c522dd59697f2f5d2879900",
+        "examples/gravity/cowling.json": "80df7a531c6eca2ea4e8860dd5af64a13dd13d2546e29b412be833e173fb0a85",
+        "examples/gravity/full.json": "ed948b1ec32bc1bec83353d7ef2c59d01f7bedb4c77e4f43ad78aba62fce53fc"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/seismograms.py",
+      "plotter_sha256": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/gravity.png",
+        "sha256": "d147cebb02b149f6073d2e27a903e49463bba93e216e462361ac9270cd27c64c"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directories": [
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-none",
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-cowling",
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-full-complete"
+        ],
+        "files": {
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-none/none.1": "7a4af4d9b3420ed53d3a7ffdad8e3eedba53294a2fb3e94aafc791a4c81daeb0",
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-none/none.receivers": "5b89d58d35eaa406f0336184a34bf9f9a55141fb8ca8823af9b73f43139885b2",
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-cowling/cowling.1": "7d7c543442f275956ef773149977da5715ac1a229f6fca43c9102a10ba20a981",
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-cowling/cowling.receivers": "b65306e56d5fb02c28006f510fde62e4611ef81f26c31b4a8cb5860a72c3f8ce",
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-full-complete/full.1": "483b190c32fd687ea54b43af3211fceecda8856201a499326ca7567c5cfa0986",
+          "/tmp/yspecpp-phase2c-runs-20261023/gravity-full-complete/full.receivers": "2b72b514643ba864e094c6af0080e7af76f61013d5d37310bff6c302ad384e3a"
+        },
+        "note": "Current-source three-way gravity comparison; full-gravity retry completed 92 frequencies in 199.82 s at two threads. This is renderer evidence, not a convergence result."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "corrected",
+      "phase1_finding": "The current-source comparison accepts only matching physical grids and units, and the three current-fixture outputs render with correct displacement units."
+    },
+    {
+      "id": "instrument/station.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/instrument/run.sh"
+      ],
+      "runner": "examples/instrument/run.sh",
+      "command": "plot traces input.json --receivers 1 2 --components ZRT -o station.png",
+      "input_hashes": {
+        "examples/instrument/input.json": "1e1eaa507c2906cb99fcea4aa8bfb26c7d4c1a53be1b5445c0f4b647b687679b"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/seismograms.py",
+      "plotter_sha256": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/instrument.png",
+        "sha256": "242bdf6d90f4c4e8497a75c1425cf00962176481d3a5bb5e5398c46117fd1fb3"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/instrument",
+        "files": {
+          "station.1": "196c82b1f2ef926146fe5b32e219891374a4af632e75886e52353214f91d7021",
+          "station.2": "b252187efcc2e02d6f54a903d53a7ed21032c15fc9c017c25f62d15949449ecb",
+          "station.receivers": "a791820e3e33723cacd08e90d02d41bbadca45a7d2a52d36755c79372c79aa7d",
+          "broadband.pz": "ce96aa95298c8de37ad2843c57bba5dc7c8950f73b973a79c89133dfdbcd7baf"
+        },
+        "note": "Ground-motion and response-corrected traces; instrument output units are read from response metadata."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "corrected",
+      "phase1_finding": "Regenerated ground-motion and instrument traces; response metadata supplies the output unit (COUNTS for this example), rather than an all-instruments assumption."
+    },
+    {
+      "id": "kernels/s-wave.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/kernels/run.sh"
+      ],
+      "runner": "examples/kernels/run.sh",
+      "command": "plot kernels traveltimes.json --measurement S -o s-wave.png",
+      "input_hashes": {
+        "examples/kernels/traveltimes.json": "51ddce6d02f956d1d38235ec0447b822af61082fc78f3a9dd8afaf25632a82c5"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/kernels.py",
+      "plotter_sha256": "ebf0b79a4a2787aef2d2450e5ba9e50b153643a8c70de1873d19a92a1801d6db",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/kernels-s.png",
+        "sha256": "59067768da55d456b2688e7fcd6139dee75ef85080c109281ead434e5ee84496"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-traveltimes-renamed",
+        "files": {
+          "traveltimes.S.measurement": "34e68e6b5a77c8f5abaec23c3286aa0ce86a161b34b4dac84b5385f3a5475078",
+          "traveltimes.S.kernels": "01eba7bcb3acc117c0db7c1a4d575c8173b93c45679208772d84fb79fc5aba7c",
+          "traveltimes.long-period-Z-packet.measurement": "ee7d9277811c606ae6923c6a9edd0450861bd895ae3509cc3357d5064b288f55",
+          "traveltimes.long-period-Z-packet.kernels": "b9b0dda2a23e46dda8fc271a99e9c3c472148f3634066d905eab03850037d575"
+        },
+        "note": "Current 40-minute, 2 s radial run completed in 23.82 s at two threads. S/sS/ScS overlap the transverse window; long-period Z packet has no surface-wave/normal-mode validation. Convergence unresolved."
+      },
+      "scientific_status": "mixed packet; numerical convergence unresolved",
+      "phase1_status": "corrected current-window render",
+      "phase1_finding": "S target remains a mixed transverse packet: direct S, sS and ScS overlap at the fixture geometry."
+    },
+    {
+      "id": "kernels/rayleigh.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/kernels/run.sh"
+      ],
+      "runner": "examples/kernels/run.sh",
+      "command": "plot kernels traveltimes.json --measurement long-period-Z-packet --deepest 700 -o rayleigh.png",
+      "input_hashes": {
+        "examples/kernels/traveltimes.json": "51ddce6d02f956d1d38235ec0447b822af61082fc78f3a9dd8afaf25632a82c5"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/kernels.py",
+      "plotter_sha256": "ebf0b79a4a2787aef2d2450e5ba9e50b153643a8c70de1873d19a92a1801d6db",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/kernels-rayleigh.png",
+        "sha256": "9054430e00612ce204ed54f0eb674f1c772bf5b92a7572b9e0f30245f2c2a884"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-traveltimes-renamed",
+        "files": {
+          "traveltimes.S.measurement": "34e68e6b5a77c8f5abaec23c3286aa0ce86a161b34b4dac84b5385f3a5475078",
+          "traveltimes.S.kernels": "01eba7bcb3acc117c0db7c1a4d575c8173b93c45679208772d84fb79fc5aba7c",
+          "traveltimes.long-period-Z-packet.measurement": "ee7d9277811c606ae6923c6a9edd0450861bd895ae3509cc3357d5064b288f55",
+          "traveltimes.long-period-Z-packet.kernels": "b9b0dda2a23e46dda8fc271a99e9c3c472148f3634066d905eab03850037d575"
+        },
+        "note": "Current 40-minute, 2 s radial run completed in 23.82 s at two threads. S/sS/ScS overlap the transverse window; long-period Z packet has no surface-wave/normal-mode validation. Convergence unresolved."
+      },
+      "scientific_status": "long-period Z packet; surface-wave identification and convergence unresolved",
+      "phase1_status": "renamed and rendered",
+      "phase1_finding": "The measurement uses a non-phase-specific long-period Z packet; no surface-wave, normal-mode or group-velocity comparison validates a Rayleigh interpretation."
+    },
+    {
+      "id": "kernels-3d/s-wave.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/kernels-3d/run.sh"
+      ],
+      "runner": "examples/kernels-3d/run.sh",
+      "command": "plot kernels s-wave.json -o s-wave.png",
+      "input_hashes": {
+        "examples/kernels-3d/s-wave.json": "6d6748e0ffb53d64ee2f9f56a083916a5b7df0be0bf12712971d0203fd718db7"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/kernels.py",
+      "plotter_sha256": "ebf0b79a4a2787aef2d2450e5ba9e50b153643a8c70de1873d19a92a1801d6db",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/kernels-3d-radial.png",
+        "sha256": "287412702a59e51de1f1b361afdb4033654187a59459961dd07840a9988f1166"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-3d",
+        "files": {
+          "s-wave.measurement": "4dc5ad0c32f49fc010548120579fc9ed2496cd4613b55e4ea16ce96c34a4a1e3",
+          "s-wave.kernels": "b9929b9085373b6965c20c58a39831dd493862e2be1438fc6917fb782694dea5",
+          "s-wave.nc": "c6a9ea73c25357a261b36fc8be268f7f8348a009cfebe00ee949481d24026885"
+        },
+        "note": "Current L200, 40-minute mixed shear-packet run; S/sS/ScS overlap; convergence unresolved."
+      },
+      "scientific_status": "mixed packet; numerical convergence unresolved",
+      "phase1_status": "corrected current-source render",
+      "phase1_finding": "The T-component S target is a mixed shear packet; plotted units and actual saved radial nodes are shown without interpolation across layer boundaries."
+    },
+    {
+      "id": "kernels-3d/s-wave-volume.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/kernels-3d/run.sh"
+      ],
+      "runner": "examples/kernels-3d/run.sh",
+      "command": "plot volume s-wave.json --parameter vs -o s-wave-volume.png",
+      "input_hashes": {
+        "examples/kernels-3d/s-wave.json": "6d6748e0ffb53d64ee2f9f56a083916a5b7df0be0bf12712971d0203fd718db7"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/volume.py",
+      "plotter_sha256": "183de7667e627a8a18cf3d9741adfc87f2266f7b24532422146ddc89c9bfb132",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/volume.png",
+        "sha256": "0719c2df2f899ec1a1efa0447b4202b2e47b5ab63e4759a613dc24ba47282ae4"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-3d",
+        "files": {
+          "s-wave.measurement": "4dc5ad0c32f49fc010548120579fc9ed2496cd4613b55e4ea16ce96c34a4a1e3",
+          "s-wave.kernels": "b9929b9085373b6965c20c58a39831dd493862e2be1438fc6917fb782694dea5",
+          "s-wave.nc": "c6a9ea73c25357a261b36fc8be268f7f8348a009cfebe00ee949481d24026885"
+        },
+        "note": "Current L200, 40-minute mixed shear-packet run; volume kernel convergence unresolved."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "corrected",
+      "phase1_finding": "The overlay is sampled on the same geocentric great-circle plane as the volume field and transformed to geographic coordinates; each map limit and slice maximum before clipping is evaluated on that depth slice."
+    },
+    {
+      "id": "kernels-gallery/gallery.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/kernels-gallery/run.sh"
+      ],
+      "runner": "examples/kernels-gallery/run.sh",
+      "command": "plot gallery gallery.json -o gallery.png",
+      "input_hashes": {
+        "examples/kernels-gallery/gallery.json": "8327827695bbe862e6c05fffbdd3306306558d043852d0b80b0f4cda3cbbe8aa"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/sections.py",
+      "plotter_sha256": "bb9e1cbfa1483377fc648cd03f48c0c22453da2d8fa0f6c315b81b98ebc5e762",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/gallery.png",
+        "sha256": "de6011ad42f859d18af856a47ba9d0831f67973f29384ffd70f25deedd111eaf"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-gallery",
+        "files": {
+          "gallery.P.measurement": "9490280b3758589df140d0094d9251f5ec3d60f3f994c8cd061dba8aee81dbc4",
+          "gallery.PP.measurement": "46ed775fdbc80c9d37cef46288a4b0449102947ba1d1cdd39e25b82645a7a46e",
+          "gallery.S.measurement": "b43d35813dd2d842dd7c60a9c9deb37d564df058a33454519ae7fecdd364c879",
+          "gallery.ScS.measurement": "214d5c9ae5ef05c47a9d7969602696d902a57a5f3312ead30a512c12316b4e1f",
+          "gallery.SS.measurement": "3da9fddb881b2b35437fa280f2743d9821a359f4b4702690743d90b8cbecb86c",
+          "gallery.P.kernels": "8aa1d59c6527c87ffc7ed2906547acfad9f1286222f9e3afb1c8d08b4ad339a4",
+          "gallery.PP.kernels": "a045799118f70f4eff59a60d88b0e53c853d0e727ee328c6516ebf083edb1021",
+          "gallery.S.kernels": "84e339acd3a752e951def66c47fa6b375b7cd474ad345e4fbc83668d363d8da2",
+          "gallery.ScS.kernels": "63ffee06f82e4c2b814fb05134e1ce82a9d94b2241c25878769797cbe985c66a",
+          "gallery.SS.kernels": "9b8081e7c1075b4defe69b7980d3201442b47f55b96c865d1637dfb809904cae",
+          "gallery.P.sections": "2e52c98bec6b490c81608326f75a3ac46dd97591608d9b94cc007f27a0e6cfc6",
+          "gallery.PP.sections": "3c0b6b918337a753f9bb35164fea8b1d079a9a1cea3ed31731aad1264b7ec49b",
+          "gallery.S.sections": "d818bc433a045ba3a3ddee23554862e45fc74d36bfcc07016bab422e4eb5211e",
+          "gallery.ScS.sections": "2cb718c227dea0f4f32f891add3a31c9e79fa00874175fce58d07e34c74ab3ff",
+          "gallery.SS.sections": "a68c1f687ae99e8b9f7b5aec0373a507bc8bc9e0d9c573c501cffbe021557f4e"
+        },
+        "note": "Five-window full-kernel run completed 84 frequencies in 178.39 s at two threads. P/PP/S/ScS/SS labels target overlapping packets; convergence unresolved."
+      },
+      "scientific_status": "mixed packets; numerical convergence unresolved",
+      "phase1_status": "corrected current geometry and windows",
+      "phase1_finding": "Current 3 km receiver-depth inputs and regenerated TauP windows are used; co-arrivals remain in the packets.",
+      "generator_hashes": {
+        "examples/kernels-gallery/make_input.py": "da01a2ac604607fba3b7098b11d3eca76b85e374dea94b9dd0217088990ff9da"
+      }
+    },
+    {
+      "id": "kernels-gallery/banana-S.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/kernels-gallery/run.sh"
+      ],
+      "runner": "examples/kernels-gallery/run.sh",
+      "command": "plot banana gallery.json --measurement S -o banana-S.png",
+      "input_hashes": {
+        "examples/kernels-gallery/gallery.json": "8327827695bbe862e6c05fffbdd3306306558d043852d0b80b0f4cda3cbbe8aa"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/sections.py",
+      "plotter_sha256": "bb9e1cbfa1483377fc648cd03f48c0c22453da2d8fa0f6c315b81b98ebc5e762",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/gallery-s.png",
+        "sha256": "2248d9504c02273815b2b15a7468e60733d74902205849080c3fc12d3b5d1ef6"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-gallery",
+        "files": {
+          "gallery.S.measurement": "b43d35813dd2d842dd7c60a9c9deb37d564df058a33454519ae7fecdd364c879",
+          "gallery.S.kernels": "84e339acd3a752e951def66c47fa6b375b7cd474ad345e4fbc83668d363d8da2",
+          "gallery.S.sections": "d818bc433a045ba3a3ddee23554862e45fc74d36bfcc07016bab422e4eb5211e"
+        },
+        "note": "S target window overlaps SP/PS/sS arrivals; mixed packet, convergence unresolved."
+      },
+      "scientific_status": "mixed packet; numerical convergence unresolved",
+      "phase1_status": "corrected current geometry and windows",
+      "phase1_finding": "Current S-window output uses the regenerated 3 km receiver-depth input; SP/PS/sS co-arrivals remain.",
+      "generator_hashes": {
+        "examples/kernels-gallery/make_input.py": "da01a2ac604607fba3b7098b11d3eca76b85e374dea94b9dd0217088990ff9da"
+      }
+    },
+    {
+      "id": "kernels-gallery/diffracted.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/kernels-gallery/run.sh"
+      ],
+      "runner": "examples/kernels-gallery/run.sh",
+      "command": "plot gallery diffracted.json -o diffracted.png",
+      "input_hashes": {
+        "examples/kernels-gallery/diffracted.json": "9cd7dea5aac099518711b6be81c831cd1eb8fd215129b9653204f2266da27319"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/sections.py",
+      "plotter_sha256": "bb9e1cbfa1483377fc648cd03f48c0c22453da2d8fa0f6c315b81b98ebc5e762",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/diffracted.png",
+        "sha256": "9c9eba21e02077b8a4c6ce5a1c14a057d41f125e6912a82f9c4e30c700bcb336"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-diffracted",
+        "files": {
+          "diffracted.Pdiff.measurement": "1e1b783103c58dd54e4c2bf44dc74b0e54f5bc94852ed137e2e35466a196bfb6",
+          "diffracted.Sdiff.measurement": "6e39e47d4e4caaa7fed8e8fd9acddfb09a3f0481340996e207b3c11dd46bf6b5",
+          "diffracted.Pdiff.kernels": "67fd125c95941ced4294664102e8cd94a082ecb8b903bd455cde4a7071e880e7",
+          "diffracted.Sdiff.kernels": "5e7bc5cbb2de70c92ccfb1d7b1138c126a71d8f79952425fb7f089853d81e71b",
+          "diffracted.Pdiff.sections": "d44672c4c018c360bd93ba5cf3bf4adc8a144fa7146eda52ca11ea0d2f14dce0",
+          "diffracted.Sdiff.sections": "a97e1b57561f13c745595e7a90119a02d8afed9b8bee32645a513039319cf91d"
+        },
+        "note": "Pdiff and Sdiff target windows completed all 81 frequencies and both kernel stages in 86.87 s at two threads. Depth phases overlap both finite-frequency packets; convergence remains unresolved."
+      },
+      "scientific_status": "mixed depth-phase packets; numerical convergence unresolved",
+      "phase1_status": "corrected current geometry and windows",
+      "phase1_finding": "Current 3 km receiver-depth inputs and regenerated TauP windows are used; depth phases remain in the Pdiff and Sdiff packets, and sensitivity convergence is untested.",
+      "generator_hashes": {
+        "examples/kernels-gallery/make_input.py": "da01a2ac604607fba3b7098b11d3eca76b85e374dea94b9dd0217088990ff9da"
+      }
+    },
+    {
+      "id": "map/map.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/map/run.sh"
+      ],
+      "runner": "examples/map/run.sh",
+      "command": "plot snapshot snapshot.json --component up -o map.png",
+      "input_hashes": {
+        "examples/map/snapshot.json": "2b8860698a2f252102ae0cb7c930229d6aca83ebf74faaa220a944526489c6a0"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/snapshots.py",
+      "plotter_sha256": "18eca6fc97639f8fd0d4554ce679b4ceca609cde6e09a50444d868712d37a6f7",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/map.png",
+        "sha256": "2238f9bc2ec168bd57d42a928211b91f1aa95178c19ac396f4700089792de483"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/map",
+        "files": {
+          "/tmp/yspecpp-phase2c-runs-20261023/map/map.1": "41989f111c828f3e61468d3a685b89c74f3fe56facbed83f71f102462b82893d",
+          "/tmp/yspecpp-phase2c-runs-20261023/map/map.2": "df25bfb6414b9780bd6bfe125f19de03df87f1aaba1bf5ab8c0cbd76a6272249",
+          "/tmp/yspecpp-phase2c-runs-20261023/map/map.3": "78c37142ca82a6972c8098dafad0303ddc3f2ab9f83b6d7e54852e99aea6d761",
+          "/tmp/yspecpp-phase2c-runs-20261023/map/map.4": "844fed1058c92ef2fccf8a0e904a96ba5aec329e53bae76c4e68c016343f0f1f",
+          "/tmp/yspecpp-phase2c-runs-20261023/map/map.5": "213cbffeed3b3230f35535096454a7037e21c17efd0974e207f8affe2c1676ea",
+          "/tmp/yspecpp-phase2c-runs-20261023/map/map.6": "4039c63b92141fd01ded4701a43f0bc37939c1c588463d229765958644bb3c1d"
+        },
+        "note": "Current-source six-time map; saved geographic coordinates and nearest-sample cells are used; amplitudes are not interpolated."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "corrected",
+      "phase1_finding": "Current-source six-time map; saved geographic coordinates and nearest-sample cells are used; amplitudes are not interpolated."
+    },
+    {
+      "id": "record-section/vertical.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/record-section/run.sh"
+      ],
+      "runner": "examples/record-section/run.sh",
+      "command": "plot section input.json --component Z --gain 2 -o vertical.png",
+      "input_hashes": {
+        "examples/record-section/input.json": "950ad80c03e6aff3e838efa9e1a2749fa63f3a26786693dcff824238a22f618b"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/seismograms.py",
+      "plotter_sha256": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/record-z.png",
+        "sha256": "dec9d63979c0b425aee034a6ac4cebb06a0e3fc68faca73f1247e387d13bb366"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/record-section",
+        "files": {
+          "section.1": "e7488af0baa58269b0ec3547ce6c4e4b767b50ba587db7c93c5edbde022a2818",
+          "section.2": "2b05760f5c753854c0c9aa3aa1f0db16a82f858edc23f9f21c86867c507cd54f",
+          "section.3": "14c7f5e729e3e3878d1ff2e59d0fd5d6d963513d76f3fc576180c6bd03862104",
+          "section.4": "4a7b888adb48b84c2872ac65079dda09c26db463ce4e70e78f58e9d01b54e724",
+          "section.5": "fbf1c6adfde5b57619bc40a8f417d19c866358ba9544dbb5fd7b6b15f309bbb0",
+          "section.6": "e3da43af02bea21140c615684bb64565b334d7f17b2459863ec75c399e8aba7a",
+          "section.7": "0f7487500fc3637fda560f270e59f97e90e0391104abd60d16089f12f5ec27e0",
+          "section.8": "44b47cd86c1d45108fe8ba21f8596492e67c3a380ea4c5d92d856d109b0e3925",
+          "section.9": "8e7ba4275cf612c4cedda3bea27615638f153812b5876ea400fc1c51f187b967",
+          "section.10": "50621b6d3d67eb1d72da481b7f931cf514e9d98ca64041441c176cb2878e6632",
+          "section.11": "317eea30b51e8a927192073d5f9a88f2ae985eaad42bdbfd88640551c4308344",
+          "section.12": "7a03c90d271eda92a4444cf99ab00ad645f7b08b75feff906899125e50628eb3",
+          "section.13": "5665c7b7d2cec149e44716fe605cc180294f739a3ada71051a4f2122d19ae9db",
+          "section.14": "d3aefeabf14f0d3471ce2c3d639de5166df9168309e06a43f7250d25b7c25b49",
+          "section.15": "fb04aa895975a97b6750b9a74bf0f5caac89c26fc73fe118816f8c3ef6e4fbee",
+          "section.16": "ae6d320c882fb7ed3d6b3831cd61851283cfc8533d4688d0eb8106ee46bcb129",
+          "section.17": "a15611504d41973d99c9104616ebc3660975f3c4957aa49294cbdceb49205eeb",
+          "section.18": "88eff651759f4c52eeef5d007d71f599f9fb79ede8492ddc26d196eb84483f06",
+          "section.19": "8f12bd300845977c9530d6cc3ce6c232e75ddcd30e0c933e951719fb5ed09cfb",
+          "section.20": "fb77588a6a0ccf213cd3f4b475a86513b80b649e5dae3d91565307f1239dc936",
+          "section.21": "2dc0bb9a0d4dac45427da3478cc4f68365b0670ba0537b973cd0a23b5d62b2db",
+          "section.22": "1b8bdbe10571c68148d6be7a8f49e11f5e8a7a3148f5475614b5a95eb8df3444",
+          "section.23": "c738ee9d38291d4a74d2bc3a88acf0818e21ac7203f6279b07233b5f4cb26eee",
+          "section.24": "edab240202a56101885721ff797f7f14ae91099313bda086b21f6501cdc4bf89",
+          "section.25": "f2bfe3c1a4ceed266316838124b154c16eac6c90fc09c2d68dcf9263cf2956ee",
+          "section.26": "d665360c374cc81ba0c32c16d26dc145d9cc1cd30a38a0400ec7d8ee6aed892f",
+          "section.27": "bdb08faa273cb41501ac6e07ee13a89d588934ba24aa18a84ff34e99f65f92d2",
+          "section.28": "bd50e0f4b3294663338b20fb50d82da9f4872f13985e2dbdf95819c4a9bf595b",
+          "section.29": "3fee0df8fb1de905c13eac6039c2619b0330a7437c08e1833c221b1a899f9b81",
+          "section.30": "e473b02de73de47234a82f19b9c285a1de2cf78ba77b8068342f77a76b5ca15d",
+          "section.31": "ee4c981b270a2a99ada9bd519fa8b9f7d4440d45cddf7f07c7afbbed4f057225",
+          "section.32": "a7db6099627d50c57f33229a37a4ef990aa5d3296acca7adf9d178fb9c310ad3",
+          "section.33": "c589cff78a5633cf2b31e3de22de079bd2ab091fb8d19899257a012932db15cc",
+          "section.34": "f652d8e645c15fbdf5b379abe6d923ed176229fd7ee17fb094a84d1e1b726aea",
+          "section.35": "86a008db1828965254ad006fd12c2cf392ae37b4d4e575f7cb5890a49783b5f6"
+        },
+        "note": "35-receiver displacement section; per-trace normalization and gain clipping are disclosed."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "retained with current-source render",
+      "phase1_finding": "Current-source 35-receiver displacement figure retains and displays the existing per-trace normalization and clipping disclosure."
+    },
+    {
+      "id": "record-section/transverse.png",
+      "kind": "generated README example",
+      "displayed_at": [
+        "README.md Examples and plotting",
+        "examples/record-section/run.sh"
+      ],
+      "runner": "examples/record-section/run.sh",
+      "command": "plot section input.json --component T --gain 2 -o transverse.png",
+      "input_hashes": {
+        "examples/record-section/input.json": "950ad80c03e6aff3e838efa9e1a2749fa63f3a26786693dcff824238a22f618b"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/seismograms.py",
+      "plotter_sha256": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": null,
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/record-t.png",
+        "sha256": "2269b80179e1599e999a677ee7d090a1fe59ee7b3f1d4b928666f3d211f4d275"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/record-section",
+        "files": {
+          "section.1": "e7488af0baa58269b0ec3547ce6c4e4b767b50ba587db7c93c5edbde022a2818",
+          "section.2": "2b05760f5c753854c0c9aa3aa1f0db16a82f858edc23f9f21c86867c507cd54f",
+          "section.3": "14c7f5e729e3e3878d1ff2e59d0fd5d6d963513d76f3fc576180c6bd03862104",
+          "section.4": "4a7b888adb48b84c2872ac65079dda09c26db463ce4e70e78f58e9d01b54e724",
+          "section.5": "fbf1c6adfde5b57619bc40a8f417d19c866358ba9544dbb5fd7b6b15f309bbb0",
+          "section.6": "e3da43af02bea21140c615684bb64565b334d7f17b2459863ec75c399e8aba7a",
+          "section.7": "0f7487500fc3637fda560f270e59f97e90e0391104abd60d16089f12f5ec27e0",
+          "section.8": "44b47cd86c1d45108fe8ba21f8596492e67c3a380ea4c5d92d856d109b0e3925",
+          "section.9": "8e7ba4275cf612c4cedda3bea27615638f153812b5876ea400fc1c51f187b967",
+          "section.10": "50621b6d3d67eb1d72da481b7f931cf514e9d98ca64041441c176cb2878e6632",
+          "section.11": "317eea30b51e8a927192073d5f9a88f2ae985eaad42bdbfd88640551c4308344",
+          "section.12": "7a03c90d271eda92a4444cf99ab00ad645f7b08b75feff906899125e50628eb3",
+          "section.13": "5665c7b7d2cec149e44716fe605cc180294f739a3ada71051a4f2122d19ae9db",
+          "section.14": "d3aefeabf14f0d3471ce2c3d639de5166df9168309e06a43f7250d25b7c25b49",
+          "section.15": "fb04aa895975a97b6750b9a74bf0f5caac89c26fc73fe118816f8c3ef6e4fbee",
+          "section.16": "ae6d320c882fb7ed3d6b3831cd61851283cfc8533d4688d0eb8106ee46bcb129",
+          "section.17": "a15611504d41973d99c9104616ebc3660975f3c4957aa49294cbdceb49205eeb",
+          "section.18": "88eff651759f4c52eeef5d007d71f599f9fb79ede8492ddc26d196eb84483f06",
+          "section.19": "8f12bd300845977c9530d6cc3ce6c232e75ddcd30e0c933e951719fb5ed09cfb",
+          "section.20": "fb77588a6a0ccf213cd3f4b475a86513b80b649e5dae3d91565307f1239dc936",
+          "section.21": "2dc0bb9a0d4dac45427da3478cc4f68365b0670ba0537b973cd0a23b5d62b2db",
+          "section.22": "1b8bdbe10571c68148d6be7a8f49e11f5e8a7a3148f5475614b5a95eb8df3444",
+          "section.23": "c738ee9d38291d4a74d2bc3a88acf0818e21ac7203f6279b07233b5f4cb26eee",
+          "section.24": "edab240202a56101885721ff797f7f14ae91099313bda086b21f6501cdc4bf89",
+          "section.25": "f2bfe3c1a4ceed266316838124b154c16eac6c90fc09c2d68dcf9263cf2956ee",
+          "section.26": "d665360c374cc81ba0c32c16d26dc145d9cc1cd30a38a0400ec7d8ee6aed892f",
+          "section.27": "bdb08faa273cb41501ac6e07ee13a89d588934ba24aa18a84ff34e99f65f92d2",
+          "section.28": "bd50e0f4b3294663338b20fb50d82da9f4872f13985e2dbdf95819c4a9bf595b",
+          "section.29": "3fee0df8fb1de905c13eac6039c2619b0330a7437c08e1833c221b1a899f9b81",
+          "section.30": "e473b02de73de47234a82f19b9c285a1de2cf78ba77b8068342f77a76b5ca15d",
+          "section.31": "ee4c981b270a2a99ada9bd519fa8b9f7d4440d45cddf7f07c7afbbed4f057225",
+          "section.32": "a7db6099627d50c57f33229a37a4ef990aa5d3296acca7adf9d178fb9c310ad3",
+          "section.33": "c589cff78a5633cf2b31e3de22de079bd2ab091fb8d19899257a012932db15cc",
+          "section.34": "f652d8e645c15fbdf5b379abe6d923ed176229fd7ee17fb094a84d1e1b726aea",
+          "section.35": "86a008db1828965254ad006fd12c2cf392ae37b4d4e575f7cb5890a49783b5f6"
+        },
+        "note": "35-receiver transverse displacement section; per-trace normalization and gain clipping are disclosed."
+      },
+      "scientific_status": "numerical convergence unresolved",
+      "phase1_status": "retained with current-source render",
+      "phase1_finding": "Current-source 35-receiver displacement figure retains and displays the existing per-trace normalization and clipping disclosure."
+    },
+    {
+      "id": "first-seismogram.svg",
+      "kind": "published asset",
+      "displayed_at": [
+        "docs/site/first-seismogram.html"
+      ],
+      "runner": "docs/site/examples/plot_first_seismogram.py",
+      "command": null,
+      "input_hashes": {
+        "docs/site/examples/first-seismogram.json": "ce09532d22437c8e3266ff855f83dd05e039328bd2fe116522aa8ccf87ac7ab3"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "docs/site/examples/plot_first_seismogram.py",
+      "plotter_sha256": "663ed44a12176d9d20dfa3c6e7536dd7c4a3cbb0615f8b5f7609f2e16d9f14a7",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md; PR5 P2 fixes uncommitted on 26e9ae1",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": "docs/site/assets/first-seismogram.svg",
+        "evidence_path": "/tmp/yspecpp-pr5-p2-fixes-20261023/first-seismogram.svg",
+        "sha256": "4b9dfc1c8d3f88d002b3f5444de6eb12f41e521532e389bed79aa1720da5e35b",
+        "render_input": {
+          "path": "/tmp/yspecpp-pr5-p2-fixes-20261023/first-seismogram-render.json",
+          "sha256": "157a189282b441753ebfd6573b4bdfa4abf6a8ffc46ca5e07a48c0a2b19cba9a",
+          "note": "Renderer copy changes only the output prefix and source name to match the saved trace; physics match the canonical fixture."
+        }
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2a-bolivia-20261023/base60",
+        "files": {
+          "bolivia.out.1": "196c82b1f2ef926146fe5b32e219891374a4af632e75886e52353214f91d7021",
+          "bolivia.out.receivers": "177529bdac3d900b3706b4724938181294425c0769b73e14d615649e6bb1d41b"
+        },
+        "note": "Current Bolivia baseline; renderer-only JSON adjusted output prefix/source name to match saved filenames. Current PR5 P2 render reads this saved trace and receiver table through a path-adjusted input copy."
+      },
+      "scientific_status": "duration gate failed; not a converged reference",
+      "phase1_status": "needs correction",
+      "phase1_finding": "Trace and SVG exactly reproduced. Degree dependence and late rise from supplied audit remain unresolved; tighter ODE tolerance changes output only ~5.06e-6 peak-normalized, dt halving matches common samples."
+    },
+    {
+      "id": "traces-small.png",
+      "kind": "published asset",
+      "displayed_at": [
+        "docs/site/plotting.html"
+      ],
+      "runner": "python/yspec/plot/seismograms.py",
+      "command": null,
+      "input_hashes": {
+        "docs/site/examples/first-seismogram.json": "ce09532d22437c8e3266ff855f83dd05e039328bd2fe116522aa8ccf87ac7ab3"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/seismograms.py",
+      "plotter_sha256": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": "docs/site/assets/traces-small.png",
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/traces-small.png",
+        "sha256": "a311892cc0670b71ade5642d23e7b8fad1c21ba724f2445cbaf3738b339d0592"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2a-bolivia-20261023/base60",
+        "files": {
+          "bolivia.out.1": "196c82b1f2ef926146fe5b32e219891374a4af632e75886e52353214f91d7021",
+          "bolivia.out.receivers": "177529bdac3d900b3706b4724938181294425c0769b73e14d615649e6bb1d41b"
+        },
+        "note": "Current Bolivia baseline; renderer-only JSON adjusted output prefix/source name to match saved filenames."
+      },
+      "scientific_status": "duration gate failed; not a converged reference",
+      "phase1_status": "needs correction",
+      "phase1_finding": "Published Mrr-only source gives T=1.38e-21 m, ~3.18e-16 of Z, yet independent axis makes it look prominent."
+    },
+    {
+      "id": "kernels-radial-small.png",
+      "kind": "published asset",
+      "displayed_at": [
+        "docs/site/plotting.html"
+      ],
+      "runner": "python/yspec/plot/kernels.py",
+      "command": null,
+      "input_hashes": {
+        "docs/site/examples/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/kernels.py",
+      "plotter_sha256": "ebf0b79a4a2787aef2d2450e5ba9e50b153643a8c70de1873d19a92a1801d6db",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": "docs/site/assets/kernels-radial-small.png",
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/kernels-radial-small.png",
+        "sha256": "768f7ff113e395505e78de7ebcde3b6c5488941b0a2ff8aa943021d3f89d745d"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-web",
+        "files": {
+          "kernel-small.measurement": "4dc5ad0c32f49fc010548120579fc9ed2496cd4613b55e4ea16ce96c34a4a1e3",
+          "kernel-small.kernels": "b9929b9085373b6965c20c58a39831dd493862e2be1438fc6917fb782694dea5",
+          "kernel-small.sections": "a3dfb4943dc599d45600a1d3190beac03336937e95b6a33641a027e5cca036dd",
+          "kernel-small.maps": "dd00f6afb378288f1b0fe9b5716d3ae5f1ef2d7d9da942dc3fbfca9a8503cb03"
+        },
+        "note": "Current L200 mixed shear-packet kernel run; TauP S/sS/ScS overlap; convergence unresolved."
+      },
+      "scientific_status": "mixed packet; numerical convergence unresolved",
+      "phase1_status": "needs correction",
+      "phase1_finding": "S label uses 300\u2013600 s; direct S predicted 1093.84 s. 680 radial rows and finite kernels do not validate intended measurement."
+    },
+    {
+      "id": "kernels-section-small.png",
+      "kind": "tracked asset",
+      "displayed_at": [
+        "docs/site/plotting.html"
+      ],
+      "runner": "python/yspec/plot/sections.py",
+      "command": "/tmp/yspecpp-plots-audit-env-20261023/bin/yspec-plot banana /tmp/yspecpp-renderer-phase2b-20261023/phase2c/final/kernels-small-render.json --measurement shear-packet --parameter vs -o /tmp/yspecpp-renderer-phase2b-20261023/phase2c/final/kernels-section-small.png",
+      "input_hashes": {
+        "docs/site/examples/kernels-small.json": "7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0"
+      },
+      "model": "examples/prem.200",
+      "model_sha256": "4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea",
+      "plotter_source": "python/yspec/plot/sections.py",
+      "plotter_sha256": "bb9e1cbfa1483377fc648cd03f48c0c22453da2d8fa0f6c315b81b98ebc5e762",
+      "source_base_revision": "a294fb321cbcf9b6736710eb7ebdcec2c694dc5c",
+      "worktree_changes": "Phase 2A/2B/2C are uncommitted; see implementation_status.md",
+      "render_status": "rendered",
+      "render_output": {
+        "tracked_path": "docs/site/assets/kernels-section-small.png",
+        "evidence_path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/final/kernels-section-small.png",
+        "sha256": "10d809540bfaa56a9911291adad682a713911e191dd85c739c74eb335269aceb"
+      },
+      "render_environment": {
+        "python": "3.12.3",
+        "numpy": "2.5.4",
+        "matplotlib": "3.11.2",
+        "scipy": "1.18.1",
+        "cartopy": "0.26.0",
+        "obspy": "1.5.1",
+        "planetmodel": "1.3.0",
+        "thread_limits": {
+          "OMP_NUM_THREADS": 1,
+          "OPENBLAS_NUM_THREADS": 1
+        }
+      },
+      "numerical_artifacts": {
+        "directory": "/tmp/yspecpp-phase2c-runs-20261023/kernels-web",
+        "files": {
+          "kernel-small.measurement": "4dc5ad0c32f49fc010548120579fc9ed2496cd4613b55e4ea16ce96c34a4a1e3",
+          "kernel-small.kernels": "b9929b9085373b6965c20c58a39831dd493862e2be1438fc6917fb782694dea5",
+          "kernel-small.sections": "a3dfb4943dc599d45600a1d3190beac03336937e95b6a33641a027e5cca036dd",
+          "kernel-small.maps": "dd00f6afb378288f1b0fe9b5716d3ae5f1ef2d7d9da942dc3fbfca9a8503cb03"
+        },
+        "note": "Current L200 mixed shear-packet kernel run; TauP S/sS/ScS overlap; convergence unresolved. A render-only JSON copy changes filesystem paths, not physical input settings."
+      },
+      "scientific_status": "mixed packet; numerical convergence unresolved",
+      "phase1_status": "corrected parameter selection; convergence unresolved",
+      "phase1_finding": "The previous implicit parameter default selected vp for the transverse shear-packet label. The current render explicitly selects vs; the T component, mixed arrivals and numerical convergence remain as documented.",
+      "render_input_copy": {
+        "path": "/tmp/yspecpp-renderer-phase2b-20261023/phase2c/final/kernels-small-render.json",
+        "sha256": "571793caca81cf85821e331c01937cd33db2d2e1b4a25902347e4e7f0b50477b",
+        "note": "Only model and output filesystem paths differ from the canonical fixture; physical settings are unchanged."
+      }
+    }
+  ],
+  "shared_plot_helpers": {
+    "python/yspec/plot/_labels.py": "39ecbede9900941fe68faa4b28effcd55d8f34f3c8ab9771c34de98f30d15e92"
+  },
+  "shared_plotter_modules": {
+    "python/yspec/plot/__init__.py": "91598d42c31e0a9f457635b529d204c1dcd49d5a22585d08279c11be1cbecf5c",
+    "python/yspec/plot/__main__.py": "6d8b7d7846a845059d7a3107143f11131f63c5511d669b44085b15ec5e3d2279",
+    "python/yspec/plot/_labels.py": "39ecbede9900941fe68faa4b28effcd55d8f34f3c8ab9771c34de98f30d15e92",
+    "python/yspec/plot/cli.py": "4ec1b3687dfcd3185279ba912a6ec7168e17919a5b153a269d1f92824e97e009",
+    "python/yspec/plot/kernels.py": "ebf0b79a4a2787aef2d2450e5ba9e50b153643a8c70de1873d19a92a1801d6db",
+    "python/yspec/plot/runs.py": "1ba39fca6ce2a20e02b4e8aeba65f1587784ec29a36213502a0b352ec7d92871",
+    "python/yspec/plot/sections.py": "bb9e1cbfa1483377fc648cd03f48c0c22453da2d8fa0f6c315b81b98ebc5e762",
+    "python/yspec/plot/seismograms.py": "aac9a45d7ffbc166d97dc42c1536870248bca817c88bcd110fecf98899fe0b5e",
+    "python/yspec/plot/snapshots.py": "18eca6fc97639f8fd0d4554ce679b4ceca609cde6e09a50444d868712d37a6f7",
+    "python/yspec/plot/volume.py": "183de7667e627a8a18cf3d9741adfc87f2266f7b24532422146ddc89c9bfb132"
+  }
+}

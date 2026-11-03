@@ -1,0 +1,55 @@
+{
+  "model": "prem.200",
+  "attenuation": false,
+  "gravity": "full",
+  "output": {
+    "prefix": "first-seismogram.out",
+    "quantity": "displacement",
+    "potential_and_tilt_corrections": false
+  },
+  "degrees": {
+    "min": 0,
+    "max": 300
+  },
+  "frequencies_mHz": {
+    "min": 1.5,
+    "max": 21.0
+  },
+  "time_series": {
+    "length_min": 300.0,
+    "time_step_s": 1.0
+  },
+  "filter_mHz": [
+    1.9,
+    2.0,
+    20.0,
+    20.1
+  ],
+  "sources": [
+    {
+      "depth_km": 647.1,
+      "latitude": -13.909919806613164,
+      "longitude": -67.25,
+      "moment_tensor_Nm": {
+        "rr": -7.59e+20,
+        "rt": -2.5e+21,
+        "rp": 4.2e+19,
+        "tt": 7.75e+20,
+        "tp": -2.48e+20,
+        "pp": -1.6e+19
+      }
+    }
+  ],
+  "receivers": {
+    "depth_km": 3.0,
+    "locations": [
+      [
+        80.06588632614357,
+        0.0
+      ]
+    ]
+  },
+  "solver": {
+    "tolerance": 1e-05
+  }
+}

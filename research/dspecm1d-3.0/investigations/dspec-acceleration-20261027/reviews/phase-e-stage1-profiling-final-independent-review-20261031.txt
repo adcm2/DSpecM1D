@@ -1,0 +1,75 @@
+Phase E Stage 1 — independent results review — Sol 6.1 high — 2026-10-31
+
+TERMINAL/PROFILE EVIDENCE AND FINAL REPORT: PASS.
+Only instrumentation/profiling authorized; this does not release Stage 2.
+
+Reviewed receipts/phase-e-stage1-terminal-snapshots-20261031.json:
+SHA256 1778af89bb3acaca2f95e723502b33fba37fddcbe5475346627bb3f56ece303f.
+Re-encoded embedded checker JSON exactly reproduces remote summary SHA256
+b20354e3a8f4e6876e2f4079bbfc43f7526e2e9d6b5d453d1ce1445a9644621c,
+matching the v2 checker job's declared output hash. V2 run plan SHA256
+07a69d7996fc57f74f335c23e525ba6dce3fc2c234c2b241290c0c3d50c71d5c.
+All eight numerical invocations plus checker completed rc0, inputs unchanged.
+V1 stopped staging and enabled D timer LIFO failure remain preserved. V2 is
+the focused child-before-parent stop correction, no scientific change.
+
+Exact common selected grid: L200/NQ6/h0.02035382429229197, 208 one-sided
+samples, 135+19 angles, bins7..41, full radius. All physical CSV channels and
+complete D arrays equal frozen Phase D exactly; Y arrays differ from its frozen
+anchor by <=1.39e-16 relative L2, all its physical CSV channels equal exactly.
+Thus new timer-disabled/enabled source preserves the accepted backend outputs;
+this is not cross-backend scientific equivalence. Current cross-backend array
+diagnostics relative to Y: along0.1211230597/across0.03669990382. No discrepancy
+cause inferred and no additional physical accuracy or fluid roundoff claim.
+
+Native driver medians (3 fresh observations each): D7.74162134s, Y4.321987202s;
+ranges D7.722947465..7.764413965s, Y4.300957274..4.325552285s.
+D/Y median ratio1.791218. Enabled observations D7.753109314/Y4.339061823s;
+relative to native medians +0.1484%/+0.3951%, versus full native range0.5356%/
+0.5691%. These single observations do not isolate timer cost from run variation.
+Supervisor numerical elapsed, driver elapsed, caller coverage and worker elapsed
+are separately named. Native supervisor medians D8.033092138/Y4.567132547s.
+
+D: 35 forward preparations,32 active unit adjoints,3 exact skips. Positive
+packing/GEMM/scatter/contraction scopes,147840 GEMMs. Worker exclusive sum
+51.751219346s matches root inclusive sum (floating rounding only); master wall
+partition7.752661697s closes exactly. GEMM19.223470250 worker-s dominates the
+angular scope22.080782963 worker-s; modal preparation24.566405655 and projected
+radial strain4.609166997 worker-s are separate parents. Inclusive parents must
+not be added to descendants; worker shares are not wall shares or speed forecasts.
+
+Y: threads0..7 partition35 forward/35 kernel work items, skips7/8/41 exactly.
+Worker exclusive sum33.520833128s equals forward+kernel roots exactly. Radial S
+16.467651075 and angular evaluation13.981666472 worker-s are the largest fine
+exclusive scopes. Material contraction14.250667824 is inclusive of angular
+evaluation; its exclusive remainder0.269001352 must be used when adding terms.
+Caller exclusive0.074838464s + master root bridge4.263386783s = unique caller
+coverage4.338225247s; driver residual0.000836576s explicitly unscoped. Bridge
+also appears inside worker roots/outer API and is not additive across domains.
+Reduction timer starts after kernel lock acquisition: lock wait belongs to
+parent remainder; no standalone lock-wait or critical-path claim is supported.
+
+Y workload requests Velocities and returns vp,vs,qkappa,qmu; eight elastic
+intermediate contractions are computed before transformation. Driver selects vs.
+Forward channels up,north,east; radial integration relative tolerance1e-5,
+start decay11 efolds, step factor0.25; its internal integration differs from
+the shared SEM requested-output mesh. No identical-backend-work assumption.
+
+Builds observed<=6 threads/2.3119GiB; v2 numerics<=9 observed threads including
+supervisor and1.1211GiB. Configured builds8/32GiB, numerics20/16GiB,8 total
+workers/inner1, aggregate ceiling50. Sequential job receipts support no numerical
+overlap. USER_SPACE_SESSION_WATCHDOG is not kernel aggregate accounting.
+
+FINAL REPORT SEAL: reviewed analyses/phase-e-stage1-matched-profiling-20261031.md
+SHA256 57d79ae79a6e3999b58494b698e699fba945e44c0de91cc32bd9479216bcf586
+and matching JSON SHA256
+69af35a5618f59e75ec1aadd3c5c7018f006f8061ef5f117c242d1078a34cc03.
+Focused report corrections confirmed: Y scope totals span both frequency phases;
+35 kernel work items include3zero skips, leaving32active in both backends;
+selected D reconstruction scopes distinguish larger solver/assembly costs;
+modal fine costs sit inside modal parent; fused D material/sample-emission scope
+is labeled; coarse groups avoid duplicate JSON remainder; Y-normalized diagnostic
+differences, timer variation and overlapping worker/wall domains are explicit.
+No remaining scientific/provenance blocker within authorized Stage 1.
+Stop here: Stage 2 optimization, production integration and discrepancy work
+have not been authorized by this Stage 1 completion or independent review.

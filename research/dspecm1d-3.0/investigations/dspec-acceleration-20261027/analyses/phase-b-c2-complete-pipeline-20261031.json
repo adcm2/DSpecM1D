@@ -1,0 +1,665 @@
+{
+  "complete_pipeline": {
+    "C2_native_component_timing_s": {
+      "combined_forward_unit_adjoint_reconstruction_contraction_wall": 15.859072063,
+      "driver_total": 15.890614612,
+      "measurement_and_actual_adjoint_spectrum": 0.002839189,
+      "weighted_complex_product_reduction": 0.010931208
+    },
+    "component_timing_interpretation": "Master wall and worker elapsed sums are distinct; worker sums overlap and are not additive to wall time.",
+    "fresh_reference": {
+      "C2_native_driver_s": 15.890614612,
+      "C2_native_supervisor_s": 16.296116217,
+      "C2_peak_rss_gib": 1.647,
+      "bins": 35,
+      "degree": 200,
+      "frequency_workers": 8,
+      "fresh_kernels_byte_match_saved_F8a": true,
+      "fresh_reference_driver_s": 16.93489922,
+      "fresh_reference_peak_rss_gib": 4.7375,
+      "fresh_reference_supervisor_s": 17.59398439398501,
+      "independent_review": "reviews/complete-pipeline-native-reference-independent-review-20261031.txt",
+      "inner_threads": 1,
+      "input_relative_error": 1e-05,
+      "mesh_step_h": 0.025,
+      "nq": 10,
+      "observed_driver_fractional_difference": -0.0617,
+      "observed_supervisor_fractional_difference": -0.0738,
+      "reference_result_receipt": "receipts/phase-c2-accepted-reference-native-v1-terminal-20261031.json",
+      "timing_limit": "one matched pair only; accepted F8a includes unconditional packed-v-tensor diagnostic work (~0.52008s summed worker elapsed), C2 timing has that oracle off. Report raw driver/supervisor boundaries; do not subtract worker diagnostic time or claim a distributional speedup"
+    },
+    "profiled_scope_example": {
+      "interpretation": "worker elapsed sums overlap the master pass and must not be added to wall time",
+      "master_combined_pass_wall": 15.975649176,
+      "profile_pipeline_wall": 15.999236098,
+      "worker_sum_combined_frequency_workspace_calls35_s": 107.962483422,
+      "worker_sum_full_weighted_HH_calls12800_s": 3.848209165,
+      "worker_sum_sparse_numerical_factorization_calls14035_s": 20.152527329
+    }
+  },
+  "date": "2026-10-31",
+  "limits": [
+    "candidate remains isolated; no production integration",
+    "Phase B common-side tables from original mapper were superseded by corrected replay; original full35 waveform and timing evidence remains valid",
+    "NQ6 finer three-bin diagnostics are reused hash-bound rows, not new solves",
+    "no numerical accuracy budget specified, so no low-mesh or truncation acceptance",
+    "no discrepancy/root-cause inquiry, YSpec rerun, figures, commits, pushes, or file deletion"
+  ],
+  "phase_b": {
+    "checker_elapsed_s": 163.63887959398562,
+    "checker_peak_rss_gib": 2.797,
+    "checker_peak_threads": 2,
+    "corrected_mapper_replay": {
+      "accuracy_threshold_applied": false,
+      "interpretation": "per-bin grouped-location relative errors are descriptive; affected means radius below at least one applicable family-degree cut, not that the total field is wholly omitted; no complete-frequency convergence claim is made; fluid subgroup ratios and absolute denominators remain in receipt",
+      "meshes": {
+        "nq5-finer": {
+          "active_bins": [
+            9,
+            25,
+            40
+          ],
+          "actual_family_degree_cut_records_per_bin": 401,
+          "common_solid_full_vs_NQ10_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 1350,
+              "group": "0|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 4.0001198425196404e+30,
+              "value": 6.588724889185084e-05
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 190,
+              "group": "1|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2887363189400359e-18,
+              "value": 0.00013464404885980168
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2232274590302219e-33,
+              "value": 0.00018144686464158152
+            }
+          },
+          "common_solid_restricted_minus_full_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 21600,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 3.8252611936872127e+27,
+              "value": 1.5326579585442467e-05
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 21600,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 8.334398895150553e-19,
+              "value": 8.207124499003043e-05
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 21600,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 9.394272534829802e-39,
+              "value": 0.00010400490783452492
+            }
+          },
+          "common_solid_restricted_vs_NQ10_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 1350,
+              "group": "0|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 4.0001198425196404e+30,
+              "value": 6.588721932986195e-05
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 190,
+              "group": "1|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2887363189400359e-18,
+              "value": 0.00013464418099313997
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2232274590302219e-33,
+              "value": 0.00018144685216820691
+            }
+          },
+          "corrected_q0_mapping_rows": 2618,
+          "elements": 132,
+          "mesh_rule": "standard source-aware h from accepted relative_error and abs(highest retained complex omega)",
+          "native_sides": 363,
+          "profiled_kernel_pass_HH_scope_calls_total": 1200,
+          "receiver_restricted_vs_full_max_rel_l2": 3.0434346142211787e-10,
+          "requested_locations_per_bin": 45122,
+          "sample_cut_classification_by_bin": {
+            "25": {
+              "affected": 31108,
+              "unaffected": 14014
+            },
+            "40": {
+              "affected": 31108,
+              "unaffected": 14014
+            },
+            "9": {
+              "affected": 31108,
+              "unaffected": 14014
+            }
+          },
+          "status": "new diagnostic replay"
+        },
+        "nq5-nominal": {
+          "active_bins": [
+            9,
+            25,
+            40
+          ],
+          "actual_family_degree_cut_records_per_bin": 401,
+          "common_solid_full_vs_NQ10_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 5.012327160911379e+29,
+              "value": 0.0011721282073127858
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 38,
+              "group": "1|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 8.013289944441177e-19,
+              "value": 0.001515872618641864
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2232274590302219e-33,
+              "value": 0.0033002203425735437
+            }
+          },
+          "common_solid_restricted_minus_full_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 21600,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 3.825256844240869e+27,
+              "value": 1.0110887139571757e-05
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 21600,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 8.33438975907943e-19,
+              "value": 5.4056630720986356e-05
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 21600,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 9.39422855136567e-39,
+              "value": 6.400131595160228e-05
+            }
+          },
+          "common_solid_restricted_vs_NQ10_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 5.012327160911379e+29,
+              "value": 0.0011721282034689734
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 38,
+              "group": "1|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 8.013289944441177e-19,
+              "value": 0.0015158726258895536
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2232274590302219e-33,
+              "value": 0.003300220336478587
+            }
+          },
+          "corrected_q0_mapping_rows": 308,
+          "elements": 70,
+          "mesh_rule": "standard source-aware h from accepted relative_error and abs(highest retained complex omega)",
+          "native_sides": 199,
+          "profiled_kernel_pass_HH_scope_calls_total": 1200,
+          "receiver_restricted_vs_full_max_rel_l2": 3.4716607790428024e-10,
+          "requested_locations_per_bin": 45122,
+          "sample_cut_classification_by_bin": {
+            "25": {
+              "affected": 31108,
+              "unaffected": 14014
+            },
+            "40": {
+              "affected": 31108,
+              "unaffected": 14014
+            },
+            "9": {
+              "affected": 31108,
+              "unaffected": 14014
+            }
+          },
+          "status": "new diagnostic replay"
+        },
+        "nq6-finer": {
+          "active_bins": [
+            9,
+            25,
+            40
+          ],
+          "actual_family_degree_cut_records_per_bin": 401,
+          "common_solid_full_vs_NQ10_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 5.012327160911379e+29,
+              "value": 9.998418197408997e-05
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 38,
+              "group": "1|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 8.013289944441177e-19,
+              "value": 0.00016417314031827115
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2232274590302219e-33,
+              "value": 0.0002900260907046722
+            }
+          },
+          "common_solid_restricted_minus_full_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 22275,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 4.562989490569231e+27,
+              "value": 1.2971679486864742e-05
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 1215,
+              "group": "0|material_interface|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 1.1779097533147447e-19,
+              "value": 6.688759385869755e-05
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 22275,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 1.264319238413968e-38,
+              "value": 8.284623387622503e-05
+            }
+          },
+          "common_solid_restricted_vs_NQ10_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 5.012327160911379e+29,
+              "value": 9.998417508869658e-05
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 38,
+              "group": "1|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 8.013289944441177e-19,
+              "value": 0.00016417314794861824
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 270,
+              "group": "0|source|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2232274590302219e-33,
+              "value": 0.00029002608073593804
+            }
+          },
+          "corrected_q0_mapping_rows": 0,
+          "elements": 96,
+          "mesh_rule": "standard source-aware h from accepted relative_error and abs(highest retained complex omega)",
+          "native_sides": 322,
+          "profiled_kernel_pass_HH_scope_calls_total": 14000,
+          "receiver_restricted_vs_full_max_rel_l2": 2.2513121908722344e-10,
+          "requested_locations_per_bin": 45122,
+          "sample_cut_classification_by_bin": {
+            "25": {
+              "affected": 30646,
+              "unaffected": 14476
+            },
+            "40": {
+              "affected": 30646,
+              "unaffected": 14476
+            },
+            "9": {
+              "affected": 31878,
+              "unaffected": 13244
+            }
+          },
+          "status": "hash-qualified reuse; no new solve"
+        },
+        "nq6-nominal": {
+          "active_bins": [
+            9,
+            25,
+            40
+          ],
+          "actual_family_degree_cut_records_per_bin": 401,
+          "common_solid_full_vs_NQ10_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 1350,
+              "group": "0|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 4.0001198425196404e+30,
+              "value": 0.00046579403330483904
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 190,
+              "group": "1|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2887363189400359e-18,
+              "value": 0.00085875101298812
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 190,
+              "group": "1|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 2.010521771085763e-37,
+              "value": 0.000730475915811647
+            }
+          },
+          "common_solid_restricted_minus_full_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 21600,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 3.825260758196535e+27,
+              "value": 9.987994504475093e-06
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 1215,
+              "group": "0|material_interface|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 1.177905920600236e-19,
+              "value": 5.905956352592469e-05
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 21600,
+              "group": "0|bulk|fluid=0|affected_below_at_least_one_applicable_cut",
+              "reference_norm2": 9.394264438693009e-39,
+              "value": 6.640824137104283e-05
+            }
+          },
+          "common_solid_restricted_vs_NQ10_maxima": {
+            "adjoint_complex_relative_l2": {
+              "bin": 9,
+              "count": 1350,
+              "group": "0|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 4.0001198425196404e+30,
+              "value": 0.00046579406402681207
+            },
+            "forward_complex_relative_l2": {
+              "bin": 9,
+              "count": 190,
+              "group": "1|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 1.2887363189400359e-18,
+              "value": 0.0008587505869097179
+            },
+            "kernel_product_relative_l2": {
+              "bin": 9,
+              "count": 190,
+              "group": "1|material_interface|fluid=0|outside_applicable_cut_radii",
+              "reference_norm2": 2.010521771085763e-37,
+              "value": 0.0007304759418720326
+            }
+          },
+          "corrected_q0_mapping_rows": 308,
+          "elements": 53,
+          "mesh_rule": "standard source-aware h from accepted relative_error and abs(highest retained complex omega)",
+          "native_sides": 189,
+          "profiled_kernel_pass_HH_scope_calls_total": 1200,
+          "receiver_restricted_vs_full_max_rel_l2": 1.6462922244982765e-10,
+          "requested_locations_per_bin": 45122,
+          "sample_cut_classification_by_bin": {
+            "25": {
+              "affected": 31108,
+              "unaffected": 14014
+            },
+            "40": {
+              "affected": 31108,
+              "unaffected": 14014
+            },
+            "9": {
+              "affected": 31108,
+              "unaffected": 14014
+            }
+          },
+          "status": "new diagnostic replay"
+        }
+      },
+      "nominal_vs_finer_solid_self_refinement_maxima": {
+        "nq5": {
+          "adjoint_complex_relative_l2": {
+            "bin": 9,
+            "count": 270,
+            "group": "0|source|fluid=0|mesh_self_refinement",
+            "reference_norm2": null,
+            "value": 0.001110079429528742
+          },
+          "forward_complex_relative_l2": {
+            "bin": 9,
+            "count": 38,
+            "group": "1|source|fluid=0|mesh_self_refinement",
+            "reference_norm2": null,
+            "value": 0.00142055920729796
+          },
+          "kernel_product_relative_l2": {
+            "bin": 9,
+            "count": 270,
+            "group": "0|source|fluid=0|mesh_self_refinement",
+            "reference_norm2": 1.2229730723536623e-33,
+            "value": 0.0031191028338048974
+          }
+        },
+        "nq6": {
+          "adjoint_complex_relative_l2": {
+            "bin": 9,
+            "count": 2565,
+            "group": "0|material_interface|fluid=0|mesh_self_refinement",
+            "reference_norm2": null,
+            "value": 0.00043672423553321434
+          },
+          "forward_complex_relative_l2": {
+            "bin": 9,
+            "count": 361,
+            "group": "1|material_interface|fluid=0|mesh_self_refinement",
+            "reference_norm2": null,
+            "value": 0.0007938238103480072
+          },
+          "kernel_product_relative_l2": {
+            "bin": 9,
+            "count": 361,
+            "group": "1|material_interface|fluid=0|mesh_self_refinement",
+            "reference_norm2": 2.011926681422554e-37,
+            "value": 0.0006828468186536761
+          }
+        }
+      },
+      "one_sided_mapper": "prefers matching element localNode0/9 at every coincident boundary; same-material containing-element fallback only at artificial noncoincident boundary",
+      "per_bin_scope_note": "The listed field/product errors are keyed active-bin per-location-group diagnostics at bins9/25/40; each bin contains45,122 requested locations and401 actual family-degree cut records. They do not compare a full35-bin frequency-summed kernel.",
+      "restricted_HH_count_scope": "fresh replay value1200 is total across bins9/25/40 per mesh; reused NQ6 finer value14000 is the original full35-bin kernel-pass total",
+      "restriction": "actual principal H_R=P H P^T, eliminated cross-cut terms, zero extension; preserves gravity DOFs and records family-degree cuts",
+      "scope": "three affected meshes replayed full/restricted at bins9/25/40; NQ6 finer original rows reused only after receipt/hash/forcing/mesh/grid and zero-q0-impact qualification",
+      "truncation_adopted": false
+    },
+    "initial_two_pass_timing_context": {
+      "C2_combined_native_driver_elapsed_s": 15.890614612,
+      "interpretation": "C2 combines passes and removes repeated factor work; this is an observed isolated candidate run, not a matched pair in this entry",
+      "validated_two_pass_C_driver_elapsed_s": 22.5004
+    },
+    "mesh_rule": "NQ5/NQ6 nominal and finer meshes use the standard source-aligned h recipe from input relative_error=1e-5 and abs(highest retained complex omega), including damping.",
+    "mesh_selection": "standard source-aligned recipe; nominal/finer pairs, full35 frequency grid highest retained complex frequency includes damping; waveform pass and timing evidence preserved from original B campaign",
+    "numerical_job_count": 6,
+    "numerical_job_elapsed_s_range": [
+      11.614774695946835,
+      13.970855596999172
+    ],
+    "numerical_job_returncodes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "numerical_peak_rss_gib_max": 0.4617,
+    "numerical_peak_threads": 2,
+    "preserved_timing_context": {
+      "interpretation": "full controls used cached responses and restricted forced actual solves; cache-asymmetric descriptive costs, not truncation speed comparison",
+      "original_full_kernel_elapsed_s_range": [
+        11.345662487,
+        17.914201106
+      ],
+      "original_restricted_kernel_elapsed_s_range": [
+        13.796841807,
+        22.008849296
+      ]
+    },
+    "receipt": "receipts/phase-b-mapper-replay-run-v1-terminal-20261031.json",
+    "replay_mesh_rule": "h values use input relative_error=1e-5 and abs(highest retained complex omega), including damping; nominal/finer source-aligned meshes.",
+    "waveform_controls_from_preserved_original_B": [
+      {
+        "elements": 70,
+        "mesh": "nq5-nominal",
+        "native_sides": 199,
+        "own_waveform_vs_nq10_rel_l2": 9.424433604274229e-06
+      },
+      {
+        "elements": 132,
+        "mesh": "nq5-finer",
+        "native_sides": 363,
+        "own_waveform_vs_nq10_rel_l2": 3.5499799616538046e-07
+      },
+      {
+        "elements": 53,
+        "mesh": "nq6-nominal",
+        "native_sides": 189,
+        "own_waveform_vs_nq10_rel_l2": 3.1984692450073845e-06
+      },
+      {
+        "elements": 96,
+        "mesh": "nq6-finer",
+        "native_sides": 322,
+        "own_waveform_vs_nq10_rel_l2": 1.7956851041979488e-07
+      }
+    ]
+  },
+  "phase_c2": {
+    "exact_zero_skip_bins": [
+      7,
+      8,
+      41
+    ],
+    "fluid_diagnostics": "raw fluid adjoint subgroup ratios are non-roundoff in parts of the inherited convention: up to2.51 in packet-side and1.43 in C2 weighting comparisons. Absolute errors/reference norms remain preserved separately; not universal subgroup equality or a physical SI-strain discrepancy.",
+    "forward_bins_retained": 35,
+    "independent_review": "reviews/phase-c2-final-independent-review-20261031.txt",
+    "payload_bytes_L200": 25268320,
+    "payload_bytes_L3": 8000720,
+    "proofs": {
+      "L200_gravity_max_abs_nondimensional_error": 2.886579864025407e-15,
+      "L3_FD_gate": 0.0002,
+      "L3_FD_relative_error": 6.440261900046464e-09,
+      "L3_gravity_max_abs_nondimensional_error": 1.9984014443252818e-15,
+      "common_reconstruction_adjoint_field_max_relative_l2": 8.691612438218795e-16,
+      "common_reconstruction_complex_product_max_relative_l2": 1.4758860414627283e-15,
+      "common_reconstruction_forward_field_max_relative_l2": 1.0136611968602517e-15,
+      "common_vs_tensor_reconstruction": {
+        "adjoint_field_max_relative_l2": 8.691612438218795e-16,
+        "complex_product_max_relative_l2": 1.4758860414627283e-15,
+        "forward_field_max_relative_l2": 1.0136611968602517e-15
+      },
+      "full35_kernel_vs_accepted_F8a": {
+        "across": 2.2884102633728705e-13,
+        "along": 4.2224753803837163e-13
+      },
+      "full35_kernel_vs_two_pass": {
+        "across": 1.990258361599405e-13,
+        "along": 4.598155724816685e-13
+      },
+      "geometry_nodes_angles_exact": true,
+      "static_zero_support": "Static taper zeros select7/8/41 for unit-adjoint skipping during the combined pass; after the own waveform, actual P is computed and asserted to match that static zero set before weighted reduction.",
+      "time_shift_adjoint_identity": 0.9999999999999997,
+      "trace_spectrum_components_vs_two_pass_exact": true,
+      "waveform_components_vs_A4_exact": true,
+      "weighted_vs_unit_adjoint_proof": {
+        "P_definition": "P = adjoint.weight * force",
+        "actual_adjoint_weights": "direction * conj(P)",
+        "actual_product_relation": "C_actual = P * C_unit before the ordered real reduction",
+        "assembled_rhs_scaling_relative_error": 2.31e-16,
+        "complex_product_relative_error": 3.29e-13,
+        "pooled_field_relative_error": 1.56e-13,
+        "static_zero_support": "MakeTaper/TaperValue exact static zeros predict7/8/41; own waveform builds actual P and asserts those bins are exactly zero before kernel skip.",
+        "stored_product_mismatch": 0.0,
+        "unit_vs_actual_adjoint_mode_max_relative_error": 8e-13
+      }
+    },
+    "result_receipt": "receipts/phase-c2-l200-controls-v2-terminal-20261031",
+    "route": "single combined forward + unit-direction H^H adjoint + common reconstruction pass; retains only requested complex contractions (no solved-response history), then applies actual waveform-derived complex forcing and ordered real reduction",
+    "route_change_note": "C2 removes the repeated factor pass measured in the validated two-pass C route; no response-history storage.",
+    "source_review": "reviews/phase-c2-pre-run-independent-review-20261031.txt",
+    "static_taper_zero_bins_predicted_and_actual_P_asserted_after_waveform": [
+      7,
+      8,
+      41
+    ],
+    "two_pass_C_driver_elapsed_s": 22.5004,
+    "unit_adjoint_work_skip_off_on": [
+      35,
+      32
+    ]
+  },
+  "provenance": {
+    "B_build_sha256": "2b309cd326509fe86bdc996165512ad22a1bca145d491635cb0f55680745c968",
+    "B_checker_sha256": "6344a6285c3375221665b650dcd81aaa5700fefae3b29a6959179af06f8a9724",
+    "B_plan_sha256": "eb60fe9a4c7fb2ebc72cb2a368326de217213a36ca23301a64025597b5dfb4b5",
+    "C2_native_sha256": "f1589d5b80f1593ef8c729e3942a88150eb7bdbbd5c505298a61bb084bd12843",
+    "C2_profile_sha256": "3c1f3f9d9e41dcb3bc9056430f330ef08cbdeee1a0914e63143fc3bbe09705bc",
+    "preserved_failures": [
+      "original Phase B checker-only failure and prior outputs",
+      "first C direct/common validation failure and diagnostic artifact",
+      "C2 staging path failures and first focused equivalence failure; corrected retries separately receipted"
+    ],
+    "raw_B_replay_outputs": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-b-fixed-mesh-v1-mapper-replay-v1-controls-v1/continuation/phase-b-mapper-replay-run-v1",
+    "raw_C2_outputs": "/space/adcm2/research/runs/dspec-yspec-kernels/2026-10-27-tunya/phase-c2-preweighted-v1-l200-controls-v2/continuation/phase-c2-l200-controls-run-v2"
+  },
+  "recommendation": "retain NQ10, mesh step h=0.025 (input relative_error=1e-5), full radial domain; lower meshes and principal truncation remain controls only because no accepted accuracy budget exists",
+  "resources": {
+    "B_replay_solve_workers": 1,
+    "L200_frequency_workers": 8,
+    "L3_solve_workers": 1,
+    "aggregate_thread_target": 50,
+    "build_memory_cap_gib": 32,
+    "build_thread_cap": 8,
+    "campaign_thread_cap": 20,
+    "inner_threads": 1,
+    "peak_observed_threads_eight_worker_runs": 9,
+    "peak_observed_threads_one_worker_diagnostics": 2,
+    "per_job_memory_cap_gib": 16,
+    "resource_enforcement": "existing user-space session watchdog; not kernel aggregate accounting"
+  },
+  "schema": "dspec-b-c2-complete-pipeline-report-v1",
+  "status": "isolated candidate validated; independent reviews complete; not integrated"
+}

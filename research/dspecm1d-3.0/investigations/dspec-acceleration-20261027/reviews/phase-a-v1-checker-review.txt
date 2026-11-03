@@ -1,0 +1,101 @@
+Phase A prelaunch checker/provenance review — Sol6.1-high,2026-10-31
+Read-only inspection; no tests, build or numerical jobs by this reviewer.
+This note records pending checker-only fixes, not control release.
+
+Confirmed
+- Runtime4855a1de022c735da616920b7145351cbbb5abfd87843a41fdc437c26bb5a31e
+  differs from prior reviewed6d2173d2... solely by one A3 frozen-provenance JSON
+  output label. Removing that line recovers the prior full SHA exactly.
+- Packet checker validates fixed binary header/record sizes and finite doubles.
+  JSON/CSV finite checks exist. A4 checks actual profile RHS/call counters and
+  absence of receiver QR and HH scopes, not only its summary claims.
+- Existing gates pin the reused frozen trace/result/component file hashes.
+
+Prior fixture qualification rechecked from saved state receipts
+ receipts/stages12-stage2-v3-measure-completed/raw-task/state.json
+ SHA16d879978fee1682770fc9eda9485a9199d9ad2d8b186d6081e62799a0c5094e
+ receipts/stages12-stage2-v2-controls-completed/raw-task/state.json
+ SHAde20dac701fd1e641b93dac3a93e0d87cb3f75de7a5be72de2ea8b9b44f537ca
+Both campaign states are completed. Reused jobs F8a-native-L200,
+F8-native-L3-audit,F8-forward-plus,F8-forward-minus are completed/rc0, input
+hash maps before=after, cleanup verified_gone. Their recorded output hashes
+match all current plan pins for reused traces/results/components. Every job
+binds accepted native binarybce00e2abf3339d9a24505ca02a9533ebc57a7767a6fe061f5e19e8353e85eab,
+command receipt8ad5163d724e58e4f042f56d14c663c52e764322c891678657e3b2df9f78b72d,
+shared libraryf891e44ed9d9ca8aaa871fcbb3d9287526aee90dc33bf4e58867abc14e9a6d8f,
+case7b0efae842bff4b414b89eaecf209a986d6e918e0641e147cea0881d46009cc0,
+model4c3c53ca04e785ff4fd853cf211fe94e353ef70d6052a526122d0f279a3519ea.
+Pin both state files in existing input-hash gate lists to retain the receipt
+qualification chain; no new numerical baseline or generic provenance system.
+
+Pending bounded checker/config fixes sent to Luna/parent
+1. Parent found incorrect build-root paths, inconsistent future job IDs/paths,
+   A1 solve-worker declaration, nonexistent A2 parameters output, A3 expected
+   angular count1183 rather than91, and one-sided command normalization in the
+   native/profile gate. Correct these before fresh immutable control staging.
+2. A5 must check actual raw profile factor/RHS counters and compare summaries:
+   sparse_factorization_calls14035,forward_rhs_columns42035,adjoint_rhs_columns0.
+   Reject duplicate raw counter names. Do not accept unrelated wrapper keys.
+3. A5 cut CSV needs exactly14035 unique actual keys: radial l0 x35bins,
+   toroidal l1..200 x35, spheroidal full l1..200 x35, bins7..41. Keep start>=0,
+   retained=full-start>0,nskip10,untruncated start0 and explicit policy checks.
+4. A4/A5 component CSVs need exact bins7..41 once each and seven numeric columns;
+   current finite-only check accepts a one-row file while summary claims35bins.
+5. Build gate currently proves three source trees equal each other, not equal
+   the approved immutable staged candidate tree. Bind to the approved manifest/
+   source hash and all reviewed math-file/hook hashes before numerical release.
+6. Parent clarified the summary collector is an existing prior-campaign tool;
+   LEAVE IT UNCHANGED. New Phase A analysis must directly collect actual declared
+   aN-summary/a4+a5-profile outputs and reject missing artifact/log hash targets.
+   The old result.json/kernel.bin.json collector is not Phase A evidence.
+
+Separate source-gate domain correction (parent concurrence required/reported)
+A2 currently tests1e-11 separately per fluid subset. Approved acceptance is
+all293sides per(bin,section,role), with fluid/channel diagnostics retained.
+Aggregate error2/norm2 over fluid classes for both replay comparisons; preserve
+all raw rows/subset errors without floors/tolerance change. This requires new
+reviewed source/build binding before A2 launch, not just a checker relabeling.
+Preserve already archived/building source and receipts. Parent owns fresh-build
+and control-release decisions. No additional numerical jobs recommended.
+
+Parent additionally found a malformed newline character literal in the driver
+CSV emitter (one quote/literal-newline/quote byte sequence). This mechanical
+compile fix must join the gate-grouping correction before the next reviewed
+source hash is frozen. Previous source review did not catch that literal.
+Checker changes here are pre-control conditions, not a request to broaden or
+restart ongoing build work independently of the parent's staging decision.
+
+Final targeted checker addendum — PASS
+Direct read-only hashes:
+ checker7a6ef9bb279c132a28a20bc12217c9dd53aa8279795ec0f679ef6370504c52bd
+ plan a666e0808d391498868ae4434ff4ec9f8b1a2ac2f71fe75e04e4e12ca01dbc9e
+Verified the published corrections: raw A5 numerical factor/forward/adjoint RHS
+counters are checked against14035/42035/0 and summary fields, duplicate counter
+names rejected; each cut CSV has exactly14035 unique expected radial/tor/full-sph
+keys and valid start/retained/full row arithmetic. A4/A5 component CSVs require
+the exact seven-column schema,35ordered bins7..41 and finite values. Three build
+source-tree hashes must equal approved
+4c94847f0a46ed96fe166165cc993ee349e9ec0ad0531fd564f89bd58bd49b4e;
+both native/profile commands are normalized before comparison. Both accepted
+prior state-file hashes are explicitly pinned. A3 angular count is91. The plan
+has13jobs and exactlyfive numerical processes with the declared two sequential
+A5 submodes. Parent separately verified full DAG/path/output bindings, successful
+three-variant build and fresh preflight; this reviewer did not rerun tests or
+builds. No remaining actual blocker among the published targeted findings.
+Parent owns fresh resource verification and numerical release; Phase B remains
+excluded and completed numerical gates are still required before final claims.
+
+Fresh v3 input-list repair — design conformance PASS
+Parent reports v2 supervisor failed hashing the candidate directory before any
+job entered state.jobs; supervisor exited with an orphan running-status file.
+Replacing that immutable-input directory entry with all33 exact compiled
+candidate file paths conforms to the existing supervisor's file-only hashing.
+The33 files are22frozen seed members+11allowed additions; keep the checker's
+--candidate root argument unchanged so its inventory/content gate still runs.
+No source, checker, binary, scientific gate, numerical command, job count or
+five-process numerical budget changes. Require fresh v3 exclusive staging,
+is_file preflight (or exact file outputs from an earlier declared job), proof
+old supervisor/descendants are gone, and preservation of all orphan v2 evidence
+without rewriting its terminal-looking status. Local plan was still v2 when
+this design was reviewed; parent must verify final v3 bytes/manifest before
+release. This is a configuration repair, not a new scientific phase.

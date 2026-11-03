@@ -1,0 +1,84 @@
+Phase D NQ6/batched angular reconstruction: final independent review
+Sol, 2026-10-31. Numerical/source/results/final report PASS. Reviewer used
+read-only source/receipt/result inspection; no implementation, build or solve.
+
+Accepted NQ6 h=0.02035382429229197 (scale .9), 59 elements/208 native sides.
+Nominal h=.022615360324768855 correctly failed the requested 1e-3 gate: maximum
+solid fields1.1167343101550463e-3 and full35 kernel2.018361762251442e-3.
+That miss is preserved; no .8 case was needed. Selected .9 case passes against
+validated NQ10 h=.025 C2/SEM reference, using its own waveform/measurement/P.
+All35 bins and45,122 fixed physical one-sided sample points are covered by
+direct candidate polynomial values/derivatives, without interpolated kernels.
+Maximum grouped solid field relativeL2=2.1952474713321954e-4 (forward,bin39,
+section1,source), absoluteL2=1.226489003095851e-13,reference norm2=3.1214784863954825e-19.
+Complete35-summed solid kernel relativeL2=1.450918716573929e-4 (section0,
+material interface),absoluteL2=3.6955351618637036e-18,reference norm2=6.48736766022329e-28.
+Waveform maximum1.191444203838423e-6; measurement norm relative2.5619812061764196e-7.
+Requested accuracy control is distinct from legacy input relative_error1e-5;
+only this case/1e-3 setting is certified,not an unconditional tolerance guarantee.
+
+Same-data scalar/batched fields/products <=1.08822e-15; common/tensor <=1.64171e-15,
+separate from mesh1e-3 acceptance. NQ10 reference forward/trace/adjoint source/
+spectrum/norm match accepted F8a exactly; kernels differ <=4.222e-13. Exact side
+inventories and complex grids align. Fluid raw-adjoint subgroup residuals remain
+non-roundoff (selected reference comparison maximum~1.549); retained diagnostics,
+not part of solid acceptance or universal physical SI-strain claims.
+
+Actual v2 batched L3/NQ8/h=.05 FD control passed: new kernel-106.02359024964314,
+frozen FD-106.02358956682345,relative6.440261900046464e-9 < existing2e-4.
+All baseline physical waveform channels exact,scalar/batch <=3.614e-16.
+L3 gravity maximum absolute nondimensional1.9984e-15; selected L2002.6645e-15;
+time-shift identity~1. Both complete35 forward/measurement paths are exercised.
+
+Matched selected-grid v2 native pair differs only scalar-only flag: scalar
+9.322228251s driver/9.710161646s supervisor; batched7.766392611s/8.102895110s.
+Observed driver reduction16.69%,1.20033x,one pair not a timing distribution.
+Waveform channels exact; raw native kernel relativeL2 <=2.222e-15. Profile/native
+and v2/default versus validated-v1 science arrays match exactly. Profile driver
+7.724436636s differs from pipeline scope7.724039203s. Actual work:35 combined
+workspaces/forward spectra,32 unit adjoints/angular calls,exact3 skips7/8/41.
+Worker angular21.9173s,modal capture24.6697s,radial-table4.6087s are consecutive
+sibling durations within each worker,overlapping across workers in wall time.
+Their shares may partition51.689 summed worker-seconds,not master wall or time
+saved. Angular working-storage bound
+17,940,200B <32MiB/worker is derived,distinct from observed RSS.
+
+Exactly one same-grid YSpec refresh:4.298666802s driver/4.527166976s supervisor.
+DSpec remains~1.81x slower. CLI workers8/library1/observed cap are verified;
+fallback freq1/solve8 metadata does not establish YSpec internal scheduling.
+Raw along/across differences12.2738%/3.6765% are disclosed cross-method limits;
+0.1% was versus accepted SEM,not YSpec. No discrepancy cause is inferred.
+Historical oracle-OFF NQ10 C2 driver15.890614612s versus current7.766392611s is
+~51.1% lower contextually,with different order/mesh and293 versus208 native sides.
+Do not assign F8a's separate diagnostic overhead to the C2 baseline.
+
+All two builds and numerical/checker jobs completed rc0,unchanged inputs/hashes,
+verified cleanup. Observed RSS native batch1.1194GiB,scalar1.1591GiB,profile1.1139GiB,
+YSpec.3287GiB,all9threads including supervisor. Largest accuracy run3.3708GiB;
+builds<=2.3066GiB/6threads. Existing20/8thread numerical/build caps,16/32GiB,
+aggregate<=50 and user-space watchdog maintained; no kernel-accounting claim.
+V2 native binary c780867c4fdd84639e75cb29516b70868d02c7ad54cb4437ab87f5c95566b223
+and profile30fed9f6a1dd0b475c7753d8a283441929a9129340286f264a94bdbc06df1910
+match both build receipts and actual run inputs.
+
+Evidence receipts: phase-d-nq6-nominal-run-v2,phase-d-nq6-refine09-run-v1,
+phase-d-l3-fd-run-v1,phase-d-selected-grid-timing-run-v1. Timing state SHA
+3b248d644f5707b0de0ed2fb03d49efb737ca8b057c4ef0f7653d179ecff15f8;
+timing checker SHA8652bd8a9e9772c7e09a3fdb567276e78a683d8fb3f35aca5837a53036a6b6cb.
+Selected accuracy checker SHA554ef0f38ecca37a7daf3a04f42a58c65b860bce6ac0da202cc9ea90507a288e.
+
+Reviewed final MD/JSON analyses/phase-d-nq6-batched-final-report-20261031.*.
+All substantive values,spacing,RSS mapping and limits align. Final report-only
+closure: remove residual JSON limits phrase 'prior diagnostic asymmetry' for C2,
+space its comparison string,replace pending status with PASS and link this review.
+Clarify the three sibling scopes can sum as worker elapsed,not wall elapsed;
+any percentages must be explicitly summed-worker shares,not wall-time shares.
+These exact edits are pre-approved,require no further runs/review cycle.
+Stop before production,discrepancy work,new figures,deletion,commit or push.
+
+Final closure: material report corrections,truthful oracle-off C2 baseline,
+worker-time versus wall-time distinction,RSS mapping,PASS status and review
+link verified. Final JSON parses. Unconditional final PASS; no required work
+remains in the approved isolated phase and no further runs are needed.
+Final MD SHA5c460683a13121c116b27073b411ad3d6806a6b030be7ce3a537df75cc106c15;
+JSON SHA013273941560685863015e48aeef42daeada129b3174ff47217637f21e605a95.

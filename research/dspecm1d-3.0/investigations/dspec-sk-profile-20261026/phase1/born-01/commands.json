@@ -1,0 +1,69 @@
+[
+  {
+    "command": [
+      "/usr/bin/g++",
+      "-O3",
+      "-DNDEBUG",
+      "-std=gnu++23",
+      "-fopenmp",
+      "-DGSHTRANS_HAVE_INTERPOLATION",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/numericconcepts-src/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/fftwpp-src",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gaussquad-src",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/interpolation-src/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/planetmodel-src/cpp/include",
+      "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gshtrans-src",
+      "-isystem",
+      "/usr/include/eigen3",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/benchmarks/yspecpp/kernels/3d/dspec_3d_adapter.cpp",
+      "-o",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/bin/after-adapter",
+      "-lfftw3",
+      "-lfftw3f",
+      "-lfftw3l"
+    ],
+    "cwd": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9",
+    "wall_s": 32.78175420200205,
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/bin/after-adapter",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/common_homogeneous.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/dspec",
+      "0.05",
+      "8"
+    ],
+    "cwd": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9",
+    "wall_s": 0.7655759289991693,
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-yspecpp/phase_d_adapter",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/common_homogeneous.deck",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/yspecpp",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/dspec/radial_nodes.csv",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/dspec/angles.csv"
+    ],
+    "cwd": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9",
+    "wall_s": 1.1181623990014486,
+    "exit_status": 0
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "/home/adcm2/Documents/Research/Projects/DSpecM1D/benchmarks/yspecpp/kernels/3d/cartesian_ti_oracle.py",
+      "--baseline",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/dspec",
+      "--output",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/oracle",
+      "--fixture",
+      "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9/investigations/dspec-sk-profile-20261026/phase1/born-01/fixture.json"
+    ],
+    "cwd": "/home/adcm2/.codex/.chatgpt-projects/g-p-69d769b3a3f881919107ef7f42c8f5c9",
+    "wall_s": 4.272137140000268,
+    "exit_status": 0
+  }
+]

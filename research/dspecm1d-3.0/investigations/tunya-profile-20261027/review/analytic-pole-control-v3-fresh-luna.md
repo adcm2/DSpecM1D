@@ -1,0 +1,23 @@
+# Fresh Luna review: analytic pole control, supervisor v4, and configs v6
+
+**Verdict: PASS for the bounded source, supervisor, and configuration review.** This is a read-only static review. I did not edit source, build binaries, run scientific jobs, or use SSH. It does not establish successful execution or scientific accuracy.
+
+## Analytic endpoint control
+
+The control source differs from the reviewed portable v4 tree in exactly one file, `engine_headers/Windowed3DFields.h`. The added branch applies only for valid nonradial degrees (`degree >= 1`), valid `m` and `n`, and exact `theta == 0.0 && phi == 0.0`; it returns `sqrt((2*degree+1)/(4*pi))` on the diagonal and exact complex zero off diagonal. Degree zero and all other arguments use the original Wigner fallback. The original v4 `receiverAtPole` S/T aggregation remains unchanged, as does the separate `harmonic(0,0,0,0.0,0.0)` radial/source call site. The control is therefore narrowly scoped to the nonradial pole evaluation and does not substitute the v6 receiver-matrix implementation.
+
+The 12-file source manifests and control-gate manifest were previously checked against their contents. The extracted v4/control/v6 function bodies are unchanged from their recorded provenance and appear verbatim in the generated control gate. The gate uses a long-double analytic oracle, requires wider long-double precision than double, checks degrees 1, 2, 3, 12, 384, and 1536 for S and T, enforces finite 3x3 matrices, eight-ULP bounds for present values, and exact zeros for forbidden and zero-phase components. The unchanged v4 recurrence is retained as a diagnostic rather than an amplitude acceptance threshold. This is consistent with the independent mathematical review in `fullkernel-reference-control-math-sol.md`; a future control pass must not rewrite the preserved original v4/v6 L3 failure as a pass.
+
+## Supervisor v4
+
+The only code delta from supervisor v3 is removal of `p.parent.mkdir(...)` when validating declared output paths. The supervisor still rejects existing outputs and unsafe relative paths. This allows each solver to own its output-directory lifecycle: the DSpec driver creates its output directory, while the YSpec output preparation requires the target to be absent before creating it. The v3 pipe-tail draining, deadline checks, process identity cleanup, single-instance lock, and thread-cap enforcement remain unchanged. README and the synthetic producer note describe the intended behavior; these are tooling checks, not scientific evidence.
+
+## Configs v6
+
+`build-control.json` defines two outputs in a dedicated analytic-control build root: the native v4 control physical driver and the standalone control receiver gate. `build-control-plan.json` contains one serial build job through the reviewed v3 receipt/builder scripts. The plan pins the compiler and dependency include paths and carries no high-degree scientific job.
+
+The pre-assessment plan has ten serial jobs under a 50-thread ceiling: the existing receiver gate, analytic-control receiver gate, four existing native/profiled DSpec v4/v6 L3 runs, the analytic-control DSpec v4 L3 run, the prefix-trace adapter, and two YSpec L3 runs. All physical solver invocations use `--lmax 3` and the same listed L3 options; the six pre-existing solver binaries remain under the reviewed build-03 tree, while the analytic-control binary points into its dedicated build root. The adapter follows the DSpec v6 native trace, and both YSpec jobs consume its task-local baseline plus DSpec radial nodes. Job ordering is consistent with those task-local inputs and the supervisor's sequential execution. The extra frozen profile-04 paths in the adapter/YSpec declared input lists are additional hash-bound provenance; command arguments point to the current task's adapter output and radial nodes.
+
+The prefix adapter remains the reviewed data-format-only conversion: it validates the 1024-sample, 5-second grid, finite values, Hann weights, exact zero weights after the 721-row prefix, and exact full/prefix weighted-energy equality; it writes the unchanged original header and first 721 rows and records input/output hashes. No solver binary or physical gate is altered. This plan explicitly stops at L3/pre-assessment; the high-degree qualification plan and separate data-only assessment are outside this review and remain pending.
+
+The configurations accurately state the bounded job sequence and thread ceiling. This review does not verify the remote filesystem, completed build receipts, execution, or results. Any later dispatch still depends on the separately reviewed launch/assessment steps and saved receipts.

@@ -1,0 +1,20 @@
+{
+  "model": "../prem.200",
+  "gravity": "full",
+  "output": { "prefix": "map", "quantity": "velocity" },
+  "degrees": { "max": 300 },
+  "frequencies_mHz": { "min": 0.1, "max": 10 },
+  "time_series": { "length_min": 90 },
+  "filter_mHz": [0.1, 0.5, 8, 10],
+  "sources": [
+    { "depth_km": 29.5, "latitude": 36.87, "longitude": 35.58,
+      "moment_tensor_Nm": { "rr": 4.22e17, "rt": 3.08e17, "rp": 6.99e17,
+                            "tt": -2.976e18, "tp": 6.54e17, "pp": 2.55e18 } }
+  ],
+  "snapshots": {
+    "times_s": [600, 1200, 1800, 2400, 3600, 4800],
+    "depths_km": 3,
+    "distances_deg": { "min": 0, "max": 180, "count": 181 },
+    "azimuths_deg": { "min": 0, "max": 360, "count": 121 }
+  }
+}

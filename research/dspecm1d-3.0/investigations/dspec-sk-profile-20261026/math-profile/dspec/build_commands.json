@@ -1,0 +1,52 @@
+{
+  "compiler_gate": "python3 investigations/dspec-sk-profile-20261026/algorithm-audit/run_compile.py --",
+  "shared_flags": [
+    "/usr/bin/g++",
+    "-O3",
+    "-DNDEBUG",
+    "-std=gnu++23",
+    "-fopenmp",
+    "-DGSHTRANS_HAVE_INTERPOLATION",
+    "-DDSFAST_HAVE_CBLAS",
+    "-DDSFAST_DISABLE_PROFILE",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/numericconcepts-src/include",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/fftwpp-src",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gaussquad-src",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/interpolation-src/include",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/planetmodel-src/cpp/include",
+    "-I/home/adcm2/Documents/Research/Projects/DSpecM1D/build/phase-d-build-cache/build-dspec/_deps/gshtrans-src",
+    "-isystem",
+    "/usr/include/eigen3",
+    "investigations/dspec-sk-profile-20261026/math-profile/dspec/driver.cpp"
+  ],
+  "active_profile_output": "investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profiled",
+  "active_profile_extra_flags": [],
+  "disabled_profile_output": "investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profile-disabled",
+  "disabled_profile_extra_flags": [
+    "-DMATHPROFILE_DISABLED"
+  ],
+  "linked_libraries": [
+    "-lfftw3",
+    "-lfftw3f",
+    "-lfftw3l",
+    "-lopenblas"
+  ],
+  "runtime_cases": "None in this implementation scope. Parent schedules all numerical cases.",
+  "thread_environment_for_parent_runs": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1"
+  },
+  "active_profile_output_v2": "investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profiled-v2",
+  "disabled_profile_output_v2": "investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profile-disabled-v2",
+  "v2_change": "Separate dspec_setup root/stages; source identical between active and disabled v2 builds.",
+  "v2_runtime_cases": "None; compile only.",
+  "active_profile_output_v3": "investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profiled-v3",
+  "disabled_profile_output_v3": "investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profile-disabled-v3",
+  "v3_change": "Additional coarse tensor stage scopes and actual GEMM m*n*k operation count; source identical between active and disabled builds.",
+  "v3_runtime_cases": "None; compile only.",
+  "active_profile_output_v4": "investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profiled-v4",
+  "disabled_profile_output_v4": "investigations/dspec-sk-profile-20261026/math-profile/dspec/fast_driver-profile-disabled-v4",
+  "v4_change": "Restored original direct-initialization forms under timed return-value lambdas; key-construction/cache-lookup scopes are distinct. Source identical between active and disabled builds.",
+  "v4_runtime_cases": "None; compile only."
+}

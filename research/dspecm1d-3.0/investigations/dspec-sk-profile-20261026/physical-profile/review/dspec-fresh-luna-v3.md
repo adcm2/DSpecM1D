@@ -1,0 +1,31 @@
+# Fresh Luna High review: frozen DSpec physical adapter v3
+
+**Scope:** Read-only comparison of `source-v3-frozen/` against frozen v2, the v3 build/hash manifests, and the bundled GSHTrans `Wigner` API needed to interpret the new tensor route. No compilation or numerical run was performed. This review does not assess the parent's pending L384 waveform result or establish physical convergence.
+
+## Decision
+
+V3 fixes the main v2 code blockers: it routes kernel sampling through the complex tensor path, implements and gates the `q·P(B raw)=2E` identity, preflights combined output size against a configured cap and available disk, adds a true forward-only baseline path, and avoids unused global harmonic coefficient work in pole-only mode.
+
+One high-degree performance issue remains in the changed tensor path. The Wigner cache size estimator counts all orders through `2l+1` even though the actual table is constructed with maximum order and spin 2. It overestimates the table size by roughly O(L), so it rejects even the first angular plan that should fit the 32 MiB cache and rebuilds plans for every angle tile at each frequency. This is a cache reuse/performance blocker, not the O(L²·Nradial) memory failure I initially suspected; inspection of the Wigner API and source modal order limits disproves that earlier estimate. Even with a corrected estimate, the fixed shared budget can retain only a few L=1000 tiles, so the changed execution still has a high tile-rebuild cost across the full grid.
+
+## Findings
+
+1. **High-degree performance blocker — tensor angular plans are rejected by an inflated Wigner estimate.** V3 passes `maxDegree`, `min(2,maxDegree)`, `min(2,maxDegree)` to `CachedAngularWigner` at `Windowed3DFields.h:1644-1645`, so Wigner `m` and `n` are capped at 2. The dependency's `Wigner` constructor documents `mMax` as the maximum stored order and bounds each degree's orders by it (`Wigner.hpp:683-705, 782-790`). The helper `angularTableBytesPerAngle()` at `Windowed3DFields.h:435-442` instead adds `2*l+1` values at every degree for each `n`, ignoring the order cap. At L=1000 and a 64-angle tile, this estimates about 2.6 GiB for a table that is roughly 13 MB. The estimate is checked against the 32 MiB cache budget before retaining the angular plan (`Windowed3DFields.h:1646-1656`), so it rejects even the first tile plan that should fit and causes Wigner/basis reconstruction on each revisit in the frequency loop. The actual table and basis grow linearly with L for this capped-order route; the rejected O(L²·Nradial) estimate is incorrect. `records` holds up to five source orders and three receiver-unit orders, with degree rows through L (`Windowed3DFields.h:1139-1150, 1573-1587`), hence O(Nradial·L); `localFields` is O(tile·Nradial) (`:1736`).
+
+2. **The tensor route is now used, but execution remains tiled.** `physical_driver.cpp:300-302` calls `sampleForKernelsTensor(..., 2, ..., false)`, selecting the complex basis route and Eigen backend value 2. The physical point set is an angle tile crossed with the selected native radial sides; the complete logical product is written to the disk output when `--radial-traces 0` is used. The implementation still batches 64 angles and streams accumulation to disk (`:290-302`), with bounded radial synthesis tiles of 16 columns in `Windowed3DFields.h:1600`; it does not materialize the full global field grid in RAM. That is a method mismatch if the accepted choice requires in-memory full-global materialization. It is complete-domain output only when `--radial-traces 0` is supplied; the default remains one radial side.
+
+3. **The `2E` identity is now enforced and recorded.** V3 forms `processed=P(B raw)`, constructs the one-sided `df·eta` weights, computes `qdotp`, compares it with `2E` at relative tolerance `1e-10`, and fails on nonfinite or nonpositive energy (`physical_driver.cpp:205-221`). Kernel-domain and result metadata record the scalar and relative error (`:339-341`, `:386-397`). This is a source-level check; its physical execution result remains pending.
+
+4. **Output preflight is implemented.** The code checks arithmetic overflow for kernel, contact, and combined binary sizes; enforces `--max-output-gib` (default 8 GiB); checks current available disk with `filesystem::space`; and records the size/cap/available-space values (`physical_driver.cpp:237-257, 339-341`). This protects the large disk-backed result. It does not estimate peak process RAM, so the angular-plan cache issue above remains separate.
+
+5. **Forward-only and pole-only avoid the reported v2 setup costs.** The baseline now defaults to `forwardOnly=true`; in that route it calls the frequency solver with empty adjoint RHS/basis inputs and skips `ParamInfo` and nonradial unit-adjoint setup (`physical_driver.cpp:151-155`; `Windowed3DFields.h:695-705, 741-770`). Pole-only mode keeps the unit receiver-basis adjoints needed by pole sampling but wraps global `modeReceiver` and source harmonic coefficient construction in `if(!poleOnly)` (`Windowed3DFields.h:750-767, 814-831`). The contact guard still requires the full global route. These code paths have not been numerically compared in this review.
+
+6. **DC handling has explicit checks.** The raw spectrum is required to be finite. When DC is included, the imaginary DC residual is normalized by the largest raw in-band magnitude and fails at `1e-10`; excluding DC records null instead of a misleading zero. Metadata states that Nyquist was not solved and its raw residual is null (`physical_driver.cpp:157-164, 369-396`).
+
+## Freeze verification
+
+Both v3 executable hashes and all listed `source-v3-frozen/` file hashes passed their manifests. The build metadata records Eigen internal matrix multiplication, no `DSFAST_HAVE_CBLAS` or `EIGEN_USE_BLAS`, and one OpenMP/OpenBLAS thread. No runtime or physical correctness result is inferred from this verification.
+
+## Remaining parent-owned checks
+
+Correct the Wigner table size estimate and characterize the 32 MiB shared cache's tile reuse limits; measure peak memory at the campaign's full radial-side/high-degree settings. Retain the parent's planned native/profiled and full-route/pole-only comparisons, external YSpec comparison, and waveform/energy convergence evidence. Do not infer a physical convergence pass from this source review.

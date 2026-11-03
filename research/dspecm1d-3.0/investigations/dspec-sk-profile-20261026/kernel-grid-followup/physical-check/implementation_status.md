@@ -1,0 +1,11 @@
+# Physical measurement math probe
+
+- 2026-10-26: Added a standalone synthetic C++ probe that includes the production `SensitivityKernels.h` and instantiates the actual `WindowedDisplacementMap`. It checks direct time-energy against one-sided Parseval energy, the production map's real-inner-product adjoint, and a central finite difference against the frozen-baseline raw-spectrum gradient. The fixture and all frequency/window/band conventions are recorded in `fixture.json`.
+- The bandpass acts on raw solver-frequency bins before inverse transform and damping removal; `WindowedDisplacementMap` then applies `sqrt(Hann[1000,1200] s)` in time. No filter/window/damping commutation is assumed.
+- The probe is not a PREM calculation or physical wavefield benchmark. It contains no Earth, source, receiver, or kernel solve and no degree/convergence campaign. Numerical execution is parent-owned.
+- Open policy item: the requested observable retains a nonzero DC band weight while `FreqFull::i1()` skips DC; `FreqFull::i2()` uses an exclusive bracketed upper index. Resolve the solver-bin policy before interpreting any physical kernel result.
+- 2026-10-26: Compiled successfully with GCC 13.3 using the shared two-slot compile semaphore and FFTW libraries. No OpenBLAS link or `EIGEN_USE_BLAS` option was used. The binary was not executed, as numerical execution is parent-owned. Compiler argv and SHA-256 identities for the probe, executable, fixture, command, and three production headers are in `build_command.json` and `SHA256SUMS`.
+- 2026-10-26: Parent ran v2 and reported true-relative residuals: Parseval `2.97e-15`, adjoint `5.55e-15`, and maximum finite-difference error `2.04e-13` over the three steps. Parent evidence: `evidence/measurement-stdout.log`.
+- 2026-10-26: Parent's separate ObsPy TauP PREM ray check selected candidate receiver 45N, 75E, 3 km depth: S 1070.836 s, sS 1093.504 s, ScS 1175.592 s. The legacy 45N, 90E receiver has direct S at 1198.804 s, near the zero-valued Hann endpoint. These are ray predictions used only for receiver/window selection, not a computed wavefield; evidence: `evidence/prem-arrival-check.json`. Updated the fixture receiver to 75E. Probe source and binary are unchanged.
+
+The fixture records benchmark context; it does not establish a physical PREM energy result.
