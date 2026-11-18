@@ -567,3 +567,168 @@ Copied benchmark_report.pdf and pkp_diffraction_report.pdf from Documents/PhD_Co
   checkpoint commit/push and PR metadata update; CI must pass, then stop.
 - Validation, benchmark-file untracking, fresh Luna-high/Sol-high review and
   the explicitly authorized normal commit/push are pending. Do not merge.
+
+## 2026-11-18 — Stage 1 diffracted-wave slowness-window pilot (Luna High implementer)
+
+- This Stage 1 was performed in a new Tunya worktree only:
+  `/space/adcm2/research/projects/DSpecM1D-diffracted-wave-window`, branch
+  `feature/diffracted-wave-slowness-window`, pinned at
+  `b7d87b8dba1817aaa82cf30fac6c5980d228a7ba` (`Generate readable reports for
+  paired YSpecpp experiments (#25)`). No commit or push was made.
+- The protected canonical checkout remained unchanged before and after: HEAD
+  `a778b13b22dca9709e1f96604b62925707654e5d`, branch
+  `feature/radial-sensitivity-kernels-k1`, with the pre-existing modifications
+  in `DSpecM1D/src/SensitivityKernels.h`,
+  `DSpecM1D/src/Windowed3DFields.h`, `DSpecM1D/src/Windowed3DKernels.h`,
+  `implementation_status.md`, `tests/test_sensitivity_kernels.cpp`, and
+  untracked `validation/phase0/`. The pinned object remained unchanged.
+- Only the Stage 1 whitelist was written on the new branch:
+  `validation/diffracted_wave/{README.md,run_pilot.py,check_outputs.py,
+  toroidal.params,spheroidal.params}`. No production source was modified.
+  Final file SHA-256 values were: `README.md`
+  `3b879e9d10e4c6364bb5391850ebcb216efa5c2c60e80dd1ce80c16e6d4466be`,
+  `run_pilot.py`
+  `646372e9717b5a0eded94f00e0b8d5f66fe6b5638aa2a6c67f7a576222ad1fa5`,
+  `check_outputs.py`
+  `c709ebb3579349cf2e92270a742ace3668c25d49cb2af568ded3db69e12a8aec`,
+  `toroidal.params`
+  `fb69961cf35d552e0a584e1e0e1f7fd2d63f2751a0718d1eb3f28428434e9765`, and
+  `spheroidal.params`
+  `6197d5ad1dbfe3805c3c980015f4289225d956d549f30e190a8b7bb982d56436`.
+- The final input is an explicitly unconverged elastic PREM proxy: clean
+  isotropic `data/models/prem.200.isotropic`, attenuation off, full gravity,
+  equatorial source `(depth 300 km, lat 0, lon 0)`, receivers at depth 3 km
+  and `(lat,lon)=(0,95),(0,130),(0,165)`, target period about 10.5 s via the
+  80–113 mHz band, 10-minute/2-second record, and filter corners
+  80–85–108–113 mHz. Toroidal uses `l=284..292`; spheroidal uses `l=145..153`.
+  These are smoke settings only; no convergence or waveform-arrival claim is
+  made.
+- Offline Release configure/build succeeded with GCC 15.2.0, CMake 3.25.1,
+  Ninja, and build parallelism 2. The dedicated build was
+  `/space/adcm2/research/builds/dspecm1d-diffracted-wave-window/20261118-stage1`;
+  the executable SHA-256 was
+  `fba72734701d0cdc6c519a6569c7a73fd2a7f6a2e6090243cf36e04f95b8f786`.
+  Exact pinned offline dependency sources were used. The first built-in smoke
+  invocation exposed only the GCC runtime loader mismatch; rerunning with
+  `LD_LIBRARY_PATH=/opt/gcc-15.2.0/lib64` passed
+  `smoke_generate_seismogram` (1/1). Solver API tests were not built because a
+  pinned GoogleTest source was not present on Tunya; the existing built-in
+  smoke was the applicable diagnostic.
+- Final pilot receipts are preserved without overwriting earlier failed
+  attempts under
+  `/space/adcm2/research/runs/dspecm1d-diffracted-wave-window/20261118-stage1-r4`.
+  Summary SHA-256 is
+  `fa937e5adaebd927112b2285c2ba42928f3487d518aa2cbba03dc1bed0419404`. Both
+  cases passed finite/nonzero checks with 302 rows, 10 columns, 2-second
+  spacing, and final sample 602 s (the pinned writer emits one sample before
+  stopping):
+  - toroidal: output SHA-256
+    `28fb8a5d664313ac6827d041cd649e3d9591c992d7a4900b6f4438702052ed5d`,
+    58,847 bytes, 0.14 s wall, 66,384 kB maximum RSS; vertical peaks were
+    exactly zero and horizontal peaks per receiver were
+    `(9.5049e-12,2.6e-15)`, `(6.5727e-12,1.64e-14)`,
+    `(4.8294e-12,7.42e-14)`.
+  - spheroidal: output SHA-256
+    `7e20c3e6364cc3c386c11695bac110139c30f2185fe039440977d376f4a3ca63`,
+    59,273 bytes, 0.95 s wall, 83,664 kB maximum RSS; component peaks per
+    receiver `(6.1508e-12,4.42e-14,8.6526e-12)`,
+    `(6.1142e-12,3.71e-14,5.8042e-12)`, and
+    `(6.6108e-12,8.04e-14,4.7196e-12)`.
+  Per-case resource receipts use `/usr/bin/busybox time -v` because Tunya has
+  no `/usr/bin/time`; the receipt files record user/system time, maximum RSS,
+  and exit status 0.
+- `git diff --check` passed on the new worktree. Stage 1 is complete for the
+  requested smoke scope and remains unconverged; no Phase 2 or production
+  change was started.
+
+## 2026-11-18 — Stage 1 solver-API evidence and pilot-safeguard closure
+
+- The solver-API evidence gap was closed in a separate external build tree,
+  preserving the existing CLI build and r4 evidence. Clean local GoogleTest
+  source was verified at `v1.14.0`, commit
+  `f8d7d77c06936315286eb55f8de22cd23c188571`, with no worktree changes. Its
+  streamed archive SHA-256 was
+  `e5f89b43d9cc0916723695c8503430fdd5cc25e8bd50881dbd242cef468a0533`.
+  Tunya received it only at
+  `/space/adcm2/research/dependencies/dspecm1d-diffracted-wave-window/20261118-stage1-googletest`;
+  extracted `CMakeLists.txt` SHA-256 is
+  `e9934d724b827530afbc2227a56e7459e608a49947ff0c4c802345eaa3ac7efb`.
+- The dedicated solver-API build was
+  `/space/adcm2/research/builds/dspecm1d-diffracted-wave-window/20261118-stage1-solver-api`.
+  It used the pinned DSpecM1D dependency sources, GCC 15.2.0, Release mode,
+  and at most two build workers. The initial CMake GoogleTest discovery hit
+  the known GCC runtime loader mismatch; rebuilding the same target with
+  `LD_LIBRARY_PATH=/opt/gcc-15.2.0/lib64` completed successfully. Solver test
+  executable SHA-256:
+  `41494979d490dbd7e41fbae70dfd561be2e037302b304e82675fa29d55909f88`.
+- The ordinary focused command used one worker for OpenMP and BLAS, plus
+  `timeout --kill-after=5s 600s` outside BusyBox timing. It ran
+  `--gtest_filter=PreferredSolverApiTests.*`: 15 tests passed; the only two
+  omitted tests were the source-marked disabled
+  `DISABLED_CowlingValidationCampaignOnPrem` and
+  `DISABLED_CowlingPerformanceOnPrem`. Receipts are preserved under
+  `/space/adcm2/research/runs/dspecm1d-diffracted-wave-window/20261118-stage1-solver-api`.
+  Focused-test log SHA-256 is
+  `1da2b14d4922c5c83e59221819800ea2e0979bf5cc9b2fe93735aada0e513fbb`;
+  test resource receipt SHA-256 is
+  `6236ebbbf3d72a79c37a4c03b5732fc929d450781f1b41bda6a65c5ff90acac0`;
+  maximum RSS was 54,016 kB and exit status was 0.
+- The pilot driver was hardened without production changes: it now requires a
+  nonexistent run directory (`exist_ok=False`), pins
+  `OMP_NUM_THREADS=1`, `OMP_THREAD_LIMIT=1`, `OPENBLAS_NUM_THREADS=1`, and
+  `MKL_NUM_THREADS=1`, and wraps each solver invocation in GNU
+  `timeout --kill-after=5s 300s` outside `/usr/bin/busybox time -v`. Launcher
+  stdout was redirected to a sibling log so it could not pre-create the run
+  directory. Final driver SHA-256 is
+  `cf994e87411e5ed4bd9692049da1e27babee8da7858b713e73fc1b2e90b20290` and
+  final README SHA-256 is
+  `89a4644cf6003acb777552691e408983e4e9bfb7b63b89cba982ed9f4fbfc6d1`.
+- Both proxies were rerun once with the safeguarded driver in fresh
+  `/space/adcm2/research/runs/dspecm1d-diffracted-wave-window/20261118-stage1-r5`.
+  Summary SHA-256 is
+  `7b3b0ae94e76e7a3ac6c068d06eaec3c68e3dbbd5d5af2ac8de2dc185b0c0ace`.
+  Both checks passed with 302 rows, 10 columns, and final sample 602 s.
+  Toroidal output SHA-256 remains
+  `28fb8a5d664313ac6827d041cd649e3d9591c992d7a4900b6f4438702052ed5d`,
+  with 67,920 kB maximum RSS; spheroidal output SHA-256 remains
+  `7e20c3e6364cc3c386c11695bac110139c30f2185fe039440977d376f4a3ca63`,
+  with 83,648 kB maximum RSS. Both resource receipts report exit status 0.
+- No production source, canonical checkout, commit, push, or next stage was
+  touched. The final new-worktree diff remains limited to
+  `implementation_status.md` and `validation/diffracted_wave/`; the canonical
+  checkout and pinned source commit remain unchanged. Stage 1 is frozen for
+  independent review.
+
+## 2026-11-18 — Stage 1 timeout advisory closure
+
+- Applied the sole requested post-review code delta in
+  `validation/diffracted_wave/run_pilot.py`: Python `subprocess.run` grace is
+  now `timeout=315`, while the GNU wrapper remains
+  `/usr/bin/timeout --kill-after=5s 300s` (TERM at 300 s, KILL after 5 s).
+  The resource command is accurately recorded as BusyBox `time -v` wrapping
+  that GNU timeout command.
+- Ran both unchanged proxies once in fresh
+  `/space/adcm2/research/runs/dspecm1d-diffracted-wave-window/20261118-stage1-r6`;
+  r5 was preserved. Both checks passed. The r6 toroidal and spheroidal raw
+  outputs are byte-identical to r5 (`cmp` passed for both), with unchanged
+  SHA-256 values `28fb8a5d664313ac6827d041cd649e3d9591c992d7a4900b6f4438702052ed5d`
+  and `7e20c3e6364cc3c386c11695bac110139c30f2185fe039440977d376f4a3ca63`.
+  R6 summary/launcher log SHA-256 is
+  `0e5466a5f8a5bb5c214ad48f3ada5e2752f4b5a43ec68790fc73205fe9cc930e`.
+- Final driver SHA-256 is
+  `e766d21ddddb3ebfbadb0ddee37dbfd5788126dac3dae943e3f911d48433521a`.
+  R6 resource receipts report exit status 0, 69,296 kB maximum RSS for
+  toroidal and 83,696 kB for spheroidal. No other source, input, dependency,
+  build, or output was changed; no commit or push was made.
+
+### Independent Stage 1 closeout
+
+The independent reviewer returned PASS on the Stage 1 workflow and PASS on
+the timeout correction. The final review verified the six scoped files,
+the pinned base and protected canonical branch, the CLI smoke (1/1), the
+enabled solver API tests (15/15), and the final r6 proxy evidence. The
+reviewed r6 summary SHA-256 is
+`0e5466a5f8a5bb5c214ad48f3ada5e2752f4b5a43ec68790fc73205fe9cc930e`.
+Both r6 waveforms match the r5 bytes. The pilot qualifies execution and
+finite, mode-appropriate output only. The next stage requires user approval
+and establishes numerical reference convergence and measurement accuracy.
