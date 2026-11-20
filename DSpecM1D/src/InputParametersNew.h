@@ -2,7 +2,9 @@
 #define DSPECM1D_INPUT_PARAMETERS_NEW_H
 
 #include <algorithm>
+#include <cmath>
 #include <filesystem>
+#include <limits>
 #include <stdexcept>
 #include <string>
 #include <utility>
@@ -55,6 +57,11 @@ private:
     return tmp;
   }
 
+  static ModelType loadEarthModel(const EarthModels::IsotropicModel &model) {
+    prem_norm<double> normClass;
+    return EarthModels::ModelInput(model, normClass);
+  }
+
   InputParameters m_params;
   std::string m_modelPath;
   ModelType m_model;
@@ -90,6 +97,39 @@ public:
                    m_params.t_out() / 60.0, df0, wtb, t1,
                    m_params.t_out() / 60.0, qex, m_model.TimeNorm()),
         m_maxstep(maxstep), m_nq(std::max(1, nq)), m_nskip(std::max(1, nskip)) {
+  }
+
+  /** Builds a fixed source/receiver/frequency setup with an in-memory SI model. */
+  explicit InputParametersNew(const std::string &paramPath,
+                              const EarthModels::IsotropicModel &earthModel,
+                              int nq = 5, int nskip = 10, double maxstep = 0.05,
+                              double df0 = 1.0, double wtb = 0.05,
+                              double t1 = 0.0, int qex = 1)
+      : m_params(paramPath), m_modelPath("<in-memory: " + earthModel.label + ">"),
+        m_model(loadEarthModel(earthModel)), m_cmt(m_params), m_srInfo(m_params),
+        m_freqFull(m_params.f1(), m_params.f2(), m_params.f11(), m_params.f12(),
+                   m_params.f21(), m_params.f22(), m_params.time_step_sec(),
+                   m_params.t_out() / 60.0, df0, wtb, t1,
+                   m_params.t_out() / 60.0, qex, m_model.TimeNorm()),
+        m_maxstep(maxstep), m_nq(std::max(1, nq)), m_nskip(std::max(1, nskip)) {}
+
+  /** Returns a model-specific transient context while preserving this setup. */
+  InputParametersNew withEarthModel(const EarthModels::IsotropicModel &earthModel) const {
+    InputParametersNew trial(*this);
+    auto supplied = loadEarthModel(earthModel);
+    const auto close = [](double a, double b) {
+      return std::abs(a - b) <= 32.0 * std::numeric_limits<double>::epsilon() *
+                                      std::max({1.0, std::abs(a), std::abs(b)});
+    };
+    if (!close(supplied.OuterRadius(), m_model.OuterRadius()) ||
+        !close(supplied.LengthNorm(), m_model.LengthNorm()) ||
+        !close(supplied.MassNorm(), m_model.MassNorm()) ||
+        !close(supplied.TimeNorm(), m_model.TimeNorm()))
+      throw std::invalid_argument(
+          "Trial model must match the prepared model outer radius and normalization");
+    trial.m_model = std::move(supplied);
+    trial.m_modelPath = "<in-memory: " + earthModel.label + ">";
+    return trial;
   }
 
   /// Returns the underlying legacy parameter object.

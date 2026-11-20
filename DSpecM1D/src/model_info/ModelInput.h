@@ -14,6 +14,21 @@
 
 namespace EarthModels {
 
+/** SI-valued isotropic MINEOS knots for in-memory model trials.
+ * Repeated radii encode the two one-sided values at a layer boundary.
+ */
+struct IsotropicModel {
+  std::vector<double> radiusM;
+  std::vector<double> rhoKgM3;
+  std::vector<double> vpMPerS;
+  std::vector<double> vsMPerS;
+  std::vector<double> qKappa;
+  std::vector<double> qMu;
+  // Must be finite; attenuation-enabled solves apply the usual positive-TREF check.
+  double referencePeriodSeconds = 0.0;
+  std::string label = "in-memory isotropic model";
+};
+
 template <typename FLOAT = double>
 class EarthConstants {
 public:
@@ -78,6 +93,8 @@ public:
   explicit ModelInput(const std::string &pathToFile);
   template <template <typename> class ParameterModel>
   ModelInput(const std::string &pathToFile, const ParameterModel<FLOAT> &modelConstants);
+  template <template <typename> class ParameterModel>
+  ModelInput(const IsotropicModel &model, const ParameterModel<FLOAT> &modelConstants);
 
   FLOAT LengthNorm() const { return m_lengthNorm; }
   FLOAT MassNorm() const { return m_massNorm; }
@@ -198,6 +215,9 @@ private:
     return values.at(validLayer(i));
   }
   void loadModel(const std::string &pathToFile);
+  void initializeFromDeck(const planetmodel::Deck &deck, const std::string &source,
+                          const std::string &modelTitle, double trefSeconds,
+                          int ifanis);
 
   std::string m_modelTitle;
   int m_numLayers = 0;
@@ -229,12 +249,52 @@ ModelInput<FLOAT, INTEGRAL>::ModelInput(const std::string &pathToFile,
 }
 
 template <typename FLOAT, typename INTEGRAL>
+template <template <typename> class ParameterModel>
+ModelInput<FLOAT, INTEGRAL>::ModelInput(const IsotropicModel &model,
+                                         const ParameterModel<FLOAT> &modelConstants) {
+  const auto n = model.radiusM.size();
+  const auto validSize = [n](const auto &values) { return values.size() == n; };
+  if (n < 2 || !validSize(model.rhoKgM3) || !validSize(model.vpMPerS) ||
+      !validSize(model.vsMPerS) || !validSize(model.qKappa) || !validSize(model.qMu))
+    throw std::invalid_argument("In-memory isotropic model arrays must have equal length >= 2");
+  if (!std::isfinite(model.referencePeriodSeconds))
+    throw std::invalid_argument("In-memory isotropic model reference period must be finite");
+  for (std::size_t i = 0; i < n; ++i) {
+    if (!std::isfinite(model.radiusM[i]) || model.radiusM[i] < 0.0 ||
+        !std::isfinite(model.rhoKgM3[i]) || model.rhoKgM3[i] <= 0.0 ||
+        !std::isfinite(model.vpMPerS[i]) || model.vpMPerS[i] <= 0.0 ||
+        !std::isfinite(model.vsMPerS[i]) || model.vsMPerS[i] < 0.0 ||
+        model.vsMPerS[i] >= model.vpMPerS[i] ||
+        !std::isfinite(model.qKappa[i]) || model.qKappa[i] < 0.0 ||
+        !std::isfinite(model.qMu[i]) || model.qMu[i] < 0.0)
+      throw std::invalid_argument(std::format("{}: invalid isotropic knot at row {}", model.label, i + 1));
+    if (i && model.radiusM[i] < model.radiusM[i - 1])
+      throw std::invalid_argument(std::format("{}: radii must be non-decreasing at row {}", model.label, i + 1));
+  }
+  auto deck = planetmodel::Deck(model.radiusM,
+      {{"rho", model.rhoKgM3}, {"vp", model.vpMPerS}, {"vs", model.vsMPerS},
+       {"qkappa", model.qKappa}, {"qmu", model.qMu}}, {}, model.label);
+  initializeNorms(modelConstants);
+  initializeFromDeck(deck, model.label, model.label,
+                     model.referencePeriodSeconds, 0);
+}
+
+template <typename FLOAT, typename INTEGRAL>
 void ModelInput<FLOAT, INTEGRAL>::loadModel(const std::string &pathToFile) {
   const auto deck = planetmodel::ReadDeck(pathToFile, planetmodel::MINEOS());
   const auto header = planetmodel::ReadMineosHeader(deck.Header(), pathToFile);
-  m_modelTitle = header.name;
-  m_tref = header.tref / m_timeNorm;
-  m_isIsotropic = header.ifanis == 0;
+  initializeFromDeck(deck, pathToFile, header.name, header.tref, header.ifanis);
+}
+
+template <typename FLOAT, typename INTEGRAL>
+void ModelInput<FLOAT, INTEGRAL>::initializeFromDeck(const planetmodel::Deck &deck,
+                                                       const std::string &source,
+                                                       const std::string &modelTitle,
+                                                       double trefSeconds,
+                                                       int ifanis) {
+  m_modelTitle = modelTitle;
+  m_tref = trefSeconds / m_timeNorm;
+  m_isIsotropic = ifanis == 0;
   const auto rawRadii = deck.Radius();
   const auto ranges = deck.Layers();
   const auto boundaries = deck.Boundaries();
@@ -251,16 +311,16 @@ void ModelInput<FLOAT, INTEGRAL>::loadModel(const std::string &pathToFile) {
   const auto& vsv = deck.Column(isotropic ? "vs" : "vsv");
   const auto& qk = deck.Column("qkappa");
   const auto& qm = deck.Column("qmu");
-  if ((header.ifanis == 0) != isotropic) {
+  if ((ifanis == 0) != isotropic) {
     throw std::invalid_argument(std::format(
         "{}: ifanis={} is inconsistent with the {}-column MINEOS rows",
-        pathToFile, header.ifanis, isotropic ? "isotropic" : "TI"));
+        source, ifanis, isotropic ? "isotropic" : "TI"));
   }
   for (std::size_t row = 0; row < rawRadii.size(); ++row) {
     for (const auto [name, value] : {std::pair{"qkappa", qk[row]}, std::pair{"qmu", qm[row]}}) {
       if (!std::isfinite(value) || value < 0.0) {
         throw std::invalid_argument(std::format("{}: row {} has invalid {}={}; expected finite Q >= 0",
-                                                pathToFile, row + 1, name, value));
+                                                source, row + 1, name, value));
       }
     }
   }

@@ -2,8 +2,10 @@
 #define DSPECM1D_OUTPUT_WRITERS_H
 
 #include <algorithm>
+#include <cmath>
 #include <fstream>
 #include <iomanip>
+#include <limits>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -215,9 +217,9 @@ writeTimeComparison(const std::string &path,
  * multi-receiver outputs without assuming a comparison layout.
  */
 inline void
-writeTimeSeries(const std::string &path, const SpectraSolver::FreqFull &freq,
-                double timeNorm, double tOutMinutes,
-                const Eigen::MatrixXd &timeSeries, int precision = 16) {
+writeTimeSeriesOnGrid(const std::string &path, double timeStep,
+                      double timeNorm, double tOutMinutes,
+                      const Eigen::MatrixXd &timeSeries, int precision = 16) {
   std::ofstream file(path);
   if (!file) {
     throw std::runtime_error("Error: unable to open output file: " + path);
@@ -226,7 +228,7 @@ writeTimeSeries(const std::string &path, const SpectraSolver::FreqFull &freq,
   file << std::fixed << std::setprecision(precision);
   for (Eigen::Index idx = 0; idx < timeSeries.cols(); ++idx) {
     const double currentTime =
-        static_cast<double>(idx) * freq.dt() * timeNorm;
+        static_cast<double>(idx) * timeStep * timeNorm;
     file << currentTime;
     for (Eigen::Index row = 0; row < timeSeries.rows(); ++row) {
       file << ';' << timeSeries(row, idx);
@@ -239,6 +241,14 @@ writeTimeSeries(const std::string &path, const SpectraSolver::FreqFull &freq,
   }
 }
 
+inline void
+writeTimeSeries(const std::string &path, const SpectraSolver::FreqFull &freq,
+                double timeNorm, double tOutMinutes,
+                const Eigen::MatrixXd &timeSeries, int precision = 16) {
+  writeTimeSeriesOnGrid(path, freq.dt(), timeNorm, tOutMinutes, timeSeries,
+                        precision);
+}
+
 /**
  * @brief Convenience overload that derives the time metadata from
  * `InputParametersNew`.
@@ -248,6 +258,81 @@ writeTimeSeries(const std::string &path, const InputParametersNew &paramsNew,
                 const Eigen::MatrixXd &timeSeries, int precision = 16) {
   writeTimeSeries(path, paramsNew.freqFull(), paramsNew.earthModel().TimeNorm(),
                   paramsNew.inputParameters().t_out(), timeSeries, precision);
+}
+
+/**
+ * @brief Writes the unfiltered raw time series with a strict duration cutoff.
+ *
+ * Each output row is a time sample. The first column is physical time in
+ * seconds; remaining columns are grouped receiver-major, with Z, N, E in each
+ * receiver block. Unlike the legacy writer, the duration is inclusive and a
+ * sample beyond it is never written.
+ */
+inline void
+writeRawTimeSeries(const std::string &path, double sampleIntervalSeconds,
+                   double durationSeconds, const Eigen::MatrixXd &timeSeries) {
+  if (!(sampleIntervalSeconds > 0.0) || !(durationSeconds >= 0.0))
+    throw std::invalid_argument("Raw time output requires a positive sample interval and non-negative duration.");
+  std::ofstream file(path);
+  if (!file)
+    throw std::runtime_error("Error: unable to open output file: " + path);
+
+  file << std::scientific
+       << std::setprecision(std::numeric_limits<double>::max_digits10);
+  for (Eigen::Index sample = 0; sample < timeSeries.cols(); ++sample) {
+    double time = static_cast<double>(sample) * sampleIntervalSeconds;
+    if (time > durationSeconds) {
+      const double oneUlpLimit = std::nextafter(
+          durationSeconds, std::numeric_limits<double>::infinity());
+      const double twoUlpLimit = std::nextafter(
+          oneUlpLimit, std::numeric_limits<double>::infinity());
+      if (time > twoUlpLimit)
+        break;
+      // Keep the exported axis strictly within the requested duration even
+      // when multiplication rounds an exact endpoint one or two ULPs high.
+      time = durationSeconds;
+    }
+    file << time;
+    for (Eigen::Index row = 0; row < timeSeries.rows(); ++row)
+      file << ';' << timeSeries(row, sample);
+    file << '\n';
+  }
+}
+
+/**
+ * @brief Writes damped raw complex spectra on the physical one-sided grid.
+ *
+ * The first column is frequency in Hz, followed by real and imaginary values
+ * for each receiver's Z, N, E components. The supplied amplitude scale
+ * converts solver output to observable SI units times seconds.
+ */
+inline void
+writeRawFrequencySeries(const std::string &path,
+                        const SpectraSolver::FreqFull &freq,
+                        double timeNorm, double amplitudeScale,
+                        const Eigen::MatrixXcd &spectrum) {
+  const Eigen::Index expectedBins = freq.nt() / 2 + 1;
+  if (spectrum.cols() != expectedBins)
+    throw std::invalid_argument(
+        "Raw frequency output must contain the full one-sided frequency grid.");
+  if (spectrum.rows() % 3 != 0)
+    throw std::invalid_argument(
+        "Raw frequency output rows must contain receiver-major Z/N/E triples.");
+
+  std::ofstream file(path);
+  if (!file)
+    throw std::runtime_error("Error: unable to open output file: " + path);
+
+  file << std::scientific
+       << std::setprecision(std::numeric_limits<double>::max_digits10);
+  for (Eigen::Index bin = 0; bin < expectedBins; ++bin) {
+    file << (freq.f(static_cast<int>(bin)) / timeNorm);
+    for (Eigen::Index row = 0; row < spectrum.rows(); ++row) {
+      const auto value = spectrum(row, bin) * amplitudeScale;
+      file << ';' << value.real() << ';' << value.imag();
+    }
+    file << '\n';
+  }
 }
 
 }   // namespace DSpecM

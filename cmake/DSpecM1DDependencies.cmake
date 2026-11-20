@@ -35,7 +35,7 @@ FetchContent_Declare(
 FetchContent_Declare(
     GSHTRANS
     GIT_REPOSITORY https://github.com/da380/GSHTrans.git
-    GIT_TAG 8dd116df8df4222fe9b10a40c7213d34f2a274fb)
+    GIT_TAG 991dd1eaba2d0c47e4200356a0329c51dfe5fb5e)
 FetchContent_Declare(
     Interpolation
     GIT_REPOSITORY https://github.com/da380/Interpolation.git

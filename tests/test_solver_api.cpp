@@ -6,6 +6,7 @@
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <tuple>
 #include <vector>
 #include <Eigen/SparseLU>
@@ -263,6 +264,109 @@ InputParametersNew makeMultiCowlingSolveParams(double fmin, double fmax,
 }
 
 }   // namespace
+
+TEST(PreferredSolverApiTests, InMemoryIsotropicTrialsMatchFileAndPreservePreparedSetup) {
+  DSpecMTest::TempDir temp;
+  const EarthModels::IsotropicModel model{
+      .radiusM = {0.0, 2.0e6, 2.0e6, 6.371e6},
+      .rhoKgM3 = {5500.0, 5000.0, 4000.0, 3300.0},
+      .vpMPerS = {10000.0, 9000.0, 8000.0, 6000.0},
+      .vsMPerS = {5500.0, 5000.0, 4500.0, 3500.0},
+      .qKappa = {600.0, 600.0, 500.0, 500.0},
+      .qMu = {300.0, 300.0, 250.0, 250.0},
+      .referencePeriodSeconds = 1.0,
+      .label = "two-layer in-memory oracle"};
+  std::ostringstream deck;
+  deck << model.label << "\n0 1 1\n4 2 2\n";
+  for (std::size_t i = 0; i < model.radiusM.size(); ++i)
+    deck << model.radiusM[i] << ' ' << model.rhoKgM3[i] << ' '
+         << model.vpMPerS[i] << ' ' << model.vsMPerS[i] << ' '
+         << model.qKappa[i] << ' ' << model.qMu[i] << '\n';
+  const auto modelPath = DSpecMTest::writeFile(temp.path() / "trial_model.txt",
+                                                deck.str());
+  DSpecMTest::ParameterOptions parameters;
+  parameters.type = 1;
+  parameters.lmax = 2;
+  parameters.f1 = parameters.f11 = parameters.f12 = 0.1;
+  parameters.f2 = parameters.f21 = parameters.f22 = 0.2;
+  parameters.tOutMinutes = 1.0;
+  parameters.timeStepSec = 10.0;
+  parameters.numReceivers = 1;
+  parameters.receivers = {{45.0, 90.0}};
+  const auto parameterPath = DSpecMTest::writeFile(
+      temp.path() / "array_params.txt",
+      DSpecMTest::makeParameterText(modelPath.string(), parameters));
+  InputParametersNew fileContext(parameterPath.string(), 3, 2, 0.2,
+                                 1.0, 0.05, 0.0, 1);
+  InputParametersNew prepared(parameterPath.string(), model, 3, 2, 0.2,
+                              1.0, 0.05, 0.0, 1);
+
+  ASSERT_EQ(fileContext.earthModel().NumberOfLayers(), 2);
+  ASSERT_EQ(prepared.earthModel().NumberOfLayers(), 2);
+  const double lowerProbe = 1.0e6 / fileContext.earthModel().LengthNorm();
+  const double upperProbe = 4.0e6 / fileContext.earthModel().LengthNorm();
+  const double interfaceRadius = 2.0e6 / fileContext.earthModel().LengthNorm();
+  EXPECT_DOUBLE_EQ(fileContext.earthModel().Density(0)(lowerProbe),
+                   prepared.earthModel().Density(0)(lowerProbe));
+  EXPECT_DOUBLE_EQ(fileContext.earthModel().Density(0)(interfaceRadius),
+                   prepared.earthModel().Density(0)(interfaceRadius));
+  EXPECT_DOUBLE_EQ(fileContext.earthModel().Density(1)(interfaceRadius),
+                   prepared.earthModel().Density(1)(interfaceRadius));
+  EXPECT_DOUBLE_EQ(fileContext.earthModel().Density(1)(upperProbe),
+                   prepared.earthModel().Density(1)(upperProbe));
+  EXPECT_DOUBLE_EQ(fileContext.tref(), prepared.tref());
+
+  const auto originalFrequencies = prepared.freqFull().w();
+  auto bad = model;
+  bad.vsMPerS[1] = bad.vpMPerS[1];
+  SPARSESPEC::SparseFSpec solver;
+  EXPECT_THROW(solver.spectra(prepared, bad), std::invalid_argument);
+  const auto fromFile = solver.spectra(fileContext);
+  const auto fromMemory = solver.spectra(prepared, model);
+  EXPECT_TRUE(fromMemory.isApprox(fromFile, 1e-12));
+  EXPECT_EQ(prepared.freqFull().w(), originalFrequencies);
+  EXPECT_EQ(prepared.earthModel().NumberOfLayers(), 2);
+}
+
+TEST(PreferredSolverApiTests, InMemoryWindowTrialUsesCowlingAndRetainsFrequencySetup) {
+  DSpecMTest::TempDir temp;
+  const EarthModels::IsotropicModel model{
+      .radiusM = {0.0, 2.0e6, 2.0e6, 6.371e6},
+      .rhoKgM3 = {5500.0, 5000.0, 4000.0, 3300.0},
+      .vpMPerS = {10000.0, 9000.0, 8000.0, 6000.0},
+      .vsMPerS = {5500.0, 5000.0, 4500.0, 3500.0},
+      .qKappa = {600.0, 600.0, 500.0, 500.0},
+      .qMu = {300.0, 300.0, 250.0, 250.0},
+      .referencePeriodSeconds = 2.0,
+      .label = "windowed model trial"};
+  const auto parameterPath = DSpecMTest::writeFile(
+      temp.path() / "window_params.txt",
+      DSpecMTest::makeParameterText("unused-model-path", {.type = 3,
+                                                           .lmin = 1,
+                                                           .lmax = 2,
+                                                           .f1 = 0.1,
+                                                           .f2 = 0.2,
+                                                           .f11 = 0.1,
+                                                           .f12 = 0.1,
+                                                           .f21 = 0.2,
+                                                           .f22 = 0.2,
+                                                           .numReceivers = 1,
+                                                           .receivers = {{45.0, 90.0}}}));
+  InputParametersNew prepared(parameterPath.string(), model, 3, 2, 0.2,
+                              1.0, 0.05, 0.0, 1);
+  prepared.setCowlingFrequencyMhz(0.01);
+  const auto originalFrequencies = prepared.freqFull().w();
+  SPARSESPEC::PostUndampingWindowOptions options;
+  options.component = SPARSESPEC::PostUndampingWindowComponent::Vertical;
+  options.slownessCorners = {0.0, 0.01, 1000.0, 1001.0};
+  options.preSolveGuardSPerDegree = 0.0;
+  SPARSESPEC::SparseFSpec solver;
+  const auto result = solver.postUndampingWindow(prepared, model, options);
+  EXPECT_EQ(result.timeSeries.rows(), 1);
+  EXPECT_TRUE(result.timeSeries.array().isFinite().all());
+  EXPECT_GT(result.fullGridPairs, 0U);
+  EXPECT_EQ(prepared.freqFull().w(), originalFrequencies);
+}
 
 
 TEST(PreferredSolverApiTests, InvalidAttenuationReferenceFailsBeforeSolverAndOffWorks) {

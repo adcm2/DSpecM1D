@@ -732,3 +732,180 @@ reviewed r6 summary SHA-256 is
 Both r6 waveforms match the r5 bytes. The pilot qualifies execution and
 finite, mode-appropriate output only. The next stage requires user approval
 and establishes numerical reference convergence and measurement accuracy.
+
+### 2026-11-19 — Opt-in post-undamping SH solve pruning
+
+The 60 s and 70 s Stage 2 proxy used 495 physical frequency bins and degrees
+1–420. Offline removal of pre-undamping pairs below the 26 s/degree cutoff
+retained 80,543 of 207,900 pairs. Independent review reproduced the counts and
+receiver scoring. Across both time-end ramps and FFT lengths, the zero-guard
+mask gave worst errors of 0.001495 s/degree and 0.0003933 per degree against the
+unwindowed reference, within the 0.003 and 0.004 limits. Both the primary groups
+and the 145–165 degree stress group passed.
+
+The implementation on `feature/sh-post-undamping-guard` adds
+`generate_seismogram <parameter-file> --experimental-sh-window` and an explicit
+`SparseFSpec::postUndampingSH` API. The command accepts toroidal mode 2 and uses
+the validated frequency sampling setting qex=4. It solves only the retained
+high-frequency suffix of each degree/chunk, uses the original radial truncation
+and symbolic-analysis cadence, removes exponential damping per degree on the
+half-step synthesis grid, and then applies the four-corner cosine taper with
+corners 0, 0.01, 23.5, 26 s/degree. A cosine ramp covers the final 2.5% of the
+time record. The experimental `_sh_window_t.out` has SI Z/N/E samples and is
+written before an additional analysis bandpass. The ordinary command retains
+its existing filter and output contract.
+
+Gate before timing: verify cutoff equality, empty-window and wrong-mode cases,
+ordinary output parity, actual solve counts, and agreement of native traces
+with the independent offline mask for both 60–70 s proxy models. This evidence
+applies to the archived long-period SH grid and proxy source/receiver setup.
+
+Independent runtime gate PASS for the scoped experiment. The native executable
+solved exactly 80,543 pairs in each model. The single-worker test traces matched
+the independently masked archived north component within 4e-15 peak-relative.
+Re-picked PREM and model-anomaly maxima were 0.001257 s/degree and 0.0001605
+per degree across the tested periods and distance groups. The ordinary tool
+produced identical output bytes on the regression fixture. Exact equality at
+degree 292 and 31.25 mHz, empty-window output, and spheroidal rejection passed.
+The Tunya native receipts were archived for review.
+
+Existing regression suites also passed against the exact source snapshot.
+The solver API suite passed all 15 active tests and the output writer suite
+passed all 10. Two existing opt-in Cowling diagnostics were disabled.
+
+The scoped performance gate passed with a persistent picker on Tunya. With
+eight OpenMP workers, one BLAS worker, and three measured repeats after a
+warm-up, full workflow medians including reading, filtering and both period
+picks were 3.410 to 3.041 s on PREM and 3.420 to 3.056 s on basal-Vs.
+Every measured repeat met the scientific gates. Median radial time fell
+from about 3.19 to 2.07 s, and the post-undamping synthesis took about
+0.75 s. The benchmark with a fresh Python picker for each trace gave mixed
+end-to-end times due to picker-process startup variability. Both benchmark
+designs and run receipts are preserved under the Tunya run directory.
+
+The accepted scope is the long-period SH proxy at 60 and 70 s. The
+experimental path and its receipts are on the separate feature worktree.
+
+### 2026-11-19 — Collaborator stage 1 and Wigner high-degree support
+
+The GSHTrans pin moves to 991dd1eaba2d0c47e4200356a0329c51dfe5fb5e.
+The other dependency pins stay fixed. A focused regression exercises the
+production Wigner order shape through degree 3600 and compares double against
+long double at three distances with both signs of the supported orders.
+
+Sol planned the scope. GPT-6-Luna High implemented it. An independent review
+and the complete available regression suite support the engineering checkpoint.
+The suite passed 85 active tests; two existing opt-in diagnostics are disabled.
+The old double pin rejected degree 4096 at its 1827 guard. On the candidate,
+21,150 angular values through degree 4096 agreed with the old long-double
+calculation to 2.7e-12 peak-relative. A degree-3600 waveform smoke at 248–250 mHz,
+19.5 km source depth and 141 receivers produced finite traces. Full-gravity and
+Cowling proxy smokes were also exercised.
+
+The collaborator’s exact decks, input settings, reference traces and adaptive picker
+were unavailable. The full-band collaborator reference and inversion-scale
+accuracy and timing remain pending. Subsequent engineering work must label its
+stand-in cases and keep the Cowling approximation separate from taper error.
+
+### 2026-11-19 — Collaborator stage 2 and component-specific taper
+
+Sol replanned following stage 1. GPT-6-Luna High added opt-in mixed-family
+transverse Sdiff for mode 4 and spheroidal vertical Pdiff for mode 3.
+`--experimental-sdiff-window` and `--experimental-pdiff-window` take four
+explicit slowness corners and an optional `--pre-solve-guard-s-per-deg`.
+The default in each new route retains the full requested solve grid. The
+explicit guard expands both outer corners for choosing raw solve pairs and
+preserves the original chunks, radial truncation and Cowling boundaries.
+The cosine taper acts after inverse transforming, removing exponential
+damping, and transforming back to real frequencies. The mixed route
+sums both families in the physical great-circle T projection.
+
+An independent per-degree reconstruction on oblique paths agreed with the
+native output to 4.6e-13 peak-relative over 16 tested combinations. Tests
+covered full gravity, all-Cowling and a mixed cutoff, with no guard, a
+two-sided guard and an empty guard. Both exact endpoints and four-worker
+contractions passed. Legacy and original SH output were byte-identical on
+the compatibility fixture. The full suite passed 85 active tests and narrow
+Cowling smoke runs returned finite nonzero T and Z at degrees 3596–3600 for
+141 receivers. Independent code review supports the scoped engineering gate.
+
+The comparison with collaborator decks and picker remains pending. These
+proxy checks establish numerical agreement with the chosen masked
+calculation. They do not validate any guard, taper or Cowling cutoff for
+the collaborator's measured phase slowness or decay.
+
+### 2026-11-19 — Collaborator stage 3, raw output and in-memory trials
+
+Sol replanned after the stage 2 review. Two GPT-6-Luna High agents added
+independent raw output and in-memory model changes. A separate GPT-6-Luna
+High agent reviewed the final engineering scope.
+
+`generate_seismogram <parameter-file> --raw-time --raw-spectrum` writes
+both outputs from one standard solve. Either flag can be used individually.
+The unfiltered time output applies exponential undamping once and writes
+samples in seconds up to the requested record duration. The complex
+output preserves the damped one-sided grid through Nyquist, including
+unsolved zeros, with an axis in Hz and amplitudes in the selected SI
+observable times seconds. Output columns are grouped by receiver in Z, N,
+E order. The console reports epsilon in inverse seconds.
+
+`EarthModels::IsotropicModel` takes radius, density, P and S velocities,
+both Q arrays and the reference period as in-memory input. It applies the
+existing layered spline conversion with independent values on the two sides
+of repeated radii. The solver overloads accept one candidate at a time for
+standard spectra or the phase-window route, using the prepared source,
+receivers, frequency grid and Cowling cutoff. Each trial builds its own
+model-dependent SEM state and leaves the prepared context usable after a
+rejected model.
+
+All 87 active tests passed, with two existing Cowling diagnostics disabled.
+The exported raw spectrum agreed with the independently scaled stage 2
+solver spectra to 1.6e-16 peak-relative error or better. Its NumPy inverse
+transform reproduced displacement, velocity and acceleration time traces
+to 3.1e-15 peak-relative error or better. A fractional sample interval
+aligned exactly with the final record time retained the endpoint. The independent PREM and
+perturbed-deck experiment found exact agreement for raw spectra and
+windowed T and Z. The perturbation changed Vs, an internal interface and
+the attenuation reference period. Four invalid trial models were rejected
+on each route. Stage 2 regression retained legacy filtered and original SH
+file identity and passed the independent reconstruction and solve-count
+checks for both mixed-family T and spheroidal Z.
+
+The engineering gate used pinned dependencies in an isolated local build.
+The collaborator's matching model decks, traces and adaptive picker are
+needed for the 0.001–0.002 s/deg acceptance gate and a fair end-to-end
+runtime comparison. This stage provides the C++ trial API and retains
+the existing spline interpolation. Model-specific SEM and factorization
+work remains in each trial.
+
+### 2026-11-19 — Deep-source benchmark follow-up, Stage 1
+
+The spheroidal phase-window path in `FullSpecMultiSem.h` now evaluates the
+receiver contribution once before extracting Z or T. The existing signs,
+component indices and output factor are retained. This is the only code
+hunk in this stage.
+
+Sol specified the implementation and review gates. One GPT-6-Luna High agent
+implemented the hunk and ran the frozen controls. A separate GPT-6-Luna High
+agent independently reviewed the source, replayed the reduced controls and
+audited the full native waveforms, solve counts and benchmark receipts.
+
+On Tunya, the matched 605 km, 65 mHz, degree-375 PREM controls all matched
+byte for byte on the 141-receiver quarter-second waveform grid. Pdiff
+retained 199125 pairs with all solves and 127308 with the zero guard.
+Mixed Sdiff retained 398250 and 254616 pairs respectively. The independent
+reduced cases cover one and four workers and a nonzero spheroidal T
+contribution. Serial original SH and raw controls matched exactly.
+Both source snapshots passed all 87 active tests.
+
+Two alternating four-worker all-solves Pdiff timing repeats averaged
+401.215 s for the baseline and 97.743 s for the candidate. User CPU averaged
+1531.61 and 322.665 s. Synthesis averaged about 20.5 s in both builds.
+The supplemental four-worker raw comparison differed at floating-point
+scale, with relative L2 error 1.787e-15 versus 1.634e-15 between repeats of
+the unchanged baseline, exact axes and no peak-index shifts. Independent
+review accepted raw compatibility and maintained the exact window gate.
+
+The timing and waveform receipts were archived for review.
+The matched full-band Cowling test and picker/taper investigations have
+separate approval gates.

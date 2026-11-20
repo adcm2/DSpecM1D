@@ -17,6 +17,7 @@
 #include "SpecHelpers.h"
 #include "SpectraRunContext.h"
 #include "InputParametersNew.h"
+#include "PostUndampingSH.h"
 
 namespace SPARSESPEC {
 
@@ -37,6 +38,19 @@ public:
   /// Preferred release-facing overload taking a fully prepared workflow
   /// context.
   Eigen::MatrixXcd spectra(InputParametersNew &);
+  /// Evaluates an SI-valued isotropic model against a reusable prepared setup.
+  Eigen::MatrixXcd spectra(const InputParametersNew &,
+                           const EarthModels::IsotropicModel &);
+  /// Experimental toroidal-only seismogram on half the requested time step.
+  PostUndampingSHResult postUndampingSH(InputParametersNew &);
+  /// Experimental mixed-mode phase-window component on the half-step grid.
+  PostUndampingWindowResult
+  postUndampingWindow(InputParametersNew &, const PostUndampingWindowOptions &);
+  /// Windowed phase component for one model, preserving the prepared setup.
+  PostUndampingWindowResult
+  postUndampingWindow(const InputParametersNew &,
+                      const EarthModels::IsotropicModel &,
+                      const PostUndampingWindowOptions &);
   /// Preferred release-facing overload that reuses a prepared SEM object.
   Eigen::MatrixXcd spectra(InputParametersNew &, Full1D::SEM &);
   /// Preferred release-facing overload with reversed convenience arguments.
@@ -60,6 +74,11 @@ public:
                            SRInfo &, double = 1e-4);
 
 private:
+  template <class model1d>
+  Eigen::MatrixXcd multiSemSpectra(
+      SpectraSolver::FreqFull &, model1d &, SourceInfo::EarthquakeCMT &,
+      InputParameters &, int, SRInfo &, double, detail::SHDegreeSpectra *,
+      detail::WindowDegreeSpectra * = nullptr);
 };
 
 }   // namespace SPARSESPEC

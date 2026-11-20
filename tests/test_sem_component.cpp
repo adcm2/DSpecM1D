@@ -164,6 +164,41 @@ TEST(DependencyApiTests, WignerKeepsSignedOrdersPolesAndHighDegreeFinite) {
   EXPECT_DOUBLE_EQ((radialDegreeZero[0][0, 0]), y00);
 }
 
+TEST(DependencyApiTests, WignerProductionOrdersMatchLongDoubleAtHighDegree) {
+  using DoubleWigner =
+      GSHTrans::Wigner<double, GSHTrans::All, GSHTrans::All,
+                       GSHTrans::Multiple>;
+  using LongDoubleWigner =
+      GSHTrans::Wigner<long double, GSHTrans::All, GSHTrans::All,
+                       GSHTrans::Multiple>;
+  const double pi = std::acos(-1.0);
+  const long double longPi = std::acos(-1.0L);
+  const std::array<double, 3> angles{
+      95.0 * pi / 180.0, 130.0 * pi / 180.0, 165.0 * pi / 180.0};
+  const std::array<long double, 3> longAngles{
+      95.0L * longPi / 180.0L, 130.0L * longPi / 180.0L,
+      165.0L * longPi / 180.0L};
+
+  const DoubleWigner doubleTable{3600, 2, 1, angles};
+  const LongDoubleWigner longTable{3600, 2, 1, longAngles};
+  for (const int degree : {20, 3600}) {
+    for (int angle = 0; angle < static_cast<int>(angles.size()); ++angle) {
+      for (int n = -1; n <= 1; ++n) {
+        for (int m = -2; m <= 2; ++m) {
+          const double actual = doubleTable[n, angle][degree, m];
+          const long double reference = longTable[n, angle][degree, m];
+          ASSERT_TRUE(std::isfinite(actual))
+              << "degree " << degree << ", angle " << angle << ", n " << n
+              << ", m " << m;
+          EXPECT_NEAR(actual, static_cast<double>(reference), 3e-12)
+              << "degree " << degree << ", angle " << angle << ", n " << n
+              << ", m " << m;
+        }
+      }
+    }
+  }
+}
+
 TEST(SEMComponentTests, LocalToGlobalMapsAreMonotonicOnMinimalModel) {
   prem_norm<double> norm;
   auto model = EarthModels::ModelInput(DSpecMTest::modelPath().string(), norm);

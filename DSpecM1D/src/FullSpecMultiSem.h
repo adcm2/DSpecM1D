@@ -13,11 +13,110 @@ SparseFSpec::spectra(InputParametersNew &paramsNew) {
                  params.relative_error());
 }
 
+inline Eigen::MatrixXcd SparseFSpec::spectra(
+    const InputParametersNew &prepared,
+    const EarthModels::IsotropicModel &model) {
+  auto trial = prepared.withEarthModel(model);
+  return spectra(trial);
+}
+
 template <class model1d>
 Eigen::MatrixXcd
 SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                      SourceInfo::EarthquakeCMT &cmt, InputParameters &params,
                      int NQ, SRInfo &srInfo, double relerr) {
+  return multiSemSpectra(myff, inp_model, cmt, params, NQ, srInfo, relerr,
+                         nullptr);
+}
+
+inline PostUndampingSHResult
+SparseFSpec::postUndampingSH(InputParametersNew &paramsNew) {
+  auto &params = paramsNew.inputParameters();
+  if (params.type() != 2 || params.lmax() < 1)
+    throw std::invalid_argument(
+        "Post-undamping SH requires explicit toroidal mode (type 2).");
+
+  Timer timer;
+  detail::SHDegreeSpectra spectra;
+  auto &freq = paramsNew.freqFull();
+  timer.start();
+  multiSemSpectra(freq, paramsNew.earthModel(), paramsNew.cmt(), params,
+                  paramsNew.nq(), paramsNew.srInfo(), params.relative_error(),
+                  &spectra);
+  timer.stop();
+
+  PostUndampingSHResult result;
+  result.radialSeconds = timer.duration_seconds();
+  result.sampleIntervalSeconds = 0.5 * freq.dt() * freq.timeNorm();
+  result.solvedPairs = spectra.solvedPairs;
+  result.fullGridPairs = spectra.fullGridPairs;
+  timer.start();
+  result.timeSeries = detail::synthesizePostUndampingSH(
+      freq, paramsNew.srInfo(), params.num_receivers(), paramsNew.normFactor(),
+      spectra);
+  timer.stop();
+  result.synthesisSeconds = timer.duration_seconds();
+  return result;
+}
+
+inline PostUndampingWindowResult
+SparseFSpec::postUndampingWindow(
+    InputParametersNew &paramsNew, const PostUndampingWindowOptions &options) {
+  auto &params = paramsNew.inputParameters();
+  const auto expectedType = options.component ==
+                                    PostUndampingWindowComponent::Transverse
+                                ? 4
+                                : 3;
+  if (params.type() != expectedType || params.lmax() < 1)
+    throw std::invalid_argument(
+        "Post-undamping phase window requires explicit type 4 for T or type 3 for Z.");
+  if (options.component == PostUndampingWindowComponent::Transverse) {
+    for (int receiver = 0; receiver < params.num_receivers(); ++receiver) {
+      const double angle = paramsNew.srInfo().epicentralAngles(receiver);
+      if (!std::isfinite(angle) || std::abs(std::sin(angle)) < 1e-12)
+        throw std::invalid_argument(
+            "Post-undamping T is undefined for coincident or antipodal geometry.");
+    }
+  }
+  detail::validatePostUndampingWindowOptions(options);
+  Timer timer;
+  detail::WindowDegreeSpectra spectra;
+  spectra.options = options;
+  auto &freq = paramsNew.freqFull();
+  timer.start();
+  multiSemSpectra(freq, paramsNew.earthModel(), paramsNew.cmt(), params,
+                  paramsNew.nq(), paramsNew.srInfo(), params.relative_error(),
+                  nullptr, &spectra);
+  timer.stop();
+
+  PostUndampingWindowResult result;
+  result.radialSeconds = timer.duration_seconds();
+  result.sampleIntervalSeconds = 0.5 * freq.dt() * freq.timeNorm();
+  result.solvedPairs = spectra.solvedPairs;
+  result.fullGridPairs = spectra.fullGridPairs;
+  timer.start();
+  result.timeSeries = detail::synthesizePostUndampingWindow(
+      freq, params.num_receivers(), paramsNew.normFactor(), spectra);
+  timer.stop();
+  result.synthesisSeconds = timer.duration_seconds();
+  return result;
+}
+
+inline PostUndampingWindowResult SparseFSpec::postUndampingWindow(
+    const InputParametersNew &prepared,
+    const EarthModels::IsotropicModel &model,
+    const PostUndampingWindowOptions &options) {
+  auto trial = prepared.withEarthModel(model);
+  return postUndampingWindow(trial, options);
+}
+
+template <class model1d>
+Eigen::MatrixXcd
+SparseFSpec::multiSemSpectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
+                             SourceInfo::EarthquakeCMT &cmt,
+                             InputParameters &params, int NQ, SRInfo &srInfo,
+                             double relerr, detail::SHDegreeSpectra *sh,
+                             detail::WindowDegreeSpectra *window) {
   using Complex = std::complex<double>;
   using MatrixC = Eigen::MatrixXcd;
   using SparseMatrixC = Eigen::SparseMatrix<Complex>;
@@ -86,7 +185,9 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
     maxSteps.push_back(step);
   }
 
-  MatrixC vecRaw = MatrixC::Zero(3 * params.num_receivers(), vecW.size());
+  MatrixC vecRaw;
+  if (!sh)
+    vecRaw = MatrixC::Zero(3 * numRec, vecW.size());
 
   // std::cout << "Just before max step printout\n";
   for (auto s : maxSteps)
@@ -110,6 +211,54 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   bool inc_tor = flags.inc_tor;
   bool inc_sph = flags.inc_sph;
   lmin = std::max(lmin, 1);
+
+  if (window) {
+    inc_rad = false;
+    inc_tor = window->options.component ==
+              PostUndampingWindowComponent::Transverse;
+    inc_sph = true;
+  }
+
+  if (sh) {
+    sh->fullGridPairs = static_cast<std::size_t>(lmax - lmin + 1) *
+                        (iEnd - iBegin);
+    sh->degrees.reserve(lmax - lmin + 1);
+    int firstBin = iBegin;
+    for (int degree = lmin; degree <= lmax; ++degree) {
+      const double cutoff = detail::shFirstSolveFrequencyHz(degree);
+      while (firstBin < iEnd && myff.f(firstBin) / myff.timeNorm() < cutoff)
+        ++firstBin;
+      sh->degrees.push_back(
+          {degree, firstBin, MatrixC(2 * numRec, iEnd - firstBin)});
+    }
+  }
+  if (window) {
+    const auto bounds =
+        detail::validatePostUndampingWindowOptions(window->options);
+    const std::size_t familyCount =
+        window->options.component == PostUndampingWindowComponent::Transverse
+            ? 2
+            : 1;
+    window->fullGridPairs = static_cast<std::size_t>(lmax - lmin + 1) *
+                            static_cast<std::size_t>(iEnd - iBegin) *
+                            familyCount;
+    window->degrees.reserve(lmax - lmin + 1);
+    for (int degree = lmin; degree <= lmax; ++degree) {
+      int firstBin = iBegin;
+      while (firstBin < iEnd &&
+             detail::degreeSlownessSPerDegree(
+                 degree, myff.f(firstBin) / myff.timeNorm()) > bounds.second)
+        ++firstBin;
+      int lastBin = firstBin;
+      while (lastBin < iEnd &&
+             detail::degreeSlownessSPerDegree(
+                 degree, myff.f(lastBin) / myff.timeNorm()) >= bounds.first)
+        ++lastBin;
+      window->degrees.push_back(
+          {degree, firstBin, lastBin,
+           MatrixC::Zero(numRec, lastBin - firstBin)});
+    }
+  }
 
   // Validate each chunk's receiver support before entering any OpenMP region.
   std::vector<std::vector<int>> receiverElementsByChunk;
@@ -167,12 +316,35 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
   // toroidals
   if (inc_tor) {
     std::cout << "Doing Toroidal Modes\n";
-#pragma omp parallel default(shared) private(solver1)
+    std::size_t solvedPairs = 0;
+#pragma omp parallel default(shared) private(solver1) reduction(+:solvedPairs)
     {
 #pragma omp for schedule(dynamic)
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
+        auto *degree = sh ? &sh->degrees[idxl - lmin] : nullptr;
+        auto *windowDegree = window ? &window->degrees[idxl - lmin] : nullptr;
+        if (degree && degree->firstBin == iEnd)
+          continue;
+
         MatrixC rvVals = srInfo.rvRedTor(idxl);
         for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
+          const auto &indices = idxChunks[idxChunk];
+          if (indices.empty())
+            continue;
+          const int i1 = indices.front();
+          const int lenChunk = static_cast<int>(indices.size());
+          int first = degree ? std::max(0, degree->firstBin - i1) : 0;
+          if (window) {
+            while (first < lenChunk) {
+              const int globalIdx = indices[first];
+              if (globalIdx >= windowDegree->firstBin)
+                break;
+              ++first;
+            }
+          }
+          if (first >= lenChunk ||
+              (window && indices[first] >= windowDegree->lastBin))
+            continue;
           Full1D::SEM &sem = sems[idxChunk];
           auto idxSource = sem.sourceElement(cmt);
           const auto &recElems = receiverElementsByChunk[idxChunk];
@@ -202,11 +374,18 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           // std::cout << "Debug 7\n";
           auto ridxtor = SpectralTools::allIndicesTor(
               sem, idxl, freqChunks[idxChunk], idxSource, nskip);
-          auto i1 = idxChunks[idxChunk][0];
-          auto lenChunk = freqChunks[idxChunk].size();
-          MatrixC vecRawL = MatrixC::Zero(3 * params.num_receivers(), lenChunk);
-          for (int idx = (int) lenChunk - 1; idx > -1; --idx) {
+          const bool capture = degree || windowDegree;
+          MatrixC vecRawL = MatrixC::Zero(3 * numRec, capture ? 1 : lenChunk);
+          // Retain the high-frequency suffix of the original chunk. The
+          // index and factorization cadence still start at its highest bin.
+          for (int idx = lenChunk - 1; idx >= first; --idx) {
             auto wval = freqChunks[idxChunk][idx];
+            const int globalIdx = indices[idx];
+            if (window) {
+              if (globalIdx < windowDegree->firstBin ||
+                  globalIdx >= windowDegree->lastBin)
+                continue;
+            }
             Complex w = wval + ieps;
             std::size_t ridx = ridxtor[idx];
             std::size_t len_ms = lentor - ridx;
@@ -217,39 +396,95 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                      hTorAtten.block(ridx, ridx, len_ms, len_ms);
             mat.makeCompressed();
             auto fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
-            factorizeOrCompute(solver1, mat, (int) lenChunk - idx - 1, nskip);
+            const int cadence = window &&
+                                        globalIdx == windowDegree->lastBin - 1
+                                    ? 0
+                                    : lenChunk - idx - 1;
+            factorizeOrCompute(solver1, mat, cadence, nskip);
             MatrixC vecSol = solver1.solve(fRed);
             auto lidx = lowidx - ridx;
-            vecRawL.col(idx) +=
+            auto contribution = vecRawL.col(capture ? 0 : idx);
+            if (capture)
+              contribution.setZero();
+            contribution +=
                 redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 2))
                     .rowwise()
                     .sum();
+            if (degree) {
+              const int out = indices[idx] - degree->firstBin;
+              const auto factor = outputFactor(params.output_type(), w, myi);
+              for (int receiver = 0; receiver < numRec; ++receiver) {
+                degree->horizontal(2 * receiver, out) =
+                    factor * contribution(3 * receiver + 1);
+                degree->horizontal(2 * receiver + 1, out) =
+                    factor * contribution(3 * receiver + 2);
+              }
+              ++solvedPairs;
+            } else if (windowDegree) {
+              const auto factor = outputFactor(params.output_type(), w, myi);
+              for (int receiver = 0; receiver < numRec; ++receiver) {
+                // True transverse is clockwise from outward R, which is the
+                // negative of the stored source-centred transverse row.
+                windowDegree->components(receiver,
+                                         globalIdx - windowDegree->firstBin) +=
+                    -factor * contribution(3 * receiver + 2);
+              }
+              ++solvedPairs;
+            }
           }
+          if (!capture) {
 #pragma omp critical(torvecadd)
-          {
-            vecRaw.block(0, i1, 3 * params.num_receivers(), lenChunk) +=
-                vecRawL;
+            {
+              vecRaw.block(0, i1, 3 * numRec, lenChunk) += vecRawL;
+            }
           }
         }
       }
     }
+    if (sh) {
+      sh->solvedPairs = solvedPairs;
+      return vecRaw;
+    }
+    if (window)
+      window->solvedPairs = solvedPairs;
   }
 
   // spheroidals
   if (inc_sph) {
     std::cout << "\nDoing Spheroidal Modes\n";
-#pragma omp parallel default(shared) private(solver1)
+    std::size_t windowSolvedPairs = window ? window->solvedPairs : 0;
+#pragma omp parallel default(shared) private(solver1) reduction(+:windowSolvedPairs)
     {
 #pragma omp for schedule(dynamic)
       for (int idxl = lmin; idxl < lmax + 1; ++idxl) {
+        auto *windowDegree = window ? &window->degrees[idxl - lmin] : nullptr;
         MatrixC rvVals = srInfo.rvRedSph(idxl);
         for (int idxChunk = 0; idxChunk < numChunks; ++idxChunk) {
           Full1D::SEM &sem = sems[idxChunk];
           auto idxSource = sem.sourceElement(cmt);
           const auto &recElems = receiverElementsByChunk[idxChunk];
+          const int lenChunk = static_cast<int>(idxChunks[idxChunk].size());
+          int selectedBegin = 0;
+          int selectedEnd = lenChunk;
+          if (window) {
+            while (selectedBegin < lenChunk) {
+              const int globalIdx = idxChunks[idxChunk][selectedBegin];
+              if (globalIdx >= windowDegree->firstBin)
+                break;
+              ++selectedBegin;
+            }
+            selectedEnd = selectedBegin;
+            while (selectedEnd < lenChunk) {
+              const int globalIdx = idxChunks[idxChunk][selectedEnd];
+              if (globalIdx >= windowDegree->lastBin)
+                break;
+              ++selectedEnd;
+            }
+            if (selectedBegin >= selectedEnd)
+              continue;
+          }
           MatrixC fVals = sem.calculateForceRedCoefficients(cmt, idxl, 0.0);
           MatrixC redC = rvVals * fVals;
-          const int lenChunk = static_cast<int>(idxChunks[idxChunk].size());
           MatrixC vecRawL = MatrixC::Zero(3 * numRec, lenChunk);
           const double cutoffMhz = params.cowlingFrequencyMhz();
           int cowlingFirst = static_cast<int>(idxChunks[idxChunk].size());
@@ -275,6 +510,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                                       ? static_cast<int>(idxChunks[idxChunk].size())
                                       : cowlingFirst;
             if (regionBegin >= regionEnd)
+              continue;
+            if (window &&
+                std::max(regionBegin, selectedBegin) >=
+                    std::min(regionEnd, selectedEnd))
               continue;
 
             const auto lowidx = useCowling
@@ -305,6 +544,8 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                 sem, idxl, regionW, idxSource, nskip, useCowling);
             SparseLUType regionSolver;
             for (int idx = regionEnd - 1; idx >= regionBegin; --idx) {
+              if (window && (idx < selectedBegin || idx >= selectedEnd))
+                continue;
               const int localRegionIdx = idx - regionBegin;
               const double wval = freqChunks[idxChunk][idx];
               const std::size_t ridx = ridxsph[localRegionIdx];
@@ -317,13 +558,37 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
                       hSa.block(ridx, ridx, len_ms, len_ms);
               wS.makeCompressed();
               MatrixC fRed = fBase.block(ridx, 0, len_ms, fBase.cols());
-              factorizeOrCompute(regionSolver, wS, regionEnd - idx - 1, nskip);
+              const int globalIdx = idxChunks[idxChunk][idx];
+              const int cadence = window &&
+                                          globalIdx == windowDegree->lastBin - 1
+                                      ? 0
+                                      : regionEnd - idx - 1;
+              factorizeOrCompute(regionSolver, wS, cadence, nskip);
               MatrixC vecSol = regionSolver.solve(fRed);
               const auto lidx = lowidx - ridx;
-              vecRawL.col(idx) +=
+              const auto contribution =
                   redC.cwiseProduct(rvBase * vecSol.block(lidx, 0, lenidx, 4))
                       .rowwise()
                       .sum();
+              if (windowDegree) {
+                const auto receiverContribution = contribution.eval();
+                const auto factor = outputFactor(params.output_type(), w, myi);
+                if (window->options.component ==
+                    PostUndampingWindowComponent::Transverse) {
+                  for (int receiver = 0; receiver < numRec; ++receiver)
+                    windowDegree->components(
+                        receiver, globalIdx - windowDegree->firstBin) +=
+                        -factor * receiverContribution(3 * receiver + 2);
+                } else {
+                  for (int receiver = 0; receiver < numRec; ++receiver)
+                    windowDegree->components(
+                        receiver, globalIdx - windowDegree->firstBin) +=
+                        factor * receiverContribution(3 * receiver);
+                }
+                ++windowSolvedPairs;
+              } else {
+                vecRawL.col(idx) += contribution;
+              }
             }
           }
           if (lenChunk > 0) {
@@ -335,6 +600,10 @@ SparseFSpec::spectra(SpectraSolver::FreqFull &myff, model1d &inp_model,
           }
         }
       }
+    }
+    if (window) {
+      window->solvedPairs = windowSolvedPairs;
+      return vecRaw;
     }
   }
 
